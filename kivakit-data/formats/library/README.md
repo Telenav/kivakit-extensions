@@ -20,7 +20,7 @@ This module contains code generally relevant to data formats.
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>lexakai</artifactId>
+        <artifactId></artifactId>
         <version><!-- ${project-version} --> 0.9.0-SNAPSHOT <!-- end --></version>
     </dependency>
 ![](documentation/images/horizontal-line.png)
