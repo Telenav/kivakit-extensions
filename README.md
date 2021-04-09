@@ -41,7 +41,7 @@ The *kivakit-extensions* repository provides a place for KivaKit modules that ex
 
 ### Projects &nbsp; ![](documentation/images/gears-40.png)
 
-[**kivakit-data**](kivakit-data/README.md)
+[**kivakit-data**](kivakit-data/README.md)  
 
 ### Javadoc Coverage
 
@@ -50,6 +50,7 @@ The *kivakit-extensions* repository provides a place for KivaKit modules that ex
 &nbsp;  ![](documentation/images/meter-100-12.png) &nbsp; &nbsp; *kivakit-data-formats-library*
 
 [//]: # (start-user-text)
+
 
 
 [//]: # (end-user-text)
