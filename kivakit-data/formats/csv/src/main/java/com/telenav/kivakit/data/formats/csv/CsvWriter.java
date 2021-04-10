@@ -18,8 +18,9 @@
 
 package com.telenav.kivakit.data.formats.csv;
 
+import com.telenav.kivakit.core.kernel.interfaces.io.Closeable;
 import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.resource.writing.BaseWriter;
+import com.telenav.kivakit.core.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -38,7 +39,7 @@ import java.io.PrintWriter;
 @UmlClassDiagram(diagram = DiagramCsv.class)
 @UmlRelation(label = "writes", referent = CsvLine.class)
 @LexakaiJavadoc(complete = true)
-public class CsvWriter extends BaseWriter
+public class CsvWriter extends BaseRepeater implements Closeable
 {
     /** The CSV schema being written to */
     @UmlAggregation(label = "uses")
