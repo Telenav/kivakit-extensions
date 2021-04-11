@@ -21,12 +21,12 @@ package com.telenav.kivakit.data.compression.project;
 import com.telenav.kivakit.core.collections.primitive.array.scalars.ByteArray;
 import com.telenav.kivakit.core.collections.primitive.list.ByteList;
 import com.telenav.kivakit.core.kernel.language.collections.map.count.CountMap;
-import com.telenav.kivakit.core.kernel.language.paths.PackagePath;
 import com.telenav.kivakit.core.kernel.language.values.count.Count;
 import com.telenav.kivakit.core.kernel.language.values.count.Minimum;
 import com.telenav.kivakit.core.kernel.language.values.count.MutableCount;
 import com.telenav.kivakit.core.kernel.language.values.mutable.MutableValue;
 import com.telenav.kivakit.core.resource.resources.other.PropertyMap;
+import com.telenav.kivakit.core.resource.resources.packaged.PackageResource;
 import com.telenav.kivakit.core.serialization.kryo.CoreKernelKryoTypes;
 import com.telenav.kivakit.core.serialization.kryo.KryoTypes;
 import com.telenav.kivakit.core.serialization.kryo.KryoUnitTest;
@@ -69,7 +69,7 @@ public class DataCompressionUnitTest extends KryoUnitTest
 
     protected PropertyMap properties(final String name)
     {
-        return PropertyMap.load(PackagePath.packagePath(getClass()), name);
+        return PropertyMap.load(PackageResource.of(getClass(), name));
     }
 
     @NotNull
