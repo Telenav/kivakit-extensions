@@ -2,7 +2,7 @@
 
     !include ../lexakai/lexakai.theme
     
-    title "kivakit-extensions-data-formats-library"
+    title "kivakit-data-formats-library"
     
     artifact kryo
     artifact minlog
@@ -16,7 +16,7 @@
     artifact kivakit_core_serialization_core
     artifact kivakit_core_serialization_kryo
     artifact kivakit_core_test
-    artifact kivakit_extensions_data_formats_library
+    artifact kivakit_data_formats_library
     artifact lexakai_annotations
     artifact kryo_serializers
     artifact swagger_annotations
@@ -40,7 +40,7 @@
     kivakit_core_resource --> kivakit_core_serialization_core
     kivakit_core_serialization_kryo --> kryo
     kivakit_core_serialization_kryo --> kryo_serializers
-    kivakit_extensions_data_formats_library --> kivakit_core_resource
+    kivakit_data_formats_library --> kivakit_core_resource
     kryo --> minlog
     kryo --> objenesis
     kryo --> reflectasm

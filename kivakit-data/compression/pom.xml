@@ -10,14 +10,14 @@
 
     <parent>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>kivakit-extensions-data</artifactId>
+        <artifactId>kivakit-data</artifactId>
         <version>0.9.0-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Extensions Data - Compression</name>
+    <name>KivaKit Data - Compression</name>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>kivakit-extensions-data-compression</artifactId>
+    <artifactId>kivakit-data-compression</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

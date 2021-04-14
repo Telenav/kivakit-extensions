@@ -10,14 +10,14 @@
 
     <parent>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>kivakit-extensions-data</artifactId>
+        <artifactId>kivakit-data</artifactId>
         <version>0.9.0-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Extensions Data - Formats</name>
+    <name>KivaKit Data - Formats</name>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>kivakit-extensions-data-formats</artifactId>
+    <artifactId>kivakit-data-formats</artifactId>
     <packaging>pom</packaging>
 
     <modules>

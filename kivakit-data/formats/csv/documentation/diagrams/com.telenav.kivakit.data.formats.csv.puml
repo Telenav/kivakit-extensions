@@ -4,11 +4,11 @@
     
     title "com.telenav.kivakit.data.formats.csv"
     
-    abstract BaseWriter
-    abstract BaseObjectReader
+    abstract BaseIterator
     abstract BaseRepeater
     
     interface PropertyValueSource
+    interface Closeable
     interface RepeaterTrait
     interface PropertyFilter
     
@@ -52,7 +52,9 @@
         +CsvPropertyFilter(CsvSchema)
     }
     
-    BaseObjectReader <|-- CsvReader
+    BaseIterator <|-- CsvReader
+    RepeaterTrait <|-- CsvReader
+    Closeable <|-- CsvReader
     CsvReader --> CsvLine : "reads"
     CsvReader o-- CsvSchema : "uses"
     class CsvReader
@@ -93,7 +95,8 @@
         +CsvColumn<?> columnForName(String name)
     }
     
-    BaseWriter <|-- CsvWriter
+    BaseRepeater <|-- CsvWriter
+    Closeable <|-- CsvWriter
     CsvWriter --> CsvLine : "writes"
     CsvWriter o-- CsvSchema : "uses"
     class CsvWriter

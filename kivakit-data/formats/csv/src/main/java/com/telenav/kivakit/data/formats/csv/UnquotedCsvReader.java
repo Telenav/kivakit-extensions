@@ -27,8 +27,8 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 /**
  * Parses a stream of simplified CSV information. This class does not handle quoted entries, so the records cannot
  * contain the delimiter. The records also cannot embed a newline. This class is useful for handling CSVs that do not
- * use CSV quote rules for records. Telenav TXD format files, for example, are built this way. It is similar to and
- * derived from class CsvReader except for the lack of double quote handling.
+ * use CSV quote rules for records. It is similar to and derived from class CsvReader except for the lack of double
+ * quote handling.
  *
  * @author jonathanl (shibo)
  * @author ericg
