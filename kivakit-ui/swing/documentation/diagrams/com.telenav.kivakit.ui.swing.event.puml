@@ -1,0 +1,16 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.event"
+    
+    class EventCoalescer
+    {
+        --(constructors)--
+        +EventCoalescer(Frequency, Runnable)
+        --(lifecycle)--
+        +void startTimer()
+    }
+    
+@enduml
+

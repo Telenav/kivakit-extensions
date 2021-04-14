@@ -1,0 +1,15 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.icon.search"
+    
+    JLabel <|-- MagnifyingGlass
+    class MagnifyingGlass
+    {
+        --(constructors)--
+        +MagnifyingGlass()
+    }
+    
+@enduml
+

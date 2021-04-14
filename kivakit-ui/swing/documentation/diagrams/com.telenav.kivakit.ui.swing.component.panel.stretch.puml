@@ -1,0 +1,15 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.panel.stretch"
+    
+    KivaKitPanel <|-- StretchPanel
+    class StretchPanel
+    {
+        --(constructors)--
+        +StretchPanel()
+    }
+    
+@enduml
+

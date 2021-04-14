@@ -1,0 +1,17 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.project"
+    
+    Project <|-- UiSwingProject
+    class UiSwingProject
+    {
+        --(constructors)--
+        #UiSwingProject()
+        --
+        +UiSwingProject get()
+    }
+    
+@enduml
+

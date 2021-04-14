@@ -1,0 +1,35 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.health"
+    
+    KivaKitPanel <|-- CpuUse
+    class CpuUse
+    {
+        --(constructors)--
+        +CpuUse()
+        --
+        +CpuUse update(JavaVirtualMachineHealth)
+    }
+    
+    FlashCardPanel <|-- HealthPanel
+    class HealthPanel
+    {
+        --(constructors)--
+        +HealthPanel()
+        --
+        +void update(JavaVirtualMachineHealth)
+    }
+    
+    KivaKitPanel <|-- MemoryUse
+    class MemoryUse
+    {
+        --(constructors)--
+        +MemoryUse()
+        --
+        +MemoryUse update(JavaVirtualMachineHealth)
+    }
+    
+@enduml
+

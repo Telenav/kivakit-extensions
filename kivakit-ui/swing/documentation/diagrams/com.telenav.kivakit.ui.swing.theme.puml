@@ -1,0 +1,120 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.theme"
+    
+    KivaKitTheme <|-- KivaKitDarculaTheme
+    class KivaKitDarculaTheme
+    {
+        --(constructors)--
+        +KivaKitDarculaTheme()
+        --
+        +Color colorTabBackground()
+        +Color colorTabForeground()
+        --(functional)--
+        +Color colorTabSelectedBackground()
+        +Color colorTabSelectedForeground()
+    }
+    
+    abstract class KivaKitTheme
+    {
+        --
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorBorder()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorCaret()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorComponentLabel()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorDropdownBackground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorDropdownText()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorFadedText()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorNote()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorProgressBarBackground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorProgressBarForeground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorSelectionBackground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorSelectionText()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorSeparator()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorShadedPanel()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorShadedSubPanel()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTableBackground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTableHeaderBackground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTableHeaderText()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTableText()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorText()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTextAreaBackground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTextFieldBackground()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTextFieldText()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTitle()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorTitleBackground()
+        +JComboBox<T> configure(JComboBox<T> dropdown, int preferredWidth)
+        +JTextField configure(JTextField)
+        +JButton configure(JButton)
+        +JCheckBox configure(JCheckBox)
+        +JTableHeader configure(JTableHeader)
+        +JComboBox<T> configure(JComboBox<T> dropdown)
+        +JEditorPane configure(JEditorPane)
+        +JTable configure(JTable)
+        +JLabel configureComponentLabel(JLabel)
+        +JPanel configureContainerPanel(JPanel)
+        +Font fontComponent()
+        +Font fontTitle()
+        +KivaKitTheme get()
+        +Margins margins()
+        +void set(KivaKitTheme)
+        +Font smallComponentFont()
+        +Font tableFont()
+        --(checks)--
+        +boolean isDark()
+        --(collection)--
+        +JList<T> configure(JList<T>)
+        --(factory)--
+        +JButton newButton(String text, ActionListener)
+        +JButton newButton(String text)
+        +JButton newButton(String text, Source<Boolean> enabled, ActionListener)
+        +JCheckBox newCheckBox(String text)
+        +JLabel newComponentLabel(String text)
+        +KivaKitPanel newContainerPanel()
+        +KivaKitPanel newContainerPanel(LayoutManager)
+        +JComboBox<T> newDropDown(T[] values, Source<Boolean> enabled)
+        +JComboBox<T> newDropDown(ComboBoxModel<T>)
+        +JComboBox<T> newDropDown(ComboBoxModel<T>, Source<Boolean> enabled)
+        +JComboBox<T> newDropDown(T[] values)
+        +JSeparator newHorizontalSeparator()
+        +JLabel newInformationLabel(String text)
+        +JLabel newListCellRenderer(String text, boolean isSelected)
+        +JLabel newNote(String text)
+        +JProgressBar newProgressBar()
+        +JScrollPane newScrollPane(JComponent child, AdjustmentListener)
+        +JTextField newSearchField()
+        +JTextField newSearchField(Source<Boolean> enabled)
+        +KivaKitPanel newShadedPanel()
+        +KivaKitPanel newShadedSubPanel()
+        +JTabbedPane newTabbedPane()
+        +JTextField newTextField(int characters)
+        +JTextField newTextField()
+        +JTextField newTextField(int characters, Source<Boolean> enabled)
+        +JTextField newTextField(Source<Boolean> enabled)
+        +JSeparator newVerticalSeparator()
+        +JSplitPane newVerticalSplitPane(JPanel top, JPanel bottom)
+        --(functional)--
+        +KivaKitPanel configureShadedPanel(KivaKitPanel)
+        +KivaKitPanel configureShadedSubPanel(KivaKitPanel)
+        +Font fontFixedWidth()
+        --(messaging)--
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorInformation()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorInformationLabel()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorQuibble()
+        +Color colorWarning()
+        +void popupInformation(JFrame, String title, String message)
+        --(search)--
+        +JTextField configureSearchField(JTextField)
+        --(status)--
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorError()
+        +com.telenav.kivakit.ui.swing.graphics.color.Color colorSuccess()
+    }
+    
+    KivaKitTheme <|-- KivaKitVanHelsingTheme
+    class KivaKitVanHelsingTheme
+    {
+    }
+    
+@enduml
+

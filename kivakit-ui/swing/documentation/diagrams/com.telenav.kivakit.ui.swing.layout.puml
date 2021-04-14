@@ -1,0 +1,163 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.layout"
+    
+    abstract AbstractBorder
+    
+    class Alignment
+    {
+        --
+        +JPanel left(JComponent)
+        +JPanel top(JComponent)
+        --(functional)--
+        +JPanel stretched(JComponent)
+    }
+    
+    class Borders
+    {
+        --(constructors)--
+        #Borders()
+        --
+        +Border apply(JComponent)
+        +Borders create()
+        +Borders insideMargins(Margins inside)
+        +Borders insideMarginsOf(Margins)
+        +Borders line()
+        +Borders line(Color)
+        +Borders lineOf(Color)
+        +Borders outsideMargins(Margins outside)
+        +Borders outsideMarginsOf(Margins)
+    }
+    
+    JComponent <|-- HorizontalBox
+    class HorizontalBox
+    {
+        --(constructors)--
+        +HorizontalBox(Spacing, int)
+        +HorizontalBox(int)
+        --
+        +HorizontalBox space(int width)
+        --(collection)--
+        +HorizontalBox add(JComponent)
+    }
+    
+    class HorizontalBoxLayout
+    {
+        --(constructors)--
+        +HorizontalBoxLayout(JComponent, Spacing)
+        +HorizontalBoxLayout(JComponent, Spacing, int)
+        --
+        +HorizontalBoxLayout horizontalGlue()
+        +HorizontalBoxLayout separator()
+        +HorizontalBoxLayout space(int width)
+        +HorizontalBoxLayout verticalGlue()
+        --(collection)--
+        +HorizontalBoxLayout add(Component)
+        +HorizontalBoxLayout add(Component, Object constraints)
+        +HorizontalBoxLayout addLeftAligned(JComponent)
+        +HorizontalBoxLayout addStretched(JComponent)
+        +HorizontalBoxLayout addTopAligned(JComponent)
+    }
+    
+    class Layouts
+    {
+        --
+        +Box leftJustify(JComponent)
+        +Box rightJustify(JComponent)
+    }
+    
+    class Margins
+    {
+        --
+        +Margins apply(JComponent)
+        +Border border()
+        +Margins bottom(int bottom)
+        +Margins bottomOf(int size)
+        +Border inside(Border outside)
+        +Margins insideExisting(JComponent)
+        +Margins left(int left)
+        +Margins leftAndRightOf(int size)
+        +Margins leftOf(int size)
+        +Margins of(int size)
+        +Border outside(Border inside)
+        +Margins outsideExisting(JComponent)
+        +Margins right(int right)
+        +Margins rightOf(int size)
+        +Margins top(int top)
+        +Margins topAndBottomOf(int size)
+        +Margins topOf(int size)
+        --(collection)--
+        +Margins size(int size)
+    }
+    
+    AbstractBorder <|-- RoundedBorder
+    class RoundedBorder
+    {
+        --(constructors)--
+        +RoundedBorder(com.telenav.kivakit.ui.swing.graphics.color.Color)
+        --
+        +Shape getBorderShape(int x, int y, int width, int height)
+    }
+    
+    class Size
+    {
+        --(constructors)--
+        #Size(int, int)
+        --(collection)--
+        +Size heightOf(int height)
+        +Size maximum(JComponent)
+        +Size maximumHeight()
+        +Size maximumWidth()
+        +Size minimum(JComponent)
+        +Size of(int size)
+        +Size preferred(JComponent)
+        +Size widthOf(int width)
+    }
+    
+    enum Spacing
+    {
+        AUTOMATIC_SPACING
+        MANUAL_SPACING
+    }
+    
+    JComponent <|-- VerticalBox
+    class VerticalBox
+    {
+        --(constructors)--
+        +VerticalBox(int)
+        --
+        +VerticalBox space(int height)
+        --(collection)--
+        +VerticalBox add(JComponent)
+    }
+    
+    class VerticalBoxLayout
+    {
+        --(constructors)--
+        +VerticalBoxLayout(JComponent)
+        +VerticalBoxLayout(JComponent, Spacing)
+        --
+        +VerticalBoxLayout horizontalGlue()
+        +VerticalBoxLayout rigidArea(int height)
+        +VerticalBoxLayout separator()
+        +VerticalBoxLayout space(int height)
+        +VerticalBoxLayout strut(int height)
+        --(collection)--
+        +VerticalBoxLayout add(Component)
+        +VerticalBoxLayout addLeftAligned(JComponent)
+        +VerticalBoxLayout addStretched(JComponent)
+        +VerticalBoxLayout addTopAligned(JComponent)
+    }
+    
+    class VerticalFlowLayout
+    {
+        --(constructors)--
+        +VerticalFlowLayout(JComponent)
+        --(collection)--
+        +VerticalFlowLayout add(JComponent child)
+    }
+    
+@enduml
+

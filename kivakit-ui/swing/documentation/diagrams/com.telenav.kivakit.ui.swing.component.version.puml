@@ -1,0 +1,23 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.version"
+    
+    KivaKitPanel <|-- KivaKitBuild
+    class KivaKitBuild
+    {
+        --(constructors)--
+        +KivaKitBuild()
+    }
+    
+    JLabel <|-- KivaKitVersion
+    class KivaKitVersion
+    {
+        --(constructors)--
+        +KivaKitVersion()
+        +KivaKitVersion(Version)
+    }
+    
+@enduml
+

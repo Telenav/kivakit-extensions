@@ -1,0 +1,15 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.math.trigonometry"
+    
+    class Trigonometry
+    {
+        --
+        +double arcTangent(double value)
+        +double arcTangent2(double y, double x)
+    }
+    
+@enduml
+

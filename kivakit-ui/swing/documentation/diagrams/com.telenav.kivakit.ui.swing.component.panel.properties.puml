@@ -1,0 +1,19 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.panel.properties"
+    
+    KivaKitPanel <|-- PropertyPanel
+    class PropertyPanel
+    {
+        --(constructors)--
+        +PropertyPanel()
+        --
+        +void property(String label, JComponent)
+        +void property(String label, String value)
+        +void space(int height)
+    }
+    
+@enduml
+

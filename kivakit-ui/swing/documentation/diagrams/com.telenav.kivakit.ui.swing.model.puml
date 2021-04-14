@@ -1,0 +1,48 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.model"
+    
+    abstract AbstractListModel
+    
+    interface Serializable
+    interface MutableComboBoxModel
+    
+    AbstractListModel <|-- RefreshableComboBoxModel
+    MutableComboBoxModel <|-- RefreshableComboBoxModel
+    Serializable <|-- RefreshableComboBoxModel
+    class RefreshableComboBoxModel<E>
+    {
+        --(constructors)--
+        +RefreshableComboBoxModel()
+        +RefreshableComboBoxModel(ArrayList<E>)
+        +RefreshableComboBoxModel(E[])
+        --
+        +void refresh(List<E> items, E defaultSelection)
+        --(collection)--
+        +void addAll(int index, Collection<? extends E>)
+        +void addAll(Collection<? extends E>)
+        +int getIndexOf(Object anObject)
+        +void removeAllElements()
+    }
+    
+    AbstractListModel <|-- RefreshableListModel
+    Serializable <|-- RefreshableListModel
+    class RefreshableListModel<E>
+    {
+        --(constructors)--
+        +RefreshableListModel()
+        +RefreshableListModel(ArrayList<E>)
+        +RefreshableListModel(E[])
+        --
+        +void refresh(List<E> items, E defaultSelection)
+        --(collection)--
+        +void addAll(int index, Collection<? extends E>)
+        +void addAll(Collection<? extends E>)
+        +int getIndexOf(Object anObject)
+        +void removeAllElements()
+    }
+    
+@enduml
+

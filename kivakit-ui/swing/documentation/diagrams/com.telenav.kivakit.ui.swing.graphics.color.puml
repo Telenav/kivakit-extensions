@@ -1,0 +1,49 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.graphics.color"
+    
+    abstract BaseStringConverter
+    
+    class Color
+    {
+        --
+        +int alpha()
+        +java.awt.Color asAwtColor()
+        +T background(T component)
+        +int blue()
+        +T foreground(T component)
+        +int green()
+        +Color invert()
+        +Color of(java.awt.Color that)
+        +int red()
+        +Color rgb(int rgb)
+        +Color rgb(int red, int green, int blue)
+        +int rgb()
+        +int rgba()
+        +Color rgba(int red, int green, int blue, int alpha)
+        --(conversion)--
+        +String toHex()
+        +String toHexWithAlpha()
+        --(functional)--
+        +Color darkened()
+        +Color darkened(Percent)
+        +Color lightened()
+        +Color lightened(Percent)
+        +Color withAlpha(int alpha)
+    }
+    
+    BaseStringConverter <|-- ColorConverter
+    class ColorConverter
+    {
+        --(constructors)--
+        +ColorConverter(Listener)
+    }
+    
+    class KivaKitColors
+    {
+    }
+    
+@enduml
+

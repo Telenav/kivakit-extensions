@@ -1,0 +1,21 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.progress"
+    
+    enum ProgressPanel.CompletionStatus
+    {
+        CANCELLED
+        COMPLETED
+    }
+    
+    KivaKitPanel <|-- ProgressPanel
+    class ProgressPanel
+    {
+        --(constructors)--
+        +ProgressPanel(ProgressReporter, int, Callback<CompletionStatus>)
+    }
+    
+@enduml
+

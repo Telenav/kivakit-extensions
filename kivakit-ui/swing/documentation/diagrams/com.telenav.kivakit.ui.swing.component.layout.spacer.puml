@@ -1,0 +1,15 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.layout.spacer"
+    
+    KivaKitPanel <|-- Spacer
+    class Spacer
+    {
+        --(constructors)--
+        +Spacer(int, int)
+    }
+    
+@enduml
+

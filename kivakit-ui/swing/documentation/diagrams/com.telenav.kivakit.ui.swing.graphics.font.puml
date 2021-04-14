@@ -1,0 +1,16 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.graphics.font"
+    
+    class Fonts
+    {
+        --
+        +Font component(int size)
+        --(functional)--
+        +Font fixedWidth(int style, int size)
+    }
+    
+@enduml
+

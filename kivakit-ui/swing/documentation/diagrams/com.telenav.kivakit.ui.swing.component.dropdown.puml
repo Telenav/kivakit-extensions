@@ -1,0 +1,13 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.dropdown"
+    
+    DefaultListCellRenderer <|-- DropDownRenderer
+    class DropDownRenderer
+    {
+    }
+    
+@enduml
+

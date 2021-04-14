@@ -1,0 +1,17 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.math.project"
+    
+    Project <|-- MathProject
+    class MathProject
+    {
+        --(constructors)--
+        #MathProject()
+        --
+        +MathProject get()
+    }
+    
+@enduml
+

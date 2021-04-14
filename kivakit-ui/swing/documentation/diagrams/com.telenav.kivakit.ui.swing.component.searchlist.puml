@@ -1,0 +1,22 @@
+@startuml
+
+    !include ../lexakai/lexakai.theme
+    
+    title "com.telenav.kivakit.ui.swing.component.searchlist"
+    
+    KivaKitPanel <|-- SearchList
+    class SearchList<T>
+    {
+        --(constructors)--
+        +SearchList(StringConverter<T>)
+        --
+        +void elements(List<T> elements)
+        +void select(T value)
+        --(collection)--
+        +void addSelectionListener(Callback<T> selectionListener)
+        --(functional)--
+        +T selected()
+    }
+    
+@enduml
+
