@@ -331,8 +331,8 @@
                         <detectJavaApiLink>false</detectJavaApiLink>
                         <doclint>none</doclint>
                         <nohelp>true</nohelp>
-                        <reportOutputDirectory>docs</reportOutputDirectory>
-                        <reportOutputDirectory>${env.KIVAKIT_DATA_HOME}/docs/javadoc/kivakit-extensions</reportOutputDirectory>
+                        <reportOutputDirectory>${env.KIVAKIT_DATA_HOME}/docs/javadoc</reportOutputDirectory>
+                        <destDir>kivakit-extensions</destDir>
                         <additionalOptions>--show-module-contents all --show-packages all --show-types private</additionalOptions>
                     </configuration>
                     <executions>
