@@ -26,6 +26,7 @@ open module kivakit.ui.swing
     exports com.telenav.kivakit.ui.swing.graphics.color;
     exports com.telenav.kivakit.ui.swing.graphics.font;
     exports com.telenav.kivakit.ui.swing.graphics.image;
+    exports com.telenav.kivakit.ui.swing.project;
     exports com.telenav.kivakit.ui.swing.layout;
     exports com.telenav.kivakit.ui.swing.model;
     exports com.telenav.kivakit.ui.swing.theme;
