@@ -20,8 +20,8 @@ This project contains projects for compressing data and processing data in commo
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; ![](https://www.kivakit.org/images/bargraph-32.png)
 
 &nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-data-compression**](compression/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-csv**](csv/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-library**](library/README.md)
+&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-csv**](formats/csv/README.md)  
+&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-library**](formats/library/README.md)
 
 [//]: # (start-user-text)
 

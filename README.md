@@ -35,18 +35,18 @@ The *kivakit-extensions* repository provides a place for KivaKit modules that ex
 
 ### Projects <a name = "projects"></a> &nbsp; ![](https://www.kivakit.org/images/gears-40.png)
 
-[**kivakit-data**](kivakit-data/README.md)  
-[**kivakit-math**](kivakit-math/README.md)  
-[**kivakit-ui**](kivakit-ui/README.md)  
+[**kivakit-data**](/README.md)  
+[**kivakit-math**](/README.md)  
+[**kivakit-ui**](/README.md)  
 
 ![](https://www.kivakit.org/images/short-horizontal-line.png)
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; ![](https://www.kivakit.org/images/bargraph-32.png)
 
 &nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-data-compression**](compression/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-csv**](csv/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-library**](library/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-math**](kivakit-math/README.md)  
+&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-csv**](formats/csv/README.md)  
+&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-library**](formats/library/README.md)  
+&nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-math**](/README.md)  
 &nbsp;  ![](https://www.kivakit.org/images/meter-40-12.png) &nbsp; &nbsp; [**kivakit-ui-swing**](swing/README.md)
 
 [//]: # (start-user-text)
