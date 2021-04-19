@@ -333,7 +333,7 @@
                         <nohelp>true</nohelp>
                         <reportOutputDirectory>${env.KIVAKIT_DATA_HOME}/docs/javadoc</reportOutputDirectory>
                         <destDir>kivakit-extensions</destDir>
-                        <additionalOptions>--show-module-contents all --show-packages all --show-types private</additionalOptions>
+                        <additionalOptions>-notimestamp --show-module-contents all --show-packages all --show-types private</additionalOptions>
                     </configuration>
                     <executions>
                         <execution>
