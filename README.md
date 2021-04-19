@@ -1,4 +1,4 @@
-# KivaKit Extensions 0.9.4 &nbsp;&nbsp; <img src="https://www.lexakai.org/images/kivakit-64.png" srcset="https://www.lexakai.org/images/kivakit-64-2x.png 2x"></img>
+# KivaKit Extensions 0.9.4 &nbsp;&nbsp; <img src="https://www.lexakai.org/images/kivakit-64.png" srcset="https://www.lexakai.org/images/kivakit-64-2x.png 2x"/>
 
 This project contains modules that extend KivaKit.
 
@@ -10,7 +10,7 @@ This project contains modules that extend KivaKit.
 
 The *kivakit-extensions* repository provides a place for KivaKit modules that extend *kivakit*.
 
-### Project Resources <a name = "project-resources"></a> &nbsp; <img src="https://www.kivakit.org/images/water-32.png" srcset="https://www.kivakit.org/images/water-32-2x.png 2x"></img>
+### Project Resources <a name = "project-resources"></a> &nbsp; <img src="https://www.kivakit.org/images/water-32.png" srcset="https://www.kivakit.org/images/water-32-2x.png 2x"/>
 
 | Resource     |     Description                   |
 |--------------|-----------------------------------|
@@ -27,13 +27,13 @@ The *kivakit-extensions* repository provides a place for KivaKit modules that ex
 
 <br/> 
 
-### Reference <a name = "reference"></a>&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"></img>
+### Reference <a name = "reference"></a>&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
 [**Javadoc**](https://telenav.github.io/kivakit-extensions/javadoc)
 
 [//]: # (end-user-text)
 
-### Projects <a name = "projects"></a> &nbsp; <img src="https://www.lexakai.org/images/gears-32.png" srcset="https://www.lexakai.org/images/gears-32-2x.png 2x"></img>
+### Projects <a name = "projects"></a> &nbsp; <img src="https://www.lexakai.org/images/gears-32.png" srcset="https://www.lexakai.org/images/gears-32-2x.png 2x"/>
 
 [**kivakit-data**](kivakit-data/README.md)  
 [**kivakit-math**](kivakit-math/README.md)  
@@ -41,7 +41,7 @@ The *kivakit-extensions* repository provides a place for KivaKit modules that ex
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.lexakai.org/images/bargraph-32.png" srcset="https://www.lexakai.org/images/bargraph-32-2x.png 2x"></img>
+### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.lexakai.org/images/bargraph-32.png" srcset="https://www.lexakai.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-data-compression**](kivakit-data/compression/README.md)  
 &nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-csv**](kivakit-data/formats/csv/README.md)  

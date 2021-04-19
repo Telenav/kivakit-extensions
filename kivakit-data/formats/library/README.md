@@ -1,4 +1,4 @@
-# kivakit-data-formats library &nbsp;&nbsp; <img src="https://www.lexakai.org/images/books-40.png" srcset="https://www.lexakai.org/images/books-40-2x.png 2x"></img>
+# kivakit-data-formats library &nbsp;&nbsp; <img src="https://www.lexakai.org/images/books-40.png" srcset="https://www.lexakai.org/images/books-40-2x.png 2x"/>
 
 This module contains code generally relevant to data formats.
 
@@ -12,7 +12,7 @@ This module contains code generally relevant to data formats.
 
 <img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512@2x.png 2x"/>
 
-### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/dependencies-32.png" srcset="https://www.lexakai.org/images/dependencies-32-2x.png 2x"></img>
+### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/dependencies-32.png" srcset="https://www.lexakai.org/images/dependencies-32-2x.png 2x"/>
 
 [*Dependency Diagram*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-data/formats/library/documentation/diagrams/dependencies.svg)
 
@@ -37,20 +37,20 @@ This module defines common data formats.
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.lexakai.org/images/diagram-32.png" srcset="https://www.lexakai.org/images/diagram-32-2x.png 2x"></img>
+### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.lexakai.org/images/diagram-32.png" srcset="https://www.lexakai.org/images/diagram-32-2x.png 2x"/>
 
 [*Data Formats*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-data/formats/library/documentation/diagrams/diagram-data-format.svg)
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/box-32.png" srcset="https://www.lexakai.org/images/box-32-2x.png 2x"></img>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/box-32.png" srcset="https://www.lexakai.org/images/box-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.data.formats.library*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-data/formats/library/documentation/diagrams/com.telenav.kivakit.data.formats.library.svg)  
 [*com.telenav.kivakit.data.formats.library.project*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-data/formats/library/documentation/diagrams/com.telenav.kivakit.data.formats.library.project.svg)
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/books-32.png" srcset="https://www.lexakai.org/images/books-32-2x.png 2x"></img>
+### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/books-32.png" srcset="https://www.lexakai.org/images/books-32-2x.png 2x"/>
 
 Javadoc coverage for this project is 92.9%.  
   

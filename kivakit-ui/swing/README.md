@@ -1,4 +1,4 @@
-# kivakit-ui-swing &nbsp;&nbsp; <img src="https://www.lexakai.org/images/window-40.png" srcset="https://www.lexakai.org/images/window-40-2x.png 2x"></img>
+# kivakit-ui-swing &nbsp;&nbsp; <img src="https://www.lexakai.org/images/window-40.png" srcset="https://www.lexakai.org/images/window-40-2x.png 2x"/>
 
 This project contains packages for developing Java Swing applications.
 
@@ -12,7 +12,7 @@ This project contains packages for developing Java Swing applications.
 
 <img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512@2x.png 2x"/>
 
-### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/dependencies-32.png" srcset="https://www.lexakai.org/images/dependencies-32-2x.png 2x"></img>
+### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/dependencies-32.png" srcset="https://www.lexakai.org/images/dependencies-32-2x.png 2x"/>
 
 [*Dependency Diagram*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-ui/swing/documentation/diagrams/dependencies.svg)
 
@@ -38,13 +38,13 @@ layout code and KivaKit-style themes.
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.lexakai.org/images/diagram-32.png" srcset="https://www.lexakai.org/images/diagram-32-2x.png 2x"></img>
+### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.lexakai.org/images/diagram-32.png" srcset="https://www.lexakai.org/images/diagram-32-2x.png 2x"/>
 
 None
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/box-32.png" srcset="https://www.lexakai.org/images/box-32-2x.png 2x"></img>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/box-32.png" srcset="https://www.lexakai.org/images/box-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.ui.swing.component*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-ui/swing/documentation/diagrams/com.telenav.kivakit.ui.swing.component.svg)  
 [*com.telenav.kivakit.ui.swing.component.dialog.message*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-ui/swing/documentation/diagrams/com.telenav.kivakit.ui.swing.component.dialog.message.svg)  
@@ -77,7 +77,7 @@ None
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/books-32.png" srcset="https://www.lexakai.org/images/books-32-2x.png 2x"></img>
+### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.lexakai.org/images/books-32.png" srcset="https://www.lexakai.org/images/books-32-2x.png 2x"/>
 
 Javadoc coverage for this project is 40.8%.  
   

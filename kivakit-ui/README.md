@@ -1,4 +1,4 @@
-# kivakit-ui &nbsp;&nbsp; <img src="https://www.lexakai.org/images/window-40.png" srcset="https://www.lexakai.org/images/window-40-2x.png 2x"></img>
+# kivakit-ui &nbsp;&nbsp; <img src="https://www.lexakai.org/images/window-40.png" srcset="https://www.lexakai.org/images/window-40-2x.png 2x"/>
 
 This module contains modules related to user interfaces.
 
@@ -10,13 +10,13 @@ This module contains modules related to user interfaces.
 
 [//]: # (end-user-text)
 
-### Projects <a name = "projects"></a> &nbsp; <img src="https://www.lexakai.org/images/gears-32.png" srcset="https://www.lexakai.org/images/gears-32-2x.png 2x"></img>
+### Projects <a name = "projects"></a> &nbsp; <img src="https://www.lexakai.org/images/gears-32.png" srcset="https://www.lexakai.org/images/gears-32-2x.png 2x"/>
 
 [**kivakit-ui-swing**](swing/README.md)  
 
 <img src="https://www.kivakit.org/images/short-horizontal-line-128.png" srcset="https://www.kivakit.org/images/short-horizontal-line-128@2x.png 2x"/>
 
-### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.lexakai.org/images/bargraph-32.png" srcset="https://www.lexakai.org/images/bargraph-32-2x.png 2x"></img>
+### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.lexakai.org/images/bargraph-32.png" srcset="https://www.lexakai.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp;  ![](https://www.kivakit.org/images/meter-40-12.png) &nbsp; &nbsp; [**kivakit-ui-swing**](swing/README.md)
 
