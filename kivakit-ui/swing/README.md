@@ -22,7 +22,7 @@ This project contains packages for developing Java Swing applications.
 
 ### Index
 
-[**Summary**](#summary)
+[**Summary**](#summary)  
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 

@@ -38,7 +38,7 @@ public enum DataFormat
     CSV, // Comma-separated variables format
     Database, // The data came directly from database
     XML, // OSM XML format
-    PBF, // OpenStreetMap native protobuf format being used for data from UniDB and OSM community
+    PBF, // OpenStreetMap protobuf format
     ;
 
     public static DataFormat of(final Resource input)
