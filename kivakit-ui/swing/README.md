@@ -1,4 +1,4 @@
-# kivakit-ui-swing &nbsp;&nbsp; <img src="https://www.kivakit.org/images/window-40.png" srcset="https://www.kivakit.org/images/window-40-2x.png 2x"/>
+# kivakit-ui-swing &nbsp;&nbsp; <img src="https://www.kivakit.org/images/window-32.png" srcset="https://www.kivakit.org/images/window-32-2x.png 2x"/>
 
 This project contains packages for developing Java Swing applications.
 

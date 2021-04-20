@@ -1,4 +1,4 @@
-# kivakit-ui &nbsp;&nbsp; <img src="https://www.kivakit.org/images/window-40.png" srcset="https://www.kivakit.org/images/window-40-2x.png 2x"/>
+# kivakit-ui &nbsp;&nbsp; <img src="https://www.kivakit.org/images/window-32.png" srcset="https://www.kivakit.org/images/window-32-2x.png 2x"/>
 
 This module contains modules related to user interfaces.
 
@@ -18,8 +18,7 @@ This module contains modules related to user interfaces.
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
-&nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-ui-swing**](swing/README.md)
+&nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/> &nbsp; &nbsp; [**kivakit-ui-swing**](swing/README.md)
 
 [//]: # (start-user-text)
 
