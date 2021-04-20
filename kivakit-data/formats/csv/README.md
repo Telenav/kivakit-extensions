@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# data-formats csv &nbsp;&nbsp; <img src="https://www.kivakit.org/images/csv-32.png" srcset="https://www.kivakit.org/images/csv-32-2x.png 2x"/>
+# data-formats csv &nbsp;&nbsp; <img src="https://www.kivakit.org/images/csv-64.png" srcset="https://www.kivakit.org/images/csv-64-2x.png 2x"/>
 
 This module reads and writes CSV data.
 
