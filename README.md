@@ -16,7 +16,9 @@ The *kivakit-extensions* repository provides a place for KivaKit modules that ex
 |--------------|-----------------------------------|
 | Project Name | KivaKit Extensions |
 | Summary | Modules that extend KivaKit| 
-| Javadoc Coverage |  <!-- ${project-javadoc-average-coverage-meter} -->  ![](https://www.kivakit.org/images/meter-70-12.png) <!-- end --> |
+| Javadoc Coverage |  <!-- <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+ --> <img src="https://www.kivakit.org/images/meter-70-12.png" srcset="https://www.kivakit.org/images/meter-70-12-2x.png 2x"/>
+ <!-- end --> |
 | Lead | Jonathan Locke (Luo, Shibo) <br/> [jonathanl@telenav.com](mailto:jonathanl@telenav.com) |
 | Administrator | Jonathan Locke (Luo, Shibo) <br/> [jonathanl@telenav.com](mailto:jonathanl@telenav.com) |
 | Email | [jonathanl@telenav.com](mailto:jonathanl@telenav.com) |
@@ -43,11 +45,16 @@ The *kivakit-extensions* repository provides a place for KivaKit modules that ex
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
-&nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-data-compression**](kivakit-data/compression/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-csv**](kivakit-data/formats/csv/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-library**](kivakit-data/formats/library/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-math**](kivakit-math/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-40-12.png) &nbsp; &nbsp; [**kivakit-ui-swing**](kivakit-ui/swing/README.md)
+&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-compression**](kivakit-data/compression/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-formats-csv**](kivakit-data/formats/csv/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-formats-library**](kivakit-data/formats/library/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-math**](kivakit-math/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-ui-swing**](kivakit-ui/swing/README.md)
 
 [//]: # (start-user-text)
 

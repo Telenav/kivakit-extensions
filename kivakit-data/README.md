@@ -1,4 +1,4 @@
-# kivakit-data &nbsp;&nbsp; <img src="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png" srcset="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png-2x.png 2x"/>
+# kivakit-data &nbsp;&nbsp; <img src="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png.png" srcset="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png-2x.png 2x"/>
 
 This project contains projects for compressing data and processing data in common formats.
 
@@ -19,9 +19,12 @@ This project contains projects for compressing data and processing data in commo
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
-&nbsp;  ![](https://www.kivakit.org/images/meter-70-12.png) &nbsp; &nbsp; [**kivakit-data-compression**](compression/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-csv**](formats/csv/README.md)  
-&nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png) &nbsp; &nbsp; [**kivakit-data-formats-library**](formats/library/README.md)
+&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-compression**](compression/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-formats-csv**](formats/csv/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-formats-library**](formats/library/README.md)
 
 [//]: # (start-user-text)
 

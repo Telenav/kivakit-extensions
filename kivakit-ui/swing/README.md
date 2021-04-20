@@ -81,7 +81,8 @@ None
 
 Javadoc coverage for this project is 40.8%.  
   
-&nbsp; &nbsp;  ![](https://www.kivakit.org/images/meter-40-12.png)
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
+
 
 The following significant classes are undocumented:  
 

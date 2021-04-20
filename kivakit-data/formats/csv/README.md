@@ -1,4 +1,4 @@
-# data-formats csv &nbsp;&nbsp; <img src="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png" srcset="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png-2x.png 2x"/>
+# data-formats csv &nbsp;&nbsp; <img src="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png.png" srcset="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-40.png-2x.png 2x"/>
 
 This module reads and writes CSV data.
 
@@ -100,7 +100,8 @@ For example (using the schema defined above):
 
 Javadoc coverage for this project is 92.9%.  
   
-&nbsp; &nbsp;  ![](https://www.kivakit.org/images/meter-90-12.png)
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
+
 
 
 
