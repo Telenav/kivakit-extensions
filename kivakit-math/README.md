@@ -22,7 +22,7 @@ This module contains packages for some common math operations.
 
 ### Index
 
-[**Summary**](#summary)  
+[**Summary**](#summary)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -47,7 +47,7 @@ This module contains packages for some common math operations.
 
 ### Summary <a name = "summary"></a>
 
-This module contains modules for statistics and trigonometry.
+This module provides simple math functions and optimizations.
 
 [//]: # (end-user-text)
 

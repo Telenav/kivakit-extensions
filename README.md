@@ -1,4 +1,3 @@
-
 [//]: # (start-user-text)
 
 <a href="https://www.kivakit.org">
@@ -27,32 +26,7 @@ This project contains modules that extend KivaKit.
 
 [//]: # (start-user-text)
 
-### Summary <a name = "summary"></a>
 
-The *kivakit-extensions* repository provides a place for KivaKit modules that extend *kivakit*.
-
-### Project Resources <a name = "project-resources"></a> &nbsp; <img src="https://www.kivakit.org/images/water-32.png" srcset="https://www.kivakit.org/images/water-32-2x.png 2x"/>
-
-| Resource     |     Description                   |
-|--------------|-----------------------------------|
-| Project Name | KivaKit Extensions |
-| Summary | Modules that extend KivaKit| 
-| Javadoc Coverage |  <!-- <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- --> <img src="https://www.kivakit.org/images/meter-70-12.png" srcset="https://www.kivakit.org/images/meter-70-12-2x.png 2x"/>
- <!-- end --> |
-| Lead | Jonathan Locke (Luo, Shibo) <br/> [jonathanl@telenav.com](mailto:jonathanl@telenav.com) |
-| Administrator | Jonathan Locke (Luo, Shibo) <br/> [jonathanl@telenav.com](mailto:jonathanl@telenav.com) |
-| Email | [jonathanl@telenav.com](mailto:jonathanl@telenav.com) |
-| Twitter | [@OpenKivaKit](https://twitter.com/openkivakit) |
-| Issues | [GitHub Issues](https://github.com/Telenav/kivakit-extensions/issues) |
-| Code | [GitHub](https://github.com/Telenav/kivakit-extensions) |
-| Checkout | `git clone git@github.com:Telenav/kivakit-extensions.git` |
-
-<br/> 
-
-### Reference <a name = "reference"></a>&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
-
-[**Javadoc**](https://telenav.github.io/kivakit-extensions/javadoc)
 
 [//]: # (end-user-text)
 

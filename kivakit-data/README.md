@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-data &nbsp;&nbsp; <img src="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-32.png-2x.png 2x"/>
+# kivakit-data &nbsp;&nbsp; <img src="https://www.kivakit.org/images/bits-32.png" srcset="https://www.kivakit.org/images/bits-32-2x.png 2x"/>
 
 This project contains projects for compressing data and processing data in common formats.
 

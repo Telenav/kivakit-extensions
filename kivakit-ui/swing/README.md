@@ -22,7 +22,7 @@ This project contains packages for developing Java Swing applications.
 
 ### Index
 
-[**Summary**](#summary)  
+[**Summary**](#summary)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -47,8 +47,7 @@ This project contains packages for developing Java Swing applications.
 
 ### Summary <a name = "summary"></a>
 
-This module contains reusable Swing components, event handling code, graphics code,
-layout code and KivaKit-style themes.
+This module provides swing components and code for layout, graphics, event processing and themes.
 
 [//]: # (end-user-text)
 

@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-data compression &nbsp;&nbsp; <img src="https://www.kivakit.org/images/compress-52.png" srcset="https://www.kivakit.org/images/compress-52-2x.png 2x"/>
+# kivakit-data compression &nbsp;&nbsp; <img src="https://www.kivakit.org/images/compress-32.png" srcset="https://www.kivakit.org/images/compress-32-2x.png 2x"/>
 
 This module contains packages for compressing and decompressing data.
 
@@ -22,9 +22,7 @@ This module contains packages for compressing and decompressing data.
 
 ### Index
 
-[**Summary**](#summary)  
-[**Codecs**](#codecs)  
-[**Types of Codecs**](#types-of-codecs)  
+[**Summary**](#summary)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -47,34 +45,10 @@ This module contains packages for compressing and decompressing data.
 
 [//]: # (start-user-text)
 
+
 ### Summary <a name = "summary"></a>
 
-This module contains a definition of a compressor / decompressor, otherwise known as a *Codec*.
-The design of this codec mini-framework is centered around direct access to byte buffers (*ByteList*s)
-for optimal efficiency. For other purposes, existing stream-oriented compressors already exist,
-including the support for ZIP format in the JDK. This module also contains an implementation of
-a fast (table-driven) [*Huffman*](https://en.wikipedia.org/wiki/Huffman_coding) codec.
-
-### Codecs <a name = "codecs"></a>
-
-The *Codec* interface is generic to any compression type and any symbol type and looks like this:
-
-    public interface Codec<Symbol>
-    {
-        boolean canEncode(Symbol symbol)
-        ByteList encode(ByteList output, SymbolProducer<Symbol> producer)
-        void decode(ByteList input, SymbolConsumer<Symbol> consumer)
-    }
-
-The *encode()* method performs huffman coding of the symbols produced by the given *SymbolProducer*,
-and writes the compressed representation to the given *ByteList*. The *decode()* method takes a *ByteList*,
-and decodes the compressed data, calling a *SymbolConsumer* with each decoded symbol.
-
-### Types of Codecs <a name = "character"></a>
-
-The *CharacterCodec*, *StringCodec* and *StringListCodec* interfaces provide a definition of compression
-by character, string and string list, respectively. The same underlying *Huffman* coder is used to implement
-all three.
+This module provides interfaces for compression and decompression and an implementation of Huffman coding.
 
 [//]: # (end-user-text)
 

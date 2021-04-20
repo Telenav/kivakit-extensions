@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# data-formats csv &nbsp;&nbsp; <img src="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/https://www.kivakit.org/images/gears-32.png-2x.png 2x"/>
+# data-formats csv &nbsp;&nbsp; <img src="https://www.kivakit.org/images/csv-32.png" srcset="https://www.kivakit.org/images/csv-32-2x.png 2x"/>
 
 This module reads and writes CSV data.
 
@@ -22,9 +22,7 @@ This module reads and writes CSV data.
 
 ### Index
 
-[**Summary**](#summary)  
-[**Schemas**](#schemas)  
-[**Reading and Writing**](#reading-and-writing)  
+[**Summary**](#summary)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -49,51 +47,7 @@ This module reads and writes CSV data.
 
 ### Summary <a name = "summary"></a>
 
-This module provides an easy way to read and write CSV files in an object-oriented fashion.
-
-### Schemas <a name = "schemas"></a>
-
-A *CsvSchema* maps column names in a CSV file to *CsvColumn* objects and optionally
-associates a *StringConverter* with each column, producing an object-oriented model
-of the CSV data.
-
-For example:
-
-    CsvColumn YEAR  = new CsvColumn("year", new IntegerConverter(this));
-    CsvColumn MODEL = new CsvColumn("model");
-    CsvColumn MAKE  = new CsvColumn("make");
-    CsvColumn PRICE = new CsvColumn("price", new DoubleConverter(this));
-
-    CsvSchema SCHEMA = new CsvSchema(YEAR, MAKE, MODEL, PRICE);
-
-### Reading and Writing <a name = "reading-and-writing"></a>
-
-The *CsvLine* class provides a model of rows of CSV data as they are read and written with
-*CsvReader* and *CsvWriter*. Data in the columns of a *CsvLine* can be accessed as strings
-or as converted objects.
-
-For example (using the schema defined above):
-
-    var progressReporter = Progress.create(this);
-
-    try (var input = new CsvReader(resource, progressReporter, SCHEMA, ','))
-    {
-        while (input.hasNext())
-        {
-            var line = input.next();
-
-            var year = line.get(YEAR)
-            var model = line.get(MODEL);
-            var make = line.get(MAKE);
-            var price = line.get(PRICE);
-
-            assert year == 1997;
-            assert price == 3000.0;
-
-                [...]
-
-        }
-    }
+This module provides easy access to CSV data using an object-oriented data model.
 
 [//]: # (end-user-text)
 

@@ -22,7 +22,7 @@ This module contains code generally relevant to data formats.
 
 ### Index
 
-[**Summary**](#summary)  
+[**Summary**](#summary)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -47,7 +47,7 @@ This module contains code generally relevant to data formats.
 
 ### Summary <a name = "summary"></a>
 
-This module defines common data formats.
+This module provides packages for use in processing data formats.
 
 [//]: # (end-user-text)
 
