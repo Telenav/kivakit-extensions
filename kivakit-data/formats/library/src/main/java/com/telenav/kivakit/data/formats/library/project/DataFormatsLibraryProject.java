@@ -30,11 +30,11 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 @LexakaiJavadoc(complete = true)
 public class DataFormatsLibraryProject extends Project
 {
-    private static final Lazy<DataFormatsLibraryProject> singleton = Lazy.of(DataFormatsLibraryProject::new);
+    private static final Lazy<DataFormatsLibraryProject> project = Lazy.of(DataFormatsLibraryProject::new);
 
     public static DataFormatsLibraryProject get()
     {
-        return singleton.get();
+        return project.get();
     }
 
     protected DataFormatsLibraryProject()

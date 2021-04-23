@@ -6,12 +6,16 @@ import com.telenav.kivakit.ui.swing.component.KivaKitPanel;
 import com.telenav.kivakit.ui.swing.graphics.color.KivaKitColors;
 import com.telenav.kivakit.ui.swing.graphics.font.Fonts;
 import com.telenav.kivakit.ui.swing.layout.Margins;
-import com.telenav.kivakit.ui.swing.theme.KivaKitTheme;
 
-import javax.swing.*;
+import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
@@ -39,26 +43,23 @@ public class OutputPanel extends KivaKitPanel
 
         if (type == Type.VARIABLE_WIDTH)
         {
-            stylesheet.addRule("body           { color: " + KivaKitColors.WHITE.toHex() + ";      font-weight: 900; font-size: 10px; font-family: Avenir,Helvetica; white-space:nowrap; }");
-            stylesheet.addRule(".aqua          { color: " + KivaKitColors.AQUA.toHex() + ";       font-weight: 600; font-size: 10px; }");
-            stylesheet.addRule(".section0      { color: " + KivaKitColors.TANGERINE.toHex() + ";  font-weight: 900; font-size: 11px; }");
-            stylesheet.addRule(".section1      { color: " + KivaKitColors.LIME.toHex() + ";       font-weight: 900; font-size: 10px; }");
-            stylesheet.addRule(".section2      { color: " + KivaKitColors.LIGHT_GRAY.toHex() + "; font-weight: 900; font-size: 10px; }");
-            stylesheet.addRule(".section3      { color: " + KivaKitColors.LIGHT_GRAY.toHex() + "; font-weight: 900; font-size: 10px; }");
-            stylesheet.addRule(".label         { color: " + KivaKitColors.LIGHT_GRAY.toHex() + "; font-weight: 800; font-size: 10px } ");
-            stylesheet.addRule(".value         { color: " + KivaKitColors.WHITE.toHex() + ";      font-weight: 800; font-size: 10px; }");
-            stylesheet.addRule(".not-available { color: " + KivaKitColors.FOSSIL.toHex() + ";       font-weight: 800; font-size: 10px; }");
+            stylesheet.addRule("body           { color: " + KivaKitColors.WHITE.asHexString() + ";      font-weight: 900; font-size: 10px; font-family: Avenir,Helvetica; white-space:nowrap; }");
+            stylesheet.addRule(".aqua          { color: " + KivaKitColors.AQUA.asHexString() + ";       font-weight: 600; font-size: 10px; }");
+            stylesheet.addRule(".section0      { color: " + KivaKitColors.TANGERINE.asHexString() + ";  font-weight: 900; font-size: 11px; }");
+            stylesheet.addRule(".section1      { color: " + KivaKitColors.LIME.asHexString() + ";       font-weight: 900; font-size: 10px; }");
+            stylesheet.addRule(".section2      { color: " + KivaKitColors.LIGHT_GRAY.asHexString() + "; font-weight: 900; font-size: 10px; }");
+            stylesheet.addRule(".section3      { color: " + KivaKitColors.LIGHT_GRAY.asHexString() + "; font-weight: 900; font-size: 10px; }");
+            stylesheet.addRule(".label         { color: " + KivaKitColors.LIGHT_GRAY.asHexString() + "; font-weight: 800; font-size: 10px } ");
+            stylesheet.addRule(".value         { color: " + KivaKitColors.WHITE.asHexString() + ";      font-weight: 800; font-size: 10px; }");
+            stylesheet.addRule(".not-available { color: " + KivaKitColors.FOSSIL.asHexString() + ";       font-weight: 800; font-size: 10px; }");
         }
 
         final var document = kit.createDefaultDocument();
 
-        final var theme = KivaKitTheme.get();
-        output = (JTextPane) theme.configure(new JTextPane());
+        final var theme = theme();
+        output = (JTextPane) theme.applyTo(new JTextPane());
+        theme.styleTextArea().applyAsSelectionStyle(output);
         output.setEditorKit(kit);
-        theme.colorTextAreaBackground().background(output);
-        theme.colorTextFieldText().foreground(output);
-        output.setSelectedTextColor(theme.colorSelectionText().asAwtColor());
-        output.setSelectionColor(theme.colorSelectionBackground().asAwtColor());
         output.setDocument(document);
         output.setEditable(false);
 

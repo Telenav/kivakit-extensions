@@ -5,8 +5,9 @@ import com.telenav.kivakit.ui.swing.layout.Margins;
 import com.telenav.kivakit.ui.swing.layout.Spacing;
 import com.telenav.kivakit.ui.swing.layout.VerticalBoxLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import java.awt.FlowLayout;
 
 /**
  * @author jonathanl (shibo)
@@ -26,9 +27,7 @@ public class TitledPanel extends KivaKitPanel
     {
         final var title = newComponentLabel(this.title);
         title.setOpaque(true);
-        colorTitle().foreground(title);
-        title.setFont(fontComponent().deriveFont(14.0f));
-        colorTitleBackground().background(title);
+        theme().styleTitle().apply(title);
         if (icon != null)
         {
             title.setIcon(icon);

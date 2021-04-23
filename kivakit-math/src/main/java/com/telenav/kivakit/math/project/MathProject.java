@@ -8,11 +8,11 @@ import com.telenav.kivakit.core.kernel.project.Project;
  */
 public class MathProject extends Project
 {
-    private static final Lazy<MathProject> singleton = Lazy.of(MathProject::new);
+    private static final Lazy<MathProject> project = Lazy.of(MathProject::new);
 
     public static MathProject get()
     {
-        return singleton.get();
+        return project.get();
     }
 
     protected MathProject()

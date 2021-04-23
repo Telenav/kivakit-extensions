@@ -1,21 +1,53 @@
 package com.telenav.kivakit.ui.swing.theme;
 
 import com.telenav.kivakit.core.kernel.interfaces.value.Source;
+import com.telenav.kivakit.core.kernel.messaging.Message;
+import com.telenav.kivakit.core.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.kernel.messaging.messages.status.Quibble;
+import com.telenav.kivakit.core.kernel.messaging.messages.status.Success;
+import com.telenav.kivakit.core.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.swing.component.KivaKitPanel;
 import com.telenav.kivakit.ui.swing.component.dropdown.DropDownRenderer;
 import com.telenav.kivakit.ui.swing.graphics.color.Color;
-import com.telenav.kivakit.ui.swing.graphics.color.KivaKitColors;
 import com.telenav.kivakit.ui.swing.graphics.font.Fonts;
+import com.telenav.kivakit.ui.swing.graphics.style.Style;
 import com.telenav.kivakit.ui.swing.layout.Margins;
 import com.telenav.kivakit.ui.swing.layout.Size;
+import com.telenav.kivakit.ui.swing.theme.darcula.KivaKitDarculaTheme;
 
-import javax.swing.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.JTableHeader;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentListener;
 
+import static com.telenav.kivakit.ui.swing.graphics.color.KivaKitColors.CHERRY;
+import static com.telenav.kivakit.ui.swing.graphics.color.KivaKitColors.CLOVER;
+import static com.telenav.kivakit.ui.swing.graphics.color.KivaKitColors.DARK_KIVAKIT_YELLOW;
+import static com.telenav.kivakit.ui.swing.graphics.color.KivaKitColors.LIGHT_GRAY;
+import static com.telenav.kivakit.ui.swing.graphics.color.KivaKitColors.TANGERINE;
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
 
@@ -28,6 +60,10 @@ public abstract class KivaKitTheme
 
     public static KivaKitTheme get()
     {
+        if (theme == null)
+        {
+            theme = new KivaKitDarculaTheme();
+        }
         return theme;
     }
 
@@ -36,204 +72,140 @@ public abstract class KivaKitTheme
         KivaKitTheme.theme = theme;
     }
 
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorBorder();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorCaret();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorComponentLabel();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorDropdownBackground();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorDropdownText();
-
-    public com.telenav.kivakit.ui.swing.graphics.color.Color colorError()
+    public KivaKitTheme()
     {
-        return KivaKitColors.CHERRY;
+        UIManager.put("Button.arc", 15);
+
+        UIManager.put("TabbedPane.minimumTabWidth", 150);
+
+        UIManager.put("TabbedPane.foreground", styleTab().foregroundColor().asColorUiResource());
+        UIManager.put("TabbedPane.background", styleTab().backgroundColor().asColorUiResource());
+
+        UIManager.put("TabbedPane.selectedForeground", styleSelectedTab().foregroundColor().asColorUiResource());
+        UIManager.put("TabbedPane.selectedBackground", styleSelectedTab().backgroundColor().asColorUiResource());
+
+        UIManager.put("TabbedPane.underlineColor", styleTabHover().foregroundColor().asColorUiResource());
+        UIManager.put("TabbedPane.hoverColor", styleTabHover().backgroundColor().asColorUiResource());
     }
 
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorFadedText();
-
-    public com.telenav.kivakit.ui.swing.graphics.color.Color colorInformation()
+    public final JButton applyTo(final JButton button)
     {
-        return KivaKitColors.LIGHT_GRAY;
-    }
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorInformationLabel();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorNote();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorProgressBarBackground();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorProgressBarForeground();
-
-    public com.telenav.kivakit.ui.swing.graphics.color.Color colorQuibble()
-    {
-        return KivaKitColors.DARK_KIVAKIT_YELLOW;
-    }
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorSelectionBackground();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorSelectionText();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorSeparator();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorShadedPanel();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorShadedSubPanel();
-
-    public com.telenav.kivakit.ui.swing.graphics.color.Color colorSuccess()
-    {
-        return KivaKitColors.CLOVER;
-    }
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTableBackground();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTableHeaderBackground();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTableHeaderText();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTableText();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorText();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTextAreaBackground();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTextFieldBackground();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTextFieldText();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTitle();
-
-    public abstract com.telenav.kivakit.ui.swing.graphics.color.Color colorTitleBackground();
-
-    public Color colorWarning()
-    {
-        return KivaKitColors.TANGERINE;
-    }
-
-    public final JButton configure(final JButton button)
-    {
-        colorText().foreground(button);
-        button.setFont(fontComponent());
+        styleButton().apply(button);
         return button;
     }
 
-    public final JTableHeader configure(final JTableHeader header)
+    public final JTableHeader applyTo(final JTableHeader header)
     {
-        colorTableHeaderText().foreground(header);
-        header.setFont(fontComponent());
+        styleTableHeader().apply(header);
         return header;
     }
 
-    public final JEditorPane configure(final JEditorPane editor)
+    public final JEditorPane applyTo(final JEditorPane editor)
     {
-        editor.setEditable(false);
-        editor.setSelectionColor(colorSelectionBackground().asAwtColor());
-        editor.setSelectedTextColor(colorSelectionText().asAwtColor());
+        styleTextArea().apply(editor);
+        styleSelection().applyAsSelectionStyle(editor);
         return editor;
     }
 
-    public <T> JComboBox<T> configure(final JComboBox<T> dropdown)
+    public <T> JComboBox<T> applyTo(final JComboBox<T> dropdown)
     {
-        return configure(dropdown, -1);
+        return applyTo(dropdown, -1);
     }
 
-    public <T> JComboBox<T> configure(final JComboBox<T> dropdown, final int preferredWidth)
+    public <T> JComboBox<T> applyTo(final JComboBox<T> dropdown, final int preferredWidth)
     {
         dropdown.setMaximumRowCount(50);
         if (preferredWidth > 0)
         {
             Size.widthOf(preferredWidth).preferred(dropdown);
         }
-        colorText().foreground(dropdown);
-        dropdown.setFont(fontComponent());
+        styleDropdown().apply(dropdown);
         dropdown.setRenderer(new DropDownRenderer());
         return dropdown;
     }
 
-    public <T> JList<T> configure(final JList<T> list)
+    public <T> JList<T> applyTo(final JList<T> list)
     {
-        list.setFont(fontComponent());
-        colorTableBackground().background(list);
-        colorTableText().foreground(list);
-        list.setSelectionBackground(colorSelectionBackground().asAwtColor());
-        list.setSelectionForeground(colorSelectionText().asAwtColor());
+        styleList().apply(list);
+        styleSelection().applyAsSelectionStyle(list);
         Margins.of(10).apply(list);
         return list;
     }
 
-    public JTable configure(final JTable table)
+    public JTable applyTo(final JTable table)
     {
-        colorTableHeaderText().foreground(table.getTableHeader());
-        colorTableHeaderBackground().background(table.getTableHeader());
-        colorTableBackground().background(table);
-        colorTableText().foreground(table);
-        table.setFont(tableFont());
-        table.setSelectionBackground(colorSelectionBackground().asAwtColor());
-        table.setSelectionForeground(colorSelectionText().asAwtColor());
+        styleTableHeader().apply(table.getTableHeader());
+        styleTable().apply(table);
+        styleSelection().applyAsSelectionStyle(table);
         return table;
     }
 
-    public JCheckBox configure(final JCheckBox checkbox)
+    public JCheckBox applyTo(final JCheckBox checkbox)
     {
-        colorText().foreground(checkbox);
-        checkbox.setFont(fontComponent());
+        styleLabel().apply(checkbox);
         return checkbox;
     }
 
-    public JTextField configure(final JTextField field)
+    public JTextField applyTo(final JTextField field)
     {
-        colorTextFieldText().foreground(field);
-        field.setFont(fontComponent());
+        styleTextField().apply(field);
         field.setCaretColor(colorCaret().asAwtColor());
         return field;
     }
 
-    public final JLabel configureComponentLabel(final JLabel label)
+    public final JLabel applyToComponentLabel(final JLabel label)
     {
-        colorComponentLabel().foreground(label);
-        label.setFont(fontComponent());
+        styleComponentLabel().apply(label);
         return label;
     }
 
-    public JPanel configureContainerPanel(final JPanel panel)
+    public JPanel applyToContainerPanel(final JPanel panel)
     {
         return panel;
     }
 
-    public JTextField configureSearchField(final JTextField field)
+    public JTextField applyToSearchField(final JTextField field)
     {
-        colorTextFieldText().foreground(field);
-        field.setFont(fontComponent());
+        styleTextField().apply(field);
         field.setCaretColor(colorCaret().asAwtColor());
         return field;
     }
 
-    public KivaKitPanel configureShadedPanel(final KivaKitPanel panel)
+    public KivaKitPanel applyToShadedPanel(final KivaKitPanel panel)
     {
-        colorShadedPanel().background(panel);
+        colorPanel().applyAsBackground(panel);
         return panel;
     }
 
-    public KivaKitPanel configureShadedSubPanel(final KivaKitPanel panel)
+    public KivaKitPanel applyToShadedSubPanel(final KivaKitPanel panel)
     {
-        colorShadedSubPanel().background(panel);
+        colorSubPanel().applyAsBackground(panel);
         return panel;
     }
 
-    public Font fontComponent()
-    {
-        return Fonts.component(12);
-    }
+    public abstract Color colorBorder();
+
+    public abstract Color colorCaret();
+
+    public abstract Color colorPanel();
+
+    public abstract Color colorSeparator();
+
+    public abstract Color colorSubPanel();
 
     public Font fontFixedWidth()
     {
         return Fonts.fixedWidth(Font.PLAIN, 12);
     }
 
-    public Font fontTitle()
+    public Font fontNormal()
     {
-        return fontComponent().deriveFont(16.0f);
+        return Fonts.component(12);
+    }
+
+    public Font fontSmall()
+    {
+        return Fonts.component(10);
     }
 
     public abstract boolean isDark();
@@ -260,34 +232,34 @@ public abstract class KivaKitTheme
                 return enabled.get();
             }
         };
-        configure(button);
+        applyTo(button);
         button.addActionListener(listener);
         return button;
     }
 
     public final JButton newButton(final String text)
     {
-        return configure(new JButton(text));
+        return applyTo(new JButton(text));
     }
 
     public final JCheckBox newCheckBox(final String text)
     {
-        return configure(new JCheckBox(text));
+        return applyTo(new JCheckBox(text));
     }
 
     public final JLabel newComponentLabel(final String text)
     {
-        return configureComponentLabel(new JLabel(text));
+        return applyToComponentLabel(new JLabel(text));
     }
 
     public KivaKitPanel newContainerPanel()
     {
-        return (KivaKitPanel) configureContainerPanel(new KivaKitPanel());
+        return (KivaKitPanel) applyToContainerPanel(new KivaKitPanel());
     }
 
     public KivaKitPanel newContainerPanel(final LayoutManager layout)
     {
-        return (KivaKitPanel) configureContainerPanel(new KivaKitPanel(layout));
+        return (KivaKitPanel) applyToContainerPanel(new KivaKitPanel(layout));
     }
 
     public <T> JComboBox<T> newDropDown(final ComboBoxModel<T> model)
@@ -327,14 +299,14 @@ public abstract class KivaKitTheme
     public final JSeparator newHorizontalSeparator()
     {
         final var separator = new JSeparator(JSeparator.HORIZONTAL);
-        colorSeparator().foreground(separator);
+        colorSeparator().applyAsForeground(separator);
         return separator;
     }
 
     public JLabel newInformationLabel(final String text)
     {
         final var label = newComponentLabel(text);
-        colorInformationLabel().foreground(label);
+        styleInformationLabel().apply(label);
         return label;
     }
 
@@ -345,13 +317,11 @@ public abstract class KivaKitTheme
 
         if (isSelected)
         {
-            colorSelectionBackground().background(renderer);
-            colorSelectionText().foreground(renderer);
+            styleSelection().applyColors(renderer);
         }
         else
         {
-            colorDropdownBackground().background(renderer);
-            colorDropdownText().foreground(renderer);
+            styleList().apply(renderer);
         }
         return renderer;
     }
@@ -359,8 +329,7 @@ public abstract class KivaKitTheme
     public final JLabel newNote(final String text)
     {
         final var label = newComponentLabel(text);
-        label.setFont(smallComponentFont());
-        colorFadedText().foreground(label);
+        styleNote().apply(label);
         return label;
     }
 
@@ -369,16 +338,14 @@ public abstract class KivaKitTheme
         final var bar = new JProgressBar(JProgressBar.HORIZONTAL);
         bar.setOpaque(false);
         bar.setMinimum(0);
-        bar.setFont(smallComponentFont());
-        colorProgressBarBackground().background(bar);
-        colorProgressBarForeground().foreground(bar);
+        styleProgressBar().apply(bar);
         return bar;
     }
 
     public JScrollPane newScrollPane(final JComponent child, final AdjustmentListener listener)
     {
         final var scrollPane = new JScrollPane(child, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_NEVER);
-        colorTableBackground().background(scrollPane);
+        styleTable().backgroundColor().applyAsBackground(scrollPane);
         final var scrollbar = scrollPane.getVerticalScrollBar();
         scrollbar.setPreferredSize(new Dimension(15, scrollbar.getWidth()));
         scrollbar.addAdjustmentListener(listener);
@@ -387,22 +354,22 @@ public abstract class KivaKitTheme
 
     public JTextField newSearchField()
     {
-        return configureSearchField(newTextField());
+        return applyToSearchField(newTextField());
     }
 
     public JTextField newSearchField(final Source<Boolean> enabled)
     {
-        return configureSearchField(newTextField(enabled));
+        return applyToSearchField(newTextField(enabled));
     }
 
     public KivaKitPanel newShadedPanel()
     {
-        return configureShadedPanel(new KivaKitPanel());
+        return applyToShadedPanel(new KivaKitPanel());
     }
 
     public KivaKitPanel newShadedSubPanel()
     {
-        return configureShadedSubPanel(new KivaKitPanel());
+        return applyToShadedSubPanel(new KivaKitPanel());
     }
 
     public JTabbedPane newTabbedPane()
@@ -420,29 +387,29 @@ public abstract class KivaKitTheme
                 return enabled.get();
             }
         };
-        return configure(field);
+        return applyTo(field);
     }
 
     public final JTextField newTextField(final int characters)
     {
         final var field = characters < 0 ? new JTextField() : new JTextField(characters);
-        return configure(field);
+        return applyTo(field);
     }
 
     public final JTextField newTextField()
     {
-        return configure(newTextField(0));
+        return applyTo(newTextField(0));
     }
 
     public final JTextField newTextField(final Source<Boolean> enabled)
     {
-        return configure(newTextField(0, enabled));
+        return applyTo(newTextField(0, enabled));
     }
 
     public final JSeparator newVerticalSeparator()
     {
         final var separator = new JSeparator(JSeparator.VERTICAL);
-        colorSeparator().foreground(separator);
+        colorSeparator().applyAsForeground(separator);
         return separator;
     }
 
@@ -460,23 +427,73 @@ public abstract class KivaKitTheme
 
     public void popupInformation(final JFrame frame, final String title, final String message)
     {
-        UIManager.put("OptionPane.background", new ColorUIResource(colorShadedPanel().asAwtColor()));
-        UIManager.put("Panel.background", new ColorUIResource(colorShadedPanel().asAwtColor()));
+        UIManager.put("OptionPane.background", new ColorUIResource(colorPanel().asAwtColor()));
+        UIManager.put("Panel.background", new ColorUIResource(colorPanel().asAwtColor()));
 
         final JOptionPane option = new JOptionPane("<html><h4><font color='#f0f0f0'>" + message + "</font></h4></html>",
                 JOptionPane.INFORMATION_MESSAGE);
-        option.setFont(fontComponent());
-        colorText().foreground(option);
+
+        styleLabel().apply(option);
 
         final JDialog dialog = option.createDialog(frame, title);
         dialog.setVisible(true);
         dialog.dispose();
     }
 
-    public Font smallComponentFont()
+    public abstract Style styleButton();
+
+    public abstract Style styleComponentLabel();
+
+    public abstract Style styleDropdown();
+
+    public abstract Style styleInformationLabel();
+
+    public abstract Style styleLabel();
+
+    public abstract Style styleList();
+
+    public Style styleMessage(final Class<? extends Message> type)
     {
-        return Fonts.component(11);
+        if (type == Problem.class)
+        {
+            return Style.create().withTextColor(CHERRY);
+        }
+        if (type == Quibble.class)
+        {
+            return Style.create().withTextColor(DARK_KIVAKIT_YELLOW);
+        }
+        if (type == Success.class)
+        {
+            return Style.create().withTextColor(CLOVER);
+        }
+        if (type == Warning.class)
+        {
+            return Style.create().withTextColor(TANGERINE);
+        }
+        return Style.create().withTextColor(LIGHT_GRAY);
     }
+
+    public abstract Style styleNote();
+
+    public abstract Style styleProgressBar();
+
+    public abstract Style styleSelectedTab();
+
+    public abstract Style styleSelection();
+
+    public abstract Style styleTab();
+
+    public abstract Style styleTabHover();
+
+    public abstract Style styleTable();
+
+    public abstract Style styleTableHeader();
+
+    public abstract Style styleTextArea();
+
+    public abstract Style styleTextField();
+
+    public abstract Style styleTitle();
 
     public Font tableFont()
     {

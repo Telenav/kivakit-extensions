@@ -21,7 +21,13 @@ package com.telenav.kivakit.ui.swing.graphics.color;
 import com.telenav.kivakit.core.kernel.language.primitives.Ints;
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 
-import java.awt.*;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.text.JTextComponent;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.Objects;
 
 public class Color
@@ -103,15 +109,87 @@ public class Color
         return alpha;
     }
 
+    public void apply(final Graphics graphics)
+    {
+        graphics.setColor(asAwtColor());
+    }
+
+    public void applyAsBackground(final Graphics2D graphics)
+    {
+        graphics.setBackground(asAwtColor());
+    }
+
+    public <T extends Component> T applyAsBackground(final T component)
+    {
+        component.setBackground(asAwtColor());
+        return component;
+    }
+
+    public void applyAsForeground(final Graphics2D graphics)
+    {
+        graphics.setColor(asAwtColor());
+    }
+
+    public <T extends Component> T applyAsForeground(final T component)
+    {
+        component.setForeground(asAwtColor());
+        return component;
+    }
+
+    public <T extends JTextComponent> T applyAsSelectionBackground(final T component)
+    {
+        component.setSelectionColor(asAwtColor());
+        return component;
+    }
+
+    public <T extends JList<?>> T applyAsSelectionBackground(final T component)
+    {
+        component.setSelectionBackground(asAwtColor());
+        return component;
+    }
+
+    public <T extends JTable> T applyAsSelectionBackground(final T component)
+    {
+        component.setSelectionBackground(asAwtColor());
+        return component;
+    }
+
+    public <T extends JTable> T applyAsSelectionForeground(final T component)
+    {
+        component.setSelectionForeground(asAwtColor());
+        return component;
+    }
+
+    public <T extends JTextComponent> T applyAsSelectionForeground(final T component)
+    {
+        component.setSelectedTextColor(asAwtColor());
+        return component;
+    }
+
+    public <T extends JList<?>> T applyAsSelectionForeground(final T component)
+    {
+        component.setSelectionForeground(asAwtColor());
+        return component;
+    }
+
     public java.awt.Color asAwtColor()
     {
         return new java.awt.Color(red(), green(), blue(), alpha());
     }
 
-    public <T extends Component> T background(final T component)
+    public ColorUIResource asColorUiResource()
     {
-        component.setBackground(asAwtColor());
-        return component;
+        return new ColorUIResource(asAwtColor());
+    }
+
+    public String asHexString()
+    {
+        return "#" + Ints.toHex(rgb(), 6);
+    }
+
+    public String asHexStringWithAlpha()
+    {
+        return "#" + Ints.toHex(rgba(), 8);
     }
 
     public int blue()
@@ -146,12 +224,6 @@ public class Color
                     && alpha == color.alpha;
         }
         return false;
-    }
-
-    public <T extends Component> T foreground(final T component)
-    {
-        component.setForeground(asAwtColor());
-        return component;
     }
 
     public int green()
@@ -198,16 +270,6 @@ public class Color
     public int rgba()
     {
         return asAwtColor().getRGB();
-    }
-
-    public String toHex()
-    {
-        return "#" + Ints.toHex(rgb(), 6);
-    }
-
-    public String toHexWithAlpha()
-    {
-        return "#" + Ints.toHex(rgba(), 8);
     }
 
     @Override

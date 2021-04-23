@@ -30,11 +30,11 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 @LexakaiJavadoc(complete = true)
 public class DataFormatsCsvProject extends Project
 {
-    private static final Lazy<DataFormatsCsvProject> singleton = Lazy.of(DataFormatsCsvProject::new);
+    private static final Lazy<DataFormatsCsvProject> project = Lazy.of(DataFormatsCsvProject::new);
 
     public static DataFormatsCsvProject get()
     {
-        return singleton.get();
+        return project.get();
     }
 
     protected DataFormatsCsvProject()

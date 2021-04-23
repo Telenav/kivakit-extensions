@@ -9,13 +9,30 @@ import com.telenav.kivakit.core.kernel.messaging.Listener;
 import com.telenav.kivakit.core.kernel.messaging.Message;
 import com.telenav.kivakit.core.kernel.messaging.Repeater;
 import com.telenav.kivakit.core.kernel.messaging.repeaters.BaseRepeater;
-import com.telenav.kivakit.ui.swing.graphics.color.Color;
 import com.telenav.kivakit.ui.swing.layout.Margins;
 import com.telenav.kivakit.ui.swing.theme.KivaKitTheme;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.ComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.JTableHeader;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentListener;
 
@@ -28,7 +45,7 @@ public class KivaKitPanel extends JPanel implements Repeater
 
     public KivaKitPanel()
     {
-        theme().configureContainerPanel(this);
+        theme().applyToContainerPanel(this);
     }
 
     public KivaKitPanel(final LayoutManager layout)
@@ -54,234 +71,79 @@ public class KivaKitPanel extends JPanel implements Repeater
         repeater.get().clearListeners();
     }
 
-    public Color colorBorder()
-    {
-        return theme().colorBorder();
-    }
-
-    public Color colorCaret()
-    {
-        return theme().colorCaret();
-    }
-
-    public Color colorComponentLabel()
-    {
-        return theme().colorComponentLabel();
-    }
-
-    public Color colorDropdownBackground()
-    {
-        return theme().colorDropdownBackground();
-    }
-
-    public Color colorDropdownText()
-    {
-        return theme().colorDropdownText();
-    }
-
-    public Color colorError()
-    {
-        return theme().colorError();
-    }
-
-    public Color colorFadedText()
-    {
-        return theme().colorFadedText();
-    }
-
-    public Color colorInformation()
-    {
-        return theme().colorInformation();
-    }
-
-    public Color colorInformationLabel()
-    {
-        return theme().colorInformationLabel();
-    }
-
-    public Color colorLabel()
-    {
-        return theme().colorComponentLabel();
-    }
-
-    public Color colorNote()
-    {
-        return theme().colorNote();
-    }
-
-    public Color colorProgressBarBackground()
-    {
-        return theme().colorProgressBarBackground();
-    }
-
-    public Color colorProgressBarForeground()
-    {
-        return theme().colorProgressBarForeground();
-    }
-
-    public Color colorQuibble()
-    {
-        return theme().colorQuibble();
-    }
-
-    public Color colorSelectionBackground()
-    {
-        return theme().colorSelectionBackground();
-    }
-
-    public Color colorSelectionText()
-    {
-        return theme().colorSelectionText();
-    }
-
-    public Color colorSeparator()
-    {
-        return theme().colorSeparator();
-    }
-
-    public Color colorShadedPanel()
-    {
-        return theme().colorShadedPanel();
-    }
-
-    public Color colorShadedSubPanel()
-    {
-        return theme().colorShadedSubPanel();
-    }
-
-    public Color colorSuccess()
-    {
-        return theme().colorSuccess();
-    }
-
-    public Color colorTableBackground()
-    {
-        return theme().colorTableBackground();
-    }
-
-    public Color colorTableHeaderBackground()
-    {
-        return theme().colorTableHeaderBackground();
-    }
-
-    public Color colorTableHeaderText()
-    {
-        return theme().colorTableHeaderText();
-    }
-
-    public Color colorTableText()
-    {
-        return theme().colorTableText();
-    }
-
-    public Color colorText()
-    {
-        return theme().colorText();
-    }
-
-    public Color colorTextAreaBackground()
-    {
-        return theme().colorTextAreaBackground();
-    }
-
-    public Color colorTextFieldBackground()
-    {
-        return theme().colorTextFieldBackground();
-    }
-
-    public Color colorTextFieldText()
-    {
-        return theme().colorTextFieldText();
-    }
-
-    public Color colorTitle()
-    {
-        return theme().colorTitle();
-    }
-
-    public Color colorTitleBackground()
-    {
-        return theme().colorTitleBackground();
-    }
-
-    public Color colorWarning()
-    {
-        return theme().colorWarning();
-    }
-
     public JButton configure(final JButton button)
     {
-        return theme().configure(button);
+        return theme().applyTo(button);
     }
 
     public JTableHeader configure(final JTableHeader header)
     {
-        return theme().configure(header);
+        return theme().applyTo(header);
     }
 
     public JLabel configure(final JLabel label)
     {
-        return theme().configureComponentLabel(label);
+        return theme().applyToComponentLabel(label);
     }
 
     public <T> JList<T> configure(final JList<T> list)
     {
-        return theme().configure(list);
+        return theme().applyTo(list);
     }
 
     public JEditorPane configure(final JEditorPane editor)
     {
-        return theme().configure(editor);
+        return theme().applyTo(editor);
     }
 
     public JTextField configure(final JTextField field)
     {
-        return theme().configure(field);
+        return theme().applyTo(field);
     }
 
     public <T> JComboBox<T> configure(final JComboBox<T> dropdown)
     {
-        return theme().configure(dropdown);
+        return theme().applyTo(dropdown);
     }
 
     public <T> JComboBox<T> configure(final JComboBox<T> dropdown, final int preferredWidth)
     {
-        return theme().configure(dropdown, preferredWidth);
+        return theme().applyTo(dropdown, preferredWidth);
     }
 
     public JTable configure(final JTable table)
     {
-        return theme().configure(table);
+        return theme().applyTo(table);
     }
 
     public JCheckBox configure(final JCheckBox checkbox)
     {
-        return theme().configure(checkbox);
+        return theme().applyTo(checkbox);
     }
 
     public JLabel configureComponentLabel(final JLabel label)
     {
-        return theme().configureComponentLabel(label);
+        return theme().applyToComponentLabel(label);
     }
 
     public JPanel configureContainerPanel(final JPanel panel)
     {
-        return theme().configureContainerPanel(panel);
+        return theme().applyToContainerPanel(panel);
     }
 
     public JTextField configureSearchField(final JTextField field)
     {
-        return theme().configureSearchField(field);
+        return theme().applyToSearchField(field);
     }
 
     public KivaKitPanel configureShadedPanel(final KivaKitPanel panel)
     {
-        return theme().configureShadedPanel(panel);
+        return theme().applyToShadedPanel(panel);
     }
 
     public KivaKitPanel configureShadedSubPanel(final KivaKitPanel panel)
     {
-        return theme().configureShadedSubPanel(panel);
+        return theme().applyToShadedSubPanel(panel);
     }
 
     @Override
@@ -300,26 +162,6 @@ public class KivaKitPanel extends JPanel implements Repeater
     {
         setOpaque(true);
         Components.debugColor(this);
-    }
-
-    public Font fixedWidthFont()
-    {
-        return theme().fontFixedWidth();
-    }
-
-    public Font fontComponent()
-    {
-        return theme().fontComponent();
-    }
-
-    public Font fontFixedWidth()
-    {
-        return theme().fontFixedWidth();
-    }
-
-    public Font fontTitle()
-    {
-        return theme().fontTitle();
     }
 
     @Override
@@ -510,11 +352,6 @@ public class KivaKitPanel extends JPanel implements Repeater
         theme().popupInformation(frame, title, message);
     }
 
-    public Color progressBarBackground()
-    {
-        return theme().colorProgressBarBackground();
-    }
-
     @Override
     public void removeListener(final Listener listener)
     {
@@ -523,7 +360,7 @@ public class KivaKitPanel extends JPanel implements Repeater
 
     public Font smallComponentFont()
     {
-        return theme().smallComponentFont();
+        return theme().fontSmall();
     }
 
     public Font tableFont()
@@ -537,16 +374,16 @@ public class KivaKitPanel extends JPanel implements Repeater
         repeater.get().transmit(message);
     }
 
+    protected KivaKitTheme theme()
+    {
+        return KivaKitTheme.get();
+    }
+
     protected Box verticalCenter(final JComponent component)
     {
         final Box verticalBox = Box.createVerticalBox();
         verticalBox.add(Box.createVerticalGlue());
         verticalBox.add(component);
         return verticalBox;
-    }
-
-    private KivaKitTheme theme()
-    {
-        return KivaKitTheme.get();
     }
 }

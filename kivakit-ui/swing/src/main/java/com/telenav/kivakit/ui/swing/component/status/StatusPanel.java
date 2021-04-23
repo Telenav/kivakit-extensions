@@ -5,17 +5,19 @@ import com.telenav.kivakit.core.kernel.language.vm.JavaVirtualMachineHealth;
 import com.telenav.kivakit.core.kernel.messaging.Listener;
 import com.telenav.kivakit.core.kernel.messaging.Message;
 import com.telenav.kivakit.core.kernel.messaging.messages.status.Announcement;
+import com.telenav.kivakit.core.kernel.messaging.messages.status.Information;
 import com.telenav.kivakit.core.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.swing.component.health.HealthPanel;
 import com.telenav.kivakit.ui.swing.component.icon.logo.kivakit.KivaKitLogo;
-import com.telenav.kivakit.ui.swing.graphics.color.Color;
+import com.telenav.kivakit.ui.swing.graphics.style.Style;
 import com.telenav.kivakit.ui.swing.layout.HorizontalBoxLayout;
 import com.telenav.kivakit.ui.swing.layout.Margins;
 import com.telenav.kivakit.ui.swing.layout.Size;
 import com.telenav.kivakit.ui.swing.theme.KivaKitTheme;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,7 +35,7 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
         NO_HEALTH_PANEL
     }
 
-    private final JLabel status = theme().configureComponentLabel(new JLabel("Ready"));
+    private final JLabel status = theme().applyToComponentLabel(new JLabel("Ready"));
 
     private final HealthPanel healthPanel = new HealthPanel();
 
@@ -42,7 +44,7 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
         final var logo = new KivaKitLogo(_32x32);
         Margins.of(5).apply(logo);
 
-        theme().configureContainerPanel(this);
+        theme().applyToContainerPanel(this);
 
         Margins.leftAndRightOf(10).bottom(5).apply(this);
 
@@ -69,32 +71,33 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
     @Override
     public void onMessage(final Message message)
     {
+        final var style = theme().styleMessage(message.getClass());
         if (message instanceof Problem)
         {
-            status(Duration.MAXIMUM, theme().colorError(), message.description());
+            status(Duration.MAXIMUM, style, message.description());
         }
         if (message instanceof Warning)
         {
-            status(Duration.seconds(15), theme().colorWarning(), message.description());
+            status(Duration.seconds(15), style, message.description());
         }
         if (message instanceof Announcement)
         {
-            status(theme().colorText(), message.description());
+            status(style, message.description());
         }
     }
 
-    public void status(final Color color, final String message, final Object... arguments)
+    public void status(final Style color, final String message, final Object... arguments)
     {
         status(Duration.seconds(15), color, message, arguments);
     }
 
-    public void status(final Duration stayFor, final Color color, final String message, final Object... arguments)
+    public void status(final Duration stayFor, final Style color, final String message, final Object... arguments)
     {
         trace(message, arguments);
         final var formatted = Message.format(message, arguments);
         if (!status.getText().equals(formatted))
         {
-            color.foreground(status);
+            color.apply(status);
             status.setText(formatted);
             final var timer = new Timer();
             linger(stayFor, formatted, timer);
@@ -104,7 +107,7 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
     @Override
     public void status(final Duration stayFor, final String message, final Object... arguments)
     {
-        status(stayFor, theme().colorText(), message, arguments);
+        status(stayFor, theme().styleMessage(Information.class), message, arguments);
     }
 
     public void update(final JavaVirtualMachineHealth health)

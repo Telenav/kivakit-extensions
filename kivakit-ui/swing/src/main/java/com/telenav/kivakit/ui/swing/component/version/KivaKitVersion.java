@@ -20,6 +20,6 @@ public class KivaKitVersion extends JLabel
     {
         super("KivaKit " + version);
 
-        KivaKitTheme.get().configureComponentLabel(this);
+        KivaKitTheme.get().applyToComponentLabel(this);
     }
 }

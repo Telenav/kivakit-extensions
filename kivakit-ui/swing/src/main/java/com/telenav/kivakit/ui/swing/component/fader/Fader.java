@@ -4,7 +4,7 @@ import com.telenav.kivakit.core.kernel.language.time.Duration;
 import com.telenav.kivakit.ui.swing.component.Components;
 import com.telenav.kivakit.ui.swing.graphics.color.Color;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 /**
  * @author jonathanl (shibo)
@@ -29,8 +29,9 @@ public class Fader extends JLabel
         this.alphaStep = alphaStep;
 
         setOpaque(true);
-        setBackground(color.withAlpha(initialAlpha).asAwtColor());
         setVisible(true);
+
+        color.withAlpha(initialAlpha).applyAsBackground(this);
     }
 
     public void fadeIn()

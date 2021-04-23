@@ -26,11 +26,11 @@ import com.telenav.kivakit.core.kernel.project.Project;
  */
 public class DataCompressionProject extends Project
 {
-    private static final Lazy<DataCompressionProject> singleton = Lazy.of(DataCompressionProject::new);
+    private static final Lazy<DataCompressionProject> project = Lazy.of(DataCompressionProject::new);
 
     public static DataCompressionProject get()
     {
-        return singleton.get();
+        return project.get();
     }
 
     protected DataCompressionProject()

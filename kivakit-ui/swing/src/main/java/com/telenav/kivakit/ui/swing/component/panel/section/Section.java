@@ -6,8 +6,10 @@ import com.telenav.kivakit.ui.swing.layout.Margins;
 import com.telenav.kivakit.ui.swing.layout.Spacing;
 import com.telenav.kivakit.ui.swing.layout.VerticalBoxLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
 
 /**
  * @author jonathanl (shibo)
@@ -26,9 +28,7 @@ public class Section extends KivaKitPanel
     {
         final var title = newComponentLabel(this.title);
         title.setOpaque(false);
-        title.setFont(fontComponent().deriveFont(12.0f));
-        colorTitle().foreground(title);
-        colorTitleBackground().background(title);
+        theme().styleTitle().apply(title);
         if (icon != null)
         {
             title.setIcon(icon);
@@ -43,7 +43,7 @@ public class Section extends KivaKitPanel
         setOpaque(false);
         new VerticalBoxLayout(this, Spacing.MANUAL_SPACING)
                 .add(header)
-                .addStretched(new HorizontalSeparator(colorSeparator()))
+                .addStretched(new HorizontalSeparator(theme().colorSeparator()))
                 .addStretched(child);
     }
 

@@ -8,11 +8,11 @@ import com.telenav.kivakit.core.kernel.project.Project;
  */
 public class UiSwingProject extends Project
 {
-    private static final Lazy<UiSwingProject> singleton = Lazy.of(UiSwingProject::new);
+    private static final Lazy<UiSwingProject> project = Lazy.of(UiSwingProject::new);
 
     public static UiSwingProject get()
     {
-        return singleton.get();
+        return project.get();
     }
 
     protected UiSwingProject()

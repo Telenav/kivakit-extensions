@@ -2,8 +2,9 @@ package com.telenav.kivakit.ui.swing.component.dropdown;
 
 import com.telenav.kivakit.ui.swing.theme.KivaKitTheme;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import java.awt.Component;
 
 /**
  * @author jonathanl (shibo)
@@ -25,13 +26,11 @@ public class DropDownRenderer extends DefaultListCellRenderer
         final var theme = KivaKitTheme.get();
         if (isSelected)
         {
-            theme.colorSelectionBackground().background(this);
-            theme.colorSelectionText().foreground(this);
+            theme.styleSelection().applyColors(this);
         }
         else
         {
-            theme.colorDropdownBackground().background(this);
-            theme.colorDropdownText().foreground(this);
+            theme.styleDropdown().apply(this);
         }
 
         return this;
