@@ -244,7 +244,7 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
             }
             else
             {
-                string = "'" + value.toString() + "'";
+                string = "'" + value + "'";
             }
             lines.add(ordinal++ + ". " + symbolToCode.get(key) + " -> " + string + " (" + Count.count(key.frequency()) + ")");
         }
