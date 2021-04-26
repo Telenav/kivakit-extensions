@@ -37,7 +37,7 @@ This module contains code generally relevant to data formats.
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-data-formats-library</artifactId>
-        <version>0.9.0-SNAPSHOT</version>
+        <version>0.9.5-alpha</version>
     </dependency>
 
 
