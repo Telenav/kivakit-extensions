@@ -9,22 +9,32 @@
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>kivakit-data</artifactId>
+        <artifactId>kivakit-ui</artifactId>
         <version>0.9.5-alpha</version>
     </parent>
 
-    <name>KivaKit Data - Compression</name>
+    <name>KivaKit UI - Desktop</name>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>kivakit-data-compression</artifactId>
+    <artifactId>kivakit-ui-desktop</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
+
+        <!-- KivaKit -->
 
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-core-resource</artifactId>
             <version>${kivakit.version}</version>
+        </dependency>
+
+        <!-- Darcula Theme -->
+
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>0.45</version>
         </dependency>
 
     </dependencies>

@@ -37,7 +37,7 @@ This module reads and writes CSV data.
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-data-formats-csv</artifactId>
-        <version>0.9.0-SNAPSHOT</version>
+        <version>0.9.5-alpha</version>
     </dependency>
 
 

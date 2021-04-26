@@ -37,7 +37,7 @@ This module contains packages for compressing and decompressing data.
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-data-compression</artifactId>
-        <version>0.9.0-SNAPSHOT</version>
+        <version>0.9.5-alpha</version>
     </dependency>
 
 
