@@ -37,7 +37,7 @@ This project contains packages for developing Java Swing applications.
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-ui-swing</artifactId>
-        <version>0.9.5-alpha</version>
+        <version>0.9.5-alpha-SNAPSHOT</version>
     </dependency>
 
 
