@@ -18,7 +18,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-extensions 0.9.4 &nbsp;&nbsp; <img src="https://www.kivakit.org/images/kivakit-64.png" srcset="https://www.kivakit.org/images/kivakit-64-2x.png 2x"/>
+# kivakit-extensions 0.9.5-alpha &nbsp;&nbsp; <img src="https://www.kivakit.org/images/kivakit-64.png" srcset="https://www.kivakit.org/images/kivakit-64-2x.png 2x"/>
 
 This project contains modules that extend KivaKit.
 
@@ -49,7 +49,7 @@ This project contains modules that extend KivaKit.
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-math**](kivakit-math/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-ui-swing**](kivakit-ui/swing/README.md)
+ &nbsp; &nbsp; [**kivakit-ui-desktop**](kivakit-ui/desktop/README.md)
 
 [//]: # (start-user-text)
 
