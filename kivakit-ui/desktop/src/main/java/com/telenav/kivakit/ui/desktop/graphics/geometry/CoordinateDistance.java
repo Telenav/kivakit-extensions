@@ -23,7 +23,7 @@ public class CoordinateDistance extends Coordinated
 
     public DrawingDistance onDrawingSurface()
     {
-        return coordinateSystem().inDrawingUnits(this);
+        return coordinateSystem().toDrawingUnits(this);
     }
 
     public CoordinateDistance scaled(final double scaleFactor)

@@ -33,6 +33,11 @@ import static java.awt.BasicStroke.JOIN_ROUND;
  */
 public class Stroke
 {
+    public static Stroke none()
+    {
+        return stroke().withWidth(DrawingDistance.of(0));
+    }
+
     public static Stroke stroke()
     {
         return new Stroke();
@@ -79,7 +84,10 @@ public class Stroke
 
     public void apply(final Graphics2D graphics)
     {
-        graphics.setStroke(awtStroke());
+        if (isVisible())
+        {
+            graphics.setStroke(awtStroke());
+        }
     }
 
     public Stroke copy()
@@ -94,7 +102,11 @@ public class Stroke
 
     public Shape stroked(final Shape shape)
     {
-        return awtStroke().createStrokedShape(shape);
+        if (isVisible())
+        {
+            return awtStroke().createStrokedShape(shape);
+        }
+        return null;
     }
 
     @Override
@@ -147,7 +159,7 @@ public class Stroke
 
     protected java.awt.Stroke awtStroke()
     {
-        if (stroke == null)
+        if (stroke == null && isVisible())
         {
             stroke = new BasicStroke((float) width.units(), cap, join, miterLimit, dash, dashPhase);
         }
@@ -157,5 +169,10 @@ public class Stroke
     protected DrawingDistance width()
     {
         return width;
+    }
+
+    private boolean isVisible()
+    {
+        return width.isNonZero();
     }
 }

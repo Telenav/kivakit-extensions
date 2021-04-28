@@ -3,12 +3,12 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.awt;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingPoint;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSize;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSize;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateWidth;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateHeight;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSize;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateWidth;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 
 import java.awt.FontMetrics;
@@ -28,7 +28,7 @@ import java.util.HashMap;
  */
 public class AwtDrawingSurface implements DrawingSurface
 {
-    public static AwtDrawingSurface of(final Graphics2D graphics)
+    public static AwtDrawingSurface surface(final Graphics2D graphics)
     {
         return new AwtDrawingSurface(graphics);
     }
@@ -62,7 +62,7 @@ public class AwtDrawingSurface implements DrawingSurface
     @Override
     public Shape drawBox(final Style style, final DrawingPoint at, final DrawingSize size)
     {
-        return null;
+        return draw(style, new Rectangle2D.Double(at.x(), at.y(), size.width(), size.height()));
     }
 
     @Override
@@ -112,70 +112,81 @@ public class AwtDrawingSurface implements DrawingSurface
     }
 
     @Override
-    public Coordinate inCoordinates(final DrawingPoint point)
-    {
-        return Coordinate.at(this, point.x(), point.y());
-    }
-
-    @Override
-    public CoordinateSize inCoordinates(final DrawingSize size)
-    {
-        return CoordinateSize.size(this, size.width(), size.height());
-    }
-
-    @Override
-    public CoordinateDistance inCoordinates(final DrawingDistance distance)
-    {
-        return CoordinateDistance.units(this, distance.units());
-    }
-
-    @Override
-    public DrawingDistance inDrawingUnits(final CoordinateHeight height)
-    {
-        return DrawingDistance.of(height.units());
-    }
-
-    @Override
-    public DrawingDistance inDrawingUnits(final CoordinateWidth width)
-    {
-        return DrawingDistance.of(width.units());
-    }
-
-    @Override
-    public DrawingDistance inDrawingUnits(final CoordinateDistance distance)
-    {
-        return DrawingDistance.of(distance.units());
-    }
-
-    @Override
-    public DrawingPoint inDrawingUnits(final Coordinate coordinate)
-    {
-        return DrawingPoint.at(coordinate.inDrawingUnits().x(), coordinate.inDrawingUnits().y());
-    }
-
-    @Override
-    public DrawingSize inDrawingUnits(final CoordinateSize coordinate)
-    {
-        return DrawingSize.size(coordinate.width(), coordinate.height());
-    }
-
-    @Override
     public DrawingSize size(final Style style, final String text)
     {
         final var bounds = textBounds(style, text);
         return DrawingSize.size(bounds.getWidth(), bounds.getHeight());
     }
 
+    @Override
+    public Coordinate toCoordinates(final DrawingPoint point)
+    {
+        return Coordinate.at(this, point.x(), point.y());
+    }
+
+    @Override
+    public CoordinateSize toCoordinates(final DrawingSize size)
+    {
+        return CoordinateSize.size(this, size.width(), size.height());
+    }
+
+    @Override
+    public CoordinateDistance toCoordinates(final DrawingDistance distance)
+    {
+        return CoordinateDistance.units(this, distance.units());
+    }
+
+    @Override
+    public DrawingDistance toDrawingUnits(final CoordinateHeight height)
+    {
+        return DrawingDistance.of(height.units());
+    }
+
+    @Override
+    public DrawingDistance toDrawingUnits(final CoordinateWidth width)
+    {
+        return DrawingDistance.of(width.units());
+    }
+
+    @Override
+    public DrawingDistance toDrawingUnits(final CoordinateDistance distance)
+    {
+        return DrawingDistance.of(distance.units());
+    }
+
+    @Override
+    public DrawingPoint toDrawingUnits(final Coordinate coordinate)
+    {
+        return DrawingPoint.at(coordinate.inDrawingUnits().x(), coordinate.inDrawingUnits().y());
+    }
+
+    @Override
+    public DrawingSize toDrawingUnits(final CoordinateSize coordinate)
+    {
+        return DrawingSize.size(coordinate.width(), coordinate.height());
+    }
+
     private Shape draw(final Style style, final Shape shape)
     {
-        style.apply(graphics);
+        // Set the paint color with Graphics2D.setPaint(),
+        style.fillColor().applyAsFillColor(graphics);
+
+        // set the drawing color,
+        style.drawColor().applyAsDrawColor(graphics);
+
+        // and the stroke to use,
+        style.drawStroke().apply(graphics);
+
+        // then draw the shape
         graphics.draw(shape);
+
+        // and return the stroked shape outline to the caller.
         return style.shape(shape);
     }
 
     private FontMetrics fontMetrics(final Style style)
     {
-        style.applyTextFont(graphics);
+        graphics.setFont(style.textFont());
         return graphics.getFontMetrics();
     }
 

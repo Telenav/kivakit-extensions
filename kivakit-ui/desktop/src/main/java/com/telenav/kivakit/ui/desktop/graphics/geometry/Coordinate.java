@@ -36,7 +36,7 @@ public class Coordinate extends Coordinated
 
     public DrawingPoint inDrawingUnits()
     {
-        return coordinateSystem().inDrawingUnits(this);
+        return coordinateSystem().toDrawingUnits(this);
     }
 
     public Coordinate minus(final Coordinate that)

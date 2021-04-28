@@ -35,27 +35,6 @@ public interface CoordinateSystem
         return CoordinateHeight.height(this, height);
     }
 
-    default Coordinate inCoordinates(final double x, final double y)
-    {
-        return inCoordinates(DrawingPoint.at(x, y));
-    }
-
-    Coordinate inCoordinates(DrawingPoint point);
-
-    CoordinateSize inCoordinates(DrawingSize size);
-
-    CoordinateDistance inCoordinates(DrawingDistance distance);
-
-    DrawingDistance inDrawingUnits(CoordinateDistance distance);
-
-    DrawingDistance inDrawingUnits(CoordinateHeight height);
-
-    DrawingDistance inDrawingUnits(CoordinateWidth width);
-
-    DrawingPoint inDrawingUnits(final Coordinate coordinate);
-
-    DrawingSize inDrawingUnits(final CoordinateSize coordinate);
-
     /**
      * @return The given height in abstract units in the coordinate system of this drawing surface
      */
@@ -71,6 +50,27 @@ public interface CoordinateSystem
         final var adjacent = point.x();
         return CoordinateSlope.radians(Math.atan(opposite / adjacent));
     }
+
+    default Coordinate toCoordinates(final double x, final double y)
+    {
+        return toCoordinates(DrawingPoint.at(x, y));
+    }
+
+    Coordinate toCoordinates(DrawingPoint point);
+
+    CoordinateSize toCoordinates(DrawingSize size);
+
+    CoordinateDistance toCoordinates(DrawingDistance distance);
+
+    DrawingDistance toDrawingUnits(CoordinateDistance distance);
+
+    DrawingDistance toDrawingUnits(CoordinateHeight height);
+
+    DrawingDistance toDrawingUnits(CoordinateWidth width);
+
+    DrawingPoint toDrawingUnits(final Coordinate coordinate);
+
+    DrawingSize toDrawingUnits(final CoordinateSize coordinate);
 
     /**
      * @return The given width in abstract units in the coordinate system of this drawing surface

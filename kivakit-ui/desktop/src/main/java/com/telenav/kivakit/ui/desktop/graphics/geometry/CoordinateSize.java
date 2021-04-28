@@ -36,7 +36,7 @@ public class CoordinateSize extends Coordinated
 
     public DrawingSize onDrawingSurface()
     {
-        return coordinateSystem().inDrawingUnits(this);
+        return coordinateSystem().toDrawingUnits(this);
     }
 
     public CoordinateSize plus(final CoordinateSize that)

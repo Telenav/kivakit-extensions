@@ -17,6 +17,11 @@ public class DrawingDistance
         this.units = units;
     }
 
+    public boolean isNonZero()
+    {
+        return units > 0;
+    }
+
     public DrawingDistance scaled(final double scaleFactor)
     {
         return of(units * scaleFactor);

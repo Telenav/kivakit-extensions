@@ -109,13 +109,13 @@ public class KivaKitColors
 
     public static final Color TRANSLUCENT_TANGERINE = TANGERINE.withAlpha(160);
 
+    public static final Color TRANSPARENT = Color.rgb(0).withAlpha(0);
+
     public static final Color UNSPECIFIED = Color.MAGENTA;
 
     public static final Color WHITE = Color.rgb(0xf0f0f0);
 
     public static final Color WHITE_SMOKE = Color.rgb(0xf5f5f5);
-
-    public static final Color TRANSPARENT = WHITE_SMOKE.withAlpha(0);
 
     public static final Color YELLOW = Color.rgb(0xffff00);
 

@@ -21,17 +21,17 @@ package com.telenav.kivakit.ui.desktop.graphics.style;
 import com.telenav.kivakit.core.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.awt.AwtShapes;
+import com.telenav.kivakit.ui.desktop.graphics.font.Fonts;
 
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.text.JTextComponent;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.TRANSPARENT;
 
 public class Style
 {
@@ -41,19 +41,19 @@ public class Style
     }
 
     // Filling
-    private Color fillColor;
+    private Color fillColor = TRANSPARENT;
 
-    private Stroke fillStroke;
+    private Stroke fillStroke = Stroke.none();
 
     // Drawing
-    private Color drawColor;
+    private Color drawColor = TRANSPARENT;
 
-    private Stroke drawStroke;
+    private Stroke drawStroke = Stroke.none();
 
     // Text
-    private Color textColor;
+    private Color textColor = TRANSPARENT;
 
-    private Font textFont;
+    private Font textFont = Fonts.component(12);
 
     protected Style()
     {
@@ -72,15 +72,7 @@ public class Style
     public Style apply(final Component component)
     {
         applyColors(component);
-        applyTextStyle(component);
-
-        return this;
-    }
-
-    public Style apply(final Graphics2D graphics)
-    {
-        applyColors(graphics);
-        applyStrokes(graphics);
+        applyText(component);
 
         return this;
     }
@@ -93,44 +85,13 @@ public class Style
         return this;
     }
 
-    public Style applyColors(final Graphics2D graphics)
+    public Style applyText(final Component component)
     {
-        fillColor.applyAsBackground(graphics);
-        drawColor.applyAsForeground(graphics);
+        assert textColor != null;
+        assert textFont != null;
 
-        return this;
-    }
-
-    public Style applyDrawColor(final Graphics graphics)
-    {
-        drawColor.applyAsForeground(graphics);
-        return this;
-    }
-
-    public Style applyDrawStyle(final Graphics2D graphics)
-    {
-        ensure(drawColor != null);
-        ensure(drawStroke != null);
-
-        applyDrawColor(graphics);
-        drawStroke.apply(graphics);
-
-        return this;
-    }
-
-    public Style applyFillColor(final Graphics2D graphics)
-    {
-        fillColor.applyAsBackground(graphics);
-        return this;
-    }
-
-    public Style applyFillStyle(final Graphics2D graphics)
-    {
-        ensure(fillColor != null);
-        ensure(fillStroke != null);
-
-        applyFillColor(graphics);
-        fillStroke.apply(graphics);
+        applyTextFont(component);
+        applyTextColor(component);
 
         return this;
     }
@@ -141,43 +102,9 @@ public class Style
         return this;
     }
 
-    public Style applyTextColor(final Graphics graphics)
-    {
-        textColor.applyAsForeground(graphics);
-        return this;
-    }
-
-    public Style applyTextFont(final Graphics graphics)
-    {
-        graphics.setFont(textFont);
-        return this;
-    }
-
     public Style applyTextFont(final Component component)
     {
         component.setFont(textFont);
-        return this;
-    }
-
-    public Style applyTextStyle(final Graphics graphics)
-    {
-        assert textColor != null;
-        assert textFont != null;
-
-        applyTextColor(graphics);
-        applyTextFont(graphics);
-
-        return this;
-    }
-
-    public Style applyTextStyle(final Component component)
-    {
-        assert textColor != null;
-        assert textFont != null;
-
-        applyTextFont(component);
-        applyTextColor(component);
-
         return this;
     }
 
@@ -251,7 +178,7 @@ public class Style
 
     public Shape shape(final Shape shape)
     {
-        return Shapes.combine(
+        return AwtShapes.combine(
                 fillStroke().stroked(shape),
                 drawStroke().stroked(shape));
     }
@@ -318,11 +245,5 @@ public class Style
     public Style withTextFontSize(final int size)
     {
         return withTextFont(new Font(textFont.getFontName(), textFont.getStyle(), size));
-    }
-
-    private void applyStrokes(final Graphics2D graphics)
-    {
-        fillStroke.apply(graphics);
-        drawStroke.apply(graphics);
     }
 }

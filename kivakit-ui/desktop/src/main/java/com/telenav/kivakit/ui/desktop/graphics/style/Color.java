@@ -35,33 +35,33 @@ import java.util.Objects;
 
 public class Color
 {
-    public static final Color LIGHT_GRAY = of(java.awt.Color.LIGHT_GRAY);
-
-    public static final Color WHITE = of(java.awt.Color.WHITE);
-
-    public static final Color GRAY = of(java.awt.Color.GRAY);
-
-    public static final Color DARK_GRAY = of(java.awt.Color.DARK_GRAY);
-
     public static final Color BLACK = of(java.awt.Color.BLACK);
-
-    public static final Color RED = of(java.awt.Color.RED);
-
-    public static final Color PINK = of(java.awt.Color.PINK);
-
-    public static final Color ORANGE = of(java.awt.Color.ORANGE);
-
-    public static final Color YELLOW = of(java.awt.Color.YELLOW);
-
-    public static final Color GREEN = of(java.awt.Color.GREEN);
-
-    public static final Color MAGENTA = of(java.awt.Color.MAGENTA);
-
-    public static final Color CYAN = of(java.awt.Color.CYAN);
 
     public static final Color BLUE = of(java.awt.Color.BLUE);
 
+    public static final Color CYAN = of(java.awt.Color.CYAN);
+
+    public static final Color DARK_GRAY = of(java.awt.Color.DARK_GRAY);
+
+    public static final Color GRAY = of(java.awt.Color.GRAY);
+
+    public static final Color GREEN = of(java.awt.Color.GREEN);
+
+    public static final Color LIGHT_GRAY = of(java.awt.Color.LIGHT_GRAY);
+
+    public static final Color MAGENTA = of(java.awt.Color.MAGENTA);
+
+    public static final Color ORANGE = of(java.awt.Color.ORANGE);
+
+    public static final Color PINK = of(java.awt.Color.PINK);
+
+    public static final Color RED = of(java.awt.Color.RED);
+
     public static final Color TRANSPARENT = rgba(0, 0, 0, 0);
+
+    public static final Color WHITE = of(java.awt.Color.WHITE);
+
+    public static final Color YELLOW = of(java.awt.Color.YELLOW);
 
     public static Color of(final java.awt.Color that)
     {
@@ -140,25 +140,20 @@ public class Color
         return alpha;
     }
 
-    public void applyAsBackground(final Graphics2D graphics)
-    {
-        graphics.setBackground(asAwtColor());
-    }
-
     public <T extends Component> T applyAsBackground(final T component)
     {
         component.setBackground(asAwtColor());
         return component;
     }
 
-    public void applyAsColor(final Graphics graphics)
+    public void applyAsDrawColor(final Graphics graphics)
     {
         graphics.setColor(asAwtColor());
     }
 
-    public void applyAsForeground(final Graphics graphics)
+    public void applyAsFillColor(final Graphics2D graphics)
     {
-        graphics.setColor(asAwtColor());
+        graphics.setPaint(asAwtColor());
     }
 
     public <T extends Component> T applyAsForeground(final T component)

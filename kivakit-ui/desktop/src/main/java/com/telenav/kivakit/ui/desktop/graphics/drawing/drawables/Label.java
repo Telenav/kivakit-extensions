@@ -65,7 +65,7 @@ public class Label extends BaseDrawable
     public Shape draw(final DrawingSurface surface)
     {
         final var size = surface.size(style(), text).plus(margin * 2, margin * 2);
-        final var shape = surface.drawBox(style(), surface.inDrawingUnits(at()), size);
+        final var shape = surface.drawBox(style(), surface.toDrawingUnits(at()), size);
         surface.drawText(style(), at().inDrawingUnits().plus(margin, margin), text);
         return shape;
     }
