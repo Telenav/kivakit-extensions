@@ -32,6 +32,11 @@ public class DrawingSize
         return DrawingPoint.at(width, height);
     }
 
+    public DrawingRectangle asRectangle()
+    {
+        return DrawingRectangle.rectangle(0, 0, width, height);
+    }
+
     public double height()
     {
         return height;

@@ -23,6 +23,8 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance.pixels;
+
 /**
  * @author jonathanl (shibo)
  */
@@ -139,19 +141,19 @@ public class AwtDrawingSurface implements DrawingSurface
     @Override
     public DrawingDistance toDrawingUnits(final CoordinateHeight height)
     {
-        return DrawingDistance.of(height.units());
+        return pixels(height.units());
     }
 
     @Override
     public DrawingDistance toDrawingUnits(final CoordinateWidth width)
     {
-        return DrawingDistance.of(width.units());
+        return pixels(width.units());
     }
 
     @Override
     public DrawingDistance toDrawingUnits(final CoordinateDistance distance)
     {
-        return DrawingDistance.of(distance.units());
+        return pixels(distance.units());
     }
 
     @Override

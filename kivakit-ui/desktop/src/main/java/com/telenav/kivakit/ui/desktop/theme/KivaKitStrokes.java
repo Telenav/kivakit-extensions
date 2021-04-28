@@ -21,8 +21,9 @@
 
 package com.telenav.kivakit.ui.desktop.theme;
 
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
+
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance.pixels;
 
 /**
  * @author jonathanl (shibo)
@@ -30,5 +31,5 @@ import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 public class KivaKitStrokes
 {
     public static Stroke THIN = Stroke.stroke()
-            .withWidth(DrawingDistance.of(1));
+            .withWidth(pixels(1));
 }

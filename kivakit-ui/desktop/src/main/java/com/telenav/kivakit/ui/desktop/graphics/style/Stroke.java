@@ -25,6 +25,7 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance.pixels;
 import static java.awt.BasicStroke.CAP_ROUND;
 import static java.awt.BasicStroke.JOIN_ROUND;
 
@@ -35,7 +36,7 @@ public class Stroke
 {
     public static Stroke none()
     {
-        return stroke().withWidth(DrawingDistance.of(0));
+        return stroke().withWidth(pixels(0));
     }
 
     public static Stroke stroke()
@@ -60,7 +61,7 @@ public class Stroke
 
     private float dashPhase;
 
-    private DrawingDistance width = DrawingDistance.of(1);
+    private DrawingDistance width = pixels(1);
 
     protected Stroke()
     {

@@ -5,7 +5,7 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing;
  */
 public class DrawingDistance
 {
-    public static DrawingDistance of(final double units)
+    public static DrawingDistance pixels(final double units)
     {
         return new DrawingDistance(units);
     }
@@ -24,7 +24,7 @@ public class DrawingDistance
 
     public DrawingDistance scaled(final double scaleFactor)
     {
-        return of(units * scaleFactor);
+        return pixels(units * scaleFactor);
     }
 
     @Override
