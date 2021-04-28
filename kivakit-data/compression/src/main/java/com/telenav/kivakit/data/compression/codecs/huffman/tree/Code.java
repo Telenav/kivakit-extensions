@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.tree;
 
-import com.telenav.kivakit.core.collections.primitive.array.bits.io.BitWriter;
 import com.telenav.kivakit.core.kernel.language.strings.Align;
 import com.telenav.kivakit.core.kernel.language.strings.Strings;
+import com.telenav.kivakit.collections.primitive.array.bits.io.BitWriter;
 
 /**
  * A Huffman code, having a length in bits and a value. The code can be written to a {@link BitWriter} with {@link

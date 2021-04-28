@@ -1,6 +1,7 @@
 open module kivakit.data.compression
 {
     requires transitive kivakit.core.resource;
+    requires transitive kivakit.collections.primitive;
 
     exports com.telenav.kivakit.data.compression.codecs.huffman.character;
     exports com.telenav.kivakit.data.compression.codecs.huffman.list;

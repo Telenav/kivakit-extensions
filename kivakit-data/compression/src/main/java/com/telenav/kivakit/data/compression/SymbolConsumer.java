@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.data.compression;
 
-import com.telenav.kivakit.core.collections.primitive.list.ByteList;
+import com.telenav.kivakit.collections.primitive.list.ByteList;
 
 /**
  * Consumer of a sequence of decoded symbols. The {@link #next(int, Object)} method is called with each decoded symbol
