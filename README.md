@@ -35,6 +35,7 @@ This project contains modules that extend KivaKit.
 [**kivakit-data**](kivakit-data/README.md)  
 [**kivakit-math**](kivakit-math/README.md)  
 [**kivakit-ui**](kivakit-ui/README.md)  
+[**kivakit-primitive-collections**](kivakit-primitive-collections/README.md)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
