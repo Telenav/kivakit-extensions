@@ -21,6 +21,7 @@
         <module>kivakit-math</module>
         <module>kivakit-data</module>
         <module>kivakit-ui</module>
+        <module>kivakit-primitive-collections</module>
 
     </modules>
 

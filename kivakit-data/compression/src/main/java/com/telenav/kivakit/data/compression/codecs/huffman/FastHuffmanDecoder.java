@@ -18,9 +18,6 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman;
 
-import com.telenav.kivakit.core.collections.primitive.array.bits.BitArray;
-import com.telenav.kivakit.core.collections.primitive.array.scalars.ByteArray;
-import com.telenav.kivakit.core.collections.primitive.list.ByteList;
 import com.telenav.kivakit.core.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.core.kernel.language.strings.StringTo;
 import com.telenav.kivakit.core.kernel.language.strings.conversion.AsString;
@@ -32,6 +29,9 @@ import com.telenav.kivakit.core.kernel.messaging.Message;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolConsumer.Directive;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.CodedSymbol;
+import com.telenav.kivakit.primitive.collections.array.bits.BitArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 
 import java.util.ArrayList;
 import java.util.HashMap;

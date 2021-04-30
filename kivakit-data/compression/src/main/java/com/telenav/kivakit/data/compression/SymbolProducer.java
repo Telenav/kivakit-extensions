@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.data.compression;
 
-import com.telenav.kivakit.core.collections.primitive.list.ByteList;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 
 import java.util.Collections;
 import java.util.List;

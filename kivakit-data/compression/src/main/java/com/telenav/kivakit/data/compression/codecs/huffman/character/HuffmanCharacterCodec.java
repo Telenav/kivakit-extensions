@@ -18,8 +18,6 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.character;
 
-import com.telenav.kivakit.core.collections.primitive.array.scalars.ByteArray;
-import com.telenav.kivakit.core.collections.primitive.list.ByteList;
 import com.telenav.kivakit.core.kernel.data.conversion.string.BaseStringConverter;
 import com.telenav.kivakit.core.kernel.language.primitives.Ints;
 import com.telenav.kivakit.core.kernel.language.primitives.Longs;
@@ -34,6 +32,8 @@ import com.telenav.kivakit.data.compression.SymbolProducer;
 import com.telenav.kivakit.data.compression.codecs.CharacterCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
+import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 
 import static com.telenav.kivakit.data.compression.SymbolConsumer.Directive.CONTINUE;
 
