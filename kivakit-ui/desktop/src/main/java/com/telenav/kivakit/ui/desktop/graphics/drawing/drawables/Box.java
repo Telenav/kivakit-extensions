@@ -2,9 +2,9 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSize;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
@@ -55,15 +55,20 @@ public class Box extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        return shape(surface.drawBox(style(), at().inDrawingUnits(), size.onDrawingSurface()));
+        return shape(surface.drawBox(style(), at(), size()));
     }
 
     @Override
-    public Drawable scaled(final double scaleFactor)
+    public Drawable scaledBy(final double scaleFactor)
     {
         final var copy = copy();
-        copy.size = size.scaled(scaleFactor);
+        copy.size = size.scaledBy(scaleFactor);
         return copy;
+    }
+
+    public CoordinateSize size()
+    {
+        return size;
     }
 
     @Override
@@ -85,7 +90,7 @@ public class Box extends BaseDrawable
     }
 
     @Override
-    public Box withDrawStrokeWidth(final DrawingDistance width)
+    public Box withDrawStrokeWidth(final CoordinateDistance width)
     {
         return (Box) super.withDrawStrokeWidth(width);
     }
@@ -103,7 +108,7 @@ public class Box extends BaseDrawable
     }
 
     @Override
-    public Box withFillStrokeWidth(final DrawingDistance width)
+    public Box withFillStrokeWidth(final CoordinateDistance width)
     {
         return (Box) super.withFillStrokeWidth(width);
     }

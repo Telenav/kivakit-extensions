@@ -20,7 +20,6 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
@@ -70,13 +69,18 @@ public class Dot extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        return shape(surface.drawCircle(style(), at().inDrawingUnits(), radius.onDrawingSurface()));
+        return shape(surface.drawCircle(style(), at(), radius()));
+    }
+
+    public CoordinateDistance radius()
+    {
+        return radius;
     }
 
     @Override
-    public Dot scaled(final double scaleFactor)
+    public Dot scaledBy(final double scaleFactor)
     {
-        return withRadius(radius.scaled(scaleFactor));
+        return withRadius(radius.scaledBy(scaleFactor));
     }
 
     @Override
@@ -104,7 +108,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot withDrawStrokeWidth(final DrawingDistance width)
+    public Dot withDrawStrokeWidth(final CoordinateDistance width)
     {
         return (Dot) super.withDrawStrokeWidth(width);
     }
@@ -122,7 +126,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot withFillStrokeWidth(final DrawingDistance width)
+    public Dot withFillStrokeWidth(final CoordinateDistance width)
     {
         return (Dot) super.withFillStrokeWidth(width);
     }

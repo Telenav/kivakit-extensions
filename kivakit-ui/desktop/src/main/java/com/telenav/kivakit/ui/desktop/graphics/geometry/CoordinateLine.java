@@ -19,17 +19,44 @@
  *
  */
 
-package com.telenav.kivakit.ui.desktop.theme;
-
-import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
-
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance.units;
+package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
 /**
  * @author jonathanl (shibo)
  */
-public class KivaKitStrokes
+public class CoordinateLine
 {
-    public static Stroke THIN = Stroke.stroke()
-            .withWidth(units(1));
+    public static CoordinateLine line(final Coordinate a, final Coordinate b)
+    {
+        return new CoordinateLine(a, b);
+    }
+
+    private final Coordinate a;
+
+    private final Coordinate b;
+
+    public CoordinateLine(final Coordinate a, final Coordinate b)
+    {
+
+        this.a = a;
+        this.b = b;
+    }
+
+    public Coordinate a()
+    {
+        return a;
+    }
+
+    public Coordinate b()
+    {
+        return b;
+    }
+
+    public CoordinateSlope slope()
+    {
+        final var point = b.minus(a);
+        final var opposite = point.y();
+        final var adjacent = point.x();
+        return CoordinateSlope.radians(Math.atan(opposite / adjacent));
+    }
 }

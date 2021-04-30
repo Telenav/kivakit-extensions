@@ -20,12 +20,11 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSize;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSlope;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
@@ -65,11 +64,6 @@ public class Line extends BaseDrawable
         toArrowHead = that.toArrowHead;
     }
 
-    public CoordinateSlope angle(final CoordinateSystem system)
-    {
-        return system.slope(from(), to());
-    }
-
     @Override
     public Line at(final Coordinate at)
     {
@@ -87,7 +81,7 @@ public class Line extends BaseDrawable
     {
         final var shape = new Area();
 
-        shape.add(new Area(shape(surface.drawLine(style(), at().inDrawingUnits(), at().plus(offset).inDrawingUnits()))));
+        shape.add(new Area(shape(surface.drawLine(style(), from(), to()))));
         shape.add(new Area(fromArrowHead.at(from()).draw(surface)));
         shape.add(new Area(toArrowHead.at(to()).draw(surface)));
 
@@ -105,11 +99,19 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line scaled(final double scaleFactor)
+    public Line scaledBy(final double scaleFactor)
     {
         final var copy = copy();
-        copy.offset = offset.scaled(scaleFactor);
+        copy.offset = offset.scaledBy(scaleFactor);
         return copy;
+    }
+
+    public CoordinateSlope slope()
+    {
+        final var point = to().minus(from());
+        final var opposite = point.y();
+        final var adjacent = point.x();
+        return CoordinateSlope.radians(Math.atan(opposite / adjacent));
     }
 
     public Coordinate to()
@@ -136,7 +138,7 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line withDrawStrokeWidth(final DrawingDistance width)
+    public Line withDrawStrokeWidth(final CoordinateDistance width)
     {
         return (Line) super.withDrawStrokeWidth(width);
     }
@@ -154,7 +156,7 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line withFillStrokeWidth(final DrawingDistance width)
+    public Line withFillStrokeWidth(final CoordinateDistance width)
     {
         return (Line) super.withFillStrokeWidth(width);
     }

@@ -1,13 +1,19 @@
 package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
+
+import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
 
 /**
  * @author jonathanl (shibo)
  */
 public class CoordinateDistance extends Coordinated
 {
+    public static CoordinateDistance units(final double units)
+    {
+        return units(drawingSurface(), units);
+    }
+
     public static CoordinateDistance units(final CoordinateSystem system, final double units)
     {
         return new CoordinateDistance(system, units);
@@ -21,19 +27,29 @@ public class CoordinateDistance extends Coordinated
         this.units = units;
     }
 
-    public DrawingDistance onDrawingSurface()
+    public CoordinateWidth asWidth()
     {
-        return coordinateSystem().toDrawingUnits(this);
+        return CoordinateWidth.width(coordinateSystem(), units);
     }
 
-    public CoordinateDistance scaled(final double scaleFactor)
+    public boolean isNonZero()
+    {
+        return units > 0;
+    }
+
+    public CoordinateDistance scaledBy(final Percent percent)
+    {
+        return newInstance(percent.scale(units));
+    }
+
+    public CoordinateDistance scaledBy(final double scaleFactor)
     {
         return newInstance(units * scaleFactor);
     }
 
-    public CoordinateDistance scaled(final Percent percent)
+    public CoordinateDistance to(final CoordinateSystem that)
     {
-        return newInstance(percent.scale(units));
+        return coordinateSystem().to(that, this);
     }
 
     public double units()

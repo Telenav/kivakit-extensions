@@ -1,9 +1,9 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
@@ -65,13 +65,13 @@ public class Label extends BaseDrawable
     public Shape draw(final DrawingSurface surface)
     {
         final var size = surface.size(style(), text).plus(margin * 2, margin * 2);
-        final var shape = surface.drawBox(style(), surface.toDrawingUnits(at()), size);
-        surface.drawText(style(), at().inDrawingUnits().plus(margin, margin), text);
+        final var shape = surface.drawBox(style(), at(), size);
+        surface.drawText(style(), at().to(surface).plus(margin, margin), text);
         return shape;
     }
 
     @Override
-    public Label scaled(final double scaleFactor)
+    public Label scaledBy(final double scaleFactor)
     {
         return unsupported();
     }
@@ -95,7 +95,7 @@ public class Label extends BaseDrawable
     }
 
     @Override
-    public Label withDrawStrokeWidth(final DrawingDistance width)
+    public Label withDrawStrokeWidth(final CoordinateDistance width)
     {
         return (Label) super.withDrawStrokeWidth(width);
     }
@@ -113,7 +113,7 @@ public class Label extends BaseDrawable
     }
 
     @Override
-    public Label withFillStrokeWidth(final DrawingDistance width)
+    public Label withFillStrokeWidth(final CoordinateDistance width)
     {
         return (Label) super.withFillStrokeWidth(width);
     }

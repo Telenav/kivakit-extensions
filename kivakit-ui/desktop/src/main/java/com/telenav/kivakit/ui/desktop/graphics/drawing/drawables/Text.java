@@ -1,9 +1,9 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
@@ -62,11 +62,11 @@ public class Text extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        return shape(surface.drawText(style(), at().inDrawingUnits(), text));
+        return shape(surface.drawText(style(), at(), text));
     }
 
     @Override
-    public Text scaled(final double scaleFactor)
+    public Text scaledBy(final double scaleFactor)
     {
         return unsupported();
     }
@@ -90,7 +90,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text withDrawStrokeWidth(final DrawingDistance width)
+    public Text withDrawStrokeWidth(final CoordinateDistance width)
     {
         return (Text) super.withDrawStrokeWidth(width);
     }
@@ -108,7 +108,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text withFillStrokeWidth(final DrawingDistance width)
+    public Text withFillStrokeWidth(final CoordinateDistance width)
     {
         return (Text) super.withFillStrokeWidth(width);
     }

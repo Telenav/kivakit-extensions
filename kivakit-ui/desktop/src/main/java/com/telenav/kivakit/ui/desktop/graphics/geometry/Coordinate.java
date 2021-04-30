@@ -1,9 +1,15 @@
 package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingPoint;
+
+import java.awt.geom.Point2D;
+import java.util.Objects;
+
+import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
 
 /**
+ * Represents a coordinate in
+ *
  * @author jonathanl (shibo)
  */
 public class Coordinate extends Coordinated
@@ -13,9 +19,14 @@ public class Coordinate extends Coordinated
         return new Coordinate(system, x, y);
     }
 
-    public static Coordinate origin(final CoordinateSystem system)
+    public static Coordinate at(final double x, final double y)
     {
-        return at(system, 0, 0);
+        return at(drawingSurface(), x, y);
+    }
+
+    public static Coordinate at(final Point2D point)
+    {
+        return at(point.getX(), point.getY());
     }
 
     private final double x;
@@ -25,6 +36,7 @@ public class Coordinate extends Coordinated
     public Coordinate(final CoordinateSystem system, final double x, final double y)
     {
         super(system);
+
         this.x = x;
         this.y = y;
     }
@@ -34,39 +46,80 @@ public class Coordinate extends Coordinated
         return CoordinateSize.size(coordinateSystem(), x, y);
     }
 
-    public DrawingPoint inDrawingUnits()
+    @Override
+    public boolean equals(final Object object)
     {
-        return coordinateSystem().toDrawingUnits(this);
+        if (object instanceof Coordinate)
+        {
+            final Coordinate that = (Coordinate) object;
+            return x == that.x && y == that.y;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(x, y);
+    }
+
+    public Coordinate minus(final double dx, final double dy)
+    {
+        return at(x - dx, y - dy);
     }
 
     public Coordinate minus(final Coordinate that)
     {
-        return at(coordinateSystem(), x - that.x, y - that.y);
-    }
-
-    public Coordinate plus(final Coordinate that)
-    {
-        return at(coordinateSystem(), x + that.x, y + that.y);
-    }
-
-    public Coordinate plus(final CoordinateSize that)
-    {
-        return at(coordinateSystem(), x + that.width(), y + that.height());
+        return at(x - that.x, y - that.y);
     }
 
     public Coordinate plus(final double dx, final double dy)
     {
-        return at(coordinateSystem(), x + dx, y + dy);
+        return at(x + dx, y + dy);
     }
 
-    public Coordinate scaled(final double scaleFactor)
+    public Coordinate plus(final CoordinateSize size)
+    {
+        return at(x + size.widthInUnits(), y + size.heightInUnits());
+    }
+
+    public Coordinate plus(final Coordinate that)
+    {
+        return at(x + that.x, y + that.y);
+    }
+
+    public CoordinateRectangle rectangle(final CoordinateSize size)
+    {
+        return CoordinateRectangle.rectangle(this, size);
+    }
+
+    public Coordinate scaledBy(final Percent percent)
+    {
+        return at(coordinateSystem(), percent.scale(x), percent.scale(y));
+    }
+
+    public CoordinateSize size(final Coordinate that)
+    {
+        final var width = Math.abs(x() - that.x());
+        final var height = Math.abs(y() - that.y());
+
+        return CoordinateSize.size(that.coordinateSystem(), width, height);
+    }
+
+    public Coordinate times(final double scaleFactor)
     {
         return at(coordinateSystem(), x * scaleFactor, y * scaleFactor);
     }
 
-    public Coordinate scaled(final Percent percent)
+    public Coordinate to(final CoordinateSystem that)
     {
-        return at(coordinateSystem(), percent.scale(x), percent.scale(y));
+        return coordinateSystem().to(that, this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return x + ", " + y;
     }
 
     /**

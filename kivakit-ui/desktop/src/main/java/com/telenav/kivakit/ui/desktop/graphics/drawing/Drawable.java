@@ -13,7 +13,7 @@ import java.awt.Shape;
 public interface Drawable
 {
     /**
-     * @return The location of the drawable relative to the upper left
+     * @return The location of the drawable
      */
     @KivaKitIncludeProperty
     Coordinate at();
@@ -38,14 +38,14 @@ public interface Drawable
     /**
      * @return This drawable scaled by the given scaling factor
      */
-    Drawable scaled(final double scaleFactor);
+    Drawable scaledBy(final double scaleFactor);
 
     /**
      * @return This drawable scaled by the given scaling factor
      */
-    default Drawable scaled(final Percent scaleFactor)
+    default Drawable scaledBy(final Percent scaleFactor)
     {
-        return copy().scaled(scaleFactor.asZeroToOne());
+        return copy().scaledBy(scaleFactor.asZeroToOne());
     }
 
     /**

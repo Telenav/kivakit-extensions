@@ -61,8 +61,8 @@ public abstract class BaseDrawable implements Drawable
         ensure(that != null);
 
         style = that.style;
-        at = that.at;
         shape = that.shape;
+        at = that.at;
     }
 
     @Override
@@ -118,7 +118,7 @@ public abstract class BaseDrawable implements Drawable
         return withStyle(style.withDrawStroke(stroke));
     }
 
-    public BaseDrawable withDrawStrokeWidth(final DrawingDistance width)
+    public BaseDrawable withDrawStrokeWidth(final CoordinateDistance width)
     {
         return withStyle(style.withDrawStroke(style.drawStroke().withWidth(width)));
     }
@@ -133,7 +133,7 @@ public abstract class BaseDrawable implements Drawable
         return withStyle(style.withFillStroke(stroke));
     }
 
-    public BaseDrawable withFillStrokeWidth(final DrawingDistance width)
+    public BaseDrawable withFillStrokeWidth(final CoordinateDistance width)
     {
         return withStyle(style.withFillStroke(style.fillStroke().withWidth(width)));
     }

@@ -19,13 +19,12 @@
 package com.telenav.kivakit.ui.desktop.graphics.style;
 
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import static com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance.pixels;
 import static java.awt.BasicStroke.CAP_ROUND;
 import static java.awt.BasicStroke.JOIN_ROUND;
 
@@ -36,7 +35,7 @@ public class Stroke
 {
     public static Stroke none()
     {
-        return stroke().withWidth(pixels(0));
+        return stroke().withWidth(CoordinateDistance.units(0));
     }
 
     public static Stroke stroke()
@@ -61,7 +60,7 @@ public class Stroke
 
     private float dashPhase;
 
-    private DrawingDistance width = pixels(1);
+    private CoordinateDistance width = CoordinateDistance.units(1);
 
     protected Stroke()
     {
@@ -98,7 +97,7 @@ public class Stroke
 
     public Stroke scale(final double scaleFactor)
     {
-        return withWidth(width().scaled(scaleFactor));
+        return withWidth(width().scaledBy(scaleFactor));
     }
 
     public Shape stroked(final Shape shape)
@@ -151,7 +150,7 @@ public class Stroke
         return copy;
     }
 
-    public Stroke withWidth(final DrawingDistance width)
+    public Stroke withWidth(final CoordinateDistance width)
     {
         final var copy = copy();
         copy.width = width;
@@ -167,7 +166,7 @@ public class Stroke
         return stroke;
     }
 
-    protected DrawingDistance width()
+    protected CoordinateDistance width()
     {
         return width;
     }

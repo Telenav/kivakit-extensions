@@ -1,18 +1,23 @@
 package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingDistance;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingPoint;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSize;
-
 /**
- * An abstract coordinate
+ * An abstract, bounded coordinate system with an {@link #origin()} and a {@link #size()}. Coordinates can be mapped to
+ * another coordinate system with {@link #to(CoordinateSystem, Coordinate)}. The mapping may be Cartesian (rectilinear)
+ * or it might be some other mapping such as a map surface projection.
  *
  * @author jonathanl (shibo)
  */
 public interface CoordinateSystem
 {
+    static CartesianCoordinateSystem drawingSurface()
+    {
+        return new CartesianCoordinateSystem()
+                .withOrigin(0, 0)
+                .withSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
     /**
-     * @return The given x, y location in the {@link CoordinateSystem} of this drawing surface
+     * @return The given x, y location in this {@link CoordinateSystem}
      */
     default Coordinate at(final double x, final double y)
     {
@@ -20,7 +25,7 @@ public interface CoordinateSystem
     }
 
     /**
-     * @return The given distance in abstract units in the coordinate system of this drawing surface
+     * @return The given distance in the units of this coordinate system
      */
     default CoordinateDistance distance(final double units)
     {
@@ -28,7 +33,7 @@ public interface CoordinateSystem
     }
 
     /**
-     * @return The given height in abstract units in the coordinate system of this drawing surface
+     * @return The given height in the units of this coordinate system
      */
     default CoordinateHeight height(final double height)
     {
@@ -36,44 +41,62 @@ public interface CoordinateSystem
     }
 
     /**
-     * @return The given height in abstract units in the coordinate system of this drawing surface
+     * @return The origin of this coordinate system
+     */
+    Coordinate origin();
+
+    /**
+     * @return The size of this coordinate system from the origin
+     */
+    CoordinateSize size();
+
+    /**
+     * @return The given size in the units of this coordinate system
      */
     default CoordinateSize size(final double width, final double height)
     {
         return CoordinateSize.size(this, width, height);
     }
 
-    default CoordinateSlope slope(final Coordinate a, final Coordinate b)
+    /**
+     * @return The given size in the units of this coordinate system
+     */
+    default CoordinateSize size(final CoordinateWidth width, final CoordinateHeight height)
     {
-        final var point = b.minus(a);
-        final var opposite = point.y();
-        final var adjacent = point.x();
-        return CoordinateSlope.radians(Math.atan(opposite / adjacent));
+        return size(width.units(), height.units());
     }
 
-    default Coordinate toCoordinates(final double x, final double y)
+    default CoordinateDistance to(final CoordinateSystem that, final CoordinateDistance distance)
     {
-        return toCoordinates(DrawingPoint.at(x, y));
+        return to(that, distance.asWidth());
     }
 
-    Coordinate toCoordinates(DrawingPoint point);
+    default CoordinateDistance to(final CoordinateSystem that, final CoordinateHeight height)
+    {
+        return distance(to(that, height.asCoordinate()).y());
+    }
 
-    CoordinateSize toCoordinates(DrawingSize size);
+    default CoordinateSize to(final CoordinateSystem that, final CoordinateSize size)
+    {
+        return size(size.widthInUnits(), size.heightInUnits());
+    }
 
-    CoordinateDistance toCoordinates(DrawingDistance distance);
-
-    DrawingDistance toDrawingUnits(CoordinateDistance distance);
-
-    DrawingDistance toDrawingUnits(CoordinateHeight height);
-
-    DrawingDistance toDrawingUnits(CoordinateWidth width);
-
-    DrawingPoint toDrawingUnits(final Coordinate coordinate);
-
-    DrawingSize toDrawingUnits(final CoordinateSize coordinate);
+    default CoordinateDistance to(final CoordinateSystem that, final CoordinateWidth width)
+    {
+        return distance(to(that, width.asCoordinate()).x());
+    }
 
     /**
-     * @return The given width in abstract units in the coordinate system of this drawing surface
+     * Converts the given coordinate from this coordinate system to the given coordinate system
+     *
+     * @param that The system to convert to
+     * @param coordinate The coordinate to convert
+     * @return The given coordinate in the given coordinate system
+     */
+    Coordinate to(CoordinateSystem that, Coordinate coordinate);
+
+    /**
+     * @return The given width in the units of this coordinate system
      */
     default CoordinateWidth width(final double width)
     {
