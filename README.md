@@ -34,8 +34,8 @@ This project contains modules that extend KivaKit.
 
 [**kivakit-data**](kivakit-data/README.md)  
 [**kivakit-math**](kivakit-math/README.md)  
+[**kivakit-primitive-collections**](kivakit-primitive-collections/README.md)  
 [**kivakit-ui**](kivakit-ui/README.md)  
-[**kivakit-primitive-collections**](kivakit-primitive-collections/README.md)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -49,6 +49,8 @@ This project contains modules that extend KivaKit.
  &nbsp; &nbsp; [**kivakit-data-formats-library**](kivakit-data/formats/library/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-math**](kivakit-math/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-primitive-collections**](kivakit-primitive-collections/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-ui-desktop**](kivakit-ui/desktop/README.md)
 

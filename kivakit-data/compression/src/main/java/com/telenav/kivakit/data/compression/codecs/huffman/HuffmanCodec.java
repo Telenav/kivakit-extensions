@@ -31,9 +31,9 @@ import com.telenav.kivakit.data.compression.codecs.huffman.tree.Code;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.CodedSymbol;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Tree;
-import com.telenav.kivakit.collections.primitive.array.bits.BitArray;
-import com.telenav.kivakit.collections.primitive.array.bits.io.BitReader;
-import com.telenav.kivakit.collections.primitive.list.ByteList;
+import com.telenav.kivakit.primitive.collections.array.bits.BitArray;
+import com.telenav.kivakit.primitive.collections.array.bits.io.BitReader;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.data.compression;
 
-import com.telenav.kivakit.collections.primitive.list.ByteList;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 import com.telenav.kivakit.data.compression.codecs.huffman.FastHuffmanDecoder;
 import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 

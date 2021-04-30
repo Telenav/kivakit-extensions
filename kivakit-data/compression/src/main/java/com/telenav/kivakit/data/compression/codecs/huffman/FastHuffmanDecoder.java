@@ -29,9 +29,9 @@ import com.telenav.kivakit.core.kernel.messaging.Message;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolConsumer.Directive;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.CodedSymbol;
-import com.telenav.kivakit.collections.primitive.array.bits.BitArray;
-import com.telenav.kivakit.collections.primitive.array.scalars.ByteArray;
-import com.telenav.kivakit.collections.primitive.list.ByteList;
+import com.telenav.kivakit.primitive.collections.array.bits.BitArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 
 import java.util.ArrayList;
 import java.util.HashMap;

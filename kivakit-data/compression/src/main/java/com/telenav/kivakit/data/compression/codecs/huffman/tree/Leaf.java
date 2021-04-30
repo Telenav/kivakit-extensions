@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.tree;
 
-import com.telenav.kivakit.collections.primitive.array.bits.io.BitReader;
+import com.telenav.kivakit.primitive.collections.array.bits.io.BitReader;
 
 /**
  * A terminal leaf in a Huffman {@link Tree}, having a symbol and a frequency.

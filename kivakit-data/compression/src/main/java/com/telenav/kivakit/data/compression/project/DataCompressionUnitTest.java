@@ -33,8 +33,8 @@ import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolProducer;
 import com.telenav.kivakit.data.compression.codecs.huffman.character.HuffmanCharacterCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
-import com.telenav.kivakit.collections.primitive.array.scalars.ByteArray;
-import com.telenav.kivakit.collections.primitive.list.ByteList;
+import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

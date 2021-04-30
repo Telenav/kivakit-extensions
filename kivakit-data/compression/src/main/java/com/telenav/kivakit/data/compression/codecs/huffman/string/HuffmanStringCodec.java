@@ -31,7 +31,7 @@ import com.telenav.kivakit.data.compression.codecs.StringCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.character.HuffmanCharacterCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
-import com.telenav.kivakit.collections.primitive.list.ByteList;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 
 /**
  * A Huffman compression codec where strings are treated as symbols instead of characters. Frequent strings in map data

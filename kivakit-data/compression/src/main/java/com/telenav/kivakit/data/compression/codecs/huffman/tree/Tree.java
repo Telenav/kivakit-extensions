@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.tree;
 
-import com.telenav.kivakit.collections.primitive.array.bits.io.BitReader;
+import com.telenav.kivakit.primitive.collections.array.bits.io.BitReader;
 
 import java.util.HashMap;
 import java.util.HashSet;
