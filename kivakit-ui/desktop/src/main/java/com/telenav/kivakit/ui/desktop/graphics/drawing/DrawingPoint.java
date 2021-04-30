@@ -45,6 +45,11 @@ public class DrawingPoint
         return Objects.hash(x, y);
     }
 
+    public DrawingPoint minus(final double dx, final double dy)
+    {
+        return at(x - dx, y - dy);
+    }
+
     public DrawingPoint plus(final double dx, final double dy)
     {
         return at(x + dx, y + dy);
@@ -53,6 +58,13 @@ public class DrawingPoint
     public DrawingPoint plus(final DrawingSize size)
     {
         return at(x + size.width(), y + size.height());
+    }
+
+    public DrawingSize size(final DrawingPoint that)
+    {
+        final var width = Math.abs(x() - that.x());
+        final var height = Math.abs(y() - that.y());
+        return DrawingSize.size(width, height);
     }
 
     @Override

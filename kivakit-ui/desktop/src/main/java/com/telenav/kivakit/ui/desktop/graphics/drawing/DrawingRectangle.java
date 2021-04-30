@@ -12,6 +12,12 @@ public class DrawingRectangle
         return new DrawingRectangle(point, size);
     }
 
+    public static DrawingRectangle rectangle(final DrawingPoint a, final DrawingPoint b)
+    {
+
+        return new DrawingRectangle(a, a.size(b));
+    }
+
     public static DrawingRectangle rectangle(final double x,
                                              final double y,
                                              final double width,
