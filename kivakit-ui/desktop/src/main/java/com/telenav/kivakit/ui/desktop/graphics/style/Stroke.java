@@ -25,6 +25,8 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
+import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance.units;
+import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
 import static java.awt.BasicStroke.CAP_ROUND;
 import static java.awt.BasicStroke.JOIN_ROUND;
 
@@ -35,7 +37,7 @@ public class Stroke
 {
     public static Stroke none()
     {
-        return stroke().withWidth(CoordinateDistance.units(0));
+        return stroke().withWidth(units(drawingSurface(), 0));
     }
 
     public static Stroke stroke()
@@ -60,7 +62,7 @@ public class Stroke
 
     private float dashPhase;
 
-    private CoordinateDistance width = CoordinateDistance.units(1);
+    private CoordinateDistance width = units(drawingSurface(), 1);
 
     protected Stroke()
     {

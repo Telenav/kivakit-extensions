@@ -5,8 +5,6 @@ import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import java.awt.geom.Point2D;
 import java.util.Objects;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
-
 /**
  * Represents a coordinate in
  *
@@ -19,21 +17,16 @@ public class Coordinate extends Coordinated
         return new Coordinate(system, x, y);
     }
 
-    public static Coordinate at(final double x, final double y)
+    public static Coordinate at(final CoordinateSystem system, final Point2D point)
     {
-        return at(drawingSurface(), x, y);
-    }
-
-    public static Coordinate at(final Point2D point)
-    {
-        return at(point.getX(), point.getY());
+        return at(system, point.getX(), point.getY());
     }
 
     private final double x;
 
     private final double y;
 
-    public Coordinate(final CoordinateSystem system, final double x, final double y)
+    protected Coordinate(final CoordinateSystem system, final double x, final double y)
     {
         super(system);
 
@@ -44,6 +37,11 @@ public class Coordinate extends Coordinated
     public CoordinateSize asSize()
     {
         return CoordinateSize.size(coordinateSystem(), x, y);
+    }
+
+    public Coordinate at(final double x, final double y)
+    {
+        return at(coordinateSystem(), x, y);
     }
 
     @Override

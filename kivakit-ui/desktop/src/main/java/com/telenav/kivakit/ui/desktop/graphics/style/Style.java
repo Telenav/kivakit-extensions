@@ -23,6 +23,7 @@ import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatt
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.awt.AwtShapes;
 import com.telenav.kivakit.ui.desktop.graphics.font.Fonts;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -143,6 +144,7 @@ public class Style
                 .withDrawColor(drawColor.darkened(percent));
     }
 
+    @KivaKitIncludeProperty
     public Color drawColor()
     {
         return drawColor;
@@ -154,6 +156,7 @@ public class Style
         return drawStroke;
     }
 
+    @KivaKitIncludeProperty
     public Color fillColor()
     {
         return fillColor;
@@ -183,6 +186,7 @@ public class Style
                 drawStroke().stroked(shape));
     }
 
+    @KivaKitIncludeProperty
     public Color textColor()
     {
         return textColor;
@@ -200,44 +204,59 @@ public class Style
         return new ObjectFormatter(this).toString();
     }
 
+    public Style translucent()
+    {
+        return copy().withFillColor(fillColor().translucent());
+    }
+
+    public Style transparent()
+    {
+        return copy().withFillColor(fillColor().transparent());
+    }
+
+    public Style withAlpha(final int alpha)
+    {
+        return copy().withFillColor(fillColor().withAlpha(alpha));
+    }
+
     public Style withDrawColor(final Color color)
     {
-        final var copy = new Style(this);
+        final var copy = copy();
         copy.drawColor = color;
         return copy;
     }
 
     public Style withDrawStroke(final Stroke stroke)
     {
-        final var copy = new Style(this);
+        final var copy = copy();
         copy.drawStroke = stroke;
         return copy;
     }
 
     public Style withFillColor(final Color fill)
     {
-        final var copy = new Style(this);
+        final var copy = copy();
         copy.fillColor = fill;
         return copy;
     }
 
     public Style withFillStroke(final Stroke stroke)
     {
-        final var copy = new Style(this);
+        final var copy = copy();
         copy.fillStroke = stroke;
         return copy;
     }
 
     public Style withTextColor(final Color text)
     {
-        final var copy = new Style(this);
+        final var copy = copy();
         copy.textColor = text;
         return copy;
     }
 
     public Style withTextFont(final Font font)
     {
-        final var copy = new Style(this);
+        final var copy = copy();
         copy.textFont = font;
         return copy;
     }
@@ -245,5 +264,11 @@ public class Style
     public Style withTextFontSize(final int size)
     {
         return withTextFont(new Font(textFont.getFontName(), textFont.getStyle(), size));
+    }
+
+    @NotNull
+    private Style copy()
+    {
+        return new Style(this);
     }
 }

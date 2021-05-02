@@ -309,6 +309,11 @@ public class Color
         return withAlpha(192);
     }
 
+    public Color transparent()
+    {
+        return withAlpha(0);
+    }
+
     public Color withAlpha(final int alpha)
     {
         final var copy = new Color(this);

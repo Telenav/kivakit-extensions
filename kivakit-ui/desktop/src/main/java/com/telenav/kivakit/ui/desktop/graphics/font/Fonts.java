@@ -1,12 +1,14 @@
 package com.telenav.kivakit.ui.desktop.graphics.font;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.font.TextAttribute;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.fail;
+import static java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT;
 
 /**
  * @author jonathanl (shibo)
@@ -18,7 +20,7 @@ public class Fonts
         final Map<TextAttribute, Object> attributes = new HashMap<>();
 
         attributes.put(TextAttribute.FAMILY, "Open Sans,Avenir,Nunito,Arial,Helvetica,SansSerif");
-        attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_LIGHT);
+        attributes.put(TextAttribute.WEIGHT, WEIGHT_EXTRA_LIGHT);
         attributes.put(TextAttribute.SIZE, size);
 
         return Font.getFont(attributes);

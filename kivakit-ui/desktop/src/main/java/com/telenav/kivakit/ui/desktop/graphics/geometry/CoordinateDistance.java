@@ -2,18 +2,11 @@ package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
-
 /**
  * @author jonathanl (shibo)
  */
 public class CoordinateDistance extends Coordinated
 {
-    public static CoordinateDistance units(final double units)
-    {
-        return units(drawingSurface(), units);
-    }
-
     public static CoordinateDistance units(final CoordinateSystem system, final double units)
     {
         return new CoordinateDistance(system, units);
@@ -21,7 +14,7 @@ public class CoordinateDistance extends Coordinated
 
     private final double units;
 
-    public CoordinateDistance(final CoordinateSystem coordinateSystem, final double units)
+    protected CoordinateDistance(final CoordinateSystem coordinateSystem, final double units)
     {
         super(coordinateSystem);
         this.units = units;

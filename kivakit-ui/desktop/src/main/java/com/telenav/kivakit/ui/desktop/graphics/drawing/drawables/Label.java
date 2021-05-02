@@ -1,6 +1,5 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
-import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
@@ -15,7 +14,7 @@ import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsu
 /**
  * @author jonathanl (shibo)
  */
-public class Label extends BaseDrawable
+public class Label extends Box
 {
     public static Label label()
     {
@@ -64,8 +63,12 @@ public class Label extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        final var size = surface.size(style(), text).plus(margin * 2, margin * 2);
-        final var shape = surface.drawBox(style(), at(), size);
+        final var size = surface
+                .size(style(), text)
+                .plus(margin * 2, margin * 2);
+
+        final var shape = super.draw(surface, size);
+
         surface.drawText(style(), at().to(surface).plus(margin, margin), text);
         return shape;
     }
@@ -123,6 +126,18 @@ public class Label extends BaseDrawable
         final var copy = copy();
         copy.margin = margin;
         return copy;
+    }
+
+    @Override
+    public Label withRoundedCorners(final CoordinateDistance corner)
+    {
+        return (Label) super.withRoundedCorners(corner);
+    }
+
+    @Override
+    public Label withRoundedCorners(final CoordinateDistance cornerWidth, final CoordinateDistance cornerHeight)
+    {
+        return (Label) super.withRoundedCorners(cornerWidth, cornerHeight);
     }
 
     @Override

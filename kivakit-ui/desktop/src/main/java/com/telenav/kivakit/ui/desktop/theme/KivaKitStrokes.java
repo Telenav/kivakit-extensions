@@ -24,6 +24,7 @@ package com.telenav.kivakit.ui.desktop.theme;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 
 import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance.units;
+import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
 
 /**
  * @author jonathanl (shibo)
@@ -31,5 +32,5 @@ import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistanc
 public class KivaKitStrokes
 {
     public static Stroke THIN = Stroke.stroke()
-            .withWidth(units(1));
+            .withWidth(units(drawingSurface(), 1));
 }

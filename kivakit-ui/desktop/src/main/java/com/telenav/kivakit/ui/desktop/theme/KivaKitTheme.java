@@ -63,6 +63,7 @@ import java.awt.event.AdjustmentListener;
 
 import static javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER;
 import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
+import static javax.swing.SwingConstants.HORIZONTAL;
 
 /**
  * @author jonathanl (shibo)
@@ -208,12 +209,12 @@ public abstract class KivaKitTheme
 
     public Font fontFixedWidth()
     {
-        return Fonts.fixedWidth(Font.PLAIN, 12);
+        return Fonts.fixedWidth(Font.PLAIN, 11);
     }
 
     public Font fontNormal()
     {
-        return Fonts.component(12);
+        return Fonts.component(11);
     }
 
     public Font fontSmall()
@@ -311,7 +312,7 @@ public abstract class KivaKitTheme
 
     public final JSeparator newHorizontalSeparator()
     {
-        final var separator = new JSeparator(JSeparator.HORIZONTAL);
+        final var separator = new JSeparator(HORIZONTAL);
         colorSeparator().applyAsForeground(separator);
         return separator;
     }
@@ -348,7 +349,7 @@ public abstract class KivaKitTheme
 
     public final JProgressBar newProgressBar()
     {
-        final var bar = new JProgressBar(JProgressBar.HORIZONTAL);
+        final var bar = new JProgressBar(HORIZONTAL);
         bar.setOpaque(false);
         bar.setMinimum(0);
         styleProgressBar().apply(bar);

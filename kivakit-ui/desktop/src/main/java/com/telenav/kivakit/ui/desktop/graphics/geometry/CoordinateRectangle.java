@@ -1,7 +1,5 @@
 package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
-
 /**
  * @author jonathanl (shibo)
  */
@@ -18,28 +16,20 @@ public class CoordinateRectangle
         return new CoordinateRectangle(a, a.size(b));
     }
 
-    public static CoordinateRectangle rectangle(final double x,
-                                                final double y,
-                                                final double width,
-                                                final double height)
-    {
-        return rectangle(drawingSurface(), x, y, width, height);
-    }
-
     public static CoordinateRectangle rectangle(final CoordinateSystem system,
                                                 final double x,
                                                 final double y,
                                                 final double width,
                                                 final double height)
     {
-        return new CoordinateRectangle(Coordinate.at(system, x, y), CoordinateSize.size(system, width, height));
+        return rectangle(Coordinate.at(system, x, y), CoordinateSize.size(system, width, height));
     }
 
     private Coordinate at;
 
     private final CoordinateSize size;
 
-    public CoordinateRectangle(final Coordinate at, final CoordinateSize size)
+    protected CoordinateRectangle(final Coordinate at, final CoordinateSize size)
     {
         this.at = at;
         this.size = size;

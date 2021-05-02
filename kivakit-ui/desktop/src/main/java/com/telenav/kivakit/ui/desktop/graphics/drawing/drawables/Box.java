@@ -29,10 +29,16 @@ public class Box extends BaseDrawable
 
     private CoordinateSize size;
 
+    private CoordinateDistance cornerWidth;
+
+    private CoordinateDistance cornerHeight;
+
     protected Box(final Box that)
     {
         super(that);
         size = that.size;
+        cornerWidth = that.cornerWidth;
+        cornerHeight = that.cornerHeight;
     }
 
     protected Box(final Style style)
@@ -55,7 +61,7 @@ public class Box extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        return shape(surface.drawBox(style(), at(), size()));
+        return draw(surface, size());
     }
 
     @Override
@@ -113,6 +119,19 @@ public class Box extends BaseDrawable
         return (Box) super.withFillStrokeWidth(width);
     }
 
+    public Box withRoundedCorners(final CoordinateDistance corner)
+    {
+        return withRoundedCorners(corner, corner);
+    }
+
+    public Box withRoundedCorners(final CoordinateDistance cornerWidth, final CoordinateDistance cornerHeight)
+    {
+        final var copy = copy();
+        copy.cornerWidth = cornerWidth;
+        copy.cornerHeight = cornerHeight;
+        return copy;
+    }
+
     public Box withSize(final CoordinateSize size)
     {
         final var copy = copy();
@@ -130,5 +149,17 @@ public class Box extends BaseDrawable
     public Box withTextColor(final Color color)
     {
         return (Box) super.withTextColor(color);
+    }
+
+    protected Shape draw(final DrawingSurface surface, final CoordinateSize size)
+    {
+        if (cornerWidth != null && cornerHeight != null)
+        {
+            return shape(surface.drawRoundedBox(style(), at(), size, cornerWidth, cornerHeight));
+        }
+        else
+        {
+            return shape(surface.drawBox(style(), at(), size));
+        }
     }
 }

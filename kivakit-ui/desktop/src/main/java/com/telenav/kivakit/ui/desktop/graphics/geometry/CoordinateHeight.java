@@ -2,8 +2,6 @@ package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
-
 /**
  * @author jonathanl (shibo)
  */
@@ -14,12 +12,7 @@ public class CoordinateHeight extends CoordinateDistance
         return new CoordinateHeight(system, units);
     }
 
-    public static CoordinateHeight height(final double units)
-    {
-        return height(drawingSurface(), units);
-    }
-
-    public CoordinateHeight(final CoordinateSystem coordinateSystem, final double units)
+    protected CoordinateHeight(final CoordinateSystem coordinateSystem, final double units)
     {
         super(coordinateSystem, units);
     }

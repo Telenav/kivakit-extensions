@@ -2,8 +2,6 @@ package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
-
 /**
  * @author jonathanl (shibo)
  */
@@ -14,16 +12,11 @@ public class CoordinateSize extends Coordinated
         return new CoordinateSize(coordinateSystem, width, height);
     }
 
-    public static CoordinateSize size(final double width, final double height)
-    {
-        return size(drawingSurface(), width, height);
-    }
-
     private final double width;
 
     private final double height;
 
-    public CoordinateSize(final CoordinateSystem coordinateSystem, final double width, final double height)
+    protected CoordinateSize(final CoordinateSystem coordinateSystem, final double width, final double height)
     {
         super(coordinateSystem);
         this.width = width;

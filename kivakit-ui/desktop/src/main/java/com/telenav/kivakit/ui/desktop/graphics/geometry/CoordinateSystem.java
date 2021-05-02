@@ -1,5 +1,7 @@
 package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
+import java.awt.geom.Point2D;
+
 /**
  * An abstract, bounded coordinate system with an {@link #origin()} and a {@link #size()}. Coordinates can be mapped to
  * another coordinate system with {@link #to(CoordinateSystem, Coordinate)}. The mapping may be Cartesian (rectilinear)
@@ -14,6 +16,11 @@ public interface CoordinateSystem
         return new CartesianCoordinateSystem()
                 .withOrigin(0, 0)
                 .withSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    }
+
+    default Coordinate at(final Point2D point)
+    {
+        return at(point.getX(), point.getY());
     }
 
     /**

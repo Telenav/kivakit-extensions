@@ -4,9 +4,7 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CartesianCoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateHeight;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSize;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateWidth;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 
 import java.awt.FontMetrics;
@@ -18,7 +16,10 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.HashMap;
+
+import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
  * @author jonathanl (shibo)
@@ -29,6 +30,10 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
                                             final Coordinate origin,
                                             final CoordinateSize size)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(origin);
+        ensureNotNull(size);
+
         return new AwtDrawingSurface(graphics, origin, size);
     }
 
@@ -52,21 +57,14 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
         graphics.setRenderingHints(new RenderingHints(hints));
     }
 
-    public Shape drawBox(final Style style,
-                         final Coordinate at,
-                         final CoordinateWidth width,
-                         final CoordinateHeight height)
-    {
-        return draw(style, new Rectangle2D.Double(
-                at.to(this).x(),
-                at.to(this).y(),
-                width.to(this).units(),
-                height.to(this).units()));
-    }
-
     @Override
     public Shape drawBox(final Style style, final Coordinate at, final CoordinateSize size)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(at);
+        ensureNotNull(size);
+
         return draw(style, new Rectangle2D.Double(
                 at.to(this).x(),
                 at.to(this).y(),
@@ -79,6 +77,11 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
                             final Coordinate at,
                             final CoordinateDistance radius)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(at);
+        ensureNotNull(radius);
+
         final var units = radius.to(this).units();
         final var x = (int) (at.to(this).x() - units / 2);
         final var y = (int) (at.to(this).y() - units / 2);
@@ -91,6 +94,11 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
                           final Coordinate from,
                           final Coordinate to)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(from);
+        ensureNotNull(to);
+
         return draw(style, new Line2D.Double(
                 from.to(this).x(),
                 from.to(this).y(),
@@ -101,7 +109,32 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
     @Override
     public Shape drawPath(final Style style, final Path2D path)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(path);
+
         return draw(style, path);
+    }
+
+    @Override
+    public Shape drawRoundedBox(final Style style,
+                                final Coordinate at,
+                                final CoordinateSize size,
+                                final CoordinateDistance cornerWidth,
+                                final CoordinateDistance cornerHeight)
+    {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(at);
+        ensureNotNull(size);
+
+        return draw(style, new RoundRectangle2D.Double(
+                at.to(this).x(),
+                at.to(this).y(),
+                size.to(this).widthInUnits(),
+                size.to(this).heightInUnits(),
+                cornerWidth.units(),
+                cornerHeight.units()));
     }
 
     /**
@@ -114,6 +147,11 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
                           final Coordinate at,
                           final String text)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(at);
+        ensureNotNull(text);
+
         final var dy = height(style, text);
         final var x = at.to(this).x();
         final var y = at.to(this).y() + dy - fontMetrics(style).getDescent();
@@ -127,22 +165,35 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
     @Override
     public CoordinateSize size(final Style style, final String text)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(text);
+
         final var bounds = textBounds(style, text);
         return size(bounds.getWidth(), bounds.getHeight());
     }
 
     private Shape draw(final Style style, final Shape shape)
     {
-        // Set the paint color with Graphics2D.setPaint(),
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(shape);
+        ensureNotNull(style.fillColor());
+        ensureNotNull(style.drawColor());
+        ensureNotNull(style.drawStroke());
+
+        // Set the paint color and stroke,
         style.fillColor().applyAsFillColor(graphics);
+        style.fillStroke().apply(graphics);
 
-        // set the drawing color,
+        // fill the shape,
+        graphics.fill(shape);
+
+        // set the draw color and stroke,
         style.drawColor().applyAsDrawColor(graphics);
-
-        // and the stroke to use,
         style.drawStroke().apply(graphics);
 
-        // then draw the shape
+        // draw the shape,
         graphics.draw(shape);
 
         // and return the stroked shape outline to the caller.
@@ -151,6 +202,10 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
 
     private FontMetrics fontMetrics(final Style style)
     {
+        ensureNotNull(graphics);
+        ensureNotNull(style);
+        ensureNotNull(style.textFont());
+
         graphics.setFont(style.textFont());
         return graphics.getFontMetrics();
     }

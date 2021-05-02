@@ -3,6 +3,9 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing;
 import com.telenav.kivakit.core.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
+import com.telenav.kivakit.ui.desktop.graphics.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 
 import java.awt.Shape;
@@ -58,4 +61,22 @@ public interface Drawable
      */
     @KivaKitIncludeProperty
     Style style();
+
+    Drawable withColors(final Style style);
+
+    Drawable withDrawColor(final Color color);
+
+    Drawable withDrawStroke(final Stroke stroke);
+
+    Drawable withDrawStrokeWidth(final CoordinateDistance width);
+
+    Drawable withFillColor(final Color color);
+
+    Drawable withFillStroke(final Stroke stroke);
+
+    Drawable withFillStrokeWidth(final CoordinateDistance width);
+
+    Drawable withStyle(final Style style);
+
+    Drawable withTextColor(final Color color);
 }

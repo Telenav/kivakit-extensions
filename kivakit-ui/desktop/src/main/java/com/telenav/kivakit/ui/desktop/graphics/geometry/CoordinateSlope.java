@@ -17,7 +17,7 @@ public class CoordinateSlope
 
     private final double radians;
 
-    private CoordinateSlope(final double radians)
+    protected CoordinateSlope(final double radians)
     {
         this.radians = radians;
     }

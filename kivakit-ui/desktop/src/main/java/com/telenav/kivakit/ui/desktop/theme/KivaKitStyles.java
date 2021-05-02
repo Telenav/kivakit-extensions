@@ -24,16 +24,17 @@ import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 import static com.telenav.kivakit.ui.desktop.graphics.style.Color.TRANSPARENT;
 import static com.telenav.kivakit.ui.desktop.graphics.style.Color.WHITE;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.AQUA;
+import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.BATTLESHIP_GRAY;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.BLACK_OLIVE;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.BLUE_RIDGE_MOUNTAINS;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.CLOVER;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.FOSSIL;
-import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.GUNMETAL_GRAY;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.IRON;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.LIME;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.MARASCHINO;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.OCEAN;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.SILVER;
+import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.SMOKE;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.TANGERINE;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.TRANSLUCENT_CLOVER;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.TRANSLUCENT_LIME;
@@ -51,7 +52,7 @@ public class KivaKitStyles
             .withFillColor(UNSPECIFIED)
             .withDrawColor(UNSPECIFIED)
             .withTextColor(UNSPECIFIED)
-            .withTextFont(Fonts.component(12));
+            .withTextFont(Fonts.component(11));
 
     public static final Style ARUBA = BASE
             .withFillColor(AQUA.translucent())
@@ -105,8 +106,8 @@ public class KivaKitStyles
 
     public static final Style OCEAN_SURF = BASE
             .withFillColor(OCEAN)
-            .withDrawColor(WHITE)
-            .withTextColor(WHITE);
+            .withDrawColor(SMOKE)
+            .withTextColor(SMOKE);
 
     public static final Style POKER = BASE
             .withFillColor(TRANSLUCENT_CLOVER)
@@ -114,9 +115,9 @@ public class KivaKitStyles
             .withTextColor(BLACK_OLIVE);
 
     public static final Style SEATTLE = BASE
-            .withFillColor(FOSSIL)
-            .withDrawColor(IRON)
-            .withTextColor(GUNMETAL_GRAY);
+            .withFillColor(IRON)
+            .withDrawColor(BATTLESHIP_GRAY)
+            .withTextColor(BATTLESHIP_GRAY);
 
     public static final Style STOP_SIGN = BASE
             .withFillColor(MARASCHINO)
