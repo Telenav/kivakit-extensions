@@ -52,7 +52,7 @@ public class KivaKitStyles
             .withFillColor(UNSPECIFIED)
             .withDrawColor(UNSPECIFIED)
             .withTextColor(UNSPECIFIED)
-            .withTextFont(Fonts.component(11));
+            .withTextFont(Fonts.component(12));
 
     public static final Style ARUBA = BASE
             .withFillColor(AQUA.translucent())

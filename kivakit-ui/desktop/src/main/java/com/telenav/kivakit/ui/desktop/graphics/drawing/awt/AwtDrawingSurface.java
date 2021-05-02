@@ -10,6 +10,7 @@ import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
@@ -44,9 +45,10 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
         super(origin, size);
 
         this.graphics = graphics;
+        graphics.scale(scalingFactor(), scalingFactor());
 
         final var hints = new HashMap<RenderingHints.Key, Object>();
-        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         hints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         hints.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
@@ -54,7 +56,11 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
         hints.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         hints.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         hints.put(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+
         graphics.setRenderingHints(new RenderingHints(hints));
+
+        System.setProperty("awt.useSystemAAFontSettings", "off");
+        System.setProperty("swing.aatext", "false");
     }
 
     @Override
@@ -152,6 +158,8 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
         ensureNotNull(at);
         ensureNotNull(text);
 
+        graphics.setFont(style.textFont());
+
         final var dy = height(style, text);
         final var x = at.to(this).x();
         final var y = at.to(this).y() + dy - fontMetrics(style).getDescent();
@@ -159,7 +167,9 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
         final var glyphs = graphics.getFont().createGlyphVector(graphics.getFontRenderContext(), text);
         final var shape = glyphs.getOutline((float) x, (float) y);
 
-        return draw(style, shape);
+        graphics.drawString(text, (float) x, (float) y);
+
+        return style.shape(shape);
     }
 
     @Override
@@ -171,6 +181,17 @@ public class AwtDrawingSurface extends CartesianCoordinateSystem implements Draw
 
         final var bounds = textBounds(style, text);
         return size(bounds.getWidth(), bounds.getHeight());
+    }
+
+    private static int scalingFactor()
+    {
+        final double scale = GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice()
+                .getDefaultConfiguration()
+                .getDefaultTransform()
+                .getScaleX();
+
+        return (int) Math.round(1.0 / scale);
     }
 
     private Shape draw(final Style style, final Shape shape)

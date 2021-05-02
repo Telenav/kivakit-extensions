@@ -8,7 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.fail;
-import static java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT;
+import static java.awt.font.TextAttribute.FAMILY;
+import static java.awt.font.TextAttribute.SIZE;
+import static java.awt.font.TextAttribute.WEIGHT;
+import static java.awt.font.TextAttribute.WEIGHT_LIGHT;
 
 /**
  * @author jonathanl (shibo)
@@ -19,9 +22,9 @@ public class Fonts
     {
         final Map<TextAttribute, Object> attributes = new HashMap<>();
 
-        attributes.put(TextAttribute.FAMILY, "Open Sans,Avenir,Nunito,Arial,Helvetica,SansSerif");
-        attributes.put(TextAttribute.WEIGHT, WEIGHT_EXTRA_LIGHT);
-        attributes.put(TextAttribute.SIZE, size);
+        attributes.put(FAMILY, "Open Sans,Avenir,Nunito,Arial,Helvetica,SansSerif");
+        attributes.put(WEIGHT, WEIGHT_LIGHT);
+        attributes.put(SIZE, size);
 
         return Font.getFont(attributes);
     }
