@@ -18,13 +18,12 @@
 
 package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
-import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSize;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSlope;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Slope;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
@@ -32,6 +31,11 @@ import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 import java.awt.Shape;
 import java.awt.geom.Area;
 
+/**
+ * A {@link Drawable} line, with optional arrowheads
+ *
+ * @author jonathanl (shibo)
+ */
 public class Line extends BaseDrawable
 {
     public static Line line()
@@ -39,7 +43,7 @@ public class Line extends BaseDrawable
         return line(null, null, null);
     }
 
-    public static Line line(final Style style, final Coordinate from, final Coordinate to)
+    public static Line line(final Style style, final Point from, final Point to)
     {
         return new Line(style, from, to.minus(from).asSize());
     }
@@ -48,9 +52,9 @@ public class Line extends BaseDrawable
 
     private Drawable toArrowHead;
 
-    private CoordinateSize offset;
+    private Size offset;
 
-    protected Line(final Style style, final Coordinate from, final CoordinateSize offset)
+    protected Line(final Style style, final Point from, final Size offset)
     {
         super(style, from);
         this.offset = offset;
@@ -65,7 +69,7 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line at(final Coordinate at)
+    public Line at(final Point at)
     {
         return (Line) super.at(at);
     }
@@ -88,12 +92,12 @@ public class Line extends BaseDrawable
         return shape;
     }
 
-    public Coordinate from()
+    public Point from()
     {
         return at();
     }
 
-    public CoordinateSize offset()
+    public Size offset()
     {
         return offset;
     }
@@ -106,15 +110,15 @@ public class Line extends BaseDrawable
         return copy;
     }
 
-    public CoordinateSlope slope()
+    public Slope slope()
     {
         final var point = to().minus(from());
         final var opposite = point.y();
         final var adjacent = point.x();
-        return CoordinateSlope.radians(Math.atan(opposite / adjacent));
+        return Slope.radians(Math.atan(opposite / adjacent));
     }
 
-    public Coordinate to()
+    public Point to()
     {
         return at().plus(offset);
     }
@@ -138,7 +142,7 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line withDrawStrokeWidth(final CoordinateDistance width)
+    public Line withDrawStrokeWidth(final Width width)
     {
         return (Line) super.withDrawStrokeWidth(width);
     }
@@ -156,12 +160,12 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line withFillStrokeWidth(final CoordinateDistance width)
+    public Line withFillStrokeWidth(final Width width)
     {
         return (Line) super.withFillStrokeWidth(width);
     }
 
-    public Line withFrom(final Coordinate from)
+    public Line withFrom(final Point from)
     {
         return at(from);
     }
@@ -173,7 +177,7 @@ public class Line extends BaseDrawable
         return copy;
     }
 
-    public Line withOffset(final CoordinateSize offset)
+    public Line withOffset(final Size offset)
     {
         final var copy = copy();
         copy.offset = offset;
@@ -192,7 +196,7 @@ public class Line extends BaseDrawable
         return (Line) super.withTextColor(color);
     }
 
-    public Line withTo(final Coordinate to)
+    public Line withTo(final Point to)
     {
         return withOffset(to.minus(at()).asSize());
     }

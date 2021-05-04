@@ -16,18 +16,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.ui.desktop.graphics.drawing;
+package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.core.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.drawables.Box;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.drawables.Dot;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.drawables.Label;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.drawables.Line;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.drawables.Text;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSize;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
@@ -36,15 +34,24 @@ import java.awt.Shape;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
 
+/**
+ * A base {@link Drawable} implementation, with a {@link Style}, retrieved with {@link #style()}, and a {@link Point}
+ * location, retrieved with {@link #at()}. When the drawable is drawn with {@link #draw(DrawingSurface)}, it then has a
+ * shape that can be retrieved with {@link #shape()}. A copy of a drawable can be retrieved with {@link #copy()} and
+ * the
+ * <i>with*()</i> functional methods can be used to create copies with new attributes applied.
+ *
+ * @author jonathanl (shibo)
+ */
 public abstract class BaseDrawable implements Drawable
 {
     private Style style;
 
-    private Coordinate at;
+    private Point at;
 
     private Shape shape;
 
-    public BaseDrawable(final Style style, final Coordinate at)
+    public BaseDrawable(final Style style, final Point at)
     {
         this(style);
         this.at = at;
@@ -66,7 +73,7 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public Drawable at(final Coordinate at)
+    public Drawable at(final Point at)
     {
         final var copy = (BaseDrawable) copy();
         copy.at = at;
@@ -74,7 +81,7 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public Coordinate at()
+    public Point at()
     {
         return at;
     }
@@ -101,6 +108,7 @@ public abstract class BaseDrawable implements Drawable
         return new ObjectFormatter(this).toString();
     }
 
+    @Override
     public BaseDrawable withColors(final Style style)
     {
         return withFillColor(style.fillColor())
@@ -108,36 +116,43 @@ public abstract class BaseDrawable implements Drawable
                 .withFillColor(style.textColor());
     }
 
+    @Override
     public BaseDrawable withDrawColor(final Color color)
     {
         return withStyle(style.withDrawColor(color));
     }
 
+    @Override
     public BaseDrawable withDrawStroke(final Stroke stroke)
     {
         return withStyle(style.withDrawStroke(stroke));
     }
 
-    public BaseDrawable withDrawStrokeWidth(final CoordinateDistance width)
+    @Override
+    public BaseDrawable withDrawStrokeWidth(final Width width)
     {
         return withStyle(style.withDrawStroke(style.drawStroke().withWidth(width)));
     }
 
+    @Override
     public BaseDrawable withFillColor(final Color color)
     {
         return withStyle(style.withFillColor(color));
     }
 
+    @Override
     public BaseDrawable withFillStroke(final Stroke stroke)
     {
         return withStyle(style.withFillStroke(stroke));
     }
 
-    public BaseDrawable withFillStrokeWidth(final CoordinateDistance width)
+    @Override
+    public BaseDrawable withFillStrokeWidth(final Width width)
     {
         return withStyle(style.withFillStroke(style.fillStroke().withWidth(width)));
     }
 
+    @Override
     public BaseDrawable withStyle(final Style style)
     {
         final var copy = (BaseDrawable) copy();
@@ -145,19 +160,20 @@ public abstract class BaseDrawable implements Drawable
         return copy;
     }
 
+    @Override
     public BaseDrawable withTextColor(final Color color)
     {
         return withStyle(style.withTextColor(color));
     }
 
-    protected Box box(final CoordinateSize size)
+    protected Box box(final Size size)
     {
         return Box.box(style)
                 .at(at)
                 .withSize(size);
     }
 
-    protected Dot dot(final CoordinateDistance radius)
+    protected Dot dot(final Length radius)
     {
         return Dot.dot(style)
                 .at(at)
@@ -169,7 +185,7 @@ public abstract class BaseDrawable implements Drawable
         return Label.label(style, text).at(at);
     }
 
-    protected Line line(final Coordinate from, final Coordinate to)
+    protected Line line(final Point from, final Point to)
     {
         return Line.line(style, from, to);
     }

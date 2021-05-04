@@ -18,26 +18,39 @@
 
 package com.telenav.kivakit.ui.desktop.graphics.style;
 
+import com.telenav.kivakit.core.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.java2d.Java2dDrawingSurface;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance.units;
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem.drawingSurface;
 import static java.awt.BasicStroke.CAP_ROUND;
 import static java.awt.BasicStroke.JOIN_ROUND;
 
 /**
+ * Wrapper that adds additional functionality and interoperation to {@link java.awt.Stroke}. Strokes can be added to
+ * {@link Style}s that are used by {@link Drawable}s to draw on a {@link DrawingSurface}.
+ *
+ * <p><b>Construction</b></p>
+ *
+ * <p>
+ * A stroke can be constructed with {@link #stroke()}, and then attributes can be added using the <i>with*()</i>
+ * functional methods. Once created, the stroke can be applied to a {@link Graphics2D} drawing surface with {@link
+ * #apply(Graphics2D)}. {@link Java2dDrawingSurface} will apply strokes automatically based on drawing {@link Style}s.
+ * </p>
+ *
  * @author jonathanl (shibo)
  */
 public class Stroke
 {
-    public static Stroke none()
+    public static Stroke defaultStroke()
     {
-        return stroke().withWidth(units(drawingSurface(), 0));
+        return stroke().withWidth(Width.pixels(1));
     }
 
     public static Stroke stroke()
@@ -52,17 +65,23 @@ public class Stroke
 
     private java.awt.Stroke stroke;
 
+    @KivaKitIncludeProperty
     private int cap = CAP_ROUND;
 
+    @KivaKitIncludeProperty
     private int join = JOIN_ROUND;
 
+    @KivaKitIncludeProperty
     private int miterLimit = 0;
 
+    @KivaKitIncludeProperty
     private float[] dash;
 
+    @KivaKitIncludeProperty
     private float dashPhase;
 
-    private CoordinateDistance width = units(drawingSurface(), 1);
+    @KivaKitIncludeProperty
+    private Width width = Width.pixels(1);
 
     protected Stroke()
     {
@@ -86,10 +105,7 @@ public class Stroke
 
     public void apply(final Graphics2D graphics)
     {
-        if (isVisible())
-        {
-            graphics.setStroke(awtStroke());
-        }
+        graphics.setStroke(awtStroke());
     }
 
     public Stroke copy()
@@ -104,11 +120,7 @@ public class Stroke
 
     public Shape stroked(final Shape shape)
     {
-        if (isVisible())
-        {
-            return awtStroke().createStrokedShape(shape);
-        }
-        return null;
+        return awtStroke().createStrokedShape(shape);
     }
 
     @Override
@@ -120,6 +132,7 @@ public class Stroke
     public Stroke withCap(final int cap)
     {
         final var copy = copy();
+        copy.stroke = null;
         copy.cap = cap;
         return copy;
     }
@@ -127,6 +140,7 @@ public class Stroke
     public Stroke withDash(final float[] dash)
     {
         final var copy = copy();
+        copy.stroke = null;
         copy.dash = dash;
         return copy;
     }
@@ -134,6 +148,7 @@ public class Stroke
     public Stroke withDashPhase(final float dash)
     {
         final var copy = copy();
+        copy.stroke = null;
         copy.dashPhase = dashPhase;
         return copy;
     }
@@ -141,6 +156,7 @@ public class Stroke
     public Stroke withJoin(final int join)
     {
         final var copy = copy();
+        copy.stroke = null;
         copy.join = join;
         return copy;
     }
@@ -148,33 +164,30 @@ public class Stroke
     public Stroke withMiterLimit(final int miterLimit)
     {
         final var copy = copy();
+        copy.stroke = null;
         copy.miterLimit = miterLimit;
         return copy;
     }
 
-    public Stroke withWidth(final CoordinateDistance width)
+    public Stroke withWidth(final Width width)
     {
         final var copy = copy();
+        copy.stroke = null;
         copy.width = width;
         return copy;
     }
 
     protected java.awt.Stroke awtStroke()
     {
-        if (stroke == null && isVisible())
+        if (stroke == null)
         {
             stroke = new BasicStroke((float) width.units(), cap, join, miterLimit, dash, dashPhase);
         }
         return stroke;
     }
 
-    protected CoordinateDistance width()
+    protected Width width()
     {
         return width;
-    }
-
-    private boolean isVisible()
-    {
-        return width.isNonZero();
     }
 }

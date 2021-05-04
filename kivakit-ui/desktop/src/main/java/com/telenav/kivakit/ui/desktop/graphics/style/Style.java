@@ -21,8 +21,7 @@ package com.telenav.kivakit.ui.desktop.graphics.style;
 import com.telenav.kivakit.core.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.awt.AwtShapes;
-import com.telenav.kivakit.ui.desktop.graphics.font.Fonts;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.java2d.Java2dShapes;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JList;
@@ -34,8 +33,33 @@ import java.awt.Shape;
 
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.TRANSPARENT;
 
+/**
+ * A style for configuring Swing components and drawing Java 2D shapes and text. A style has a fill color and stroke, a
+ * draw color and stroke, and a text color and font. Styles are designed to be reusable and new styles can be derived
+ * from existing styles using a variety of functional methods:
+ *
+ * <ul>
+ *     <li>{@link #darkened()} - A copy of this style where all colors are 10% darker</li>
+ *     <li>{@link #darkened(Percent)} - A copy of this style where all colors are darkened by the given {@link Percent}</li>
+ *     <li>{@link #lightened()} - A copy of this style where all colors are 10% darkened</li>
+ *     <li>{@link #lightened(Percent)} - A copy of this style where all colors are lightened by the given {@link Percent}</li>
+ *     <li>{@link #translucent()} - A copy of this style where the fill color has an alpha of 192</li>
+ *     <li>{@link #transparent()} - A copy of this style where the fill color has an alpha of 0</li>
+ *     <li>{@link #withAlpha(int)} - A copy of this style where the fill color has the given alpha value</li>
+ *     <li>{@link #withDrawColor(Color)} - A copy of this style with the given drawing color</li>
+ *     <li>{@link #withDrawStroke(Stroke)} - A copy of this style with the given drawing {@link Stroke}</li>
+ *     <li>{@link #withFillColor(Color)} - A copy of this style with the given fill color</li>
+ *     <li>{@link #withFillStroke(Stroke)} - A copy of this style with the given fill {@link Stroke}</li>
+ *     <li>{@link #withTextColor(Color)} - A copy of this style with the given text color</li>
+ *     <li>{@link #withTextFont(Font)} - A copy of this style with the given text font</li>
+ *     <li>{@link #withTextFontSize(int)} - A copy of this style with the given font size</li>
+ * </ul>
+ */
 public class Style
 {
+    /**
+     * @return A style where all colors are transparent
+     */
     public static Style create()
     {
         return new Style();
@@ -44,12 +68,12 @@ public class Style
     // Filling
     private Color fillColor = TRANSPARENT;
 
-    private Stroke fillStroke = Stroke.none();
+    private Stroke fillStroke = Stroke.defaultStroke();
 
     // Drawing
     private Color drawColor = TRANSPARENT;
 
-    private Stroke drawStroke = Stroke.none();
+    private Stroke drawStroke = Stroke.defaultStroke();
 
     // Text
     private Color textColor = TRANSPARENT;
@@ -140,8 +164,9 @@ public class Style
 
     public Style darkened(final Percent percent)
     {
-        return withFillColor(fillColor.darkened(percent))
-                .withDrawColor(drawColor.darkened(percent));
+        return withFillColor(fillColor.darker(percent))
+                .withDrawColor(drawColor.darker(percent))
+                .withTextColor(textColor.darker(percent));
     }
 
     @KivaKitIncludeProperty
@@ -175,13 +200,13 @@ public class Style
 
     public Style lightened(final Percent percent)
     {
-        return withFillColor(fillColor.lightened(percent))
-                .withDrawColor(drawColor.lightened(percent));
+        return withFillColor(fillColor.brighter(percent))
+                .withDrawColor(drawColor.brighter(percent));
     }
 
     public Shape shape(final Shape shape)
     {
-        return AwtShapes.combine(
+        return Java2dShapes.combine(
                 fillStroke().stroked(shape),
                 drawStroke().stroked(shape));
     }

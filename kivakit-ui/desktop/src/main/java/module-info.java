@@ -22,7 +22,7 @@ open module kivakit.ui.desktop
     exports com.telenav.kivakit.ui.desktop.component.version;
     exports com.telenav.kivakit.ui.desktop.component;
     exports com.telenav.kivakit.ui.desktop.event;
-    exports com.telenav.kivakit.ui.desktop.graphics.drawing.awt;
+    exports com.telenav.kivakit.ui.desktop.graphics.drawing.java2d;
     exports com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
     exports com.telenav.kivakit.ui.desktop.graphics.drawing;
     exports com.telenav.kivakit.ui.desktop.graphics.font;
@@ -35,4 +35,7 @@ open module kivakit.ui.desktop
     exports com.telenav.kivakit.ui.desktop.theme.darcula;
     exports com.telenav.kivakit.ui.desktop.theme.vanhelsing;
     exports com.telenav.kivakit.ui.desktop.theme;
+    exports com.telenav.kivakit.ui.desktop.graphics.geometry.objects;
+    exports com.telenav.kivakit.ui.desktop.graphics.geometry.coordinates;
+    exports com.telenav.kivakit.ui.desktop.graphics.geometry.measurements;
 }

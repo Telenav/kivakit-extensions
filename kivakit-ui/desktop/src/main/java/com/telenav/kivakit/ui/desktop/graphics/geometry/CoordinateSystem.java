@@ -1,112 +1,137 @@
 package com.telenav.kivakit.ui.desktop.graphics.geometry;
 
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Height;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Rectangle;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
+
 import java.awt.geom.Point2D;
 
 /**
  * An abstract, bounded coordinate system with an {@link #origin()} and a {@link #size()}. Coordinates can be mapped to
- * another coordinate system with {@link #to(CoordinateSystem, Coordinate)}. The mapping may be Cartesian (rectilinear)
- * or it might be some other mapping such as a map surface projection.
+ * another coordinate system with {@link #to(CoordinateSystem, Point)}.
  *
  * @author jonathanl (shibo)
  */
 public interface CoordinateSystem
 {
-    static CartesianCoordinateSystem drawingSurface()
-    {
-        return new CartesianCoordinateSystem()
-                .withOrigin(0, 0)
-                .withSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-    }
-
-    default Coordinate at(final Point2D point)
+    /**
+     * @return The given Java 2D point as a {@link Point}
+     */
+    default Point at(final Point2D point)
     {
         return at(point.getX(), point.getY());
     }
 
     /**
-     * @return The given x, y location in this {@link CoordinateSystem}
+     * @return The given x, y location as a {@link Point} in this {@link CoordinateSystem}
      */
-    default Coordinate at(final double x, final double y)
+    default Point at(final double x, final double y)
     {
-        return Coordinate.at(this, x, y);
-    }
-
-    /**
-     * @return The given distance in the units of this coordinate system
-     */
-    default CoordinateDistance distance(final double units)
-    {
-        return CoordinateDistance.units(this, units);
+        return Point.at(this, x, y);
     }
 
     /**
      * @return The given height in the units of this coordinate system
      */
-    default CoordinateHeight height(final double height)
+    default Height height(final double height)
     {
-        return CoordinateHeight.height(this, height);
+        return Height.height(this, height);
+    }
+
+    /**
+     * @return True if this coordinate system is bounded
+     */
+    boolean isBounded();
+
+    /**
+     * @return The given distance in the units of this coordinate system
+     */
+    default Length length(final double units)
+    {
+        return Length.units(this, units);
     }
 
     /**
      * @return The origin of this coordinate system
      */
-    Coordinate origin();
+    Point origin();
 
     /**
      * @return The size of this coordinate system from the origin
      */
-    CoordinateSize size();
+    Size size();
 
     /**
      * @return The given size in the units of this coordinate system
      */
-    default CoordinateSize size(final double width, final double height)
+    default Size size(final double width, final double height)
     {
-        return CoordinateSize.size(this, width, height);
+        return Size.size(this, width, height);
     }
 
     /**
      * @return The given size in the units of this coordinate system
      */
-    default CoordinateSize size(final CoordinateWidth width, final CoordinateHeight height)
+    default Size size(final Width width, final Height height)
     {
         return size(width.units(), height.units());
     }
 
-    default CoordinateDistance to(final CoordinateSystem that, final CoordinateDistance distance)
+    /**
+     * @return The given {@link Length} converted from this coordinate system to the given coordinate system
+     */
+    default Length to(final CoordinateSystem that, final Length distance)
     {
         return to(that, distance.asWidth());
     }
 
-    default CoordinateDistance to(final CoordinateSystem that, final CoordinateHeight height)
+    /**
+     * @return The given {@link Height} converted from this coordinate system to the given coordinate system
+     */
+    default Height to(final CoordinateSystem that, final Height height)
     {
-        return distance(to(that, height.asCoordinate()).y());
-    }
-
-    default CoordinateSize to(final CoordinateSystem that, final CoordinateSize size)
-    {
-        return size(size.widthInUnits(), size.heightInUnits());
-    }
-
-    default CoordinateDistance to(final CoordinateSystem that, final CoordinateWidth width)
-    {
-        return distance(to(that, width.asCoordinate()).x());
+        return height(to(that, height.asCoordinate()).y());
     }
 
     /**
-     * Converts the given coordinate from this coordinate system to the given coordinate system
-     *
-     * @param that The system to convert to
-     * @param coordinate The coordinate to convert
-     * @return The given coordinate in the given coordinate system
+     * @return The given {@link Size} converted from this coordinate system to the given coordinate system
      */
-    Coordinate to(CoordinateSystem that, Coordinate coordinate);
+    default Size to(final CoordinateSystem that, final Size size)
+    {
+        return size(to(that, size.width()), to(that, size.height()));
+    }
+
+    /**
+     * @return The given {@link Rectangle} converted from this coordinate system to the given coordinate system
+     */
+    default Rectangle to(final CoordinateSystem that, final Rectangle rectangle)
+    {
+        final var a = to(that, rectangle.at());
+        final var b = to(that, rectangle.to());
+        return Rectangle.rectangle(a, b);
+    }
+
+    /**
+     * @return The given {@link Width} converted from this coordinate system to the given coordinate system
+     */
+    default Width to(final CoordinateSystem that, final Width width)
+    {
+        return width(to(that, width.asCoordinate()).x());
+    }
+
+    /**
+     * @return The given {@link Point} from this coordinate system to the given coordinate system
+     */
+    Point to(CoordinateSystem that, Point coordinate);
 
     /**
      * @return The given width in the units of this coordinate system
      */
-    default CoordinateWidth width(final double width)
+    default Width width(final double width)
     {
-        return CoordinateWidth.width(this, width);
+        return Width.width(this, width);
     }
 }

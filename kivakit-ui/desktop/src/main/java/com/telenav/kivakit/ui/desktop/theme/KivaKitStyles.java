@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.ui.desktop.theme;
 
-import com.telenav.kivakit.ui.desktop.graphics.font.Fonts;
+import com.telenav.kivakit.ui.desktop.graphics.style.Fonts;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 
 import static com.telenav.kivakit.ui.desktop.graphics.style.Color.TRANSPARENT;
@@ -71,7 +71,7 @@ public class KivaKitStyles
 
     public static final Style GOLF = BASE
             .withFillColor(TRANSLUCENT_CLOVER)
-            .withDrawColor(AQUA.lightened())
+            .withDrawColor(AQUA.brighter())
             .withTextColor(BLACK_OLIVE);
 
     public static final Style HEADACHE = BASE

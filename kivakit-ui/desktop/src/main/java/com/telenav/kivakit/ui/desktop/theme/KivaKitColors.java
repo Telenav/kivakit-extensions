@@ -25,10 +25,6 @@ import com.telenav.kivakit.ui.desktop.graphics.style.Color;
  */
 public class KivaKitColors
 {
-    //----------------------------------------------------------------------------------------------
-    // Monochrome
-    //----------------------------------------------------------------------------------------------
-
     public static final Color AQUA = Color.rgb(0x0096ff);
 
     public static final Color AQUAMARINE = Color.rgb(0x4e78a0);
@@ -47,6 +43,8 @@ public class KivaKitColors
 
     public static final Color DARK_KIVAKIT_YELLOW = Color.rgb(0xd8bc00);
 
+    public static final Color DULL_BLUE = Color.rgb(0x23395d);
+
     public static final Color FOSSIL = Color.rgb(0x787276);
 
     public static final Color GAINSBORO = Color.rgb(0xdcdcdc);
@@ -58,10 +56,6 @@ public class KivaKitColors
     public static final Color IRON = Color.rgb(0x48494b);
 
     public static final Color KIVAKIT_BLACK = Color.rgb(0x1b1b1a);
-
-    //----------------------------------------------------------------------------------------------
-    // Color
-    //----------------------------------------------------------------------------------------------
 
     public static final Color KIVAKIT_GRAY = Color.rgb(0x808080);
 
@@ -94,6 +88,8 @@ public class KivaKitColors
     public static final Color STREET_SIGN_BLUE = Color.rgb(0x18, 0x58, 0x96);
 
     public static final Color TANGERINE = Color.rgb(0xff9300);
+
+    public static final Color DARK_TANGERINE = TANGERINE.darker().darker();
 
     public static final Color TOPAZ = Color.rgb(0x0198e1);
 

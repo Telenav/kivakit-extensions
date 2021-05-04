@@ -1,9 +1,9 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
-import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
@@ -13,6 +13,8 @@ import java.awt.Shape;
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
+ * A text string that is {@link Drawable} in a given {@link Style}
+ *
  * @author jonathanl (shibo)
  */
 public class Text extends BaseDrawable
@@ -48,7 +50,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text at(final Coordinate at)
+    public Text at(final Point at)
     {
         return (Text) super.at(at);
     }
@@ -62,7 +64,8 @@ public class Text extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        return shape(surface.drawText(style(), at(), text));
+        surface.drawText(style(), at(), text);
+        return null;
     }
 
     @Override
@@ -90,7 +93,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text withDrawStrokeWidth(final CoordinateDistance width)
+    public Text withDrawStrokeWidth(final Width width)
     {
         return (Text) super.withDrawStrokeWidth(width);
     }
@@ -108,7 +111,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text withFillStrokeWidth(final CoordinateDistance width)
+    public Text withFillStrokeWidth(final Width width)
     {
         return (Text) super.withFillStrokeWidth(width);
     }

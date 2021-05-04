@@ -18,7 +18,7 @@ public class KivaKitVanHelsingTheme extends KivaKitTheme
 
     private final Color MEDIUM_BACKGROUND = KivaKitColors.SILVER;
 
-    private final Color HIGHLIGHT = KivaKitColors.AQUA.darkened();
+    private final Color HIGHLIGHT = KivaKitColors.AQUA.darker();
 
     public KivaKitVanHelsingTheme()
     {
@@ -110,7 +110,7 @@ public class KivaKitVanHelsingTheme extends KivaKitTheme
     public Style styleList()
     {
         return Style.create()
-                .withDrawColor(KivaKitColors.AQUA.darkened())
+                .withDrawColor(KivaKitColors.AQUA.darker())
                 .withFillColor(DARK_BACKGROUND);
     }
 
@@ -160,7 +160,7 @@ public class KivaKitVanHelsingTheme extends KivaKitTheme
     {
         return Style.create()
                 .withDrawColor(HIGHLIGHT)
-                .withFillColor(DARK_BACKGROUND.lightened());
+                .withFillColor(DARK_BACKGROUND.brighter());
     }
 
     @Override

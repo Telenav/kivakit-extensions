@@ -24,7 +24,12 @@ import java.util.List;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
 
-public class ColorSequence implements Iterator<Color>
+/**
+ * A sequence of colors with varying hues in the order of the rainbow.
+ *
+ * @author jonathanl (shibo)
+ */
+public class Rainbow implements Iterator<Color>
 {
     private static final List<Color> COLORS = new ArrayList<>();
 

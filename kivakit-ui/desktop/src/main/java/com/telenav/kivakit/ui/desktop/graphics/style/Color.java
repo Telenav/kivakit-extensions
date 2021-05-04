@@ -33,6 +33,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Objects;
 
+/**
+ * Represents a color in RGBA space (red, green, blue, alpha).
+ */
 public class Color
 {
     public static final Color BLACK = of(java.awt.Color.BLACK);
@@ -198,6 +201,11 @@ public class Color
         return component;
     }
 
+    public void applyAsTextColor(final Graphics graphics)
+    {
+        graphics.setColor(asAwtColor());
+    }
+
     public java.awt.Color asAwtColor()
     {
         return new java.awt.Color(red(), green(), blue(), alpha());
@@ -223,12 +231,27 @@ public class Color
         return blue;
     }
 
-    public Color darkened()
+    public Color brighter()
     {
-        return darkened(Percent.of(15));
+        return brighter(Percent.of(15));
     }
 
-    public Color darkened(final Percent percent)
+    public Color brighter(final Percent percent)
+    {
+        final var factor = percent.inverse().asZeroToOne();
+        final var copy = new Color(this);
+        copy.red = Math.min((int) (red() * factor), 255);
+        copy.green = Math.min((int) (green() * factor), 255);
+        copy.blue = Math.min((int) (blue() * factor), 255);
+        return copy;
+    }
+
+    public Color darker()
+    {
+        return darker(Percent.of(15));
+    }
+
+    public Color darker(final Percent percent)
     {
         final var factor = percent.inverse().asZeroToOne();
         final var copy = new Color(this);
@@ -266,21 +289,6 @@ public class Color
     public Color invert()
     {
         return rgb((~red()) & 255, (~green()) & 255, (~blue()) & 255);
-    }
-
-    public Color lightened()
-    {
-        return lightened(Percent.of(15));
-    }
-
-    public Color lightened(final Percent percent)
-    {
-        final var factor = percent.inverse().asZeroToOne();
-        final var copy = new Color(this);
-        copy.red = Math.min((int) (red() * factor), 255);
-        copy.green = Math.min((int) (green() * factor), 255);
-        copy.blue = Math.min((int) (blue() * factor), 255);
-        return copy;
     }
 
     public int red()

@@ -125,7 +125,7 @@ public class KivaKitDarculaTheme extends KivaKitTheme
     public Style styleList()
     {
         return Style.create()
-                .withDrawColor(AQUA.darkened())
+                .withDrawColor(AQUA.darker())
                 .withFillColor(DARK_BACKGROUND);
     }
 
@@ -175,14 +175,14 @@ public class KivaKitDarculaTheme extends KivaKitTheme
     {
         return Style.create()
                 .withDrawColor(HIGHLIGHT)
-                .withFillColor(DARK_BACKGROUND.lightened());
+                .withFillColor(DARK_BACKGROUND.brighter());
     }
 
     @Override
     public Style styleTable()
     {
         return Style.create()
-                .withDrawColor(AQUA.darkened())
+                .withDrawColor(AQUA.darker())
                 .withFillColor(DARK_BACKGROUND);
     }
 

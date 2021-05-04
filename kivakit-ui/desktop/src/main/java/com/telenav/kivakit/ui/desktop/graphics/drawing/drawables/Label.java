@@ -1,8 +1,11 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Height;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
@@ -12,6 +15,8 @@ import java.awt.Shape;
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
+ * A {@link Drawable} text label with an underlying {@link Box}
+ *
  * @author jonathanl (shibo)
  */
 public class Label extends Box
@@ -49,7 +54,7 @@ public class Label extends Box
     }
 
     @Override
-    public Label at(final Coordinate at)
+    public Label at(final Point at)
     {
         return (Label) super.at(at);
     }
@@ -64,7 +69,7 @@ public class Label extends Box
     public Shape draw(final DrawingSurface surface)
     {
         final var size = surface
-                .size(style(), text)
+                .textSize(style(), text)
                 .plus(margin * 2, margin * 2);
 
         final var shape = super.draw(surface, size);
@@ -98,7 +103,7 @@ public class Label extends Box
     }
 
     @Override
-    public Label withDrawStrokeWidth(final CoordinateDistance width)
+    public Label withDrawStrokeWidth(final Width width)
     {
         return (Label) super.withDrawStrokeWidth(width);
     }
@@ -116,7 +121,7 @@ public class Label extends Box
     }
 
     @Override
-    public Label withFillStrokeWidth(final CoordinateDistance width)
+    public Label withFillStrokeWidth(final Width width)
     {
         return (Label) super.withFillStrokeWidth(width);
     }
@@ -129,13 +134,13 @@ public class Label extends Box
     }
 
     @Override
-    public Label withRoundedCorners(final CoordinateDistance corner)
+    public Label withRoundedCorners(final Length corner)
     {
         return (Label) super.withRoundedCorners(corner);
     }
 
     @Override
-    public Label withRoundedCorners(final CoordinateDistance cornerWidth, final CoordinateDistance cornerHeight)
+    public Label withRoundedCorners(final Width cornerWidth, final Height cornerHeight)
     {
         return (Label) super.withRoundedCorners(cornerWidth, cornerHeight);
     }

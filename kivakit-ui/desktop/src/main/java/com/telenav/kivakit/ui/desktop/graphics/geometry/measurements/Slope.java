@@ -19,40 +19,37 @@
  *
  */
 
-package com.telenav.kivakit.ui.desktop.graphics.drawing.awt;
-
-import java.awt.Shape;
-import java.awt.geom.Area;
-import java.util.Collection;
+package com.telenav.kivakit.ui.desktop.graphics.geometry.measurements;
 
 /**
  * @author jonathanl (shibo)
  */
-public class AwtShapes
+public class Slope
 {
-    public static Area combine(final Shape... shapes)
+    public static Slope degrees(final double degrees)
     {
-        final var area = new Area();
-        for (final var shape : shapes)
-        {
-            if (shape != null)
-            {
-                area.add(new Area(shape));
-            }
-        }
-        return area;
+        return new Slope(Math.toRadians(degrees));
     }
 
-    public static Area combine(final Collection<Shape> shapes)
+    public static Slope radians(final double radians)
     {
-        final var area = new Area();
-        for (final var shape : shapes)
-        {
-            if (shape != null)
-            {
-                area.add(new Area(shape));
-            }
-        }
-        return area;
+        return new Slope(radians);
+    }
+
+    private final double radians;
+
+    protected Slope(final double radians)
+    {
+        this.radians = radians;
+    }
+
+    public double degrees()
+    {
+        return Math.toDegrees(radians);
+    }
+
+    public double radians()
+    {
+        return radians;
     }
 }

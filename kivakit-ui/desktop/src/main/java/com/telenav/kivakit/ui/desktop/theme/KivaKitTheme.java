@@ -26,7 +26,7 @@ import com.telenav.kivakit.core.kernel.messaging.messages.status.Success;
 import com.telenav.kivakit.core.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 import com.telenav.kivakit.ui.desktop.component.dropdown.DropDownRenderer;
-import com.telenav.kivakit.ui.desktop.graphics.font.Fonts;
+import com.telenav.kivakit.ui.desktop.graphics.style.Fonts;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 import com.telenav.kivakit.ui.desktop.layout.Margins;

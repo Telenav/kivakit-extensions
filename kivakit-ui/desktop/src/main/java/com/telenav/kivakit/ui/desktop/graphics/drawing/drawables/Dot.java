@@ -19,16 +19,22 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.BaseDrawable;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.Coordinate;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateDistance;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
+import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
 import com.telenav.kivakit.ui.desktop.graphics.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
 import com.telenav.kivakit.ui.desktop.graphics.style.Style;
 
 import java.awt.Shape;
 
+/**
+ * A {@link Drawable} dot with a given style and {@link #radius()}.
+ *
+ * @author jonathanl (shibo)
+ */
 public class Dot extends BaseDrawable
 {
     public static Dot dot()
@@ -41,7 +47,7 @@ public class Dot extends BaseDrawable
         return new Dot(style);
     }
 
-    private CoordinateDistance radius;
+    private Length radius;
 
     protected Dot(final Style style)
     {
@@ -55,7 +61,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot at(final Coordinate at)
+    public Dot at(final Point at)
     {
         return (Dot) super.at(at);
     }
@@ -72,7 +78,7 @@ public class Dot extends BaseDrawable
         return shape(surface.drawCircle(style(), at(), radius()));
     }
 
-    public CoordinateDistance radius()
+    public Length radius()
     {
         return radius;
     }
@@ -108,7 +114,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot withDrawStrokeWidth(final CoordinateDistance width)
+    public Dot withDrawStrokeWidth(final Width width)
     {
         return (Dot) super.withDrawStrokeWidth(width);
     }
@@ -126,12 +132,12 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot withFillStrokeWidth(final CoordinateDistance width)
+    public Dot withFillStrokeWidth(final Width width)
     {
         return (Dot) super.withFillStrokeWidth(width);
     }
 
-    public Dot withRadius(final CoordinateDistance radius)
+    public Dot withRadius(final Length radius)
     {
         final var copy = copy();
         copy.radius = radius;
