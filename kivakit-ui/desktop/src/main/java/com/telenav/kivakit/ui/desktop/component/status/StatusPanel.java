@@ -10,7 +10,7 @@ import com.telenav.kivakit.core.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.desktop.component.health.HealthPanel;
 import com.telenav.kivakit.ui.desktop.component.icon.logo.kivakit.KivaKitLogo;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 import com.telenav.kivakit.ui.desktop.layout.HorizontalBoxLayout;
 import com.telenav.kivakit.ui.desktop.layout.Margins;
 import com.telenav.kivakit.ui.desktop.layout.Size;

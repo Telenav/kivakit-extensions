@@ -1,29 +1,32 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// © 2011-2021 Telenav, Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ * ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ * //
+ * // © 2011-2021 Telenav, Inc.
+ * //
+ * // Licensed under the Apache License, Version 2.0 (the "License");
+ * // you may not use this file except in compliance with the License.
+ * // You may obtain a copy of the License at
+ * //
+ * // http://www.apache.org/licenses/LICENSE-2.0
+ * //
+ * // Unless required by applicable law or agreed to in writing, software
+ * // distributed under the License is distributed on an "AS IS" BASIS,
+ * // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * // See the License for the specific language governing permissions and
+ * // limitations under the License.
+ * //
+ * ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ *
+ */
 
-package com.telenav.kivakit.ui.desktop.graphics.style;
+package com.telenav.kivakit.ui.desktop.graphics.drawing.style;
 
 import com.telenav.kivakit.core.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.java2d.Java2dDrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.surfaces.java2d.Java2dDrawingSurface;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -50,7 +53,7 @@ public class Stroke
 {
     public static Stroke defaultStroke()
     {
-        return stroke().withWidth(Width.pixels(1));
+        return stroke().withWidth(DrawingWidth.pixels(1));
     }
 
     public static Stroke stroke()
@@ -81,7 +84,7 @@ public class Stroke
     private float dashPhase;
 
     @KivaKitIncludeProperty
-    private Width width = Width.pixels(1);
+    private DrawingWidth width = DrawingWidth.pixels(1);
 
     protected Stroke()
     {
@@ -169,7 +172,7 @@ public class Stroke
         return copy;
     }
 
-    public Stroke withWidth(final Width width)
+    public Stroke withWidth(final DrawingWidth width)
     {
         final var copy = copy();
         copy.stroke = null;
@@ -186,7 +189,7 @@ public class Stroke
         return stroke;
     }
 
-    protected Width width()
+    protected DrawingWidth width()
     {
         return width;
     }

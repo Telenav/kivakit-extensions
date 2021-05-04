@@ -19,65 +19,65 @@
  *
  */
 
-package com.telenav.kivakit.ui.desktop.graphics.geometry.measurements;
+package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.coordinates.CartesianCoordinateSystem.pixelCoordinateSystem;
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.createCoordinateSystem;
 
 /**
  * @author jonathanl (shibo)
  */
-public class Width extends Length
+public class DrawingWidth extends DrawingLength
 {
-    public static Width pixels(final double units)
+    public static DrawingWidth pixels(final double units)
     {
-        return width(pixelCoordinateSystem(), units);
+        return width(createCoordinateSystem(), units);
     }
 
-    public static Width width(final CoordinateSystem system, final double units)
+    public static DrawingWidth width(final CoordinateSystem system, final double units)
     {
-        return new Width(system, units);
+        return new DrawingWidth(system, units);
     }
 
-    protected Width(final CoordinateSystem coordinateSystem, final double units)
+    protected DrawingWidth(final CoordinateSystem coordinateSystem, final double units)
     {
         super(coordinateSystem, units);
     }
 
-    public Point asCoordinate()
+    public DrawingPoint asCoordinate()
     {
-        return Point.at(coordinateSystem(), units(), 0);
+        return DrawingPoint.at(coordinateSystem(), units(), 0);
     }
 
     @Override
-    public Width rounded()
+    public DrawingWidth rounded()
     {
         return width(coordinateSystem(), Math.round(units()));
     }
 
     @Override
-    public Width scaledBy(final Percent percent)
+    public DrawingWidth scaledBy(final Percent percent)
     {
-        return (Width) super.scaledBy(percent);
+        return (DrawingWidth) super.scaledBy(percent);
     }
 
     @Override
-    public Width scaledBy(final double scaleFactor)
+    public DrawingWidth scaledBy(final double scaleFactor)
     {
-        return (Width) super.scaledBy(scaleFactor);
+        return (DrawingWidth) super.scaledBy(scaleFactor);
     }
 
     @Override
-    public Width to(final CoordinateSystem that)
+    public DrawingWidth to(final CoordinateSystem that)
     {
         return coordinateSystem().to(that, this);
     }
 
     @Override
-    protected Length newInstance(final double units)
+    protected DrawingLength newInstance(final double units)
     {
         return width(coordinateSystem(), units);
     }

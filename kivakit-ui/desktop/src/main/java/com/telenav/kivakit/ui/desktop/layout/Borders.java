@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.layout;
 
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 
 import javax.swing.BorderFactory;

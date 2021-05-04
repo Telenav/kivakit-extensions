@@ -20,13 +20,13 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Slope;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingSlope;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Stroke;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
 import java.awt.Shape;
 import java.awt.geom.Area;
@@ -43,7 +43,7 @@ public class Line extends BaseDrawable
         return line(null, null, null);
     }
 
-    public static Line line(final Style style, final Point from, final Point to)
+    public static Line line(final Style style, final DrawingPoint from, final DrawingPoint to)
     {
         return new Line(style, from, to.minus(from).asSize());
     }
@@ -52,9 +52,9 @@ public class Line extends BaseDrawable
 
     private Drawable toArrowHead;
 
-    private Size offset;
+    private DrawingSize offset;
 
-    protected Line(final Style style, final Point from, final Size offset)
+    protected Line(final Style style, final DrawingPoint from, final DrawingSize offset)
     {
         super(style, from);
         this.offset = offset;
@@ -69,7 +69,7 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line at(final Point at)
+    public Line at(final DrawingPoint at)
     {
         return (Line) super.at(at);
     }
@@ -92,12 +92,12 @@ public class Line extends BaseDrawable
         return shape;
     }
 
-    public Point from()
+    public DrawingPoint from()
     {
         return at();
     }
 
-    public Size offset()
+    public DrawingSize offset()
     {
         return offset;
     }
@@ -110,15 +110,15 @@ public class Line extends BaseDrawable
         return copy;
     }
 
-    public Slope slope()
+    public DrawingSlope slope()
     {
         final var point = to().minus(from());
         final var opposite = point.y();
         final var adjacent = point.x();
-        return Slope.radians(Math.atan(opposite / adjacent));
+        return DrawingSlope.radians(Math.atan(opposite / adjacent));
     }
 
-    public Point to()
+    public DrawingPoint to()
     {
         return at().plus(offset);
     }
@@ -142,7 +142,7 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line withDrawStrokeWidth(final Width width)
+    public Line withDrawStrokeWidth(final DrawingWidth width)
     {
         return (Line) super.withDrawStrokeWidth(width);
     }
@@ -160,12 +160,12 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line withFillStrokeWidth(final Width width)
+    public Line withFillStrokeWidth(final DrawingWidth width)
     {
         return (Line) super.withFillStrokeWidth(width);
     }
 
-    public Line withFrom(final Point from)
+    public Line withFrom(final DrawingPoint from)
     {
         return at(from);
     }
@@ -177,7 +177,7 @@ public class Line extends BaseDrawable
         return copy;
     }
 
-    public Line withOffset(final Size offset)
+    public Line withOffset(final DrawingSize offset)
     {
         final var copy = copy();
         copy.offset = offset;
@@ -196,7 +196,7 @@ public class Line extends BaseDrawable
         return (Line) super.withTextColor(color);
     }
 
-    public Line withTo(final Point to)
+    public Line withTo(final DrawingPoint to)
     {
         return withOffset(to.minus(at()).asSize());
     }

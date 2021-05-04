@@ -19,14 +19,15 @@
  *
  */
 
-package com.telenav.kivakit.ui.desktop.graphics.geometry;
+package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry;
 
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Height;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Rectangle;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingRectangle;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
@@ -36,12 +37,12 @@ import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensu
  *
  * @author jonathanl (shibo)
  */
-public abstract class Coordinated
+public abstract class DrawingObject
 {
     /** The coordinate system for this object */
     private final CoordinateSystem coordinateSystem;
 
-    protected Coordinated(final CoordinateSystem coordinateSystem)
+    protected DrawingObject(final CoordinateSystem coordinateSystem)
     {
         ensureNotNull(coordinateSystem);
 
@@ -53,32 +54,32 @@ public abstract class Coordinated
         return coordinateSystem;
     }
 
-    public Size normalized(final Size that)
+    public DrawingSize normalized(final DrawingSize that)
     {
         return that.to(coordinateSystem());
     }
 
-    public Length normalized(final Length that)
+    public DrawingLength normalized(final DrawingLength that)
     {
         return that.to(coordinateSystem());
     }
 
-    public Rectangle normalized(final Rectangle that)
+    public DrawingRectangle normalized(final DrawingRectangle that)
     {
         return that.to(coordinateSystem());
     }
 
-    public Width normalized(final Width that)
+    public DrawingWidth normalized(final DrawingWidth that)
     {
         return that.to(coordinateSystem());
     }
 
-    public Height normalized(final Height that)
+    public DrawingHeight normalized(final DrawingHeight that)
     {
         return that.to(coordinateSystem());
     }
 
-    public Point normalized(final Point that)
+    public DrawingPoint normalized(final DrawingPoint that)
     {
         return that.to(coordinateSystem());
     }
@@ -86,7 +87,7 @@ public abstract class Coordinated
     /**
      * @return True If this object and the given object are in the same coordinate system
      */
-    public boolean sameCoordinateSystem(final Coordinated that)
+    public boolean sameCoordinateSystem(final DrawingObject that)
     {
         return coordinateSystem().equals(that.coordinateSystem());
     }

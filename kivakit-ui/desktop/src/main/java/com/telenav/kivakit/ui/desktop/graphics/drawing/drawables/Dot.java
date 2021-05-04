@@ -21,12 +21,12 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Stroke;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
 import java.awt.Shape;
 
@@ -47,7 +47,7 @@ public class Dot extends BaseDrawable
         return new Dot(style);
     }
 
-    private Length radius;
+    private DrawingLength radius;
 
     protected Dot(final Style style)
     {
@@ -61,7 +61,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot at(final Point at)
+    public Dot at(final DrawingPoint at)
     {
         return (Dot) super.at(at);
     }
@@ -75,10 +75,10 @@ public class Dot extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        return shape(surface.drawCircle(style(), at(), radius()));
+        return shape(surface.drawDot(style(), at(), radius()));
     }
 
-    public Length radius()
+    public DrawingLength radius()
     {
         return radius;
     }
@@ -114,7 +114,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot withDrawStrokeWidth(final Width width)
+    public Dot withDrawStrokeWidth(final DrawingWidth width)
     {
         return (Dot) super.withDrawStrokeWidth(width);
     }
@@ -132,12 +132,12 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot withFillStrokeWidth(final Width width)
+    public Dot withFillStrokeWidth(final DrawingWidth width)
     {
         return (Dot) super.withFillStrokeWidth(width);
     }
 
-    public Dot withRadius(final Length radius)
+    public Dot withRadius(final DrawingLength radius)
     {
         final var copy = copy();
         copy.radius = radius;

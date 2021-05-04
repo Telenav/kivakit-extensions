@@ -1,12 +1,33 @@
-package com.telenav.kivakit.ui.desktop.graphics.drawing.java2d;
+/*
+ * ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ * //
+ * // © 2011-2021 Telenav, Inc.
+ * //
+ * // Licensed under the Apache License, Version 2.0 (the "License");
+ * // you may not use this file except in compliance with the License.
+ * // You may obtain a copy of the License at
+ * //
+ * // http://www.apache.org/licenses/LICENSE-2.0
+ * //
+ * // Unless required by applicable law or agreed to in writing, software
+ * // distributed under the License is distributed on an "AS IS" BASIS,
+ * // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * // See the License for the specific language governing permissions and
+ * // limitations under the License.
+ * //
+ * ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ *
+ */
+
+package com.telenav.kivakit.ui.desktop.graphics.drawing.surfaces.java2d;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.coordinates.CartesianCoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Rectangle;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingRectangle;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -24,20 +45,20 @@ import java.util.HashMap;
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
- * A Java2D {@link DrawingSurface} with x, y coordinates in a {@link CartesianCoordinateSystem}. The drawing area on the
- * {@link Graphics2D} surface is bounded by a {@link Rectangle}, with an origin in the top left, but not necessarily at
- * 0, 0. A  {@link Java2dDrawingSurface} can be created for a {@link Graphics2D} surface and drawing area on that
- * surface with {@link #surface(Graphics2D, Rectangle)}.
+ * A Java2D {@link DrawingSurface} with x, y coordinates in a {@link DrawingCoordinateSystem}. The drawing area on the
+ * {@link Graphics2D} surface is bounded by a {@link DrawingRectangle}, with an origin in the top left, but not
+ * necessarily at 0, 0. A  {@link Java2dDrawingSurface} can be created for a {@link Graphics2D} surface and drawing area
+ * on that surface with {@link #surface(Graphics2D, DrawingRectangle)}.
  *
  * @author jonathanl (shibo)
  */
-public class Java2dDrawingSurface extends CartesianCoordinateSystem implements DrawingSurface
+public class Java2dDrawingSurface extends DrawingCoordinateSystem implements DrawingSurface
 {
     /**
      * @return A Java 2D drawing surface for the given {@link Graphics2D} context with the given origin and size
      */
     public static Java2dDrawingSurface surface(final Graphics2D graphics,
-                                               final Rectangle area)
+                                               final DrawingRectangle area)
     {
         ensureNotNull(graphics);
         ensureNotNull(area);
@@ -48,7 +69,7 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
     /** The graphics surface to draw on */
     private final Graphics2D graphics;
 
-    protected Java2dDrawingSurface(final Graphics2D graphics, final Rectangle area)
+    protected Java2dDrawingSurface(final Graphics2D graphics, final DrawingRectangle area)
     {
         super(area.topLeft(), area.size());
 
@@ -75,7 +96,7 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
      * {@inheritDoc}
      */
     @Override
-    public Shape drawBox(final Style style, final Point at, final Size size)
+    public Shape drawBox(final Style style, final DrawingPoint at, final DrawingSize size)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -93,9 +114,9 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
      * {@inheritDoc}
      */
     @Override
-    public Shape drawCircle(final Style style,
-                            final Point at,
-                            final Length radius)
+    public Shape drawDot(final Style style,
+                         final DrawingPoint at,
+                         final DrawingLength radius)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -114,8 +135,8 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
      */
     @Override
     public Shape drawLine(final Style style,
-                          final Point from,
-                          final Point to)
+                          final DrawingPoint from,
+                          final DrawingPoint to)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -147,10 +168,10 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
      */
     @Override
     public Shape drawRoundedBox(final Style style,
-                                final Point at,
-                                final Size size,
-                                final Length cornerWidth,
-                                final Length cornerHeight)
+                                final DrawingPoint at,
+                                final DrawingSize size,
+                                final DrawingLength cornerWidth,
+                                final DrawingLength cornerHeight)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -171,7 +192,7 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
      */
     @Override
     public void drawText(final Style style,
-                         final Point at,
+                         final DrawingPoint at,
                          final String text)
     {
         ensureNotNull(graphics);
@@ -193,7 +214,7 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
      */
     @Override
     public Shape textShape(final Style style,
-                           final Point at,
+                           final DrawingPoint at,
                            final String text)
     {
         ensureNotNull(graphics);
@@ -216,7 +237,7 @@ public class Java2dDrawingSurface extends CartesianCoordinateSystem implements D
      * {@inheritDoc}
      */
     @Override
-    public Size textSize(final Style style, final String text)
+    public DrawingSize textSize(final Style style, final String text)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);

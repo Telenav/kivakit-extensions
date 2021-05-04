@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.ui.desktop.theme;
 
-import com.telenav.kivakit.ui.desktop.graphics.style.Fonts;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Fonts;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
-import static com.telenav.kivakit.ui.desktop.graphics.style.Color.TRANSPARENT;
-import static com.telenav.kivakit.ui.desktop.graphics.style.Color.WHITE;
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color.TRANSPARENT;
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color.WHITE;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.AQUA;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.BATTLESHIP_GRAY;
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.BLACK_OLIVE;

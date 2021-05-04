@@ -3,7 +3,7 @@ package com.telenav.kivakit.ui.desktop.component.panel.output;
 import com.telenav.kivakit.core.kernel.language.strings.StringTo;
 import com.telenav.kivakit.core.kernel.messaging.Message;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
-import com.telenav.kivakit.ui.desktop.graphics.style.Fonts;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Fonts;
 import com.telenav.kivakit.ui.desktop.layout.Margins;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitColors;
 

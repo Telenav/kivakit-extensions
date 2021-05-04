@@ -19,37 +19,46 @@
  *
  */
 
-package com.telenav.kivakit.ui.desktop.graphics.geometry.measurements;
+package com.telenav.kivakit.ui.desktop.graphics.drawing.surfaces.java2d;
+
+import java.awt.Shape;
+import java.awt.geom.Area;
+import java.util.Collection;
 
 /**
  * @author jonathanl (shibo)
  */
-public class Slope
+public class Java2dShapes
 {
-    public static Slope degrees(final double degrees)
+    /**
+     * @return The given non-null shapes combined into a compound {@link Area} shape
+     */
+    public static Area combine(final Shape... shapes)
     {
-        return new Slope(Math.toRadians(degrees));
+        final var area = new Area();
+        for (final var shape : shapes)
+        {
+            if (shape != null)
+            {
+                area.add(new Area(shape));
+            }
+        }
+        return area;
     }
 
-    public static Slope radians(final double radians)
+    /**
+     * @return The given non-null shapes combined into a compound {@link Area} shape
+     */
+    public static Area combine(final Collection<Shape> shapes)
     {
-        return new Slope(radians);
-    }
-
-    private final double radians;
-
-    protected Slope(final double radians)
-    {
-        this.radians = radians;
-    }
-
-    public double degrees()
-    {
-        return Math.toDegrees(radians);
-    }
-
-    public double radians()
-    {
-        return radians;
+        final var area = new Area();
+        for (final var shape : shapes)
+        {
+            if (shape != null)
+            {
+                area.add(new Area(shape));
+            }
+        }
+        return area;
     }
 }

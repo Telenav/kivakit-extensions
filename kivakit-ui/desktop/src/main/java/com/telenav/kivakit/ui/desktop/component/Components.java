@@ -3,7 +3,7 @@ package com.telenav.kivakit.ui.desktop.component;
 import com.telenav.kivakit.core.kernel.language.threading.latches.CompletionLatch;
 import com.telenav.kivakit.core.kernel.language.time.Duration;
 import com.telenav.kivakit.core.kernel.language.values.count.MutableCount;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitColors;
 
 import javax.swing.JComboBox;

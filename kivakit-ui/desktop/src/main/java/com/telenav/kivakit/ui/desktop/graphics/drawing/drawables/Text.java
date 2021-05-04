@@ -2,11 +2,11 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Stroke;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
 import java.awt.Shape;
 
@@ -50,7 +50,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text at(final Point at)
+    public Text at(final DrawingPoint at)
     {
         return (Text) super.at(at);
     }
@@ -93,7 +93,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text withDrawStrokeWidth(final Width width)
+    public Text withDrawStrokeWidth(final DrawingWidth width)
     {
         return (Text) super.withDrawStrokeWidth(width);
     }
@@ -111,7 +111,7 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text withFillStrokeWidth(final Width width)
+    public Text withFillStrokeWidth(final DrawingWidth width)
     {
         return (Text) super.withFillStrokeWidth(width);
     }

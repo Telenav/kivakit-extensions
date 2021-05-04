@@ -22,20 +22,18 @@ open module kivakit.ui.desktop
     exports com.telenav.kivakit.ui.desktop.component.version;
     exports com.telenav.kivakit.ui.desktop.component;
     exports com.telenav.kivakit.ui.desktop.event;
-    exports com.telenav.kivakit.ui.desktop.graphics.drawing.java2d;
     exports com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
+    exports com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
+    exports com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects;
+    exports com.telenav.kivakit.ui.desktop.graphics.drawing.geometry;
+    exports com.telenav.kivakit.ui.desktop.graphics.drawing.style;
+    exports com.telenav.kivakit.ui.desktop.graphics.drawing.surfaces.java2d;
     exports com.telenav.kivakit.ui.desktop.graphics.drawing;
-    exports com.telenav.kivakit.ui.desktop.graphics.font;
-    exports com.telenav.kivakit.ui.desktop.graphics.geometry;
     exports com.telenav.kivakit.ui.desktop.graphics.image;
-    exports com.telenav.kivakit.ui.desktop.graphics.style;
     exports com.telenav.kivakit.ui.desktop.layout;
     exports com.telenav.kivakit.ui.desktop.model;
     exports com.telenav.kivakit.ui.desktop.project;
     exports com.telenav.kivakit.ui.desktop.theme.darcula;
     exports com.telenav.kivakit.ui.desktop.theme.vanhelsing;
     exports com.telenav.kivakit.ui.desktop.theme;
-    exports com.telenav.kivakit.ui.desktop.graphics.geometry.objects;
-    exports com.telenav.kivakit.ui.desktop.graphics.geometry.coordinates;
-    exports com.telenav.kivakit.ui.desktop.graphics.geometry.measurements;
 }

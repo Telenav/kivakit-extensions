@@ -2,7 +2,7 @@ package com.telenav.kivakit.ui.desktop.component.fader;
 
 import com.telenav.kivakit.core.kernel.language.time.Duration;
 import com.telenav.kivakit.ui.desktop.component.Components;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
 
 import javax.swing.JLabel;
 

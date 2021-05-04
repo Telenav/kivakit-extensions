@@ -1,8 +1,8 @@
 package com.telenav.kivakit.ui.desktop.theme.darcula;
 
 import com.formdev.flatlaf.FlatDarculaLaf;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 
 import static com.telenav.kivakit.ui.desktop.theme.KivaKitColors.AQUA;

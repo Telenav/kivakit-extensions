@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.ui.desktop.theme;
 
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
 
 /**
  * @author jonathanl (shibo)

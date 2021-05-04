@@ -22,24 +22,23 @@ import com.telenav.kivakit.core.kernel.language.reflection.property.filters.Kiva
 import com.telenav.kivakit.core.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Stroke;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
 import java.awt.Shape;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
- * A base {@link Drawable} implementation, with a {@link Style}, retrieved with {@link #style()}, and a {@link Point}
- * location, retrieved with {@link #at()}. When the drawable is drawn with {@link #draw(DrawingSurface)}, it then has a
- * shape that can be retrieved with {@link #shape()}. A copy of a drawable can be retrieved with {@link #copy()} and
- * the
- * <i>with*()</i> functional methods can be used to create copies with new attributes applied.
+ * A base {@link Drawable} implementation, with a {@link Style}, retrieved with {@link #style()}, and a {@link
+ * DrawingPoint} location, retrieved with {@link #at()}. When the drawable is drawn with {@link #draw(DrawingSurface)},
+ * it then has a shape that can be retrieved with {@link #shape()}. A copy of a drawable can be retrieved with {@link
+ * #copy()} and the <i>with*()</i> functional methods can be used to create copies with new attributes.
  *
  * @author jonathanl (shibo)
  */
@@ -47,11 +46,11 @@ public abstract class BaseDrawable implements Drawable
 {
     private Style style;
 
-    private Point at;
+    private DrawingPoint at;
 
     private Shape shape;
 
-    public BaseDrawable(final Style style, final Point at)
+    public BaseDrawable(final Style style, final DrawingPoint at)
     {
         this(style);
         this.at = at;
@@ -73,7 +72,7 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public Drawable at(final Point at)
+    public Drawable at(final DrawingPoint at)
     {
         final var copy = (BaseDrawable) copy();
         copy.at = at;
@@ -81,7 +80,7 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public Point at()
+    public DrawingPoint at()
     {
         return at;
     }
@@ -129,7 +128,7 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public BaseDrawable withDrawStrokeWidth(final Width width)
+    public BaseDrawable withDrawStrokeWidth(final DrawingWidth width)
     {
         return withStyle(style.withDrawStroke(style.drawStroke().withWidth(width)));
     }
@@ -147,7 +146,7 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public BaseDrawable withFillStrokeWidth(final Width width)
+    public BaseDrawable withFillStrokeWidth(final DrawingWidth width)
     {
         return withStyle(style.withFillStroke(style.fillStroke().withWidth(width)));
     }
@@ -166,14 +165,14 @@ public abstract class BaseDrawable implements Drawable
         return withStyle(style.withTextColor(color));
     }
 
-    protected Box box(final Size size)
+    protected Box box(final DrawingSize size)
     {
         return Box.box(style)
                 .at(at)
                 .withSize(size);
     }
 
-    protected Dot dot(final Length radius)
+    protected Dot dot(final DrawingLength radius)
     {
         return Dot.dot(style)
                 .at(at)
@@ -185,7 +184,7 @@ public abstract class BaseDrawable implements Drawable
         return Label.label(style, text).at(at);
     }
 
-    protected Line line(final Point from, final Point to)
+    protected Line line(final DrawingPoint from, final DrawingPoint to)
     {
         return Line.line(style, from, to);
     }

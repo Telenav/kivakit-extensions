@@ -19,65 +19,65 @@
  *
  */
 
-package com.telenav.kivakit.ui.desktop.graphics.geometry.measurements;
+package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
 
-import static com.telenav.kivakit.ui.desktop.graphics.geometry.coordinates.CartesianCoordinateSystem.pixelCoordinateSystem;
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.createCoordinateSystem;
 
 /**
  * @author jonathanl (shibo)
  */
-public class Height extends Length
+public class DrawingHeight extends DrawingLength
 {
-    public static Height height(final CoordinateSystem system, final double units)
+    public static DrawingHeight height(final CoordinateSystem system, final double units)
     {
-        return new Height(system, units);
+        return new DrawingHeight(system, units);
     }
 
-    public static Height pixels(final double units)
+    public static DrawingHeight pixels(final double units)
     {
-        return height(pixelCoordinateSystem(), units);
+        return height(createCoordinateSystem(), units);
     }
 
-    protected Height(final CoordinateSystem coordinateSystem, final double units)
+    protected DrawingHeight(final CoordinateSystem coordinateSystem, final double units)
     {
         super(coordinateSystem, units);
     }
 
-    public Point asCoordinate()
+    public DrawingPoint asCoordinate()
     {
-        return Point.at(coordinateSystem(), 0, units());
+        return DrawingPoint.at(coordinateSystem(), 0, units());
     }
 
     @Override
-    public Height rounded()
+    public DrawingHeight rounded()
     {
         return height(coordinateSystem(), Math.round(units()));
     }
 
     @Override
-    public Height scaledBy(final Percent percent)
+    public DrawingHeight scaledBy(final Percent percent)
     {
-        return (Height) super.scaledBy(percent);
+        return (DrawingHeight) super.scaledBy(percent);
     }
 
     @Override
-    public Height scaledBy(final double scaleFactor)
+    public DrawingHeight scaledBy(final double scaleFactor)
     {
-        return (Height) super.scaledBy(scaleFactor);
+        return (DrawingHeight) super.scaledBy(scaleFactor);
     }
 
     @Override
-    public Height to(final CoordinateSystem that)
+    public DrawingHeight to(final CoordinateSystem that)
     {
         return coordinateSystem().to(that, this);
     }
 
     @Override
-    protected Length newInstance(final double units)
+    protected DrawingLength newInstance(final double units)
     {
         return units(coordinateSystem(), units);
     }

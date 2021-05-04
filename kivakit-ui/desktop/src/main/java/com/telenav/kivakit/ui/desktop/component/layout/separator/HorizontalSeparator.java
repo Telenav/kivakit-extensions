@@ -1,7 +1,7 @@
 package com.telenav.kivakit.ui.desktop.component.layout.separator;
 
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
 import com.telenav.kivakit.ui.desktop.layout.Size;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 

@@ -1,7 +1,7 @@
 package com.telenav.kivakit.ui.desktop.theme.vanhelsing;
 
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitColors;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 

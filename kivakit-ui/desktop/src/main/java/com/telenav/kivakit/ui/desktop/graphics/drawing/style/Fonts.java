@@ -19,7 +19,7 @@
  *
  */
 
-package com.telenav.kivakit.ui.desktop.graphics.style;
+package com.telenav.kivakit.ui.desktop.graphics.drawing.style;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;

@@ -20,7 +20,7 @@ package com.telenav.kivakit.ui.desktop.graphics.color;
 
 import com.telenav.kivakit.core.kernel.messaging.Listener;
 import com.telenav.kivakit.core.test.UnitTest;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
 import org.junit.Test;
 
 public class ColorConverterTest extends UnitTest

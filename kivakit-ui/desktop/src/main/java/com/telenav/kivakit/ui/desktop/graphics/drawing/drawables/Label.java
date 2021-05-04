@@ -2,13 +2,13 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Height;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Stroke;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
 import java.awt.Shape;
 
@@ -54,7 +54,7 @@ public class Label extends Box
     }
 
     @Override
-    public Label at(final Point at)
+    public Label at(final DrawingPoint at)
     {
         return (Label) super.at(at);
     }
@@ -103,7 +103,7 @@ public class Label extends Box
     }
 
     @Override
-    public Label withDrawStrokeWidth(final Width width)
+    public Label withDrawStrokeWidth(final DrawingWidth width)
     {
         return (Label) super.withDrawStrokeWidth(width);
     }
@@ -121,7 +121,7 @@ public class Label extends Box
     }
 
     @Override
-    public Label withFillStrokeWidth(final Width width)
+    public Label withFillStrokeWidth(final DrawingWidth width)
     {
         return (Label) super.withFillStrokeWidth(width);
     }
@@ -134,13 +134,13 @@ public class Label extends Box
     }
 
     @Override
-    public Label withRoundedCorners(final Length corner)
+    public Label withRoundedCorners(final DrawingLength corner)
     {
         return (Label) super.withRoundedCorners(corner);
     }
 
     @Override
-    public Label withRoundedCorners(final Width cornerWidth, final Height cornerHeight)
+    public Label withRoundedCorners(final DrawingWidth cornerWidth, final DrawingHeight cornerHeight)
     {
         return (Label) super.withRoundedCorners(cornerWidth, cornerHeight);
     }

@@ -2,14 +2,14 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Height;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Length;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.measurements.Width;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Point;
-import com.telenav.kivakit.ui.desktop.graphics.geometry.objects.Size;
-import com.telenav.kivakit.ui.desktop.graphics.style.Color;
-import com.telenav.kivakit.ui.desktop.graphics.style.Stroke;
-import com.telenav.kivakit.ui.desktop.graphics.style.Style;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Stroke;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
 import java.awt.Shape;
 
@@ -30,11 +30,11 @@ public class Box extends BaseDrawable
         return new Box(style);
     }
 
-    private Size size;
+    private DrawingSize size;
 
-    private Width cornerWidth;
+    private DrawingWidth cornerWidth;
 
-    private Height cornerHeight;
+    private DrawingHeight cornerHeight;
 
     protected Box(final Box that)
     {
@@ -50,7 +50,7 @@ public class Box extends BaseDrawable
     }
 
     @Override
-    public Box at(final Point at)
+    public Box at(final DrawingPoint at)
     {
         return (Box) super.at(at);
     }
@@ -75,7 +75,7 @@ public class Box extends BaseDrawable
         return copy;
     }
 
-    public Size size()
+    public DrawingSize size()
     {
         return size;
     }
@@ -99,7 +99,7 @@ public class Box extends BaseDrawable
     }
 
     @Override
-    public Box withDrawStrokeWidth(final Width width)
+    public Box withDrawStrokeWidth(final DrawingWidth width)
     {
         return (Box) super.withDrawStrokeWidth(width);
     }
@@ -117,17 +117,17 @@ public class Box extends BaseDrawable
     }
 
     @Override
-    public Box withFillStrokeWidth(final Width width)
+    public Box withFillStrokeWidth(final DrawingWidth width)
     {
         return (Box) super.withFillStrokeWidth(width);
     }
 
-    public Box withRoundedCorners(final Length corner)
+    public Box withRoundedCorners(final DrawingLength corner)
     {
         return withRoundedCorners(corner.asWidth(), corner.asHeight());
     }
 
-    public Box withRoundedCorners(final Width cornerWidth, final Height cornerHeight)
+    public Box withRoundedCorners(final DrawingWidth cornerWidth, final DrawingHeight cornerHeight)
     {
         final var copy = copy();
         copy.cornerWidth = cornerWidth;
@@ -135,7 +135,7 @@ public class Box extends BaseDrawable
         return copy;
     }
 
-    public Box withSize(final Size size)
+    public Box withSize(final DrawingSize size)
     {
         final var copy = copy();
         copy.size = size;
@@ -154,7 +154,7 @@ public class Box extends BaseDrawable
         return (Box) super.withTextColor(color);
     }
 
-    protected Shape draw(final DrawingSurface surface, final Size size)
+    protected Shape draw(final DrawingSurface surface, final DrawingSize size)
     {
         if (cornerWidth != null && cornerHeight != null)
         {
