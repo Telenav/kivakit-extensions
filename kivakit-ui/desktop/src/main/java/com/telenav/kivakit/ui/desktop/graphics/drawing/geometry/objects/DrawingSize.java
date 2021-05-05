@@ -23,11 +23,10 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
-
-import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.createCoordinateSystem;
 
 /**
  * A {@link DrawingWidth} and {@link DrawingHeight}
@@ -38,7 +37,7 @@ public class DrawingSize extends DrawingObject
 {
     public static DrawingSize pixels(final double width, final double height)
     {
-        return size(createCoordinateSystem(), width, height);
+        return size(DrawingCoordinateSystem.drawingCoordinateSystem(), width, height);
     }
 
     public static DrawingSize size(final CoordinateSystem coordinateSystem, final double width, final double height)

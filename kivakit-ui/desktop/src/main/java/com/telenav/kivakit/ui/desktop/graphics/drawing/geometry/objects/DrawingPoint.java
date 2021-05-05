@@ -23,11 +23,10 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
 
 import java.util.Objects;
-
-import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.createCoordinateSystem;
 
 /**
  * Represents an x, y point in a {@link CoordinateSystem}.
@@ -49,7 +48,7 @@ public class DrawingPoint extends DrawingObject
      */
     public static DrawingPoint pixels(final double x, final double y)
     {
-        return new DrawingPoint(createCoordinateSystem(), x, y);
+        return new DrawingPoint(DrawingCoordinateSystem.drawingCoordinateSystem(), x, y);
     }
 
     /** The x coordinate */

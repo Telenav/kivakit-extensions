@@ -29,10 +29,12 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingR
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
@@ -74,6 +76,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         super(area.topLeft(), area.size());
 
         this.graphics = graphics;
+
         graphics.scale(scalingFactor(), scalingFactor());
 
         final var hints = new HashMap<RenderingHints.Key, Object>();
@@ -128,6 +131,20 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         final var y = (int) (at.to(this).y() - units / 2);
 
         return draw(style, new Ellipse2D.Double(x, y, units, units));
+    }
+
+    @Override
+    public Shape drawImage(final DrawingPoint at, final Image image, final Composite composite)
+    {
+        final var x = (int) at.to(this).rounded().x();
+        final var y = (int) at.to(this).rounded().y();
+
+        final var original = graphics.getComposite();
+        graphics.setComposite(composite);
+        graphics.drawImage(image, x, y, null);
+        graphics.setComposite(original);
+
+        return new Rectangle2D.Double(x, y, image.getWidth(null), image.getHeight(null));
     }
 
     /**

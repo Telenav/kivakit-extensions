@@ -22,11 +22,11 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.createCoordinateSystem;
 
 /**
  * A rectangle at a given {@link DrawingPoint} with a given {@link DrawingSize}, in the same coordinate system.
@@ -40,7 +40,7 @@ public class DrawingRectangle extends DrawingObject
                                           final double width,
                                           final double height)
     {
-        return rectangle(createCoordinateSystem(), x, y, width, height);
+        return rectangle(DrawingCoordinateSystem.drawingCoordinateSystem(), x, y, width, height);
     }
 
     public static DrawingRectangle rectangle(final DrawingPoint a, final DrawingPoint b)
@@ -117,9 +117,9 @@ public class DrawingRectangle extends DrawingObject
         return copy;
     }
 
-    public boolean contains(final DrawingPoint that)
+    public boolean contains(final DrawingPoint point)
     {
-        final var normalized = normalized(that);
+        final var normalized = normalized(point);
         return normalized.x() >= left() &&
                 normalized.y() >= top() &&
                 normalized.x() < right() &&

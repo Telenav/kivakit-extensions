@@ -8,8 +8,12 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingR
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;
 
+import java.awt.Composite;
+import java.awt.Image;
 import java.awt.Shape;
 import java.awt.geom.Path2D;
+
+import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * @author jonathanl (shibo)
@@ -26,6 +30,9 @@ public interface DrawingSurface extends CoordinateSystem
                           final DrawingWidth width,
                           final DrawingHeight height)
     {
+        ensure(at.sameCoordinateSystem(width));
+        ensure(at.sameCoordinateSystem(height));
+
         return drawBox(style, at, DrawingSize.size(at.coordinateSystem(), width.units(), height.units()));
     }
 
@@ -38,6 +45,19 @@ public interface DrawingSurface extends CoordinateSystem
      * Draws a circle at the given point with the given radius in the given style
      */
     Shape drawDot(Style style, DrawingPoint at, DrawingLength radius);
+
+    /**
+     * Draws the given image at the given point on this drawing surface
+     */
+    Shape drawImage(DrawingPoint at, Image image, Composite composite);
+
+    /**
+     * Draws the given image at the given point on this drawing surface
+     */
+    default Shape drawImage(final DrawingPoint at, final Image image)
+    {
+        return drawImage(at, image, null);
+    }
 
     /**
      * Draws a line from one point to another in the given style

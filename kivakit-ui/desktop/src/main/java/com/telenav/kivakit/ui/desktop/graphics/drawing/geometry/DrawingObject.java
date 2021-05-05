@@ -40,7 +40,7 @@ import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensu
 public abstract class DrawingObject
 {
     /** The coordinate system for this object */
-    private final CoordinateSystem coordinateSystem;
+    private CoordinateSystem coordinateSystem;
 
     protected DrawingObject(final CoordinateSystem coordinateSystem)
     {
@@ -52,6 +52,11 @@ public abstract class DrawingObject
     public CoordinateSystem coordinateSystem()
     {
         return coordinateSystem;
+    }
+
+    public void coordinateSystem(final CoordinateSystem coordinateSystem)
+    {
+        this.coordinateSystem = coordinateSystem;
     }
 
     public DrawingSize normalized(final DrawingSize that)

@@ -23,6 +23,7 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingRectangle;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
 
 import java.util.Objects;
@@ -39,7 +40,9 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     /**
      * @return A {@link DrawingCoordinateSystem} with the given origin and size
      */
-    public static DrawingCoordinateSystem createCoordinateSystem(final double x, final double y, final DrawingSize size)
+    public static DrawingCoordinateSystem drawingCoordinateSystem(final double x,
+                                                                  final double y,
+                                                                  final DrawingSize size)
     {
         return new DrawingCoordinateSystem(x, y, size);
     }
@@ -47,7 +50,7 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     /**
      * @return A coordinate system with the given origin, but with no size and therefore no scaling
      */
-    public static DrawingCoordinateSystem createCoordinateSystem(final double x, final double y)
+    public static DrawingCoordinateSystem drawingCoordinateSystem(final double x, final double y)
     {
         return new DrawingCoordinateSystem(x, y);
     }
@@ -55,13 +58,13 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     /**
      * @return A {@link DrawingCoordinateSystem} with an origin of 0, 0 and no bounds
      */
-    public static DrawingCoordinateSystem createCoordinateSystem()
+    public static DrawingCoordinateSystem drawingCoordinateSystem()
     {
-        return createCoordinateSystem(0, 0);
+        return drawingCoordinateSystem(0, 0);
     }
 
     /** The origin of this coordinate system */
-    private final DrawingPoint origin;
+    private DrawingPoint origin;
 
     /** The size of the coordinate system, or null if it is unbounded */
     private DrawingSize size;
@@ -69,6 +72,7 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     protected DrawingCoordinateSystem(final double x, final double y, final DrawingSize size)
     {
         this(x, y);
+
         this.size = size;
     }
 
@@ -86,6 +90,12 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     {
         this.origin = origin;
         this.size = size;
+    }
+
+    @Override
+    public DrawingRectangle bounds()
+    {
+        return isBounded() ? origin().rectangle(size()) : null;
     }
 
     @Override
@@ -112,6 +122,12 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     public boolean isBounded()
     {
         return size() != null;
+    }
+
+    public DrawingCoordinateSystem origin(final DrawingPoint origin)
+    {
+        this.origin = origin;
+        return this;
     }
 
     @Override

@@ -23,9 +23,8 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
-
-import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.createCoordinateSystem;
 
 /**
  * @author jonathanl (shibo)
@@ -39,7 +38,7 @@ public class DrawingHeight extends DrawingLength
 
     public static DrawingHeight pixels(final double units)
     {
-        return height(createCoordinateSystem(), units);
+        return height(DrawingCoordinateSystem.drawingCoordinateSystem(), units);
     }
 
     protected DrawingHeight(final CoordinateSystem coordinateSystem, final double units)

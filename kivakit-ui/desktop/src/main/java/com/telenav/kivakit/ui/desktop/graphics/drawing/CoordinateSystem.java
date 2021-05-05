@@ -55,6 +55,11 @@ public interface CoordinateSystem
     }
 
     /**
+     * @return The bounds of this coordinate system, or null if it is unbounded
+     */
+    DrawingRectangle bounds();
+
+    /**
      * @return The given height in the units of this coordinate system
      */
     default DrawingHeight height(final double height)
