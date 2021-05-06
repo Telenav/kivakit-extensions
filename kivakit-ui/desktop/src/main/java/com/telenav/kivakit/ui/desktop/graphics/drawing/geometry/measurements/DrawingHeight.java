@@ -22,39 +22,40 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.PIXELS;
 
 /**
  * @author jonathanl (shibo)
  */
 public class DrawingHeight extends DrawingLength
 {
-    public static DrawingHeight height(final CoordinateSystem system, final double units)
+    public static DrawingHeight height(final Coordinated coordinates, final double units)
     {
-        return new DrawingHeight(system, units);
+        return new DrawingHeight(coordinates, units);
     }
 
     public static DrawingHeight pixels(final double units)
     {
-        return height(DrawingCoordinateSystem.drawingCoordinateSystem(), units);
+        return height(PIXELS, units);
     }
 
-    protected DrawingHeight(final CoordinateSystem coordinateSystem, final double units)
+    protected DrawingHeight(final Coordinated coordinates, final double units)
     {
-        super(coordinateSystem, units);
+        super(coordinates, units);
     }
 
-    public DrawingPoint asCoordinate()
+    public DrawingPoint asPoint()
     {
-        return DrawingPoint.at(coordinateSystem(), 0, units());
+        return point(0, units());
     }
 
     @Override
     public DrawingHeight rounded()
     {
-        return height(coordinateSystem(), Math.round(units()));
+        return height(Math.round(units()));
     }
 
     @Override
@@ -70,14 +71,20 @@ public class DrawingHeight extends DrawingLength
     }
 
     @Override
-    public DrawingHeight to(final CoordinateSystem that)
+    public DrawingHeight toCoordinates(final Coordinated that)
     {
-        return coordinateSystem().to(that, this);
+        return coordinates().toCoordinates(that, this);
     }
 
     @Override
-    protected DrawingLength newInstance(final double units)
+    public String toString()
     {
-        return units(coordinateSystem(), units);
+        return super.toString() + " tall";
+    }
+
+    @Override
+    protected DrawingHeight newInstance(final double units)
+    {
+        return height(units);
     }
 }

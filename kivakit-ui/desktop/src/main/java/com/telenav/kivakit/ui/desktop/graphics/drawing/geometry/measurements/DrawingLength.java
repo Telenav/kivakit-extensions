@@ -23,8 +23,10 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
+
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.PIXELS;
 
 /**
  * A length in {@link CoordinateSystem} units
@@ -33,42 +35,48 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
  */
 public class DrawingLength extends DrawingObject
 {
-    public static DrawingLength pixels(final double units)
+    public static DrawingLength length(final Coordinated coordinates, final double units)
     {
-        return new DrawingLength(DrawingCoordinateSystem.drawingCoordinateSystem(), units);
+        return new DrawingLength(coordinates, units);
     }
 
-    public static DrawingLength units(final CoordinateSystem system, final double units)
+    public static DrawingLength pixels(final double pixels)
     {
-        return new DrawingLength(system, units);
+        return length(PIXELS, pixels);
     }
 
     private final double units;
 
-    protected DrawingLength(final CoordinateSystem coordinateSystem, final double units)
+    protected DrawingLength(final Coordinated coordinates, final double units)
     {
-        super(coordinateSystem);
+        super(coordinates);
+
         this.units = units;
     }
 
     public DrawingHeight asHeight()
     {
-        return DrawingHeight.height(coordinateSystem(), units);
+        return height(units);
     }
 
     public DrawingWidth asWidth()
     {
-        return DrawingWidth.width(coordinateSystem(), units);
+        return width(units);
     }
 
     public boolean isNonZero()
     {
-        return units > 0;
+        return !isZero();
+    }
+
+    public boolean isZero()
+    {
+        return units == 0;
     }
 
     public DrawingLength rounded()
     {
-        return units(coordinateSystem(), Math.round(units));
+        return length(Math.round(units));
     }
 
     public DrawingLength scaledBy(final Percent percent)
@@ -81,9 +89,15 @@ public class DrawingLength extends DrawingObject
         return newInstance(units * scaleFactor);
     }
 
-    public DrawingLength to(final CoordinateSystem that)
+    public DrawingLength toCoordinates(final Coordinated that)
     {
-        return coordinateSystem().to(that, this);
+        return coordinates().toCoordinates(that, this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return super.toString() + ": " + units + " units";
     }
 
     public double units()
@@ -93,6 +107,6 @@ public class DrawingLength extends DrawingObject
 
     protected DrawingLength newInstance(final double units)
     {
-        return units(coordinateSystem(), units);
+        return length(units);
     }
 }

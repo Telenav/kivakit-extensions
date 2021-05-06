@@ -30,10 +30,10 @@ public interface DrawingSurface extends CoordinateSystem
                           final DrawingWidth width,
                           final DrawingHeight height)
     {
-        ensure(at.sameCoordinateSystem(width));
-        ensure(at.sameCoordinateSystem(height));
+        ensure(at.inSameCoordinateSystem(width));
+        ensure(at.inSameCoordinateSystem(height));
 
-        return drawBox(style, at, DrawingSize.size(at.coordinateSystem(), width.units(), height.units()));
+        return drawBox(style, at, DrawingSize.size(at.coordinates(), width.units(), height.units()));
     }
 
     /**
@@ -84,6 +84,11 @@ public interface DrawingSurface extends CoordinateSystem
      * DrawingPoint, String)}
      */
     void drawText(Style style, DrawingPoint at, String text);
+
+    default DrawingRectangle drawingArea()
+    {
+        return rectangle(x(), y(), width(), height());
+    }
 
     /**
      * @return The shape of the given text drawn im the given style at the given location

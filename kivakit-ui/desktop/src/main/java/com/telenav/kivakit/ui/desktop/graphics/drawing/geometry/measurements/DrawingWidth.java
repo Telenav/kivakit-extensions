@@ -22,39 +22,40 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.PIXELS;
 
 /**
  * @author jonathanl (shibo)
  */
 public class DrawingWidth extends DrawingLength
 {
-    public static DrawingWidth pixels(final double units)
+    public static DrawingWidth pixels(final double pixels)
     {
-        return width(DrawingCoordinateSystem.drawingCoordinateSystem(), units);
+        return width(PIXELS, pixels);
     }
 
-    public static DrawingWidth width(final CoordinateSystem system, final double units)
+    public static DrawingWidth width(final Coordinated coordinates, final double units)
     {
-        return new DrawingWidth(system, units);
+        return new DrawingWidth(coordinates, units);
     }
 
-    protected DrawingWidth(final CoordinateSystem coordinateSystem, final double units)
+    protected DrawingWidth(final Coordinated coordinates, final double units)
     {
-        super(coordinateSystem, units);
+        super(coordinates, units);
     }
 
-    public DrawingPoint asCoordinate()
+    public DrawingPoint asPoint()
     {
-        return DrawingPoint.at(coordinateSystem(), units(), 0);
+        return point(units(), 0);
     }
 
     @Override
     public DrawingWidth rounded()
     {
-        return width(coordinateSystem(), Math.round(units()));
+        return width(Math.round(units()));
     }
 
     @Override
@@ -70,14 +71,20 @@ public class DrawingWidth extends DrawingLength
     }
 
     @Override
-    public DrawingWidth to(final CoordinateSystem that)
+    public DrawingWidth toCoordinates(final Coordinated that)
     {
-        return coordinateSystem().to(that, this);
+        return coordinates().toCoordinates(that, this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return super.toString() + " wide";
     }
 
     @Override
     protected DrawingLength newInstance(final double units)
     {
-        return width(coordinateSystem(), units);
+        return width(units);
     }
 }

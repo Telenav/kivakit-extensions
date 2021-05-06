@@ -22,80 +22,67 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingRectangle;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
 
 import java.util.Objects;
 
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint.pixels;
+import static java.lang.Double.MAX_VALUE;
 
 /**
  * Maps to and from a given bounded coordinate system using simple rectangular interpolation.
  *
  * @author jonathanl (shibo)
+ * @see CoordinateSystem
  */
 public class DrawingCoordinateSystem implements CoordinateSystem
 {
     /**
-     * @return A {@link DrawingCoordinateSystem} with the given origin and size
+     * A {@link DrawingCoordinateSystem} with an origin of 0, 0 and no bounds
      */
-    public static DrawingCoordinateSystem drawingCoordinateSystem(final double x,
-                                                                  final double y,
-                                                                  final DrawingSize size)
-    {
-        return new DrawingCoordinateSystem(x, y, size);
-    }
+    public static final DrawingCoordinateSystem PIXELS = drawingCoordinateSystem("pixels")
+            .withOrigin(0, 0)
+            .unbounded();
 
     /**
-     * @return A coordinate system with the given origin, but with no size and therefore no scaling
+     * @return A new coordinate system with the given name, but no origin or size
      */
-    public static DrawingCoordinateSystem drawingCoordinateSystem(final double x, final double y)
+    public static DrawingCoordinateSystem drawingCoordinateSystem(final String name)
     {
-        return new DrawingCoordinateSystem(x, y);
-    }
-
-    /**
-     * @return A {@link DrawingCoordinateSystem} with an origin of 0, 0 and no bounds
-     */
-    public static DrawingCoordinateSystem drawingCoordinateSystem()
-    {
-        return drawingCoordinateSystem(0, 0);
+        return new DrawingCoordinateSystem(name);
     }
 
     /** The origin of this coordinate system */
-    private DrawingPoint origin;
+    private double x, y;
 
     /** The size of the coordinate system, or null if it is unbounded */
-    private DrawingSize size;
+    private double dx = -1, dy = -1;
 
-    protected DrawingCoordinateSystem(final double x, final double y, final DrawingSize size)
+    /** The name of this coordinate system */
+    private String name;
+
+    protected DrawingCoordinateSystem(final String name)
     {
-        this(x, y);
-
-        this.size = size;
+        this.name = name;
     }
 
-    protected DrawingCoordinateSystem(final double x, final double y)
+    protected DrawingCoordinateSystem(final DrawingCoordinateSystem that)
     {
-        origin = DrawingPoint.at(this, x, y);
+        name = that.name;
+
+        x = that.x;
+        y = that.y;
+        dx = that.dx;
+        dy = that.dy;
     }
 
-    protected DrawingCoordinateSystem(final DrawingPoint origin)
+    public DrawingCoordinateSystem copy()
     {
-        this.origin = origin;
-    }
-
-    protected DrawingCoordinateSystem(final DrawingPoint origin, final DrawingSize size)
-    {
-        this.origin = origin;
-        this.size = size;
-    }
-
-    @Override
-    public DrawingRectangle bounds()
-    {
-        return isBounded() ? origin().rectangle(size()) : null;
+        return new DrawingCoordinateSystem(this);
     }
 
     @Override
@@ -104,15 +91,30 @@ public class DrawingCoordinateSystem implements CoordinateSystem
         if (object instanceof DrawingCoordinateSystem)
         {
             final DrawingCoordinateSystem that = (DrawingCoordinateSystem) object;
-            return origin.equals(that.origin) && Objects.equals(size, that.size);
+            return x == that.x &&
+                    y == that.y &&
+                    dx == that.dx &&
+                    dy == that.dy;
         }
         return false;
+    }
+
+    public void extent(final double dx, final double dy)
+    {
+        this.dx = dx;
+        this.dy = dy;
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(origin, size);
+        return Objects.hash(x, y, dx, dy);
+    }
+
+    @Override
+    public double height()
+    {
+        return dy;
     }
 
     /**
@@ -121,75 +123,190 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     @Override
     public boolean isBounded()
     {
-        return size() != null;
+        return dx != MAX_VALUE || dy != MAX_VALUE;
     }
 
-    public DrawingCoordinateSystem origin(final DrawingPoint origin)
+    @Override
+    public String name()
     {
-        this.origin = origin;
-        return this;
+        if (name.equals("pixels"))
+        {
+            return name;
+        }
+        return name + " (" + x + ", " + y + " : " + (isBounded() ? dx + " x " + dy : "unbounded") + ")";
     }
 
     @Override
     public DrawingPoint origin()
     {
-        return origin;
+        return pixels(x, y);
+    }
+
+    public DrawingCoordinateSystem origin(final double x, final double y)
+    {
+        this.x = x;
+        this.y = y;
+        return this;
     }
 
     @Override
-    public DrawingSize size()
+    public DrawingWidth toCoordinates(final Coordinated coordinated, final DrawingWidth width)
     {
-        return size;
-    }
+        ensureNotNull(coordinated);
 
-    @Override
-    public DrawingPoint to(final CoordinateSystem that, final DrawingPoint coordinate)
-    {
-        ensureNotNull(that);
+        final var that = coordinated.coordinates();
 
         // If we are already in the same coordinate system,
-        if (this == that)
+        if (equals(that))
         {
-            // the coordinate does not need to be converted.
-            return coordinate;
+            // the coordinate does not need to be mapped.
+            return width;
         }
         else
         {
-            // If this coordinate system has a finite size,
-            if (size != null)
+            // If this coordinate systems are both bounded,
+            if (isBounded() && that.isBounded())
             {
-                // normalize the given coordinate to the unit interval from 0 to 1 in the this coordinate system,
-                final var xUnit = (coordinate.x() - origin.x()) / size.widthInUnits();
-                final var yUnit = (coordinate.y() - origin.y()) / size.heightInUnits();
+                // normalize the width to the unit interval from 0 to 1 in this coordinate system,
+                final var dxUnit = width.units() / dx;
+
+                // then return the scaled width in the given coordinate system.
+                final var dx = dxUnit * that.width();
+
+                return DrawingWidth.width(coordinated, dx);
+            }
+            else
+            {
+                return width;
+            }
+        }
+    }
+
+    @Override
+    public DrawingHeight toCoordinates(final Coordinated coordinated, final DrawingHeight height)
+    {
+        ensureNotNull(coordinated);
+
+        final var that = coordinated.coordinates();
+
+        // If we are already in the same coordinate system,
+        if (equals(that))
+        {
+            // the coordinate does not need to be mapped.
+            return height;
+        }
+        else
+        {
+            // If this coordinate systems are both bounded,
+            if (isBounded() && that.isBounded())
+            {
+                // normalize the width to the unit interval from 0 to 1 in this coordinate system,
+                final var dyUnit = height.units() / dy;
+
+                // then return the scaled width in the given coordinate system.
+                final var dy = dyUnit * that.height();
+
+                return DrawingHeight.height(coordinated, dy);
+            }
+            else
+            {
+                return height;
+            }
+        }
+    }
+
+    @Override
+    public DrawingPoint toCoordinates(final Coordinated coordinated, final DrawingPoint point)
+    {
+        ensureNotNull(coordinated);
+
+        final var that = coordinated.coordinates();
+
+        // If we are already in the same coordinate system,
+        if (equals(that))
+        {
+            // the coordinate does not need to be mapped.
+            return point;
+        }
+        else
+        {
+            // If this coordinate systems are both bounded,
+            if (isBounded() && that.isBounded())
+            {
+                // normalize the given coordinate to the unit interval from 0 to 1 in this coordinate system,
+                final var xUnit = (point.x() - x) / dx;
+                final var yUnit = (point.y() - y) / dy;
 
                 // then return the x, y coordinate in the given coordinate system scaled to the same relative position.
-                final var x = that.origin().x() + xUnit * that.size().widthInUnits();
-                final var y = that.origin().y() + yUnit * that.size().heightInUnits();
+                final var x = that.x() + xUnit * that.width();
+                final var y = that.y() + yUnit * that.height();
 
-                return at(x, y);
+                return point(x, y);
             }
             else
             {
                 // otherwise, get the offset of the given coordinate in this coordinate system,
-                final var dx = coordinate.x() - origin.x();
-                final var dy = coordinate.y() - origin.y();
+                final var dx = point.x() - x;
+                final var dy = point.y() - y;
 
                 // and return the origin of the target coordinate system plus the offset.
-                final var x = that.origin().x() + dx;
-                final var y = that.origin().y() + dy;
+                final var x = that.x() + dx;
+                final var y = that.y() + dy;
 
-                return at(x, y);
+                return point(x, y);
             }
         }
     }
 
-    public DrawingCoordinateSystem withOrigin(final double x, final double y)
+    @Override
+    public String toString()
     {
-        return new DrawingCoordinateSystem(DrawingPoint.at(this, x, y), size);
+        return name();
     }
 
-    public DrawingCoordinateSystem withSize(final double dx, final double dy)
+    public DrawingCoordinateSystem unbounded()
     {
-        return new DrawingCoordinateSystem(origin, DrawingSize.size(this, dx, dy));
+        return withExtent(MAX_VALUE, MAX_VALUE);
+    }
+
+    @Override
+    public double width()
+    {
+        return dx;
+    }
+
+    public DrawingCoordinateSystem withExtent(final double dx, final double dy)
+    {
+        final var copy = copy();
+        copy.dx = dx;
+        copy.dy = dy;
+        return copy;
+    }
+
+    public DrawingCoordinateSystem withName(final String name)
+    {
+        final var copy = copy();
+        copy.name = name;
+        return copy;
+    }
+
+    public DrawingCoordinateSystem withOrigin(final double x, final double y)
+    {
+        final var copy = copy();
+        copy.x = x;
+        copy.y = y;
+        return copy;
+    }
+
+    @Override
+    public double x()
+    {
+        return x;
+    }
+
+    @Override
+    public double y()
+    {
+        return y;
     }
 }

@@ -22,11 +22,12 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
+
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.PIXELS;
 
 /**
  * A {@link DrawingWidth} and {@link DrawingHeight}
@@ -37,47 +38,47 @@ public class DrawingSize extends DrawingObject
 {
     public static DrawingSize pixels(final double width, final double height)
     {
-        return size(DrawingCoordinateSystem.drawingCoordinateSystem(), width, height);
+        return size(PIXELS, width, height);
     }
 
-    public static DrawingSize size(final CoordinateSystem coordinateSystem, final double width, final double height)
+    public static DrawingSize size(final Coordinated coordinates, final double width, final double height)
     {
-        return new DrawingSize(coordinateSystem, width, height);
+        return new DrawingSize(coordinates, width, height);
     }
 
     private final double width;
 
     private final double height;
 
-    protected DrawingSize(final CoordinateSystem coordinateSystem, final double width, final double height)
+    protected DrawingSize(final Coordinated coordinates, final double width, final double height)
     {
-        super(coordinateSystem);
+        super(coordinates);
         this.width = width;
         this.height = height;
     }
 
-    public DrawingPoint asCoordinate()
+    public DrawingPoint asPoint()
     {
-        return DrawingPoint.at(coordinateSystem(), width, height);
+        return point(width, height);
     }
 
     public DrawingRectangle asRectangle()
     {
-        return DrawingRectangle.rectangle(coordinateSystem(), 0, 0, width, height);
+        return rectangle(0, 0, width, height);
     }
 
     public DrawingRectangle centeredIn(final DrawingRectangle that)
     {
-        final var normalized = normalized(that);
-        return normalized
+        final var rectangle = toCoordinates(that);
+        return rectangle
                 .topLeft()
-                .plus(normalized.size().minus(this).times(0.5))
+                .plus(rectangle.size().minus(this).times(0.5))
                 .rectangle(this);
     }
 
     public DrawingHeight height()
     {
-        return DrawingHeight.height(coordinateSystem(), height);
+        return height(height);
     }
 
     public double heightInUnits()
@@ -87,8 +88,8 @@ public class DrawingSize extends DrawingObject
 
     public DrawingSize minus(final DrawingSize that)
     {
-        final var normalized = normalized(that);
-        return withSize(widthInUnits() - normalized.widthInUnits(), heightInUnits() - normalized.heightInUnits());
+        final var size = toCoordinates(that);
+        return withSize(widthInUnits() - size.widthInUnits(), heightInUnits() - size.heightInUnits());
     }
 
     public DrawingSize plus(final double width, final double height)
@@ -98,13 +99,13 @@ public class DrawingSize extends DrawingObject
 
     public DrawingSize plus(final DrawingSize that)
     {
-        final var normalized = normalized(that);
-        return withSize(width + normalized.width, height + normalized.height);
+        final var size = toCoordinates(that);
+        return withSize(width + size.width, height + size.height);
     }
 
     public DrawingSize rounded()
     {
-        return size(coordinateSystem(), Math.round(width), Math.round(height));
+        return size(Math.round(width), Math.round(height));
     }
 
     public DrawingSize scaledBy(final double scaleFactor)
@@ -122,20 +123,20 @@ public class DrawingSize extends DrawingObject
         return withSize(widthInUnits() * scaleFactor, heightInUnits() * scaleFactor);
     }
 
-    public DrawingSize to(final CoordinateSystem system)
+    public DrawingSize toCoordinates(final Coordinated that)
     {
-        return system.to(system, this);
+        return coordinates().toCoordinates(that, this);
     }
 
     @Override
     public String toString()
     {
-        return width + ", " + height;
+        return super.toString() + ": " + width + " x " + height;
     }
 
     public DrawingWidth width()
     {
-        return DrawingWidth.width(coordinateSystem(), width);
+        return width(width);
     }
 
     public double widthInUnits()
@@ -145,16 +146,16 @@ public class DrawingSize extends DrawingObject
 
     public DrawingSize withHeight(final double height)
     {
-        return size(coordinateSystem(), width, height);
+        return size(width, height);
     }
 
     public DrawingSize withSize(final double width, final double height)
     {
-        return size(coordinateSystem(), width, height);
+        return size(width, height);
     }
 
     public DrawingSize withWidth(final double width)
     {
-        return size(coordinateSystem(), width, height);
+        return size(width, height);
     }
 }

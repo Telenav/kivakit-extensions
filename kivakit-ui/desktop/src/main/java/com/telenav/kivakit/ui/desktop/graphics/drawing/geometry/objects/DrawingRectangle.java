@@ -21,12 +21,13 @@
 
 package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects;
 
-import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.PIXELS;
 
 /**
  * A rectangle at a given {@link DrawingPoint} with a given {@link DrawingSize}, in the same coordinate system.
@@ -40,51 +41,69 @@ public class DrawingRectangle extends DrawingObject
                                           final double width,
                                           final double height)
     {
-        return rectangle(DrawingCoordinateSystem.drawingCoordinateSystem(), x, y, width, height);
+        return rectangle(PIXELS, x, y, width, height);
     }
 
     public static DrawingRectangle rectangle(final DrawingPoint a, final DrawingPoint b)
     {
-        ensure(a.sameCoordinateSystem(b));
-
-        return new DrawingRectangle(a.coordinateSystem(), a, a.sizeBetween(b));
+        return new DrawingRectangle(a.coordinates(), a, a.sizeBetween(b));
     }
 
     public static DrawingRectangle rectangle(final DrawingPoint at, final DrawingSize size)
     {
-        ensure(at.sameCoordinateSystem(size));
-
-        return new DrawingRectangle(at.coordinateSystem(), at, size);
+        return new DrawingRectangle(at.coordinates(), at, size);
     }
 
-    public static DrawingRectangle rectangle(final CoordinateSystem system,
+    public static DrawingRectangle rectangle(final Coordinated coordinates,
                                              final double x,
                                              final double y,
                                              final double width,
                                              final double height)
     {
-        return rectangle(DrawingPoint.at(system, x, y), DrawingSize.size(system, width, height));
+        return rectangle(DrawingPoint.point(coordinates, x, y), DrawingSize.size(coordinates, width, height));
     }
 
     private DrawingPoint at;
 
     private final DrawingSize size;
 
-    protected DrawingRectangle(final CoordinateSystem system, final DrawingPoint at, final DrawingSize size)
+    protected DrawingRectangle(final Coordinated coordinates, final DrawingPoint at, final DrawingSize size)
     {
-        super(system);
+        super(coordinates);
 
         ensureNotNull(at);
         ensureNotNull(size);
 
-        this.at = normalized(at);
-        this.size = normalized(size);
+        this.at = toCoordinates(at);
+        this.size = toCoordinates(size);
     }
 
-    public DrawingRectangle at(final DrawingPoint at)
+    protected DrawingRectangle(final DrawingRectangle that)
     {
-        final var normalized = normalized(at);
-        return rectangle(normalized, size);
+        super(that.coordinates());
+        at = that.at;
+        size = that.size;
+    }
+
+    public DrawingHeight asHeight()
+    {
+        return size.height();
+    }
+
+    public DrawingPoint asPoint()
+    {
+        return at.plus(size);
+    }
+
+    public DrawingWidth asWidth()
+    {
+        return size.width();
+    }
+
+    public DrawingRectangle at(final DrawingPoint that)
+    {
+        final var at = toCoordinates(that);
+        return rectangle(at, size);
     }
 
     public DrawingPoint at()
@@ -99,36 +118,36 @@ public class DrawingRectangle extends DrawingObject
 
     public DrawingPoint bottomLeft()
     {
-        return DrawingPoint.at(coordinateSystem(), left(), bottom());
+        return DrawingPoint.point(coordinates(), left(), bottom());
     }
 
     public DrawingPoint bottomRight()
     {
-        return DrawingPoint.at(coordinateSystem(), right(), bottom());
+        return DrawingPoint.point(coordinates(), right(), bottom());
     }
 
     public DrawingRectangle centeredIn(final DrawingSize that)
     {
-        final var normalized = normalized(that);
+        final var size = toCoordinates(that);
         final var copy = copy();
-        copy.at = DrawingPoint.at(size.coordinateSystem(),
-                (normalized.widthInUnits() - size.widthInUnits()) / 2,
-                (normalized.heightInUnits() - size.heightInUnits()) / 2);
+        copy.at = DrawingPoint.point(this.size.coordinates(),
+                (size.widthInUnits() - this.size.widthInUnits()) / 2,
+                (size.heightInUnits() - this.size.heightInUnits()) / 2);
         return copy;
     }
 
-    public boolean contains(final DrawingPoint point)
+    public boolean contains(final DrawingPoint that)
     {
-        final var normalized = normalized(point);
-        return normalized.x() >= left() &&
-                normalized.y() >= top() &&
-                normalized.x() < right() &&
-                normalized.y() < bottom();
+        final var point = toCoordinates(that);
+        return point.x() >= left() &&
+                point.y() >= top() &&
+                point.x() < right() &&
+                point.y() < bottom();
     }
 
     public DrawingRectangle copy()
     {
-        return new DrawingRectangle(coordinateSystem(), at, size);
+        return new DrawingRectangle(this);
     }
 
     public double height()
@@ -138,23 +157,23 @@ public class DrawingRectangle extends DrawingObject
 
     public boolean intersects(final DrawingRectangle that)
     {
-        final var normalized = normalized(that);
+        final var rectangle = toCoordinates(that);
 
-        return !((right() < normalized.left())
-                || (left() > normalized.right())
-                || (top() > normalized.bottom())
-                || (bottom() < normalized.top()));
+        return !((right() < rectangle.left())
+                || (left() > rectangle.right())
+                || (top() > rectangle.bottom())
+                || (bottom() < rectangle.top()));
     }
 
     public double left()
     {
-        return at().x();
+        return x();
     }
 
     public DrawingRectangle plus(final DrawingPoint that)
     {
-        final var normalized = normalized(that);
-        return rectangle(at.plus(normalized), size);
+        final var point = toCoordinates(that);
+        return rectangle(at.plus(point), size);
     }
 
     public double right()
@@ -172,14 +191,9 @@ public class DrawingRectangle extends DrawingObject
         return size;
     }
 
-    public DrawingRectangle to(final CoordinateSystem that)
+    public DrawingRectangle toCoordinates(final Coordinated that)
     {
-        return coordinateSystem().to(that, this);
-    }
-
-    public DrawingPoint to()
-    {
-        return at.plus(size);
+        return coordinates().toCoordinates(that, this);
     }
 
     @Override
@@ -190,7 +204,7 @@ public class DrawingRectangle extends DrawingObject
 
     public double top()
     {
-        return at().y();
+        return y();
     }
 
     public DrawingPoint topLeft()
@@ -200,7 +214,7 @@ public class DrawingRectangle extends DrawingObject
 
     public DrawingPoint topRight()
     {
-        return DrawingPoint.at(at.coordinateSystem(), right(), top());
+        return DrawingPoint.point(at.coordinates(), right(), top());
     }
 
     public double width()

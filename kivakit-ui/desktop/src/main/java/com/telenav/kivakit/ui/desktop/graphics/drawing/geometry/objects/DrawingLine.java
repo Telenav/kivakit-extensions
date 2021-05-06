@@ -37,7 +37,7 @@ public class DrawingLine extends DrawingObject
 {
     public static DrawingLine line(final DrawingPoint a, final DrawingPoint b)
     {
-        ensure(a.sameCoordinateSystem(b));
+        ensure(a.inSameCoordinateSystem(b));
 
         return new DrawingLine(a, b);
     }
@@ -48,7 +48,7 @@ public class DrawingLine extends DrawingObject
 
     protected DrawingLine(final DrawingPoint a, final DrawingPoint b)
     {
-        super(a.coordinateSystem());
+        super(a.coordinates());
 
         this.a = a;
         this.b = b;
@@ -70,5 +70,11 @@ public class DrawingLine extends DrawingObject
         final var opposite = point.y();
         final var adjacent = point.x();
         return DrawingSlope.radians(Math.atan(opposite / adjacent));
+    }
+
+    @Override
+    public String toString()
+    {
+        return a + " -> " + b;
     }
 }

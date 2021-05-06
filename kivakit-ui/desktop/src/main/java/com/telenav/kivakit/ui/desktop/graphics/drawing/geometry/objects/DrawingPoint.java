@@ -23,10 +23,12 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects;
 
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
-import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
 
 import java.util.Objects;
+
+import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.PIXELS;
 
 /**
  * Represents an x, y point in a {@link CoordinateSystem}.
@@ -36,19 +38,19 @@ import java.util.Objects;
 public class DrawingPoint extends DrawingObject
 {
     /**
-     * @return The given x, y coordinate in the given coordinate system
-     */
-    public static DrawingPoint at(final CoordinateSystem system, final double x, final double y)
-    {
-        return new DrawingPoint(system, x, y);
-    }
-
-    /**
      * @return The given x, y coordinate in an unbounded coordinate system of pixels
      */
     public static DrawingPoint pixels(final double x, final double y)
     {
-        return new DrawingPoint(DrawingCoordinateSystem.drawingCoordinateSystem(), x, y);
+        return new DrawingPoint(PIXELS, x, y);
+    }
+
+    /**
+     * @return The given x, y coordinate in the given coordinate system
+     */
+    public static DrawingPoint point(final Coordinated coordinates, final double x, final double y)
+    {
+        return new DrawingPoint(coordinates, x, y);
     }
 
     /** The x coordinate */
@@ -57,9 +59,9 @@ public class DrawingPoint extends DrawingObject
     /** The y coordinate */
     private final double y;
 
-    protected DrawingPoint(final CoordinateSystem system, final double x, final double y)
+    protected DrawingPoint(final Coordinated coordinates, final double x, final double y)
     {
-        super(system);
+        super(coordinates);
 
         this.x = x;
         this.y = y;
@@ -71,7 +73,7 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingSize asSize()
     {
-        return DrawingSize.size(coordinateSystem(), x, y);
+        return size(x, y);
     }
 
     @Override
@@ -80,7 +82,7 @@ public class DrawingPoint extends DrawingObject
         if (object instanceof DrawingPoint)
         {
             final DrawingPoint that = (DrawingPoint) object;
-            return coordinateSystem() == that.coordinateSystem() && x == that.x && y == that.y;
+            return coordinates().equals(that.coordinates()) && x == that.x && y == that.y;
         }
         return false;
     }
@@ -88,7 +90,7 @@ public class DrawingPoint extends DrawingObject
     @Override
     public int hashCode()
     {
-        return Objects.hash(System.identityHashCode(coordinateSystem()), x, y);
+        return Objects.hash(coordinates(), x, y);
     }
 
     /**
@@ -96,7 +98,7 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingPoint minus(final double dx, final double dy)
     {
-        return at(coordinateSystem(), x - dx, y - dy);
+        return point(x - dx, y - dy);
     }
 
     /**
@@ -104,8 +106,8 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingPoint minus(final DrawingPoint that)
     {
-        final var normalized = normalized(that);
-        return at(coordinateSystem(), x - normalized.x, y - normalized.y);
+        final var point = toCoordinates(that);
+        return point(x - point.x, y - point.y);
     }
 
     /**
@@ -113,16 +115,16 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingPoint plus(final double dx, final double dy)
     {
-        return at(coordinateSystem(), x + dx, y + dy);
+        return point(x + dx, y + dy);
     }
 
     /**
      * @return This coordinate plus the given size as an offset
      */
-    public DrawingPoint plus(final DrawingSize size)
+    public DrawingPoint plus(final DrawingSize that)
     {
-        final var normalized = normalized(size);
-        return at(coordinateSystem(), x + normalized.widthInUnits(), y + normalized.heightInUnits());
+        final var size = toCoordinates(that);
+        return point(x + size.widthInUnits(), y + size.heightInUnits());
     }
 
     /**
@@ -130,17 +132,17 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingPoint plus(final DrawingPoint that)
     {
-        final var normalized = normalized(that);
-        return at(coordinateSystem(), x + normalized.x, y + normalized.y);
+        final var point = toCoordinates(that);
+        return point(x + point.x, y + point.y);
     }
 
     /**
      * @return This coordinate as a rectangle whose width and height are determined by the given size
      */
-    public DrawingRectangle rectangle(final DrawingSize size)
+    public DrawingRectangle rectangle(final DrawingSize that)
     {
-        final var normalized = normalized(size);
-        return DrawingRectangle.rectangle(this, normalized);
+        final var size = toCoordinates(that);
+        return rectangle(x(), y(), size.widthInUnits(), size.heightInUnits());
     }
 
     /**
@@ -148,7 +150,7 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingPoint rounded()
     {
-        return at(coordinateSystem(), Math.round(x), Math.round(y));
+        return point(Math.round(x), Math.round(y));
     }
 
     /**
@@ -156,7 +158,7 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingPoint scaledBy(final Percent percent)
     {
-        return at(coordinateSystem(), percent.scale(x), percent.scale(y));
+        return point(percent.scale(x), percent.scale(y));
     }
 
     /**
@@ -164,12 +166,12 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingSize sizeBetween(final DrawingPoint that)
     {
-        final var normalized = normalized(that);
+        final var point = toCoordinates(that);
 
-        final var width = Math.abs(x() - normalized.x());
-        final var height = Math.abs(y() - normalized.y());
+        final var width = Math.abs(x() - point.x());
+        final var height = Math.abs(y() - point.y());
 
-        return DrawingSize.size(coordinateSystem(), width, height);
+        return size(width, height);
     }
 
     /**
@@ -177,25 +179,25 @@ public class DrawingPoint extends DrawingObject
      */
     public DrawingPoint times(final double scaleFactor)
     {
-        return at(coordinateSystem(), x * scaleFactor, y * scaleFactor);
+        return point(x * scaleFactor, y * scaleFactor);
     }
 
     /**
      * @return This coordinate converted to the given coordinate system
      */
-    public DrawingPoint to(final CoordinateSystem that)
+    public DrawingPoint toCoordinates(final Coordinated that)
     {
-        return coordinateSystem().to(that, this);
+        return coordinates().toCoordinates(that, this);
     }
 
     @Override
     public String toString()
     {
-        return x + ", " + y;
+        return super.toString() + ": " + x + ", " + y;
     }
 
     /**
-     * @return The x location of this coordinate in {@link #coordinateSystem()}
+     * @return The x location of this coordinate in {@link #coordinates()}
      */
     public double x()
     {
@@ -203,7 +205,7 @@ public class DrawingPoint extends DrawingObject
     }
 
     /**
-     * @return The x location of this coordinate in {@link #coordinateSystem()}
+     * @return The x location of this coordinate in {@link #coordinates()}
      */
     public double y()
     {

@@ -77,7 +77,6 @@ public class Stroke
     @KivaKitIncludeProperty
     private int miterLimit = 0;
 
-    @KivaKitIncludeProperty
     private float[] dash;
 
     @KivaKitIncludeProperty
@@ -129,7 +128,7 @@ public class Stroke
     @Override
     public String toString()
     {
-        return new ObjectFormatter(stroke).toString();
+        return new ObjectFormatter(this).toString();
     }
 
     public Stroke withCap(final int cap)

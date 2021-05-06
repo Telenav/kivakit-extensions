@@ -22,6 +22,7 @@
 package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry;
 
 import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingHeight;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
@@ -37,63 +38,100 @@ import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensu
  *
  * @author jonathanl (shibo)
  */
-public abstract class DrawingObject
+public abstract class DrawingObject implements Coordinated
 {
     /** The coordinate system for this object */
-    private CoordinateSystem coordinateSystem;
+    private CoordinateSystem coordinates;
 
-    protected DrawingObject(final CoordinateSystem coordinateSystem)
+    protected DrawingObject(final Coordinated coordinates)
     {
-        ensureNotNull(coordinateSystem);
+        ensureNotNull(coordinates);
 
-        this.coordinateSystem = coordinateSystem;
+        this.coordinates = coordinates.coordinates();
     }
 
-    public CoordinateSystem coordinateSystem()
+    public void coordinates(final Coordinated coordinates)
     {
-        return coordinateSystem;
+        this.coordinates = coordinates.coordinates();
     }
 
-    public void coordinateSystem(final CoordinateSystem coordinateSystem)
+    @Override
+    public CoordinateSystem coordinates()
     {
-        this.coordinateSystem = coordinateSystem;
-    }
-
-    public DrawingSize normalized(final DrawingSize that)
-    {
-        return that.to(coordinateSystem());
-    }
-
-    public DrawingLength normalized(final DrawingLength that)
-    {
-        return that.to(coordinateSystem());
-    }
-
-    public DrawingRectangle normalized(final DrawingRectangle that)
-    {
-        return that.to(coordinateSystem());
-    }
-
-    public DrawingWidth normalized(final DrawingWidth that)
-    {
-        return that.to(coordinateSystem());
-    }
-
-    public DrawingHeight normalized(final DrawingHeight that)
-    {
-        return that.to(coordinateSystem());
-    }
-
-    public DrawingPoint normalized(final DrawingPoint that)
-    {
-        return that.to(coordinateSystem());
+        return coordinates;
     }
 
     /**
      * @return True If this object and the given object are in the same coordinate system
      */
-    public boolean sameCoordinateSystem(final DrawingObject that)
+    public boolean inSameCoordinateSystem(final DrawingObject that)
     {
-        return coordinateSystem().equals(that.coordinateSystem());
+        return coordinates().equals(that.coordinates());
+    }
+
+    public DrawingPoint point(final double x, final double y)
+    {
+        return DrawingPoint.point(this, x, y);
+    }
+
+    public DrawingRectangle rectangle(final double x, final double y, final double dx, final double dy)
+    {
+        return DrawingRectangle.rectangle(this, x, y, dx, dy);
+    }
+
+    public DrawingRectangle toCoordinates(final DrawingRectangle that)
+    {
+        return that.toCoordinates(this);
+    }
+
+    public DrawingWidth toCoordinates(final DrawingWidth that)
+    {
+        return that.toCoordinates(this);
+    }
+
+    public DrawingHeight toCoordinates(final DrawingHeight that)
+    {
+        return that.toCoordinates(this);
+    }
+
+    public DrawingPoint toCoordinates(final DrawingPoint that)
+    {
+        return that.toCoordinates(this);
+    }
+
+    public DrawingSize toCoordinates(final DrawingSize that)
+    {
+        return that.toCoordinates(this);
+    }
+
+    public DrawingLength toCoordinates(final DrawingLength that)
+    {
+        return that.toCoordinates(this);
+    }
+
+    @Override
+    public String toString()
+    {
+        return coordinates().name();
+    }
+
+    protected DrawingHeight height(final double units)
+    {
+        return DrawingHeight.height(coordinates(), units);
+    }
+
+    protected DrawingLength length(final double units)
+    {
+        return DrawingLength.length(coordinates(), units);
+    }
+
+    protected DrawingSize size(final double dx, final double dy)
+    {
+        return DrawingSize.size(coordinates(), dx, dy);
+    }
+
+    protected DrawingWidth width(final double units)
+    {
+        return DrawingWidth.width(coordinates(), units);
     }
 }

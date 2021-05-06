@@ -50,7 +50,7 @@ import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensu
  * A Java2D {@link DrawingSurface} with x, y coordinates in a {@link DrawingCoordinateSystem}. The drawing area on the
  * {@link Graphics2D} surface is bounded by a {@link DrawingRectangle}, with an origin in the top left, but not
  * necessarily at 0, 0. A  {@link Java2dDrawingSurface} can be created for a {@link Graphics2D} surface and drawing area
- * on that surface with {@link #surface(Graphics2D, DrawingRectangle)}.
+ * on that surface with {@link #surface(String, Graphics2D, DrawingRectangle)}.
  *
  * @author jonathanl (shibo)
  */
@@ -59,21 +59,25 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
     /**
      * @return A Java 2D drawing surface for the given {@link Graphics2D} context with the given origin and size
      */
-    public static Java2dDrawingSurface surface(final Graphics2D graphics,
+    public static Java2dDrawingSurface surface(final String name,
+                                               final Graphics2D graphics,
                                                final DrawingRectangle area)
     {
         ensureNotNull(graphics);
         ensureNotNull(area);
 
-        return new Java2dDrawingSurface(graphics, area);
+        return new Java2dDrawingSurface(name, graphics, area);
     }
 
     /** The graphics surface to draw on */
     private final Graphics2D graphics;
 
-    protected Java2dDrawingSurface(final Graphics2D graphics, final DrawingRectangle area)
+    protected Java2dDrawingSurface(final String name, final Graphics2D graphics, final DrawingRectangle area)
     {
-        super(area.topLeft(), area.size());
+        super(name);
+
+        origin(area.x(), area.y());
+        extent(area.width(), area.height());
 
         this.graphics = graphics;
 
@@ -106,11 +110,14 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         ensureNotNull(at);
         ensureNotNull(size);
 
+        final var atLocal = at.toCoordinates(this);
+        final var sizeLocal = size.toCoordinates(this);
+
         return draw(style, new Rectangle2D.Double(
-                at.to(this).x(),
-                at.to(this).y(),
-                size.to(this).widthInUnits(),
-                size.to(this).heightInUnits()));
+                atLocal.x(),
+                atLocal.y(),
+                sizeLocal.widthInUnits(),
+                sizeLocal.heightInUnits()));
     }
 
     /**
@@ -126,9 +133,9 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         ensureNotNull(at);
         ensureNotNull(radius);
 
-        final var units = radius.to(this).units();
-        final var x = (int) (at.to(this).x() - units / 2);
-        final var y = (int) (at.to(this).y() - units / 2);
+        final var units = radius.toCoordinates(this).units();
+        final var x = (int) (at.toCoordinates(this).x() - units / 2);
+        final var y = (int) (at.toCoordinates(this).y() - units / 2);
 
         return draw(style, new Ellipse2D.Double(x, y, units, units));
     }
@@ -136,8 +143,8 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
     @Override
     public Shape drawImage(final DrawingPoint at, final Image image, final Composite composite)
     {
-        final var x = (int) at.to(this).rounded().x();
-        final var y = (int) at.to(this).rounded().y();
+        final var x = (int) at.toCoordinates(this).rounded().x();
+        final var y = (int) at.toCoordinates(this).rounded().y();
 
         final var original = graphics.getComposite();
         graphics.setComposite(composite);
@@ -161,10 +168,10 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         ensureNotNull(to);
 
         return draw(style, new Line2D.Double(
-                from.to(this).x(),
-                from.to(this).y(),
-                to.to(this).x(),
-                to.to(this).y()));
+                from.toCoordinates(this).x(),
+                from.toCoordinates(this).y(),
+                to.toCoordinates(this).x(),
+                to.toCoordinates(this).y()));
     }
 
     /**
@@ -196,10 +203,10 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         ensureNotNull(size);
 
         return draw(style, new RoundRectangle2D.Double(
-                at.to(this).x(),
-                at.to(this).y(),
-                size.to(this).widthInUnits(),
-                size.to(this).heightInUnits(),
+                at.toCoordinates(this).x(),
+                at.toCoordinates(this).y(),
+                size.toCoordinates(this).widthInUnits(),
+                size.toCoordinates(this).heightInUnits(),
                 cornerWidth.units(),
                 cornerHeight.units()));
     }
@@ -218,8 +225,8 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         ensureNotNull(text);
 
         final var dy = height(style, text);
-        final var x = at.to(this).x();
-        final var y = at.to(this).y() + dy - fontMetrics(style).getDescent();
+        final var x = at.toCoordinates(this).x();
+        final var y = at.toCoordinates(this).y() + dy - fontMetrics(style).getDescent();
 
         style.textColor().applyAsTextColor(graphics);
         graphics.setFont(style.textFont());
@@ -242,8 +249,8 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
         graphics.setFont(style.textFont());
 
         final var dy = height(style, text);
-        final var x = at.to(this).x();
-        final var y = at.to(this).y() + dy - fontMetrics(style).getDescent();
+        final var x = at.toCoordinates(this).x();
+        final var y = at.toCoordinates(this).y() + dy - fontMetrics(style).getDescent();
 
         final var glyphs = graphics.getFont().createGlyphVector(graphics.getFontRenderContext(), text);
 

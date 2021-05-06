@@ -6,6 +6,7 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.Dra
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint;
+import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingRectangle;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Stroke;
@@ -78,6 +79,11 @@ public class Box extends BaseDrawable
     public DrawingSize size()
     {
         return size;
+    }
+
+    public Box withArea(final DrawingRectangle rectangle)
+    {
+        return withSize(rectangle.size()).at(rectangle.at());
     }
 
     @Override
