@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.primitive.collections.list;
 
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveList;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveList;
 import com.telenav.kivakit.core.kernel.interfaces.factory.LongMapFactory;
 import com.telenav.kivakit.core.kernel.interfaces.numeric.Sized;
-import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.kivakit.core.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.core.kernel.language.values.count.Count;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
  * Interface implemented by primitive lists. Primitive values are treated as longs to unify the different lists and

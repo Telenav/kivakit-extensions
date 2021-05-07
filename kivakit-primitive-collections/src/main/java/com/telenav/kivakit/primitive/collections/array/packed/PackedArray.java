@@ -21,22 +21,22 @@ package com.telenav.kivakit.primitive.collections.array.packed;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.array.scalars.LongArray;
-import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
-import com.telenav.kivakit.primitive.collections.array.PrimitiveArray;
-import com.telenav.kivakit.primitive.collections.list.LongList;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
 import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
 import com.telenav.kivakit.core.kernel.language.objects.Hash;
 import com.telenav.kivakit.core.kernel.language.objects.Objects;
 import com.telenav.kivakit.core.kernel.language.values.count.BitCount;
 import com.telenav.kivakit.core.kernel.language.values.count.Count;
 import com.telenav.kivakit.core.kernel.language.values.count.Estimate;
+import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
+import com.telenav.kivakit.primitive.collections.array.PrimitiveArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.LongArray;
+import com.telenav.kivakit.primitive.collections.list.LongList;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
+import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
 import static com.telenav.kivakit.primitive.collections.array.packed.PackedPrimitiveArray.OverflowHandling.ALLOW_OVERFLOW;
 import static com.telenav.kivakit.primitive.collections.array.packed.PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW;
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * A packed array packs arbitrary bit-length integral values into an underlying long array.

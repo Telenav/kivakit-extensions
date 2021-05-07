@@ -18,10 +18,10 @@
 
 package com.telenav.kivakit.primitive.collections.map;
 
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
+import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
 import com.telenav.kivakit.primitive.collections.map.scalars.IntToByteMap;
 import com.telenav.kivakit.primitive.collections.map.scalars.LongToLongMap;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
-import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**

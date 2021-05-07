@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.primitive.collections.map.multi;
 
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMultiMap;
+import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
 import com.telenav.kivakit.primitive.collections.list.PrimitiveList;
 import com.telenav.kivakit.primitive.collections.map.multi.fixed.IntToByteFixedMultiMap;
 import com.telenav.kivakit.primitive.collections.map.multi.fixed.LongToLongFixedMultiMap;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveMultiMap;
-import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.List;

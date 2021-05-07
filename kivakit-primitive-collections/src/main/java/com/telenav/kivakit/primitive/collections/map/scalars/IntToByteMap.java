@@ -22,15 +22,15 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.map.PrimitiveMap;
-import com.telenav.kivakit.primitive.collections.map.PrimitiveScalarMap;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
-import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
-import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
 import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
-import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.core.kernel.language.values.count.Count;
+import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
+import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
+import com.telenav.kivakit.primitive.collections.map.PrimitiveMap;
+import com.telenav.kivakit.primitive.collections.map.PrimitiveScalarMap;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.Arrays;
 

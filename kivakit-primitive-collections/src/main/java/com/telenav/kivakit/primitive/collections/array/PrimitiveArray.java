@@ -18,10 +18,16 @@
 
 package com.telenav.kivakit.primitive.collections.array;
 
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
 import com.telenav.kivakit.core.kernel.language.values.count.Count;
 import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
-import com.telenav.kivakit.primitive.collections.array.scalars.*;
+import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.IntArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.LongArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.ShortArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.SplitByteArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.SplitIntArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.SplitLongArray;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**

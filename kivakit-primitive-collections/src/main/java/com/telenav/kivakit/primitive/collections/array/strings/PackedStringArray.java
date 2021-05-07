@@ -21,11 +21,8 @@ package com.telenav.kivakit.primitive.collections.array.strings;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.array.PrimitiveArray;
-import com.telenav.kivakit.primitive.collections.array.scalars.SplitByteArray;
-import com.telenav.kivakit.primitive.collections.array.scalars.SplitCharArray;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
 import com.telenav.kivakit.core.collections.map.CacheMap;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
 import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
 import com.telenav.kivakit.core.kernel.language.strings.AsciiArt;
 import com.telenav.kivakit.core.kernel.language.strings.Strings;
@@ -36,6 +33,9 @@ import com.telenav.kivakit.core.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.core.kernel.logging.Logger;
 import com.telenav.kivakit.core.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.core.kernel.messaging.Debug;
+import com.telenav.kivakit.primitive.collections.array.PrimitiveArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.SplitByteArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.SplitCharArray;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**

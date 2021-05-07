@@ -22,20 +22,20 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.array.scalars.LongArray;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMultiMap;
+import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
+import com.telenav.kivakit.core.kernel.language.values.count.BitCount;
 import com.telenav.kivakit.primitive.collections.array.packed.PackedPrimitiveArray;
 import com.telenav.kivakit.primitive.collections.array.packed.SplitPackedArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.IntArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.LongArray;
+import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
 import com.telenav.kivakit.primitive.collections.list.PrimitiveList;
 import com.telenav.kivakit.primitive.collections.map.multi.LongMultiMap;
 import com.telenav.kivakit.primitive.collections.map.multi.PrimitiveMultiMap;
 import com.telenav.kivakit.primitive.collections.map.multi.PrimitiveScalarMultiMap;
 import com.telenav.kivakit.primitive.collections.map.scalars.IntToIntMap;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveMultiMap;
-import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
-import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import com.telenav.kivakit.core.kernel.language.values.count.BitCount;
 
 import java.util.List;
 

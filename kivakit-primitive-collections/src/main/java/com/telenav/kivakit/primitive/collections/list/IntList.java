@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.primitive.collections.list;
 
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveList;
 import com.telenav.kivakit.primitive.collections.IntCollection;
 import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveList;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**

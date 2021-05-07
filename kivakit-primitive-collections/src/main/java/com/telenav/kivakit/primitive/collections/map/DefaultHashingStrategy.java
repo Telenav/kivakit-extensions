@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.primitive.collections.map;
 
-import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
 import com.telenav.kivakit.core.kernel.language.values.count.Count;
 import com.telenav.kivakit.core.kernel.language.values.count.Estimate;
 import com.telenav.kivakit.core.kernel.language.values.level.Percent;
+import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 @UmlClassDiagram(diagram = DiagramPrimitiveMap.class)

@@ -18,14 +18,14 @@
 
 package com.telenav.kivakit.primitive.collections.array.bits.io.input;
 
-import com.telenav.kivakit.primitive.collections.array.bits.BitArray;
-import com.telenav.kivakit.primitive.collections.array.bits.io.BitReader;
-import com.telenav.kivakit.primitive.collections.list.ByteList;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArrayBitIo;
-import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArrayBitIo;
 import com.telenav.kivakit.core.kernel.language.strings.StringTo;
 import com.telenav.kivakit.core.kernel.language.values.count.Count;
 import com.telenav.kivakit.core.kernel.messaging.Message;
+import com.telenav.kivakit.primitive.collections.array.bits.BitArray;
+import com.telenav.kivakit.primitive.collections.array.bits.io.BitReader;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
  * Reads bits from some sequence of bytes.

@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.primitive.collections.list;
 
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveList;
+import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
 import com.telenav.kivakit.primitive.collections.ByteCollection;
 import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveList;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
 
 /**
  * A byte collection supporting indexed operations. The first and last values in the list can be retrieved with {@link

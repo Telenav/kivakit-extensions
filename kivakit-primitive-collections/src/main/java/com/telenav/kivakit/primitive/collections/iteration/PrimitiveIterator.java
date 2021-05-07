@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.primitive.collections.iteration;
 
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
-import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.kivakit.core.kernel.language.objects.Hash;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
  * Base class for primitive iterators, allowing subclasses to be treated the same

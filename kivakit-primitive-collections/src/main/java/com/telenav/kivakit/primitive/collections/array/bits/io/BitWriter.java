@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.primitive.collections.array.bits.io;
 
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArrayBitIo;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArrayBitIo;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.nio.charset.StandardCharsets;

@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.primitive.collections.map;
 
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
 import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 

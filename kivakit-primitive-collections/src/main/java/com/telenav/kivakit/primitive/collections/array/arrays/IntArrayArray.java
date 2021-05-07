@@ -22,15 +22,15 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.array.PrimitiveArrayArray;
-import com.telenav.kivakit.primitive.collections.iteration.IntIterable;
-import com.telenav.kivakit.primitive.collections.array.scalars.IntArray;
-import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArrayArray;
 import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
-import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.kivakit.core.kernel.language.objects.Hash;
 import com.telenav.kivakit.core.kernel.language.objects.Objects;
+import com.telenav.kivakit.primitive.collections.array.PrimitiveArrayArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.IntArray;
+import com.telenav.kivakit.primitive.collections.iteration.IntIterable;
+import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArrayArray;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
  * Optimized storage of two dimensional int arrays. A sequence of {@link IntArray} objects can be added by calling

@@ -22,16 +22,16 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.array.PrimitiveArrayArray;
-import com.telenav.kivakit.primitive.collections.iteration.ByteIterable;
-import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
-import com.telenav.kivakit.primitive.collections.array.scalars.IntArray;
-import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArrayArray;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArrayArray;
 import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
-import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.kivakit.core.kernel.language.objects.Hash;
 import com.telenav.kivakit.core.kernel.language.objects.Objects;
+import com.telenav.kivakit.primitive.collections.array.PrimitiveArrayArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
+import com.telenav.kivakit.primitive.collections.array.scalars.IntArray;
+import com.telenav.kivakit.primitive.collections.iteration.ByteIterable;
+import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
  * Optimized storage of two dimensional byte arrays. A sequence of {@link ByteArray} objects can be added by calling

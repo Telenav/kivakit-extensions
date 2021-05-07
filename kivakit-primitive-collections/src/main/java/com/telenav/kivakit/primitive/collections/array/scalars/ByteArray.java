@@ -22,13 +22,13 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
+import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
+import com.telenav.kivakit.core.kernel.language.strings.StringTo;
 import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
 import com.telenav.kivakit.primitive.collections.array.PrimitiveArray;
 import com.telenav.kivakit.primitive.collections.list.ByteList;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
-import com.telenav.kivakit.core.kernel.language.strings.StringTo;
 
 import java.util.Arrays;
 

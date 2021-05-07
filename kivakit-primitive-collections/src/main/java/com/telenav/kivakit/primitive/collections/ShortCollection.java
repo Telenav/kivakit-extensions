@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.primitive.collections;
 
-import com.telenav.kivakit.primitive.collections.iteration.ShortIterable;
-import com.telenav.kivakit.primitive.collections.iteration.ShortIterator;
-import com.telenav.kivakit.core.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
 import com.telenav.kivakit.core.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.core.kernel.interfaces.naming.NamedObject;
 import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
 import com.telenav.kivakit.core.kernel.interfaces.numeric.Sized;
+import com.telenav.kivakit.primitive.collections.iteration.ShortIterable;
+import com.telenav.kivakit.primitive.collections.iteration.ShortIterator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.List;
