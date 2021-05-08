@@ -1,14 +1,7 @@
 package com.telenav.kivakit.ui.desktop.component;
 
-import com.telenav.kivakit.core.kernel.interfaces.comparison.Filter;
-import com.telenav.kivakit.core.kernel.interfaces.messaging.Transmittable;
 import com.telenav.kivakit.core.kernel.interfaces.value.Source;
-import com.telenav.kivakit.core.kernel.language.objects.Lazy;
-import com.telenav.kivakit.core.kernel.language.threading.context.CodeContext;
-import com.telenav.kivakit.core.kernel.messaging.Listener;
-import com.telenav.kivakit.core.kernel.messaging.Message;
-import com.telenav.kivakit.core.kernel.messaging.Repeater;
-import com.telenav.kivakit.core.kernel.messaging.repeaters.BaseRepeater;
+import com.telenav.kivakit.core.kernel.messaging.repeaters.RepeaterTrait;
 import com.telenav.kivakit.ui.desktop.layout.Margins;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 
@@ -39,10 +32,8 @@ import java.awt.event.AdjustmentListener;
 /**
  * @author jonathanl (shibo)
  */
-public class KivaKitPanel extends JPanel implements Repeater
+public class KivaKitPanel extends JPanel implements RepeaterTrait
 {
-    private final Lazy<BaseRepeater> repeater = Lazy.of(() -> new BaseRepeater("kivakit-panel-repeater", getClass()));
-
     public KivaKitPanel()
     {
         theme().applyToContainerPanel(this);
@@ -51,24 +42,6 @@ public class KivaKitPanel extends JPanel implements Repeater
     public KivaKitPanel(final LayoutManager layout)
     {
         super(layout);
-    }
-
-    @Override
-    public void addListener(final Listener listener)
-    {
-        repeater.get().addListener(listener);
-    }
-
-    @Override
-    public void addListener(final Listener listener, final Filter<Transmittable> filter)
-    {
-        repeater.get().addListener(listener, filter);
-    }
-
-    @Override
-    public void clearListeners()
-    {
-        repeater.get().clearListeners();
     }
 
     public JButton configure(final JButton button)
@@ -146,28 +119,10 @@ public class KivaKitPanel extends JPanel implements Repeater
         return theme().applyToShadedSubPanel(panel);
     }
 
-    @Override
-    public CodeContext debugCodeContext()
-    {
-        return repeater.get().debugCodeContext();
-    }
-
-    @Override
-    public void debugCodeContext(final CodeContext context)
-    {
-        repeater.get().debugCodeContext(context);
-    }
-
     public void debugColor()
     {
         setOpaque(true);
         Components.debugColor(this);
-    }
-
-    @Override
-    public boolean hasListeners()
-    {
-        return repeater.get().hasListeners();
     }
 
     public boolean isDark()
@@ -341,21 +296,9 @@ public class KivaKitPanel extends JPanel implements Repeater
         return theme().newVerticalSplitPane(top, bottom);
     }
 
-    @Override
-    public void onMessage(final Message message)
-    {
-        repeater.get().onMessage(message);
-    }
-
     public void popupInformation(final JFrame frame, final String title, final String message)
     {
         theme().popupInformation(frame, title, message);
-    }
-
-    @Override
-    public void removeListener(final Listener listener)
-    {
-        repeater.get().removeListener(listener);
     }
 
     public Font smallComponentFont()
@@ -366,12 +309,6 @@ public class KivaKitPanel extends JPanel implements Repeater
     public Font tableFont()
     {
         return theme().tableFont();
-    }
-
-    @Override
-    public void transmit(final Message message)
-    {
-        repeater.get().transmit(message);
     }
 
     protected KivaKitTheme theme()
