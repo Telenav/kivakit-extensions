@@ -18,16 +18,16 @@
 
 package com.telenav.kivakit.data.compression.project;
 
-import com.telenav.kivakit.core.kernel.language.collections.map.count.CountMap;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
-import com.telenav.kivakit.core.kernel.language.values.count.Minimum;
-import com.telenav.kivakit.core.kernel.language.values.count.MutableCount;
-import com.telenav.kivakit.core.kernel.language.values.mutable.MutableValue;
-import com.telenav.kivakit.core.resource.resources.other.PropertyMap;
-import com.telenav.kivakit.core.resource.resources.packaged.PackageResource;
-import com.telenav.kivakit.core.serialization.kryo.CoreKernelKryoTypes;
-import com.telenav.kivakit.core.serialization.kryo.KryoTypes;
-import com.telenav.kivakit.core.serialization.kryo.KryoUnitTest;
+import com.telenav.kivakit.kernel.language.collections.map.count.CountMap;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.count.Minimum;
+import com.telenav.kivakit.kernel.language.values.count.MutableCount;
+import com.telenav.kivakit.kernel.language.values.mutable.MutableValue;
+import com.telenav.kivakit.resource.resources.other.PropertyMap;
+import com.telenav.kivakit.resource.resources.packaged.PackageResource;
+import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
+import com.telenav.kivakit.serialization.kryo.KryoTypes;
+import com.telenav.kivakit.serialization.kryo.KryoUnitTest;
 import com.telenav.kivakit.data.compression.Codec;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolProducer;

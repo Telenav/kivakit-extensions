@@ -19,12 +19,12 @@
 package com.telenav.kivakit.primitive.collections.list.store;
 
 import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
-import com.telenav.kivakit.core.kernel.language.values.mutable.MutableValue;
+import com.telenav.kivakit.kernel.language.values.mutable.MutableValue;
 import org.junit.Test;
 
 import java.util.Collections;
 
-import static com.telenav.kivakit.core.test.UnitTest.Repeats.ALLOW_REPEATS;
+import static com.telenav.kivakit.test.UnitTest.Repeats.ALLOW_REPEATS;
 
 public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
 {

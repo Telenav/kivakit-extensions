@@ -1,6 +1,6 @@
 open module kivakit.data.formats.csv
 {
-    requires transitive kivakit.core.resource;
+    requires transitive kivakit.resource;
 
     exports com.telenav.kivakit.data.formats.csv;
     exports com.telenav.kivakit.data.formats.csv.project;

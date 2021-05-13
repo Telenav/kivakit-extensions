@@ -1,6 +1,6 @@
 open module kivakit.data.formats.library
 {
-    requires transitive kivakit.core.resource;
+    requires transitive kivakit.resource;
 
     exports com.telenav.kivakit.data.formats.library;
     exports com.telenav.kivakit.data.formats.library.project;

@@ -62,12 +62,12 @@ import com.telenav.kivakit.primitive.collections.set.SplitLongSet;
 import com.telenav.kivakit.primitive.collections.map.multi.fixed.IntToByteFixedMultiMap;
 import com.telenav.kivakit.primitive.collections.map.multi.fixed.IntToLongFixedMultiMap;
 import com.telenav.kivakit.primitive.collections.map.multi.fixed.LongToLongFixedMultiMap;
-import com.telenav.kivakit.core.kernel.language.collections.list.LinkedObjectList;
-import com.telenav.kivakit.core.serialization.kryo.KryoTypes;
+import com.telenav.kivakit.kernel.language.collections.list.LinkedObjectList;
+import com.telenav.kivakit.serialization.kryo.KryoTypes;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Kryo type registrations for objects in the kivakit-core-collections module
+ * Kryo type registrations for objects in the kivakit-collections module
  *
  * @author jonathanl (shibo)
  */

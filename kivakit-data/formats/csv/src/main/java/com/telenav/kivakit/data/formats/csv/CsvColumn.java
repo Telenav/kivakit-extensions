@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.data.formats.csv;
 
-import com.telenav.kivakit.core.kernel.data.conversion.string.StringConverter;
-import com.telenav.kivakit.core.kernel.language.values.name.Name;
+import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
+import com.telenav.kivakit.kernel.language.values.name.Name;
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;

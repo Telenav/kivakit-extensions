@@ -13,7 +13,7 @@ import java.awt.Image;
 import java.awt.Shape;
 import java.awt.geom.Path2D;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * @author jonathanl (shibo)

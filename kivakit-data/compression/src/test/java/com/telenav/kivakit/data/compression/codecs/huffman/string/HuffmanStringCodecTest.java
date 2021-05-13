@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.string;
 
-import com.telenav.kivakit.core.kernel.language.progress.reporters.Progress;
-import com.telenav.kivakit.core.kernel.messaging.Listener;
+import com.telenav.kivakit.kernel.language.progress.reporters.Progress;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.data.compression.project.DataCompressionUnitTest;
 import org.junit.Test;
 

@@ -9,7 +9,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import java.util.ArrayList;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 
 /**
  * @author jonathanl (shibo)

@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman;
 
-import com.telenav.kivakit.core.kernel.data.conversion.string.StringConverter;
-import com.telenav.kivakit.core.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.core.kernel.language.primitives.Ints;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
-import com.telenav.kivakit.core.kernel.language.values.count.Maximum;
-import com.telenav.kivakit.core.resource.resources.other.PropertyMap;
+import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
+import com.telenav.kivakit.kernel.language.primitives.Ints;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.count.Maximum;
+import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.kivakit.data.compression.Codec;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolProducer;
@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * A general-purpose Huffman coder implementing {@link Codec} which works for any arbitrary symbol type. This design

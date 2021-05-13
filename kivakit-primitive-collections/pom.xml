@@ -25,17 +25,17 @@
 
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-core-serialization-kryo</artifactId>
+            <artifactId>kivakit-serialization-kryo</artifactId>
             <version>${kivakit.version}</version>
         </dependency>
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-core-test</artifactId>
+            <artifactId>kivakit-test</artifactId>
             <version>${kivakit.version}</version>
         </dependency>
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-core-collections</artifactId>
+            <artifactId>kivakit-collections</artifactId>
             <version>${kivakit.version}</version>
         </dependency>
 

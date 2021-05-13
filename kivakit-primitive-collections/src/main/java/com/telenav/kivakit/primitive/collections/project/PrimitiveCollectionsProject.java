@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.primitive.collections.project;
 
-import com.telenav.kivakit.core.kernel.language.objects.Lazy;
-import com.telenav.kivakit.core.kernel.project.Project;
+import com.telenav.kivakit.kernel.language.objects.Lazy;
+import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-core-collections
+ * Project class for kivakit-collections
  *
  * @author jonathanl (shibo)
  */

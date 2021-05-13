@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.ui.desktop.theme;
 
-import com.telenav.kivakit.core.kernel.interfaces.value.Source;
-import com.telenav.kivakit.core.kernel.messaging.Message;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Quibble;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Success;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Warning;
+import com.telenav.kivakit.kernel.interfaces.value.Source;
+import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.kernel.messaging.messages.status.Quibble;
+import com.telenav.kivakit.kernel.messaging.messages.status.Success;
+import com.telenav.kivakit.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 import com.telenav.kivakit.ui.desktop.component.dropdown.DropDownRenderer;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;

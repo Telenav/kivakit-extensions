@@ -19,15 +19,15 @@
 package com.telenav.kivakit.primitive.collections.array.scalars;
 
 import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
-import com.telenav.kivakit.core.kernel.language.values.mutable.MutableInteger;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.mutable.MutableInteger;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 
-import static com.telenav.kivakit.core.test.UnitTest.Repeats.ALLOW_REPEATS;
-import static com.telenav.kivakit.core.test.UnitTest.Repeats.NO_REPEATS;
+import static com.telenav.kivakit.test.UnitTest.Repeats.ALLOW_REPEATS;
+import static com.telenav.kivakit.test.UnitTest.Repeats.NO_REPEATS;
 
 public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
 {

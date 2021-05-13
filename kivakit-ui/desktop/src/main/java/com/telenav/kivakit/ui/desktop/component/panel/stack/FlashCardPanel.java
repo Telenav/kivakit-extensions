@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.component.panel.stack;
 
-import com.telenav.kivakit.core.kernel.language.time.Duration;
+import com.telenav.kivakit.kernel.language.time.Duration;
 
 import javax.swing.*;
 import java.awt.*;

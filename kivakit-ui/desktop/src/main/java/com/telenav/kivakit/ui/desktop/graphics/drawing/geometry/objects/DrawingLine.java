@@ -25,7 +25,7 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingSlope;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * A line between two {@link DrawingPoint}s with a {@link DrawingSlope}. The points must be in the same {@link

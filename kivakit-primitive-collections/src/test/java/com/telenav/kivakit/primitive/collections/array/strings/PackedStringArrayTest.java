@@ -19,7 +19,7 @@
 package com.telenav.kivakit.primitive.collections.array.strings;
 
 import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
-import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
+import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
 import org.junit.Test;
 
 public class PackedStringArrayTest extends PrimitiveCollectionsUnitTest

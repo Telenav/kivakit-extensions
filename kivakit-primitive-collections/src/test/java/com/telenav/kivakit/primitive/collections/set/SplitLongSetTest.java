@@ -19,7 +19,7 @@
 package com.telenav.kivakit.primitive.collections.set;
 
 import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
-import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
+import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
 import org.junit.Test;
 
 import java.util.*;

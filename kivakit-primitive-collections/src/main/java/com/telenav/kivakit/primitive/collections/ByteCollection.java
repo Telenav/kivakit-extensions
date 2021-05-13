@@ -19,17 +19,17 @@
 package com.telenav.kivakit.primitive.collections;
 
 import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
-import com.telenav.kivakit.core.kernel.interfaces.naming.Named;
-import com.telenav.kivakit.core.kernel.interfaces.naming.NamedObject;
-import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.core.kernel.interfaces.numeric.Sized;
+import com.telenav.kivakit.kernel.interfaces.naming.Named;
+import com.telenav.kivakit.kernel.interfaces.naming.NamedObject;
+import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
+import com.telenav.kivakit.kernel.interfaces.numeric.Sized;
 import com.telenav.kivakit.primitive.collections.iteration.ByteIterable;
 import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.List;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
  * A collection of primitive byte values. All primitive collections have a name that can be retrieved with {@link

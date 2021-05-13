@@ -1,7 +1,7 @@
 package com.telenav.kivakit.ui.desktop.component.version;
 
-import com.telenav.kivakit.core.kernel.KivaKit;
-import com.telenav.kivakit.core.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.KivaKit;
+import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 
 import javax.swing.*;

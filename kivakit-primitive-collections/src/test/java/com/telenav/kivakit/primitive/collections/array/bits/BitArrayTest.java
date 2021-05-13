@@ -21,9 +21,9 @@ package com.telenav.kivakit.primitive.collections.array.bits;
 import com.telenav.kivakit.primitive.collections.array.bits.io.BitReader;
 import com.telenav.kivakit.primitive.collections.array.bits.io.BitWriter;
 import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
-import com.telenav.kivakit.core.kernel.language.bits.Bits;
-import com.telenav.kivakit.core.kernel.language.io.IO;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.bits.Bits;
+import com.telenav.kivakit.kernel.language.io.IO;
+import com.telenav.kivakit.kernel.language.values.count.Count;
 import org.junit.Test;
 
 public class BitArrayTest extends PrimitiveCollectionsUnitTest

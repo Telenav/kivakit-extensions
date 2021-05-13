@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.math.statistics;
 
-import com.telenav.kivakit.core.kernel.language.time.Duration;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
 
 public class AverageDurationTest extends UnitTest

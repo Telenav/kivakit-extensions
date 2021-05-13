@@ -23,7 +23,7 @@ import com.telenav.kivakit.primitive.collections.list.ByteList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
  * A source of input symbols for a {@link Codec} to compress. Symbols can be retrieved by the codec through the {@link

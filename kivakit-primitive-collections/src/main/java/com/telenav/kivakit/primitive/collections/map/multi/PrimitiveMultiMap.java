@@ -19,15 +19,15 @@
 package com.telenav.kivakit.primitive.collections.map.multi;
 
 import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMultiMap;
-import com.telenav.kivakit.core.kernel.interfaces.collection.Keyed;
-import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.kernel.language.strings.Indent;
+import com.telenav.kivakit.kernel.interfaces.collection.Keyed;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.language.strings.Indent;
 import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
 import com.telenav.kivakit.primitive.collections.iteration.PrimitiveIterator;
 import com.telenav.kivakit.primitive.collections.map.PrimitiveMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 @UmlClassDiagram(diagram = DiagramPrimitiveMultiMap.class)
 public abstract class PrimitiveMultiMap extends PrimitiveMap

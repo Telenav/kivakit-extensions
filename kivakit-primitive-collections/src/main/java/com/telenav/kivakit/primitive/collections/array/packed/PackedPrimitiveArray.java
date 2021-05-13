@@ -19,7 +19,7 @@
 package com.telenav.kivakit.primitive.collections.array.packed;
 
 import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArray;
-import com.telenav.kivakit.core.kernel.language.values.count.BitCount;
+import com.telenav.kivakit.kernel.language.values.count.BitCount;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**

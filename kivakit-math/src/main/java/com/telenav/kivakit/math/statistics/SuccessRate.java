@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.math.statistics;
 
-import com.telenav.kivakit.core.kernel.language.values.level.Percent;
+import com.telenav.kivakit.kernel.language.values.level.Percent;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import java.util.concurrent.atomic.AtomicInteger;

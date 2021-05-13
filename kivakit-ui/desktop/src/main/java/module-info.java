@@ -2,7 +2,7 @@ open module kivakit.ui.desktop
 {
     requires transitive java.desktop;
 
-    requires transitive kivakit.core.resource;
+    requires transitive kivakit.resource;
 
     requires transitive com.formdev.flatlaf;
 

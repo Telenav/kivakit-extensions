@@ -1,8 +1,8 @@
 package com.telenav.kivakit.ui.desktop.component.searchlist;
 
-import com.telenav.kivakit.core.kernel.data.conversion.string.StringConverter;
-import com.telenav.kivakit.core.kernel.interfaces.code.Callback;
-import com.telenav.kivakit.core.kernel.language.strings.Strings;
+import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
+import com.telenav.kivakit.kernel.interfaces.code.Callback;
+import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 import com.telenav.kivakit.ui.desktop.component.icon.search.MagnifyingGlass;
 import com.telenav.kivakit.ui.desktop.layout.HorizontalBox;

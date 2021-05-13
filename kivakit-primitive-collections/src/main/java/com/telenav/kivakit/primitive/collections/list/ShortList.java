@@ -19,9 +19,9 @@
 package com.telenav.kivakit.primitive.collections.list;
 
 import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveList;
-import com.telenav.kivakit.core.kernel.interfaces.naming.Named;
-import com.telenav.kivakit.core.kernel.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.core.kernel.interfaces.numeric.Sized;
+import com.telenav.kivakit.kernel.interfaces.naming.Named;
+import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
+import com.telenav.kivakit.kernel.interfaces.numeric.Sized;
 import com.telenav.kivakit.primitive.collections.ShortCollection;
 import com.telenav.kivakit.primitive.collections.iteration.ShortIterable;
 import com.telenav.kivakit.primitive.collections.iteration.ShortIterator;

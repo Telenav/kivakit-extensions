@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.primitive.collections.project;
 
-import com.telenav.kivakit.core.serialization.kryo.CoreKernelKryoTypes;
-import com.telenav.kivakit.core.serialization.kryo.KryoTypes;
-import com.telenav.kivakit.core.serialization.kryo.KryoUnitTest;
+import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
+import com.telenav.kivakit.serialization.kryo.KryoTypes;
+import com.telenav.kivakit.serialization.kryo.KryoUnitTest;
 
 /**
  * This is the base test class for all unit tests. It provides some methods common to all tests.

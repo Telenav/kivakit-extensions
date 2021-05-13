@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.tree;
 
-import com.telenav.kivakit.core.kernel.language.strings.StringTo;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
-import com.telenav.kivakit.core.kernel.messaging.Message;
+import com.telenav.kivakit.kernel.language.strings.StringTo;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.messaging.Message;
 
 /**
  * An encoded symbol in a Huffman {@link Tree}, having a symbol value, a frequency and a {@link Code}.

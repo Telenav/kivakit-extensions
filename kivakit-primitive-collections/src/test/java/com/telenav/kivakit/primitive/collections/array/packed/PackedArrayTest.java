@@ -19,7 +19,7 @@
 package com.telenav.kivakit.primitive.collections.array.packed;
 
 import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
-import com.telenav.kivakit.core.kernel.language.values.count.BitCount;
+import com.telenav.kivakit.kernel.language.values.count.BitCount;
 import org.junit.Test;
 
 public class PackedArrayTest extends PrimitiveCollectionsUnitTest

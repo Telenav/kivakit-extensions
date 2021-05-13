@@ -19,7 +19,7 @@
 package com.telenav.kivakit.data.compression.codecs.huffman.list;
 
 import com.telenav.kivakit.primitive.collections.list.ByteList;
-import com.telenav.kivakit.core.kernel.language.values.mutable.MutableIndex;
+import com.telenav.kivakit.kernel.language.values.mutable.MutableIndex;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolProducer;
 import com.telenav.kivakit.data.compression.codecs.CharacterCodec;

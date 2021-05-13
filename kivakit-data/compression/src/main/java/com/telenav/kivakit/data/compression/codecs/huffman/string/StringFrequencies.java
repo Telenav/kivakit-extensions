@@ -18,10 +18,10 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.string;
 
-import com.telenav.kivakit.core.kernel.language.collections.map.count.CountMap;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
-import com.telenav.kivakit.core.kernel.language.values.count.Maximum;
-import com.telenav.kivakit.core.kernel.language.values.count.Minimum;
+import com.telenav.kivakit.kernel.language.collections.map.count.CountMap;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.count.Maximum;
+import com.telenav.kivakit.kernel.language.values.count.Minimum;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
 
 /**

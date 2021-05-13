@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.model;
 
-import com.telenav.kivakit.core.kernel.language.threading.locks.ReadWriteLock;
+import com.telenav.kivakit.kernel.language.threading.locks.ReadWriteLock;
 
 import javax.swing.*;
 import java.io.Serializable;

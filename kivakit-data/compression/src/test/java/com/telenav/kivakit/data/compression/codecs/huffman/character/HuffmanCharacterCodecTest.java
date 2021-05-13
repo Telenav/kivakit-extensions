@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.character;
 
-import com.telenav.kivakit.core.kernel.language.progress.reporters.Progress;
+import com.telenav.kivakit.kernel.language.progress.reporters.Progress;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.project.DataCompressionUnitTest;
 import org.junit.Test;

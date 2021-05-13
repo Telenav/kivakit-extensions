@@ -18,16 +18,16 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.tree;
 
-import com.telenav.kivakit.core.kernel.data.conversion.string.StringConverter;
-import com.telenav.kivakit.core.kernel.language.collections.list.ObjectList;
-import com.telenav.kivakit.core.kernel.language.collections.map.count.CountMap;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
-import com.telenav.kivakit.core.kernel.language.values.count.Maximum;
-import com.telenav.kivakit.core.kernel.language.values.count.Minimum;
-import com.telenav.kivakit.core.kernel.messaging.Message;
-import com.telenav.kivakit.core.resource.Resource;
-import com.telenav.kivakit.core.resource.WritableResource;
-import com.telenav.kivakit.core.resource.resources.other.PropertyMap;
+import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
+import com.telenav.kivakit.kernel.language.collections.map.count.CountMap;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.count.Maximum;
+import com.telenav.kivakit.kernel.language.values.count.Minimum;
+import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.resource.Resource;
+import com.telenav.kivakit.resource.WritableResource;
+import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 
 import java.util.Comparator;
@@ -36,7 +36,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.function.Function;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * A set of {@link CodedSymbol}s, optionally including an escape symbol, that can be used to construct a {@link
