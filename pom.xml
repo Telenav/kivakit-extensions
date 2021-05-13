@@ -72,10 +72,6 @@
         <jakarta.activation.version>1.2.2</jakarta.activation.version>
         <java-mail.version>1.6.2</java-mail.version>
 
-        <!-- Legacy Road Name Standardizer -->
-
-        <g2.standardizer.version>2.0.0.137005</g2.standardizer.version>
-
         <!-- Protocols -->
 
         <protobuf.version>3.11.4</protobuf.version>
@@ -173,6 +169,10 @@
 
     <build>
 
+        <directory>target.nosync</directory>
+        <outputDirectory>target.nosync/classes</outputDirectory>
+        <testOutputDirectory>target.nosync/test-classes</testOutputDirectory>
+
         <plugins>
 
             <!-- Create project.properties and build.properties files -->
@@ -196,12 +196,13 @@
                                 </condition>
                                 <taskdef resource = "net/sf/antcontrib/antcontrib.properties" classpathref = "maven.plugin.classpath"/>
                                 <if>
+                                    <!--suppress MavenModelInspection -->
                                     <equals arg1 = "${source.exists}" arg2 = "true"/>
                                     <then>
                                         <echo file = "src/main/java/project.properties">
                                             project-name        = ${project.name}${line.separator}project-version     = ${project.version}${line.separator}project-group-id    = ${project.groupId}${line.separator}project-artifact-id = ${project.artifactId}
                                         </echo>
-                                        <java jar = "${env.KIVAKIT_DATA_HOME}/docs/applications/kivakit-build-metadata-${env.KIVAKIT_BUILD_METADATA_VERSION}.jar"
+                                        <java jar = "${env.KIVAKIT_ASSETS_HOME}/docs/applications/cactus-build-metadata-${env.KIVAKIT_BUILD_METADATA_VERSION}.jar"
                                               failonerror = "true"
                                               fork = "true">
                                             <arg value = "src/main/java"/>
@@ -211,7 +212,7 @@
                                         <echo file = "${project.basedir}/project.properties">
                                             project-name        = ${project.name}${line.separator}project-version     = ${project.version}${line.separator}project-group-id    = ${project.groupId}${line.separator}project-artifact-id = ${project.artifactId}
                                         </echo>
-                                        <java jar = "${env.KIVAKIT_DATA_HOME}/docs/applications/kivakit-build-metadata-${env.KIVAKIT_BUILD_METADATA_VERSION}.jar"
+                                        <java jar = "${env.KIVAKIT_ASSETS_HOME}/docs/applications/cactus-build-metadata-${env.KIVAKIT_BUILD_METADATA_VERSION}.jar"
                                               failonerror = "true"
                                               fork = "true">
                                             <arg value = "${project.basedir}"/>
@@ -309,8 +310,10 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M5</version>
                     <configuration>
+                        <!--suppress MavenModelInspection -->
                         <excludedGroups>${exclude.test.groups}</excludedGroups>
                         <systemPropertyVariables>
+                            <!--suppress MavenModelInspection -->
                             <testQuick>${testQuick}</testQuick>
                         </systemPropertyVariables>
                         <argLine>-Xmx2g</argLine>
@@ -329,7 +332,7 @@
                         <detectJavaApiLink>false</detectJavaApiLink>
                         <doclint>none</doclint>
                         <nohelp>true</nohelp>
-                        <reportOutputDirectory>${env.KIVAKIT_DATA_HOME}/docs/javadoc</reportOutputDirectory>
+                        <reportOutputDirectory>${env.KIVAKIT_ASSETS_HOME}/docs/javadoc</reportOutputDirectory>
                         <destDir>kivakit-extensions</destDir>
                         <additionalOptions>-notimestamp --show-module-contents all --show-packages all --show-types private</additionalOptions>
                     </configuration>
