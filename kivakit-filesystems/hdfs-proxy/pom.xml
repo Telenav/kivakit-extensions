@@ -1,5 +1,6 @@
 <project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-filesystems</artifactId>
@@ -13,7 +14,13 @@
     <packaging>jar</packaging>
 
     <properties>
+
         <jar.name>kivakit-hdfs-proxy-${kivakit.version}</jar.name>
+
+        <hdfs.version>3.3.0</hdfs.version>
+
+        <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
+
     </properties>
 
     <dependencies>
@@ -46,7 +53,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.4.1</version>
+            <version>${httpclient.version}</version>
         </dependency>
 
         <!-- Hadoop -->
@@ -54,7 +61,7 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-hdfs</artifactId>
-            <version>3.3.0</version>
+            <version>${hdfs.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.ws.rs</groupId>
@@ -65,12 +72,12 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-hdfs-client</artifactId>
-            <version>3.3.0</version>
+            <version>${hdfs.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <version>3.3.0</version>
+            <version>${hdfs.version}</version>
         </dependency>
 
     </dependencies>
@@ -80,6 +87,7 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-jar-plugin</artifactId>
+              <version>${maven-jar-plugin.version}</version>
               <configuration>
                 <archive>
                   <manifestEntries>
@@ -122,7 +130,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-antrun-plugin</artifactId>
-                        <version>3.0.0</version>
+                        <version>${maven-antrun-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>install-kivakit-hdfs-proxy</id>
