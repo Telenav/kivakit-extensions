@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.component.status;
 
-import com.telenav.kivakit.core.kernel.language.time.Duration;
+import com.telenav.kivakit.kernel.language.time.Duration;
 
 /**
  * Displays a short feedback string for a given duration.

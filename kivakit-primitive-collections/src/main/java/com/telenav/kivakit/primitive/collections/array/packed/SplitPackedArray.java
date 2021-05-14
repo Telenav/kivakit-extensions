@@ -22,11 +22,11 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveSplitArray;
-import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
-import com.telenav.kivakit.core.kernel.language.objects.Hash;
-import com.telenav.kivakit.core.kernel.language.objects.Objects;
-import com.telenav.kivakit.core.kernel.language.values.count.BitCount;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
+import com.telenav.kivakit.kernel.language.objects.Hash;
+import com.telenav.kivakit.kernel.language.objects.Objects;
+import com.telenav.kivakit.kernel.language.values.count.BitCount;
+import com.telenav.kivakit.kernel.language.values.count.Count;
 import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
 import com.telenav.kivakit.primitive.collections.array.PrimitiveSplitArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.SplitByteArray;
@@ -38,8 +38,8 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.Arrays;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
  * {@link SplitPackedArray} maintains an array of packed arrays, indexing them as a single larger array. The purpose in

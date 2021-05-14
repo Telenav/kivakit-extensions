@@ -1,7 +1,7 @@
 package com.telenav.kivakit.ui.desktop.component;
 
-import com.telenav.kivakit.core.kernel.interfaces.value.Source;
-import com.telenav.kivakit.core.kernel.messaging.repeaters.RepeaterTrait;
+import com.telenav.kivakit.kernel.interfaces.value.Source;
+import com.telenav.kivakit.kernel.messaging.repeaters.RepeaterTrait;
 import com.telenav.kivakit.ui.desktop.layout.Margins;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 

@@ -29,7 +29,7 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingP
 
 import java.util.Objects;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingPoint.pixels;
 import static java.lang.Double.MAX_VALUE;
 

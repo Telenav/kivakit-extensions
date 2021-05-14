@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.data.formats.csv;
 
-import com.telenav.kivakit.core.kernel.language.collections.list.ObjectList;
-import com.telenav.kivakit.core.kernel.language.collections.map.string.NameMap;
-import com.telenav.kivakit.core.kernel.language.collections.set.ObjectSet;
-import com.telenav.kivakit.core.kernel.language.values.count.Maximum;
-import com.telenav.kivakit.core.kernel.messaging.repeaters.BaseRepeater;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
+import com.telenav.kivakit.kernel.language.collections.map.string.NameMap;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
+import com.telenav.kivakit.kernel.language.values.count.Maximum;
+import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;

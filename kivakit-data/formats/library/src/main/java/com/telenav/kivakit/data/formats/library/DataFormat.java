@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.data.formats.library;
 
-import com.telenav.kivakit.core.resource.Resource;
+import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.data.formats.library.project.lexakai.diagrams.DiagramDataFormat;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 
 /**
  * Identifying values for common data formats.

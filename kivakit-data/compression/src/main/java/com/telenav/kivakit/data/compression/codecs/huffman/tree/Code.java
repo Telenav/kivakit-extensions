@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.tree;
 
-import com.telenav.kivakit.core.kernel.language.strings.Align;
-import com.telenav.kivakit.core.kernel.language.strings.Strings;
+import com.telenav.kivakit.kernel.language.strings.Align;
+import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.primitive.collections.array.bits.io.BitWriter;
 
 /**

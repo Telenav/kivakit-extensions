@@ -19,10 +19,10 @@
 package com.telenav.kivakit.primitive.collections.map;
 
 import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
-import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 @UmlClassDiagram(diagram = DiagramPrimitiveMap.class)
 public abstract class SplitPrimitiveMap extends PrimitiveMap

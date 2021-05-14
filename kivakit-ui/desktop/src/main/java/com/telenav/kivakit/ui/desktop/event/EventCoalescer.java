@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.ui.desktop.event;
 
-import com.telenav.kivakit.core.kernel.language.time.Frequency;
+import com.telenav.kivakit.kernel.language.time.Frequency;
 
 import javax.swing.*;
 

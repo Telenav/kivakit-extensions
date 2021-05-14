@@ -24,7 +24,7 @@ import org.junit.Test;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection.Method;
+import static com.telenav.kivakit.kernel.language.collections.CompressibleCollection.Method;
 
 public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
 {

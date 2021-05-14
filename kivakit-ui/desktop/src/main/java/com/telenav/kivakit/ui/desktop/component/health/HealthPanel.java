@@ -2,8 +2,8 @@ package com.telenav.kivakit.ui.desktop.component.health;
 
 import com.telenav.kivakit.ui.desktop.component.version.KivaKitBuild;
 import com.telenav.kivakit.ui.desktop.component.panel.stack.FlashCardPanel;
-import com.telenav.kivakit.core.kernel.language.time.Duration;
-import com.telenav.kivakit.core.kernel.language.vm.JavaVirtualMachineHealth;
+import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachineHealth;
 
 import java.awt.*;
 

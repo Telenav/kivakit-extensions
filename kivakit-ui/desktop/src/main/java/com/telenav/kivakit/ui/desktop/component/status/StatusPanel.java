@@ -1,13 +1,13 @@
 package com.telenav.kivakit.ui.desktop.component.status;
 
-import com.telenav.kivakit.core.kernel.language.time.Duration;
-import com.telenav.kivakit.core.kernel.language.vm.JavaVirtualMachineHealth;
-import com.telenav.kivakit.core.kernel.messaging.Listener;
-import com.telenav.kivakit.core.kernel.messaging.Message;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Announcement;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Information;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.core.kernel.messaging.messages.status.Warning;
+import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachineHealth;
+import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.kernel.messaging.messages.status.Announcement;
+import com.telenav.kivakit.kernel.messaging.messages.status.Information;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.desktop.component.health.HealthPanel;
 import com.telenav.kivakit.ui.desktop.component.icon.logo.kivakit.KivaKitLogo;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Style;

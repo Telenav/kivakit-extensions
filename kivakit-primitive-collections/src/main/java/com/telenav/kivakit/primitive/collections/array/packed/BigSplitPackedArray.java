@@ -21,9 +21,9 @@ package com.telenav.kivakit.primitive.collections.array.packed;
 import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
 import com.telenav.kivakit.primitive.collections.array.PrimitiveSplitArray;
 import com.telenav.kivakit.primitive.collections.iteration.LongIterator;
-import com.telenav.kivakit.core.kernel.language.collections.CompressibleCollection;
-import com.telenav.kivakit.core.kernel.language.values.count.BitCount;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
+import com.telenav.kivakit.kernel.language.values.count.BitCount;
+import com.telenav.kivakit.kernel.language.values.count.Count;
 
 import java.util.ArrayList;
 import java.util.List;

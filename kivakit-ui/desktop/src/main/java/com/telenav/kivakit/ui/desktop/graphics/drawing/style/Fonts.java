@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static java.awt.font.TextAttribute.FAMILY;
 import static java.awt.font.TextAttribute.SIZE;
 import static java.awt.font.TextAttribute.WEIGHT;

@@ -30,7 +30,7 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingP
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingRectangle;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.objects.DrawingSize;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
  * An object in a {@link CoordinateSystem}. The <i>normalized()</i> methods convert geometric objects from their

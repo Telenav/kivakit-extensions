@@ -1,9 +1,9 @@
 package com.telenav.kivakit.ui.desktop.component.progress;
 
-import com.telenav.kivakit.core.kernel.interfaces.code.Callback;
-import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.core.kernel.messaging.Message;
+import com.telenav.kivakit.kernel.interfaces.code.Callback;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.language.values.level.Percent;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 import com.telenav.kivakit.ui.desktop.layout.HorizontalBoxLayout;
 import com.telenav.kivakit.ui.desktop.layout.Size;

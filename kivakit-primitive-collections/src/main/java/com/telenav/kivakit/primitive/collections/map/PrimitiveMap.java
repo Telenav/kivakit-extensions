@@ -21,16 +21,16 @@ package com.telenav.kivakit.primitive.collections.map;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.core.kernel.language.objects.Hash;
-import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.kernel.language.progress.reporters.Progress;
-import com.telenav.kivakit.core.kernel.language.strings.Indent;
-import com.telenav.kivakit.core.kernel.language.values.count.Count;
-import com.telenav.kivakit.core.kernel.language.values.level.Percent;
-import com.telenav.kivakit.core.kernel.language.values.name.Name;
-import com.telenav.kivakit.core.kernel.logging.Logger;
-import com.telenav.kivakit.core.kernel.logging.LoggerFactory;
-import com.telenav.kivakit.core.kernel.messaging.Debug;
+import com.telenav.kivakit.kernel.language.objects.Hash;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.language.progress.reporters.Progress;
+import com.telenav.kivakit.kernel.language.strings.Indent;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.level.Percent;
+import com.telenav.kivakit.kernel.language.values.name.Name;
+import com.telenav.kivakit.kernel.logging.Logger;
+import com.telenav.kivakit.kernel.logging.LoggerFactory;
+import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
 import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
 import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
@@ -43,9 +43,9 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.fail;
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.illegalState;
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.illegalState;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 @SuppressWarnings("UnusedReturnValue")
 @UmlClassDiagram(diagram = DiagramPrimitiveMap.class)

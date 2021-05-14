@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.graphics.image;
 
-import com.telenav.kivakit.core.resource.resources.packaged.PackageResource;
+import com.telenav.kivakit.resource.resources.packaged.PackageResource;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

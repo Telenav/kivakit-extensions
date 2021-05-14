@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.component.version;
 
-import com.telenav.kivakit.core.kernel.KivaKit;
+import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 
 import java.awt.*;

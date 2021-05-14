@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.data.formats.csv;
 
-import com.telenav.kivakit.core.kernel.language.io.LookAheadReader;
-import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.resource.Resource;
+import com.telenav.kivakit.kernel.language.io.LookAheadReader;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 

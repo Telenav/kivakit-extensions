@@ -13,7 +13,7 @@
         <version>0.9.5-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit - UI</name>
+    <name>KivaKit UI</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-ui</artifactId>

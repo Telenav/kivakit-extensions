@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import static com.telenav.kivakit.core.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * A Huffman coding tree, composed of {@link Node} and {@link Leaf} sub-trees. Symbols in the tree are assigned a code

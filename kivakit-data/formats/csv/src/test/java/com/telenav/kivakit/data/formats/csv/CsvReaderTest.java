@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.data.formats.csv;
 
-import com.telenav.kivakit.core.kernel.data.conversion.string.primitive.DoubleConverter;
-import com.telenav.kivakit.core.kernel.data.conversion.string.primitive.IntegerConverter;
-import com.telenav.kivakit.core.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.resource.resources.packaged.PackageResource;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.kernel.data.conversion.string.primitive.DoubleConverter;
+import com.telenav.kivakit.kernel.data.conversion.string.primitive.IntegerConverter;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.resource.resources.packaged.PackageResource;
+import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
 
 public class CsvReaderTest extends UnitTest

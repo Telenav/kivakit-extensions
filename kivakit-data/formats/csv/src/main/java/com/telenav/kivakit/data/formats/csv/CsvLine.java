@@ -18,14 +18,14 @@
 
 package com.telenav.kivakit.data.formats.csv;
 
-import com.telenav.kivakit.core.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.core.kernel.language.reflection.Type;
-import com.telenav.kivakit.core.kernel.language.reflection.populator.ObjectPopulator;
-import com.telenav.kivakit.core.kernel.language.reflection.property.Property;
-import com.telenav.kivakit.core.kernel.language.reflection.property.PropertyValueSource;
-import com.telenav.kivakit.core.kernel.language.strings.Strings;
-import com.telenav.kivakit.core.kernel.language.values.count.Maximum;
-import com.telenav.kivakit.core.kernel.messaging.repeaters.RepeaterTrait;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
+import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.kernel.language.reflection.populator.ObjectPopulator;
+import com.telenav.kivakit.kernel.language.reflection.property.Property;
+import com.telenav.kivakit.kernel.language.reflection.property.PropertyValueSource;
+import com.telenav.kivakit.kernel.language.strings.Strings;
+import com.telenav.kivakit.kernel.language.values.count.Maximum;
+import com.telenav.kivakit.kernel.messaging.repeaters.RepeaterTrait;
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;

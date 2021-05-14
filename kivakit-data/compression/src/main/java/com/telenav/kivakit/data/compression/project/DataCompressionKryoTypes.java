@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.data.compression.project;
 
-import com.telenav.kivakit.core.serialization.kryo.KryoTypes;
+import com.telenav.kivakit.serialization.kryo.KryoTypes;
 import com.telenav.kivakit.data.compression.codecs.huffman.FastHuffmanDecoder;
 import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.character.HuffmanCharacterCodec;

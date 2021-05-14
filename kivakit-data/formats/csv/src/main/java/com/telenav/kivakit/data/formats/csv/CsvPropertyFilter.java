@@ -1,6 +1,6 @@
 package com.telenav.kivakit.data.formats.csv;
 
-import com.telenav.kivakit.core.kernel.language.reflection.property.PropertyFilter;
+import com.telenav.kivakit.kernel.language.reflection.property.PropertyFilter;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import java.lang.reflect.Field;
