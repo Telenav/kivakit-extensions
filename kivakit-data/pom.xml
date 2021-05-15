@@ -14,7 +14,7 @@
         <version>0.9.5-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Data</name>
+    <name>KivaKit Extensions - Data</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-data</artifactId>

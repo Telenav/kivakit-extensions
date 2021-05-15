@@ -7,7 +7,7 @@
         <version>0.9.5-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Filesystems - HDFS Proxy</name>
+    <name>KivaKit Extensions Filesystems - HDFS Proxy</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-filesystems-hdfs-proxy</artifactId>

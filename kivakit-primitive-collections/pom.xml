@@ -14,7 +14,7 @@
         <version>0.9.5-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit - Primitive Collections</name>
+    <name>KivaKit Extensions - Primitive Collections</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-primitive-collections</artifactId>

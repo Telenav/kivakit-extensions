@@ -14,7 +14,7 @@
         <version>0.9.5-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Service - Registry</name>
+    <name>KivaKit Extensions Service - Registry</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-service-registry</artifactId>
