@@ -14,7 +14,7 @@
         <version>0.9.5-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Extensions Data Formats - Library</name>
+    <name>KivaKit Extensions - Data - Formats - Library</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-data-formats-library</artifactId>

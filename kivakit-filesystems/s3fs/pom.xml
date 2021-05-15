@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-filesystems-s3fs</artifactId>
     <packaging>jar</packaging>
-    <name>KivaKit Extensions Filesystems - S3FS</name>
+    <name>KivaKit Extensions - Filesystems - S3FS</name>
 
     <dependencies>
 

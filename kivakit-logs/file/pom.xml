@@ -14,7 +14,7 @@
         <version>0.9.5-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Extensions Logs - File</name>
+    <name>KivaKit Extensions - Logs - File</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-logs-file</artifactId>
