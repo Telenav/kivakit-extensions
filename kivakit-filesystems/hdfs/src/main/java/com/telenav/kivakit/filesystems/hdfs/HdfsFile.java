@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,6 +19,8 @@
 package com.telenav.kivakit.filesystems.hdfs;
 
 import com.telenav.kivakit.filesystem.spi.FileService;
+import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
+import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
 import com.telenav.kivakit.kernel.interfaces.code.CheckedCode;
 import com.telenav.kivakit.kernel.language.threading.Retry;
 import com.telenav.kivakit.kernel.language.time.Duration;
@@ -26,8 +28,6 @@ import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
-import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
-import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;

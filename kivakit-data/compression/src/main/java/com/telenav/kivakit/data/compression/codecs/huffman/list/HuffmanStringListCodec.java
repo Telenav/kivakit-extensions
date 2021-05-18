@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,14 +18,14 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.list;
 
-import com.telenav.kivakit.primitive.collections.list.ByteList;
-import com.telenav.kivakit.kernel.language.values.mutable.MutableIndex;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolProducer;
 import com.telenav.kivakit.data.compression.codecs.CharacterCodec;
 import com.telenav.kivakit.data.compression.codecs.StringCodec;
 import com.telenav.kivakit.data.compression.codecs.StringListCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
+import com.telenav.kivakit.kernel.language.values.mutable.MutableIndex;
+import com.telenav.kivakit.primitive.collections.list.ByteList;
 
 /**
  * Compression and decompression of lists of strings using a {@link StringCodec} and a {@link CharacterCodec}. The

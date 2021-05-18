@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +18,6 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman;
 
-import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.primitives.Ints;
-import com.telenav.kivakit.kernel.language.values.count.Count;
-import com.telenav.kivakit.kernel.language.values.count.Maximum;
-import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.kivakit.data.compression.Codec;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolProducer;
@@ -31,9 +25,15 @@ import com.telenav.kivakit.data.compression.codecs.huffman.tree.Code;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.CodedSymbol;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Tree;
+import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
+import com.telenav.kivakit.kernel.language.primitives.Ints;
+import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.primitive.collections.array.bits.BitArray;
 import com.telenav.kivakit.primitive.collections.array.bits.io.BitReader;
 import com.telenav.kivakit.primitive.collections.list.ByteList;
+import com.telenav.kivakit.resource.resources.other.PropertyMap;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -64,7 +64,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * @see SymbolProducer
  * @see FastHuffmanDecoder
  * @see <a href="https://en.wikipedia.org/wiki/Huffman_coding">Huffman Coding</a>
- * @see <a href="http://people.ucalgary.ca/~dfeder/449/Huffman.pdf">Fast Huffman Decoding</a>
+ * @see <a href="https://people.ucalgary.ca/~dfeder/449/Huffman.pdf">Fast Huffman Decoding</a>
  */
 public class HuffmanCodec<Symbol> implements Codec<Symbol>
 {

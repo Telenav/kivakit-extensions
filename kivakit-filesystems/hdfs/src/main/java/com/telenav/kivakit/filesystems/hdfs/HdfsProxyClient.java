@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,6 +20,8 @@ package com.telenav.kivakit.filesystems.hdfs;
 
 import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.filesystem.Folder;
+import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
+import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
 import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.time.Duration;
@@ -31,8 +33,6 @@ import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher;
-import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
-import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.ServiceMetadata;
 import com.telenav.kivakit.service.registry.ServiceType;

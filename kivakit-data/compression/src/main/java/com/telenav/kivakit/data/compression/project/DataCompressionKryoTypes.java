@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,7 +18,6 @@
 
 package com.telenav.kivakit.data.compression.project;
 
-import com.telenav.kivakit.serialization.kryo.KryoTypes;
 import com.telenav.kivakit.data.compression.codecs.huffman.FastHuffmanDecoder;
 import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 import com.telenav.kivakit.data.compression.codecs.huffman.character.HuffmanCharacterCodec;
@@ -30,6 +29,7 @@ import com.telenav.kivakit.data.compression.codecs.huffman.tree.Leaf;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Node;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.Tree;
+import com.telenav.kivakit.serialization.kryo.KryoTypes;
 
 /**
  * @author jonathanl (shibo)

@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.data.formats.csv;
 
+import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.kivakit.kernel.interfaces.io.Closeable;
 import com.telenav.kivakit.kernel.language.io.LookAheadReader;
 import com.telenav.kivakit.kernel.language.iteration.BaseIterator;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.kernel.messaging.repeaters.RepeaterTrait;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -32,7 +32,7 @@ import com.telenav.lexakai.annotations.associations.UmlRelation;
 
 /**
  * Parses a stream of CSV information. The rules outlined
- * <a href="http://en.wikipedia.org/wiki/Comma-separated_values">here</a> dictate valid CSV format.
+ * <a href="https://en.wikipedia.org/wiki/Comma-separated_values">here</a> dictate valid CSV format.
  * In particular, this class can handle quoted strings, line breaks within quotes, comments, empty lines, and some of
  * the other standard formatting issues.
  *

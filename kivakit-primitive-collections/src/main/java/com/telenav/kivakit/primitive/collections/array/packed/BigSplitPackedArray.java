@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.primitive.collections.array.packed;
 
-import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
-import com.telenav.kivakit.primitive.collections.array.PrimitiveSplitArray;
-import com.telenav.kivakit.primitive.collections.iteration.LongIterator;
 import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
 import com.telenav.kivakit.kernel.language.values.count.BitCount;
 import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.primitive.collections.PrimitiveCollection;
+import com.telenav.kivakit.primitive.collections.array.PrimitiveSplitArray;
+import com.telenav.kivakit.primitive.collections.iteration.LongIterator;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,12 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.list;
 
+import com.telenav.kivakit.data.compression.Codec;
+import com.telenav.kivakit.data.compression.SymbolConsumer;
+import com.telenav.kivakit.data.compression.codecs.huffman.character.HuffmanCharacterCodec;
+import com.telenav.kivakit.data.compression.codecs.huffman.string.HuffmanStringCodec;
+import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
+import com.telenav.kivakit.data.compression.project.DataCompressionUnitTest;
 import com.telenav.kivakit.kernel.language.collections.list.Lists;
 import com.telenav.kivakit.kernel.language.collections.map.count.CountMap;
 import com.telenav.kivakit.kernel.language.progress.reporters.Progress;
@@ -25,12 +31,6 @@ import com.telenav.kivakit.kernel.language.values.count.Count;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.kernel.language.values.count.Minimum;
 import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.data.compression.Codec;
-import com.telenav.kivakit.data.compression.SymbolConsumer;
-import com.telenav.kivakit.data.compression.codecs.huffman.character.HuffmanCharacterCodec;
-import com.telenav.kivakit.data.compression.codecs.huffman.string.HuffmanStringCodec;
-import com.telenav.kivakit.data.compression.codecs.huffman.tree.Symbols;
-import com.telenav.kivakit.data.compression.project.DataCompressionUnitTest;
 import org.junit.Test;
 
 import java.util.ArrayList;

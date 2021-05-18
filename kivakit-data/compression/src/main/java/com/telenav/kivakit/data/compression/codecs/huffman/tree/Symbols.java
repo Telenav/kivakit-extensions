@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman.tree;
 
+import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
 import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.collections.map.count.CountMap;
@@ -28,7 +29,6 @@ import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.WritableResource;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
-import com.telenav.kivakit.data.compression.codecs.huffman.HuffmanCodec;
 
 import java.util.Comparator;
 import java.util.HashSet;

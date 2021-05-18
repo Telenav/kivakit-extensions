@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,6 +23,7 @@ import com.telenav.kivakit.kernel.logging.Log;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.kernel.logging.logs.text.BaseTextLog;
+import com.telenav.kivakit.logs.email.project.lexakai.diagrams.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.email.Email;
@@ -31,7 +32,6 @@ import com.telenav.kivakit.network.email.EmailSender;
 import com.telenav.kivakit.network.email.senders.SmtpEmailSender;
 import com.telenav.kivakit.security.authentication.UserName;
 import com.telenav.kivakit.security.authentication.passwords.PlainTextPassword;
-import com.telenav.kivakit.logs.email.project.lexakai.diagrams.DiagramLogsEmail;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;

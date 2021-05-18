@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,6 +18,9 @@
 
 package com.telenav.kivakit.data.compression.codecs.huffman;
 
+import com.telenav.kivakit.data.compression.SymbolConsumer;
+import com.telenav.kivakit.data.compression.SymbolConsumer.Directive;
+import com.telenav.kivakit.data.compression.codecs.huffman.tree.CodedSymbol;
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.strings.StringTo;
 import com.telenav.kivakit.kernel.language.strings.conversion.AsString;
@@ -26,9 +29,6 @@ import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.data.compression.SymbolConsumer;
-import com.telenav.kivakit.data.compression.SymbolConsumer.Directive;
-import com.telenav.kivakit.data.compression.codecs.huffman.tree.CodedSymbol;
 import com.telenav.kivakit.primitive.collections.array.bits.BitArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.ByteArray;
 import com.telenav.kivakit.primitive.collections.list.ByteList;
@@ -46,7 +46,7 @@ import static com.telenav.kivakit.data.compression.SymbolConsumer.Directive.STOP
  * ByteArray} using a set of lookup tables built from a {@link HuffmanCodec}.
  *
  * @author jonathanl (shibo)
- * @see <a href="http://people.ucalgary.ca/~dfeder/449/Huffman.pdf">Fast Huffman Decoding</a>
+ * @see <a href="https://people.ucalgary.ca/~dfeder/449/Huffman.pdf">Fast Huffman Decoding</a>
  * @see HuffmanCodec
  * @see Consumer
  * @see ByteArray
@@ -59,7 +59,7 @@ public final class FastHuffmanDecoder<Symbol>
 
     /**
      * A table with entries for a given prefix (or no prefix in the case of the root table). For a very nice discussion
-     * of this, including an example set of decoding tables, see page 69 of <a href="http://people.ucalgary.ca/~dfeder/449/Huffman.pdf">Fast
+     * of this, including an example set of decoding tables, see page 69 of <a href="https://people.ucalgary.ca/~dfeder/449/Huffman.pdf">Fast
      * Huffman Decoding</a>
      */
     public static class Table<Symbol> implements AsString

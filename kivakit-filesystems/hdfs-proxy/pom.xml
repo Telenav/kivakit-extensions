@@ -21,6 +21,8 @@
 
         <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
 
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+
     </properties>
 
     <dependencies>
@@ -85,16 +87,16 @@
     <build>
         <plugins>
             <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-jar-plugin</artifactId>
-              <version>${maven-jar-plugin.version}</version>
-              <configuration>
-                <archive>
-                  <manifestEntries>
-                    <Automatic-Module-Name>kivakit.filesystems.hdfs.proxy</Automatic-Module-Name>
-                  </manifestEntries>
-                </archive>
-              </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Automatic-Module-Name>kivakit.filesystems.hdfs.proxy</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>

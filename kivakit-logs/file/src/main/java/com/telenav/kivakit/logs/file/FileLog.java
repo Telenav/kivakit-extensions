@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,8 +23,8 @@ import com.telenav.kivakit.kernel.language.strings.StringTo;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.kernel.logging.Log;
 import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
-import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.logs.file.project.lexakai.diagrams.DiagramLogsFile;
+import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 

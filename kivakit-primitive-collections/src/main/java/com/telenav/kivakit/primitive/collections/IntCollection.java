@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.primitive.collections;
 
-import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.interfaces.naming.NamedObject;
 import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
 import com.telenav.kivakit.kernel.interfaces.numeric.Sized;
 import com.telenav.kivakit.primitive.collections.iteration.IntIterable;
 import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.List;
