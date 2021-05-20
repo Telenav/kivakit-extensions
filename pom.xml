@@ -204,7 +204,7 @@
         <jetty.version>9.4.36.v20210114</jetty.version>
         <jersey.version>2.33</jersey.version>
         <swagger.version>2.1.6</swagger.version>
-        <httpclient.version>4.5.1</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <wicket-jquery.version>8.8.0</wicket-jquery.version>
         <wicket.version>9.2.0</wicket.version>
 
