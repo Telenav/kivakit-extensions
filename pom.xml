@@ -12,28 +12,36 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.telenav.kivakit</groupId>
     <artifactId>kivakit-extensions</artifactId>
-    <version>0.9.5-alpha-SNAPSHOT</version>
+    <version>0.9.6-alpha</version>
     <packaging>pom</packaging>
+
+    <!-- Project -->
 
     <name>KivaKit Extensions</name>
     <description>A collection of modules that extend KivaKit.</description>
     <url>http://www.kivakit.org</url>
     <inceptionYear>2011</inceptionYear>
-
     <organization>
         <name>Telenav</name>
         <url>https://www.telenav.com</url>
     </organization>
 
+    <!-- Licensing -->
+
     <licenses>
+
         <license>
             <name>Apache License, Version 2.0</name>
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
         </license>
+
     </licenses>
 
+    <!-- Contributors -->
+
     <developers>
+
         <developer>
             <id>jonathanl</id>
             <name>Jonathan Locke (Luo Shibo)</name>
@@ -45,8 +53,9 @@
                 <role>administrator</role>
             </roles>
         </developer>
+
         <developer>
-            <id>hfzhu</id>
+            <id>haifeng</id>
             <name>Haifeng Zhu</name>
             <email>hfzhu@telenav.com</email>
             <organization>Telenav</organization>
@@ -56,18 +65,27 @@
                 <role>administrator</role>
             </roles>
         </developer>
+
     </developers>
 
+    <!-- Source Code -->
+
     <scm>
+
         <connection>scm:git:https://Telenav/kivakit.git</connection>
         <developerConnection>scm:git:https://Telenav/kivakit.git</developerConnection>
         <url>https://Telenav/kivakit.git</url>
+
     </scm>
+
+    <!-- Issue Tracking -->
 
     <issueManagement>
         <system>GitHub</system>
         <url>https://github.com/Telenav/kivakit-extensions/issues</url>
     </issueManagement>
+
+    <!-- Publishing -->
 
     <distributionManagement>
 
@@ -83,6 +101,8 @@
 
     </distributionManagement>
 
+    <!-- Snapshots -->
+
     <repositories>
 
         <repository>
@@ -97,6 +117,8 @@
         </repository>
 
     </repositories>
+
+    <!-- Modules -->
 
     <modules>
 
@@ -115,8 +137,8 @@
 
         <!-- KivaKit Version -->
 
-        <kivakit.version>0.9.5-alpha-SNAPSHOT</kivakit.version>
-        <kivakit.downloads.folder>${user.home}/.kivakit/${kivakit.version}/temporary/tools/downloads/</kivakit.downloads.folder>
+        <kivakit.version>0.9.6-alpha</kivakit.version>
+        <kivakit.downloads.folder>${user.home}/.kivakit/${kivakit.version}/downloads/</kivakit.downloads.folder>
 
         <!-- Cactus Build -->
 
@@ -145,7 +167,6 @@
         <!-- Maven -->
 
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-compiler-plugin-java.version>12</maven-compiler-plugin-java.version>
         <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
         <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
         <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
@@ -298,7 +319,7 @@
                 <executions>
                     <execution>
                         <id>project-metadata</id>
-                        <phase>validate</phase>
+                        <phase>verify</phase>
                         <configuration>
                             <target name = "build-metadata">
                                 <property name = "project.groupId" value = "${project.groupId}"/>
@@ -312,8 +333,8 @@
                                 <if>
                                     <equals arg1 = "${maven.multiModuleProjectDirectory}" arg2 = "${project.basedir}"/>
                                     <then>
-                                        <mkdir dir="${kivakit.downloads.folder}"/>
-                                        <get src="${cactus.build.url}" dest="${cactus.build.jar}"/>
+                                        <mkdir dir = "${kivakit.downloads.folder}"/>
+                                        <get src = "${cactus.build.url}" dest = "${cactus.build.jar}"/>
                                     </then>
                                 </if>
                                 <if>
@@ -322,23 +343,17 @@
                                         <echo file = "src/main/java/project.properties">
                                             project-name = ${project.name}${line.separator}project-version = ${project.version}${line.separator}project-group-id = ${project.groupId}${line.separator}project-artifact-id = ${project.artifactId}
                                         </echo>
-                                        <java jar = "${cactus.build.jar}"
-                                              failonerror = "true"
-                                              fork = "true">
+                                        <java jar = "${cactus.build.jar}" failonerror = "true" fork = "true">
                                             <arg value = "src/main/java"/>
                                         </java>
                                     </then>
-                                    <else>
-                                        <echo file = "${project.basedir}/project.properties">
-                                            project-name = ${project.name}${line.separator}project-version = ${project.version}${line.separator}project-group-id = ${project.groupId}${line.separator}project-artifact-id = ${project.artifactId}
-                                        </echo>
-                                        <java jar = "${cactus.build.jar}"
-                                              failonerror = "true"
-                                              fork = "true">
-                                            <arg value = "${project.basedir}"/>
-                                        </java>
-                                    </else>
                                 </if>
+                                <echo file = "${project.basedir}/project.properties">
+                                    project-name = ${project.name}${line.separator}project-version = ${project.version}${line.separator}project-group-id = ${project.groupId}${line.separator}project-artifact-id = ${project.artifactId}
+                                </echo>
+                                <java jar = "${cactus.build.jar}" failonerror = "true" fork = "true">
+                                    <arg value = "${project.basedir}"/>
+                                </java>
                             </target>
                         </configuration>
                         <goals>
@@ -405,8 +420,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler-plugin.version}</version>
                     <configuration>
-                        <source>${maven-compiler-plugin-java.version}</source>
-                        <target>${maven-compiler-plugin-java.version}</target>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                         <release>${java.version}</release>
                         <compilerArgs>
                             <compilerArgument>-Xlint:unchecked</compilerArgument>
