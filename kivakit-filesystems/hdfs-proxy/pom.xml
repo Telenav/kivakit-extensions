@@ -21,8 +21,6 @@
 
         <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
 
-        <maven.javadoc.skip>true</maven.javadoc.skip>
-
     </properties>
 
     <dependencies>
@@ -65,6 +63,14 @@
             <artifactId>hadoop-hdfs</artifactId>
             <version>${hdfs.version}</version>
             <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>javax.ws.rs</groupId>
                     <artifactId>jsr311-api</artifactId>
