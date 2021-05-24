@@ -31,7 +31,7 @@ Service provider for AWS S3 filesystems.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
@@ -77,14 +77,14 @@ For example:
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
 
-[*S3 Service Provider*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/diagram-s3.svg)
+[*S3 Service Provider*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/diagram-s3.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystems.s3fs*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.svg)  
-[*com.telenav.kivakit.filesystems.s3fs.project*](https://www.kivakit.org/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.project.svg)
+[*com.telenav.kivakit.filesystems.s3fs*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.svg)  
+[*com.telenav.kivakit.filesystems.s3fs.project*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.project.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -99,13 +99,13 @@ Javadoc coverage for this project is 80.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*FileSystemsS3FsProject*](https://www.kivakit.org/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/project/FileSystemsS3FsProject.html) |  |  
-| [*S3File*](https://www.kivakit.org/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3File.html) |  |  
-| [*S3FileSystemObject*](https://www.kivakit.org/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemObject.html) |  |  
-| [*S3FileSystemService*](https://www.kivakit.org/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemService.html) |  |  
-| [*S3Folder*](https://www.kivakit.org/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Folder.html) |  |  
-| [*S3Output*](https://www.kivakit.org/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Output.html) |  |  
-| [*S3Settings*](https://www.kivakit.org/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Settings.html) |  |  
+| [*FileSystemsS3FsProject*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/project/FileSystemsS3FsProject.html) |  |  
+| [*S3File*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3File.html) |  |  
+| [*S3FileSystemObject*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemObject.html) |  |  
+| [*S3FileSystemService*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemService.html) |  |  
+| [*S3Folder*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Folder.html) |  |  
+| [*S3Output*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Output.html) |  |  
+| [*S3Settings*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Settings.html) |  |  
 
 [//]: # (start-user-text)
 
