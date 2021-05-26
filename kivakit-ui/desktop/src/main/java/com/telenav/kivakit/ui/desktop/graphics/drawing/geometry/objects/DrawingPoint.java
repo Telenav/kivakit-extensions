@@ -59,6 +59,12 @@ public class DrawingPoint extends DrawingObject
     /** The y coordinate */
     private final double y;
 
+    public boolean isClose(final DrawingPoint projectedPoint, final double tolerance)
+    {
+        return Math.abs(projectedPoint.x() - x()) < tolerance
+                && Math.abs(projectedPoint.y() - y()) < tolerance;
+    }
+
     protected DrawingPoint(final Coordinated coordinates, final double x, final double y)
     {
         super(coordinates);
