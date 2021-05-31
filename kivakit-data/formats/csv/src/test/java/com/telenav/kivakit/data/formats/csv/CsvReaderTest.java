@@ -46,7 +46,7 @@ public class CsvReaderTest extends UnitTest
             // 1st line
             final var firstDataLine = myReader.next();
             ensureEqual(firstDataLine.get(year), 1997);
-            ensureEqual(firstDataLine.get(description), "ac, abs, moon");
+            ensureEqual(firstDataLine.string(description), "ac, abs, moon");
             ensureEqual(firstDataLine.get(price), 3000.0);
 
             // 2nd line
@@ -54,19 +54,19 @@ public class CsvReaderTest extends UnitTest
 
             // 3rd line
             final var thirdLine = myReader.next();
-            ensureEqual(thirdLine.get(model), "Venture \"Extended Edition, Very Large\"");
+            ensureEqual(thirdLine.string(model), "Venture \"Extended Edition, Very Large\"");
 
             // 4th line
             final var fourthLine = myReader.next();
-            ensure(fourthLine.get(description).indexOf('\n') >= 0);
+            ensure(fourthLine.string(description).indexOf('\n') >= 0);
 
             // 5th line
             final var fifthLine = myReader.next();
-            ensureEqual(fifthLine.get(model), "\"Venture Extended Edition, Very Large\"");
+            ensureEqual(fifthLine.string(model), "\"Venture Extended Edition, Very Large\"");
 
             // 6th line
             final var sixthLine = myReader.next();
-            ensureEqual(sixthLine.get(model), "\"K\" Ct");
+            ensureEqual(sixthLine.string(model), "\"K\" Ct");
         }
     }
 }

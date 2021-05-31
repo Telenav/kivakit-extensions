@@ -46,11 +46,11 @@ public class UnquotedCsvReaderTest extends UnitTest
             // simple test
             ensureEqual(firstDataLine.get(year), 1997);
             // comma-within-column test
-            ensureEqual(firstDataLine.get(description), "\"ac, abs, moon\"");
+            ensureEqual(firstDataLine.string(description), "\"ac, abs, moon\"");
             reader.next();
             final var thirdLine = reader.next();
             // quote-within-column test
-            ensureEqual(thirdLine.get(model), "\"Venture \"\"Extended Edition, Very Large\"\"\"");
+            ensureEqual(thirdLine.string(model), "\"Venture \"\"Extended Edition, Very Large\"\"\"");
         }
     }
 }
