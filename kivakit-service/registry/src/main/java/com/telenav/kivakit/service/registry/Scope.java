@@ -79,6 +79,11 @@ public class Scope implements Named, Comparable<Scope>
                 .collect(Collectors.toSet()));
     }
 
+    public static Scope scope(final Scope.Type type)
+    {
+        return new Scope(type, null);
+    }
+
     /**
      * @return The network-wide scope
      */

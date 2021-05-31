@@ -85,8 +85,8 @@ import javax.ws.rs.core.Response;
                 ),
 
                 license = @License(
-                        name = "Copyright 2020 Telenav - All rights reserved.",
-                        url = "https://www.telenav.com"
+                        name = "Copyright 2011-2021 Telenav, Inc. Licensed under Apache License, Version 2.0",
+                        url = "https://www.apache.org/licenses/LICENSE-2.0"
                 )
         )
 )
@@ -390,7 +390,7 @@ public class ServiceRegistryRestResource extends BaseRestResource
                 + Settings.require(ServiceRegistrySettings.class).version()
                 + "\n"
                 + "KivaKit "
-                + KivaKit.get().version()
+                + KivaKit.get().projectVersion()
                 + " (" + KivaKit.get().build() + ")";
 
         return Response.status(200)

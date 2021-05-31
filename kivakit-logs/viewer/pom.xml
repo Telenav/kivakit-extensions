@@ -1,0 +1,209 @@
+<!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!--                                                                                                                 -->
+<!--  © 2011-2021 Telenav, Inc.                                                                                      -->
+<!--  Licensed under Apache License, Version 2.0                                                                     -->
+<!--                                                                                                                 -->
+<!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit-logs</artifactId>
+        <version>0.9.8-alpha-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>kivakit-logs-viewer</artifactId>
+    <packaging>jar</packaging>
+    <name>KivaKit Extensions - Logs - Viewer</name>
+
+    <properties>
+
+        <jar.base.name>kivakit-log-viewer-${kivakit.version}</jar.base.name>
+
+    </properties>
+
+    <dependencies>
+
+        <!-- KivaKit -->
+
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-application</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-ui-desktop</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-network-core</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-logs-client</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-logs-server</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>tools</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>${maven-shade-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <finalName>${jar.base.name}</finalName>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <transformers>
+                                        <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>
+                                                com.telenav.kivakit.tools.applications.log.viewer.ServiceRegistryApplication
+                                            </mainClass>
+                                        </transformer>
+                                    </transformers>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <excludes>
+                                                <exclude>module-info.class</exclude>
+                                                <exclude>license.txt</exclude>
+                                                <exclude>META-INF/DEPENDENCIES</exclude>
+                                                <exclude>META-INF/LICENSE*</exclude>
+                                                <exclude>META-INF/NOTICE*</exclude>
+                                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>install-log-viewer-jar</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <target name = "Install ${jar.base.name}.jar">
+                                        <mkdir dir = "target/application"/>
+                                        <echo message = "Installing ${jar.base.name}.jar"/>
+                                        <copy file = "target/${jar.base.name}.jar"
+                                              tofile = "${project.basedir}/../../../tools/applications/${jar.base.name}.jar"/>
+                                        <copy file = "target/${jar.base.name}.jar"
+                                              tofile = "target/application/${jar.base.name}.jar"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dmg</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <os>
+                    <family>mac</family>
+                </os>
+                <file>
+                    <exists>/usr/bin/jpackage</exists>
+                </file>
+                <property>
+                    <name>dmg</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>jpackage</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>/usr/bin/jpackage</executable>
+                                    <arguments>
+                                        <argument>--input</argument>
+                                        <argument>target/application/</argument>
+                                        <argument>--name</argument>
+                                        <argument>kivakit Log Viewer</argument>
+                                        <argument>--main-jar</argument>
+                                        <argument>kivakit-log-viewer-${kivakit.version}.jar</argument>
+                                        <argument>--main-class</argument>
+                                        <argument>com.telenav.kivakit.tools.applications.log.viewer.ServiceRegistryApplication</argument>
+                                        <argument>--type</argument>
+                                        <argument>dmg</argument>
+                                        <argument>--icon</argument>
+                                        <argument>src/main/resources/kivakit-logo.icns</argument>
+                                        <argument>--mac-package-name</argument>
+                                        <argument>"kivakit Log Viewer"</argument>
+                                        <argument>--app-version</argument>
+                                        <argument>${kivakit.version}</argument>
+                                        <argument>--vendor</argument>
+                                        <argument>Telenav</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>install-dmg</id>
+                                <phase>install</phase>
+                                <configuration>
+                                    <target name = "Install kivakit-log-viewer-${kivakit.version}.jar">
+                                        <echo message = "Installing kivakit Log Viewer DMG"/>
+                                        <copy file = "kivakit Log Viewer-${kivakit.version}.dmg"
+                                              tofile = "${project.basedir}/../../../tools/applications/kivakit Log Viewer ${kivakit.version}.dmg"
+                                              verbose = "true"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

@@ -167,7 +167,7 @@ public class HdfsProxyClient extends BaseRepeater
             // allocated for the current application / process.
             final var local = Folder.kivakitHome()
                     .folder("kivakit-filesystems/hdfs-proxy/target")
-                    .file("kivakit-hdfs-proxy-" + KivaKit.get().version() + ".jar");
+                    .file("kivakit-hdfs-proxy-" + KivaKit.get().projectVersion() + ".jar");
             final var process = listenTo(new JarLauncher())
                     .addJarSource(local)
                     .addJarSource(settings.proxyJar())

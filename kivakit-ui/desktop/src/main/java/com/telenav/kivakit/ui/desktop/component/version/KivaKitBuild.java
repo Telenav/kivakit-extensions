@@ -3,7 +3,7 @@ package com.telenav.kivakit.ui.desktop.component.version;
 import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 
 /**
  * @author jonathanl (shibo)
@@ -16,7 +16,7 @@ public class KivaKitBuild extends KivaKitPanel
         setLayout(new BorderLayout());
 
         final var kivakit = KivaKit.get();
-        final var text = "KivaKit " + kivakit.version().withoutRelease() + " " + kivakit.build().name();
+        final var text = "KivaKit " + kivakit.projectVersion().withoutRelease() + " " + kivakit.build().name();
         add(newSmallFadedLabel(text), BorderLayout.EAST);
     }
 }

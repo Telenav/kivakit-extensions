@@ -30,7 +30,7 @@ import com.telenav.kivakit.kernel.language.threading.locks.Monitor;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.kernel.project.CoreKernelProject;
+import com.telenav.kivakit.kernel.project.KernelProject;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -110,7 +110,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
 
     public HdfsProxyServer()
     {
-        super(CoreKernelProject.get());
+        super(KernelProject.get());
 
         // Shut the proxy server down when it hasn't been used in a while to prevent stuck proxy servers
         Duration.minutes(1).every(timer ->

@@ -48,7 +48,7 @@ public class S3FileTest extends UnitTest
     @Test
     public void testInSameBucket()
     {
-        ensure(file.inSameBucket(new S3File("s3://kivakit/" + KivaKit.get().version() + "/another")));
+        ensure(file.inSameBucket(new S3File("s3://kivakit/" + KivaKit.get().projectVersion() + "/another")));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class S3FileTest extends UnitTest
     {
         final FolderService folder = file.parent();
         ensure("apidocs".equals(folder.baseName().toString()));
-        ensure(("s3://kivakit/" + KivaKit.get().version() + "/apidocs").equals(folder.path().toString()));
+        ensure(("s3://kivakit/" + KivaKit.get().projectVersion() + "/apidocs").equals(folder.path().toString()));
     }
 
     @Test
@@ -93,6 +93,6 @@ public class S3FileTest extends UnitTest
     @NotNull
     private String apidocs()
     {
-        return KivaKit.get().version() + "/apidocs/index.html";
+        return KivaKit.get().projectVersion() + "/apidocs/index.html";
     }
 }

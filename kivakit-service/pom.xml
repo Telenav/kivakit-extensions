@@ -24,6 +24,7 @@
         <module>registry</module>
         <module>client</module>
         <module>server</module>
+        <module>viewer</module>
 
     </modules>
 

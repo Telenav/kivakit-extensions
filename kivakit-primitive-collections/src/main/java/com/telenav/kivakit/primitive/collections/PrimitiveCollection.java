@@ -883,7 +883,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     @MustBeInvokedByOverriders
     public void write(final Kryo kryo, final Output output)
     {
-        kryo.writeObject(output, KivaKit.get().version());
+        kryo.writeObject(output, KivaKit.get().projectVersion());
         kryo.writeObject(output, objectName);
         kryo.writeObject(output, size);
         kryo.writeObject(output, compressionMethod);

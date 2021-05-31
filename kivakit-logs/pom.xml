@@ -23,6 +23,9 @@
 
         <module>file</module>
         <module>email</module>
+        <module>server</module>
+        <module>client</module>
+        <module>viewer</module>
 
     </modules>
 

@@ -44,6 +44,6 @@ public class HeaderPanel extends Panel
         super(id);
         add(new Label("title", title));
         add(new Image("icon", new PackageResourceReference(getClass(), "kivakit-logo.png")));
-        add(new Label("version", version + " / KivaKit " + KivaKit.get().version() + " " + KivaKit.get().build()));
+        add(new Label("version", version + " / KivaKit " + KivaKit.get().projectVersion() + " " + KivaKit.get().build()));
     }
 }
