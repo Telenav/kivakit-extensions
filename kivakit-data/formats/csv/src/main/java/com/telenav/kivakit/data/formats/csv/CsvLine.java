@@ -19,6 +19,9 @@
 package com.telenav.kivakit.data.formats.csv;
 
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
+import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
+import com.telenav.kivakit.kernel.data.conversion.string.collection.BaseListConverter;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.reflection.populator.ObjectPopulator;
@@ -46,9 +49,9 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
  * <p><b>Converting a Line to an Object</b></p>
  *
  * <p>
- * A {@link CsvLine} can be converted directly to an object with {@link #asObject(Class)}. A new instance of the class
- * is created and its properties are populated using the {@link CsvSchema} of this line. For details, see {@link
- * #asObject(Class)} and {@link #valueFor(Property)}.
+ * A {@link CsvLine} can be converted directly to an object with {@link #populatedObject(Class)}. A new instance of the
+ * class is created and its properties are populated using the {@link CsvSchema} of this line. For details, see {@link
+ * #populatedObject(Class)} and {@link #valueFor(Property)}.
  * </p>
  *
  * @author jonathanl (shibo)
@@ -85,12 +88,48 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     }
 
     /**
+     * @return The value of the given column
+     */
+    public <T> T get(final CsvColumn<T> column)
+    {
+        final var text = string(column);
+        return text == null ? null : column.asType(text);
+    }
+
+    /**
+     * @return The value of the given column
+     */
+    public <T> T get(final CsvColumn<T> column, final StringConverter<T> converter)
+    {
+        final var text = string(column);
+        return text == null ? null : column.asType(text, converter);
+    }
+
+    /**
+     * @return The value of the given column
+     */
+    public <T> ObjectList<T> get(final CsvColumn<T> column, final BaseListConverter<T> converter)
+    {
+        final var text = string(column);
+        return text == null ? null : column.asType(text, converter);
+    }
+
+    /**
+     * @return The line number of this CSV line in the input, or -1 if the line was not read from an input source (if it
+     * was constructed to be written)
+     */
+    public int lineNumber()
+    {
+        return lineNumber;
+    }
+
+    /**
      * @return An object of the given type with its properties populated by {@link ObjectPopulator} using {@link
      * CsvPropertyFilter}. Properties of the object that correspond to {@link CsvColumn}s using KivaKit property naming
      * are retrieved with {@link PropertyValueSource#valueFor(Property)} (see below) and set on the new object by
      * reflection. The result is an object corresponding to this line.
      */
-    public <T> T asObject(final Class<T> type)
+    public <T> T populatedObject(final Class<T> type)
     {
         try
         {
@@ -102,24 +141,6 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
             problem(e, "Unable to create or populate ${debug}", type);
             return null;
         }
-    }
-
-    /**
-     * @return The value of the given column
-     */
-    public <T> T get(final CsvColumn<T> column)
-    {
-        final var text = string(column);
-        return text == null ? null : column.asType(text);
-    }
-
-    /**
-     * @return The line number of this CSV line in the input, or -1 if the line was not read from an input source (if it
-     * was constructed to be written)
-     */
-    public int lineNumber()
-    {
-        return lineNumber;
     }
 
     /**
@@ -187,8 +208,8 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     }
 
     /**
-     * Implementation of {@link PropertyValueSource} used by {@link ObjectPopulator} in {@link #asObject(Class)} to get
-     * the value of the given property using the property name to find the {@link CsvColumn}.
+     * Implementation of {@link PropertyValueSource} used by {@link ObjectPopulator} in {@link #populatedObject(Class)}
+     * to get the value of the given property using the property name to find the {@link CsvColumn}.
      */
     @Override
     public Object valueFor(final Property property)

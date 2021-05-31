@@ -20,9 +20,13 @@ package com.telenav.kivakit.data.formats.csv;
 
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
 import com.telenav.kivakit.kernel.data.conversion.string.StringConverter;
+import com.telenav.kivakit.kernel.data.conversion.string.collection.BaseListConverter;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.values.name.Name;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
+
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
  * A typesafe model of a CSV column that belongs to a {@link CsvSchema} and can convert values for the column between
@@ -40,9 +44,9 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @LexakaiJavadoc(complete = true)
 public class CsvColumn<Type> extends Name
 {
-    public static CsvColumn<String> of(final String name)
+    public static <T> CsvColumn<T> of(final String name)
     {
-        return new CsvColumn<>(name, StringConverter.IDENTITY);
+        return CsvColumn.of(name, null);
     }
 
     public static <T> CsvColumn<T> of(final String name, final StringConverter<T> converter)
@@ -71,9 +75,36 @@ public class CsvColumn<Type> extends Name
     /**
      * @return The text for the given value in this column
      */
+    public String asString(final Type value, final StringConverter<Type> converter)
+    {
+        ensureNotNull(converter);
+        return converter.toString(value);
+    }
+
+    /**
+     * @return The value of the given text if it is in this column
+     */
+    public Type asType(final String text, final StringConverter<Type> converter)
+    {
+        ensureNotNull(converter);
+        return converter.convert(text);
+    }
+
+    /**
+     * @return The value of the given text if it is in this column
+     */
+    public ObjectList<Type> asType(final String text, final BaseListConverter<Type> converter)
+    {
+        ensureNotNull(converter);
+        return converter.convert(text);
+    }
+
+    /**
+     * @return The text for the given value in this column
+     */
     public String asString(final Type value)
     {
-        return converter.toString(value);
+        return asString(value, converter);
     }
 
     /**
@@ -81,7 +112,7 @@ public class CsvColumn<Type> extends Name
      */
     public Type asType(final String text)
     {
-        return converter.convert(text);
+        return asType(text, converter);
     }
 
     /**
