@@ -12,7 +12,6 @@ import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.Debug;
-import com.telenav.kivakit.logs.server.project.LogsServerProject;
 import com.telenav.kivakit.resource.path.Extension;
 import com.telenav.kivakit.serialization.core.SerializationSession;
 
@@ -114,11 +113,6 @@ public class SessionStore
         return new LinkedList<>();
     }
 
-    private SerializationSession session()
-    {
-        return LogsServerProject.get().sessionFactory().session(DEBUG.listener());
-    }
-
     public boolean has(final Session session)
     {
         return sessions().contains(session);
@@ -183,6 +177,11 @@ public class SessionStore
         return Folder.kivakitCache()
                 .folder("logs")
                 .mkdirs();
+    }
+
+    private SerializationSession session()
+    {
+        return SerializationSession.threadLocal(DEBUG.listener());
     }
 
     private File sessionFile(final Session session, final Extension extension)

@@ -16,10 +16,10 @@ import java.util.Set;
  */
 public class LogsServerProject extends Project
 {
-    private static final Lazy<LogsServerProject> singleton = Lazy.of(LogsServerProject::new);
-
     private static final KryoTypes KRYO_TYPES = new CoreKernelKryoTypes()
             .mergedWith(new LogsServerKryoTypes());
+
+    private static final Lazy<LogsServerProject> singleton = Lazy.of(LogsServerProject::new);
 
     public static LogsServerProject get()
     {
@@ -28,16 +28,12 @@ public class LogsServerProject extends Project
 
     private LogsServerProject()
     {
+        SerializationSessionFactory.threadLocal(KRYO_TYPES.sessionFactory());
     }
 
     @Override
     public Set<Project> dependencies()
     {
         return Set.of(KernelProject.get(), ResourceProject.get(), NetworkCoreProject.get());
-    }
-
-    public SerializationSessionFactory sessionFactory()
-    {
-        return KRYO_TYPES.sessionFactory();
     }
 }

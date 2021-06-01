@@ -28,17 +28,16 @@ import com.telenav.kivakit.serialization.kryo.KryoTypes;
 import java.util.Set;
 
 /**
- * The project class for kivakit-service-registry. Includes a {@link SerializationSessionFactory} that can serialize
- * local and network service registries, retrieved with {@link #sessionFactory()}.
+ * The project class for kivakit-service-registry.
  *
  * @author jonathanl (shibo)
  */
 public class ServiceRegistryProject extends Project
 {
-    private static final Lazy<ServiceRegistryProject> project = Lazy.of(ServiceRegistryProject::new);
-
     private static final KryoTypes KRYO_TYPES = new ServiceRegistryKryoTypes()
             .mergedWith(new CoreKernelKryoTypes());
+
+    private static final Lazy<ServiceRegistryProject> project = Lazy.of(ServiceRegistryProject::new);
 
     public static ServiceRegistryProject get()
     {
@@ -47,16 +46,12 @@ public class ServiceRegistryProject extends Project
 
     private ServiceRegistryProject()
     {
+        SerializationSessionFactory.threadLocal(KRYO_TYPES.sessionFactory());
     }
 
     @Override
     public Set<Project> dependencies()
     {
         return Set.of(CoreCollectionsProject.get());
-    }
-
-    public SerializationSessionFactory sessionFactory()
-    {
-        return KRYO_TYPES.sessionFactory();
     }
 }

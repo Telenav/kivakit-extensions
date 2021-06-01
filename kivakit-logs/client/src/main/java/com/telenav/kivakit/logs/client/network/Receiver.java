@@ -10,7 +10,6 @@ import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.values.version.VersionedObject;
 import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
-import com.telenav.kivakit.logs.client.project.LogsClientProject;
 import com.telenav.kivakit.logs.server.session.Session;
 import com.telenav.kivakit.logs.server.session.SessionStore;
 import com.telenav.kivakit.serialization.core.SerializationSession;
@@ -58,7 +57,7 @@ public class Receiver extends BaseRepeater implements Stoppable
                         final Consumer<VersionedObject<?>> objectListener)
     {
         // Create a serializer and read the TDK version from the server
-        final var serializationSession = LogsClientProject.get().sessionFactory().session(this);
+        final var serializationSession = SerializationSession.threadLocal(this);
         final var version = serializationSession.open(CLIENT, KivaKit.get().kivakitVersion(), connection.input());
 
         // and if we are compatible with it,

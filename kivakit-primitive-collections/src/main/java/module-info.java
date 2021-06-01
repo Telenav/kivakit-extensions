@@ -16,6 +16,7 @@ open module kivakit.primitive.collections
     exports com.telenav.kivakit.primitive.collections.array.strings;
     exports com.telenav.kivakit.primitive.collections.iteration;
     exports com.telenav.kivakit.primitive.collections.list;
+    exports com.telenav.kivakit.primitive.collections.list.adapters;
     exports com.telenav.kivakit.primitive.collections.list.store;
     exports com.telenav.kivakit.primitive.collections.map;
     exports com.telenav.kivakit.primitive.collections.map.multi.dynamic;

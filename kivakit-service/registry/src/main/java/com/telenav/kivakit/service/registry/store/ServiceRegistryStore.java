@@ -28,9 +28,9 @@ import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.resource.path.Extension;
+import com.telenav.kivakit.serialization.core.SerializationSession;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
 import com.telenav.kivakit.service.registry.ServiceRegistrySettings;
-import com.telenav.kivakit.service.registry.project.ServiceRegistryProject;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRegistry;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -78,7 +78,7 @@ public class ServiceRegistryStore extends BaseRepeater
                 try (final var input = file.openForReading())
                 {
                     // create a serialization object and read the serialized registry
-                    final var session = ServiceRegistryProject.get().sessionFactory().session(this);
+                    final var session = SerializationSession.threadLocal(this);
                     session.open(RESOURCE, settings().version(), input);
                     final VersionedObject<ServiceRegistry> object = session.read();
 
@@ -118,7 +118,7 @@ public class ServiceRegistryStore extends BaseRepeater
             {
                 try (final var output = file.openForWriting())
                 {
-                    final var session = ServiceRegistryProject.get().sessionFactory().session(this);
+                    final var session = SerializationSession.threadLocal(this);
                     session.open(RESOURCE, settings().version(), output);
                     session.write(new VersionedObject<>(settings().version(), registry));
                     session.close();

@@ -31,9 +31,9 @@ import java.util.Set;
 
 public class LogsClientProject extends Project
 {
-    private static final Lazy<LogsClientProject> project = Lazy.of(LogsClientProject::new);
-
     private static final KryoTypes KRYO_TYPES = new CoreKernelKryoTypes();
+
+    private static final Lazy<LogsClientProject> project = Lazy.of(LogsClientProject::new);
 
     public static LogsClientProject get()
     {
@@ -42,6 +42,7 @@ public class LogsClientProject extends Project
 
     protected LogsClientProject()
     {
+        SerializationSessionFactory.threadLocal(KRYO_TYPES.sessionFactory());
     }
 
     @Override
@@ -58,10 +59,5 @@ public class LogsClientProject extends Project
         return MesaKit.get().cacheFolder()
                 .folder("map")
                 .mkdirs();
-    }
-
-    public SerializationSessionFactory sessionFactory()
-    {
-        return KRYO_TYPES.sessionFactory();
     }
 }

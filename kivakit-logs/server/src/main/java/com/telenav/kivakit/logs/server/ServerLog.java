@@ -234,7 +234,7 @@ public class ServerLog extends BaseTextLog
                 synchronized (serializationLock)
                 {
                     // Create a serializer and start writing to the connection
-                    final var serializer = LogsServerProject.get().sessionFactory().session(LOGGER);
+                    final var serializer = SerializationSession.threadLocal(LOGGER);
                     serializer.open(CLIENT, KivaKit.get().kivakitVersion(), input);
                     serializer.open(SERVER, KivaKit.get().kivakitVersion(), output);
 
