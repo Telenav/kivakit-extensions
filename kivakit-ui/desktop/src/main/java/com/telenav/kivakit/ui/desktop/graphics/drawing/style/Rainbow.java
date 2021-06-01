@@ -32,7 +32,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
  *
  * @author jonathanl (shibo)
  */
-public class Rainbow implements Iterator<Color>
+public class Rainbow implements Iterator<Style>
 {
     private static final List<Color> COLORS = new ArrayList<>();
 
@@ -53,13 +53,16 @@ public class Rainbow implements Iterator<Color>
     }
 
     @Override
-    public Color next()
+    public Style next()
     {
         if (index == COLORS.size())
         {
             index = 0;
         }
-        return COLORS.get(index++);
+        final var color = COLORS.get(index++);
+        return Style.create()
+                .withTextColor(color)
+                .withFillColor(color);
     }
 
     @Override
