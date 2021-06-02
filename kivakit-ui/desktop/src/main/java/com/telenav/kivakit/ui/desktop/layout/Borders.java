@@ -16,6 +16,11 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
  */
 public class Borders
 {
+    public static void applyMargin(final JComponent component, final int size)
+    {
+        Borders.insideMarginsOf(Margins.of(8)).apply(component);
+    }
+
     public static Borders create()
     {
         return new Borders();

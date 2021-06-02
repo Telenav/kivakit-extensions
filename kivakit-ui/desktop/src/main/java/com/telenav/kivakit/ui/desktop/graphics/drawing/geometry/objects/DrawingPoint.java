@@ -26,6 +26,7 @@ import com.telenav.kivakit.ui.desktop.graphics.drawing.CoordinateSystem;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Coordinated;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingObject;
 
+import java.awt.geom.Point2D;
 import java.util.Objects;
 
 import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCoordinateSystem.PIXELS;
@@ -59,18 +60,17 @@ public class DrawingPoint extends DrawingObject
     /** The y coordinate */
     private final double y;
 
-    public boolean isClose(final DrawingPoint projectedPoint, final double tolerance)
-    {
-        return Math.abs(projectedPoint.x() - x()) < tolerance
-                && Math.abs(projectedPoint.y() - y()) < tolerance;
-    }
-
     protected DrawingPoint(final Coordinated coordinates, final double x, final double y)
     {
         super(coordinates);
 
         this.x = x;
         this.y = y;
+    }
+
+    public Point2D.Double asAwt()
+    {
+        return new Point2D.Double(x, y);
     }
 
     /**
@@ -97,6 +97,12 @@ public class DrawingPoint extends DrawingObject
     public int hashCode()
     {
         return Objects.hash(coordinates(), x, y);
+    }
+
+    public boolean isClose(final DrawingPoint projectedPoint, final double tolerance)
+    {
+        return Math.abs(projectedPoint.x() - x()) < tolerance
+                && Math.abs(projectedPoint.y() - y()) < tolerance;
     }
 
     /**
