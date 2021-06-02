@@ -23,6 +23,7 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.style;
 
 import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingWidth;
@@ -120,6 +121,11 @@ public class Stroke
         return withWidth(width().scaledBy(scaleFactor));
     }
 
+    public Stroke scale(final Percent scaleFactor)
+    {
+        return withWidth(width().scaledBy(scaleFactor));
+    }
+
     public Shape stroked(final Shape shape)
     {
         return awtStroke().createStrokedShape(shape);
@@ -129,6 +135,11 @@ public class Stroke
     public String toString()
     {
         return new ObjectFormatter(this).toString();
+    }
+
+    public DrawingWidth width()
+    {
+        return width;
     }
 
     public Stroke withCap(final int cap)
@@ -186,10 +197,5 @@ public class Stroke
             stroke = new BasicStroke((float) width.units(), cap, join, miterLimit, dash, dashPhase);
         }
         return stroke;
-    }
-
-    protected DrawingWidth width()
-    {
-        return width;
     }
 }

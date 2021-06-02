@@ -50,12 +50,6 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Text at(final DrawingPoint at)
-    {
-        return (Text) super.at(at);
-    }
-
-    @Override
     public Text copy()
     {
         return new Text(this);
@@ -64,7 +58,7 @@ public class Text extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        surface.drawText(style(), at(), text);
+        surface.drawText(style(), withLocation(), text);
         return null;
     }
 
@@ -114,6 +108,12 @@ public class Text extends BaseDrawable
     public Text withFillStrokeWidth(final DrawingWidth width)
     {
         return (Text) super.withFillStrokeWidth(width);
+    }
+
+    @Override
+    public Text withLocation(final DrawingPoint at)
+    {
+        return (Text) super.withLocation(at);
     }
 
     @Override

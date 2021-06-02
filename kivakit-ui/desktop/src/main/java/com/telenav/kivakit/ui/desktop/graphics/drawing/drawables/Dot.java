@@ -61,12 +61,6 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot at(final DrawingPoint at)
-    {
-        return (Dot) super.at(at);
-    }
-
-    @Override
     public Dot copy()
     {
         return new Dot(this);
@@ -75,7 +69,7 @@ public class Dot extends BaseDrawable
     @Override
     public Shape draw(final DrawingSurface surface)
     {
-        return shape(surface.drawDot(style(), at(), radius()));
+        return shape(surface.drawDot(style(), withLocation(), radius()));
     }
 
     public DrawingLength radius()
@@ -135,6 +129,12 @@ public class Dot extends BaseDrawable
     public Dot withFillStrokeWidth(final DrawingWidth width)
     {
         return (Dot) super.withFillStrokeWidth(width);
+    }
+
+    @Override
+    public Dot withLocation(final DrawingPoint at)
+    {
+        return (Dot) super.withLocation(at);
     }
 
     public Dot withRadius(final DrawingLength radius)

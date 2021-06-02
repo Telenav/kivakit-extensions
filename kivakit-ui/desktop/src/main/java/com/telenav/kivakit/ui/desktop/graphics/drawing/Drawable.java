@@ -12,26 +12,15 @@ import java.awt.Shape;
 
 /**
  * An object with a {@link #style()} that can be drawn on a {@link DrawingSurface} with {@link #draw(DrawingSurface)}.
- * The object has a location that can be queried with {@link #at()}. A copy of the object can be created with {@link
- * #copy()}. A copy at a new location can be created with {@link #at(DrawingPoint)} and a scaled copy with {@link
- * #scaledBy(double)} or {@link #scaledBy(Percent)}. Once the drawable has been drawn, its {@link Shape} can be
- * retrieved with {@link #shape()}.
+ * The object has a location that can be queried with {@link #withLocation()}. A copy of the object can be created with
+ * {@link #copy()}. A copy at a new location can be created with {@link #withLocation(DrawingPoint)} and a scaled copy
+ * with {@link #scaledBy(double)} or {@link #scaledBy(Percent)}. Once the drawable has been drawn, its {@link Shape} can
+ * be retrieved with {@link #shape()}.
  *
  * @author jonathanl (shibo)
  */
 public interface Drawable
 {
-    /**
-     * @return The location of the drawable
-     */
-    @KivaKitIncludeProperty
-    DrawingPoint at();
-
-    /**
-     * @return A copy of this drawable at the given new location
-     */
-    Drawable at(DrawingPoint at);
-
     /**
      * @return A copy of this drawable
      */
@@ -81,6 +70,17 @@ public interface Drawable
     Drawable withFillStroke(final Stroke stroke);
 
     Drawable withFillStrokeWidth(final DrawingWidth width);
+
+    /**
+     * @return The location of the drawable
+     */
+    @KivaKitIncludeProperty
+    DrawingPoint withLocation();
+
+    /**
+     * @return A copy of this drawable at the given new location
+     */
+    Drawable withLocation(DrawingPoint at);
 
     Drawable withStyle(final Style style);
 

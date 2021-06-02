@@ -69,12 +69,6 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line at(final DrawingPoint at)
-    {
-        return (Line) super.at(at);
-    }
-
-    @Override
     public Line copy()
     {
         return new Line(this);
@@ -86,15 +80,15 @@ public class Line extends BaseDrawable
         final var shape = new Area();
 
         shape.add(new Area(shape(surface.drawLine(style(), from(), to()))));
-        shape.add(new Area(fromArrowHead.at(from()).draw(surface)));
-        shape.add(new Area(toArrowHead.at(to()).draw(surface)));
+        shape.add(new Area(fromArrowHead.withLocation(from()).draw(surface)));
+        shape.add(new Area(toArrowHead.withLocation(to()).draw(surface)));
 
         return shape;
     }
 
     public DrawingPoint from()
     {
-        return at();
+        return withLocation();
     }
 
     public DrawingSize offset()
@@ -120,7 +114,7 @@ public class Line extends BaseDrawable
 
     public DrawingPoint to()
     {
-        return at().plus(offset);
+        return withLocation().plus(offset);
     }
 
     @Override
@@ -167,7 +161,7 @@ public class Line extends BaseDrawable
 
     public Line withFrom(final DrawingPoint from)
     {
-        return at(from);
+        return withLocation(from);
     }
 
     public Line withFromArrowHead(final Drawable arrowHead)
@@ -175,6 +169,12 @@ public class Line extends BaseDrawable
         final var copy = copy();
         copy.fromArrowHead = arrowHead;
         return copy;
+    }
+
+    @Override
+    public Line withLocation(final DrawingPoint at)
+    {
+        return (Line) super.withLocation(at);
     }
 
     public Line withOffset(final DrawingSize offset)
@@ -198,7 +198,7 @@ public class Line extends BaseDrawable
 
     public Line withTo(final DrawingPoint to)
     {
-        return withOffset(to.minus(at()).asSize());
+        return withOffset(to.minus(withLocation()).asSize());
     }
 
     public Line withToArrowHead(final Drawable arrowHead)

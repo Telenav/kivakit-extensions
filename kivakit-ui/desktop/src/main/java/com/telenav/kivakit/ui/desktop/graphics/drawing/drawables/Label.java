@@ -54,12 +54,6 @@ public class Label extends Box
     }
 
     @Override
-    public Label at(final DrawingPoint at)
-    {
-        return (Label) super.at(at);
-    }
-
-    @Override
     public Label copy()
     {
         return new Label(this);
@@ -74,7 +68,7 @@ public class Label extends Box
 
         final var shape = super.draw(surface, size);
 
-        surface.drawText(style(), at().plus(margin, margin), text);
+        surface.drawText(style(), withLocation().plus(margin, margin), text);
         return shape;
     }
 
@@ -124,6 +118,12 @@ public class Label extends Box
     public Label withFillStrokeWidth(final DrawingWidth width)
     {
         return (Label) super.withFillStrokeWidth(width);
+    }
+
+    @Override
+    public Label withLocation(final DrawingPoint at)
+    {
+        return (Label) super.withLocation(at);
     }
 
     public Label withMargin(final int margin)

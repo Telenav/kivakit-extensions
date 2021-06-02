@@ -20,6 +20,7 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.drawables;
 
 import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.kernel.language.values.level.Percent;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.Drawable;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.DrawingSurface;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements.DrawingLength;
@@ -36,9 +37,10 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * A base {@link Drawable} implementation, with a {@link Style}, retrieved with {@link #style()}, and a {@link
- * DrawingPoint} location, retrieved with {@link #at()}. When the drawable is drawn with {@link #draw(DrawingSurface)},
- * it then has a shape that can be retrieved with {@link #shape()}. A copy of a drawable can be retrieved with {@link
- * #copy()} and the <i>with*()</i> functional methods can be used to create copies with new attributes.
+ * DrawingPoint} location, retrieved with {@link #withLocation()}. When the drawable is drawn with {@link
+ * #draw(DrawingSurface)}, it then has a shape that can be retrieved with {@link #shape()}. A copy of a drawable can be
+ * retrieved with {@link #copy()} and the <i>with*()</i> functional methods can be used to create copies with new
+ * attributes.
  *
  * @author jonathanl (shibo)
  */
@@ -72,21 +74,13 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public Drawable at(final DrawingPoint at)
-    {
-        final var copy = (BaseDrawable) copy();
-        copy.at = at;
-        return copy;
-    }
-
-    @Override
-    public DrawingPoint at()
-    {
-        return at;
-    }
-
-    @Override
     public abstract BaseDrawable copy();
+
+    public BaseDrawable fattened(final Percent percent)
+    {
+        final var width = style.drawStroke().width();
+        return withDrawStrokeWidth(width.scaledBy(percent));
+    }
 
     @Override
     public Shape shape()
@@ -152,6 +146,20 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
+    public Drawable withLocation(final DrawingPoint at)
+    {
+        final var copy = (BaseDrawable) copy();
+        copy.at = at;
+        return copy;
+    }
+
+    @Override
+    public DrawingPoint withLocation()
+    {
+        return at;
+    }
+
+    @Override
     public BaseDrawable withStyle(final Style style)
     {
         final var copy = (BaseDrawable) copy();
@@ -168,20 +176,20 @@ public abstract class BaseDrawable implements Drawable
     protected Box box(final DrawingSize size)
     {
         return Box.box(style)
-                .at(at)
+                .withLocation(at)
                 .withSize(size);
     }
 
     protected Dot dot(final DrawingLength radius)
     {
         return Dot.dot(style)
-                .at(at)
+                .withLocation(at)
                 .withRadius(radius);
     }
 
     protected Label label(final String text)
     {
-        return Label.label(style, text).at(at);
+        return Label.label(style, text).withLocation(at);
     }
 
     protected Line line(final DrawingPoint from, final DrawingPoint to)
@@ -197,6 +205,6 @@ public abstract class BaseDrawable implements Drawable
 
     protected Text text(final String text)
     {
-        return Text.text(style, text).at(at);
+        return Text.text(style, text).withLocation(at);
     }
 }

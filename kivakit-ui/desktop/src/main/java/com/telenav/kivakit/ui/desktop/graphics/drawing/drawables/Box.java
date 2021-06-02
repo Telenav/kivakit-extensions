@@ -51,12 +51,6 @@ public class Box extends BaseDrawable
     }
 
     @Override
-    public Box at(final DrawingPoint at)
-    {
-        return (Box) super.at(at);
-    }
-
-    @Override
     public Box copy()
     {
         return new Box(this);
@@ -83,7 +77,7 @@ public class Box extends BaseDrawable
 
     public Box withArea(final DrawingRectangle rectangle)
     {
-        return withSize(rectangle.size()).at(rectangle.at());
+        return withSize(rectangle.size()).withLocation(rectangle.at());
     }
 
     @Override
@@ -128,6 +122,12 @@ public class Box extends BaseDrawable
         return (Box) super.withFillStrokeWidth(width);
     }
 
+    @Override
+    public Box withLocation(final DrawingPoint at)
+    {
+        return (Box) super.withLocation(at);
+    }
+
     public Box withRoundedCorners(final DrawingLength corner)
     {
         return withRoundedCorners(corner.asWidth(), corner.asHeight());
@@ -164,11 +164,11 @@ public class Box extends BaseDrawable
     {
         if (cornerWidth != null && cornerHeight != null)
         {
-            return shape(surface.drawRoundedBox(style(), at(), size, cornerWidth, cornerHeight));
+            return shape(surface.drawRoundedBox(style(), withLocation(), size, cornerWidth, cornerHeight));
         }
         else
         {
-            return shape(surface.drawBox(style(), at(), size));
+            return shape(surface.drawBox(style(), withLocation(), size));
         }
     }
 }
