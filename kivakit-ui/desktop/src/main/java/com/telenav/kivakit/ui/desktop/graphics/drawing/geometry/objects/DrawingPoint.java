@@ -46,6 +46,11 @@ public class DrawingPoint extends DrawingObject
         return new DrawingPoint(PIXELS, x, y);
     }
 
+    public static DrawingPoint point(final Point2D point)
+    {
+        return pixels(point.getX(), point.getY());
+    }
+
     /**
      * @return The given x, y coordinate in the given coordinate system
      */
