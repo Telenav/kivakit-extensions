@@ -80,7 +80,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     private final SwitchParser<Folder> CONFIGURATION_FOLDER = Folder
-            .folderSwitch("configuration-folder", "Folder containing HDFS configuration files")
+            .folderSwitchParser("configuration-folder", "Folder containing HDFS configuration files")
             .required()
             .build();
 
@@ -93,12 +93,12 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
             .build();
 
     private final SwitchParser<Integer> DATA_PORT = SwitchParser
-            .integerSwitch("data-port", "The port to use when responding to data requests")
+            .integerSwitchParser("data-port", "The port to use when responding to data requests")
             .required()
             .build();
 
     private final SwitchParser<Integer> RMI_OBJECT_PORT = SwitchParser
-            .integerSwitch("rmi-object-port", "The port to use when registering the remote proxy object")
+            .integerSwitchParser("rmi-object-port", "The port to use when registering the remote proxy object")
             .required()
             .build();
 

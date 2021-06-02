@@ -30,6 +30,8 @@ import com.telenav.kivakit.ui.desktop.graphics.image.ImageResource;
 import java.awt.Taskbar;
 import java.util.Set;
 
+import static com.telenav.kivakit.commandline.SwitchParser.maximumSwitchParser;
+
 /**
  * Application to view remote {@link ServerLog}s.
  *
@@ -43,7 +45,7 @@ public class LogViewerApplication extends Application
     }
 
     private final SwitchParser<Maximum> MAXIMUM_ENTRIES =
-            SwitchParser.maximumSwitch("maximum-entries", "The maximum number of entries to keep at a time")
+            maximumSwitchParser("maximum-entries", "The maximum number of entries to keep at a time")
                     .optional()
                     .defaultValue(Maximum.maximum(20_000))
                     .build();

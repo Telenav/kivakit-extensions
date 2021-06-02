@@ -28,6 +28,7 @@ import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.network.core.project.NetworkCoreProject;
 import com.telenav.kivakit.service.registry.Scope;
+import com.telenav.kivakit.service.registry.Scope.Type;
 import com.telenav.kivakit.service.registry.ServiceMetadata;
 import com.telenav.kivakit.service.registry.ServiceType;
 import com.telenav.kivakit.service.registry.client.ServiceRegistryClient;
@@ -35,6 +36,7 @@ import com.telenav.kivakit.service.registry.client.ServiceRegistryClient;
 import java.util.Set;
 
 import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITH_EXCEPTION;
+import static com.telenav.kivakit.service.registry.Scope.Type.scopeTypeSwitchParser;
 
 /**
  * Identifier to view the TDK services on a machine.
@@ -49,7 +51,7 @@ public class ServiceRegistryViewerApplication extends Application
         new ServiceRegistryViewerApplication().run(arguments);
     }
 
-    private final SwitchParser<Scope.Type> SCOPE_TYPE = Scope.Type.switchParser().build();
+    private final SwitchParser<Type> SCOPE_TYPE = scopeTypeSwitchParser().build();
 
     private final Debug DEBUG = new Debug(this);
 

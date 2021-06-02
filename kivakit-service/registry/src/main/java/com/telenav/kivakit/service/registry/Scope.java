@@ -79,17 +79,17 @@ public class Scope implements Named, Comparable<Scope>
                 .collect(Collectors.toSet()));
     }
 
-    public static Scope scope(final Scope.Type type)
-    {
-        return new Scope(type, null);
-    }
-
     /**
      * @return The network-wide scope
      */
     public static Scope network()
     {
         return new Scope(NETWORK, null);
+    }
+
+    public static Scope scope(final Scope.Type type)
+    {
+        return new Scope(type, null);
     }
 
     public static Set<Scope> scopes(final Result<Set<Service>> result)
@@ -123,10 +123,10 @@ public class Scope implements Named, Comparable<Scope>
         /** Services anywhere on the network */
         NETWORK;
 
-        public static SwitchParser.Builder<Type> switchParser()
+        public static SwitchParser.Builder<Type> scopeTypeSwitchParser()
         {
             return SwitchParser
-                    .enumSwitch("scope", "The scope to search", Type.class)
+                    .enumSwitchParser("scope", "The scope to search", Type.class)
                     .optional()
                     .defaultValue(LOCALHOST);
         }

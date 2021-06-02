@@ -76,13 +76,13 @@ public class ServiceRegistryServer extends Server
     }
 
     private final SwitchParser<Scope.Type> SCOPE = SwitchParser
-            .enumSwitch("scope", "The scope of operation for this server", Scope.Type.class)
+            .enumSwitchParser("scope", "The scope of operation for this server", Scope.Type.class)
             .defaultValue(Scope.localhost().type())
             .optional()
             .build();
 
     private final SwitchParser<Integer> PORT = SwitchParser
-            .integerSwitch("first-port", "The first port in the range of ports to be allocated")
+            .integerSwitchParser("first-port", "The first port in the range of ports to be allocated")
             .defaultValue(50_000)
             .optional()
             .build();
