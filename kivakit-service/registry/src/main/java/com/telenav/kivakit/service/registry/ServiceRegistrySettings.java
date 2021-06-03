@@ -48,7 +48,7 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
  * <pre>
  * class = com.telenav.kivakit.service.registry.ServiceRegistrySettings
  *
- * version = 8.0
+ * version = 0.9.8-alpha
  * rest-api-path = api/v8
  * local-service-registry-port = 23573
  * network-service-registry-port = kivakit.service.registry:23575

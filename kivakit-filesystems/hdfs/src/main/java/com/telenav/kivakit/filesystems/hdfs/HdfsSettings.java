@@ -54,8 +54,23 @@ public class HdfsSettings
     /** User information */
     private String username;
 
+    /** The name of the HDFS cluster */
+    private String clusterName;
+
     /** Container of HDFS site configuration resources */
     private ResourceFolder configurationFolder;
+
+    public String clusterName()
+    {
+        return clusterName;
+    }
+
+    @KivaKitPropertyConverter
+    public HdfsSettings clusterName(final String clusterName)
+    {
+        this.clusterName = clusterName;
+        return this;
+    }
 
     @KivaKitPropertyConverter(ResourceFolder.Converter.class)
     public HdfsSettings configurationFolder(final ResourceFolder configuration)

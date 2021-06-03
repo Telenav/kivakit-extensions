@@ -89,7 +89,6 @@ public class HdfsProxyClient extends BaseRepeater
 
     private HdfsProxyClient()
     {
-        listenTo(this);
     }
 
     public Port dataPort()
@@ -138,7 +137,8 @@ public class HdfsProxyClient extends BaseRepeater
 
         final var settings = Settings.require(HdfsSettings.class);
 
-        final var materialized = settings.configurationFolder().materialize();
+        final var materialized = settings.configurationFolder()
+                .materializeTo(Folder.kivakitCache().folder("hdfs-filesystem/settings/" + settings.clusterName()));
 
         final var metadata = new ServiceMetadata()
                 .version(HdfsProxy.VERSION)
@@ -165,7 +165,7 @@ public class HdfsProxyClient extends BaseRepeater
 
             // download the jar (if need be) and launch it as a child process using the ports
             // allocated for the current application / process.
-            final var local = Folder.kivakitHome()
+            final var local = Folder.kivakitExtensionsHome()
                     .folder("kivakit-filesystems/hdfs-proxy/target")
                     .file("kivakit-hdfs-proxy-" + KivaKit.get().projectVersion() + ".jar");
             final var process = listenTo(new JarLauncher())

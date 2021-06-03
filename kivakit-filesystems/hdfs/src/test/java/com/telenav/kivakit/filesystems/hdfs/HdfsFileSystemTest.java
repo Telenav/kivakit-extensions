@@ -24,6 +24,7 @@ import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.network.core.NetworkPath;
 import com.telenav.kivakit.network.http.HttpNetworkLocation;
+import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.test.annotations.SlowTests;
 import org.junit.Before;
@@ -46,13 +47,14 @@ public class HdfsFileSystemTest extends UnitTest
     @Before
     public void testBefore()
     {
+        final var kivakitVersion = KivaKit.get().kivakitVersion();
         final var settings = new HdfsSettings()
-                .configurationFolder(com.telenav.kivakit.resource.resources.packaged.Package.of(getClass(), "configurations/test"))
+                .clusterName("cluster1ns")
+                .configurationFolder(Package.of(getClass(), "settings/cluster1ns"))
                 .contactEmail(EmailAddress.parse("jonathanl@telenav.com"))
                 .username("automation")
                 .proxyJar(new HttpNetworkLocation(NetworkPath.parseNetworkPath(
-                        "https://www.kivakit.org/applications/kivakit-hdfs-proxy"
-                                + KivaKit.get().kivakitVersion() + ".jar")).get());
+                        "https://www.kivakit.org/" + kivakitVersion + "/applications/kivakit-hdfs-proxy-" + kivakitVersion + ".jar")).get());
         Settings.register(settings);
     }
 

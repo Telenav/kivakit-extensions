@@ -194,7 +194,7 @@ class HdfsFileSystem
             }
             else
             {
-                fail("HDFS configuration folder $ does not exist", folder);
+                fail("HDFS configuration folder $ does not exist", property);
             }
         }
 
@@ -209,9 +209,7 @@ class HdfsFileSystem
         ensureNotNull(configurationFolder, "Cannot initialize HDFS as no HdfsProxyServerSettings was provided");
 
         // Get resource folder holding site configuration file
-        final var siteConfiguration = configurationFolder
-                .folder(cluster(path))
-                .resource("/hdfs-site.xml");
+        final var siteConfiguration = configurationFolder.resource("/hdfs-site.xml");
         final var configuration = new Configuration();
         if (siteConfiguration.exists())
         {

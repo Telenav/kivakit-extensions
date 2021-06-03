@@ -76,7 +76,7 @@ import javax.ws.rs.core.Response;
 
                 title = "KivaKit Service Registry",
                 description = "Registry of KivaKit services. See KivaKit module kivakit.service for details.",
-                version = "8.0.7",
+                version = "0.9.8-alpha",
 
                 contact = @Contact(
                         name = "Jonathan Locke",
@@ -90,7 +90,7 @@ import javax.ws.rs.core.Response;
                 )
         )
 )
-@Path("api/v8")
+@Path("api/0.9.8-alpha")
 @LexakaiJavadoc(complete = true)
 public class ServiceRegistryRestResource extends BaseRestResource
 {
