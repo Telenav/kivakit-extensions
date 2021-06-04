@@ -48,7 +48,7 @@ import static com.telenav.kivakit.serialization.core.SerializationSession.Type.S
 
 public class ServerLog extends BaseTextLog
 {
-    public static ServiceType SERVER_LOG = new ServiceType("tdk-server-log");
+    public static ServiceType SERVER_LOG = new ServiceType("kivakit-server-log");
 
     private static final ConsoleLogger LOGGER = new ConsoleLogger();
 
