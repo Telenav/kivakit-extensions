@@ -78,7 +78,7 @@ public class ConnectionPanel extends KivaKitPanel
 
     private void refreshConnections()
     {
-        // Locate all TDK server logs services on the network
+        // Locate all KivaKit server logs services on the network
         final var client = LOGGER.listenTo(new ServiceRegistryClient());
         final var services = client.discoverServices(Scope.localhost(), ServerLog.SERVER_LOG)
                 .with(client.discoverServices(Scope.network(), ServerLog.SERVER_LOG), Sets::union);

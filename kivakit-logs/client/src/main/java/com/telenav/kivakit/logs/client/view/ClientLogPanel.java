@@ -226,7 +226,7 @@ public class ClientLogPanel extends KivaKitPanel
     {
         final var currentSession = sessionPanel().currentSession();
         final var entries = currentSession != null ? currentSession.entries().size() : 0;
-        frame.title(Message.format("TDK Log Viewer ($) - Viewing $ Entries",
+        frame.title(Message.format("MesaKit Log Viewer ($) - Viewing $ Entries",
                 connector().isConnected() ? connector().connectedPort() : "Disconnected", entries));
     }
 

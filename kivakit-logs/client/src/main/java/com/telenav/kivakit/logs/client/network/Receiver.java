@@ -56,7 +56,7 @@ public class Receiver extends BaseRepeater implements Stoppable
                         final Consumer<Session> newSessionListener,
                         final Consumer<VersionedObject<?>> objectListener)
     {
-        // Create a serializer and read the TDK version from the server
+        // Create a serializer and read the framework version from the server
         final var serializationSession = SerializationSession.threadLocal(this);
         final var version = serializationSession.open(CLIENT, KivaKit.get().kivakitVersion(), connection.input());
 
@@ -74,7 +74,7 @@ public class Receiver extends BaseRepeater implements Stoppable
             newSessionListener.accept(session);
 
             // then loop until we are told to stop,
-            narrate("Receiving data from $ - $ (TDK version $)", port, session.name(), version);
+            narrate("Receiving data from $ - $ (version $)", port, session.name(), version);
             stopping.reset();
             state = RUNNING;
             while (state == RUNNING)

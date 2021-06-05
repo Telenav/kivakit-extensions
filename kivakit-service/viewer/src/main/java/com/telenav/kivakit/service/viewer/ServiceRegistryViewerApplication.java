@@ -39,7 +39,7 @@ import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.For
 import static com.telenav.kivakit.service.registry.Scope.Type.scopeTypeSwitchParser;
 
 /**
- * Identifier to view the TDK services on a machine.
+ * Identifier to view the KivaKit services on a machine.
  *
  * @author jonathanl (shibo)
  */

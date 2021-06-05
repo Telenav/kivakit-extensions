@@ -98,7 +98,7 @@ public class SessionStore
                 {
                     final var serializationSession = session();
                     final var version = serializationSession.open(RESOURCE, KivaKit.get().kivakitVersion(), input);
-                    DEBUG.trace("Loaded session '$' (TDK version $)", session, version);
+                    DEBUG.trace("Loaded session '$' (KivaKit version $)", session, version);
                     entries = (LinkedList<LogEntry>) serializationSession.read().get();
                     sessionNameToEntries.put(session, entries);
                 }
