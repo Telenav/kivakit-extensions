@@ -59,7 +59,7 @@ public class LogViewerApplication extends Application
     @Override
     protected void onRun()
     {
-        final var icon = ImageResource.of(getClass(), "kivakit-icon-128.png").image();
+        final var icon = ImageResource.of(getClass(), "kivakit-128.png").image();
         Taskbar.getTaskbar().setIconImage(icon);
 
         final var configuration = PropertyMap.create();

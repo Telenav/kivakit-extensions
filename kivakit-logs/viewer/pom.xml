@@ -21,7 +21,8 @@
 
     <properties>
 
-        <jar.base.name>kivakit-log-viewer-${kivakit.version}</jar.base.name>
+        <viewer.version>1.9.8</viewer.version>
+        <jar.base.name>kivakit-log-viewer-${viewer.version}</jar.base.name>
 
     </properties>
 
@@ -78,7 +79,7 @@
                                     <transformers>
                                         <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                             <mainClass>
-                                                com.telenav.kivakit.tools.applications.log.viewer.ServiceRegistryApplication
+                                                com.telenav.kivakit.logs.viewer.LogViewerTesterApplication
                                             </mainClass>
                                         </transformer>
                                     </transformers>
@@ -160,19 +161,19 @@
                                         <argument>--input</argument>
                                         <argument>target/application/</argument>
                                         <argument>--name</argument>
-                                        <argument>kivakit Log Viewer</argument>
+                                        <argument>kivakit-log-viewer</argument>
                                         <argument>--main-jar</argument>
-                                        <argument>kivakit-log-viewer-${kivakit.version}.jar</argument>
+                                        <argument>kivakit-log-viewer-${viewer.version}.jar</argument>
                                         <argument>--main-class</argument>
-                                        <argument>com.telenav.kivakit.tools.applications.log.viewer.ServiceRegistryApplication</argument>
+                                        <argument>com.telenav.kivakit.logs.viewer.LogViewerApplication</argument>
                                         <argument>--type</argument>
                                         <argument>dmg</argument>
                                         <argument>--icon</argument>
-                                        <argument>src/main/resources/kivakit-logo.icns</argument>
+                                        <argument>src/main/resources/kivakit-512.icns</argument>
                                         <argument>--mac-package-name</argument>
-                                        <argument>"kivakit Log Viewer"</argument>
+                                        <argument>"kivakit-log-viewer"</argument>
                                         <argument>--app-version</argument>
-                                        <argument>${kivakit.version}</argument>
+                                        <argument>${viewer.version}</argument>
                                         <argument>--vendor</argument>
                                         <argument>Telenav</argument>
                                     </arguments>
@@ -189,10 +190,10 @@
                                 <id>install-dmg</id>
                                 <phase>install</phase>
                                 <configuration>
-                                    <target name = "Install kivakit-log-viewer-${kivakit.version}.jar">
-                                        <echo message = "Installing kivakit Log Viewer DMG"/>
-                                        <copy file = "kivakit Log Viewer-${kivakit.version}.dmg"
-                                              tofile = "${project.basedir}/../../../tools/applications/kivakit Log Viewer ${kivakit.version}.dmg"
+                                    <target name = "Install kivakit-log-viewer-${viewer.version}.jar">
+                                        <echo message = "Installing kivakit-log-viewer DMG"/>
+                                        <copy file = "kivakit-log-viewer-${viewer.version}.dmg"
+                                              tofile = "${project.basedir}/../../../tools/applications/kivakit-log-viewer-${viewer.version}.dmg"
                                               verbose = "true"/>
                                     </target>
                                 </configuration>
