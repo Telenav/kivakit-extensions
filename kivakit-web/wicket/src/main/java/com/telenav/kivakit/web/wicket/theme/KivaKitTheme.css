@@ -148,7 +148,7 @@
     color: var(--kivakit-header-title-color);
     position: absolute;
     top: 25px;
-    left: 170px;
+    left: 75px;
 }
 
 .kivakit-header-version {
