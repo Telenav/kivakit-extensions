@@ -21,6 +21,7 @@
 
     <modules>
 
+        <module>core</module>
         <module>dynamo</module>
         <module>lambda</module>
         <module>s3</module>
