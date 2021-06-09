@@ -130,6 +130,7 @@
         <module>kivakit-web</module>
         <module>kivakit-service</module>
         <module>kivakit-filesystems</module>
+        <module>kivakit-aws</module>
 
     </modules>
 
