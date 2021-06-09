@@ -1,12 +1,12 @@
 package com.telenav.kivakit.aws.s3;
 
-import com.telenav.kivakit.aws.core.AwsRegion;
 import com.telenav.kivakit.aws.core.AwsTags;
 import com.telenav.kivakit.aws.core.security.AwsSecurityPolicy;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.language.trait.Trait;
+import com.telenav.kivakit.resource.path.ResourcePathed;
 
-public interface S3Object extends Named, Trait
+public interface S3Object extends Named, Trait, ResourcePathed
 {
     default S3AccessControlList acl()
     {
@@ -31,11 +31,6 @@ public interface S3Object extends Named, Trait
     default S3Proxy proxy()
     {
         return trait(S3Proxy.class, S3Proxy::new);
-    }
-
-    default AwsRegion region()
-    {
-        return proxy().region(this);
     }
 
     default AwsSecurityPolicy securityPolicy()

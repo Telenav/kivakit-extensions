@@ -2,6 +2,7 @@ package com.telenav.kivakit.aws.s3;
 
 import com.telenav.kivakit.aws.core.AwsUserIdentifier;
 import com.telenav.kivakit.resource.Resource;
+import com.telenav.kivakit.resource.ResourcePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 
 import java.io.InputStream;
@@ -61,6 +62,12 @@ public class BucketObject extends BaseWritableResource implements S3Object
     public Bucket parent()
     {
         return parent;
+    }
+
+    @Override
+    public ResourcePath path()
+    {
+        return super.path().withChild(key.identifier());
     }
 
     public void save(final Resource copyFrom)

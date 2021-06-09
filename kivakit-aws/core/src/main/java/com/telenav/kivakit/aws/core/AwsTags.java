@@ -1,5 +1,7 @@
 package com.telenav.kivakit.aws.core;
 
-public class AwsTags
+import com.telenav.kivakit.resource.resources.other.PropertyMap;
+
+public class AwsTags extends PropertyMap
 {
 }
