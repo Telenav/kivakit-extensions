@@ -18,10 +18,9 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.configuration.InstanceIdentifier;
-import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
+import com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams.DiagramS3;
 import com.telenav.kivakit.kernel.language.patterns.Pattern;
 import com.telenav.kivakit.kernel.language.patterns.group.Group;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
@@ -33,10 +32,8 @@ import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
-import com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams.DiagramS3;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -54,6 +51,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+
 /**
  * Base functionality common to both {@link S3File} and {@link S3Folder}.
  *
@@ -68,8 +67,13 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     // A bucket name in the path
     private static final Pattern BUCKET_NAME = Pattern.expression("[\\w-\\d\\.]").oneOrMore();
 
+    // A region name in the path
+    private static final Pattern REGION_NAME = Pattern.expression("[a-z0-9-]").oneOrMore();
+
     // A key name in the path
     private static final Pattern KEY_NAME = Pattern.ANYTHING;
+
+    private static final Group<String> regionGroup = REGION_NAME.group(Listener.none());
 
     private static final Group<String> bucketGroup = BUCKET_NAME.group(Listener.none());
 
@@ -79,16 +83,19 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     private static final Group<String> schemeGroup = schemePattern().group(Listener.none());
 
-    // s3://${bucket}/${key}
+    // s3://${region}/${bucket}/${key}
     private static final Pattern pattern = schemeGroup
             .then(Pattern.constant("://"))
+            .then(regionGroup)
+            .then(Pattern.SLASH)
             .then(bucketGroup)
             .then(Pattern.SLASH.optional())
             .then(keyGroup.optional());
 
     public static boolean accepts(final String path)
     {
-        return schemePattern().then(Pattern.ANYTHING)
+        return schemePattern()
+                .then(Pattern.ANYTHING)
                 .matches(path);
     }
 
@@ -124,6 +131,9 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     // True if it's a folder
     private final boolean isFolder;
 
+    // The AWS region for this object
+    private Region region;
+
     S3FileSystemObject(final FilePath path, final boolean isFolder)
     {
         super(normalize(path));
@@ -133,6 +143,22 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         final var matcher = pattern.matcher(path().toString());
         if (matcher.matches())
         {
+            final var regionName = regionGroup.get(matcher);
+            for (final var at : Region.regions())
+            {
+                if (at.id().equals(regionName))
+                {
+                    this.region = at;
+                }
+            }
+            if ("default-region".equals(regionName))
+            {
+                this.region = null;
+            }
+            else
+            {
+                ensureNotNull(this.region, "Region '$' is not recognized", regionName);
+            }
             scheme = schemeGroup.get(matcher);
             bucket = bucketGroup.get(matcher);
             key = isFolder ? keyGroup.get(matcher, "") + "/" : keyGroup.get(matcher, "");
@@ -297,13 +323,16 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     {
         if (client == null)
         {
-            final var credentials = Settings.require(S3Settings.class,
-                    new InstanceIdentifier(bucket())).credentials();
-
-            client = S3Client.builder()
-                    .credentialsProvider(StaticCredentialsProvider.create(credentials))
-                    .region(Region.US_WEST_2)
-                    .build();
+            if (this.region != null)
+            {
+                client = S3Client.builder()
+                        .region(this.region)
+                        .build();
+            }
+            else
+            {
+                client = S3Client.builder().build();
+            }
         }
         return client;
     }

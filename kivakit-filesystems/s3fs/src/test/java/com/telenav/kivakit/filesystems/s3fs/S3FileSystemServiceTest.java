@@ -19,14 +19,25 @@
 package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.resource.path.FileName;
-import org.junit.Ignore;
+import com.telenav.kivakit.test.annotations.SlowTests;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-// TODO shibo - S3 test doesn't work for now because of missing credentials
-@Ignore
+import static org.junit.Assume.assumeTrue;
+
+@Category({ SlowTests.class })
 public class S3FileSystemServiceTest
 {
+    @Before
+    public void beforeMethod()
+    {
+        assumeTrue(JavaVirtualMachine.property("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(JavaVirtualMachine.property("AWS_SECRET_ACCESS_KEY") != null);
+    }
+
     @Test
     public void testFile()
     {

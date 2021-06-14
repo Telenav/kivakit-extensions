@@ -18,81 +18,30 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.kernel.KivaKit;
-import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.test.annotations.SlowTests;
-import org.jetbrains.annotations.NotNull;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import static org.junit.Assume.assumeTrue;
 
 @Category({ SlowTests.class })
 public class S3FileTest extends UnitTest
 {
-    final S3File file = new S3File("s3://kivakit/" + apidocs());
+    final S3File file = new S3File("s3://default-region/kivakit/test-data/test.txt");
 
-    @Test
-    public void testBucketName()
+    @Before
+    public void beforeMethod()
     {
-        ensure(file.fileName().equals(FileName.parse("index.html")));
-    }
-
-    @Test
-    public void testGetName()
-    {
-        ensure("index.html".equals(file.name()));
-    }
-
-    @Test
-    public void testInSameBucket()
-    {
-        ensure(file.inSameBucket(new S3File("s3://kivakit/" + KivaKit.get().projectVersion() + "/another")));
-    }
-
-    @Test
-    public void testIsFolder()
-    {
-        ensure(file.isFile());
-        ensureFalse(file.isFolder());
-    }
-
-    @Test
-    public void testKeyName()
-    {
-        ensure(apidocs().equals(file.key()));
-    }
-
-    @Test
-    public void testParent()
-    {
-        final FolderService folder = file.parent();
-        ensure("apidocs".equals(folder.baseName().toString()));
-        ensure(("s3://kivakit/" + KivaKit.get().projectVersion() + "/apidocs").equals(folder.path().toString()));
-    }
-
-    @Test
-    public void testPath()
-    {
-        ensure(new S3File("s3://kivakit/s3-test.gz").path().equals(FilePath.parseFilePath("s3://kivakit/s3-test.gz")));
+        assumeTrue(JavaVirtualMachine.property("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(JavaVirtualMachine.property("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test
     public void testReadFile()
     {
-        // Message.println("$", file.string());
-    }
-
-    @Test
-    public void testWithIdenticalKey()
-    {
-        ensure(file.withIdenticalKey(new S3File("s3://anotherBucket/" + apidocs())));
-    }
-
-    @NotNull
-    private String apidocs()
-    {
-        return KivaKit.get().projectVersion() + "/apidocs/index.html";
+        ensure("123".equals(file.reader().string().trim()));
     }
 }
