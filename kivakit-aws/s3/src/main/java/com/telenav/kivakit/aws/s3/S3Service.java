@@ -4,8 +4,14 @@ import com.telenav.kivakit.aws.core.AwsRegion;
 import com.telenav.kivakit.aws.core.AwsService;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 
+/**
+ * AWS Simple Storage Service (S3) service.
+ */
 public class S3Service extends AwsService
 {
+    /**
+     * @return Create {@link S3Service} object
+     */
     public static S3Service create()
     {
         return new S3Service();
@@ -20,6 +26,9 @@ public class S3Service extends AwsService
         super(that);
     }
 
+    /**
+     * @return The bucket at the given path
+     */
     public Bucket bucket(final String path)
     {
         return Bucket.bucketForPath(this, path);

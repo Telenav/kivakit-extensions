@@ -113,7 +113,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     public final synchronized void onLog(final LogEntry entry)
     {
         final var timeToRollOver = Time.now().isAfter(rolloverAt);
-        final var sizeToRollOver = outputSize != null && outputSize.bytes().isGreaterThan(maximumLogSize);
+        final var sizeToRollOver = outputSize != null && outputSize.sizeInBytes().isGreaterThan(maximumLogSize);
         if (timeToRollOver || sizeToRollOver)
         {
             try

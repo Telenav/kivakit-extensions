@@ -22,6 +22,7 @@ import com.telenav.kivakit.configuration.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
+import com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams.DiagramS3;
 import com.telenav.kivakit.kernel.language.patterns.Pattern;
 import com.telenav.kivakit.kernel.language.patterns.group.Group;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
@@ -33,7 +34,6 @@ import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
-import com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams.DiagramS3;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -153,7 +153,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
                 .key(key())
                 .build();
 
-        client().putObject(request, RequestBody.fromInputStream(in, resource.bytes().asBytes()));
+        client().putObject(request, RequestBody.fromInputStream(in, resource.sizeInBytes().asBytes()));
     }
 
     @Override
@@ -198,7 +198,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public abstract boolean isWritable();
+    public abstract Boolean isWritable();
 
     public String name()
     {

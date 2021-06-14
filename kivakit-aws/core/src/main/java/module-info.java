@@ -7,5 +7,4 @@ module kivakit.aws.core
     requires kivakit.resource;
 
     exports com.telenav.kivakit.aws.core;
-    exports com.telenav.kivakit.aws.core.security;
 }

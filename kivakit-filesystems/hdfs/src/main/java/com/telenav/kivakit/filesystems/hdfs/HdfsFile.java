@@ -67,20 +67,6 @@ public class HdfsFile extends BaseWritableResource implements FileService
     }
 
     @Override
-    public Bytes bytes()
-    {
-        if (size == null)
-        {
-            size = retry(() ->
-            {
-                final var length = proxy().length(pathAsString());
-                return length < 0 ? null : Bytes.bytes(length);
-            }).or(Bytes._0, "Unable to get size of $", this);
-        }
-        return size;
-    }
-
-    @Override
     public boolean chmod(final PosixFilePermission... permissions)
     {
         return unsupported();
@@ -114,7 +100,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
     }
 
     @Override
-    public boolean isWritable()
+    public Boolean isWritable()
     {
         return retry(() -> proxy().isWritable(pathAsString())).or(false, "Unable to determine if $ is writable", this);
     }
@@ -185,6 +171,20 @@ public class HdfsFile extends BaseWritableResource implements FileService
     public HdfsFolder root()
     {
         return new HdfsFolder(path.root());
+    }
+
+    @Override
+    public Bytes sizeInBytes()
+    {
+        if (size == null)
+        {
+            size = retry(() ->
+            {
+                final var length = proxy().length(pathAsString());
+                return length < 0 ? null : Bytes.bytes(length);
+            }).or(Bytes._0, "Unable to get size of $", this);
+        }
+        return size;
     }
 
     @Override

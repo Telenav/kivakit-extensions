@@ -72,12 +72,6 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public Bytes bytes()
-    {
-        return null;
-    }
-
-    @Override
     public boolean chmod(final PosixFilePermission... permissions)
     {
         return unsupported();
@@ -239,7 +233,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public boolean isWritable()
+    public Boolean isWritable()
     {
         return false;
     }
@@ -318,6 +312,12 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     {
         final var path = path(scheme(), bucket(), "");
         return new S3Folder(path);
+    }
+
+    @Override
+    public Bytes sizeInBytes()
+    {
+        return null;
     }
 
     @Override
