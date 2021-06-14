@@ -20,16 +20,18 @@ package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
+import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.test.annotations.SlowTests;
+import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-// This test can be run in Eclipse where the module path is set, but there doesn't seem to be a way
-// to run it from maven on the command line
-@Ignore
+import static org.junit.Assume.assumeTrue;
+
+@Category({ SlowTests.class })
 public class S3FolderTest extends UnitTest
 {
     @SuppressWarnings("EmptyMethod")
@@ -38,17 +40,17 @@ public class S3FolderTest extends UnitTest
     {
     }
 
-    @Test
-    public void testBucketName()
+    @Before
+    public void beforeMethod()
     {
-        final var s3Folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder");
-        ensure(s3Folder.bucket().equals("com-telenav-nav-user-analytics-dev"));
+        assumeTrue(JavaVirtualMachine.property("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(JavaVirtualMachine.property("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test
     public void testClear()
     {
-        final FolderService folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/folder");
+        final FolderService folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
         final var child = folder.folder(FileName.parse("child"));
         child.mkdirs();
         ensure(child.exists());
@@ -61,7 +63,7 @@ public class S3FolderTest extends UnitTest
     @Test
     public void testDelete()
     {
-        final FolderService folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/folder");
+        final FolderService folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
         folder.mkdirs();
         ensure(folder.exists());
         folder.clear();
@@ -70,65 +72,10 @@ public class S3FolderTest extends UnitTest
     }
 
     @Test
-    public void testFile()
-    {
-        final var folder = Folder.parse("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder");
-        final var file = folder.file(FileName.parse("name1"));
-        ensure(file.fileName().toString().equals("name1"));
-    }
-
-    @Test
-    public void testFolder()
-    {
-        final var path = "s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder";
-        final var folder = Folder.parse(path);
-        ensure(folder.folder("child").name().equals(FileName.parse("child")));
-    }
-
-    @Test
-    public void testGetName()
-    {
-        final var path = "s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder";
-        final var folder = Folder.parse(path);
-        ensure(folder.name().equals(FileName.parse("folder")));
-    }
-
-    @Test
-    public void testKeyName()
-    {
-        final var s3Folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder");
-        ensure(s3Folder.key().equals("nav-user-analytics/folder/"));
-    }
-
-    @Test
-    public void testParent()
-    {
-        final var path = "s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder";
-        final var folder = Folder.parse(path);
-        ensure(folder.parent().equals(Folder.parse("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics")));
-        ensure(folder.parent().name().equals(FileName.parse("nav-user-analytics")));
-    }
-
-    @Test
-    public void testPath()
-    {
-        final var path = "s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder";
-        final var folder = Folder.parse(path);
-        ensure(folder.path().equals(FilePath.parseFilePath(path)));
-    }
-
-    @Test
-    public void testPathString()
-    {
-        final var path = "s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder";
-        final var folder = Folder.parse(path);
-        ensure(folder.path().toString().equals(path));
-    }
-
-    @Test
     public void testRename()
     {
-        final var folder = Folder.parse("s3://com-telenav-nav-user-analytics-dev/old-" + FileName.dateTime());
+        final var folder = Folder.parse("s3://default-region/kivakit/test-data/old-" + FileName.dateTime());
+        assert folder != null;
         folder.mkdirs();
         final var file = folder.file(FileName.parse("tmp.txt"));
         final var printWriter = file.printWriter();
@@ -145,12 +92,5 @@ public class S3FolderTest extends UnitTest
         ensure(!that.exists());
         folder.delete();
         ensure(!folder.exists());
-    }
-
-    @Test
-    public void testScheme()
-    {
-        final var s3Folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/folder");
-        ensure(s3Folder.scheme().equals("s3://"));
     }
 }

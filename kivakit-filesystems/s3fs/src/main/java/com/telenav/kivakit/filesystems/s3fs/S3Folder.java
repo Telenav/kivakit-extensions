@@ -134,9 +134,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public S3File file(final FileName fileName)
     {
-        final var path = path();
-        path.withChild(fileName.name());
-        return new S3File(path);
+        return new S3File(path().withChild(fileName.name()));
     }
 
     @Override
@@ -357,16 +355,12 @@ public class S3Folder extends S3FileSystemObject implements FolderService
 
     private FilePath child(final FileName child)
     {
-        final var path = path();
-        path.withChild(child.name());
-        return path;
+        return path().withChild(child.name());
     }
 
     private FilePath child(final Folder folder)
     {
-        final var path = path();
-        path.withChild(folder.toString());
-        return path;
+        return path().withChild(folder.toString());
     }
 
     private boolean isMetadata(final FileName fileName)

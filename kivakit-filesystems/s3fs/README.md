@@ -47,29 +47,22 @@ Service provider for AWS S3 filesystems.
 
 ### Summary <a name = "summary"></a>
 
-This module is a filesystem service provider, giving access to S3 filesystem data under the
-[*kivakit-resource*](../../kivakit/resource/README.md)
-mini-framework. This service provider will be discovered using the Java
-service loader mechanism. All that is required to make use of S3 paths with *File* and
-*Folder* objects is to:
+This module is a filesystem service provider, giving access to S3 filesystem data under the [*kivakit-resource*](../../kivakit/resource/README.md) mini-framework. This service provider will be discovered using the Java service loader mechanism. All that is required to make use of S3 paths with *File* and *Folder* objects is to:
 
 1. Include the dependency above in *pom.xml*
 2. Import *kivakit-filesystems-s3fs* in *module-info.java*
-3. Provide an instance of *S3Settings* with *Settings.register(settings, bucket)*,
-   where *bucket* identifies the S3 bucket that is used in paths, such as s3://*bucket*/data.txt
+3. Set the AWS environment variables *AWS_ACCESS_KEY_ID* and *AWS_SECRET_ACCESS_KEY* to allow authentication with S3
 4. Make use of S3 paths in files and folders, for example:
 
 ### Example <a name = "example"></a>
 
-For example:
+For example, this code:
 
-    var settings = new S3Settings();
+    var file = File.parse("s3://us-west-1/my-bucket/my-file.txt")
 
-        [...]
+would access the file *my-file.txt* in the bucket *my-bucket* in the *us-west-1* region on S3. To use the default region specified using the environment variable *AWS_DEFAULT_REGION*, the region "default-region" can be specified, as in:
 
-    Settings.register(settings, new InstanceIdentifier("my-bucket"));
-
-    var file = File.parse("s3://my-bucket/myfile.txt")
+    var file = File.parse("s3://default-region/my-bucket/my-file.txt")
 
 [//]: # (end-user-text)
 
