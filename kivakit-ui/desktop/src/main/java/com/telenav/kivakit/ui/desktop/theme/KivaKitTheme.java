@@ -84,22 +84,7 @@ public abstract class KivaKitTheme
     public static void set(final KivaKitTheme theme)
     {
         KivaKitTheme.theme = theme;
-    }
-
-    public KivaKitTheme()
-    {
-        UIManager.put("Button.arc", 15);
-
-        UIManager.put("TabbedPane.minimumTabWidth", 150);
-
-        UIManager.put("TabbedPane.foreground", styleTab().fillColor().asColorUiResource());
-        UIManager.put("TabbedPane.background", styleTab().fillColor().asColorUiResource());
-
-        UIManager.put("TabbedPane.selectedForeground", styleSelectedTab().fillColor().asColorUiResource());
-        UIManager.put("TabbedPane.selectedBackground", styleSelectedTab().fillColor().asColorUiResource());
-
-        UIManager.put("TabbedPane.underlineColor", styleTabHover().fillColor().asColorUiResource());
-        UIManager.put("TabbedPane.hoverColor", styleTabHover().fillColor().asColorUiResource());
+        theme.initialize();
     }
 
     public final JButton applyTo(final JButton button)
@@ -220,6 +205,22 @@ public abstract class KivaKitTheme
     public Font fontSmall()
     {
         return Fonts.component(10);
+    }
+
+    public void initialize()
+    {
+        UIManager.put("Button.arc", 15);
+
+        UIManager.put("TabbedPane.minimumTabWidth", 150);
+
+        UIManager.put("TabbedPane.foreground", styleTab().fillColor().asColorUiResource());
+        UIManager.put("TabbedPane.background", styleTab().fillColor().asColorUiResource());
+
+        UIManager.put("TabbedPane.selectedForeground", styleSelectedTab().fillColor().asColorUiResource());
+        UIManager.put("TabbedPane.selectedBackground", styleSelectedTab().fillColor().asColorUiResource());
+
+        UIManager.put("TabbedPane.underlineColor", styleTabHover().fillColor().asColorUiResource());
+        UIManager.put("TabbedPane.hoverColor", styleTabHover().fillColor().asColorUiResource());
     }
 
     public abstract boolean isDark();
