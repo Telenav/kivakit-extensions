@@ -9,24 +9,26 @@
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>kivakit-extensions</artifactId>
+        <artifactId>kivakit-aws</artifactId>
         <version>0.9.8-alpha-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Extensions - AWS</name>
+    <name>KivaKit Extensions - AWS - IAM</name>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>kivakit-aws</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>kivakit-aws-iam</artifactId>
+    <packaging>jar</packaging>
 
-    <modules>
+    <dependencies>
 
-        <module>core</module>
-        <module>iam</module>
-        <module>dynamo</module>
-        <module>lambda</module>
-        <module>s3</module>
+        <!-- KivaKit -->
 
-    </modules>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-resource</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+
+    </dependencies>
 
 </project>
