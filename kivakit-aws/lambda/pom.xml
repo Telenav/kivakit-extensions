@@ -25,8 +25,41 @@
 
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-aws-s3</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-resource</artifactId>
             <version>${kivakit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-serialization-json</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-configuration</artifactId>
+            <version>0.9.8-alpha-SNAPSHOT</version>
+        </dependency>
+
+        <!-- AWS -->
+
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>auth</artifactId>
+            <version>${aws.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>lambda</artifactId>
+            <version>${aws.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-core</artifactId>
+            <version>1.2.1</version>
         </dependency>
 
     </dependencies>

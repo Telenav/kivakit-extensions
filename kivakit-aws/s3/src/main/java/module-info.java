@@ -1,5 +1,6 @@
 module kivakit.aws.s3
 {
+    exports com.telenav.kivakit.aws.s3;
     requires transitive kivakit.kernel;
     requires transitive kivakit.configuration;
     requires transitive kivakit.aws.core;
