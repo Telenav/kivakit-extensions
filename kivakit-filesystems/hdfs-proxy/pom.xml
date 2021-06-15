@@ -103,67 +103,57 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven-shade-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>false</minimizeJar>
+                            <finalName>${jar.name}</finalName>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>*:*</include>
+                                </includes>
+                            </artifactSet>
+                            <transformers>
+                                <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.telenav.kivakit.filesystems.hdfs.proxy.HdfsProxyServer</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${maven-antrun-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>install-kivakit-hdfs-proxy</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target name = "Install ${jar.name}">
+                                <echo message = "Installing ${project.basedir}/target/${jar.name}.jar -> ${env.HOME}/.kivakit/${kivakit.version}/temporary/launcher/${jar.name}.jar"/>
+                                <copy file = "${project.basedir}/target/${jar.name}.jar"
+                                      tofile = "${env.HOME}/.kivakit/${kivakit.version}/temporary/launcher/${jar.name}.jar"
+                                      verbose = "true"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>shade</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <version>${maven-shade-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <minimizeJar>false</minimizeJar>
-                                    <finalName>${jar.name}</finalName>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <artifactSet>
-                                        <includes>
-                                            <include>*:*</include>
-                                        </includes>
-                                    </artifactSet>
-                                    <transformers>
-                                        <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                            <mainClass>com.telenav.kivakit.filesystems.hdfs.proxy.HdfsProxyServer</mainClass>
-                                        </transformer>
-                                    </transformers>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>${maven-antrun-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>install-kivakit-hdfs-proxy</id>
-                                <phase>install</phase>
-                                <configuration>
-                                    <target name = "Install ${jar.name}">
-                                        <echo message = "Installing ${project.basedir}/target/${jar.name}.jar -> ${env.HOME}/.kivakit/${kivakit.version}/temporary/launcher/${jar.name}.jar"/>
-                                        <copy file = "${project.basedir}/target/${jar.name}.jar"
-                                              tofile = "${env.HOME}/.kivakit/${kivakit.version}/temporary/launcher/${jar.name}.jar"
-                                              verbose = "true"/>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>

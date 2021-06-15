@@ -21,7 +21,7 @@
 
     <properties>
 
-        <jar.name>kivakit-service-registry-${kivakit.version}</jar.name>
+        <jar.name>kivakit-service-server-${kivakit.version}</jar.name>
 
     </properties>
 
@@ -91,73 +91,68 @@
 
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>shade</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <version>${maven-shade-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                                <configuration>
-                                    <minimizeJar>false</minimizeJar>
-                                    <finalName>${jar.name}</finalName>
-                                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                                    <artifactSet>
-                                        <includes>
-                                            <include>*:*</include>
-                                        </includes>
-                                    </artifactSet>
-                                    <filters>
-                                        <filter>
-                                            <artifact>*:*</artifact>
-                                            <excludes>
-                                                <exclude>module-info.class</exclude>
-                                            </excludes>
-                                        </filter>
-                                    </filters>
-                                    <transformers>
-                                        <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                            <mainClass>com.telenav.kivakit.service.registry.server.ServiceRegistryServer</mainClass>
-                                        </transformer>
-                                        <transformer implementation = "org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                    </transformers>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-antrun-plugin</artifactId>
-                        <version>3.0.0</version>
-                        <executions>
-                            <execution>
-                                <id>install-kivakit-service-registry</id>
-                                <phase>install</phase>
-                                <configuration>
-                                    <target name = "Install ${jar.name}">
-                                        <echo message = "Installing jar ${jar.name}.jar"/>
-                                        <copy file = "${project.basedir}/target/${jar.name}.jar"
-                                              tofile = "${env.HOME}/.kivakit/${kivakit.version}/temporary/launcher/${jar.name}.jar"
-                                              verbose = "true"/>
-                                    </target>
-                                </configuration>
-                                <goals>
-                                    <goal>run</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven-shade-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <minimizeJar>false</minimizeJar>
+                            <finalName>${jar.name}</finalName>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>*:*</include>
+                                </includes>
+                            </artifactSet>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>module-info.class</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <transformers>
+                                <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.telenav.kivakit.service.registry.server.ServiceRegistryServer</mainClass>
+                                </transformer>
+                                <transformer implementation = "org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>install-kivakit-service-registry</id>
+                        <phase>install</phase>
+                        <configuration>
+                            <target name = "Install ${jar.name}">
+                                <echo message = "Installing jar ${jar.name}.jar"/>
+                                <copy file = "${project.basedir}/target/${jar.name}.jar"
+                                      tofile = "${env.HOME}/.kivakit/${kivakit.version}/temporary/launcher/${jar.name}.jar"
+                                      verbose = "true"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
