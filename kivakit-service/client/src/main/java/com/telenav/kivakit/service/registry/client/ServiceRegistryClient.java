@@ -470,7 +470,7 @@ public class ServiceRegistryClient extends BaseRepeater
                 trace("Connecting client to $", port);
                 final var local = Folder.kivakitExtensionsHome()
                         .folder("kivakit-service/server/target")
-                        .file("kivakit-service-registry-" + KivaKit.get().kivakitVersion() + ".jar");
+                        .file("kivakit-service-server-" + KivaKit.get().kivakitVersion() + ".jar");
                 final var jar = settings.serverJar();
                 trace("Launching $", jar);
                 listenTo(new JarLauncher())
