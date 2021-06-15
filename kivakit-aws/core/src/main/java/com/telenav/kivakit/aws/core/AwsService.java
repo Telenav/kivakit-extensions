@@ -19,8 +19,6 @@ public abstract class AwsService
         this.region = that.region;
     }
 
-    public abstract AwsService copy();
-
     public AwsCredentialsProvider credentialsProvider()
     {
         return credentialsProvider;
@@ -44,4 +42,6 @@ public abstract class AwsService
         copy.region = region;
         return copy;
     }
+
+    protected abstract AwsService copy();
 }
