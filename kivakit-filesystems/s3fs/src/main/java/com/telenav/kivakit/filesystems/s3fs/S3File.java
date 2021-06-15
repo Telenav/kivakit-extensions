@@ -52,19 +52,13 @@ public class S3File extends S3FileSystemObject implements FileService
     }
 
     @Override
-    public Bytes bytes()
-    {
-        return length();
-    }
-
-    @Override
     public boolean chmod(final PosixFilePermission... permissions)
     {
         return unsupported();
     }
 
     @Override
-    public boolean isWritable()
+    public Boolean isWritable()
     {
         return true;
     }
@@ -89,6 +83,12 @@ public class S3File extends S3FileSystemObject implements FileService
         }
         fail("Cannot rename $ to $ across filesystems", this, that);
         return false;
+    }
+
+    @Override
+    public Bytes sizeInBytes()
+    {
+        return length();
     }
 
     public void write(final String line)

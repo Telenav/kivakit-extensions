@@ -179,7 +179,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
                 .key(key())
                 .build();
 
-        client().putObject(request, RequestBody.fromInputStream(in, resource.bytes().asBytes()));
+        client().putObject(request, RequestBody.fromInputStream(in, resource.sizeInBytes().asBytes()));
     }
 
     @Override
@@ -224,7 +224,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public abstract boolean isWritable();
+    public abstract Boolean isWritable();
 
     public String name()
     {

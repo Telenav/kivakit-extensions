@@ -130,7 +130,7 @@ public class SessionStore
                 final var time = LocalTime.parseDateTime(parts[1]);
                 if (!Strings.isEmpty(name) && time != null)
                 {
-                    sessions.add(new Session(name, time, file.bytes()));
+                    sessions.add(new Session(name, time, file.sizeInBytes()));
                 }
             }
         }

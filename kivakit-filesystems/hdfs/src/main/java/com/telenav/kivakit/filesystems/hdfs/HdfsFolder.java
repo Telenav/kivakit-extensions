@@ -76,12 +76,6 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public Bytes bytes()
-    {
-        return null;
-    }
-
-    @Override
     public boolean chmod(final PosixFilePermission... permissions)
     {
         return unsupported();
@@ -191,7 +185,7 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public boolean isWritable()
+    public Boolean isWritable()
     {
         return exists() && retry(() -> proxy().isWritable(pathAsString())).or(false, "Unable to determine if $ is writable", this);
     }
@@ -276,6 +270,12 @@ public class HdfsFolder implements FolderService
     public HdfsFolder root()
     {
         return new HdfsFolder(path.root());
+    }
+
+    @Override
+    public Bytes sizeInBytes()
+    {
+        return null;
     }
 
     @SuppressWarnings("EmptyTryBlock")

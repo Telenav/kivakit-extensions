@@ -91,7 +91,7 @@ public class S3ParsingTest extends UnitTest
     public void testFolderBucketName()
     {
         final var s3Folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
-        ensure(s3Folder.bucket().equals("com-telenav-nav-user-analytics-dev"));
+        ensure(s3Folder.bucket().equals("kivakit"));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class S3ParsingTest extends UnitTest
     public void testFolderKeyName()
     {
         final var s3Folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
-        ensure(s3Folder.key().equals("nav-user-analytics/folder/"));
+        ensure(s3Folder.key().equals("test-data/folder/"));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class S3ParsingTest extends UnitTest
         final var folder = Folder.parse(path);
         assert folder != null;
         ensure(folder.parent().equals(Folder.parse("s3://default-region/kivakit/test-data")));
-        ensure(folder.parent().name().equals(FileName.parse("nav-user-analytics")));
+        ensure(folder.parent().name().equals(FileName.parse("test-data")));
     }
 
     @Test
