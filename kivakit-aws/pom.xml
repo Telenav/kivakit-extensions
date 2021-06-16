@@ -23,7 +23,6 @@
 
         <module>core</module>
         <module>iam</module>
-        <module>dynamo</module>
         <module>lambda</module>
         <module>s3</module>
 

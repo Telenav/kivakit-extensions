@@ -21,10 +21,10 @@ import static software.amazon.awssdk.services.lambda.model.InvocationType.REQUES
  * for the lambda function. See the example below.
  *
  * <p><b>Example</b></p>
- * <p><i>Base class for all lambda functions in my project:</i></p>
+ * <p><i>Base class for all lambda functions in MyProject:</i></p>
  * <br/>
  * <pre>
- * abstract class MyBaseLambda&lt;Request, Response&gt;
+ * public abstract class MyBaseLambda&lt;Request, Response&gt;
  *     extends Lambda&lt;Request, Response&gt;
  * {
  *     protected MyBaseLambda(Class&lt;Request&gt; request, Class&lt;Response&gt; response)
@@ -42,10 +42,10 @@ import static software.amazon.awssdk.services.lambda.model.InvocationType.REQUES
  *     }
  * }
  * </pre>
- * <p><i>For each lambda in my project:</i></p>
+ * <p><i>For each lambda in MyProject:</i></p>
  * <br/>
  * <pre>
- * class MyLambda extends MyBaseLambda&lt;MyRequest, MyResponse&gt;
+ * public class MyLambda extends MyBaseLambda&lt;MyRequest, MyResponse&gt;
  * {
  *     public MyLambda()
  *     {
@@ -53,7 +53,7 @@ import static software.amazon.awssdk.services.lambda.model.InvocationType.REQUES
  *     }
  * }
  *
- * class MyLambdaCode extends LambdaCode&lt;MyRequest, MyResponse&gt;
+ * public class MyLambdaCode extends LambdaCode&lt;MyRequest, MyResponse&gt;
  * {
  *     public MyLambdaCode()
  *     {

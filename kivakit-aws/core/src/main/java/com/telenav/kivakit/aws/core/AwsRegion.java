@@ -1,7 +1,10 @@
 package com.telenav.kivakit.aws.core;
 
 import com.telenav.kivakit.kernel.language.values.identifier.StringIdentifier;
+import software.amazon.awssdk.regions.PartitionMetadata;
 import software.amazon.awssdk.regions.Region;
+
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.illegalArgument;
 
 public class AwsRegion extends StringIdentifier
 {
@@ -10,9 +13,16 @@ public class AwsRegion extends StringIdentifier
         return new AwsRegion(region);
     }
 
-    public static AwsRegion parse(final String name)
+    public static AwsRegion parse(final String identifier)
     {
-        return new AwsRegion(Region.of(name));
+        for (final var region : Region.regions())
+        {
+            if (region.id().equals(identifier))
+            {
+                return new AwsRegion(region);
+            }
+        }
+        return illegalArgument("$ is not a valid region", identifier);
     }
 
     private final Region region;
@@ -36,6 +46,12 @@ public class AwsRegion extends StringIdentifier
     public boolean isGlobal()
     {
         return region.isGlobalRegion();
+    }
+
+    public AwsPartition partition()
+    {
+        final var metadata = PartitionMetadata.of(region);
+        return AwsPartition.parse(metadata.id());
     }
 
     public Region region()

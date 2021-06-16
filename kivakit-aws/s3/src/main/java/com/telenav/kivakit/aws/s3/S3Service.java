@@ -19,6 +19,7 @@ public class S3Service extends AwsService
 
     protected S3Service()
     {
+        super("s3");
     }
 
     protected S3Service(final S3Service that)

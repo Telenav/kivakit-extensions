@@ -29,6 +29,7 @@ public class LambdaService extends AwsService
 
     protected LambdaService()
     {
+        super("lambda");
     }
 
     protected LambdaService(final LambdaService that)

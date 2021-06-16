@@ -28,6 +28,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * lambda function in it. The {@link #handleRequest(InputStream, OutputStream, Context)} method is implemented by
  * calling {@link #onRun(Object)}, which executes the subclass implementation or the code provided by {@link
  * #withCode(Function)}.
+ * </p>
  *
  * @author jonathanl (shibo)
  */
