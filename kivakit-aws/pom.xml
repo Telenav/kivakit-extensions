@@ -22,7 +22,6 @@
     <modules>
 
         <module>core</module>
-        <module>iam</module>
         <module>lambda</module>
         <module>s3</module>
 
