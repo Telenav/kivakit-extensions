@@ -1,5 +1,10 @@
 package com.telenav.kivakit.aws.core;
 
+/**
+ * An AWS user with an identifier.
+ *
+ * @author jonathanl (shibo)
+ */
 public class AwsUser
 {
     private final String identifier;

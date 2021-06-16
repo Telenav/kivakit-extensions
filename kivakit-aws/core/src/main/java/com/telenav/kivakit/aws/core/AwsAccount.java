@@ -2,6 +2,11 @@ package com.telenav.kivakit.aws.core;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.illegalArgument;
 
+/**
+ * An AWS account number, without the dashes.
+ *
+ * @author jonathanl (shibo)
+ */
 public class AwsAccount
 {
     public static AwsAccount parse(final String account)

@@ -13,9 +13,9 @@ public abstract class AwsService implements Named
 {
     private AwsCredentialsProvider credentialsProvider = DefaultCredentialsProvider.builder().build();
 
-    private AwsRegion region;
-
     private final String name;
+
+    private AwsRegion region;
 
     private AwsAccount account;
 
@@ -29,6 +29,7 @@ public abstract class AwsService implements Named
         this.name = that.name;
         this.credentialsProvider = that.credentialsProvider;
         this.region = that.region;
+        this.account = that.account;
     }
 
     public Arn arn(final String path)

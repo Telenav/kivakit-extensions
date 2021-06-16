@@ -32,11 +32,6 @@ public class AwsRegion extends StringIdentifier
         this.region = region;
     }
 
-    public AwsGateway gateway()
-    {
-        return AwsGateway.gateway(this);
-    }
-
     @Override
     public String identifier()
     {
