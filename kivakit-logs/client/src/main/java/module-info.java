@@ -8,10 +8,10 @@ open module kivakit.logs.client
     requires transitive kivakit.primitive.collections;
     requires transitive kivakit.service.client;
     requires transitive kivakit.network.core;
-    requires transitive mesakit.core;
 
     provides com.telenav.kivakit.kernel.logging.Log with
             com.telenav.kivakit.logs.client.ClientLog;
 
     exports com.telenav.kivakit.logs.client;
 }
+0

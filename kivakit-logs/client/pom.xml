@@ -42,22 +42,9 @@
             <version>${kivakit.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.telenav.mesakit</groupId>
-            <artifactId>mesakit-core</artifactId>
-            <version>0.9.8-alpha-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-primitive-collections</artifactId>
-            <version>0.9.8-alpha-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.telenav.kivakit.logs</groupId>
-            <artifactId>kivakit-logs-server</artifactId>
-            <version>0.9.8-alpha-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${kivakit.version}</version>
         </dependency>
 
     </dependencies>

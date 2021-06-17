@@ -18,14 +18,12 @@
 
 package com.telenav.kivakit.logs.client.project;
 
-import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.language.collections.set.Sets;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
 import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
 import com.telenav.kivakit.serialization.kryo.KryoTypes;
-import com.telenav.mesakit.core.MesaKit;
 
 import java.util.Set;
 
@@ -49,15 +47,5 @@ public class LogsClientProject extends Project
     public Set<Project> dependencies()
     {
         return Sets.of();
-    }
-
-    /**
-     * @return The folder where various kinds of data are cached
-     */
-    public Folder mesakitMapFolder()
-    {
-        return MesaKit.get().mesakitCacheFolder()
-                .folder("map")
-                .mkdirs();
     }
 }
