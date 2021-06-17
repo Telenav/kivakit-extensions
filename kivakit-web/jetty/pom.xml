@@ -164,6 +164,7 @@
                     <groupId>jakarta.xml.bind</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+
             </exclusions>
 
         </dependency>
