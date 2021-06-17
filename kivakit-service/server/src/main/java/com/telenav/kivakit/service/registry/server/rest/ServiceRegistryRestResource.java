@@ -124,7 +124,6 @@ public class ServiceRegistryRestResource extends BaseRestResource
                          content = @Content(schema = @Schema(implementation = DiscoverApplicationsResponse.class))
             )
     )
-
     public DiscoverApplicationsResponse onDiscoverApplications
     (
             @Parameter(name = "request",
@@ -214,7 +213,6 @@ public class ServiceRegistryRestResource extends BaseRestResource
             )
 
     )
-
     public DiscoverServicesResponse onDiscoverServices
     (
             @Parameter(name = "request",
