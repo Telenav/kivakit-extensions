@@ -82,7 +82,7 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/Telenav/kivakit-extensions/issues</url>
+        <url>https://github.com/Telenav/kivakit/issues</url>
     </issueManagement>
 
     <!-- Publishing -->
