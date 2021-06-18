@@ -79,7 +79,7 @@ public class LambdaService extends AwsService
     {
         if (this.gsonFactory == null)
         {
-            this.gsonFactory = Lookup.global().locate(GsonFactory.class);
+            this.gsonFactory = Lookup.global().lookup(GsonFactory.class);
         }
         return gsonFactory.newInstance();
     }
