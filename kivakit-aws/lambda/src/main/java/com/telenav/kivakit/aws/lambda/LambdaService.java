@@ -3,7 +3,7 @@ package com.telenav.kivakit.aws.lambda;
 import com.google.gson.Gson;
 import com.telenav.kivakit.aws.core.AwsRegion;
 import com.telenav.kivakit.aws.core.AwsService;
-import com.telenav.kivakit.configuration.lookup.Lookup;
+import com.telenav.kivakit.configuration.lookup.Registry;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.services.lambda.LambdaClient;
@@ -79,7 +79,7 @@ public class LambdaService extends AwsService
     {
         if (this.gsonFactory == null)
         {
-            this.gsonFactory = Lookup.global().lookup(GsonFactory.class);
+            this.gsonFactory = Registry.global().lookup(GsonFactory.class);
         }
         return gsonFactory.newInstance();
     }

@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.logs.email;
 
-import com.telenav.kivakit.configuration.lookup.Lookup;
+import com.telenav.kivakit.configuration.lookup.Registry;
 import com.telenav.kivakit.kernel.logging.Log;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
@@ -139,7 +139,7 @@ public class EmailLog extends BaseTextLog
         email.subject(subject);
         if (sender == null)
         {
-            sender = Lookup.global().lookup(EmailSender.class);
+            sender = Registry.global().lookup(EmailSender.class);
         }
         sender.enqueue(email);
     }
