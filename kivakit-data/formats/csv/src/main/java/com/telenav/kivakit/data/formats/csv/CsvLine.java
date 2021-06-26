@@ -29,7 +29,7 @@ import com.telenav.kivakit.kernel.language.reflection.property.Property;
 import com.telenav.kivakit.kernel.language.reflection.property.PropertyValueSource;
 import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
-import com.telenav.kivakit.kernel.messaging.repeaters.RepeaterTrait;
+import com.telenav.kivakit.kernel.messaging.repeaters.RepeaterMixin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -62,7 +62,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
  */
 @UmlClassDiagram(diagram = DiagramCsv.class)
 @LexakaiJavadoc(complete = true)
-public class CsvLine extends StringList implements PropertyValueSource, RepeaterTrait
+public class CsvLine extends StringList implements PropertyValueSource, RepeaterMixin
 {
     /** The schema that this line obeys */
     private final transient CsvSchema schema;

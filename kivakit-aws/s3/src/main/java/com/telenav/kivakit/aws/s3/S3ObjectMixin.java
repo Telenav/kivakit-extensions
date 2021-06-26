@@ -2,16 +2,16 @@ package com.telenav.kivakit.aws.s3;
 
 import com.telenav.kivakit.aws.core.AwsTags;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
-import com.telenav.kivakit.kernel.language.trait.Trait;
+import com.telenav.kivakit.kernel.language.mixin.Mixin;
 import com.telenav.kivakit.resource.path.ResourcePathed;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import software.amazon.awssdk.services.s3.model.AccessControlPolicy;
 
 /**
- * A trait that adds functionality common to S3 objects ({@link Bucket}s and {@link BucketObject}s). This is not a
+ * A mixin that adds functionality common to S3 objects ({@link Bucket}s and {@link BucketObject}s). This is not a
  * normal base class because {@link BucketObject} must inherit from {@link BaseWritableResource}.
  */
-public interface S3ObjectTrait extends Named, ResourcePathed, Trait
+public interface S3ObjectMixin extends Named, ResourcePathed, Mixin
 {
     /**
      * @return Gets the access control list for this S3 object
@@ -51,11 +51,12 @@ public interface S3ObjectTrait extends Named, ResourcePathed, Trait
     Bucket parent();
 
     /**
-     * @return The S3Proxy object associated with this {@link Trait}
+     * @return The S3Proxy object associated with this {@link Mixin}
      */
+    @SuppressWarnings("ClassEscapesDefinedScope")
     default S3Proxy proxy()
     {
-        return trait(S3Proxy.class, S3Proxy::new);
+        return state(S3Proxy.class, S3Proxy::new);
     }
 
     /**

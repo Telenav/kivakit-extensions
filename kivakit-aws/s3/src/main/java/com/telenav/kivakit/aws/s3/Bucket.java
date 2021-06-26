@@ -52,7 +52,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.illegalAr
  *
  * @author jonathanl (shibo)
  */
-public class Bucket extends BaseRepeater implements S3ObjectTrait
+public class Bucket extends BaseRepeater implements S3ObjectMixin
 {
     static Bucket bucketForName(final S3Service service, final String name)
     {

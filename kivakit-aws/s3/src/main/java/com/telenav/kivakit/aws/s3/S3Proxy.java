@@ -4,8 +4,8 @@ import com.telenav.kivakit.aws.core.AwsTags;
 import com.telenav.kivakit.aws.core.AwsUser;
 import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
 import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
+import com.telenav.kivakit.kernel.language.mixin.Mixin;
 import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.language.trait.Trait;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.resource.Resource;
@@ -38,7 +38,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 /**
  * Proxy to S3 using S3Client
  */
-class S3Proxy extends BaseRepeater implements Trait
+class S3Proxy extends BaseRepeater implements Mixin
 {
     /** The underlying S3Client */
     private S3Client client;
@@ -46,7 +46,7 @@ class S3Proxy extends BaseRepeater implements Trait
     /**
      * @return The Access control list for the given S3 object
      */
-    AccessControlPolicy acl(final S3ObjectTrait object)
+    AccessControlPolicy acl(final S3ObjectMixin object)
     {
         if (object instanceof Bucket)
         {
@@ -90,7 +90,7 @@ class S3Proxy extends BaseRepeater implements Trait
      *
      * @return True if the access control list was changed
      */
-    boolean acl(final S3ObjectTrait object, final AccessControlPolicy acl)
+    boolean acl(final S3ObjectMixin object, final AccessControlPolicy acl)
     {
         if (object instanceof Bucket)
         {
@@ -197,7 +197,7 @@ class S3Proxy extends BaseRepeater implements Trait
     /**
      * Deletes the given S3 object (bucket or object)
      */
-    boolean delete(final S3ObjectTrait object)
+    boolean delete(final S3ObjectMixin object)
     {
         if (object instanceof Bucket)
         {
@@ -217,7 +217,7 @@ class S3Proxy extends BaseRepeater implements Trait
      *
      * @return True if the tags were removed
      */
-    boolean deleteTags(final S3ObjectTrait object)
+    boolean deleteTags(final S3ObjectMixin object)
     {
         if (object instanceof Bucket)
         {
@@ -235,7 +235,7 @@ class S3Proxy extends BaseRepeater implements Trait
     /**
      * @return True if the given bucket or object is writable by the given user
      */
-    boolean isWritable(final S3ObjectTrait object, final AwsUser user)
+    boolean isWritable(final S3ObjectMixin object, final AwsUser user)
     {
         final var acl = acl(object);
         for (final var grant : acl.grants())
@@ -307,7 +307,7 @@ class S3Proxy extends BaseRepeater implements Trait
      *
      * @return True if the tags were applied
      */
-    boolean tags(final S3ObjectTrait object, final AwsTags tags)
+    boolean tags(final S3ObjectMixin object, final AwsTags tags)
     {
         if (object instanceof Bucket)
         {
@@ -325,7 +325,7 @@ class S3Proxy extends BaseRepeater implements Trait
     /**
      * @return The tags on the given S3 object
      */
-    AwsTags tags(final S3ObjectTrait object)
+    AwsTags tags(final S3ObjectMixin object)
     {
         if (object instanceof Bucket)
         {
@@ -360,7 +360,7 @@ class S3Proxy extends BaseRepeater implements Trait
         return unsupported();
     }
 
-    private S3Client client(final S3ObjectTrait object)
+    private S3Client client(final S3ObjectMixin object)
     {
         if (client == null)
         {

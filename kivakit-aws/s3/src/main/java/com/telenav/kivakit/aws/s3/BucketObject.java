@@ -44,7 +44,7 @@ import java.io.OutputStream;
  *
  * @author jonathanl (shibo)
  */
-public class BucketObject extends BaseWritableResource implements S3ObjectTrait
+public class BucketObject extends BaseWritableResource implements S3ObjectMixin
 {
     private final Bucket parent;
 
