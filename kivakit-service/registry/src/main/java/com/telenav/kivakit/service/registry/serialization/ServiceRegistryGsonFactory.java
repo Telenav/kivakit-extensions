@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry.serialization;
 
 import com.google.gson.GsonBuilder;
-import com.telenav.kivakit.application.ApplicationIdentifier;
+import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
@@ -47,7 +47,7 @@ public class ServiceRegistryGsonFactory extends GsonFactory
     protected GsonBuilder addSerializers(final GsonBuilder builder)
     {
         addSerializer(builder, Port.class, serializer(new Port.Converter(LOGGER)));
-        addSerializer(builder, ApplicationIdentifier.class, new ApplicationIdentifierSerializer());
+        addSerializer(builder, Application.Identifier.class, new ApplicationIdentifierSerializer());
         addSerializer(builder, ServiceType.class, new ServiceTypeSerializer());
         addSerializer(builder, Problem.class, new ProblemSerializer());
         addSerializer(builder, Time.class, new TimeSerializer());

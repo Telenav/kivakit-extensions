@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry.protocol.discover;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.telenav.kivakit.application.ApplicationIdentifier;
+import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.service.registry.Scope;
@@ -81,16 +81,16 @@ public class DiscoverServicesRequest extends BaseRequest
 
     @JsonProperty
     @Schema(description = "The application to search, if the search type is APPLICATION_SERVICES")
-    private ApplicationIdentifier application;
+    private Application.Identifier application;
 
-    public DiscoverServicesRequest application(final ApplicationIdentifier application)
+    public DiscoverServicesRequest application(final Application.Identifier application)
     {
         this.application = application;
         return this;
     }
 
     @KivaKitIncludeProperty
-    public ApplicationIdentifier application()
+    public Application.Identifier application()
     {
         return application;
     }

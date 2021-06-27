@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry.protocol.discover;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.telenav.kivakit.application.ApplicationIdentifier;
+import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
@@ -41,19 +41,19 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
 @Schema(description = "The applications discovered by a DiscoverApplicationsRequest")
 @UmlClassDiagram(diagram = DiagramRest.class)
 @LexakaiJavadoc(complete = true)
-public class DiscoverApplicationsResponse extends BaseResponse<Set<ApplicationIdentifier>>
+public class DiscoverApplicationsResponse extends BaseResponse<Set<Application.Identifier>>
 {
     @JsonProperty
     @Schema(description = "The applications that were found")
-    private Set<ApplicationIdentifier> applications = new HashSet<>();
+    private Set<Application.Identifier> applications = new HashSet<>();
 
     @KivaKitIncludeProperty
-    public Set<ApplicationIdentifier> applications()
+    public Set<Application.Identifier> applications()
     {
         return applications;
     }
 
-    public DiscoverApplicationsResponse applications(final Set<ApplicationIdentifier> applications)
+    public DiscoverApplicationsResponse applications(final Set<Application.Identifier> applications)
     {
         this.applications = applications;
         return this;
@@ -66,13 +66,13 @@ public class DiscoverApplicationsResponse extends BaseResponse<Set<ApplicationId
     }
 
     @Override
-    protected void value(final Set<ApplicationIdentifier> value)
+    protected void value(final Set<Application.Identifier> value)
     {
         applications = value;
     }
 
     @Override
-    protected Set<ApplicationIdentifier> value()
+    protected Set<Application.Identifier> value()
     {
         return applications();
     }

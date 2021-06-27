@@ -21,7 +21,6 @@ package com.telenav.kivakit.service.registry;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.application.ApplicationIdentifier;
 import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.conversion.AsString;
 import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
@@ -94,7 +93,7 @@ public class Service implements Comparable<Service>, AsString
     @Schema(description = "The application that is running the service",
             required = true)
     @UmlAggregation
-    private ApplicationIdentifier application;
+    private Application.Identifier application;
 
     @JsonProperty
     @Schema(description = "The scope that the service is visible to",
@@ -128,14 +127,14 @@ public class Service implements Comparable<Service>, AsString
     {
     }
 
-    public Service application(final ApplicationIdentifier application)
+    public Service application(final Application.Identifier application)
     {
         this.application = application;
         return this;
     }
 
     @KivaKitIncludeProperty
-    public ApplicationIdentifier application()
+    public Application.Identifier application()
     {
         return application;
     }

@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.service.registry;
 
-import com.telenav.kivakit.application.ApplicationIdentifier;
+import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.kernel.messaging.Repeater;
@@ -54,7 +54,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
  * @see LocalServiceRegistry
  * @see Service
  * @see ServiceType
- * @see ApplicationIdentifier
+ * @see Application.Identifier
  * @see Port
  * @see Result
  */
@@ -111,7 +111,7 @@ public interface ServiceRegistry extends Repeater
     /**
      * @return All applications that have registered a service
      */
-    @NotNull Result<Set<ApplicationIdentifier>> discoverApplications(Scope scope);
+    @NotNull Result<Set<Application.Identifier>> discoverApplications(Scope scope);
 
     /**
      * @return All of the hosts that have registered services
@@ -139,12 +139,12 @@ public interface ServiceRegistry extends Repeater
     /**
      * Any application services of the given type
      */
-    @NotNull Result<Set<Service>> discoverServices(ApplicationIdentifier application, ServiceType type);
+    @NotNull Result<Set<Service>> discoverServices(Application.Identifier application, ServiceType type);
 
     /**
      * All services registered by the given application
      */
-    @NotNull Result<Set<Service>> discoverServices(ApplicationIdentifier application);
+    @NotNull Result<Set<Service>> discoverServices(Application.Identifier application);
 
     /**
      * @return All services registered with this registry

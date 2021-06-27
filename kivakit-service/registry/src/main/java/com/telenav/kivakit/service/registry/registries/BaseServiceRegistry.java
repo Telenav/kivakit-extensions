@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.service.registry.registries;
 
-import com.telenav.kivakit.application.ApplicationIdentifier;
+import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.collections.map.MultiSet;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.language.collections.set.Sets;
@@ -97,7 +97,7 @@ import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.F
  * @see Service
  * @see ServiceType
  * @see Scope
- * @see ApplicationIdentifier
+ * @see Application.Identifier
  * @see Port
  */
 @UmlClassDiagram(diagram = DiagramRegistry.class)
@@ -117,7 +117,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
     private MultiSet<ServiceType, Service> serviceTypeToServices = new MultiSet<>();
 
     /** Services by application */
-    private MultiSet<ApplicationIdentifier, Service> applicationToServices = new MultiSet<>();
+    private MultiSet<Application.Identifier, Service> applicationToServices = new MultiSet<>();
 
     /** The time each service last renewed its lease */
     private Map<Service, Time> renewedAt = new HashMap<>();
@@ -188,7 +188,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      */
     @Override
     @NotNull
-    public Result<Set<ApplicationIdentifier>> discoverApplications(final Scope scope)
+    public Result<Set<Application.Identifier>> discoverApplications(final Scope scope)
     {
         return lock.read(() -> Result.succeeded(applicationToServices.keySet()));
     }
@@ -206,7 +206,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      * Any service of the given type registered by the given application
      */
     @Override
-    public @NotNull Result<Set<Service>> discoverServices(final ApplicationIdentifier application,
+    public @NotNull Result<Set<Service>> discoverServices(final Application.Identifier application,
                                                           final ServiceType type)
     {
         return lock.read(() ->
@@ -238,7 +238,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      * All services registered by the given application
      */
     @Override
-    public @NotNull Result<Set<Service>> discoverServices(final ApplicationIdentifier application)
+    public @NotNull Result<Set<Service>> discoverServices(final Application.Identifier application)
     {
         return lock.read(() ->
         {

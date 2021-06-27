@@ -20,7 +20,6 @@ package com.telenav.kivakit.service.registry.client;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.application.ApplicationIdentifier;
 import com.telenav.kivakit.application.Server;
 import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.filesystem.Folder;
@@ -136,8 +135,8 @@ import static com.telenav.kivakit.service.registry.protocol.discover.DiscoverSer
  *     <li>{@link #discoverPortService(Port)} - Find the service running on the given port (and host since {@link Port} specifies host)</li>
  *     <li>{@link #discoverServices(Scope)} - All services within the given scope</li>
  *     <li>{@link #discoverServices(Scope, ServiceType)} - All services of the given type within the given scope</li>
- *     <li>{@link #discoverServices(Scope, ApplicationIdentifier)} - All services belonging to the given application within the given scope</li>
- *     <li>{@link #discoverServices(Scope, ApplicationIdentifier, ServiceType)} - A specific application service within the given scope</li>
+ *     <li>{@link #discoverServices(Scope, Application.Identifier)} - All services belonging to the given application within the given scope</li>
+ *     <li>{@link #discoverServices(Scope, Application.Identifier, ServiceType)} - A specific application service within the given scope</li>
  * </ul>
  * <p>
  * <b>Example</b>
@@ -187,14 +186,14 @@ import static com.telenav.kivakit.service.registry.protocol.discover.DiscoverSer
  * @see Service
  * @see ServiceType
  * @see Scope
- * @see ApplicationIdentifier
+ * @see Application.Identifier
  * @see Port
  * @see Result
  */
 @SuppressWarnings("InfiniteLoopStatement")
 @UmlClassDiagram(diagram = DiagramClient.class)
 @UmlRelation(label = "returns", referent = Result.class)
-@UmlRelation(label = "discovers applications", referent = ApplicationIdentifier.class)
+@UmlRelation(label = "discovers applications", referent = Application.Identifier.class)
 @UmlRelation(label = "discovers services", referent = Provider.Service.class)
 @UmlRelation(label = "searches within", referent = Scope.class)
 public class ServiceRegistryClient extends BaseRepeater
@@ -214,7 +213,7 @@ public class ServiceRegistryClient extends BaseRepeater
      * @return All applications that have registered a service within the given scope
      */
     public @NotNull
-    Result<Set<ApplicationIdentifier>> discoverApplications(final Scope scope)
+    Result<Set<Application.Identifier>> discoverApplications(final Scope scope)
     {
         trace("Requesting $ applications from remote registry", scope);
         final var request = new DiscoverApplicationsRequest().scope(scope);
@@ -243,7 +242,7 @@ public class ServiceRegistryClient extends BaseRepeater
      * @return All services registered by the given application within the given scope
      */
     public @NotNull
-    Result<Set<Service>> discoverServices(final Scope scope, final ApplicationIdentifier application)
+    Result<Set<Service>> discoverServices(final Scope scope, final Application.Identifier application)
     {
         trace("Discovering $ services of $", scope, application);
         final var request = new DiscoverServicesRequest()
@@ -277,7 +276,7 @@ public class ServiceRegistryClient extends BaseRepeater
      */
     public @NotNull
     Result<Set<Service>> discoverServices(
-            final Scope scope, final ApplicationIdentifier application, final ServiceType type)
+            final Scope scope, final Application.Identifier application, final ServiceType type)
     {
         trace("Discovering $ $ services of $ in remote registry", scope, type, application);
         final var request = new DiscoverServicesRequest()
@@ -385,7 +384,7 @@ public class ServiceRegistryClient extends BaseRepeater
 
         // then compose an identifier for the service application
         final var applicationIdentifier = application == null
-                ? new ApplicationIdentifier("Unknown (pid " + OperatingSystem.get().processIdentifier() + ")")
+                ? new Application.Identifier("Unknown (pid " + OperatingSystem.get().processIdentifier() + ")")
                 : application.identifier();
 
         // and a name to use in the description
