@@ -186,7 +186,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
 
     static
     {
-        new KivaKitShutdownHook(FIRST, () ->
+        KivaKitShutdownHook.register(FIRST, () ->
         {
             compressionRecords = compressionRecords.uniqued();
             Collections.sort(compressionRecords);

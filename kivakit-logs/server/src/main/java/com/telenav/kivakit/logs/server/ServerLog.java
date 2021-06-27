@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.LAST;
 import static com.telenav.kivakit.serialization.core.SerializationSession.Type.CLIENT;
 import static com.telenav.kivakit.serialization.core.SerializationSession.Type.SERVER;
 
@@ -85,7 +86,7 @@ public class ServerLog extends BaseTextLog
 
     public ServerLog()
     {
-        new KivaKitShutdownHook(KivaKitShutdownHook.Order.LAST, () -> SessionStore.get().save(session.get()));
+        KivaKitShutdownHook.register(LAST, () -> SessionStore.get().save(session.get()));
 
         LogsServerProject.get().initialize();
 

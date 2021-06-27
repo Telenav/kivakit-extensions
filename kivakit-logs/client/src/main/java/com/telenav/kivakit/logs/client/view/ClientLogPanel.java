@@ -95,7 +95,7 @@ public class ClientLogPanel extends KivaKitPanel
         this.frame = frame;
         this.log = log;
 
-        new KivaKitShutdownHook(FIRST, this::saveConnectedSession);
+        KivaKitShutdownHook.register(FIRST, this::saveConnectedSession);
 
         receiver = statusPanel().listenTo(new Receiver());
 

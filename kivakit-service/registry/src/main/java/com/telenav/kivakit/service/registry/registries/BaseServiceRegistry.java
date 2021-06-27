@@ -318,7 +318,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
             running = true;
 
             // Save the service registry on shutdown
-            new KivaKitShutdownHook(FIRST, () -> store.save(this));
+            KivaKitShutdownHook.register(FIRST, () -> store.save(this));
 
             // and also every 30 seconds, in case we go down.
             KivaKitThread.repeat(this, "ServiceRegistrySaver", Duration.seconds(30).asFrequency(), () -> store.save(this));

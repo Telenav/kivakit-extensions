@@ -179,7 +179,7 @@ public class HdfsProxyClient extends BaseRepeater
                     .processType(CHILD)
                     .run();
 
-            new KivaKitShutdownHook(KivaKitShutdownHook.Order.LAST, process::destroyForcibly);
+            KivaKitShutdownHook.register(KivaKitShutdownHook.Order.LAST, process::destroyForcibly);
         }
         else
         {
