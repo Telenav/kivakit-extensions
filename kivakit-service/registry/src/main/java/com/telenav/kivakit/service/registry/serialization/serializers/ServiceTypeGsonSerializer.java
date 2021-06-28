@@ -18,32 +18,32 @@
 
 package com.telenav.kivakit.service.registry.serialization.serializers;
 
-import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.serialization.json.PrimitiveGsonSerializer;
+import com.telenav.kivakit.service.registry.ServiceType;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Serializes {@link Application.Identifier}s to and from JSON
+ * Serializes {@link ServiceType}s to and from JSON.
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class ApplicationIdentifierSerializer extends PrimitiveGsonSerializer<Application.Identifier, String>
+public class ServiceTypeGsonSerializer extends PrimitiveGsonSerializer<ServiceType, String>
 {
-    public ApplicationIdentifierSerializer()
+    public ServiceTypeGsonSerializer()
     {
         super(String.class);
     }
 
     @Override
-    protected Application.Identifier toObject(final String identifier)
+    protected ServiceType toObject(final String identifier)
     {
-        return new Application.Identifier(identifier);
+        return new ServiceType(identifier);
     }
 
     @Override
-    protected String toPrimitive(final Application.Identifier application)
+    protected String toPrimitive(final ServiceType type)
     {
-        return application.identifier();
+        return type.identifier();
     }
 }

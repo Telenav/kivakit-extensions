@@ -7,10 +7,10 @@ open module kivakit.service.server
     requires transitive kivakit.web.jersey;
     requires transitive kivakit.web.swagger;
 
-    requires transitive wicket.extensions;
-    requires transitive wicket.jquery.ui;
-    requires transitive wicket.jquery.ui.core;
-    requires transitive wicket.util;
+    requires wicket.extensions;
+    requires wicket.jquery.ui;
+    requires wicket.jquery.ui.core;
+    requires wicket.util;
 
     requires org.danekja.jdk.serializable.functional;
     requires java.prefs;

@@ -26,11 +26,11 @@ import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
+import com.telenav.kivakit.serialization.json.serializers.TimeGsonSerializer;
 import com.telenav.kivakit.service.registry.ServiceType;
-import com.telenav.kivakit.service.registry.serialization.serializers.ApplicationIdentifierSerializer;
-import com.telenav.kivakit.service.registry.serialization.serializers.ProblemSerializer;
-import com.telenav.kivakit.service.registry.serialization.serializers.ServiceTypeSerializer;
-import com.telenav.kivakit.service.registry.serialization.serializers.TimeSerializer;
+import com.telenav.kivakit.service.registry.serialization.serializers.ApplicationIdentifierGsonSerializer;
+import com.telenav.kivakit.service.registry.serialization.serializers.ServiceTypeGsonSerializer;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
@@ -47,10 +47,10 @@ public class ServiceRegistryGsonFactory extends GsonFactory
     protected GsonBuilder addSerializers(final GsonBuilder builder)
     {
         addSerializer(builder, Port.class, serializer(new Port.Converter(LOGGER)));
-        addSerializer(builder, Application.Identifier.class, new ApplicationIdentifierSerializer());
-        addSerializer(builder, ServiceType.class, new ServiceTypeSerializer());
-        addSerializer(builder, Problem.class, new ProblemSerializer());
-        addSerializer(builder, Time.class, new TimeSerializer());
+        addSerializer(builder, Application.Identifier.class, new ApplicationIdentifierGsonSerializer());
+        addSerializer(builder, ServiceType.class, new ServiceTypeGsonSerializer());
+        addSerializer(builder, Problem.class, new ProblemGsonSerializer());
+        addSerializer(builder, Time.class, new TimeGsonSerializer());
         return builder;
     }
 }
