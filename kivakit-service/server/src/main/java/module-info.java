@@ -1,5 +1,7 @@
 open module kivakit.service.server
 {
+    requires transitive java.prefs;
+
     requires transitive kivakit.service.client;
 
     requires transitive kivakit.web.jetty;
@@ -7,15 +9,14 @@ open module kivakit.service.server
     requires transitive kivakit.web.jersey;
     requires transitive kivakit.web.swagger;
 
-    requires wicket.extensions;
-    requires wicket.jquery.ui;
-    requires wicket.jquery.ui.core;
-    requires wicket.util;
+    requires transitive wicket.extensions;
+    requires transitive wicket.jquery.ui;
+    requires transitive wicket.jquery.ui.core;
+    requires transitive wicket.util;
 
-    requires org.danekja.jdk.serializable.functional;
-    requires java.prefs;
+    requires transitive org.danekja.jdk.serializable.functional;
 
-    requires io.swagger.v3.oas.annotations;
+    requires transitive io.swagger.v3.oas.annotations;
 
     exports com.telenav.kivakit.service.registry.server.project;
     exports com.telenav.kivakit.service.registry.server.project.lexakai.diagrams;
