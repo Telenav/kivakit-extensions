@@ -18,11 +18,8 @@
 
 package com.telenav.kivakit.web.swagger;
 
-import com.telenav.kivakit.kernel.language.types.Classes;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResource;
+import com.telenav.kivakit.web.jetty.resources.JettyStaticResources;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
  * Provides the Swagger JavaScript resources required to show Swagger documentation.
@@ -30,24 +27,10 @@ import org.eclipse.jetty.servlet.ServletHolder;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettySwaggerStaticResources extends BaseJettyResource
+public class JettySwaggerStaticResources extends JettyStaticResources
 {
     public JettySwaggerStaticResources()
     {
-        super("[SwaggerStaticResources]");
-    }
-
-    @Override
-    public ServletHolder holder()
-    {
-        final var defaultServlet = new DefaultServlet();
-
-        final var holder = new ServletHolder(defaultServlet);
-        holder.setName("static-resources");
-        holder.setInitParameter("resourceBase", Classes.resourceUri(getClass(), "webapp").toString());
-        holder.setInitParameter("dirAllowed", "false");
-        holder.setInitParameter("pathInfoOnly", "true");
-
-        return holder;
+        super(JettySwaggerStaticResources.class, "webapp");
     }
 }
