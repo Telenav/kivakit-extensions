@@ -32,14 +32,14 @@ This module is an email log service provider.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/0.9.8-beta/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-logs-email</artifactId>
-        <version>0.9.8-alpha-SNAPSHOT</version>
+        <version>0.9.8-beta</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -85,14 +85,14 @@ More details about logging are available at [*kivakit-kernel logging*](../../kiv
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
 
-[*Email Log*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/diagram-logs-email.svg)
+[*Email Log*](https://www.kivakit.org/0.9.8-beta/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/diagram-logs-email.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.logs.email*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.svg)  
-[*com.telenav.kivakit.logs.email.project*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.project.svg)
+[*com.telenav.kivakit.logs.email*](https://www.kivakit.org/0.9.8-beta/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.svg)  
+[*com.telenav.kivakit.logs.email.project*](https://www.kivakit.org/0.9.8-beta/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.project.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -107,8 +107,8 @@ Javadoc coverage for this project is 75.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*EmailLog*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/EmailLog.html) |  |  
-| [*LogsEmailProject*](https://www.kivakit.org/0.9.8-alpha-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/project/LogsEmailProject.html) |  |  
+| [*EmailLog*](https://www.kivakit.org/0.9.8-beta/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/EmailLog.html) |  |  
+| [*LogsEmailProject*](https://www.kivakit.org/0.9.8-beta/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/project/LogsEmailProject.html) |  |  
 
 [//]: # (start-user-text)
 
