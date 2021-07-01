@@ -241,11 +241,11 @@ public class Color
 
     public Color brighter(final Percent percent)
     {
-        final var factor = percent.inverse().asZeroToOne();
         final var copy = new Color(this);
-        copy.red = Math.min((int) (red() * factor), 255);
-        copy.green = Math.min((int) (green() * factor), 255);
-        copy.blue = Math.min((int) (blue() * factor), 255);
+        final var scaleFactor = 1.0 + percent.asZeroToOne();
+        copy.red = Math.min((int) (red() * scaleFactor), 255);
+        copy.green = Math.min((int) (green() * scaleFactor), 255);
+        copy.blue = Math.min((int) (blue() * scaleFactor), 255);
         return copy;
     }
 
@@ -256,11 +256,11 @@ public class Color
 
     public Color darker(final Percent percent)
     {
-        final var factor = percent.inverse().asZeroToOne();
         final var copy = new Color(this);
-        copy.red = Math.max((int) (red() * factor), 0);
-        copy.green = Math.max((int) (green() * factor), 0);
-        copy.blue = Math.max((int) (blue() * factor), 0);
+        final var scaleFactor = 1.0 - percent.asZeroToOne();
+        copy.red = Math.max((int) (red() * scaleFactor), 0);
+        copy.green = Math.max((int) (green() * scaleFactor), 0);
+        copy.blue = Math.max((int) (blue() * scaleFactor), 0);
         return copy;
     }
 
