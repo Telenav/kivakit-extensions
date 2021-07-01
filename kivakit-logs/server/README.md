@@ -1,28 +1,18 @@
 [//]: # (start-user-text)
 
-<a href="https://www.kivakit.org">
-<img src="https://www.kivakit.org/images/web-32.png" srcset="https://www.kivakit.org/images/web-32-2x.png 2x"/>
-</a>
-&nbsp;
-<a href="https://twitter.com/openkivakit">
-<img src="https://www.kivakit.org/images/twitter-32.png" srcset="https://www.kivakit.org/images/twitter-32-2x.png 2x"/>
-</a>
-&nbsp;
-<a href="https://kivakit.zulipchat.com">
-<img src="https://www.kivakit.org/images/zulip-32.png" srcset="https://www.kivakit.org/images/zulip-32-2x.png 2x"/>
-</a>
+
 
 [//]: # (end-user-text)
 
-# kivakit-filesystems hdfs-proxy-spi &nbsp;&nbsp; <img src="https://www.kivakit.org/images/communicate-32.png" srcset="https://www.kivakit.org/images/communicate-32-2x.png 2x"/>
+# kivakit-logs server &nbsp;&nbsp; <img src="https://www.kivakit.org/images/log-32.png" srcset="https://www.kivakit.org/images/log-32-2x.png 2x"/>
 
-Service provider interface for HDFS proxy.
+This module provides log information to clients from a server.
 
 <img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
 
 ### Index
 
-[**Summary**](#summary)  
+
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -30,13 +20,13 @@ Service provider interface for HDFS proxy.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/0.9.9-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/hdfs-proxy-spi/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/0.9.9-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/server/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>kivakit-filesystems-hdfs-proxy-spi</artifactId>
+        <artifactId>kivakit-logs-server</artifactId>
         <version>0.9.9-SNAPSHOT</version>
     </dependency>
 
@@ -44,9 +34,7 @@ Service provider interface for HDFS proxy.
 
 [//]: # (start-user-text)
 
-### Summary <a name = "summary"></a>
 
-**This module is not public API**
 
 [//]: # (end-user-text)
 
@@ -54,28 +42,37 @@ Service provider interface for HDFS proxy.
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
 
-[*HDFS Proxy Service Provider Interface (SPI)*](https://www.kivakit.org/0.9.9-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/hdfs-proxy-spi/documentation/diagrams/diagram-hdfs-spi.svg)
+None
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystems.hdfs.proxy.spi*](https://www.kivakit.org/0.9.9-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/hdfs-proxy-spi/documentation/diagrams/com.telenav.kivakit.filesystems.hdfs.proxy.spi.svg)
+[*com.telenav.kivakit.logs.server*](https://www.kivakit.org/0.9.9-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/server/documentation/diagrams/com.telenav.kivakit.logs.server.svg)  
+[*com.telenav.kivakit.logs.server.project*](https://www.kivakit.org/0.9.9-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/server/documentation/diagrams/com.telenav.kivakit.logs.server.project.svg)  
+[*com.telenav.kivakit.logs.server.session*](https://www.kivakit.org/0.9.9-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/server/documentation/diagrams/com.telenav.kivakit.logs.server.session.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 100.0%.  
+Javadoc coverage for this project is 39.1%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
 
 
+The following significant classes are undocumented:  
 
+- ServerLog  
+- SessionStore
 
 | Class | Documentation Sections |
 |---|---|
-| [*HdfsProxy*](https://www.kivakit.org/0.9.9-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.hdfs.proxy.spi/com/telenav/kivakit/filesystems/hdfs/proxy/spi/HdfsProxy.html) |  |  
+| [*LogsServerKryoTypes*](https://www.kivakit.org/0.9.9-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/project/LogsServerKryoTypes.html) |  |  
+| [*LogsServerProject*](https://www.kivakit.org/0.9.9-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/project/LogsServerProject.html) |  |  
+| [*ServerLog*](https://www.kivakit.org/0.9.9-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/ServerLog.html) |  |  
+| [*Session*](https://www.kivakit.org/0.9.9-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/session/Session.html) |  |  
+| [*SessionStore*](https://www.kivakit.org/0.9.9-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/session/SessionStore.html) |  |  
 
 [//]: # (start-user-text)
 
