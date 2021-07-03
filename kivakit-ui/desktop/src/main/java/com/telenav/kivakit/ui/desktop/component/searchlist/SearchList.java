@@ -10,10 +10,13 @@ import com.telenav.kivakit.ui.desktop.layout.Margins;
 import com.telenav.kivakit.ui.desktop.layout.Spacing;
 import com.telenav.kivakit.ui.desktop.layout.VerticalBoxLayout;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.Dimension;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -133,13 +136,13 @@ public class SearchList<T> extends KivaKitPanel
                 final var match = filter.toLowerCase();
 
                 model.addAll(elements.stream()
-                        .filter(item -> converter.toString(item).toLowerCase().startsWith(match))
+                        .filter(item -> converter.unconvert(item).toLowerCase().startsWith(match))
                         .collect(Collectors.toList()));
 
                 model.addAll(elements.stream()
                         .filter(item ->
                         {
-                            final var string = converter.toString(item).toLowerCase();
+                            final var string = converter.unconvert(item).toLowerCase();
                             return string.contains(match) && !string.startsWith(filter);
                         })
                         .collect(Collectors.toList()));

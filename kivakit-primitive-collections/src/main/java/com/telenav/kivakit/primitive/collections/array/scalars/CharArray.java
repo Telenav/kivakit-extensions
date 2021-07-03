@@ -74,7 +74,7 @@ public final class CharArray extends PrimitiveArray implements CharList
         }
 
         @Override
-        protected CharArray onConvertToObject(final String value)
+        protected CharArray onToValue(final String value)
         {
             final var array = new CharArray("converted");
             array.initialize();
@@ -86,7 +86,7 @@ public final class CharArray extends PrimitiveArray implements CharList
         }
 
         @Override
-        protected String onConvertToString(final CharArray array)
+        protected String onToString(final CharArray array)
         {
             final var strings = new StringList(Maximum.maximum(array.size()));
             final var values = array.iterator();

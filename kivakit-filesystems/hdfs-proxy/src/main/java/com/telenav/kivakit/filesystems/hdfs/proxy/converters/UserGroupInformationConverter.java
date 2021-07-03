@@ -37,7 +37,7 @@ public class UserGroupInformationConverter extends BaseStringConverter<UserGroup
     }
 
     @Override
-    protected UserGroupInformation onConvertToObject(final String value)
+    protected UserGroupInformation onToValue(final String value)
     {
         return UserGroupInformation.createRemoteUser(value);
     }

@@ -97,7 +97,7 @@ public class Color
         }
 
         @Override
-        protected Color onConvertToObject(final String value)
+        protected Color onToValue(final String value)
         {
             if (value.length() == 8)
             {
@@ -111,7 +111,7 @@ public class Color
         }
 
         @Override
-        protected String onConvertToString(final Color value)
+        protected String onToString(final Color value)
         {
             return Align.right(Integer.toHexString(value.rgba()), 8, '0');
         }

@@ -74,7 +74,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
         }
 
         @Override
-        protected ShortArray onConvertToObject(final String value)
+        protected ShortArray onToValue(final String value)
         {
             final var elements = StringList.split(value, separators.current());
             final var array = new ShortArray("converted");
@@ -87,7 +87,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
         }
 
         @Override
-        protected String onConvertToString(final ShortArray array)
+        protected String onToString(final ShortArray array)
         {
             final var strings = new StringList(Maximum.maximum(array.size()));
             final var values = array.iterator();

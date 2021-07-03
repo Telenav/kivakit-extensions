@@ -73,7 +73,7 @@ public final class LongArray extends PrimitiveArray implements LongList
         }
 
         @Override
-        protected LongArray onConvertToObject(final String value)
+        protected LongArray onToValue(final String value)
         {
             final var elements = StringList.split(value, separators.current());
             final var array = new LongArray("converted");
@@ -86,7 +86,7 @@ public final class LongArray extends PrimitiveArray implements LongList
         }
 
         @Override
-        protected String onConvertToString(final LongArray array)
+        protected String onToString(final LongArray array)
         {
             final var strings = new StringList(Maximum.maximum(array.size()));
             final var values = array.iterator();

@@ -32,8 +32,8 @@ public class ColorConverterTest extends UnitTest
         ensureEqual(Color.RED, converter.convert("ffff0000"));
         ensureEqual(Color.GREEN, converter.convert("ff00ff00"));
         ensureEqual(Color.BLUE, converter.convert("ff0000ff"));
-        ensureEqual("ffff0000", converter.toString(Color.RED));
-        ensureEqual("ff00ff00", converter.toString(Color.GREEN));
-        ensureEqual("ff0000ff", converter.toString(Color.BLUE));
+        ensureEqual("ffff0000", converter.unconvert(Color.RED));
+        ensureEqual("ff00ff00", converter.unconvert(Color.GREEN));
+        ensureEqual("ff0000ff", converter.unconvert(Color.BLUE));
     }
 }

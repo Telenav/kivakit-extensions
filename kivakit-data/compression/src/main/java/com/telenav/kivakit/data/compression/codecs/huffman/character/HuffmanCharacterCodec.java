@@ -102,13 +102,13 @@ public class HuffmanCharacterCodec implements CharacterCodec
         }
 
         @Override
-        protected Character onConvertToObject(final String value)
+        protected Character onToValue(final String value)
         {
             return (char) Longs.parseHex(value);
         }
 
         @Override
-        protected String onConvertToString(final Character character)
+        protected String onToString(final Character character)
         {
             return "0x" + Ints.toHex(character, 2);
         }
