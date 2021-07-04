@@ -22,7 +22,7 @@ import com.telenav.kivakit.kernel.interfaces.value.Source;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.kernel.messaging.messages.status.Quibble;
-import com.telenav.kivakit.kernel.messaging.messages.status.Success;
+import com.telenav.kivakit.kernel.messaging.messages.status.StepSuccess;
 import com.telenav.kivakit.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 import com.telenav.kivakit.ui.desktop.component.dropdown.DropDownRenderer;
@@ -479,7 +479,7 @@ public abstract class KivaKitTheme
         {
             return Style.create().withTextColor(KivaKitColors.DARK_KIVAKIT_YELLOW);
         }
-        if (type == Success.class)
+        if (type == StepSuccess.class)
         {
             return Style.create().withTextColor(KivaKitColors.CLOVER);
         }
