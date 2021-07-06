@@ -149,7 +149,7 @@
 
         <!-- Java -->
 
-        <java.version>12</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakarta.activation.version>1.2.2</jakarta.activation.version>
         <java-mail.version>1.6.2</java-mail.version>
@@ -252,7 +252,7 @@
                         <version>${maven-javadoc-plugin.version}</version>
                         <configuration>
                             <show>public</show>
-                            <source>12</source>
+                            <source>11</source>
                             <doclint>none</doclint>
                             <nohelp>true</nohelp>
                             <additionalOptions>-notimestamp --show-module-contents all --show-packages all --show-types private</additionalOptions>
