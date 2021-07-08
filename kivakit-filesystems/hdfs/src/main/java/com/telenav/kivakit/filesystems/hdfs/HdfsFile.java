@@ -21,7 +21,7 @@ package com.telenav.kivakit.filesystems.hdfs;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
 import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
-import com.telenav.kivakit.kernel.interfaces.code.CheckedCode;
+import com.telenav.kivakit.kernel.interfaces.code.Unchecked;
 import com.telenav.kivakit.kernel.language.threading.Retry;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
@@ -38,7 +38,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.attribute.PosixFilePermission;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
@@ -76,21 +75,21 @@ public class HdfsFile extends BaseWritableResource implements FileService
     public boolean delete()
     {
         return retry(() -> proxy().deleteFile(pathAsString()))
-                .or(false, "Unable to delete $", this);
+                .orDefault(this, false, "Unable to delete $", this);
     }
 
     @Override
     public boolean exists()
     {
         return retry(() -> proxy().exists(pathAsString()))
-                .or(false, "Unable to determine if $ exists", this);
+                .orDefault(this, false, "Unable to determine if $ exists", this);
     }
 
     @Override
     public boolean isFolder()
     {
         return retry(() -> proxy().isFolder(pathAsString()))
-                .or(false, "Unable to determine if $ is a folder", this);
+                .orDefault(this, false, "Unable to determine if $ is a folder", this);
     }
 
     @Override
@@ -102,35 +101,35 @@ public class HdfsFile extends BaseWritableResource implements FileService
     @Override
     public Boolean isWritable()
     {
-        return retry(() -> proxy().isWritable(pathAsString())).or(false, "Unable to determine if $ is writable", this);
+        return retry(() -> proxy().isWritable(pathAsString())).orDefault(this, false, "Unable to determine if $ is writable", this);
     }
 
     @Override
     public Time lastModified()
     {
         return retry(() -> Time.milliseconds(proxy().lastModified(pathAsString())))
-                .or(null, "Unable to get last modified time of $", this);
+                .orDefault(this, null, "Unable to get last modified time of $", this);
     }
 
     @Override
     public boolean lastModified(final Time modified)
     {
         return retry(() -> proxy().lastModified(pathAsString(), modified.asMilliseconds()))
-                .or(false, "Unable to set last modified time of $ to $", this, modified);
+                .orDefault(this, false, "Unable to set last modified time of $ to $", this, modified);
     }
 
     @Override
     public InputStream onOpenForReading()
     {
         return retry(() -> HdfsProxyIO.in(proxy().openForReading(pathAsString())))
-                .or(null, "Unable to open $ for reading", this);
+                .orDefault(this, null, "Unable to open $ for reading", this);
     }
 
     @Override
     public OutputStream onOpenForWriting()
     {
         return retry(() -> HdfsProxyIO.out(proxy().openForWriting(pathAsString())))
-                .or(null, "Unable to open $ for writing", this);
+                .orDefault(this, null, "Unable to open $ for writing", this);
     }
 
     @Override
@@ -157,14 +156,13 @@ public class HdfsFile extends BaseWritableResource implements FileService
         {
             return renameTo((HdfsFile) that.resolveService());
         }
-        fail("Cannot rename $ to $ across filesystems", this, that);
-        return false;
+        return fatal("Cannot rename $ to $ across filesystems", this, that);
     }
 
     public boolean renameTo(final HdfsFile to)
     {
         return retry(() -> proxy().rename(pathAsString(), to.path().toString()))
-                .or(false, "Unable to rename $ to $", this, to);
+                .orDefault(this, false, "Unable to rename $ to $", this, to);
     }
 
     @Override
@@ -182,7 +180,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
             {
                 final var length = proxy().length(pathAsString());
                 return length < 0 ? null : Bytes.bytes(length);
-            }).or(Bytes._0, "Unable to get size of $", this);
+            }).orDefault(this, Bytes._0, "Unable to get size of $", this);
         }
         return size;
     }
@@ -207,7 +205,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
         return proxy;
     }
 
-    private <T> CheckedCode<T> retry(final CheckedCode<T> code)
+    private <T> Unchecked<T> retry(final Unchecked<T> code)
     {
         return Retry.retry(code, 16, Duration.seconds(15), () -> proxy = null);
     }

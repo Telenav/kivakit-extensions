@@ -27,7 +27,6 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.nio.file.attribute.PosixFilePermission;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
@@ -81,8 +80,7 @@ public class S3File extends S3FileSystemObject implements FileService
         {
             return renameTo((S3File) that.resolveService());
         }
-        fail("Cannot rename $ to $ across filesystems", this, that);
-        return false;
+        return fatal("Cannot rename $ to $ across filesystems", this, that);
     }
 
     @Override
