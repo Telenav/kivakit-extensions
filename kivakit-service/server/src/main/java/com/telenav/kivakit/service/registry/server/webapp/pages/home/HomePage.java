@@ -176,7 +176,7 @@ public class HomePage extends ServiceRegistryWebPage
         if (scope.isLocal())
         {
             // just directly access the registry without the client
-            return ServiceRegistryServer.get().registry().discoverServices();
+            return ServiceRegistryServer.get().serviceRegistry().discoverServices();
         }
         else
         {

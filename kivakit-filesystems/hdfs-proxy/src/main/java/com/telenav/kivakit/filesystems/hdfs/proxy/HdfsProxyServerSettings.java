@@ -19,10 +19,10 @@
 package com.telenav.kivakit.filesystems.hdfs.proxy;
 
 import com.telenav.kivakit.configuration.settings.Settings;
-import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
-import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.filesystems.hdfs.proxy.converters.UserGroupInformationConverter;
 import com.telenav.kivakit.filesystems.hdfs.proxy.project.lexakai.diagrams.DiagramHdfsProxy;
+import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
+import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import org.apache.hadoop.security.UserGroupInformation;
 

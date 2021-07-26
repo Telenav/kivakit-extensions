@@ -79,11 +79,16 @@ public interface ServiceRegistry extends Repeater
      */
     static Port network()
     {
-        final var host = JavaVirtualMachine.property
+        final var port = JavaVirtualMachine.property
                 (
                         "KIVAKIT_NETWORK_SERVICE_REGISTRY_PORT",
                         "kivakit-network-service-registry.mypna.com:23575"
                 );
+
+        if (port != null)
+        {
+            return Port.parse(port);
+        }
 
         return settings().networkServiceRegistryPort();
     }
