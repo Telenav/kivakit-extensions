@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.filesystems.hdfs;
 
-import com.telenav.kivakit.configuration.settings.Settings;
+import com.telenav.kivakit.configuration.BaseComponent;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
 import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
@@ -29,7 +29,6 @@ import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
-import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher;
@@ -67,7 +66,7 @@ import static com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher.Pr
 @UmlClassDiagram(diagram = DiagramHdfs.class)
 @UmlRelation(label = "configures with", referent = HdfsSettings.class)
 @LexakaiJavadoc(complete = true)
-public class HdfsProxyClient extends BaseRepeater
+public class HdfsProxyClient extends BaseComponent
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
@@ -135,7 +134,7 @@ public class HdfsProxyClient extends BaseRepeater
         // Find a free port for the child proxy server process to use
         final var client = listenTo(new ServiceRegistryClient());
 
-        final var settings = Settings.require(HdfsSettings.class);
+        final var settings = require(HdfsSettings.class);
 
         final var materialized = settings.configurationFolder()
                 .materializeTo(Folder.kivakitCache().folder("hdfs-filesystem/settings/" + settings.clusterName()));
