@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.filesystems.hdfs.proxy;
 
+import com.telenav.kivakit.configuration.BaseComponent;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
-import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileSystemService;
@@ -93,7 +93,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
  */
 @UmlClassDiagram(diagram = DiagramHdfsProxy.class)
 @LexakaiJavadoc(complete = true)
-class HdfsFileSystem
+class HdfsFileSystem extends BaseComponent
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
@@ -152,7 +152,7 @@ class HdfsFileSystem
             try
             {
                 final var instance = InstanceIdentifier.of(root.first());
-                final var settings = Settings.require(HdfsProxyServerSettings.class, instance);
+                final var settings = require(HdfsProxyServerSettings.class, instance);
                 fileSystem = settings.user().doAs((PrivilegedExceptionAction<FileSystem>) () ->
                 {
                     DEBUG.trace("Initializing HDFS at $", root);
@@ -202,7 +202,7 @@ class HdfsFileSystem
         if (configurationFolder == null)
         {
             // then try the resource specified in the HdfsProxyServerSettings configuration,
-            final var settings = Settings.require(HdfsProxyServerSettings.class);
+            final var settings = require(HdfsProxyServerSettings.class);
             configurationFolder = settings.configurationFolder();
         }
 

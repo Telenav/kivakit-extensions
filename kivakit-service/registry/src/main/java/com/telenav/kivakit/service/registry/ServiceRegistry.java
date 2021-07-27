@@ -19,9 +19,7 @@
 package com.telenav.kivakit.service.registry;
 
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.configuration.settings.Settings;
-import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
-import com.telenav.kivakit.kernel.messaging.Repeater;
+import com.telenav.kivakit.configuration.ComponentMixin;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
@@ -62,50 +60,8 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @UmlNote(text = "Use ServiceRegistryClient to register and discover services")
 @UmlNotPublicApi
 @LexakaiJavadoc(complete = true)
-public interface ServiceRegistry extends Repeater
+public interface ServiceRegistry extends ComponentMixin
 {
-    /**
-     * <b>Not public API</b>
-     */
-    static Port local()
-    {
-        return port(Host.loopback());
-    }
-
-    /**
-     * <b>Not public API</b>
-     *
-     * @return The service registry for the network (normally some kind of intranet)
-     */
-    static Port network()
-    {
-        final var port = JavaVirtualMachine.property
-                (
-                        "KIVAKIT_NETWORK_SERVICE_REGISTRY_PORT",
-                        "kivakit-network-service-registry.mypna.com:23575"
-                );
-
-        if (port != null)
-        {
-            return Port.parse(port);
-        }
-
-        return settings().networkServiceRegistryPort();
-    }
-
-    /**
-     * <b>Not public API</b>
-     */
-    static Port port(final Host host)
-    {
-        return host.http(settings().localServiceRegistryPort());
-    }
-
-    static ServiceRegistrySettings settings()
-    {
-        return Settings.require(ServiceRegistrySettings.class);
-    }
-
     /**
      * <b>Not public API</b>
      * <p>
@@ -205,5 +161,10 @@ public interface ServiceRegistry extends Repeater
     default @NotNull Result<Service> renew(final Service service)
     {
         return unsupported();
+    }
+
+    default ServiceRegistrySettings settings()
+    {
+        return require(ServiceRegistrySettings.class);
     }
 }

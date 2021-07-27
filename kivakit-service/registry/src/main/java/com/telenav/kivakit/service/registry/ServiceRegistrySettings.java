@@ -26,6 +26,8 @@ import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Frequency;
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
+import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
@@ -91,6 +93,14 @@ public class ServiceRegistrySettings
     /** The frequency at which clients should renew leases */
     private Frequency serviceLeaseRenewalFrequency;
 
+    /**
+     * <b>Not public API</b>
+     */
+    public Port local()
+    {
+        return port(Host.loopback());
+    }
+
     @KivaKitPropertyConverter(IntegerConverter.class)
     public ServiceRegistrySettings localServiceRegistryPort(final int localServiceRegistryPort)
     {
@@ -102,6 +112,27 @@ public class ServiceRegistrySettings
     public int localServiceRegistryPort()
     {
         return localServiceRegistryPort;
+    }
+
+    /**
+     * <b>Not public API</b>
+     *
+     * @return The service registry for the network (normally some kind of intranet)
+     */
+    public Port network()
+    {
+        final var port = JavaVirtualMachine.property
+                (
+                        "KIVAKIT_NETWORK_SERVICE_REGISTRY_PORT",
+                        "kivakit-network-service-registry.mypna.com:23575"
+                );
+
+        if (port != null)
+        {
+            return Port.parse(port);
+        }
+
+        return networkServiceRegistryPort();
     }
 
     @KivaKitIncludeProperty
@@ -198,5 +229,13 @@ public class ServiceRegistrySettings
     public void version(final Version version)
     {
         this.version = version;
+    }
+
+    /**
+     * <b>Not public API</b>
+     */
+    Port port(final Host host)
+    {
+        return host.http(localServiceRegistryPort());
     }
 }

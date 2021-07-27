@@ -139,7 +139,7 @@ public class EmailLog extends BaseTextLog
         email.subject(subject);
         if (sender == null)
         {
-            sender = Registry.lookup(EmailSender.class);
+            sender = Registry.of(this).lookup(EmailSender.class);
         }
         sender.enqueue(email);
     }

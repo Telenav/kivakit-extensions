@@ -347,7 +347,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
                             // and if the port expired too long ago then the expired service is probably
                             // not ever coming back online to reclaim the port it registered
                             final var expiredAt = reservedPortToExpirationTime.get(port);
-                            if (expiredAt.elapsedSince().isGreaterThan(ServiceRegistry.settings().portReservationExpirationTime()))
+                            if (expiredAt.elapsedSince().isGreaterThan(settings().portReservationExpirationTime()))
                             {
                                 // so we cancel the port reservation so the port can be re-used
                                 trace("Expired port $", port);
@@ -425,7 +425,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
 
         final var elapsed = renewedAt.getOrDefault(service, Time.now()).elapsedSince();
         trace("Service $ was last renewed $ ago", service, elapsed);
-        return elapsed.isGreaterThan(ServiceRegistry.settings().serviceRegistrationExpirationTime());
+        return elapsed.isGreaterThan(settings().serviceRegistrationExpirationTime());
     }
 
     private Result<Set<Service>> result(final Collection<Service> set)

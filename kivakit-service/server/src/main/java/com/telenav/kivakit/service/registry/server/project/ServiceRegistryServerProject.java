@@ -47,6 +47,6 @@ public class ServiceRegistryServerProject extends Project
     @Override
     public Version projectVersion()
     {
-        return Settings.require(ServiceRegistrySettings.class).version();
+        return Settings.of(this).require(ServiceRegistrySettings.class).version();
     }
 }
