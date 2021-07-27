@@ -151,7 +151,7 @@ class HdfsFileSystem
         {
             try
             {
-                final var instance = new InstanceIdentifier(root.first());
+                final var instance = InstanceIdentifier.of(root.first());
                 final var settings = Settings.require(HdfsProxyServerSettings.class, instance);
                 fileSystem = settings.user().doAs((PrivilegedExceptionAction<FileSystem>) () ->
                 {

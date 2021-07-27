@@ -97,7 +97,7 @@ public class ServiceRegistryRestResource extends BaseRestResource
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
     /** The service registry to query and update */
-    private final ServiceRegistry registry = ServiceRegistryServer.get().registry();
+    private final ServiceRegistry registry = ServiceRegistryServer.get().serviceRegistry();
 
     //----------------------------------------------------------------------------------------------
     // Discover Applications

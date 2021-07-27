@@ -87,7 +87,7 @@ public class ServiceRegistryServer extends Server
             .optional()
             .build();
 
-    private transient final Lazy<ServiceRegistry> registry = Lazy.of(() ->
+    private transient final Lazy<ServiceRegistry> serviceRegistry = Lazy.of(() ->
     {
         final var registry = listenTo(get(SCOPE) == Scope.Type.NETWORK
                 ? new NetworkServiceRegistry()
@@ -119,14 +119,14 @@ public class ServiceRegistryServer extends Server
         return commandLine().get(PORT);
     }
 
-    public ServiceRegistry registry()
-    {
-        return registry.get();
-    }
-
     public Scope.Type scope()
     {
         return commandLine().get(SCOPE);
+    }
+
+    public ServiceRegistry serviceRegistry()
+    {
+        return serviceRegistry.get();
     }
 
     @Override
