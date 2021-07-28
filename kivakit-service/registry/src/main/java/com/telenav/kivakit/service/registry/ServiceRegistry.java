@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry;
 
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.configuration.ComponentMixin;
+import com.telenav.kivakit.application.component.ComponentMixin;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;

@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.service.registry.store;
 
-import com.telenav.kivakit.configuration.BaseComponent;
+import com.telenav.kivakit.application.component.BaseComponent;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.language.primitives.Booleans;
