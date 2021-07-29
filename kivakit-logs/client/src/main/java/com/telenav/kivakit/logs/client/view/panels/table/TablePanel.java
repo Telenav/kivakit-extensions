@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.telenav.kivakit.kernel.language.strings.conversion.StringFormat.USER_LABEL;
-import static com.telenav.kivakit.kernel.logging.logs.text.formatters.ColumnarFormatter.DEFAULT;
+import static com.telenav.kivakit.kernel.logging.logs.text.formatters.ColumnarLogFormatter.DEFAULT;
 import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.logs.client.view.panels.table.TableModel.CONTEXT;
 import static com.telenav.kivakit.logs.client.view.panels.table.TableModel.ELAPSED;
