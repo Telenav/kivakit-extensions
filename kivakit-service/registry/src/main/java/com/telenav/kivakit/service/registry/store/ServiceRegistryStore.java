@@ -112,7 +112,7 @@ public class ServiceRegistryStore extends BaseComponent
         if (Booleans.isTrue(JavaVirtualMachine.property("KIVAKIT_SAVE_REGISTRY", "true")))
         {
             final var file = file(registry.getClass()).withExtension(Extension.TMP);
-            trace("Saving service registry to $", file.parentBroadcaster());
+            trace("Saving service registry to $", file.messageSource());
             if (file.delete())
             {
                 try (final var output = file.openForWriting())
