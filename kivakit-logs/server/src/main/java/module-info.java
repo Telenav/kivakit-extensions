@@ -1,13 +1,16 @@
+import com.telenav.kivakit.kernel.logging.Log;
+import com.telenav.kivakit.logs.server.ServerLog;
+
 open module kivakit.logs.server
 {
-    requires transitive kivakit.network.core;
+    provides Log with ServerLog;
+
+    // KivaKit
     requires transitive kivakit.network.socket;
     requires transitive kivakit.service.registry;
-    requires kivakit.service.client;
+    requires transitive kivakit.service.client;
 
-    provides com.telenav.kivakit.kernel.logging.Log
-            with com.telenav.kivakit.logs.server.ServerLog;
-
+    // Module exports
     exports com.telenav.kivakit.logs.server;
     exports com.telenav.kivakit.logs.server.project;
     exports com.telenav.kivakit.logs.server.session;

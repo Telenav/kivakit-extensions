@@ -1,11 +1,14 @@
 open module kivakit.service.registry
 {
+    // KivaKit
     requires transitive kivakit.application;
     requires transitive kivakit.network.core;
     requires transitive kivakit.serialization.jersey.json;
 
+    // Jackson
     requires transitive com.fasterxml.jackson.annotation;
 
+    // Module exports
     exports com.telenav.kivakit.service.registry;
     exports com.telenav.kivakit.service.registry.project;
     exports com.telenav.kivakit.service.registry.project.lexakai.diagrams;
