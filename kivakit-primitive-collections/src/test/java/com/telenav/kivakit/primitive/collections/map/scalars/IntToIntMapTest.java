@@ -155,7 +155,10 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
 
     private IntToIntMap map()
     {
-        return (IntToIntMap) new IntToIntMap("test").nullInt(Integer.MIN_VALUE).initialize();
+        var map = (IntToIntMap) new IntToIntMap("test")
+                .nullInt(Integer.MIN_VALUE);
+        map.initialize();
+        return map;
     }
 
     private void putAll(final IntToIntMap map, final List<Integer> keys, final List<Integer> values)

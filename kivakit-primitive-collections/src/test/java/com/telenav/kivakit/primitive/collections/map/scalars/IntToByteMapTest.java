@@ -165,7 +165,11 @@ public class IntToByteMapTest extends PrimitiveCollectionsUnitTest
 
     private IntToByteMap map()
     {
-        return (IntToByteMap) new IntToByteMap("test").nullInt(Integer.MIN_VALUE).nullByte(Byte.MIN_VALUE).initialize();
+        var map = (IntToByteMap) new IntToByteMap("test")
+                .nullInt(Integer.MIN_VALUE)
+                .nullByte(Byte.MIN_VALUE);
+        map.initialize();
+        return map;
     }
 
     private void putAll(final IntToByteMap map, final List<Integer> keys, final List<Byte> values)

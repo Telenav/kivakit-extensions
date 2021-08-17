@@ -243,9 +243,10 @@ public class SplitIntArrayTest extends PrimitiveCollectionsUnitTest
 
     private SplitIntArray array()
     {
-        return (SplitIntArray) new SplitIntArray("test")
+        var array = (SplitIntArray) new SplitIntArray("test")
                 .nullInt(-1)
-                .initialChildSize(100)
-                .initialize();
+                .initialChildSize(100);
+        array.initialize();
+        return array;
     }
 }

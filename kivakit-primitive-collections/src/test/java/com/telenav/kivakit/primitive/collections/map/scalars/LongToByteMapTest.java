@@ -162,7 +162,11 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
 
     private LongToByteMap map()
     {
-        return (LongToByteMap) new LongToByteMap("test").nullLong(Long.MIN_VALUE).nullByte(Byte.MIN_VALUE).initialize();
+        var map = (LongToByteMap) new LongToByteMap("test")
+                .nullLong(Long.MIN_VALUE)
+                .nullByte(Byte.MIN_VALUE);
+        map.initialize();
+        return map;
     }
 
     private void putAll(final LongToByteMap map, final List<Long> keys, final List<Byte> values)

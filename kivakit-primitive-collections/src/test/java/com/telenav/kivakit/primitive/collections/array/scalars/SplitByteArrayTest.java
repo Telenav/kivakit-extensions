@@ -241,9 +241,10 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
 
     private SplitByteArray array()
     {
-        return (SplitByteArray) new SplitByteArray("test")
+        var array = (SplitByteArray) new SplitByteArray("test")
                 .initialChildSize(100)
-                .nullByte((byte) -1)
-                .initialize();
+                .nullByte((byte) -1);
+        array.initialize();
+        return array;
     }
 }

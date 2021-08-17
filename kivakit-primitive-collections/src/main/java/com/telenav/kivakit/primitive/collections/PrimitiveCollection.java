@@ -642,14 +642,13 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     }
 
     @Override
-    public final PrimitiveCollection initialize()
+    public final void initialize()
     {
         if (!initialized)
         {
             onInitialize();
             initialized = true;
         }
-        return this;
     }
 
     /**

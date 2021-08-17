@@ -63,7 +63,7 @@ public class ServiceRegistryViewerApplication extends Application
     @Override
     protected void onRun()
     {
-        announce();
+        showCommandLine();
 
         // Connect to service registry server
         final var client = listenTo(new ServiceRegistryClient());

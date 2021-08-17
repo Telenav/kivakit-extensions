@@ -133,7 +133,7 @@ public class ServiceRegistryServer extends Server
     @Override
     protected void onRun()
     {
-        announce();
+        showCommandLine();
 
         // Determine what port to use for the server,
         final var settings = require(ServiceRegistrySettings.class);

@@ -241,9 +241,10 @@ public class SplitLongArrayTest extends PrimitiveCollectionsUnitTest
 
     private SplitLongArray array()
     {
-        return (SplitLongArray) new SplitLongArray("test")
+        var array = (SplitLongArray) new SplitLongArray("test")
                 .nullLong(Long.MIN_VALUE)
-                .initialChildSize(100)
-                .initialize();
+                .initialChildSize(100);
+        array.initialize();
+        return array;
     }
 }
