@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry;
 
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.application.component.ComponentMixin;
+import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
@@ -67,12 +67,14 @@ public interface ServiceRegistry extends ComponentMixin
      * <p>
      * Adds or updates registration information and renews the lease for the given service.
      */
-    @NotNull Result<Boolean> addOrUpdate(final Service service);
+    @NotNull
+    Result<Boolean> addOrUpdate(final Service service);
 
     /**
      * @return All applications that have registered a service
      */
-    @NotNull Result<Set<Application.Identifier>> discoverApplications(Scope scope);
+    @NotNull
+    Result<Set<Application.Identifier>> discoverApplications(Scope scope);
 
     /**
      * @return All of the hosts that have registered services
@@ -95,27 +97,32 @@ public interface ServiceRegistry extends ComponentMixin
      * @return Any service running on the given port. Since a {@link Port} includes the host it is unique and only a
      * single service is returned since only one service can be running on a specific port on a specific host.
      */
-    @NotNull Result<Service> discoverPortService(Port port);
+    @NotNull
+    Result<Service> discoverPortService(Port port);
 
     /**
      * Any application services of the given type
      */
-    @NotNull Result<Set<Service>> discoverServices(Application.Identifier application, ServiceType type);
+    @NotNull
+    Result<Set<Service>> discoverServices(Application.Identifier application, ServiceType type);
 
     /**
      * All services registered by the given application
      */
-    @NotNull Result<Set<Service>> discoverServices(Application.Identifier application);
+    @NotNull
+    Result<Set<Service>> discoverServices(Application.Identifier application);
 
     /**
      * @return All services registered with this registry
      */
-    @NotNull Result<Set<Service>> discoverServices();
+    @NotNull
+    Result<Set<Service>> discoverServices();
 
     /**
      * All services of the given type that have been registered with this registry
      */
-    @NotNull Result<Set<Service>> discoverServices(ServiceType type);
+    @NotNull
+    Result<Set<Service>> discoverServices(ServiceType type);
 
     /**
      * @return True if this is a {@link LocalServiceRegistry}
@@ -145,7 +152,8 @@ public interface ServiceRegistry extends ComponentMixin
      * @param service The service to register
      * @return The registered service, bound to a port
      */
-    default @NotNull Result<Service> register(final Service service)
+    default @NotNull
+    Result<Service> register(final Service service)
     {
         return unsupported();
     }
@@ -158,7 +166,8 @@ public interface ServiceRegistry extends ComponentMixin
      * updated through information propagated from local registries.
      * </p>
      */
-    default @NotNull Result<Service> renew(final Service service)
+    default @NotNull
+    Result<Service> renew(final Service service)
     {
         return unsupported();
     }

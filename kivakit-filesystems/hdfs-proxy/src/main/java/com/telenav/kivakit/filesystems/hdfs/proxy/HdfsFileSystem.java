@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.filesystems.hdfs.proxy;
 
-import com.telenav.kivakit.application.component.BaseComponent;
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;

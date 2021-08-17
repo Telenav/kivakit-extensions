@@ -21,7 +21,7 @@ package com.telenav.kivakit.service.registry.client;
 import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.application.Server;
-import com.telenav.kivakit.application.component.BaseComponent;
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.kernel.language.reflection.Type;
