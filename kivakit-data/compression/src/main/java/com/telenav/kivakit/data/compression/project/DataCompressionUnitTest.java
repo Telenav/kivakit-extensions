@@ -69,7 +69,7 @@ public class DataCompressionUnitTest extends KryoUnitTest
 
     protected PropertyMap properties(final String name)
     {
-        return PropertyMap.load(PackageResource.of(getClass(), name));
+        return PropertyMap.load(this, PackageResource.of(getClass(), name));
     }
 
     @NotNull
