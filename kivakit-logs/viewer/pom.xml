@@ -192,7 +192,7 @@
                                     <target name = "Install kivakit-log-viewer-${viewer.version}.jar">
                                         <echo message = "Installing kivakit-log-viewer DMG"/>
                                         <copy file = "kivakit-log-viewer-${viewer.version}.dmg"
-                                              tofile = "${project.basedir}/../../../tools/applications/kivakit-log-viewer-${viewer.version}.dmg"
+                                              tofile = "${project.basedir}/../../tools/applications/kivakit-log-viewer-${viewer.version}.dmg"
                                               verbose = "true"/>
                                     </target>
                                 </configuration>
