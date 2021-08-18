@@ -112,7 +112,7 @@
                                         <mkdir dir = "target/application"/>
                                         <echo message = "Installing ${jar.base.name}.jar"/>
                                         <copy file = "target/${jar.base.name}.jar"
-                                              tofile = "${project.basedir}/../../../tools/applications/${jar.base.name}.jar"/>
+                                              tofile = "${project.basedir}/../../tools/applications/${jar.base.name}.jar"/>
                                         <copy file = "target/${jar.base.name}.jar"
                                               tofile = "target/application/${jar.base.name}.jar"/>
                                     </target>
