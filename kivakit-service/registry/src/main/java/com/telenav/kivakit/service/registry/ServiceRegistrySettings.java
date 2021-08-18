@@ -21,7 +21,7 @@ package com.telenav.kivakit.service.registry;
 import com.telenav.kivakit.kernel.data.conversion.string.language.VersionConverter;
 import com.telenav.kivakit.kernel.data.conversion.string.primitive.IntegerConverter;
 import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
-import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Frequency;

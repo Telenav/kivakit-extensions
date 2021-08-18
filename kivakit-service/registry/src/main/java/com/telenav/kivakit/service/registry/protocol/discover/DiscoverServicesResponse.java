@@ -20,7 +20,7 @@ package com.telenav.kivakit.service.registry.protocol.discover;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.kernel.language.collections.set.Sets;
-import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;

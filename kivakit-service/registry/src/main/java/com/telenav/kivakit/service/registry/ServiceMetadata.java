@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRegistry;
