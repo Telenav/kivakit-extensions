@@ -21,7 +21,7 @@
     <properties>
 
         <viewer.version>1.9.8</viewer.version>
-        <jar.base.name>kivakit-log-viewer-${viewer.version}</jar.base.name>
+        <jar.base.name>kivakit-logs-viewer-${viewer.version}</jar.base.name>
 
     </properties>
 
@@ -109,10 +109,12 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <target name = "Install ${jar.base.name}.jar">
-                                        <mkdir dir = "target/application"/>
                                         <echo message = "Installing ${jar.base.name}.jar"/>
+                                        <mkdir dir = "${env.KIVAKIT_HOME}/tools/applications"/>
                                         <copy file = "target/${jar.base.name}.jar"
-                                              tofile = "${project.basedir}/../../tools/applications/${jar.base.name}.jar"/>
+                                              verbose = "true"
+                                              tofile = "${env.KIVAKIT_HOME}/tools/applications/${jar.base.name}.jar"/>
+                                        <mkdir dir = "target/application"/>
                                         <copy file = "target/${jar.base.name}.jar"
                                               tofile = "target/application/${jar.base.name}.jar"/>
                                     </target>
@@ -189,7 +191,7 @@
                                 <id>install-dmg</id>
                                 <phase>install</phase>
                                 <configuration>
-                                    <target name = "Install kivakit-log-viewer-${viewer.version}.jar">
+                                    <target name = "Install kivakit-log-viewer-${viewer.version}.dmg">
                                         <echo message = "Installing kivakit-log-viewer DMG"/>
                                         <copy file = "kivakit-log-viewer-${viewer.version}.dmg"
                                               tofile = "${project.basedir}/../../tools/applications/kivakit-log-viewer-${viewer.version}.dmg"
