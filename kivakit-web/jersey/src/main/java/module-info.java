@@ -1,6 +1,7 @@
 open module kivakit.web.jersey
 {
     // KivaKit
+    requires transitive kivakit.component;
     requires transitive kivakit.web.jetty;
 
     // Jersey

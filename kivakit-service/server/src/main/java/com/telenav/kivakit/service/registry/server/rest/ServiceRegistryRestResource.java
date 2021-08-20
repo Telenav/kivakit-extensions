@@ -20,8 +20,6 @@ package com.telenav.kivakit.service.registry.server.rest;
 
 import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.kernel.KivaKit;
-import com.telenav.kivakit.kernel.logging.Logger;
-import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
@@ -94,8 +92,6 @@ import javax.ws.rs.core.Response;
 @LexakaiJavadoc(complete = true)
 public class ServiceRegistryRestResource extends BaseRestResource
 {
-    private static final Logger LOGGER = LoggerFactory.newLogger();
-
     /** The service registry to query and update */
     private final ServiceRegistry registry = ServiceRegistryServer.get().serviceRegistry();
 
@@ -278,7 +274,7 @@ public class ServiceRegistryRestResource extends BaseRestResource
         }
         else
         {
-            LOGGER.warning("Client tried to update an unbound service: $", service);
+            warning("Client tried to update an unbound service: $", service);
             succeeded = false;
         }
 
@@ -394,10 +390,5 @@ public class ServiceRegistryRestResource extends BaseRestResource
         return Response.status(200)
                 .entity(output)
                 .build();
-    }
-
-    private void narrate(final String message, final Object... arguments)
-    {
-        LOGGER.narrate(message, arguments);
     }
 }
