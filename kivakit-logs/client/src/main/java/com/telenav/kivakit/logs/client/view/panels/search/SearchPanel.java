@@ -121,12 +121,12 @@ public class SearchPanel extends KivaKitPanel
             messageTypeDropDown = KivaKitTheme.get().applyTo(new JComboBox<>(new String[]
                     {
                             ALL_TYPES,
-                            "Problem, Warning or Quibble",
+                            "Problem, Glitch or Warning",
                             "Problem or Warning",
                             "Problem",
-                            "Warning or Quibble",
+                            "Warning or Glitch",
                             "Warning",
-                            "Quibble",
+                            "Glitch",
                             "Announcement",
                             "Narration",
                             "Information",

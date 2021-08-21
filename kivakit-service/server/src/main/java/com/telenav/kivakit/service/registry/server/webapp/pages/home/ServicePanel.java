@@ -83,7 +83,7 @@ public class ServicePanel extends Panel
         add(new Label("alerts", () -> health.count("Alert")));
         add(new Label("problems", () -> health.count("Problem")));
         add(new Label("warnings", () -> health.count("Warning")));
-        add(new Label("quibbles", () -> health.count("Quibble")));
+        add(new Label("glitches", () -> health.count("Glitch")));
         add(new Label("threads", () -> health.threadSnapshot().snapshot().size()));
 
         final var states = new CountMap<Thread.State>();
