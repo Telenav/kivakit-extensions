@@ -49,7 +49,7 @@ import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.logging.logs.BaseLog;
 import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.kernel.messaging.messages.status.Activity;
+import com.telenav.kivakit.kernel.messaging.messages.status.activity.Activity;
 import com.telenav.kivakit.primitive.collections.array.PrimitiveArray;
 import com.telenav.kivakit.primitive.collections.array.PrimitiveArrayArray;
 import com.telenav.kivakit.primitive.collections.array.PrimitiveSplitArray;

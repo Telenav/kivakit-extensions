@@ -22,7 +22,7 @@ import com.telenav.kivakit.kernel.interfaces.value.Source;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Glitch;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.kernel.messaging.messages.status.StepSuccess;
+import com.telenav.kivakit.kernel.messaging.messages.status.activity.StepSuccess;
 import com.telenav.kivakit.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 import com.telenav.kivakit.ui.desktop.component.dropdown.DropDownRenderer;
