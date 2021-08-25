@@ -16,15 +16,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.filesystems.s3fs;
+package com.telenav.kivakit.filesystems.github;
 
 import com.telenav.kivakit.filesystem.spi.FileService;
-import com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams.DiagramS3;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import com.telenav.lexakai.annotations.UmlClassDiagram;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,22 +32,21 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 /**
  * <b>Not public API</b>
  * <p>
- * Implementation of {@link FileService} used to provide {@link S3FileSystemService}.
+ * Implementation of {@link FileService} used to provide {@link GitHubFileSystemService}.
  *
  * @author jonathanl (shibo)
  */
-@UmlClassDiagram(diagram = DiagramS3.class)
 @LexakaiJavadoc(complete = true)
-public class S3File extends S3FileSystemObject implements FileService
+public class GitHubFile extends GitHubFileSystemObject implements FileService
 {
-    public S3File(final FilePath path)
+    public GitHubFile(final FilePath path)
     {
-        super(path, false);
+        super(path);
     }
 
-    public S3File(final String path)
+    public GitHubFile(final String path)
     {
-        super(FilePath.parseFilePath(path), false);
+        super(FilePath.parseFilePath(path));
     }
 
     @Override
@@ -62,45 +58,38 @@ public class S3File extends S3FileSystemObject implements FileService
     @Override
     public Boolean isWritable()
     {
-        return true;
+        return false;
     }
 
     @Override
     public InputStream onOpenForReading()
     {
-        final var request = GetObjectRequest.builder()
-                .bucket(bucket())
-                .key(key())
-                .build();
-
-        return client().getObject(request);
+        try
+        {
+            return entry().readAsBlob();
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to open for reading: $", entry().getPath());
+            return null;
+        }
     }
 
     @Override
     public OutputStream onOpenForWriting()
     {
-        return new S3Output(this);
+        return unsupported();
     }
 
-    public boolean renameTo(final S3File that)
+    public boolean renameTo(final GitHubFile that)
     {
-        if (canRenameTo(that))
-        {
-            copyTo(that);
-            delete();
-            return true;
-        }
-        return false;
+        return unsupported();
     }
 
     @Override
     public boolean renameTo(final FileService that)
     {
-        if (isOnSameFileSystem(that))
-        {
-            return renameTo((S3File) that.resolveService());
-        }
-        return fatal("Cannot rename $ to $ across filesystems", this, that);
+        return unsupported();
     }
 
     @Override
@@ -109,14 +98,9 @@ public class S3File extends S3FileSystemObject implements FileService
         return length();
     }
 
-    public void write(final String line)
+    @Override
+    Bytes length()
     {
-        if (exists())
-        {
-            delete();
-        }
-        final var printWriter = printWriter();
-        printWriter.println(line);
-        printWriter.close();
+        return Bytes.bytes(entry().getSize());
     }
 }
