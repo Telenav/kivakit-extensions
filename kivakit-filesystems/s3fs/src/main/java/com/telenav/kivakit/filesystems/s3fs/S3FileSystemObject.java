@@ -52,6 +52,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
  * Base functionality common to both {@link S3File} and {@link S3Folder}.
@@ -234,18 +235,13 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     @Override
     public InputStream onOpenForReading()
     {
-        final var request = GetObjectRequest.builder()
-                .bucket(bucket())
-                .key(key())
-                .build();
-
-        return client().getObject(request);
+        return unsupported();
     }
 
     @Override
     public OutputStream onOpenForWriting()
     {
-        return new S3Output(this);
+        return unsupported();
     }
 
     @Override

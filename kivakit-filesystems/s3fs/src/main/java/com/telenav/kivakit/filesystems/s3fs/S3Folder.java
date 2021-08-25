@@ -196,12 +196,6 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return folders;
     }
 
-    @Override
-    public List<? extends FolderService> folders(final Matcher<FilePath> matcher)
-    {
-        return unsupported();
-    }
-
     public boolean hasFiles()
     {
         return exists() && files().iterator().hasNext();

@@ -25,6 +25,7 @@
         <module>hdfs-proxy</module>
         <module>hdfs</module>
         <module>s3fs</module>
+        <module>github</module>
 
     </modules>
 
