@@ -115,13 +115,13 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public List<HdfsFile> files()
+    public List<FileService> files()
     {
         return retry(() -> matching(proxy().files(pathAsString()), new AnythingMatcher<>())).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public List<? extends FileService> files(final Matcher<FilePath> matcher)
+    public List<FileService> files(final Matcher<FilePath> matcher)
     {
         return retry(() -> matching(proxy().files(pathAsString()), matcher)).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
@@ -139,18 +139,17 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<HdfsFolder> folders()
+    public List<FolderService> folders()
     {
-        return (List<HdfsFolder>) folders(new AnythingMatcher<>());
+        return folders(new AnythingMatcher<>());
     }
 
     @Override
-    public List<? extends FolderService> folders(final Matcher<FilePath> matcher)
+    public List<FolderService> folders(final Matcher<FilePath> matcher)
     {
         return retry(() ->
         {
-            final var files = new ArrayList<HdfsFolder>();
+            final var files = new ArrayList<FolderService>();
             for (final var pathAsString : proxy().folders(pathAsString()))
             {
                 final var path = FilePath.parseFilePath(pathAsString);
@@ -167,13 +166,13 @@ public class HdfsFolder implements FolderService
     @Override
     public boolean isEmpty()
     {
-        final Iterable<HdfsFolder> folders = folders();
+        final Iterable<FolderService> folders = folders();
         if (folders != null && folders.iterator().hasNext())
         {
             return false;
         }
 
-        final Iterable<HdfsFile> files = files();
+        final Iterable<FileService> files = files();
         return files == null || !files.iterator().hasNext();
     }
 
@@ -215,19 +214,19 @@ public class HdfsFolder implements FolderService
         return path().fileName().name();
     }
 
-    public List<HdfsFile> nestedFiles()
+    public List<FileService> nestedFiles()
     {
         return retry(() -> matching(proxy().nestedFiles(pathAsString()), new AnythingMatcher<>())).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public List<? extends FileService> nestedFiles(final Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(final Matcher<FilePath> matcher)
     {
         return retry(() -> matching(proxy().nestedFiles(pathAsString()), matcher)).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public List<? extends FolderService> nestedFolders(final Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(final Matcher<FilePath> matcher)
     {
         return unsupported();
     }
@@ -334,9 +333,9 @@ public class HdfsFolder implements FolderService
         return path().toString();
     }
 
-    private List<HdfsFile> matching(final List<String> paths, final Matcher<FilePath> matcher)
+    private List<FileService> matching(final List<String> paths, final Matcher<FilePath> matcher)
     {
-        final var files = new ArrayList<HdfsFile>();
+        final var files = new ArrayList<FileService>();
         for (final var pathAsString : paths)
         {
             final var path = FilePath.parseFilePath(pathAsString);

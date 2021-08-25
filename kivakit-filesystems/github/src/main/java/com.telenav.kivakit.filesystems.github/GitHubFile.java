@@ -41,12 +41,12 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
 {
     public GitHubFile(final FilePath path)
     {
-        super(path, false);
+        super(path);
     }
 
     public GitHubFile(final String path)
     {
-        super(FilePath.parseFilePath(path), false);
+        super(FilePath.parseFilePath(path));
     }
 
     @Override

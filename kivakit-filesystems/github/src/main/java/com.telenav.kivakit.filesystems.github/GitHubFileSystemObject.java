@@ -23,7 +23,11 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.kernel.language.objects.Hash;
 import com.telenav.kivakit.kernel.language.objects.Objects;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.language.strings.Strings;
+import com.telenav.kivakit.kernel.language.strings.Strip;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.kernel.logging.Logger;
+import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.path.FilePath;
@@ -52,8 +56,10 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
             "/(?<repository>[A-Za-z0-9-.]+)" +
             "/(?<branch>[A-Za-z0-9-.]+)" +
             "(?<path>(/[A-Za-z0-9_.-]+)*?)" +
-            "/(?<filename>[A-Za-z0-9_.-]+)"
+            "(?<filename>(/[A-Za-z0-9_.-]*)?)"
     );
+
+    private static final Logger LOGGER = LoggerFactory.newLogger();
 
     public static boolean accepts(final String path)
     {
@@ -72,15 +78,11 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
 
     private String fileName;
 
-    private final boolean isFolder;
-
     private GitHubTree tree;
 
-    GitHubFileSystemObject(final FilePath pathname, final boolean isFolder)
+    GitHubFileSystemObject(final FilePath pathname)
     {
         super(normalize(pathname));
-
-        this.isFolder = isFolder;
 
         final var matcher = URL_PATTERN.matcher(path().toString());
         if (matcher.matches())
@@ -89,8 +91,8 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
             userName = matcher.group("username");
             repositoryName = matcher.group("repository");
             branchName = matcher.group("branch");
-            path = matcher.group("path");
-            fileName = matcher.group("filename");
+            path = Strip.leading(matcher.group("path"), "/");
+            fileName = Strip.leading(matcher.group("filename"), "/");
 
             ensure(userName.length() <= 39, "GitHub username is too long: $", userName);
             ensure(!userName.contains("--"), "GitHub username cannot contain consecutive hyphens");
@@ -106,7 +108,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
         }
         else
         {
-            illegalArgument("Invalid GitHub path: $", path);
+            LOGGER.illegalArgument("Invalid GitHub path: $", path);
         }
     }
 
@@ -118,7 +120,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     @Override
     public boolean delete()
     {
-        return false;
+        return unsupported();
     }
 
     @Override
@@ -154,7 +156,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     @Override
     public boolean isFolder()
     {
-        return isFolder;
+        return this instanceof GitHubFolder;
     }
 
     @Override
@@ -200,10 +202,18 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
         return FilePath.parseFilePath(super.path().toString());
     }
 
+    /**
+     * @return The path to this object without the leading root folder (github://username/repository/branch)
+     */
+    public FilePath relativePath()
+    {
+        return FilePath.parseFilePath(path);
+    }
+
     @Override
     public FolderService root()
     {
-        return new GitHubFolder(scheme + "/" + userName + "/" + repositoryName + "/" + branchName + "/");
+        return new GitHubFolder(scheme + "://" + userName + "/" + repositoryName + "/" + branchName);
     }
 
     @Override
@@ -214,14 +224,17 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
 
     protected GHTreeEntry entry()
     {
-        return tree().entry(this.path);
+        var path = Strings.isEmpty(this.path) ? fileName : this.path + "/" + fileName;
+        var entry = tree().entry(path);
+        ensure(entry != null, "No entry for $", path);
+        return entry;
     }
 
     protected GitHubTree tree()
     {
         if (tree == null)
         {
-            tree = GitHubTree.tree(userName, repositoryName, branchName);
+            tree = listenTo(GitHubTree.tree(this, userName, repositoryName, branchName));
         }
         return tree;
     }

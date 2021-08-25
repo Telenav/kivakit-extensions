@@ -138,7 +138,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<S3File> files()
+    public List<FileService> files()
     {
         final var request = ListObjectsRequest.builder()
                 .bucket(bucket())
@@ -146,7 +146,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
 
         final var response = client().listObjects(request);
 
-        final List<S3File> files = new ArrayList<>();
+        final List<FileService> files = new ArrayList<>();
         for (final var object : response.contents())
         {
             final var path = S3FileSystemObject.path(scheme(), bucket(), object.key());
@@ -156,9 +156,9 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<? extends FileService> files(final Matcher<FilePath> matcher)
+    public List<FileService> files(final Matcher<FilePath> matcher)
     {
-        final List<S3File> files = new ArrayList<>();
+        final List<FileService> files = new ArrayList<>();
         for (final var file : files())
         {
             if (matcher.matches(file.path()))
@@ -182,12 +182,12 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<S3Folder> folders()
+    public List<FolderService> folders()
     {
         final var request = ListBucketsRequest.builder().build();
         final var response = client().listBuckets(request);
 
-        final List<S3Folder> folders = new ArrayList<>();
+        final List<FolderService> folders = new ArrayList<>();
         for (final var bucket : response.buckets())
         {
             final var path = S3FileSystemObject.path(scheme(), bucket.name(), "");
@@ -209,7 +209,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public boolean isEmpty()
     {
-        final Iterable<S3Folder> folders = folders();
+        final Iterable<FolderService> folders = folders();
         if (folders != null && folders().iterator().hasNext())
         {
             return false;
@@ -243,9 +243,9 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<? extends FileService> nestedFiles(final Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(final Matcher<FilePath> matcher)
     {
-        final List<S3File> files = new ArrayList<>();
+        final List<FileService> files = new ArrayList<>();
         for (final var file : nestedFiles(this, new ArrayList<>()))
         {
             if (matcher.matches(file.path()))
@@ -257,9 +257,9 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<? extends FolderService> nestedFolders(final Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(final Matcher<FilePath> matcher)
     {
-        final List<S3Folder> folders = new ArrayList<>();
+        final List<FolderService> folders = new ArrayList<>();
         for (final var at : nestedFolders(this, new ArrayList<>()))
         {
             if (matcher.matches(at.path()))
@@ -378,7 +378,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         }
     }
 
-    private List<S3File> nestedFiles(final S3Folder folder, final List<S3File> files)
+    private List<FileService> nestedFiles(final FolderService folder, final List<FileService> files)
     {
         files.addAll(folder.files());
         for (final var at : folders())
@@ -388,7 +388,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return files;
     }
 
-    private List<S3Folder> nestedFolders(final S3Folder folder, final List<S3Folder> folders)
+    private List<FolderService> nestedFolders(final FolderService folder, final List<FolderService> folders)
     {
         folders.add(this);
         for (final var at : folder.folders())

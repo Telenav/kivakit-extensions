@@ -27,7 +27,6 @@ import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
-import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,36 +44,12 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
 {
     public GitHubFolder(final FilePath path)
     {
-        super(path, true);
+        super(path);
     }
 
     public GitHubFolder(final String path)
     {
         this(FilePath.parseFilePath(path));
-    }
-
-    @Override
-    public boolean chmod(final PosixFilePermission... permissions)
-    {
-        return unsupported();
-    }
-
-    @Override
-    public GitHubFolder clear()
-    {
-        return unsupported();
-    }
-
-    @Override
-    public boolean delete()
-    {
-        return unsupported();
-    }
-
-    @Override
-    public void ensureExists()
-    {
-        unsupported();
     }
 
     @Override
@@ -90,12 +65,12 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public List<GitHubFile> files()
+    public List<FileService> files()
     {
-        var files = new ArrayList<GitHubFile>();
-        for (var entry : tree().entries(path().asUnixString(), GitHubTree.EntryType.FILE, false))
+        var files = new ArrayList<FileService>();
+        for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FILE, false))
         {
-            files.add(new GitHubFile(entry.getPath()));
+            files.add(new GitHubFile(root() + "/" + entry.getPath()));
         }
         return files;
     }
@@ -113,30 +88,20 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public List<GitHubFolder> folders()
+    public List<FolderService> folders()
     {
-        var folders = new ArrayList<GitHubFolder>();
-        for (var entry : tree().entries(path().asUnixString(), GitHubTree.EntryType.FOLDER, false))
+        var folders = new ArrayList<FolderService>();
+        for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FOLDER, false))
         {
-            folders.add(new GitHubFolder(entry.getPath()));
+            folders.add(new GitHubFolder(root() + "/" + entry.getPath()));
         }
         return folders;
-    }
-
-    public boolean hasFiles()
-    {
-        return exists() && !files().isEmpty();
-    }
-
-    public boolean hasSubFolders()
-    {
-        return exists() && !folders().isEmpty();
     }
 
     @Override
     public boolean isEmpty()
     {
-        return files().isEmpty();
+        return FolderService.super.isEmpty();
     }
 
     @Override
@@ -146,42 +111,25 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public GitHubFolder mkdirs()
+    public List<FileService> nestedFiles(final Matcher<FilePath> matcher)
     {
-        return unsupported();
-    }
-
-    @Override
-    public List<? extends FileService> nestedFiles(final Matcher<FilePath> matcher)
-    {
-        var files = new ArrayList<GitHubFile>();
-        for (var entry : tree().entries(path().asUnixString(), GitHubTree.EntryType.FILE, true))
+        var files = new ArrayList<FileService>();
+        for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FILE, true))
         {
-            files.add(new GitHubFile(entry.getPath()));
+            files.add(new GitHubFile(root() + "/" + entry.getPath()));
         }
         return files;
     }
 
     @Override
-    public List<? extends FolderService> nestedFolders(final Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(final Matcher<FilePath> matcher)
     {
-        var folders = new ArrayList<GitHubFolder>();
-        for (var entry : tree().entries(path().asUnixString(), GitHubTree.EntryType.FOLDER, true))
+        var folders = new ArrayList<FolderService>();
+        for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FOLDER, true))
         {
-            folders.add(new GitHubFolder(entry.getPath()));
+            folders.add(new GitHubFolder(root() + "/" + entry.getPath()));
         }
         return folders;
-    }
-
-    @Override
-    public boolean renameTo(final FolderService that)
-    {
-        return unsupported();
-    }
-
-    public boolean renameTo(final GitHubFolder that)
-    {
-        return unsupported();
     }
 
     @Override
@@ -192,18 +140,6 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
 
     @Override
     public Bytes sizeInBytes()
-    {
-        return unsupported();
-    }
-
-    @Override
-    public GitHubFile temporaryFile(final FileName baseName)
-    {
-        return unsupported();
-    }
-
-    @Override
-    public GitHubFolder temporaryFolder(final FileName baseName)
     {
         return unsupported();
     }

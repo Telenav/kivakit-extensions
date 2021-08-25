@@ -2,6 +2,7 @@ package com.telenav.kivakit.filesystems.github;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.strings.Strip;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import org.kohsuke.github.GHTree;
 import org.kohsuke.github.GHTreeEntry;
 import org.kohsuke.github.GitHub;
@@ -30,10 +31,10 @@ public class GitHubTree extends BaseComponent
      * @param branch The branch of the repository
      * @return A complete GitHub tree for the given username, repository and branch.
      */
-    public static GitHubTree tree(String username, String repository, String branch)
+    public static GitHubTree tree(Listener listener, String username, String repository, String branch)
     {
         var key = username + "/" + repository + "/" + branch;
-        return trees.computeIfAbsent(key, ignored -> new GitHubTree(username, repository, branch));
+        return trees.computeIfAbsent(key, ignored -> listener.listenTo(new GitHubTree(username, repository, branch)));
     }
 
     public enum EntryType
@@ -91,12 +92,12 @@ public class GitHubTree extends BaseComponent
 
     public List<GHTreeEntry> entries()
     {
-        return tree.getTree();
+        return tree().getTree();
     }
 
     public GHTreeEntry entry(String path)
     {
-        return tree.getEntry(path);
+        return tree().getEntry(path);
     }
 
     public void load()
@@ -127,5 +128,14 @@ public class GitHubTree extends BaseComponent
             default:
                 return unsupported();
         }
+    }
+
+    private GHTree tree()
+    {
+        if (tree == null)
+        {
+            load();
+        }
+        return tree;
     }
 }
