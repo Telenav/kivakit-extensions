@@ -144,7 +144,8 @@
         <cactus.version>0.9.8-beta</cactus.version>
         <cactus.download.version>0.9.8-beta</cactus.download.version>
         <cactus.downloads.folder>${user.home}/.cactus-build/downloads</cactus.downloads.folder>
-        <cactus.url>https://repo1.maven.org/maven2/com/telenav/cactus/cactus-build-metadata/${cactus.download.version}/cactus-build-metadata-${cactus.download.version}.jar</cactus.url>
+        <cactus.url>https://repo1.maven.org/maven2/com/telenav/cactus/cactus-build-metadata/${cactus.download.version}/cactus-build-metadata-${cactus.download.version}.jar
+        </cactus.url>
         <cactus.jar>${cactus.downloads.folder}/cactus-build-metadata-${cactus.download.version}.jar</cactus.jar>
 
         <!-- Java -->
@@ -463,6 +464,7 @@
                     <configuration>
                         <show>public</show>
                         <source>8</source>
+                        <sourcepath>src/main/java</sourcepath>
                         <detectJavaApiLink>false</detectJavaApiLink>
                         <doclint>none</doclint>
                         <nohelp>true</nohelp>

@@ -58,4 +58,13 @@ public class GitHubFileSystemTest extends UnitTest
         ensure(folders.contains(folder.folder(FileName.parse("legal"))));
         ensure(folders.contains(folder.folder(FileName.parse("src")).folder(FileName.parse("main"))));
     }
+
+    @Ignore
+    public void testPrivateFile()
+    {
+        var token = "";
+        var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
+        ensure(file.reader().get().contains("30909955"));
+        ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
+    }
 }

@@ -24,13 +24,11 @@ This project contains filesystem service providers for the service provider inte
 
 ### Summary <a name = "summary"></a>
 
-To use the [hdfs](hdfs/README.md) or [s3fs](s3fs/README.md) providers with the KivaKit resource mini-framework, all that is required
-is to add the appropriate dependency to *pom.xml* and add an *import* statement to module-info.java.
+To use the [hdfs](hdfs/README.md), [s3fs](s3fs/README.md) or [github](github/README.md) providers with the KivaKit resource mini-framework, all that is required is to add the appropriate dependency to *pom.xml* and add an *import* statement to module-info.java.
 
 See [filesystem](https://github.com/Telenav/kivakit/blob/master/kivakit/resource/documentation/diagrams/com.telenav.kivakit.filesystem.spi.svg)
 and [resource](https://github.com/Telenav/kivakit/blob/master/kivakit/resource/documentation/diagrams/com.telenav.kivakit.resource.svg)
-UML diagrams as well
-as  [FileSystem](https://telenav.github.io/kivakit/javadoc/kivakit.resource/com/telenav/kivakit/filesystem/spi/FileSystemService.html)
+UML diagrams as well as  [FileSystem](https://telenav.github.io/kivakit/javadoc/kivakit.resource/com/telenav/kivakit/filesystem/spi/FileSystemService.html)
 and [FileSystemServiceLoader](https://telenav.github.io/kivakit/javadoc/kivakit.resource/com/telenav/kivakit/filesystem/loader/FileSystemServiceLoader.html)
 classes.
 
@@ -38,6 +36,7 @@ classes.
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
 
+[**kivakit-filesystems-github**](github/README.md)  
 [**kivakit-filesystems-hdfs**](hdfs/README.md)  
 [**kivakit-filesystems-hdfs-proxy**](hdfs-proxy/README.md)  
 [**kivakit-filesystems-hdfs-proxy-spi**](hdfs-proxy-spi/README.md)  
@@ -47,6 +46,8 @@ classes.
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
+&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-filesystems-github**](github/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-hdfs**](hdfs/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>

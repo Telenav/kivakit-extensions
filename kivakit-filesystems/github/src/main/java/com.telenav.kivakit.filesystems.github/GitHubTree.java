@@ -31,10 +31,11 @@ public class GitHubTree extends BaseComponent
      * @param branch The branch of the repository
      * @return A complete GitHub tree for the given username, repository and branch.
      */
-    public static GitHubTree tree(Listener listener, String username, String repository, String branch)
+    public static GitHubTree tree(Listener listener, String username, String accessToken, String repository,
+                                  String branch)
     {
         var key = username + "/" + repository + "/" + branch;
-        return trees.computeIfAbsent(key, ignored -> listener.listenTo(new GitHubTree(username, repository, branch)));
+        return trees.computeIfAbsent(key, ignored -> listener.listenTo(new GitHubTree(username, accessToken, repository, branch)));
     }
 
     public enum EntryType
@@ -45,15 +46,18 @@ public class GitHubTree extends BaseComponent
 
     private final String username;
 
+    private final String accessToken;
+
     private final String repository;
 
     private final String branch;
 
     private GHTree tree;
 
-    protected GitHubTree(String username, String repository, String branch)
+    protected GitHubTree(String username, String accessToken, String repository, String branch)
     {
         this.username = username;
+        this.accessToken = accessToken;
         this.repository = repository;
         this.branch = branch;
     }
@@ -104,7 +108,8 @@ public class GitHubTree extends BaseComponent
     {
         try
         {
-            tree = GitHub.connectAnonymously()
+            var github = accessToken == null ? GitHub.connectAnonymously() : GitHub.connect(username, accessToken);
+            tree = github
                     .getUser(username)
                     .getRepository(repository)
                     .getTreeRecursive(branch, 1);

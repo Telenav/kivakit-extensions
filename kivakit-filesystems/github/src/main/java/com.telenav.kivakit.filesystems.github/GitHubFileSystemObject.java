@@ -52,7 +52,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
 {
     // Parses URLs like: github://Telenav/kivakit/develop/<path>?/filename
     private static final Pattern URL_PATTERN = Pattern.compile("(?<scheme>github):/" +
-            "/(?<username>[A-Za-z0-9-]+)" +
+            "/(?<user>[A-Za-z0-9-]+)(/access-token/(?<accessToken>\\w+))?" +
             "/(?<repository>[A-Za-z0-9-.]+)" +
             "/(?<branch>[A-Za-z0-9-.]+)" +
             "(?<path>(/[A-Za-z0-9_.-]+)*?)" +
@@ -69,6 +69,8 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     private String scheme;
 
     private String userName;
+
+    private String accessToken;
 
     private String repositoryName;
 
@@ -88,7 +90,8 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
         if (matcher.matches())
         {
             scheme = matcher.group("scheme");
-            userName = matcher.group("username");
+            userName = matcher.group("user");
+            accessToken = matcher.group("accessToken");
             repositoryName = matcher.group("repository");
             branchName = matcher.group("branch");
             path = Strip.leading(matcher.group("path"), "/");
@@ -234,7 +237,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     {
         if (tree == null)
         {
-            tree = listenTo(GitHubTree.tree(this, userName, repositoryName, branchName));
+            tree = listenTo(GitHubTree.tree(this, userName, accessToken, repositoryName, branchName));
         }
         return tree;
     }
