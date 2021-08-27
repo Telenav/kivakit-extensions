@@ -74,7 +74,7 @@ public final class IntArray extends PrimitiveArray implements IntList
         }
 
         @Override
-        protected IntArray onConvertToObject(final String value)
+        protected IntArray onToValue(final String value)
         {
             final var elements = StringList.split(value, separators.current());
             final var array = new IntArray("converted");
@@ -87,7 +87,7 @@ public final class IntArray extends PrimitiveArray implements IntList
         }
 
         @Override
-        protected String onConvertToString(final IntArray array)
+        protected String onToString(final IntArray array)
         {
             final var strings = new StringList(Maximum.maximum(array.size()));
             final var values = array.iterator();

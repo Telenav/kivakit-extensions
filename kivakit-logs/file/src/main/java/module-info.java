@@ -3,10 +3,12 @@ import com.telenav.kivakit.logs.file.FileLog;
 
 open module kivakit.logs.file
 {
-    requires transitive kivakit.resource;
-
     provides Log with FileLog;
 
+    // KivaKit
+    requires transitive kivakit.resource;
+
+    // Module exports
     exports com.telenav.kivakit.logs.file;
     exports com.telenav.kivakit.logs.file.project;
     exports com.telenav.kivakit.logs.file.project.lexakai.diagrams;

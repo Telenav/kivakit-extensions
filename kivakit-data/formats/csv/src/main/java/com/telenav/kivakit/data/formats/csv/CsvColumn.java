@@ -78,16 +78,15 @@ public class CsvColumn<Type> extends Name
     public String asString(final Type value, final StringConverter<Type> converter)
     {
         ensureNotNull(converter);
-        return converter.toString(value);
+        return converter.unconvert(value);
     }
 
     /**
-     * @return The value of the given text if it is in this column
+     * @return The text for the given value in this column
      */
-    public Type asType(final String text, final StringConverter<Type> converter)
+    public String asString(final Type value)
     {
-        ensureNotNull(converter);
-        return converter.convert(text);
+        return asString(value, converter);
     }
 
     /**
@@ -100,11 +99,12 @@ public class CsvColumn<Type> extends Name
     }
 
     /**
-     * @return The text for the given value in this column
+     * @return The value of the given text if it is in this column
      */
-    public String asString(final Type value)
+    public Type asType(final String text, final StringConverter<Type> converter)
     {
-        return asString(value, converter);
+        ensureNotNull(converter);
+        return converter.convert(text);
     }
 
     /**

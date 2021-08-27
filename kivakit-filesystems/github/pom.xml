@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!--                                                                                                                 -->
+<!--  © 2011-2021 Telenav, Inc.                                                                                      -->
+<!--  Licensed under Apache License, Version 2.0                                                                     -->
+<!--                                                                                                                 -->
+<!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns = "http://maven.apache.org/POM/4.0.0">
+    <parent>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit-filesystems</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>kivakit-filesystems-github</artifactId>
+    <packaging>jar</packaging>
+    <name>KivaKit Extensions - Filesystems - GitHub</name>
+
+    <dependencies>
+
+        <!-- KivaKit -->
+
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-component</artifactId>
+            <version>${kivakit.version}</version>
+        </dependency>
+
+        <!-- GitHub API -->
+
+        <dependency>
+            <groupId>org.kohsuke</groupId>
+            <artifactId>github-api</artifactId>
+            <version>1.132</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

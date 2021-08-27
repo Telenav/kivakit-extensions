@@ -23,6 +23,7 @@ import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
+import com.telenav.kivakit.service.registry.ServiceRegistrySettings;
 import com.telenav.kivakit.service.registry.project.ServiceRegistryProject;
 import com.telenav.kivakit.service.registry.registries.LocalServiceRegistry;
 import com.telenav.kivakit.service.registry.registries.NetworkServiceRegistry;
@@ -87,7 +88,7 @@ public class ServiceRegistryServer extends Server
             .optional()
             .build();
 
-    private transient final Lazy<ServiceRegistry> registry = Lazy.of(() ->
+    private transient final Lazy<ServiceRegistry> serviceRegistry = Lazy.of(() ->
     {
         final var registry = listenTo(get(SCOPE) == Scope.Type.NETWORK
                 ? new NetworkServiceRegistry()
@@ -119,23 +120,23 @@ public class ServiceRegistryServer extends Server
         return commandLine().get(PORT);
     }
 
-    public ServiceRegistry registry()
-    {
-        return registry.get();
-    }
-
     public Scope.Type scope()
     {
         return commandLine().get(SCOPE);
     }
 
+    public ServiceRegistry serviceRegistry()
+    {
+        return serviceRegistry.get();
+    }
+
     @Override
     protected void onRun()
     {
-        announce();
+        showCommandLine();
 
         // Determine what port to use for the server,
-        final var settings = ServiceRegistry.settings();
+        final var settings = require(ServiceRegistrySettings.class);
         final var port = isNetwork()
                 ? settings.networkServiceRegistryPort().number()
                 : settings.localServiceRegistryPort();

@@ -77,11 +77,11 @@ class TableFilter extends RowFilter<Object, Object>
 
                     // Build matcher
                     final var matcher = Pattern.compile(term
-                            .replaceAll("\\.", "\\\\.")
-                            .replaceAll("\\[", "\\\\[")
-                            .replaceAll("]", "\\\\]")
-                            .replaceAll("!", "\\\\!")
-                            .replaceAll("\\*", ".*"), Pattern.CASE_INSENSITIVE)
+                                    .replaceAll("\\.", "\\\\.")
+                                    .replaceAll("\\[", "\\\\[")
+                                    .replaceAll("]", "\\\\]")
+                                    .replaceAll("!", "\\\\!")
+                                    .replaceAll("\\*", ".*"), Pattern.CASE_INSENSITIVE)
                             .matcher("");
                     matchers.add(matcher);
                 }
@@ -114,7 +114,7 @@ class TableFilter extends RowFilter<Object, Object>
         {
             final var type = entry.getValue(MESSAGE_TYPE).toString();
             var include = false;
-            for (final var current : new String[] { "Problem", "Warning", "Quibble" })
+            for (final var current : new String[] { "Problem", "Warning", "Glitch" })
             {
                 if (messageType.contains(current) && type.equals(current))
                 {

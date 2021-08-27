@@ -155,7 +155,11 @@ public class IntToLongMapTest extends PrimitiveCollectionsUnitTest
 
     private IntToLongMap map()
     {
-        return (IntToLongMap) new IntToLongMap("test").nullInt(Integer.MIN_VALUE).nullLong(Long.MIN_VALUE).initialize();
+        var map = (IntToLongMap) new IntToLongMap("test")
+                .nullInt(Integer.MIN_VALUE)
+                .nullLong(Long.MIN_VALUE);
+        map.initialize();
+        return map;
     }
 
     private void putAll(final IntToLongMap map, final List<Integer> keys, final List<Long> values)

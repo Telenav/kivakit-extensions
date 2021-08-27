@@ -20,7 +20,6 @@ package com.telenav.kivakit.filesystems.hdfs.proxy;
 
 import com.telenav.kivakit.application.Server;
 import com.telenav.kivakit.commandline.SwitchParser;
-import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystems.hdfs.proxy.converters.UserGroupInformationConverter;
 import com.telenav.kivakit.filesystems.hdfs.proxy.project.lexakai.diagrams.DiagramHdfsProxy;
@@ -447,7 +446,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
         try
         {
             // Register proxy server settings
-            Settings.register(new HdfsProxyServerSettings()
+            registerSettingsObject(new HdfsProxyServerSettings()
                     .configurationFolder(get(CONFIGURATION_FOLDER))
                     .user(get(USERNAME)));
 

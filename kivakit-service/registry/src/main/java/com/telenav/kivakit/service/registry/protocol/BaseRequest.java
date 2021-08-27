@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry.protocol;
 
 import com.telenav.kivakit.configuration.settings.Settings;
-import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.service.registry.ServiceRegistrySettings;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
@@ -40,6 +40,6 @@ public abstract class BaseRequest
     @KivaKitIncludeProperty
     public Version version()
     {
-        return Settings.require(ServiceRegistrySettings.class).version();
+        return Settings.of(this).require(ServiceRegistrySettings.class).version();
     }
 }

@@ -19,9 +19,7 @@
 package com.telenav.kivakit.service.registry;
 
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.configuration.settings.Settings;
-import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
-import com.telenav.kivakit.kernel.messaging.Repeater;
+import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
@@ -62,56 +60,21 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @UmlNote(text = "Use ServiceRegistryClient to register and discover services")
 @UmlNotPublicApi
 @LexakaiJavadoc(complete = true)
-public interface ServiceRegistry extends Repeater
+public interface ServiceRegistry extends ComponentMixin
 {
-    /**
-     * <b>Not public API</b>
-     */
-    static Port local()
-    {
-        return port(Host.loopback());
-    }
-
-    /**
-     * <b>Not public API</b>
-     *
-     * @return The service registry for the network (normally some kind of intranet)
-     */
-    static Port network()
-    {
-        final var host = JavaVirtualMachine.property
-                (
-                        "KIVAKIT_NETWORK_SERVICE_REGISTRY_PORT",
-                        "kivakit-network-service-registry.mypna.com:23575"
-                );
-
-        return settings().networkServiceRegistryPort();
-    }
-
-    /**
-     * <b>Not public API</b>
-     */
-    static Port port(final Host host)
-    {
-        return host.http(settings().localServiceRegistryPort());
-    }
-
-    static ServiceRegistrySettings settings()
-    {
-        return Settings.require(ServiceRegistrySettings.class);
-    }
-
     /**
      * <b>Not public API</b>
      * <p>
      * Adds or updates registration information and renews the lease for the given service.
      */
-    @NotNull Result<Boolean> addOrUpdate(final Service service);
+    @NotNull
+    Result<Boolean> addOrUpdate(final Service service);
 
     /**
      * @return All applications that have registered a service
      */
-    @NotNull Result<Set<Application.Identifier>> discoverApplications(Scope scope);
+    @NotNull
+    Result<Set<Application.Identifier>> discoverApplications(Scope scope);
 
     /**
      * @return All of the hosts that have registered services
@@ -134,27 +97,32 @@ public interface ServiceRegistry extends Repeater
      * @return Any service running on the given port. Since a {@link Port} includes the host it is unique and only a
      * single service is returned since only one service can be running on a specific port on a specific host.
      */
-    @NotNull Result<Service> discoverPortService(Port port);
+    @NotNull
+    Result<Service> discoverPortService(Port port);
 
     /**
      * Any application services of the given type
      */
-    @NotNull Result<Set<Service>> discoverServices(Application.Identifier application, ServiceType type);
+    @NotNull
+    Result<Set<Service>> discoverServices(Application.Identifier application, ServiceType type);
 
     /**
      * All services registered by the given application
      */
-    @NotNull Result<Set<Service>> discoverServices(Application.Identifier application);
+    @NotNull
+    Result<Set<Service>> discoverServices(Application.Identifier application);
 
     /**
      * @return All services registered with this registry
      */
-    @NotNull Result<Set<Service>> discoverServices();
+    @NotNull
+    Result<Set<Service>> discoverServices();
 
     /**
      * All services of the given type that have been registered with this registry
      */
-    @NotNull Result<Set<Service>> discoverServices(ServiceType type);
+    @NotNull
+    Result<Set<Service>> discoverServices(ServiceType type);
 
     /**
      * @return True if this is a {@link LocalServiceRegistry}
@@ -184,7 +152,8 @@ public interface ServiceRegistry extends Repeater
      * @param service The service to register
      * @return The registered service, bound to a port
      */
-    default @NotNull Result<Service> register(final Service service)
+    default @NotNull
+    Result<Service> register(final Service service)
     {
         return unsupported();
     }
@@ -197,8 +166,14 @@ public interface ServiceRegistry extends Repeater
      * updated through information propagated from local registries.
      * </p>
      */
-    default @NotNull Result<Service> renew(final Service service)
+    default @NotNull
+    Result<Service> renew(final Service service)
     {
         return unsupported();
+    }
+
+    default ServiceRegistrySettings settings()
+    {
+        return require(ServiceRegistrySettings.class);
     }
 }

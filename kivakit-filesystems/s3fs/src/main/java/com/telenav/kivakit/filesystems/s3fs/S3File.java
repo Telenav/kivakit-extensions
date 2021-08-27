@@ -24,10 +24,12 @@ import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.attribute.PosixFilePermission;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
@@ -63,6 +65,23 @@ public class S3File extends S3FileSystemObject implements FileService
         return true;
     }
 
+    @Override
+    public InputStream onOpenForReading()
+    {
+        final var request = GetObjectRequest.builder()
+                .bucket(bucket())
+                .key(key())
+                .build();
+
+        return client().getObject(request);
+    }
+
+    @Override
+    public OutputStream onOpenForWriting()
+    {
+        return new S3Output(this);
+    }
+
     public boolean renameTo(final S3File that)
     {
         if (canRenameTo(that))
@@ -81,8 +100,7 @@ public class S3File extends S3FileSystemObject implements FileService
         {
             return renameTo((S3File) that.resolveService());
         }
-        fail("Cannot rename $ to $ across filesystems", this, that);
-        return false;
+        return fatal("Cannot rename $ to $ across filesystems", this, that);
     }
 
     @Override

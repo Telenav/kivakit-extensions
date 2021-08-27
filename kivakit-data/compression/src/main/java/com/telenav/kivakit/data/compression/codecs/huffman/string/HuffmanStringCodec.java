@@ -92,7 +92,7 @@ public class HuffmanStringCodec implements StringCodec
         }
 
         @Override
-        protected String onConvertToObject(final String value)
+        protected String onToValue(final String value)
         {
             return value;
         }

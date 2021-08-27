@@ -3,13 +3,16 @@ import com.telenav.kivakit.filesystems.hdfs.HdfsFileSystemService;
 
 open module kivakit.filesystems.hdfs
 {
-    requires transitive java.rmi;
+    provides FileSystemService with HdfsFileSystemService;
 
+    // KivaKit
     requires transitive kivakit.service.client;
     requires transitive kivakit.filesystems.hdfs.proxy.spi;
 
-    provides FileSystemService with HdfsFileSystemService;
+    // RMI
+    requires transitive java.rmi;
 
+    // Module exports
     exports com.telenav.kivakit.filesystems.hdfs;
     exports com.telenav.kivakit.filesystems.hdfs.project;
     exports com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams;

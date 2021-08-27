@@ -55,7 +55,7 @@ public class HdfsFileSystemTest extends UnitTest
                 .username("automation")
                 .proxyJar(new HttpNetworkLocation(NetworkPath.parseNetworkPath(
                         "https://www.kivakit.org/" + kivakitVersion + "/applications/kivakit-hdfs-proxy-" + kivakitVersion + ".jar")).get());
-        Settings.register(settings);
+        Settings.of(this).register(settings);
     }
 
     @Test

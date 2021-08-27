@@ -21,7 +21,8 @@ package com.telenav.kivakit.service.registry;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
+import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.conversion.AsString;
 import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
@@ -85,7 +86,7 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
 @UmlClassDiagram(diagram = DiagramRegistry.class)
 @UmlExcludeSuperTypes
 @LexakaiJavadoc(complete = true)
-public class Service implements Comparable<Service>, AsString
+public class Service extends BaseComponent implements Comparable<Service>, AsString
 {
     public static final Port UNBOUND = Host.local().port(0);
 
@@ -225,7 +226,7 @@ public class Service implements Comparable<Service>, AsString
     @JsonIgnore
     public boolean isStale()
     {
-        return renewedAt().elapsedSince().isGreaterThan(ServiceRegistry.settings()
+        return renewedAt().elapsedSince().isGreaterThan(require(ServiceRegistrySettings.class)
                 .serviceLeaseRenewalFrequency().cycleLength().times(1.5));
     }
 

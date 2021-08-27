@@ -18,6 +18,9 @@
 
 package com.telenav.kivakit.web.jersey;
 
+import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.logging.Logger;
+import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
@@ -26,6 +29,12 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class BaseRestResource
+public class BaseRestResource extends BaseComponent
 {
+    private static final Logger LOGGER = LoggerFactory.newLogger();
+
+    public BaseRestResource()
+    {
+        LOGGER.listenTo(this);
+    }
 }

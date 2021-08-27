@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.telenav.kivakit.kernel.logging.logs.text.formatters.ColumnarFormatter.DEFAULT;
+import static com.telenav.kivakit.kernel.logging.logs.text.formatters.ColumnarLogFormatter.DEFAULT;
 import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.serialization.core.SerializationSession.Type.RESOURCE;
 

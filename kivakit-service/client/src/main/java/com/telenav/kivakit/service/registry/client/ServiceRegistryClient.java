@@ -21,7 +21,7 @@ package com.telenav.kivakit.service.registry.client;
 import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.application.Server;
-import com.telenav.kivakit.configuration.settings.Settings;
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.kernel.language.reflection.Type;
@@ -31,7 +31,6 @@ import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
-import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher;
 import com.telenav.kivakit.service.registry.Scope;
@@ -196,7 +195,7 @@ import static com.telenav.kivakit.service.registry.protocol.discover.DiscoverSer
 @UmlRelation(label = "discovers applications", referent = Application.Identifier.class)
 @UmlRelation(label = "discovers services", referent = Provider.Service.class)
 @UmlRelation(label = "searches within", referent = Scope.class)
-public class ServiceRegistryClient extends BaseRepeater
+public class ServiceRegistryClient extends BaseComponent
 {
     /** True if the client is connected */
     private boolean connected;
@@ -206,7 +205,7 @@ public class ServiceRegistryClient extends BaseRepeater
 
     public ServiceRegistryClient()
     {
-        settings = Settings.require(ServiceRegistryClientSettings.class);
+        settings = require(ServiceRegistryClientSettings.class);
     }
 
     /**
@@ -333,7 +332,7 @@ public class ServiceRegistryClient extends BaseRepeater
                 {
                     while (true)
                     {
-                        ServiceRegistry.settings().serviceLeaseRenewalFrequency().cycleLength().sleep();
+                        settings().serviceLeaseRenewalFrequency().cycleLength().sleep();
                         trace("Renewing lease on registered service: $", registered);
                         final var health = JavaVirtualMachine.local().health();
                         if (health != null)
@@ -450,7 +449,7 @@ public class ServiceRegistryClient extends BaseRepeater
      */
     public Version version()
     {
-        return Settings.require(ServiceRegistrySettings.class).version();
+        return settings().version();
     }
 
     /**
@@ -462,7 +461,7 @@ public class ServiceRegistryClient extends BaseRepeater
         if (!connected)
         {
             // get the local port and if it is available, the registry is not running,
-            final var port = ServiceRegistry.local();
+            final var port = settings().local();
             if (port.isAvailable())
             {
                 // so launch the service from remote storage
@@ -517,7 +516,7 @@ public class ServiceRegistryClient extends BaseRepeater
 
         // turn the request into JSON,
         final var requestJson = gson().toJson(request);
-        trace("Sending JSON ${class} to $/$:\n$", request.getClass(), ServiceRegistry.settings().restApiPath(),
+        trace("Sending JSON ${class} to $/$:\n$", request.getClass(), settings().restApiPath(),
                 request.path(), requestJson);
 
         // get the appropriate server to contact based on the scope,
@@ -525,12 +524,12 @@ public class ServiceRegistryClient extends BaseRepeater
         switch (scope.type())
         {
             case LOCALHOST:
-                server = ServiceRegistry.local();
+                server = settings().local();
                 break;
 
             case NETWORK:
             case CLUSTER:
-                server = ServiceRegistry.network();
+                server = settings().network();
                 break;
 
             default:
@@ -545,7 +544,7 @@ public class ServiceRegistryClient extends BaseRepeater
             {
                 final var entity = Entity.entity(requestJson, "application/json");
                 final var path = server
-                        .path(ServiceRegistry.settings().restApiPath())
+                        .path(settings().restApiPath())
                         .withChild(request.path());
                 trace("Posting $ to $", request.getClass().getSimpleName(), path);
                 final var jaxResponse = client
@@ -580,6 +579,11 @@ public class ServiceRegistryClient extends BaseRepeater
         response.problem("Unable to connect to $", server);
         problem("Could not resolve ${lower} registry on host $", scope, server.host().name());
         return response;
+    }
+
+    private ServiceRegistrySettings settings()
+    {
+        return require(ServiceRegistrySettings.class);
     }
 }
 

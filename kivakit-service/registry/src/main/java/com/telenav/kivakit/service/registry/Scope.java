@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.language.collections.Collections;
-import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.network.core.cluster.ClusterIdentifier;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRegistry;

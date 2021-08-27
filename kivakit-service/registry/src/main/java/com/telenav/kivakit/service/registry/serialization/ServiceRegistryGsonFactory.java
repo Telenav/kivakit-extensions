@@ -33,6 +33,8 @@ import com.telenav.kivakit.service.registry.serialization.serializers.Applicatio
 import com.telenav.kivakit.service.registry.serialization.serializers.ServiceTypeGsonSerializer;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
+import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITH_EXCEPTION;
+
 /**
  * Factory for GSON serializers
  *
@@ -49,7 +51,7 @@ public class ServiceRegistryGsonFactory extends GsonFactory
         addSerializer(builder, Port.class, serializer(new Port.Converter(LOGGER)));
         addSerializer(builder, Application.Identifier.class, new ApplicationIdentifierGsonSerializer());
         addSerializer(builder, ServiceType.class, new ServiceTypeGsonSerializer());
-        addSerializer(builder, Problem.class, new ProblemGsonSerializer());
+        addSerializer(builder, Problem.class, new ProblemGsonSerializer(WITH_EXCEPTION));
         addSerializer(builder, Time.class, new TimeGsonSerializer());
         return builder;
     }

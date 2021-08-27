@@ -23,7 +23,7 @@ import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
 import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
-import com.telenav.kivakit.kernel.interfaces.code.CheckedCode;
+import com.telenav.kivakit.kernel.interfaces.code.Unchecked;
 import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
 import com.telenav.kivakit.kernel.language.matchers.AnythingMatcher;
 import com.telenav.kivakit.kernel.language.threading.Retry;
@@ -99,13 +99,13 @@ public class HdfsFolder implements FolderService
     public boolean delete()
     {
         return retry(() -> proxy().deleteFolder(pathAsString()))
-                .or(null, "Unable to delete $", this);
+                .orDefault(null, "Unable to delete $", this);
     }
 
     @Override
     public boolean exists()
     {
-        return retry(() -> proxy().exists(pathAsString())).or(false, "Unable to determine if $ exists", this);
+        return retry(() -> proxy().exists(pathAsString())).orDefault(false, "Unable to determine if $ exists", this);
     }
 
     @Override
@@ -115,15 +115,15 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public List<HdfsFile> files()
+    public List<FileService> files()
     {
-        return retry(() -> matching(proxy().files(pathAsString()), new AnythingMatcher<>())).or(new ArrayList<>(), "Unable to locate files in $", this);
+        return retry(() -> matching(proxy().files(pathAsString()), new AnythingMatcher<>())).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public List<? extends FileService> files(final Matcher<FilePath> matcher)
+    public List<FileService> files(final Matcher<FilePath> matcher)
     {
-        return retry(() -> matching(proxy().files(pathAsString()), matcher)).or(new ArrayList<>(), "Unable to locate files in $", this);
+        return retry(() -> matching(proxy().files(pathAsString()), matcher)).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
@@ -139,18 +139,17 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<HdfsFolder> folders()
+    public List<FolderService> folders()
     {
-        return (List<HdfsFolder>) folders(new AnythingMatcher<>());
+        return folders(new AnythingMatcher<>());
     }
 
     @Override
-    public List<? extends FolderService> folders(final Matcher<FilePath> matcher)
+    public List<FolderService> folders(final Matcher<FilePath> matcher)
     {
         return retry(() ->
         {
-            final var files = new ArrayList<HdfsFolder>();
+            final var files = new ArrayList<FolderService>();
             for (final var pathAsString : proxy().folders(pathAsString()))
             {
                 final var path = FilePath.parseFilePath(pathAsString);
@@ -161,19 +160,19 @@ public class HdfsFolder implements FolderService
             }
 
             return files;
-        }).or(new ArrayList<>(), "Unable to locate folders in $", this);
+        }).orDefault(new ArrayList<>(), "Unable to locate folders in $", this);
     }
 
     @Override
     public boolean isEmpty()
     {
-        final Iterable<HdfsFolder> folders = folders();
+        final Iterable<FolderService> folders = folders();
         if (folders != null && folders.iterator().hasNext())
         {
             return false;
         }
 
-        final Iterable<HdfsFile> files = files();
+        final Iterable<FileService> files = files();
         return files == null || !files.iterator().hasNext();
     }
 
@@ -181,20 +180,20 @@ public class HdfsFolder implements FolderService
     public boolean isFolder()
     {
         return retry(() -> proxy().isFolder(pathAsString()))
-                .or(false, "Unable to determine if $ is a folder", this);
+                .orDefault(false, "Unable to determine if $ is a folder", this);
     }
 
     @Override
     public Boolean isWritable()
     {
-        return exists() && retry(() -> proxy().isWritable(pathAsString())).or(false, "Unable to determine if $ is writable", this);
+        return exists() && retry(() -> proxy().isWritable(pathAsString())).orDefault(false, "Unable to determine if $ is writable", this);
     }
 
     @Override
     public Time lastModified()
     {
         return retry(() -> Time.milliseconds(proxy().lastModified(pathAsString())))
-                .or(null, "Unable to determine modification time of $", this);
+                .orDefault(null, "Unable to determine modification time of $", this);
     }
 
     @Override
@@ -207,7 +206,7 @@ public class HdfsFolder implements FolderService
                 return new HdfsFolder(path);
             }
             return null;
-        }).or(null, "Unable to create folder path $", this);
+        }).orDefault(null, "Unable to create folder path $", this);
     }
 
     public String name()
@@ -215,19 +214,19 @@ public class HdfsFolder implements FolderService
         return path().fileName().name();
     }
 
-    public List<HdfsFile> nestedFiles()
+    public List<FileService> nestedFiles()
     {
-        return retry(() -> matching(proxy().nestedFiles(pathAsString()), new AnythingMatcher<>())).or(new ArrayList<>(), "Unable to locate files in $", this);
+        return retry(() -> matching(proxy().nestedFiles(pathAsString()), new AnythingMatcher<>())).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public List<? extends FileService> nestedFiles(final Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(final Matcher<FilePath> matcher)
     {
-        return retry(() -> matching(proxy().nestedFiles(pathAsString()), matcher)).or(new ArrayList<>(), "Unable to locate files in $", this);
+        return retry(() -> matching(proxy().nestedFiles(pathAsString()), matcher)).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public List<? extends FolderService> nestedFolders(final Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(final Matcher<FilePath> matcher)
     {
         return unsupported();
     }
@@ -263,7 +262,7 @@ public class HdfsFolder implements FolderService
     public boolean renameTo(final HdfsFolder to)
     {
         return retry(() -> proxy().rename(pathAsString(), to.path().toString()))
-                .or(false, "Unable to rename $ to $", this, to);
+                .orDefault(false, "Unable to rename $ to $", this, to);
     }
 
     @Override
@@ -334,9 +333,9 @@ public class HdfsFolder implements FolderService
         return path().toString();
     }
 
-    private List<HdfsFile> matching(final List<String> paths, final Matcher<FilePath> matcher)
+    private List<FileService> matching(final List<String> paths, final Matcher<FilePath> matcher)
     {
-        final var files = new ArrayList<HdfsFile>();
+        final var files = new ArrayList<FileService>();
         for (final var pathAsString : paths)
         {
             final var path = FilePath.parseFilePath(pathAsString);
@@ -362,7 +361,7 @@ public class HdfsFolder implements FolderService
         return proxy;
     }
 
-    private <T> CheckedCode<T> retry(final CheckedCode<T> code)
+    private <T> Unchecked<T> retry(final Unchecked<T> code)
     {
         return Retry.retry(code, 16, Duration.seconds(15), () -> proxy = null);
     }

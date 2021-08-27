@@ -19,7 +19,7 @@
 package com.telenav.kivakit.service.registry.protocol.update;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.telenav.kivakit.kernel.language.reflection.property.filters.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.protocol.BaseRequest;

@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.service.registry.store;
 
-import com.telenav.kivakit.configuration.settings.Settings;
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.language.primitives.Booleans;
@@ -26,7 +26,6 @@ import com.telenav.kivakit.kernel.language.strings.CaseFormat;
 import com.telenav.kivakit.kernel.language.values.version.VersionedObject;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.kernel.messaging.Debug;
-import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.resource.path.Extension;
 import com.telenav.kivakit.serialization.core.SerializationSession;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
@@ -54,7 +53,7 @@ import static com.telenav.kivakit.serialization.core.SerializationSession.Type.R
 @UmlClassDiagram(diagram = DiagramRegistry.class)
 @UmlNotPublicApi
 @LexakaiJavadoc(complete = true)
-public class ServiceRegistryStore extends BaseRepeater
+public class ServiceRegistryStore extends BaseComponent
 {
     /**
      * Loads the service registry of the given type from the cache folder where that type of registry is saved by {@link
@@ -113,7 +112,7 @@ public class ServiceRegistryStore extends BaseRepeater
         if (Booleans.isTrue(JavaVirtualMachine.property("KIVAKIT_SAVE_REGISTRY", "true")))
         {
             final var file = file(registry.getClass()).withExtension(Extension.TMP);
-            trace("Saving service registry to $", file.parentBroadcaster());
+            trace("Saving service registry to $", file.messageSource());
             if (file.delete())
             {
                 try (final var output = file.openForWriting())
@@ -143,6 +142,6 @@ public class ServiceRegistryStore extends BaseRepeater
 
     private ServiceRegistrySettings settings()
     {
-        return Settings.require(ServiceRegistrySettings.class);
+        return require(ServiceRegistrySettings.class);
     }
 }

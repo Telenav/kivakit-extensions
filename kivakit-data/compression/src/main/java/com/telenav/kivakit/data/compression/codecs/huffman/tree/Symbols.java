@@ -176,7 +176,7 @@ public class Symbols<Symbol>
         final var properties = PropertyMap.create();
         for (final var symbol : sortedByFrequency())
         {
-            final var key = converter.toString(symbol.value());
+            final var key = converter.unconvert(symbol.value());
             final var value = Count.count(symbol.frequency()).toCommaSeparatedString();
             ensure(!key.contains("="));
             final var comment = commenter.apply(symbol.value());
