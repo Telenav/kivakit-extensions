@@ -157,7 +157,7 @@ public class ServiceRegistryServer extends Server
     }
 
     @Override
-    protected Set<SwitchParser<?>> switchParsers()
+    protected ObjectSet<SwitchParser<?>> switchParsers()
     {
         return Set.of(PORT, SCOPE);
     }

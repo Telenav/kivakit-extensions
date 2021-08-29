@@ -26,6 +26,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.ERROR;
 import static javax.servlet.DispatcherType.FORWARD;
@@ -41,13 +42,21 @@ import static javax.servlet.DispatcherType.REQUEST;
 public class JettyWicket extends BaseJettyFilter
 {
     /** Wicket-specific definition of a web application */
-    private final Class<? extends WebApplication> applicationClass;
+    private Class<? extends WebApplication> applicationClass;
+
+    /** Wicket web application */
+    private WebApplication application;
 
     public JettyWicket(final Class<? extends WebApplication> applicationClass)
     {
-        super("[Wicket application = " + applicationClass.getSimpleName() + "]");
+        super(applicationClass.getSimpleName());
+        this.applicationClass = ensureNotNull(applicationClass);
+    }
 
-        this.applicationClass = applicationClass;
+    public JettyWicket(WebApplication application)
+    {
+        super(application.getClass().getSimpleName());
+        this.application = ensureNotNull(application);
     }
 
     /**
@@ -65,6 +74,8 @@ public class JettyWicket extends BaseJettyFilter
     @Override
     public FilterHolder holder()
     {
-        return new JettyWicketFilterHolder(applicationClass);
+        return applicationClass != null
+                ? new JettyWicketFilterHolder(applicationClass)
+                : new JettyWicketFilterHolder(application);
     }
 }

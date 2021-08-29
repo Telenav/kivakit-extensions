@@ -467,7 +467,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    protected Set<SwitchParser<?>> switchParsers()
+    protected ObjectSet<SwitchParser<?>> switchParsers()
     {
         return Set.of(
                 DATA_PORT,
