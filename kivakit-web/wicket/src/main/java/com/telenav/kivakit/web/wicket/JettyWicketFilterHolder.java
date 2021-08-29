@@ -38,10 +38,14 @@ class JettyWicketFilterHolder extends FilterHolder
 {
     public JettyWicketFilterHolder(final Class<? extends WebApplication> applicationClass)
     {
-        super(new WicketFilter());
-
-        // Set expected Wicket initialization parameters
+        setFilter(new WicketFilter());
         setInitParameter(ContextParamWebApplicationFactory.APP_CLASS_PARAM, applicationClass.getName());
+        setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");
+    }
+
+    public JettyWicketFilterHolder(final WebApplication application)
+    {
+        setFilter(new WicketFilter(application));
         setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");
     }
 }

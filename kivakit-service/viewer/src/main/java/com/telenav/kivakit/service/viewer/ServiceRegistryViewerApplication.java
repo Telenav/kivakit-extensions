@@ -104,7 +104,7 @@ public class ServiceRegistryViewerApplication extends Application
     }
 
     @Override
-    protected Set<SwitchParser<?>> switchParsers()
+    protected ObjectSet<SwitchParser<?>> switchParsers()
     {
         return Set.of(SCOPE_TYPE);
     }
