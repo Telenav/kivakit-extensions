@@ -29,16 +29,18 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * <ol>
  *     <li>Create the microservice in the application's main(String[]) method</li>
  *     <li>Call {@link #run(String[])}, passing in the arguments to main()</li>
- *     <li>Pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
- *     <li>Add a description of the service</li>
+ *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
+ *     <li>Optionally, add a description of the service for display in administrative user interfaces</li>
  *     <li>Return any {@link MicroserviceRestApplication} from {@link #restApplication()}</li>
  *     <li>Return any {@link MicroserviceWicketWebApplication} from {@link #webApplication()}</li>
  * </ol>
  * <p>
- * KivaKit will parse the command line and start the microservice on the port passed to the command line.
- * If no port is specified, the port in {@link MicroserviceSettings} will be used, as loaded from the
- * {@link Deployment} specified on the command line with -deployment=[deployment].
+ * KivaKit will parse the command line and start the microservice on any port passed to the command line with
+ * -port=[port]. If no port is specified, the port in {@link MicroserviceSettings} will be used, as loaded from the
+ * {@link Deployment} specified on the command line with -deployment=[deployment]. See
  * </p>
+ *
+ * <p><b>Example</b></p>
  *
  * <pre>
  * public class MyMicroservice extends Microservice
