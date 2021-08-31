@@ -26,8 +26,6 @@ import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
 import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
 import com.telenav.kivakit.serialization.kryo.KryoTypes;
 
-import java.util.Set;
-
 /**
  * The project class for kivakit-service-registry.
  *
@@ -53,6 +51,6 @@ public class ServiceRegistryProject extends Project
     @Override
     public ObjectSet<Project> dependencies()
     {
-        return Set.of(CoreCollectionsProject.get());
+        return ObjectSet.of(CoreCollectionsProject.get());
     }
 }

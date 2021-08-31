@@ -6,7 +6,7 @@ import com.telenav.kivakit.configuration.settings.deployment.Deployment;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.web.MicroserviceWicketWebApplication;
+import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.web.jersey.JettyJersey;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.JettyStaticResources;
@@ -32,7 +32,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
  *     <li>Optionally, add a description of the service for display in administrative user interfaces</li>
  *     <li>Return any {@link MicroserviceRestApplication} from {@link #restApplication()}</li>
- *     <li>Return any {@link MicroserviceWicketWebApplication} from {@link #webApplication()}</li>
+ *     <li>Return any {@link MicroserviceWebApplication} from {@link #webApplication()}</li>
  * </ol>
  * <p>
  * KivaKit will parse the command line and start the microservice on any port passed to the command line with
@@ -55,18 +55,19 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *         super(new MyMicroserviceProject());
  *     }
  *
- *     @Override
+ *     &#064;Override
  *     public String description()
  *     {
  *         return "My microservice";
  *     }
  *
+ *     &#064;Override
  *     public MyRestApplication restApplication()
  *     {
  *         return new MyRestApplication();
  *     }
  *
- *     @Override
+ *     &#064;Override
  *     public MyWebApplication webApplication()
  *     {
  *         return new MyWebApplication();
@@ -126,7 +127,7 @@ public abstract class Microservice extends Application
         return ObjectSet.of(PORT);
     }
 
-    protected abstract MicroserviceWicketWebApplication webApplication();
+    protected abstract MicroserviceWebApplication webApplication();
 
     private MicroserviceSettings settings()
     {
