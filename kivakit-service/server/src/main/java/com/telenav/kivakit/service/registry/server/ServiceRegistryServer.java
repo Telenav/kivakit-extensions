@@ -20,6 +20,7 @@ package com.telenav.kivakit.service.registry.server;
 
 import com.telenav.kivakit.application.Server;
 import com.telenav.kivakit.commandline.SwitchParser;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
@@ -42,8 +43,6 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.UmlNote;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
-
-import java.util.Set;
 
 /**
  * Service registry server, including Wicket, REST and Swagger resources. Accepts these switches from the command line:
@@ -159,6 +158,6 @@ public class ServiceRegistryServer extends Server
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return Set.of(PORT, SCOPE);
+        return ObjectSet.of(PORT, SCOPE);
     }
 }

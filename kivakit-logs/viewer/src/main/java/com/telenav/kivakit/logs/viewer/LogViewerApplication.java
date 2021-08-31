@@ -20,6 +20,7 @@ package com.telenav.kivakit.logs.viewer;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.SwitchParser;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.logs.client.ClientLog;
 import com.telenav.kivakit.logs.server.ServerLog;
@@ -28,7 +29,6 @@ import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.kivakit.ui.desktop.graphics.image.ImageResource;
 
 import java.awt.Taskbar;
-import java.util.Set;
 
 import static com.telenav.kivakit.commandline.SwitchParser.maximumSwitchParser;
 
@@ -74,6 +74,6 @@ public class LogViewerApplication extends Application
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return Set.of(MAXIMUM_ENTRIES, QUIET);
+        return ObjectSet.of(MAXIMUM_ENTRIES, QUIET);
     }
 }

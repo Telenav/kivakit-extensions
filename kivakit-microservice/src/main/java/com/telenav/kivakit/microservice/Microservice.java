@@ -24,7 +24,7 @@ public abstract class Microservice extends Application
                     .optional()
                     .build();
 
-    public Microservice(final MicroserviceProject project)
+    public Microservice(final MicroserviceProject... project)
     {
         super(project);
     }

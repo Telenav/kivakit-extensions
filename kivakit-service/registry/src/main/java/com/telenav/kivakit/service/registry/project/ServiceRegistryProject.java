@@ -19,6 +19,7 @@
 package com.telenav.kivakit.service.registry.project;
 
 import com.telenav.kivakit.collections.project.CoreCollectionsProject;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
@@ -50,7 +51,7 @@ public class ServiceRegistryProject extends Project
     }
 
     @Override
-    public Set<Project> dependencies()
+    public ObjectSet<Project> dependencies()
     {
         return Set.of(CoreCollectionsProject.get());
     }
