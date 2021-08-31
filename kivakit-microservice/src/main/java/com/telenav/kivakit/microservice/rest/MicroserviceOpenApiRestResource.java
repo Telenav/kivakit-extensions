@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.rest.resources.openapi;
+package com.telenav.kivakit.microservice.rest;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.KivaKit;
