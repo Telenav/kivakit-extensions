@@ -18,8 +18,6 @@
 
 package com.telenav.kivakit.logs.client.project;
 
-import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
-import com.telenav.kivakit.kernel.language.collections.set.Sets;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
@@ -40,11 +38,5 @@ public class LogsClientProject extends Project
     protected LogsClientProject()
     {
         SerializationSessionFactory.threadLocal(KRYO_TYPES.sessionFactory());
-    }
-
-    @Override
-    public ObjectSet<Project> dependencies()
-    {
-        return Sets.of();
     }
 }

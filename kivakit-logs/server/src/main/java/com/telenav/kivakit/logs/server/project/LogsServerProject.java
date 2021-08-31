@@ -10,8 +10,6 @@ import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
 import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
 import com.telenav.kivakit.serialization.kryo.KryoTypes;
 
-import java.util.Set;
-
 /**
  * @author jonathanl (shibo)
  */
@@ -35,6 +33,6 @@ public class LogsServerProject extends Project
     @Override
     public ObjectSet<Project> dependencies()
     {
-        return Set.of(KernelProject.get(), ResourceProject.get(), NetworkCoreProject.get());
+        return ObjectSet.of(KernelProject.get(), ResourceProject.get(), NetworkCoreProject.get());
     }
 }

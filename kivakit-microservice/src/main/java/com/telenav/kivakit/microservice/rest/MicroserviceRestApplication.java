@@ -18,7 +18,8 @@
 
 package com.telenav.kivakit.microservice.rest;
 
-import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.application.Application;
+import com.telenav.kivakit.microservice.rest.servlet.JettyMicroserviceFilter;
 import com.telenav.kivakit.serialization.jersey.json.JerseyGsonSerializer;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 
@@ -30,19 +31,22 @@ import javax.ws.rs.ApplicationPath;
  * @author jonathanl (shibo)
  */
 @ApplicationPath("/api")
-public abstract class MicroserviceRestApplication extends BaseRestApplication implements ComponentMixin
+public abstract class MicroserviceRestApplication extends BaseRestApplication
 {
+    private final JettyMicroserviceFilter filter = new JettyMicroserviceFilter(this);
+
     public MicroserviceRestApplication()
     {
         register(new JerseyGsonSerializer<>(gsonFactory()));
     }
 
-    protected abstract MicroserviceGsonFactory gsonFactory();
+    public abstract MicroserviceGsonFactory gsonFactory();
 
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    protected final void mount(String path, Class<? extends MicroserviceMethod> request)
+    protected final void mount(String path, Class<? extends MicroserviceRestRequest> request)
     {
+        filter.mount("/api/" + Application.get().version() + "/" + path, request);
     }
 }

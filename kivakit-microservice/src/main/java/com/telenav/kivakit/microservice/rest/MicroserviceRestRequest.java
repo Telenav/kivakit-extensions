@@ -42,7 +42,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * @see Validatable
  * @see BaseComponent
  */
-public abstract class MicroserviceMethod<Response extends MicroserviceMethod.MicroserviceResponse> extends BaseComponent implements Validatable
+public abstract class MicroserviceRestRequest<Response extends MicroserviceRestRequest.MicroserviceResponse> extends BaseComponent implements Validatable
 {
     /**
      * REST methods

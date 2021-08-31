@@ -18,7 +18,6 @@
 
 package com.telenav.kivakit.microservice.web;
 
-import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.settings.ExceptionSettings;
 
@@ -29,14 +28,8 @@ import static org.apache.wicket.RuntimeConfigurationType.DEVELOPMENT;
  *
  * @author jonathanl (shibo)
  */
-public abstract class MicroserviceWicketWebApplication extends WebApplication
+public abstract class MicroserviceWebApplication extends WebApplication
 {
-    @Override
-    public RuntimeConfigurationType getConfigurationType()
-    {
-        return DEVELOPMENT;
-    }
-
     @Override
     public void init()
     {
@@ -54,7 +47,5 @@ public abstract class MicroserviceWicketWebApplication extends WebApplication
             getMarkupSettings().setCompressWhitespace(false);
             getExceptionSettings().setUnexpectedExceptionDisplay(ExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
         }
-
-        mountPage("/home", getHomePage());
     }
 }

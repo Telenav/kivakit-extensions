@@ -14,8 +14,7 @@ open module kivakit.microservice
     // Module exports
     exports com.telenav.kivakit.microservice;
     exports com.telenav.kivakit.microservice.rest;
-    exports com.telenav.kivakit.microservice.rest.serialization;
     exports com.telenav.kivakit.microservice.web;
-    exports com.telenav.kivakit.microservice.methods;
-    exports com.telenav.kivakit.microservice.rest.resources.openapi;
+    exports com.telenav.kivakit.microservice.rest.methods;
+    exports com.telenav.kivakit.microservice.rest.servlet;
 }

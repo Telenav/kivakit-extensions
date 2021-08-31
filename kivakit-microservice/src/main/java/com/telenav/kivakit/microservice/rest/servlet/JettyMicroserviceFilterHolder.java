@@ -16,18 +16,26 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.web.jersey;
+package com.telenav.kivakit.microservice.rest.servlet;
 
-import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import org.glassfish.jersey.server.ResourceConfig;
+import org.eclipse.jetty.servlet.FilterHolder;
 
 /**
- * Base class for Rest applications that clarifies the Jersey API.
+ * <b>Not public API</b>
+ *
+ * <p>
+ * Installs and configures the {@link JettyMicroserviceFilter} required to handle REST requests.
+ * </p>
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseRestApplication extends ResourceConfig implements ComponentMixin
+public class JettyMicroserviceFilterHolder extends FilterHolder
 {
+    public JettyMicroserviceFilterHolder(final MicroserviceRestApplication application)
+    {
+        setFilter(new JettyMicroserviceFilter(application));
+    }
 }
