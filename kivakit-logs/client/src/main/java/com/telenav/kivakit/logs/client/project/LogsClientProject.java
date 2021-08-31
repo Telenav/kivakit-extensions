@@ -18,14 +18,13 @@
 
 package com.telenav.kivakit.logs.client.project;
 
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.collections.set.Sets;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
 import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
 import com.telenav.kivakit.serialization.kryo.KryoTypes;
-
-import java.util.Set;
 
 public class LogsClientProject extends Project
 {
@@ -44,7 +43,7 @@ public class LogsClientProject extends Project
     }
 
     @Override
-    public Set<Project> dependencies()
+    public ObjectSet<Project> dependencies()
     {
         return Sets.of();
     }

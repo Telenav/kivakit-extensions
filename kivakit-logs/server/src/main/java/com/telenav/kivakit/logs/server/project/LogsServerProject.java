@@ -1,5 +1,6 @@
 package com.telenav.kivakit.logs.server.project;
 
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.KernelProject;
 import com.telenav.kivakit.kernel.project.Project;
@@ -32,7 +33,7 @@ public class LogsServerProject extends Project
     }
 
     @Override
-    public Set<Project> dependencies()
+    public ObjectSet<Project> dependencies()
     {
         return Set.of(KernelProject.get(), ResourceProject.get(), NetworkCoreProject.get());
     }

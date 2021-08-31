@@ -30,7 +30,8 @@ import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Base REST response
+ * Base REST response. Holds a (JSON serialized) problem, as well as whatever fields are in the subclass. The {@link
+ * #onTransmitting(Transmittable)} method captures any problems that are broadcast to this response object.
  *
  * @author jonathanl (shibo)
  */
@@ -44,14 +45,16 @@ public abstract class MicroserviceResponse extends BaseComponent
      */
     public Result<MicroserviceResponse> asResult()
     {
-        return problem != null ? Result.failed(problem) : Result.succeeded(this);
+        return problem != null
+                ? Result.failed(problem)
+                : Result.succeeded(this);
     }
 
     /**
      * Capture any problems that this response is about to send
      */
     @Override
-    public void onTransmit(final Transmittable message)
+    public void onTransmitting(final Transmittable message)
     {
         if (message instanceof Problem)
         {

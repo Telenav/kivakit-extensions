@@ -23,6 +23,7 @@ import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystems.hdfs.proxy.converters.UserGroupInformationConverter;
 import com.telenav.kivakit.filesystems.hdfs.proxy.project.lexakai.diagrams.DiagramHdfsProxy;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.threading.locks.Monitor;
@@ -58,7 +59,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 
@@ -469,7 +469,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return Set.of(
+        return ObjectSet.of(
                 DATA_PORT,
                 RMI_OBJECT_PORT,
                 CONFIGURATION_FOLDER,
