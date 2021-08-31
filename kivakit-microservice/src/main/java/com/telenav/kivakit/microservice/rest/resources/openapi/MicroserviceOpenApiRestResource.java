@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.rest;
+package com.telenav.kivakit.microservice.rest.resources.openapi;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.KivaKit;
@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
  *
  * @author jonathanl (shibo)
  */
-public class MicroserviceRestResource extends BaseRestResource
+public class MicroserviceOpenApiRestResource extends BaseRestResource
 {
     /**
      * @return The version of this rest service
