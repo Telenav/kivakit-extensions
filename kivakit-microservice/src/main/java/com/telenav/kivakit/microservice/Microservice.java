@@ -40,21 +40,21 @@ public abstract class Microservice extends Application
         showCommandLine();
 
         // get the port to run on,
-        final var port = get(PORT);
+        final var port = has(PORT) ? get(PORT) : settings().port();
 
         // create the Jersey REST application,
-        final var application = listenTo(restApplication());
+        final var restApplication = listenTo(restApplication());
 
         // and start up Jetty with Swagger, Jersey and Wicket.
         listenTo(new JettyServer())
                 .port(port)
                 .add("/*", new JettyWicket(webApplication()))
-                .add("/open-api/*", new JettySwaggerOpenApi(application))
+                .add("/open-api/*", new JettySwaggerOpenApi(restApplication))
                 .add("/docs/*", new JettySwaggerIndex(port))
                 .add("/webapp/*", new JettySwaggerStaticResources())
-                .add("/webjar/*", new JettySwaggerWebJar(application))
+                .add("/webjar/*", new JettySwaggerWebJar(restApplication))
                 .add("/ui/*", new JettyStaticResources(getClass(), "ui"))
-                .add("/*", new JettyJersey(application))
+                .add("/*", new JettyJersey(restApplication))
                 .start();
     }
 
@@ -62,5 +62,10 @@ public abstract class Microservice extends Application
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
         return ObjectSet.of(PORT);
+    }
+
+    private MicroserviceSettings settings()
+    {
+        return require(MicroserviceSettings.class);
     }
 }
