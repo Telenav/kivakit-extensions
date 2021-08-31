@@ -19,8 +19,6 @@
 package com.telenav.kivakit.microservice.rest;
 
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.microservice.rest.protocol.MicroserviceRequest;
-import com.telenav.kivakit.microservice.rest.serialization.MicroserviceGsonFactory;
 import com.telenav.kivakit.serialization.jersey.json.JerseyGsonSerializer;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 
@@ -34,17 +32,6 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("/api")
 public abstract class MicroserviceRestApplication extends BaseRestApplication implements ComponentMixin
 {
-    /**
-     * REST methods
-     */
-    public enum Method
-    {
-        POST,
-        GET,
-        PUT,
-        DELETE
-    }
-
     public MicroserviceRestApplication()
     {
         register(new JerseyGsonSerializer<>(gsonFactory()));
@@ -55,8 +42,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication im
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    protected final void mount(String path, Method method, Class<? extends MicroserviceRequest> request)
+    protected final void mount(String path, Class<? extends MicroserviceMethod> request)
     {
-        
     }
 }

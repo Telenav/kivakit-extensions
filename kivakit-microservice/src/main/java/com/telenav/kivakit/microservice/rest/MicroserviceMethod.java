@@ -16,28 +16,98 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.rest.protocol;
+package com.telenav.kivakit.microservice.rest;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
+import com.telenav.kivakit.kernel.interfaces.messaging.Transmittable;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitExcludeProperty;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * Base REST request class. The request subclass implements {@link #newResponse()} to create a {@link
- * MicroserviceResponse} when {@link #respond()} is called. It overrides {@link #onRespond(MicroserviceResponse)} to
- * populate the response (if the request is valid).
+ * <p>
+ * Defines the request and response of a REST method.
+ * </p>
+ * The subclass implements {@link #newResponse()} to create a {@link MicroserviceResponse} when {@link #respond()} is
+ * called. It overrides {@link #onRespond(MicroserviceResponse)} to populate the response (if the request is valid).
  *
  * @author jonathanl (shibo)
  * @see Validatable
  * @see BaseComponent
  */
-public abstract class MicroserviceRequest<Response extends MicroserviceResponse> extends BaseComponent implements Validatable
+public abstract class MicroserviceMethod<Response extends MicroserviceMethod.MicroserviceResponse> extends BaseComponent implements Validatable
 {
+    /**
+     * REST methods
+     */
+    public enum Method
+    {
+        POST,
+        GET,
+        PUT,
+        DELETE
+    }
+
+    /**
+     * Base REST response. Holds a (JSON serialized) problem, as well as whatever fields are in the subclass. The {@link
+     * #onTransmitting(Transmittable)} method captures any problems that are broadcast to this response object.
+     *
+     * @author jonathanl (shibo)
+     */
+    public abstract static class MicroserviceResponse extends BaseComponent
+    {
+        @KivaKitExcludeProperty
+        private Problem problem;
+
+        /**
+         * @return This response as a {@link Result} object
+         */
+        public Result<MicroserviceResponse> asResult()
+        {
+            return problem != null
+                    ? Result.failed(problem)
+                    : Result.succeeded(this);
+        }
+
+        /**
+         * Capture any problems that this response is about to send
+         */
+        @Override
+        public void onTransmitting(final Transmittable message)
+        {
+            if (message instanceof Problem)
+            {
+                problem = (Problem) message;
+            }
+        }
+
+        @KivaKitIncludeProperty
+        @Schema(description = "A description of any problem that might have occurred")
+        public Problem problem()
+        {
+            return problem;
+        }
+
+        public String toString()
+        {
+            return new ObjectFormatter(this).toString();
+        }
+
+        @KivaKitIncludeProperty
+        @Schema(description = "The server version")
+        public Version version()
+        {
+            return Application.get().version();
+        }
+    }
+
     /**
      * Responds to this request.
      *
@@ -87,6 +157,11 @@ public abstract class MicroserviceRequest<Response extends MicroserviceResponse>
     {
         return Application.get().version();
     }
+
+    /**
+     * @return The REST method for this API method
+     */
+    protected abstract Method method();
 
     /**
      * @return A new response object, created by the subclass
