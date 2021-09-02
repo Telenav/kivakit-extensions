@@ -9,6 +9,11 @@ open module kivakit.web.jersey
     requires transitive jersey.container.servlet.core;
     requires transitive jersey.server;
 
+    // Java
+    requires transitive java.ws.rs;
+    requires transitive java.xml.bind;
+    requires transitive jakarta.activation;
+
     // Module exports
     exports com.telenav.kivakit.web.jersey;
     exports com.telenav.kivakit.web.jersey.project;

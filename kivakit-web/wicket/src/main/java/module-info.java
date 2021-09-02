@@ -2,6 +2,7 @@ open module kivakit.web.wicket
 {
     // KivaKit
     requires transitive kivakit.web.jetty;
+    requires transitive kivakit.component;
 
     // Wicket
     requires transitive wicket.core;

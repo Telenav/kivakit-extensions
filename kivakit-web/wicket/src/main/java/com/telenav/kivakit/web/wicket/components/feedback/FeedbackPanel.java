@@ -18,10 +18,16 @@
 
 package com.telenav.kivakit.web.wicket.components.feedback;
 
+import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.kernel.interfaces.messaging.Transmittable;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.kernel.messaging.messages.status.Warning;
 import com.telenav.kivakit.web.wicket.theme.KivaKitTheme;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
+
+import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 
 /**
  * A KivaKit feedback panel in the KivaKit style.
@@ -29,11 +35,27 @@ import org.apache.wicket.markup.head.IHeaderResponse;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackPanel
+public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackPanel implements ComponentMixin
 {
     public FeedbackPanel(final String id)
     {
         super(id);
+    }
+
+    @Override
+    public void onTransmitting(final Transmittable message)
+    {
+        if (message instanceof Problem)
+        {
+            var problem = (Problem) message;
+            error(problem.formatted(WITHOUT_EXCEPTION));
+        }
+        
+        if (message instanceof Warning)
+        {
+            var problem = (Warning) message;
+            warning(problem.formatted(WITHOUT_EXCEPTION));
+        }
     }
 
     @Override

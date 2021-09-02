@@ -46,9 +46,6 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
@@ -335,17 +332,9 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     void copyTo(final S3FileSystemObject that)
     {
-        String sourceUrl = null;
-        try
-        {
-            sourceUrl = URLEncoder.encode(bucket() + "/" + key(), StandardCharsets.UTF_8.toString());
-        }
-        catch (final UnsupportedEncodingException e)
-        {
-            LOGGER.warning(e, "URL could not be encoded");
-        }
-
-        final var request = CopyObjectRequest.builder().copySource(sourceUrl)
+        final var request = CopyObjectRequest.builder()
+                .sourceBucket(bucket())
+                .sourceKey(key())
                 .destinationBucket(that.bucket())
                 .destinationKey(key())
                 .build();

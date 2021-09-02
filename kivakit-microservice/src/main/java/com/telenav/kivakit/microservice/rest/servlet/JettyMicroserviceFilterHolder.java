@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.microservice.rest.servlet;
 
+import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -32,10 +33,10 @@ import org.eclipse.jetty.servlet.FilterHolder;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyMicroserviceFilterHolder extends FilterHolder
+public class JettyMicroserviceFilterHolder extends FilterHolder implements ComponentMixin
 {
     public JettyMicroserviceFilterHolder(final MicroserviceRestApplication application)
     {
-        setFilter(new JettyMicroserviceFilter(application));
+        setFilter(listenTo(new JettyMicroserviceFilter(application)));
     }
 }
