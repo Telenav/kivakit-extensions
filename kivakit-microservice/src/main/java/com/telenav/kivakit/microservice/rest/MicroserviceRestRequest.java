@@ -122,12 +122,13 @@ public abstract class MicroserviceRestRequest<Response extends MicroserviceRestR
      *
      * @return The response
      */
-    public final Response respond()
+    public final Response respond(Listener listener)
     {
         trace("Request: $", this);
 
         // Create the response object,
         var response = newResponse();
+        listener.listenTo(response);
 
         // and if this request is valid,
         if (isValid(response))
@@ -138,7 +139,7 @@ public abstract class MicroserviceRestRequest<Response extends MicroserviceRestR
         }
         else
         {
-            // otherwise warn the caller.
+            // otherwise warn the caller.s
             response.warning("Request is invalid: $", this);
         }
 

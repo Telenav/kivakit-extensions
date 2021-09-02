@@ -10,6 +10,7 @@ open module kivakit.service.client
     requires transitive jersey.media.json.jackson;
     requires transitive com.fasterxml.jackson.core;
     requires transitive java.ws.rs;
+    requires transitive jakarta.activation;
 
     // Module exports
     exports com.telenav.kivakit.service.registry.client;

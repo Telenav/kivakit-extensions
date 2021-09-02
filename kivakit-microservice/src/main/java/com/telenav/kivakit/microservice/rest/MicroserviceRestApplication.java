@@ -45,7 +45,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    protected final void mount(String path, Class<? extends MicroserviceRestRequest> request)
+    protected final void mount(String path, Class<? extends MicroserviceRestRequest<?>> request)
     {
         filter.mount("/api/" + Application.get().version() + "/" + path, request);
     }

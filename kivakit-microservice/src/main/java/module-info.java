@@ -4,12 +4,8 @@ open module kivakit.microservice
     requires transitive kivakit.application;
     requires transitive kivakit.web.wicket;
     requires transitive kivakit.web.jersey;
-    requires transitive kivakit.serialization.json;
+    requires transitive kivakit.web.swagger;
     requires transitive kivakit.serialization.jersey.json;
-
-    // Java
-    requires transitive java.ws.rs;
-    requires kivakit.web.swagger;
 
     // Module exports
     exports com.telenav.kivakit.microservice;

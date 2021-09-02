@@ -9,6 +9,7 @@ open module kivakit.web.jetty
     requires transitive org.eclipse.jetty.servlet;
     requires transitive org.eclipse.jetty.util;
     requires transitive org.eclipse.jetty.webapp;
+    requires transitive jakarta.activation;
 
     // Module exports
     exports com.telenav.kivakit.web.jetty;
