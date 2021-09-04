@@ -18,7 +18,7 @@ git clone --branch "$BRANCH" --quiet https://github.com/Telenav/kivakit.git
 
 echo "Installing kivakit super POM"
 cd "$ROOT"/kivakit/superpom
-mvn clean install
+mvn --batch-mode --no-transfer-progress clean install
 
 echo "Cloning kivakit-extensions in $ROOT"
 cd "$ROOT"
