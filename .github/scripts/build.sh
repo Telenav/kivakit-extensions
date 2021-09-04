@@ -12,8 +12,14 @@ ROOT="$(pwd)"
 echo "Building feature branch $GITHUB_REF"
 
 echo "Cloning KivaKit in $ROOT"
-git clone --branch "$GITHUB_REF" https://github.com/Telenav/kivakit.git
-git clone --branch "$GITHUB_REF" https://github.com/Telenav/kivakit-extensions.git
+
+git clone https://github.com/Telenav/kivakit.git
+cd "$ROOT"/kivakit
+git checkout "$GITHUB_REF"
+
+git clone https://github.com/Telenav/kivakit-extensions.git
+cd "$ROOT"/kivakit-extensions
+git checkout "$GITHUB_REF"
 
 echo "Installing KivaKit super POM"
 cd "$ROOT"/kivakit/superpom
