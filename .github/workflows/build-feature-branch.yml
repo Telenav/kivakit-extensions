@@ -25,6 +25,17 @@ jobs:
 
     steps:
 
+      - name: Checkout kivakit-extensions
+        uses: actions/checkout@v2
+        with:
+          path: kivakit-extensions
+
+      - name: Checkout kivakit
+        uses: actions/checkout@v2
+        with:
+          repository: Telenav/kivakit
+          path: kivakit
+
       - name: Checkout
         uses: actions/checkout@v2
 
