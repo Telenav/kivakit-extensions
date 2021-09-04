@@ -27,12 +27,14 @@ jobs:
 
       - name: Checkout kivakit-extensions
         uses: actions/checkout@v2
+        with:
+          path: main
 
       - name: Checkout kivakit
         uses: actions/checkout@v2
         with:
-          path: ../kivakit
           repository: Telenav/kivakit
+          path: kivakit
 
       - name: Setup Java
         uses: actions/setup-java@v1
@@ -41,5 +43,4 @@ jobs:
 
       - name: Build
         run: |
-          cd ./kivakit-extensions |
           mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install
