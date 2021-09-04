@@ -44,7 +44,7 @@ jobs:
       - name: Install Super POM
         working-directory: kivakit
         run: |
-          cd superpom && mvn clean install
+          cd main/superpom && mvn clean install
 
       - name: Build
         working-directory: main
