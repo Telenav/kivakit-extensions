@@ -25,28 +25,15 @@ jobs:
 
     steps:
 
-      - name: Checkout kivakit-extensions
+      - name: Checkout
         uses: actions/checkout@v2
-        with:
-          path: main
-
-      - name: Checkout kivakit
-        uses: actions/checkout@v2
-        with:
-          repository: Telenav/kivakit
-          path: kivakit
 
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
           java-version: 16
 
-      - name: Install Super POM
-        working-directory: kivakit/superpom
-        run: |
-          mvn clean install
-
       - name: Build
-        working-directory: kivakit-extensions
         run: |
-          mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install
+          ./.github/scripts/build.sh
+        shell: bash
