@@ -27,7 +27,6 @@
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-resource</artifactId>
-            <version>${kivakit.version}</version>
         </dependency>
 
         <!-- Darcula Theme -->
@@ -35,7 +34,6 @@
         <dependency>
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
-            <version>0.45</version>
         </dependency>
 
     </dependencies>
