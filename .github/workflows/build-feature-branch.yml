@@ -44,4 +44,7 @@ jobs:
       - name: Build
         working-directory: main
         run: |
+          cd superpom |
+          mvn clean install |
+          cd .. |
           mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install
