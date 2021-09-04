@@ -44,6 +44,8 @@ jobs:
 
       - name: Install Super POM
         run: |
+          echo $CWD
+          pwd
           cd kivakit/superpom && mvn clean install
 
       - name: Build
