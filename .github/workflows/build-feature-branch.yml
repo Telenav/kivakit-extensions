@@ -46,7 +46,7 @@ jobs:
         run: |
           echo $CWD
           pwd
-          cd kivakit/superpom && mvn clean install
+          cd ./kivakit/superpom && mvn clean install
 
       - name: Build
         working-directory: ./main
