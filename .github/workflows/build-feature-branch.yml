@@ -41,10 +41,13 @@ jobs:
         with:
           java-version: 16
 
-      - name: Build
-        working-directory: main
+      - name: Install Super POM
+        working-directory: kivakit
         run: |
           cd superpom |
           mvn clean install |
-          cd .. |
+
+      - name: Build
+        working-directory: main
+        run: |
           mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install
