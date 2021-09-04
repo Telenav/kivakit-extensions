@@ -7,12 +7,15 @@
 #
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-echo "Building in $(pwd)"
-pushd ..
-echo "Cloning KivaKit into $(pwd)}"
+ROOT="$(pwd)"
+
+echo "Cloning KivaKit in $ROOT"
 git clone https://github.com/Telenav/kivakit.git
+git clone https://github.com/Telenav/kivakit-extensions.git
+
 echo "Installing KivaKit super POM"
-cd kivakit/superpom
+cd "$ROOT"/kivakit/superpom
 mvn clean install
-popd
+
+cd "$ROOT"/kivakit-extensions
 mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install
