@@ -34,6 +34,7 @@ jobs:
           java-version: 16
 
       - name: Build
+        env:
         run: |
           ./.github/scripts/build.sh
         shell: bash
