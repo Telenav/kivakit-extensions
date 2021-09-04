@@ -7,23 +7,38 @@
 #
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#
+# Environment
+#
+
 ROOT="$(pwd)"
 BRANCH="${GITHUB_REF//refs\/heads\//}"
+SUPERPOM_BUILD="mvn --batch-mode --no-transfer-progress clean install"
+BUILD="mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install"
+CLONE="cd $ROOT && git clone --branch "$BRANCH" --quiet"
 
-echo "Building feature branch $BRANCH"
+#
+# Build kivakit
+#
 
-echo "Cloning kivakit-extensions in $ROOT"
-cd "$ROOT"
-git clone --branch "$BRANCH" --quiet https://github.com/Telenav/kivakit.git
+echo "Cloning kivakit in $ROOT"
+$CLONE https://github.com/Telenav/kivakit.git
 
 echo "Installing kivakit super POM"
 cd "$ROOT"/kivakit/superpom
-mvn --batch-mode --no-transfer-progress clean install
+$SUPERPOM_BUILD
+
+echo "Building kivakit"
+cd "$ROOT"/kivakit
+$BUILD
+
+#
+# Build kivakit-extensions
+#
 
 echo "Cloning kivakit-extensions in $ROOT"
-cd "$ROOT"
-git clone --branch "$BRANCH"--quiet https://github.com/Telenav/kivakit-extensions.git
+$CLONE https://github.com/Telenav/kivakit-extensions.git
 
 echo "Building kivakit-extensions"
 cd "$ROOT"/kivakit-extensions
-mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install
+$BUILD
