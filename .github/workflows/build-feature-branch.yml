@@ -25,17 +25,16 @@ jobs:
 
     steps:
 
-      - name: Checkout kivakit
-        uses: actions/checkout@v2
-        with:
-          repository: Telenav/kivakit
-          path: ./kivakit
-
       - name: Checkout kivakit-extensions
         uses: actions/checkout@v2
         with:
-          repository: Telenav/kivakit-extensions
-          path: ./kivakit-extensions
+          path: main
+
+      - name: Checkout kivakit
+        uses: actions/checkout@v2
+        with:
+          path: kivakit
+          repository: Telenav/kivakit
 
       - name: Setup Java
         uses: actions/setup-java@v1
