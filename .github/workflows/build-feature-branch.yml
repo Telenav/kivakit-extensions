@@ -42,9 +42,9 @@ jobs:
           java-version: 16
 
       - name: Install Super POM
-        working-directory: kivakit
+        working-directory: kivakit/superpom
         run: |
-          cd main/superpom && mvn clean install
+          mvn clean install
 
       - name: Build
         working-directory: main
