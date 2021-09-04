@@ -15,13 +15,14 @@ ROOT="$(pwd)"
 BRANCH="${GITHUB_REF//refs\/heads\//}"
 SUPERPOM_BUILD="mvn --batch-mode --no-transfer-progress clean install"
 BUILD="mvn -Dmaven.javadoc.skip=true -DKIVAKIT_DEBUG="!Debug" -P shade -P tools --no-transfer-progress --batch-mode clean install"
-CLONE="cd $ROOT && git clone --branch "$BRANCH" --quiet"
+CLONE="git clone --branch "$BRANCH" --quiet"
 
 #
 # Build kivakit
 #
 
 echo "Cloning kivakit in $ROOT"
+cd "$ROOT"
 $CLONE https://github.com/Telenav/kivakit.git
 
 echo "Installing kivakit super POM"
@@ -37,6 +38,7 @@ $BUILD
 #
 
 echo "Cloning kivakit-extensions in $ROOT"
+cd "$ROOT"
 $CLONE https://github.com/Telenav/kivakit-extensions.git
 
 echo "Building kivakit-extensions"
