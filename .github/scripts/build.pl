@@ -10,6 +10,10 @@
 use strict;
 use warnings FATAL => 'all';
 
+print "REF = $ENV{'GITHUB_REF'}";
+print "HEADREF = $ENV{'GITHUB_HEAD_REF'}";
+print "BASEREF = $ENV{'GITHUB_BASE_REF'}";
+
 #
 # Include build script from cactus-build
 #
