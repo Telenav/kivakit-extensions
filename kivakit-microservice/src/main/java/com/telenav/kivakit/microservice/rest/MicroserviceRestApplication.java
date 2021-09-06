@@ -20,8 +20,8 @@ package com.telenav.kivakit.microservice.rest;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.microservice.rest.servlet.JettyMicroserviceFilter;
-import com.telenav.kivakit.serialization.jersey.json.JerseyGsonSerializer;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
+import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
 
 import javax.ws.rs.ApplicationPath;
 

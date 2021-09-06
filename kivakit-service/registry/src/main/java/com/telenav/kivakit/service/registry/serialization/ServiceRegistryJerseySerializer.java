@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.service.registry.serialization;
 
-import com.telenav.kivakit.serialization.jersey.json.JerseyGsonSerializer;
+import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import javax.ws.rs.Consumes;
