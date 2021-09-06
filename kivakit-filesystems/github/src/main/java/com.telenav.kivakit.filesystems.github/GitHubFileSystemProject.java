@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.filesystems.github.project;
+package com.telenav.kivakit.filesystems.github;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
@@ -28,16 +28,16 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class FileSystemsGitHubProject extends Project
+public class GitHubFileSystemProject extends Project
 {
-    private static final Lazy<FileSystemsGitHubProject> project = Lazy.of(FileSystemsGitHubProject::new);
+    private static final Lazy<GitHubFileSystemProject> project = Lazy.of(GitHubFileSystemProject::new);
 
-    public static FileSystemsGitHubProject get()
+    public static GitHubFileSystemProject get()
     {
         return project.get();
     }
 
-    protected FileSystemsGitHubProject()
+    protected GitHubFileSystemProject()
     {
     }
 }

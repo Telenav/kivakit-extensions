@@ -16,5 +16,4 @@ open module kivakit.filesystems.github
 
     // Module exports
     exports com.telenav.kivakit.filesystems.github;
-    exports com.telenav.kivakit.filesystems.github.project;
 }
