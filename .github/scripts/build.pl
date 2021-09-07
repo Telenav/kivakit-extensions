@@ -32,5 +32,5 @@ my $github = "https://github.com/Telenav";
 clone("$github/kivakit", "dependency");
 clone("$github/kivakit-extensions", "build");
 
-build_kivakit("package");
+build_kivakit($build_type);
 build_kivakit_extensions($build_type);

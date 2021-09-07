@@ -32,9 +32,31 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-network-http</artifactId>
         </dependency>
+
+        <!-- Jersey -->
+
         <dependency>
-            <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-web-jersey</artifactId>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+        </dependency>
+
+        <!-- XML Binding -->
+
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
         </dependency>
 
     </dependencies>
