@@ -16,28 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.logs.email.project;
+package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-logs-email
+ * Project class for kivakit-web-swagger
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class LogsEmailProject extends Project
+public class JettySwaggerProject extends Project
 {
-    private static final Lazy<LogsEmailProject> project = Lazy.of(LogsEmailProject::new);
+    private static final Lazy<JettySwaggerProject> project = Lazy.of(JettySwaggerProject::new);
 
-    public static LogsEmailProject get()
+    public static JettySwaggerProject get()
     {
         return project.get();
     }
 
-    protected LogsEmailProject()
+    protected JettySwaggerProject()
     {
     }
 }

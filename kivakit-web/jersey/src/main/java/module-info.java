@@ -25,5 +25,4 @@ open module kivakit.web.jersey
 
     // Module exports
     exports com.telenav.kivakit.web.jersey;
-    exports com.telenav.kivakit.web.jersey.project;
 }

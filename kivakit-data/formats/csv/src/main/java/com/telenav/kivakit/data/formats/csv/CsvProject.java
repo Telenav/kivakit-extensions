@@ -16,41 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.service.registry.project;
+package com.telenav.kivakit.data.formats.csv;
 
-import com.telenav.kivakit.collections.project.CoreCollectionsProject;
-import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
-import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
-import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
-import com.telenav.kivakit.serialization.kryo.KryoTypes;
+import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * The project class for kivakit-service-registry.
+ * Project class for kivakit-data-formats-csv
  *
  * @author jonathanl (shibo)
  */
-public class ServiceRegistryProject extends Project
+@LexakaiJavadoc(complete = true)
+public class CsvProject extends Project
 {
-    private static final KryoTypes KRYO_TYPES = new ServiceRegistryKryoTypes()
-            .mergedWith(new CoreKernelKryoTypes());
+    private static final Lazy<CsvProject> project = Lazy.of(CsvProject::new);
 
-    private static final Lazy<ServiceRegistryProject> project = Lazy.of(ServiceRegistryProject::new);
-
-    public static ServiceRegistryProject get()
+    public static CsvProject get()
     {
         return project.get();
     }
 
-    private ServiceRegistryProject()
+    protected CsvProject()
     {
-        SerializationSessionFactory.threadLocal(KRYO_TYPES.sessionFactory());
-    }
-
-    @Override
-    public ObjectSet<Project> dependencies()
-    {
-        return ObjectSet.of(CoreCollectionsProject.get());
     }
 }

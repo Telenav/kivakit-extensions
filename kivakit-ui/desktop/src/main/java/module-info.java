@@ -36,8 +36,8 @@ open module kivakit.ui.desktop
     exports com.telenav.kivakit.ui.desktop.graphics.image;
     exports com.telenav.kivakit.ui.desktop.layout;
     exports com.telenav.kivakit.ui.desktop.model;
-    exports com.telenav.kivakit.ui.desktop.project;
     exports com.telenav.kivakit.ui.desktop.theme.darcula;
     exports com.telenav.kivakit.ui.desktop.theme.vanhelsing;
     exports com.telenav.kivakit.ui.desktop.theme;
+    exports com.telenav.kivakit.ui.desktop;
 }

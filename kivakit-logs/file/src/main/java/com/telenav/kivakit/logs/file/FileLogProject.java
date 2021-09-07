@@ -16,24 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.data.compression.project;
+package com.telenav.kivakit.logs.file;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
+import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
+ * Project class for kivakit-logs-file
+ *
  * @author jonathanl (shibo)
  */
-public class DataCompressionProject extends Project
+@LexakaiJavadoc(complete = true)
+public class FileLogProject extends Project
 {
-    private static final Lazy<DataCompressionProject> project = Lazy.of(DataCompressionProject::new);
+    private static final Lazy<FileLogProject> project = Lazy.of(FileLogProject::new);
 
-    public static DataCompressionProject get()
+    public static FileLogProject get()
     {
         return project.get();
     }
 
-    protected DataCompressionProject()
+    protected FileLogProject()
     {
     }
 }

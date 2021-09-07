@@ -16,28 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.data.formats.library.project;
+package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-data-formats-library
+ * Project class for kivakit-filesystems-s3fs
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class DataFormatsLibraryProject extends Project
+public class S3FileSystemProject extends Project
 {
-    private static final Lazy<DataFormatsLibraryProject> project = Lazy.of(DataFormatsLibraryProject::new);
+    private static final Lazy<S3FileSystemProject> project = Lazy.of(S3FileSystemProject::new);
 
-    public static DataFormatsLibraryProject get()
+    public static S3FileSystemProject get()
     {
         return project.get();
     }
 
-    protected DataFormatsLibraryProject()
+    protected S3FileSystemProject()
     {
     }
 }

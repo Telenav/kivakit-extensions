@@ -16,28 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.primitive.collections.project;
+package com.telenav.kivakit.data.formats.library;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-collections
+ * Project class for kivakit-data-formats-library
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class PrimitiveCollectionsProject extends Project
+public class DataFormatProject extends Project
 {
-    private static final Lazy<PrimitiveCollectionsProject> project = Lazy.of(PrimitiveCollectionsProject::new);
+    private static final Lazy<DataFormatProject> project = Lazy.of(DataFormatProject::new);
 
-    public static PrimitiveCollectionsProject get()
+    public static DataFormatProject get()
     {
         return project.get();
     }
 
-    protected PrimitiveCollectionsProject()
+    protected DataFormatProject()
     {
     }
 }

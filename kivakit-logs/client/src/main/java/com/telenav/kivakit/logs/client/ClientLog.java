@@ -11,7 +11,7 @@ import com.telenav.kivakit.kernel.language.threading.latches.CompletionLatch;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.logs.BaseLog;
-import com.telenav.kivakit.logs.server.project.LogsServerProject;
+import com.telenav.kivakit.logs.server.ServerLogProject;
 
 import javax.swing.SwingUtilities;
 import java.awt.Image;
@@ -29,7 +29,7 @@ public class ClientLog extends BaseLog
 
     public ClientLog()
     {
-        LogsServerProject.get().initialize();
+        ServerLogProject.get().initialize();
     }
 
     @Override

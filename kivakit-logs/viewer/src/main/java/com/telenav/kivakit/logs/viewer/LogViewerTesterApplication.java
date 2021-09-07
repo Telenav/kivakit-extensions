@@ -21,7 +21,7 @@ package com.telenav.kivakit.logs.viewer;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.logs.server.ServerLog;
-import com.telenav.kivakit.logs.server.project.LogsServerProject;
+import com.telenav.kivakit.logs.server.ServerLogProject;
 
 /**
  * Application to view remote {@link ServerLog}s.
@@ -38,7 +38,7 @@ public class LogViewerTesterApplication extends Application
 
     private LogViewerTesterApplication()
     {
-        super(LogsServerProject.get());
+        super(ServerLogProject.get());
     }
 
     @Override

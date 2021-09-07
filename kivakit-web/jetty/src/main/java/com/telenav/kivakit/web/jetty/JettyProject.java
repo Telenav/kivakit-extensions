@@ -16,28 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.data.formats.csv.project;
+package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-data-formats-csv
+ * Project class for kivakit-web-jetty
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class DataFormatsCsvProject extends Project
+public class JettyProject extends Project
 {
-    private static final Lazy<DataFormatsCsvProject> project = Lazy.of(DataFormatsCsvProject::new);
+    private static final Lazy<JettyProject> project = Lazy.of(JettyProject::new);
 
-    public static DataFormatsCsvProject get()
+    public static JettyProject get()
     {
         return project.get();
     }
 
-    protected DataFormatsCsvProject()
+    protected JettyProject()
     {
     }
 }

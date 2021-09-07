@@ -16,5 +16,4 @@ open module kivakit.web.swagger
 
     // Module exports
     exports com.telenav.kivakit.web.swagger;
-    exports com.telenav.kivakit.web.swagger.project;
 }

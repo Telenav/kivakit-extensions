@@ -27,7 +27,7 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.strings.AsciiArt;
 import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.network.core.project.NetworkCoreProject;
+import com.telenav.kivakit.network.core.NetworkProject;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.Scope.Type;
 import com.telenav.kivakit.service.registry.ServiceMetadata;
@@ -56,7 +56,7 @@ public class ServiceRegistryViewerApplication extends Application
 
     private ServiceRegistryViewerApplication()
     {
-        super(NetworkCoreProject.get());
+        super(NetworkProject.get());
     }
 
     @Override

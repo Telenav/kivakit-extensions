@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// http://www.apache.org/licenses/LICENSE-2.0
+// https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,27 +16,24 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.logs.client.project;
+package com.telenav.kivakit.data.compression;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
-import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
-import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
-import com.telenav.kivakit.serialization.kryo.KryoTypes;
 
-public class LogsClientProject extends Project
+/**
+ * @author jonathanl (shibo)
+ */
+public class DataCompressionProject extends Project
 {
-    private static final KryoTypes KRYO_TYPES = new CoreKernelKryoTypes();
+    private static final Lazy<DataCompressionProject> project = Lazy.of(DataCompressionProject::new);
 
-    private static final Lazy<LogsClientProject> project = Lazy.of(LogsClientProject::new);
-
-    public static LogsClientProject get()
+    public static DataCompressionProject get()
     {
         return project.get();
     }
 
-    protected LogsClientProject()
+    protected DataCompressionProject()
     {
-        SerializationSessionFactory.threadLocal(KRYO_TYPES.sessionFactory());
     }
 }
