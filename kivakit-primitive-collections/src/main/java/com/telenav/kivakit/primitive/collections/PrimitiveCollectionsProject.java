@@ -16,28 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.service.registry.client.project;
+package com.telenav.kivakit.primitive.collections;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-service-registry-client
+ * Project class for kivakit-collections
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class ServiceClientProject extends Project
+public class PrimitiveCollectionsProject extends Project
 {
-    private static final Lazy<ServiceClientProject> project = Lazy.of(ServiceClientProject::new);
+    private static final Lazy<PrimitiveCollectionsProject> project = Lazy.of(PrimitiveCollectionsProject::new);
 
-    public static ServiceClientProject get()
+    public static PrimitiveCollectionsProject get()
     {
         return project.get();
     }
 
-    protected ServiceClientProject()
+    protected PrimitiveCollectionsProject()
     {
     }
 }

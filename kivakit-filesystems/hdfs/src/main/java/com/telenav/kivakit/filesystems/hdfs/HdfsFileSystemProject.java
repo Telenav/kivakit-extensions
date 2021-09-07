@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.filesystems.hdfs.project;
+package com.telenav.kivakit.filesystems.hdfs;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
@@ -28,16 +28,16 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class FileSystemsHdfsProject extends Project
+public class HdfsFileSystemProject extends Project
 {
-    private static final Lazy<FileSystemsHdfsProject> project = Lazy.of(FileSystemsHdfsProject::new);
+    private static final Lazy<HdfsFileSystemProject> project = Lazy.of(HdfsFileSystemProject::new);
 
-    public static FileSystemsHdfsProject get()
+    public static HdfsFileSystemProject get()
     {
         return project.get();
     }
 
-    protected FileSystemsHdfsProject()
+    protected HdfsFileSystemProject()
     {
     }
 }

@@ -6,7 +6,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// https://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,28 +16,27 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.web.swagger.project;
+package com.telenav.kivakit.logs.client;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import com.telenav.kivakit.serialization.core.SerializationSessionFactory;
+import com.telenav.kivakit.serialization.kryo.CoreKernelKryoTypes;
+import com.telenav.kivakit.serialization.kryo.KryoTypes;
 
-/**
- * Project class for kivakit-web-swagger
- *
- * @author jonathanl (shibo)
- */
-@LexakaiJavadoc(complete = true)
-public class WebSwaggerProject extends Project
+public class ClientLogProject extends Project
 {
-    private static final Lazy<WebSwaggerProject> project = Lazy.of(WebSwaggerProject::new);
+    private static final KryoTypes KRYO_TYPES = new CoreKernelKryoTypes();
 
-    public static WebSwaggerProject get()
+    private static final Lazy<ClientLogProject> project = Lazy.of(ClientLogProject::new);
+
+    public static ClientLogProject get()
     {
         return project.get();
     }
 
-    protected WebSwaggerProject()
+    protected ClientLogProject()
     {
+        SerializationSessionFactory.threadLocal(KRYO_TYPES.sessionFactory());
     }
 }

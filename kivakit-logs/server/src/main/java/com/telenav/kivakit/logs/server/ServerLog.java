@@ -25,7 +25,6 @@ import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.loggers.ConsoleLogger;
 import com.telenav.kivakit.kernel.logging.logs.text.BaseTextLog;
-import com.telenav.kivakit.logs.server.project.LogsServerProject;
 import com.telenav.kivakit.logs.server.session.Session;
 import com.telenav.kivakit.logs.server.session.SessionStore;
 import com.telenav.kivakit.network.socket.server.ConnectionListener;
@@ -88,7 +87,7 @@ public class ServerLog extends BaseTextLog
     {
         KivaKitShutdownHook.register(LAST, () -> SessionStore.get().save(session.get()));
 
-        LogsServerProject.get().initialize();
+        ServerLogProject.get().initialize();
 
         final var client = LOGGER.listenTo(new ServiceRegistryClient());
         final var metadata = new ServiceMetadata()

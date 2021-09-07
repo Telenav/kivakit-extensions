@@ -1,4 +1,4 @@
-package com.telenav.kivakit.math.project;
+package com.telenav.kivakit.math;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;

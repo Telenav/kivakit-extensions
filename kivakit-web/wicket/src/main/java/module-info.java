@@ -15,7 +15,6 @@ open module kivakit.web.wicket
     exports com.telenav.kivakit.web.wicket.components.header;
     exports com.telenav.kivakit.web.wicket.components.refresh;
     exports com.telenav.kivakit.web.wicket.library;
-    exports com.telenav.kivakit.web.wicket.project;
     exports com.telenav.kivakit.web.wicket.theme;
     exports com.telenav.kivakit.web.wicket;
 }

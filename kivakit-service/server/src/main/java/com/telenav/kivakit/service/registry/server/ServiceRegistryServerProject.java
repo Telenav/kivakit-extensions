@@ -16,28 +16,37 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.logs.file.project;
+package com.telenav.kivakit.service.registry.server;
 
+import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
+import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
+import com.telenav.kivakit.service.registry.ServiceRegistrySettings;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-logs-file
+ * Project class for kivakit-service-registry-server
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class LogsFileProject extends Project
+public class ServiceRegistryServerProject extends Project
 {
-    private static final Lazy<LogsFileProject> project = Lazy.of(LogsFileProject::new);
+    private static final Lazy<ServiceRegistryServerProject> project = Lazy.of(ServiceRegistryServerProject::new);
 
-    public static LogsFileProject get()
+    public static ServiceRegistryServerProject get()
     {
         return project.get();
     }
 
-    protected LogsFileProject()
+    protected ServiceRegistryServerProject()
     {
+    }
+
+    @Override
+    public Version projectVersion()
+    {
+        return Settings.of(this).require(ServiceRegistrySettings.class).version();
     }
 }

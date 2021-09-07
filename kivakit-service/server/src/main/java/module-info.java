@@ -23,9 +23,9 @@ open module kivakit.service.server
     requires transitive io.swagger.v3.oas.annotations;
 
     // Module exports
-    exports com.telenav.kivakit.service.registry.server.project;
     exports com.telenav.kivakit.service.registry.server.project.lexakai.diagrams;
     exports com.telenav.kivakit.service.registry.server.rest;
     exports com.telenav.kivakit.service.registry.server.webapp.pages.home;
     exports com.telenav.kivakit.service.registry.server.webapp;
+    exports com.telenav.kivakit.service.registry.server;
 }

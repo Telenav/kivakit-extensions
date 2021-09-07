@@ -13,6 +13,5 @@ open module kivakit.web.jetty
 
     // Module exports
     exports com.telenav.kivakit.web.jetty;
-    exports com.telenav.kivakit.web.jetty.project;
     exports com.telenav.kivakit.web.jetty.resources;
 }

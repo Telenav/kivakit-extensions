@@ -16,37 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.service.registry.server.project;
+package com.telenav.kivakit.web.jersey;
 
-import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
-import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
-import com.telenav.kivakit.service.registry.ServiceRegistrySettings;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-service-registry-server
+ * Project class for kivakit-web-jersey
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class ServiceRegistryServerProject extends Project
+public class JettyJerseyProject extends Project
 {
-    private static final Lazy<ServiceRegistryServerProject> project = Lazy.of(ServiceRegistryServerProject::new);
+    private static final Lazy<JettyJerseyProject> project = Lazy.of(JettyJerseyProject::new);
 
-    public static ServiceRegistryServerProject get()
+    public static JettyJerseyProject get()
     {
         return project.get();
     }
 
-    protected ServiceRegistryServerProject()
+    protected JettyJerseyProject()
     {
-    }
-
-    @Override
-    public Version projectVersion()
-    {
-        return Settings.of(this).require(ServiceRegistrySettings.class).version();
     }
 }

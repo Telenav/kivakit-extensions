@@ -16,28 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.web.jersey.project;
+package com.telenav.kivakit.logs.email;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-web-jersey
+ * Project class for kivakit-logs-email
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class WebJerseyProject extends Project
+public class EmailLogProject extends Project
 {
-    private static final Lazy<WebJerseyProject> project = Lazy.of(WebJerseyProject::new);
+    private static final Lazy<EmailLogProject> project = Lazy.of(EmailLogProject::new);
 
-    public static WebJerseyProject get()
+    public static EmailLogProject get()
     {
         return project.get();
     }
 
-    protected WebJerseyProject()
+    protected EmailLogProject()
     {
     }
 }

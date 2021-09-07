@@ -25,7 +25,7 @@ import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
 import com.telenav.kivakit.service.registry.ServiceRegistrySettings;
-import com.telenav.kivakit.service.registry.project.ServiceRegistryProject;
+import com.telenav.kivakit.service.registry.ServiceRegistryProject;
 import com.telenav.kivakit.service.registry.registries.LocalServiceRegistry;
 import com.telenav.kivakit.service.registry.registries.NetworkServiceRegistry;
 import com.telenav.kivakit.service.registry.server.project.lexakai.diagrams.DiagramServer;

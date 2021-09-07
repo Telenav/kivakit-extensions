@@ -24,7 +24,7 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.logs.client.ClientLog;
 import com.telenav.kivakit.logs.server.ServerLog;
-import com.telenav.kivakit.logs.server.project.LogsServerProject;
+import com.telenav.kivakit.logs.server.ServerLogProject;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.kivakit.ui.desktop.graphics.image.ImageResource;
 
@@ -52,7 +52,7 @@ public class LogViewerApplication extends Application
 
     private LogViewerApplication()
     {
-        super(LogsServerProject.get());
+        super(ServerLogProject.get());
     }
 
     @SuppressWarnings("resource")

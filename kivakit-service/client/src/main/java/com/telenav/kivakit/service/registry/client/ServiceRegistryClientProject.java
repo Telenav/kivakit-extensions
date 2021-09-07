@@ -16,28 +16,28 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.web.jetty.project;
+package com.telenav.kivakit.service.registry.client;
 
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
- * Project class for kivakit-web-jetty
+ * Project class for kivakit-service-registry-client
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class WebJettyProject extends Project
+public class ServiceRegistryClientProject extends Project
 {
-    private static final Lazy<WebJettyProject> project = Lazy.of(WebJettyProject::new);
+    private static final Lazy<ServiceRegistryClientProject> project = Lazy.of(ServiceRegistryClientProject::new);
 
-    public static WebJettyProject get()
+    public static ServiceRegistryClientProject get()
     {
         return project.get();
     }
 
-    protected WebJettyProject()
+    protected ServiceRegistryClientProject()
     {
     }
 }
