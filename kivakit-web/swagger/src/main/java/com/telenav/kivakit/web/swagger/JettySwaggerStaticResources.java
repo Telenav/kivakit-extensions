@@ -31,6 +31,6 @@ public class JettySwaggerStaticResources extends JettyStaticResources
 {
     public JettySwaggerStaticResources()
     {
-        super(JettySwaggerStaticResources.class, "webapp");
+        super(JettySwaggerStaticResources.class, "assets");
     }
 }
