@@ -56,7 +56,7 @@ public class JettySwaggerWebJar extends BaseJettyResource
 
     String resourceBase()
     {
-        final var path = "META-INF/resources/webjars/swagger-ui/3.34.0";
+        final var path = "META-INF/resources/webjars/swagger-ui/3.51.2";
         return Classes.resourceUri(application.getClass(), path).toString();
     }
 }
