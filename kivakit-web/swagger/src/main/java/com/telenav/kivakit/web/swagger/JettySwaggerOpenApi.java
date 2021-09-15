@@ -41,7 +41,7 @@ public class JettySwaggerOpenApi extends BaseJettyServlet
 
     public JettySwaggerOpenApi(final Application application)
     {
-        super("[SwaggerOpenApi service = " + application.getClass().getSimpleName() + "]");
+        super("[JettySwaggerOpenApi application = " + application.getClass().getSimpleName() + "]");
 
         this.application = application;
     }

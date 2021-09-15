@@ -18,7 +18,8 @@
 
 package com.telenav.kivakit.web.swagger;
 
-import com.telenav.kivakit.web.jetty.resources.JettyStaticResources;
+import com.telenav.kivakit.resource.resources.packaged.Package;
+import com.telenav.kivakit.web.jetty.resources.JettyAssets;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
@@ -27,10 +28,10 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettySwaggerStaticResources extends JettyStaticResources
+public class JettySwaggerAssets extends JettyAssets
 {
-    public JettySwaggerStaticResources()
+    public JettySwaggerAssets()
     {
-        super(JettySwaggerStaticResources.class, "assets");
+        super(Package.of(JettySwaggerAssets.class, "assets"));
     }
 }

@@ -62,7 +62,7 @@ public class JettySwaggerIndex extends BaseJettyResource
      */
     public JettySwaggerIndex(final int port)
     {
-        super("[SwaggerIndex]");
+        super("[JettySwaggerIndex port = " + port + "]");
         this.port = port;
     }
 

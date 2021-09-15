@@ -41,7 +41,7 @@ public class JettyJersey extends BaseJettyServlet
      */
     public JettyJersey(final ResourceConfig application)
     {
-        super("[Jersey application = " + application.getClass().getSimpleName() + "]");
+        super("[JettyJersey application = " + application.getClass().getSimpleName() + "]");
 
         this.application = application;
     }
