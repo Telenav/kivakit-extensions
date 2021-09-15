@@ -39,7 +39,7 @@ public class JettySwaggerWebJar extends BaseJettyResource
 
     public JettySwaggerWebJar(final Application application)
     {
-        super("[SwaggerDocumentation service = " + application.getClass().getSimpleName() + "]");
+        super("[JettySwaggerWebJar application = " + application.getClass().getSimpleName() + "]");
 
         this.application = application;
     }

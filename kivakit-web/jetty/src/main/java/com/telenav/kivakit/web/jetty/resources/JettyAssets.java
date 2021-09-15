@@ -1,19 +1,16 @@
 package com.telenav.kivakit.web.jetty.resources;
 
-import com.telenav.kivakit.kernel.language.types.Classes;
+import com.telenav.kivakit.resource.ResourceFolder;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-public class JettyStaticResources extends BaseJettyResource
+public class JettyAssets extends BaseJettyResource
 {
-    private final Class<?> _package;
+    private final ResourceFolder folder;
 
-    private final String folder;
-
-    public JettyStaticResources(final Class<?> _package, final String folder)
+    public JettyAssets(final ResourceFolder folder)
     {
-        super(folder);
-        this._package = _package;
+        super("[JettyAssets path = " + folder.toString() + "]");
         this.folder = folder;
     }
 
@@ -23,8 +20,9 @@ public class JettyStaticResources extends BaseJettyResource
         final var defaultServlet = new DefaultServlet();
 
         final var holder = new ServletHolder(defaultServlet);
-        holder.setName("jetty-static-resources:" + _package.getSimpleName());
-        holder.setInitParameter("resourceBase", Classes.resourceUri(_package, folder).toString());
+
+        holder.setName("jetty-assets:" + folder.identifier());
+        holder.setInitParameter("resourceBase", folder.uri().toString());
         holder.setInitParameter("dirAllowed", "false");
         holder.setInitParameter("pathInfoOnly", "true");
 

@@ -113,21 +113,21 @@ public class JettyServer extends BaseRepeater
         configureLogging();
     }
 
-    public JettyServer add(final String path, final BaseJettyFilter filter)
+    public JettyServer mount(final String path, final BaseJettyFilter filter)
     {
         filter.path(path);
         filters.add(filter);
         return this;
     }
 
-    public JettyServer add(final String path, final BaseJettyServlet servlet)
+    public JettyServer mount(final String path, final BaseJettyServlet servlet)
     {
         servlet.path(path);
         servlets.add(servlet);
         return this;
     }
 
-    public JettyServer add(final String path, final BaseJettyResource resource)
+    public JettyServer mount(final String path, final BaseJettyResource resource)
     {
         resource.path(path);
         resources.add(resource);
@@ -147,7 +147,7 @@ public class JettyServer extends BaseRepeater
         {
             // Create and start Jetty
             server().start();
-            narrate("Jetty started on port $", port);
+            narrate("Jetty started on port ${integer}", port);
         }
         catch (final Exception e)
         {
@@ -184,7 +184,7 @@ public class JettyServer extends BaseRepeater
         {
             // add it to the servlet context at the given path,
             servletContext.addServlet(resource.holder(), resource.path());
-            narrate("Added resource $ => $", resource.path(), resource.name());
+            narrate("Mounted resource $ => $", resource.path(), resource.name());
         });
 
         // and for each JettyFilter,
@@ -192,7 +192,7 @@ public class JettyServer extends BaseRepeater
         {
             // add it to the servlet context at the given path,
             servletContext.addFilter(filter.holder(), filter.path(), filter.dispatchers());
-            narrate("Added filter $ => $", filter.path(), filter.name());
+            narrate("Mounted filter $ => $", filter.path(), filter.name());
         });
 
         // and for each JettyServlet,
@@ -200,7 +200,7 @@ public class JettyServer extends BaseRepeater
         {
             // add it to the servlet context at the given path,
             servletContext.addServlet(servlet.holder(), servlet.path());
-            narrate("Added servlet $ => $", servlet.path(), servlet.name());
+            narrate("Mounted servlet $ => $", servlet.path(), servlet.name());
         });
 
         // and finally, add the servlet context as the handler for server requests.
