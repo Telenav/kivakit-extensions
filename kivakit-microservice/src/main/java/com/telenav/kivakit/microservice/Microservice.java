@@ -57,13 +57,13 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *         <td>/</td><td>&nbsp;</td><td>Jersey REST application</td>
  *     </tr>
  *     <tr>
- *         <td>/resources</td><td>&nbsp;</td><td>Static resources</td>
+ *         <td>/assets</td><td>&nbsp;</td><td>Static resources</td>
  *     </tr>
  *     <tr>
  *         <td>/docs/</td><td>&nbsp;</td><td>Swagger documentation</td>
  *     </tr>
  *     <tr>
- *         <td>/open-api/resources</td><td>&nbsp;</td><td>Static resources for use in OpenAPI definitions</td>
+ *         <td>/open-api/assets</td><td>&nbsp;</td><td>Static resources for use in OpenAPI definitions</td>
  *     </tr>
  *     <tr>
  *         <td>/open-api/</td><td>&nbsp;</td><td>Open API definition</td>
