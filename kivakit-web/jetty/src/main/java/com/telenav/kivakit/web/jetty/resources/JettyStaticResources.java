@@ -23,7 +23,7 @@ public class JettyStaticResources extends BaseJettyResource
         final var defaultServlet = new DefaultServlet();
 
         final var holder = new ServletHolder(defaultServlet);
-        holder.setName("jetty-static-resources");
+        holder.setName("jetty-static-resources:" + _package.getSimpleName());
         holder.setInitParameter("resourceBase", Classes.resourceUri(_package, folder).toString());
         holder.setInitParameter("dirAllowed", "false");
         holder.setInitParameter("pathInfoOnly", "true");
