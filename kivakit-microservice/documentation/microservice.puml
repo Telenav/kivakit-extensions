@@ -1,0 +1,36 @@
+
+@startuml
+
+    !include ../../documentation/lexakai/lexakai.theme
+
+    title "Microservice"
+
+    Microservice -down-o MicroservletFilter
+
+    class Microservice
+    {
+        # mount(String path, Microservlet)
+    }
+
+    class Microservlet<Request, Response>
+    {
+        # getObject(String key, StringConverter<T>) : T
+        # getInt(String key) : int
+        # getLong(String key) : long
+        # getString(String key) : String
+        + onPost(Request) : Response
+        + onGet() : Response
+    }
+
+    MicroservletFilter "*" -down-o "1" Microservlet
+
+    class MicroservletFilter extends Filter
+    {
+        + doFilter(ServletRequest, ServletResponse, FilterChain)
+
+        # mount(String path, Microservlet)
+    }
+
+    note left of MicroservletFilter: Paths are matched from longest to shortest
+
+@enduml
