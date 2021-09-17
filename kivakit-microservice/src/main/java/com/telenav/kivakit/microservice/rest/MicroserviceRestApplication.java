@@ -18,8 +18,11 @@
 
 package com.telenav.kivakit.microservice.rest;
 
-import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.microservice.rest.servlet.JettyMicroserviceFilter;
+import com.google.gson.Gson;
+import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.microservice.Microservice;
+import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservlet;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
 
@@ -33,20 +36,49 @@ import javax.ws.rs.ApplicationPath;
 @ApplicationPath("/api")
 public abstract class MicroserviceRestApplication extends BaseRestApplication
 {
-    private final JettyMicroserviceFilter filter = new JettyMicroserviceFilter(this);
+    private final Microservice microservice;
 
-    public MicroserviceRestApplication()
+    private JettyMicroservlet jettyMicroservlet;
+
+    public MicroserviceRestApplication(Microservice microservice)
     {
+        this.microservice = microservice;
+
+        // Install the Jersey JSON serializer with the given Gson factory
         register(new JerseyGsonSerializer<>(gsonFactory()));
     }
 
+    /**
+     * @return Factory that can create a {@link Gson} instance for serializing JSON object
+     */
     public abstract MicroserviceGsonFactory gsonFactory();
 
     /**
-     * Mounts the given request method on the given path. Paths descend from the root of the server.
+     * @return The microservice to which this rest application belongs
      */
-    protected final void mount(String path, Class<? extends MicroserviceRestRequest<?>> request)
+    public Microservice microservice()
     {
-        filter.mount("/api/" + Application.get().version() + "/" + path, request);
+        return microservice;
+    }
+
+    public void mount(String path, Class<Microservlet<?, ?>> microservletType)
+    {
+        try
+        {
+            var microservlet = microservletType
+                    .getConstructor(Listener.class)
+                    .newInstance(this);
+
+            mount(path, microservlet);
+        }
+        catch (final Exception e)
+        {
+            problem("Couldn't construct converter: $", microservletType);
+        }
+    }
+
+    public void mount(String path, Microservlet microservlet)
+    {
+        jettyMicroservlet.mount(path, microservlet);
     }
 }

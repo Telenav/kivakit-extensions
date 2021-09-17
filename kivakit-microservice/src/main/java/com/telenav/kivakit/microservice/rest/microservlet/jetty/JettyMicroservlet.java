@@ -16,9 +16,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.rest.servlet;
+package com.telenav.kivakit.microservice.rest.microservlet.jetty;
 
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
+import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyFilter;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -27,7 +28,6 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.ERROR;
 import static javax.servlet.DispatcherType.FORWARD;
@@ -40,15 +40,15 @@ import static javax.servlet.DispatcherType.REQUEST;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyMicroservice extends BaseJettyFilter
+public class JettyMicroservlet extends BaseJettyFilter
 {
-    private final MicroserviceRestApplication application;
+    private JettyMicroservletFilterHolder holder;
 
-    public JettyMicroservice(MicroserviceRestApplication application)
+    public JettyMicroservlet(MicroserviceRestApplication application)
     {
         super(application.getClass().getSimpleName());
 
-        this.application = ensureNotNull(application);
+        application.listenTo(new JettyMicroservletFilterHolder(application));
     }
 
     /**
@@ -66,6 +66,11 @@ public class JettyMicroservice extends BaseJettyFilter
     @Override
     public FilterHolder holder()
     {
-        return new JettyMicroserviceFilterHolder(application);
+        return holder;
+    }
+
+    public void mount(String path, Microservlet<?, ?> microservlet)
+    {
+        holder.mount(path, microservlet);
     }
 }

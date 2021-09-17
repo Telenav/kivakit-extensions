@@ -151,6 +151,8 @@ public abstract class Microservice extends Application implements Startable
         return running;
     }
 
+    public abstract MicroserviceMetadata metadata();
+
     /**
      * {@inheritDoc}
      */
@@ -214,10 +216,8 @@ public abstract class Microservice extends Application implements Startable
         return true;
     }
 
-    protected abstract MicroserviceMetadata metadata();
-
     /**
-     * Called to initialize the microservice before it Time start = Time.now();s running
+     * Called to initialize the microservice before it's running
      */
     protected void onInitialize()
     {
@@ -226,10 +226,10 @@ public abstract class Microservice extends Application implements Startable
     @Override
     protected final void onRun()
     {
-        // Let the microservice initialize,
+        // Initialize this microservice,
         onInitialize();
 
-        // then start it.
+        // then start it running.
         start();
     }
 
@@ -243,12 +243,9 @@ public abstract class Microservice extends Application implements Startable
     }
 
     /**
-     * @return The REST application, if any
+     * @return The REST application
      */
-    protected MicroserviceRestApplication restApplication()
-    {
-        return null;
-    }
+    protected abstract MicroserviceRestApplication restApplication();
 
     /**
      * @return The resource folder containing static assets. The resources will be mounted on <i>/assets</i>.

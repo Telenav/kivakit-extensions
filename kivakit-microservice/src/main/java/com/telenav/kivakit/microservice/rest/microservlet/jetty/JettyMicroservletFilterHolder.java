@@ -16,10 +16,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.rest.servlet;
+package com.telenav.kivakit.microservice.rest.microservlet.jetty;
 
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
+import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.FilterHolder;
 
@@ -27,16 +28,24 @@ import org.eclipse.jetty.servlet.FilterHolder;
  * <b>Not public API</b>
  *
  * <p>
- * Installs and configures the {@link JettyMicroserviceFilter} required to handle REST requests.
+ * Installs and configures the {@link JettyMicroservletFilter} required to handle REST requests.
  * </p>
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyMicroserviceFilterHolder extends FilterHolder implements ComponentMixin
+public class JettyMicroservletFilterHolder extends FilterHolder implements ComponentMixin
 {
-    public JettyMicroserviceFilterHolder(final MicroserviceRestApplication application)
+    private final JettyMicroservletFilter filter;
+
+    public JettyMicroservletFilterHolder(final MicroserviceRestApplication application)
     {
-        setFilter(listenTo(new JettyMicroserviceFilter(application)));
+        filter = new JettyMicroservletFilter(application);
+        setFilter(listenTo(filter));
+    }
+
+    public void mount(String path, Microservlet<?, ?> microservlet)
+    {
+        filter.mount(path, microservlet);
     }
 }

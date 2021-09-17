@@ -12,4 +12,7 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.web;
     exports com.telenav.kivakit.microservice.rest.methods;
     exports com.telenav.kivakit.microservice.rest.servlet;
+    exports com.telenav.kivakit.microservice.rest.microservlet;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty;
+    exports com.telenav.kivakit.microservice.rest.microservlet.cycle;
 }
