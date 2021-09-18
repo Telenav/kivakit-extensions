@@ -3,8 +3,8 @@ package com.telenav.kivakit.microservice.rest.microservlet;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.conversion.Converter;
 import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.microservice.rest.microservlet.cycle.MicroservletRequestCycle;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
@@ -12,7 +12,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 /**
  * A microservlet responds to GET and POST requests made to the {@link JettyMicroservletFilter}.
  */
-public class Microservlet<Request, Response> extends BaseComponent
+public class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent
 {
     /** The type of the request object */
     private final Class<? extends Request> requestType;
@@ -21,7 +21,7 @@ public class Microservlet<Request, Response> extends BaseComponent
     private final Class<? extends Response> responseType;
 
     /** A thread local variable holding the request cycle for a given thread using this servlet */
-    private final ThreadLocal<MicroservletRequestCycle> cycle = new ThreadLocal<>();
+    private final ThreadLocal<JettyMicroservletRequestCycle> cycle = new ThreadLocal<>();
 
     /**
      * @param requestType The Request type
@@ -37,7 +37,7 @@ public class Microservlet<Request, Response> extends BaseComponent
      * Attaches a request cycle to this servlet. The association is thread-local so that {@link Microservlet}s are
      * thread-safe but also have access to request cycle information.
      */
-    public void attach(MicroservletRequestCycle cycle)
+    public void attach(JettyMicroservletRequestCycle cycle)
     {
         this.cycle.set(cycle);
     }
@@ -48,6 +48,11 @@ public class Microservlet<Request, Response> extends BaseComponent
     public void detach()
     {
         attach(null);
+    }
+
+    public Response get()
+    {
+        return onGet();
     }
 
     /**
@@ -64,6 +69,12 @@ public class Microservlet<Request, Response> extends BaseComponent
     public Response onPost(Request request)
     {
         return unsupported("Microservlet $ does not support method: POST", objectName());
+    }
+
+    @SuppressWarnings("unchecked")
+    public Response post(final MicroservletRequest request)
+    {
+        return onPost((Request) request);
     }
 
     /**
@@ -129,7 +140,7 @@ public class Microservlet<Request, Response> extends BaseComponent
     /**
      * @return The active request cycle for the calling thread
      */
-    protected MicroservletRequestCycle cycle()
+    protected JettyMicroservletRequestCycle cycle()
     {
         return cycle.get();
     }

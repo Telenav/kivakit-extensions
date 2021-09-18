@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.rest.microservlet.cycle;
+package com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Represents a request / response cycle for a microservlet.
  * <p>
- * Provides the {@link MicroservletRequest} and {@link MicroserviceResponse} via {@link #request()} and {@link
+ * Provides the {@link JettyMicroservletRequest} and {@link JettyMicroserviceResponse} via {@link #request()} and {@link
  * #response()}. Also provides a {@link Gson} instance created by the application's factory for serialization of request
  * and response objects.
  * </p>
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jonathanl (shibo)
  */
-public class MicroservletRequestCycle extends BaseComponent
+public class JettyMicroservletRequestCycle extends BaseComponent
 {
     /** The REST application that owns this request cycle */
     private final MicroserviceRestApplication application;
@@ -36,10 +36,10 @@ public class MicroservletRequestCycle extends BaseComponent
     private Microservlet<?, ?> servlet;
 
     /** The request */
-    private final MicroservletRequest request;
+    private final JettyMicroservletRequest request;
 
     /** The response **/
-    private final MicroserviceResponse response;
+    private final JettyMicroserviceResponse response;
 
     /** A Gson instance provided by the {@link MicroserviceRestApplication}'s factory */
     private final Lazy<Gson> gson = Lazy.of(() -> application().gsonFactory().newInstance());
@@ -49,13 +49,13 @@ public class MicroservletRequestCycle extends BaseComponent
      * @param request The Java Servlet API HTTP request object
      * @param response The Java Servlet API HTTP response object
      */
-    public MicroservletRequestCycle(final MicroserviceRestApplication application,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
+    public JettyMicroservletRequestCycle(final MicroserviceRestApplication application,
+                                         final HttpServletRequest request,
+                                         final HttpServletResponse response)
     {
         this.application = application;
-        this.request = listenTo(new MicroservletRequest(this, request));
-        this.response = listenTo(new MicroserviceResponse(this, response));
+        this.request = listenTo(new JettyMicroservletRequest(this, request));
+        this.response = listenTo(new JettyMicroserviceResponse(this, response));
     }
 
     /**
@@ -88,7 +88,7 @@ public class MicroservletRequestCycle extends BaseComponent
     /**
      * @return The request
      */
-    public MicroservletRequest request()
+    public JettyMicroservletRequest request()
     {
         return request;
     }
@@ -96,7 +96,7 @@ public class MicroservletRequestCycle extends BaseComponent
     /**
      * @return The response
      */
-    public MicroserviceResponse response()
+    public JettyMicroserviceResponse response()
     {
         return response;
     }

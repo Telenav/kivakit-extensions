@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.rest.microservlet.cycle;
+package com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jonathanl (shibo)
  */
-public final class MicroserviceResponse extends BaseComponent
+public final class JettyMicroserviceResponse extends BaseComponent
 {
     /** Any problem that occurred */
     @KivaKitExcludeProperty
@@ -29,12 +29,12 @@ public final class MicroserviceResponse extends BaseComponent
     private Object object;
 
     /** The request cycle to which this response belongs */
-    private final MicroservletRequestCycle cycle;
+    private final JettyMicroservletRequestCycle cycle;
 
     /** Servlet response */
     private final HttpServletResponse response;
 
-    public MicroserviceResponse(MicroservletRequestCycle cycle, HttpServletResponse response)
+    public JettyMicroserviceResponse(JettyMicroservletRequestCycle cycle, HttpServletResponse response)
     {
         this.cycle = cycle;
         this.response = response;
@@ -48,35 +48,6 @@ public final class MicroserviceResponse extends BaseComponent
         return problem != null
                 ? Result.failed(problem)
                 : Result.succeeded(object);
-    }
-
-    /**
-     * Writes the given response object to the servlet output stream in JSON format.
-     */
-    public void object(final Object object)
-    {
-        // If the object can be validated,
-        if (object instanceof Validatable)
-        {
-            // then validate it.
-            final var validatable = (Validatable) object;
-            validatable.validator().validate(this);
-        }
-
-        // If there is no problem with the response,
-        if (problem() == null)
-        {
-            try
-            {
-                // then output JSON for the object to the servlet output stream.
-                var out = this.response.getOutputStream();
-                out.println(cycle.gson().toJson(object));
-            }
-            catch (Exception e)
-            {
-                problem(e, "Unable to write JSON response to servlet output stream");
-            }
-        }
     }
 
     /**
@@ -117,5 +88,34 @@ public final class MicroserviceResponse extends BaseComponent
                 .microservice()
                 .metadata()
                 .version();
+    }
+
+    /**
+     * Writes the given response object to the servlet output stream in JSON format.
+     */
+    public void writeObject(final Object object)
+    {
+        // If the object can be validated,
+        if (object instanceof Validatable)
+        {
+            // then validate it.
+            final var validatable = (Validatable) object;
+            validatable.validator().validate(this);
+        }
+
+        // If there is no problem with the response,
+        if (problem() == null)
+        {
+            try
+            {
+                // then output JSON for the object to the servlet output stream.
+                var out = this.response.getOutputStream();
+                out.println(cycle.gson().toJson(object));
+            }
+            catch (Exception e)
+            {
+                problem(e, "Unable to write JSON response to servlet output stream");
+            }
+        }
     }
 }

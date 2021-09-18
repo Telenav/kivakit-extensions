@@ -16,15 +16,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.rest.microservlet.cycle;
+package com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
+import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
@@ -39,20 +41,20 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * Represents a request to a microservlet.
  *
  * <p>
- * The {@link #object(Class)} method parses the JSON payload of a POST request into an object of the given type. It then
- * calls the validator of the object, if it implements {@link Validatable}. Parameters to the request (both path and
- * query parameters) can be retrieved with {@link #parameters()}. The requested path is available through {@link
- * #path()}, and the version of the REST application is provided by {@link #version()}.
+ * The {@link #readObject(Class)} method parses the JSON payload of a POST request into an object of the given type. It
+ * then calls the {@link Validator} of the object. Parameters to the request (both path and query parameters) can be
+ * retrieved with {@link #parameters()}. The requested path is available through {@link #path()}, and the version of the
+ * REST application is provided by {@link #version()}.
  * </p>
  *
  * @author jonathanl (shibo)
  * @see Validatable
  * @see BaseComponent
  */
-public class MicroservletRequest extends BaseComponent
+public class JettyMicroservletRequest extends BaseComponent
 {
     /** The request cycle to which this request belongs */
-    private final MicroservletRequestCycle cycle;
+    private final JettyMicroservletRequestCycle cycle;
 
     /** Servlet request */
     private final HttpServletRequest request;
@@ -64,42 +66,10 @@ public class MicroservletRequest extends BaseComponent
      * @param cycle The request cycle for the {@link Microservlet}
      * @param request The Java Servlet API HTTP request object
      */
-    public MicroservletRequest(MicroservletRequestCycle cycle, HttpServletRequest request)
+    public JettyMicroservletRequest(JettyMicroservletRequestCycle cycle, HttpServletRequest request)
     {
         this.cycle = cycle;
         this.request = request;
-    }
-
-    /**
-     * Retrieves an object from the JSON in the servlet request input stream.
-     *
-     * @param type The type of object to deserialize from JSON
-     * @param <T> The object type
-     * @return The deserialized object, or null if deserialization failed
-     */
-    public <T> T object(Class<T> type)
-    {
-        try
-        {
-            // Read JSON object from servlet input
-            var in = request.getInputStream();
-            var object = cycle.gson().fromJson(IO.string(in), type);
-
-            // If the object can be validated,
-            if (object instanceof Validatable)
-            {
-                // then validate it.
-                final var validatable = (Validatable) object;
-                validatable.validator().validate(this);
-            }
-
-            return object;
-        }
-        catch (Exception e)
-        {
-            problem(e, "Unable to read JSON request from servlet input stream");
-            return null;
-        }
     }
 
     /**
@@ -140,6 +110,30 @@ public class MicroservletRequest extends BaseComponent
 
         // then return the URI without the context path
         return FilePath.parseFilePath(uri.substring(contextPath.length()));
+    }
+
+    /**
+     * Retrieves an object from the JSON in the servlet request input stream.
+     *
+     * @param requestType The type of object to deserialize from JSON
+     * @param <T> The object type
+     * @return The deserialized object, or null if deserialization failed
+     */
+    public <T extends MicroservletRequest> T readObject(Class<T> requestType)
+    {
+        try
+        {
+            // Read JSON object from servlet input
+            var in = request.getInputStream();
+            var object = cycle.gson().fromJson(IO.string(in), requestType);
+            object.validator().validate(this);
+            return object;
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to read JSON request from servlet input stream");
+            return null;
+        }
     }
 
     public String toString()

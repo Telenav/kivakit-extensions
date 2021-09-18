@@ -19,39 +19,75 @@
 package com.telenav.kivakit.microservice.rest;
 
 import com.google.gson.Gson;
+import com.telenav.kivakit.kernel.data.validation.Validatable;
+import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroserviceResponse;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequest;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
 
-import javax.ws.rs.ApplicationPath;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 
 /**
- * REST interface for the KivaKit example microservice
+ * Base class for KivaKit microservice REST applications.
+ *
+ * <p><b>Flow of Control</b></p>
+ *
+ * <ol>
+ *     <li>{@link MicroserviceRestApplication} creates a {@link JettyMicroservlet}</li>
+ *     <li>In the {@link MicroserviceRestApplication} subclass constructor, to <i>mount*()</i> methods are used to bind {@link Microservlet}s to paths</li>
+ *     <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link JettyMicroservlet}</li>
+ *     <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} method parses the request path and parameters</li>
+ *     <li>The request path is used to resolve any {@link Microservlet} mounted on the path</li>
+ *     <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
+ *     <li>If the HTTP request method is POST, the {@link Microservlet#onPost(MicroservletRequest)} method is called</li>
+ *     <li>If the HTTP request method is GET, the {@link Microservlet#onGet()} method is called</li>
+ *     <li>The return value from onPost() or onGet() is passed to {@link JettyMicroserviceResponse#writeObject(Object)}, which:</li>
+ *     <ol>
+ *         <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
+ *         <li>Converts the object to JSON using the {@link Gson} object provided by {@link MicroserviceRestApplication#gsonFactory()}</li>
+ *         <li>Writes the JSON object to the servlet response output stream</li>
+ *     </ol>
+ * </ol>
  *
  * @author jonathanl (shibo)
  */
-@ApplicationPath("/api")
 public abstract class MicroserviceRestApplication extends BaseRestApplication
 {
+    /** The microservice that owns this REST application */
     private final Microservice microservice;
 
-    private JettyMicroservlet jettyMicroservlet;
+    /** The Jetty microservlet filter plugin for this REST application */
+    private final JettyMicroservlet jettyMicroservlet;
 
+    /**
+     * @param microservice The microservice that is creating this REST application
+     */
     public MicroserviceRestApplication(Microservice microservice)
     {
         this.microservice = microservice;
+        this.jettyMicroservlet = new JettyMicroservlet(this);
 
-        // Install the Jersey JSON serializer with the given Gson factory
+        // Register the Jersey JSON serializer with the given Gson factory
         register(new JerseyGsonSerializer<>(gsonFactory()));
     }
 
     /**
      * @return Factory that can create a {@link Gson} instance for serializing JSON object
      */
-    public abstract MicroserviceGsonFactory gsonFactory();
+    public MicroserviceGsonFactory gsonFactory()
+    {
+        return new MicroserviceGsonFactory();
+    }
 
     /**
      * @return The microservice to which this rest application belongs
@@ -61,23 +97,46 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         return microservice;
     }
 
-    public void mount(String path, Class<Microservlet<?, ?>> microservletType)
+    /**
+     * Mounts the given request class on the given path
+     *
+     * @param path The path to mount on
+     * @param requestType The type of the request
+     */
+    @SuppressWarnings("unchecked")
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    void mount(String path, Class<Request> requestType)
     {
         try
         {
-            var microservlet = microservletType
-                    .getConstructor(Listener.class)
-                    .newInstance(this);
+            // Create a request object so we can get the response type,
+            var request = requestType.getConstructor().newInstance();
 
-            mount(path, microservlet);
+            // then mount a microservlet on the given path
+            mount(path, listenTo(new Microservlet<Request, Response>(requestType, (Class<Response>) request.responseType())
+            {
+                @Override
+                @SuppressWarnings("unchecked")
+                public Response onPost(Request request)
+                {
+                    // that simply returns the object returned by respond().
+                    return (Response) request.respond();
+                }
+            }));
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
-            problem("Couldn't construct converter: $", microservletType);
+            problem(e, "Couldn't construct request: $", requestType);
         }
     }
 
-    public void mount(String path, Microservlet microservlet)
+    /**
+     * Mounts the given microservlet on the given path
+     *
+     * @param path The path to the microservlet
+     * @param microservlet The microservlet to mounds
+     */
+    public void mount(String path, Microservlet<?, ?> microservlet)
     {
         jettyMicroservlet.mount(path, microservlet);
     }

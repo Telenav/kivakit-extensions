@@ -5,7 +5,8 @@ import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.cycle.MicroservletRequestCycle;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.resource.path.FilePath;
 
 import javax.servlet.Filter;
@@ -32,10 +33,10 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
  * </p>
  *
  * <p>
- * The POST method results in a call to {@link Microservlet#onPost(Object)}, where the parameter is the posted JSON
- * object. The GET method results in a call to {@link Microservlet#onGet()}. The object returned from either method is
- * written to the response output in JSON format. The {@link Gson} object used to serialize and deserialize JSON objects
- * is obtained from the {@link MicroserviceRestApplication} passed to the filter constructor.
+ * The POST method results in a call to {@link Microservlet#onPost(MicroservletRequest)} , where the parameter is the
+ * posted JSON object. The GET method results in a call to {@link Microservlet#onGet()}. The object returned from either
+ * method is written to the response output in JSON format. The {@link Gson} object used to serialize and deserialize
+ * JSON objects is obtained from the {@link MicroserviceRestApplication} passed to the filter constructor.
  * </p>
  *
  * @author jonathanl (shibo)
@@ -43,7 +44,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 public class JettyMicroservletFilter implements Filter, ComponentMixin
 {
     /** Map from path to servlet */
-    private final Map<String, Microservlet> pathToServlet = new HashMap<>();
+    private final Map<FilePath, Microservlet<?, ?>> pathToServlet = new HashMap<>();
 
     /** The microservice rest application */
     private final MicroserviceRestApplication application;
@@ -78,7 +79,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
         var httpResponse = (HttpServletResponse) servletResponse;
 
         // create microservlet request cycle,
-        var cycle = listenTo(new MicroservletRequestCycle(application, httpRequest, httpResponse));
+        var cycle = listenTo(new JettyMicroservletRequestCycle(application, httpRequest, httpResponse));
 
         // resolve the microservlet at the requested path,
         final var servlet = resolve(cycle.request().path());
@@ -116,9 +117,9 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    public final void mount(String path, Microservlet servlet)
+    public final void mount(String path, Microservlet<?, ?> servlet)
     {
-        pathToServlet.put("/api/" + Application.get().version() + "/" + path, servlet);
+        pathToServlet.put(FilePath.parseFilePath("/api/" + Application.get().version() + "/" + path), servlet);
     }
 
     /**
@@ -129,8 +130,8 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
      * @param servlet The microservlet to call
      */
     private void handleRequest(final String method,
-                               final MicroservletRequestCycle cycle,
-                               final Microservlet servlet)
+                               final JettyMicroservletRequestCycle cycle,
+                               final Microservlet<?, ?> servlet)
     {
         // Attach the request cycle to the microservlet and vice versa,
         servlet.attach(cycle);
@@ -142,17 +143,17 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
             case "POST":
             {
                 // then get the posted object,
-                var request = cycle.request().object(servlet.responseType());
+                var request = cycle.request().readObject(servlet.requestType());
 
                 // and respond with the object returned from onPost.
-                cycle.response().object(servlet.onPost(request));
+                cycle.response().writeObject(servlet.post(request));
             }
             break;
 
             case "GET":
             {
                 // then respond with the object returned from onGet.
-                cycle.response().object(servlet.onGet());
+                cycle.response().writeObject(servlet.get());
             }
             break;
 
@@ -173,7 +174,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
      * @param path The mount path
      * @return The microservlet at the given path, or null if the path does not map to any microservlet
      */
-    private Microservlet resolve(FilePath path)
+    private Microservlet<?, ?> resolve(FilePath path)
     {
         for (; path.isNonEmpty(); path = path.withoutLast())
         {
