@@ -21,17 +21,23 @@ package com.telenav.kivakit.microservice.rest;
 import com.google.gson.Gson;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
+import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
+import com.telenav.kivakit.microservice.rest.microservlet.model.methods.MicroservletGet;
+import com.telenav.kivakit.microservice.rest.microservlet.model.methods.MicroservletPost;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
+import io.swagger.v3.oas.models.info.Info;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
@@ -77,8 +83,9 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         this.microservice = microservice;
         this.jettyMicroservlet = new JettyMicroservlet(this);
 
-        // Register the Jersey JSON serializer with the given Gson factory
         register(new JerseyGsonSerializer<>(gsonFactory()));
+
+        mount("/open-api", JettyOpenApiRequest.class);
     }
 
     /**
@@ -107,26 +114,29 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(String path, Class<Request> requestType)
     {
-        try
+        // Create a request object so we can get the response type,
+        var request = Classes.newInstance(this, requestType);
+        if (request != null)
         {
-            // Create a request object so we can get the response type,
-            var request = requestType.getConstructor().newInstance();
-
-            // then mount a microservlet on the given path
-            mount(path, listenTo(new Microservlet<Request, Response>(requestType, (Class<Response>) request.responseType())
+            // then mount an anonymous microservlet on the given path,
+            final Class<Response> responseType = (Class<Response>) request.responseType();
+            mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
             {
+                @Override
+                public Response onGet(Request request)
+                {
+                    // and if the microservlet receives a GET request, return the value of the request object,
+                    return (Response) ((MicroservletGet) request).onGet();
+                }
+
                 @Override
                 @SuppressWarnings("unchecked")
                 public Response onPost(Request request)
                 {
-                    // that simply returns the object returned by respond().
-                    return (Response) request.respond();
+                    // and if the microservlet receives a POST request, return the value of the request object.
+                    return (Response) ((MicroservletPost) request).onPost();
                 }
             }));
-        }
-        catch (Exception e)
-        {
-            problem(e, "Couldn't construct request: $", requestType);
         }
     }
 
@@ -139,5 +149,21 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     public void mount(String path, Microservlet<?, ?> microservlet)
     {
         jettyMicroservlet.mount(path, microservlet);
+    }
+
+    /**
+     * OpenAPI {@link Info} for this REST application. This method can be overridden to provide more detail that what is
+     * in {@link MicroserviceMetadata}.
+     */
+    public Info openApiInfo()
+    {
+        // Get the microservice metadata,
+        var metadata = microservice.metadata();
+
+        // and add it to the OpenAPI object.
+        return new Info()
+                .version(metadata.version().toString())
+                .description(metadata.description())
+                .title(metadata.name());
     }
 }

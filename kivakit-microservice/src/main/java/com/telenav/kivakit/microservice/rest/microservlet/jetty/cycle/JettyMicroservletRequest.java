@@ -26,7 +26,6 @@ import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludePro
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
@@ -119,14 +118,20 @@ public class JettyMicroservletRequest extends BaseComponent
      * @param <T> The object type
      * @return The deserialized object, or null if deserialization failed
      */
-    public <T extends MicroservletRequest> T readObject(Class<T> requestType)
+    public <T> T readObject(Class<T> requestType)
     {
         try
         {
             // Read JSON object from servlet input
             var in = request.getInputStream();
             var object = cycle.gson().fromJson(IO.string(in), requestType);
-            object.validator().validate(this);
+
+            // and validate it if we can
+            if (object instanceof Validatable)
+            {
+                ((Validatable) object).validator().validate(this);
+            }
+            
             return object;
         }
         catch (Exception e)

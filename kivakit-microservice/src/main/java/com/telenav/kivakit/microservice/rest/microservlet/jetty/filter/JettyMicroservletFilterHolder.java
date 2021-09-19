@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.rest.microservlet.jetty;
+package com.telenav.kivakit.microservice.rest.microservlet.jetty.filter;
 
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
@@ -40,8 +40,12 @@ public class JettyMicroservletFilterHolder extends FilterHolder implements Compo
 
     public JettyMicroservletFilterHolder(final MicroserviceRestApplication application)
     {
-        filter = new JettyMicroservletFilter(application);
-        setFilter(listenTo(filter));
+        setFilter(listenTo(filter = new JettyMicroservletFilter(application)));
+    }
+
+    public JettyMicroservletFilter filter()
+    {
+        return filter;
     }
 
     public void mount(String path, Microservlet<?, ?> microservlet)

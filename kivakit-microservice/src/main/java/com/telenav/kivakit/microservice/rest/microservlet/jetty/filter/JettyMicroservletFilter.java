@@ -1,12 +1,13 @@
-package com.telenav.kivakit.microservice.rest.microservlet.jetty;
+package com.telenav.kivakit.microservice.rest.microservlet.jetty.filter;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
+import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.resource.path.FilePath;
 
 import javax.servlet.Filter;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
@@ -33,28 +35,29 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
  * </p>
  *
  * <p>
- * The POST method results in a call to {@link Microservlet#onPost(MicroservletRequest)} , where the parameter is the
- * posted JSON object. The GET method results in a call to {@link Microservlet#onGet()}. The object returned from either
- * method is written to the response output in JSON format. The {@link Gson} object used to serialize and deserialize
- * JSON objects is obtained from the {@link MicroserviceRestApplication} passed to the filter constructor.
+ * The POST method results in a call to {@link Microservlet#onPost(MicroservletRequest)}, where the parameter is the
+ * posted JSON object. The GET method results in a call to {@link Microservlet#onGet(MicroservletRequest)}. The object
+ * returned from either method is written to the response output in JSON format. The {@link Gson} object used to
+ * serialize and deserialize JSON objects is obtained from the {@link MicroserviceRestApplication} passed to the filter
+ * constructor.
  * </p>
  *
  * @author jonathanl (shibo)
  */
 public class JettyMicroservletFilter implements Filter, ComponentMixin
 {
-    /** Map from path to servlet */
-    private final Map<FilePath, Microservlet<?, ?>> pathToServlet = new HashMap<>();
+    /** Map from path to microservlet */
+    private final Map<FilePath, Microservlet<?, ?>> pathToMicroservlet = new HashMap<>();
 
     /** The microservice rest application */
-    private final MicroserviceRestApplication application;
+    private final MicroserviceRestApplication restApplication;
 
     /**
-     * @param application The REST application that is using this filter
+     * @param restApplication The REST application that is using this filter
      */
-    public JettyMicroservletFilter(final MicroserviceRestApplication application)
+    public JettyMicroservletFilter(final MicroserviceRestApplication restApplication)
     {
-        this.application = application;
+        this.restApplication = restApplication;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
     }
 
     /**
-     * Main Servlet API filter entrypoint
+     * Main Java Servlet API filter entrypoint
      *
      * @param servletRequest The servlet request
      * @param servletResponse The servlet response
@@ -79,20 +82,20 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
         var httpResponse = (HttpServletResponse) servletResponse;
 
         // create microservlet request cycle,
-        var cycle = listenTo(new JettyMicroservletRequestCycle(application, httpRequest, httpResponse));
+        var cycle = listenTo(new JettyMicroservletRequestCycle(restApplication, httpRequest, httpResponse));
 
         // resolve the microservlet at the requested path,
-        final var servlet = resolve(cycle.request().path());
-        if (servlet != null)
+        final var microservlet = resolve(cycle.request().path());
+        if (microservlet != null)
         {
             try
             {
-                // and attach the request cycle to the (stateless) servlet via thread-local map.
-                handleRequest(httpRequest.getMethod(), cycle, servlet);
+                // and attach the request cycle to the (stateless) microservlet via thread-local map.
+                handleRequest(httpRequest.getMethod(), cycle, microservlet);
             }
             catch (Exception e)
             {
-                problem(e, "REST $ method to $ failed", httpRequest.getMethod(), servlet.objectName());
+                problem(e, "REST $ method to $ failed", httpRequest.getMethod(), microservlet.objectName());
             }
         }
         else
@@ -114,12 +117,27 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
     {
     }
 
+    public Microservlet<?, ?> microservlet(final FilePath path)
+    {
+        return pathToMicroservlet.get(path);
+    }
+
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    public final void mount(String path, Microservlet<?, ?> servlet)
+    public final void mount(String path, Microservlet<?, ?> microservlet)
     {
-        pathToServlet.put(FilePath.parseFilePath("/api/" + Application.get().version() + "/" + path), servlet);
+        pathToMicroservlet.put(FilePath.parseFilePath("/api/" + Application.get().version() + "/" + path), microservlet);
+    }
+
+    public Set<FilePath> paths()
+    {
+        return pathToMicroservlet.keySet();
+    }
+
+    public MicroserviceRestApplication restApplication()
+    {
+        return restApplication;
     }
 
     /**
@@ -127,33 +145,36 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
      *
      * @param method The method, either GET or POST
      * @param cycle The request cycle
-     * @param servlet The microservlet to call
+     * @param microservlet The microservlet to call
      */
     private void handleRequest(final String method,
                                final JettyMicroservletRequestCycle cycle,
-                               final Microservlet<?, ?> servlet)
+                               final Microservlet<?, ?> microservlet)
     {
         // Attach the request cycle to the microservlet and vice versa,
-        servlet.attach(cycle);
-        cycle.attach(servlet);
+        microservlet.attach(cycle);
+        cycle.attach(microservlet);
 
         // and if the request method is
         switch (method)
         {
             case "POST":
             {
-                // then get the posted object,
-                var request = cycle.request().readObject(servlet.requestType());
+                // then convert the posted JSON to an object of the request type,
+                var request = listenTo(cycle.request().readObject(microservlet.requestType()));
 
                 // and respond with the object returned from onPost.
-                cycle.response().writeObject(servlet.post(request));
+                cycle.response().writeObject(microservlet.post(request));
             }
             break;
 
             case "GET":
             {
-                // then respond with the object returned from onGet.
-                cycle.response().writeObject(servlet.get());
+                // then create an empty request object,
+                var request = Classes.newInstance(this, microservlet.requestType());
+
+                // and respond with the object returned from onGet.
+                cycle.response().writeObject(microservlet.get(request));
             }
             break;
 
@@ -164,7 +185,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
         }
 
         // Detach the request cycle.
-        servlet.detach();
+        microservlet.detach();
     }
 
     /**
@@ -178,10 +199,10 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
     {
         for (; path.isNonEmpty(); path = path.withoutLast())
         {
-            var servlet = pathToServlet.get(path);
-            if (servlet != null)
+            var microservlet = microservlet(path);
+            if (microservlet != null)
             {
-                return servlet;
+                return microservlet;
             }
         }
 

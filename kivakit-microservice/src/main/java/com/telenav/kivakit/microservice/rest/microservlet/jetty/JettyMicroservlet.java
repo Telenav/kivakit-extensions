@@ -20,10 +20,11 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty;
 
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilterHolder;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyFilter;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.eclipse.jetty.servlet.FilterHolder;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
@@ -42,8 +43,12 @@ import static javax.servlet.DispatcherType.REQUEST;
 @LexakaiJavadoc(complete = true)
 public class JettyMicroservlet extends BaseJettyFilter
 {
-    private JettyMicroservletFilterHolder holder;
+    /** The Jetty holder for an instance of {@link JettyMicroservletFilter} */
+    private JettyMicroservletFilterHolder filterHolder;
 
+    /**
+     * @param application The REST application
+     */
     public JettyMicroservlet(MicroserviceRestApplication application)
     {
         super(application.getClass().getSimpleName());
@@ -64,13 +69,16 @@ public class JettyMicroservlet extends BaseJettyFilter
      * {@inheritDoc}
      */
     @Override
-    public FilterHolder holder()
+    public JettyMicroservletFilterHolder holder()
     {
-        return holder;
+        return filterHolder;
     }
 
+    /**
+     * Forwards requests to mount microservlets to the filter holder
+     */
     public void mount(String path, Microservlet<?, ?> microservlet)
     {
-        holder.mount(path, microservlet);
+        filterHolder.mount(path, microservlet);
     }
 }

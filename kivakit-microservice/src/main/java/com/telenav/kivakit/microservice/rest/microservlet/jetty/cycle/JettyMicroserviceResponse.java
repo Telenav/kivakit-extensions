@@ -3,12 +3,9 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.interfaces.messaging.Transmittable;
-import com.telenav.kivakit.kernel.language.reflection.property.KivaKitExcludeProperty;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.messages.Result;
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,13 +18,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public final class JettyMicroserviceResponse extends BaseComponent
 {
-    /** Any problem that occurred */
-    @KivaKitExcludeProperty
-    private Problem problem;
-
-    /** Response object */
-    private Object object;
-
     /** The request cycle to which this response belongs */
     private final JettyMicroservletRequestCycle cycle;
 
@@ -38,38 +28,6 @@ public final class JettyMicroserviceResponse extends BaseComponent
     {
         this.cycle = cycle;
         this.response = response;
-    }
-
-    /**
-     * @return This response as a {@link Result} object
-     */
-    public Result<Object> asResult()
-    {
-        return problem != null
-                ? Result.failed(problem)
-                : Result.succeeded(object);
-    }
-
-    /**
-     * Capture any problem that might be sent to this response object
-     */
-    @Override
-    public void onTransmitting(final Transmittable message)
-    {
-        if (message instanceof Problem)
-        {
-            problem = (Problem) message;
-        }
-    }
-
-    /**
-     * @return Any problem, or null if there is no problem
-     */
-    @KivaKitIncludeProperty
-    @Schema(description = "A description of any problem that might have occurred")
-    public Problem problem()
-    {
-        return problem;
     }
 
     public String toString()
@@ -103,19 +61,15 @@ public final class JettyMicroserviceResponse extends BaseComponent
             validatable.validator().validate(this);
         }
 
-        // If there is no problem with the response,
-        if (problem() == null)
+        try
         {
-            try
-            {
-                // then output JSON for the object to the servlet output stream.
-                var out = this.response.getOutputStream();
-                out.println(cycle.gson().toJson(object));
-            }
-            catch (Exception e)
-            {
-                problem(e, "Unable to write JSON response to servlet output stream");
-            }
+            // then output JSON for the object to the servlet output stream.
+            var out = this.response.getOutputStream();
+            out.println(cycle.gson().toJson(object));
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to write JSON response to servlet output stream");
         }
     }
 }

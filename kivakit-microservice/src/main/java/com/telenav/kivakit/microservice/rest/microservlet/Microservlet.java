@@ -3,8 +3,10 @@ package com.telenav.kivakit.microservice.rest.microservlet;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.conversion.Converter;
 import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
@@ -12,7 +14,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 /**
  * A microservlet responds to GET and POST requests made to the {@link JettyMicroservletFilter}.
  */
-public class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent
+public abstract class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent
 {
     /** The type of the request object */
     private final Class<? extends Request> requestType;
@@ -43,6 +45,14 @@ public class Microservlet<Request extends MicroservletRequest, Response extends 
     }
 
     /**
+     * @return Description of what this microservice does, for OpenAPI
+     */
+    public String description()
+    {
+        return "No description available";
+    }
+
+    /**
      * Detaches any attached request cycle from this microservlet
      */
     public void detach()
@@ -50,15 +60,16 @@ public class Microservlet<Request extends MicroservletRequest, Response extends 
         attach(null);
     }
 
-    public Response get()
+    @SuppressWarnings("unchecked")
+    public Response get(final MicroservletRequest request)
     {
-        return onGet();
+        return onGet((Request) request);
     }
 
     /**
      * This method is unsupported unless overridden
      */
-    public Response onGet()
+    public Response onGet(Request request)
     {
         return unsupported("Microservlet $ does not support method: GET", objectName());
     }
