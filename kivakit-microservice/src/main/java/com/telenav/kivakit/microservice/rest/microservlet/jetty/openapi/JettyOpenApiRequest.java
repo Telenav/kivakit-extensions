@@ -1,20 +1,19 @@
 package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi;
 
-import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.microservice.Microservice;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.rest.microservlet.model.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletErrors;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
-import com.telenav.kivakit.microservice.rest.microservlet.model.methods.MicroservletGet;
-import com.telenav.kivakit.microservice.rest.microservlet.model.methods.MicroservletPost;
+import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletPostRequest;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import io.swagger.v3.core.converter.ModelConverters;
-import io.swagger.v3.jaxrs2.Reader;
-import io.swagger.v3.oas.integration.GenericOpenApiContext;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -23,28 +22,28 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.Content;
 import io.swagger.v3.oas.models.media.MediaType;
 import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+import org.apache.wicket.util.string.Strings;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
-
 /**
- * A {@link MicroservletGet} request that produces an {@link OpenAPI} definition for a {@link JettyMicroservlet}.
+ * A {@link MicroservletGetRequest} request that produces an {@link OpenAPI} definition for a {@link
+ * JettyMicroservlet}.
  */
-public class JettyOpenApiRequest extends MicroservletGet
+@UmlClassDiagram(diagram = DiagramJetty.class)
+public class JettyOpenApiRequest extends MicroservletGetRequest
 {
     /**
      * Response to OpenAPI request
      */
-    private class Response extends BaseMicroservletResponse
+    public class Response extends MicroservletResponse
     {
         @SuppressWarnings("FieldCanBeLocal")
         private final OpenAPI openAPI;
@@ -53,15 +52,21 @@ public class JettyOpenApiRequest extends MicroservletGet
         {
             openAPI = openApi();
         }
+
+        public OpenAPI openAPI()
+        {
+            return openAPI;
+        }
     }
 
     /** The Java Servlet API filter */
+    @UmlAggregation
     private final JettyMicroservletFilter filter;
 
     /** Models for which to make schemas */
     private final Set<Class<?>> models = new HashSet<>();
 
-    public JettyOpenApiRequest(JettyMicroservletFilter filter)
+    public JettyOpenApiRequest(final JettyMicroservletFilter filter)
     {
         this.filter = filter;
     }
@@ -80,7 +85,7 @@ public class JettyOpenApiRequest extends MicroservletGet
      */
     public OpenAPI openApi()
     {
-        var api = new OpenAPI();
+        final var api = new OpenAPI();
 
         // Add metadata
         addInfo(api);
@@ -107,7 +112,7 @@ public class JettyOpenApiRequest extends MicroservletGet
      * Adds a Swagger {@link Info} object to the given {@link OpenAPI} object. The {@link Info} object is populated from
      * {@link Microservice} metadata by {@link MicroserviceRestApplication#openApiInfo()}.
      */
-    private void addInfo(OpenAPI api)
+    private void addInfo(final OpenAPI api)
     {
         api.info(filter.restApplication().openApiInfo());
     }
@@ -116,12 +121,12 @@ public class JettyOpenApiRequest extends MicroservletGet
      * Adds each path that is mounted on the {@link JettyMicroservletFilter}. The {@link PathItem} for each path is
      * resolved by {@link #pathItem(Microservlet)}.
      */
-    private void addPaths(OpenAPI api)
+    private void addPaths(final OpenAPI api)
     {
-        var paths = new Paths();
+        final var paths = new Paths();
 
         // Got through each mount path that the filter has,
-        for (var path : filter.paths())
+        for (final var path : filter.paths())
         {
             // and add a PathItem to the list of paths.
             paths.addPathItem(path.join(), pathItem(filter.microservlet(path)));
@@ -135,32 +140,12 @@ public class JettyOpenApiRequest extends MicroservletGet
      * Add {@link Schema}s for all the models in {@link #models} set. This set is populated during {@link
      * #addPaths(OpenAPI)}.
      */
-    private void addSchemas(OpenAPI api)
+    private void addSchemas(final OpenAPI api)
     {
-        var schemas = api.getComponents().getSchemas();
-        for (var model : models)
+        final var schemas = api.getComponents().getSchemas();
+        for (final var model : models)
         {
             schemas.putAll(ModelConverters.getInstance().read(model));
-        }
-    }
-
-    private boolean methodAnnotationExists(
-            final Class<? extends MicroservletRequest> requestType,
-            final String method,
-            final Class<? extends Annotation> annotationClass)
-    {
-        try
-        {
-            var annotation = requestType
-                    .getMethod(method)
-                    .getAnnotation(annotationClass);
-
-            return annotation != null;
-        }
-        catch (NoSuchMethodException e)
-        {
-            problem(e, "No $() method in $", method, requestType);
-            return false;
         }
     }
 
@@ -172,13 +157,13 @@ public class JettyOpenApiRequest extends MicroservletGet
     {
         try
         {
-            var annotation = requestType
+            final var annotation = requestType
                     .getMethod(method)
                     .getAnnotation(annotationClass);
 
             return annotation == null ? null : function.apply(annotation);
         }
-        catch (NoSuchMethodException e)
+        catch (final NoSuchMethodException e)
         {
             problem(e, "No $() method in $", method, requestType);
             return null;
@@ -188,7 +173,7 @@ public class JettyOpenApiRequest extends MicroservletGet
     /**
      * @return A new {@link ApiResponse} for the given description and schema.
      */
-    private ApiResponse newResponse(String description, Schema<?> schema)
+    private ApiResponse newResponse(final String description, final Schema<?> schema)
     {
         return new ApiResponse()
                 .description(description)
@@ -196,10 +181,34 @@ public class JettyOpenApiRequest extends MicroservletGet
                         .addMediaType("application/json", new MediaType().schema(schema)));
     }
 
-    private Operation operationGet(final Class<? extends MicroservletGet> requestType,
+    private Operation operation(final String methodName,
+                                final Class<? extends MicroservletRequest> requestType,
+                                final Class<? extends MicroservletResponse> responseType)
+    {
+        // then create an operation and populate it with the summary and description of the request,
+        final var operation = new Operation();
+        operation.summary(methodAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::summary));
+        operation.description(methodAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::description));
+        operation.operationId(methodAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::operationId));
+        operation.deprecated(Strings.isTrue(methodAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, op -> Boolean.toString(op.deprecated()))));
+
+        // add success and error responses,
+        operation.responses(new ApiResponses()
+                .addApiResponse("200", responseSuccess(responseType))
+                .addApiResponse("403", newResponse("Forbidden", null))
+                .addApiResponse("404", newResponse("Not Found", null))
+                .addApiResponse("500", newResponse("Server Error", schemaError())));
+
+        operation.requestBody(new RequestBody().content(requestContent(requestType)));
+
+        // and return the operation
+        return operation;
+    }
+
+    private Operation operationGet(final Class<? extends MicroservletGetRequest> requestType,
                                    final Class<? extends MicroservletResponse> responseType)
     {
-        return unsupported();
+        return operation("onGet", requestType, responseType);
     }
 
     /**
@@ -207,50 +216,10 @@ public class JettyOpenApiRequest extends MicroservletGet
      * @param responseType The type of the JSON response object
      * @return The OpenAPI {@link Operation} describing this post operation
      */
-    private Operation operationPost(final Class<? extends MicroservletPost> requestType,
+    private Operation operationPost(final Class<? extends MicroservletPostRequest> requestType,
                                     final Class<? extends MicroservletResponse> responseType)
     {
-        // Create an instance of the request type,
-        var request = Classes.newInstance(this, requestType);
-        if (request != null)
-        {
-            var reader = new Reader();
-
-            var context = new GenericOpenApiContext<>();
-            var openApi = context.read();
-
-            // then create an operation and populate it with the summary and description of the request,
-            var operation = new Operation();
-            operation.summary(methodAnnotationValue(requestType, "onPost", io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::summary));
-            operation.description(methodAnnotationValue(requestType, "onPost", io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::description));
-
-            // next, create a parameter object and populate it from the request,
-            var parameters = new ArrayList<Parameter>();
-            if (methodAnnotationExists(requestType, "onPost", io.swagger.v3.oas.annotations.Parameter.class))
-            {
-                var parameter = new Parameter();
-                parameter.name(methodAnnotationValue(requestType, "onPost", io.swagger.v3.oas.annotations.Parameter.class, io.swagger.v3.oas.annotations.Parameter::name));
-                parameter.description(requestType.getSimpleName());
-                parameter.setRequired(true);
-                parameter.setExample(null);
-                parameter.setContent(requestContent(requestType));
-            }
-
-            // add any parameters to the operation,
-            operation.parameters(parameters);
-
-            // add success and error responses,
-            operation.responses(new ApiResponses()
-                    .addApiResponse("200", responseSuccess(responseType))
-                    .addApiResponse("403", newResponse("Forbidden", null))
-                    .addApiResponse("404", newResponse("Not Found", null))
-                    .addApiResponse("500", newResponse("Server Error", schemaError())));
-
-            // and return the operation
-            return operation;
-        }
-
-        return null;
+        return operation("onPost", requestType, responseType);
     }
 
     /**
@@ -263,29 +232,29 @@ public class JettyOpenApiRequest extends MicroservletGet
     private PathItem pathItem(final Microservlet<?, ?> microservlet)
     {
         // Create the path item and give it the microservlet's description,
-        var item = new PathItem();
+        final var item = new PathItem();
         item.description(microservlet.description());
 
         // get the request and response types,
-        var requestType = microservlet.requestType();
-        var responseType = microservlet.responseType();
+        final var requestType = microservlet.requestType();
+        final var responseType = microservlet.responseType();
 
         // add them to the set of models,
         models.add(requestType);
         models.add(responseType);
 
         // and if it's a get request,
-        if (requestType.isAssignableFrom(MicroservletGet.class))
+        if (requestType.isAssignableFrom(MicroservletGetRequest.class))
         {
             // then add a get operation description,
-            item.get(operationGet((Class<? extends MicroservletGet>) requestType, responseType));
+            item.get(operationGet((Class<? extends MicroservletGetRequest>) requestType, responseType));
         }
 
         // and if it's a post request,
-        if (requestType.isAssignableFrom(MicroservletPost.class))
+        if (requestType.isAssignableFrom(MicroservletPostRequest.class))
         {
             // add a post operation description.
-            item.post(operationPost((Class<? extends MicroservletPost>) requestType, responseType));
+            item.post(operationPost((Class<? extends MicroservletPostRequest>) requestType, responseType));
         }
 
         return item;
@@ -294,7 +263,7 @@ public class JettyOpenApiRequest extends MicroservletGet
     /**
      * @return A {@link Content} object for the given request type
      */
-    private Content requestContent(final Class<? extends MicroservletPost> requestType)
+    private Content requestContent(final Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
         models.add(requestType);
@@ -322,7 +291,7 @@ public class JettyOpenApiRequest extends MicroservletGet
      * @return The {@link Schema} for the given model
      */
     @SuppressWarnings("rawtypes")
-    private Schema<?> schema(Class<?> model)
+    private Schema<?> schema(final Class<?> model)
     {
         // Get the schemas for the model,
         final Map<String, Schema> schemas = ModelConverters.getInstance().read(model);

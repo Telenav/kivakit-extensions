@@ -69,8 +69,8 @@ The following significant classes are undocumented:
 | Class | Documentation Sections |
 |---|---|
 | [*LogsServerKryoTypes*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/project/LogsServerKryoTypes.html) |  |  
-| [*LogsServerProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/project/LogsServerProject.html) |  |  
 | [*ServerLog*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/ServerLog.html) |  |  
+| [*ServerLogProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/ServerLogProject.html) |  |  
 | [*Session*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/session/Session.html) |  |  
 | [*SessionStore*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.server/com/telenav/kivakit/logs/server/session/SessionStore.html) |  |  
 

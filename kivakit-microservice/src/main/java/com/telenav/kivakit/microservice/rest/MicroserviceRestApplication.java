@@ -25,6 +25,7 @@ import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroserviceResponse;
@@ -33,10 +34,13 @@ import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicr
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
-import com.telenav.kivakit.microservice.rest.microservlet.model.methods.MicroservletGet;
-import com.telenav.kivakit.microservice.rest.microservlet.model.methods.MicroservletPost;
+import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletPostRequest;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlAggregation;
+import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.swagger.v3.oas.models.info.Info;
 
 import javax.servlet.FilterChain;
@@ -56,7 +60,7 @@ import javax.servlet.ServletResponse;
  *     <li>The request path is used to resolve any {@link Microservlet} mounted on the path</li>
  *     <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
  *     <li>If the HTTP request method is POST, the {@link Microservlet#onPost(MicroservletRequest)} method is called</li>
- *     <li>If the HTTP request method is GET, the {@link Microservlet#onGet()} method is called</li>
+ *     <li>If the HTTP request method is GET, the {@link Microservlet#onGet(MicroservletRequest)} method is called</li>
  *     <li>The return value from onPost() or onGet() is passed to {@link JettyMicroserviceResponse#writeObject(Object)}, which:</li>
  *     <ol>
  *         <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
@@ -67,21 +71,24 @@ import javax.servlet.ServletResponse;
  *
  * @author jonathanl (shibo)
  */
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class MicroserviceRestApplication extends BaseRestApplication
 {
     /** The microservice that owns this REST application */
+    @UmlAggregation
     private final Microservice microservice;
 
     /** The Jetty microservlet filter plugin for this REST application */
+    @UmlAggregation
     private final JettyMicroservlet jettyMicroservlet;
 
     /**
      * @param microservice The microservice that is creating this REST application
      */
-    public MicroserviceRestApplication(Microservice microservice)
+    public MicroserviceRestApplication(final Microservice microservice)
     {
         this.microservice = microservice;
-        this.jettyMicroservlet = new JettyMicroservlet(this);
+        jettyMicroservlet = new JettyMicroservlet(this);
 
         register(new JerseyGsonSerializer<>(gsonFactory()));
 
@@ -91,6 +98,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     /**
      * @return Factory that can create a {@link Gson} instance for serializing JSON object
      */
+    @UmlRelation(label = "creates")
     public MicroserviceGsonFactory gsonFactory()
     {
         return new MicroserviceGsonFactory();
@@ -112,10 +120,10 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
      */
     @SuppressWarnings("unchecked")
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mount(String path, Class<Request> requestType)
+    void mount(final String path, final Class<Request> requestType)
     {
-        // Create a request object so we can get the response type,
-        var request = Classes.newInstance(this, requestType);
+        // Create a request object, so we can get the response type,
+        final var request = Classes.newInstance(this, requestType);
         if (request != null)
         {
             // then mount an anonymous microservlet on the given path,
@@ -123,18 +131,18 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
             mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
             {
                 @Override
-                public Response onGet(Request request)
+                public Response onGet(final Request request)
                 {
                     // and if the microservlet receives a GET request, return the value of the request object,
-                    return (Response) ((MicroservletGet) request).onGet();
+                    return (Response) ((MicroservletGetRequest) request).onGet();
                 }
 
                 @Override
                 @SuppressWarnings("unchecked")
-                public Response onPost(Request request)
+                public Response onPost(final Request request)
                 {
                     // and if the microservlet receives a POST request, return the value of the request object.
-                    return (Response) ((MicroservletPost) request).onPost();
+                    return (Response) ((MicroservletPostRequest) request).onPost();
                 }
             }));
         }
@@ -146,7 +154,8 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
      * @param path The path to the microservlet
      * @param microservlet The microservlet to mounds
      */
-    public void mount(String path, Microservlet<?, ?> microservlet)
+    @UmlRelation(label = "mounts", referent = Microservlet.class)
+    public void mount(final String path, final Microservlet<?, ?> microservlet)
     {
         jettyMicroservlet.mount(path, microservlet);
     }
@@ -158,7 +167,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     public Info openApiInfo()
     {
         // Get the microservice metadata,
-        var metadata = microservice.metadata();
+        final var metadata = microservice.metadata();
 
         // and add it to the OpenAPI object.
         return new Info()

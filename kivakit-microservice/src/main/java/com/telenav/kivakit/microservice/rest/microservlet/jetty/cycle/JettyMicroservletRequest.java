@@ -25,10 +25,13 @@ import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,9 +53,11 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * @see Validatable
  * @see BaseComponent
  */
+@UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletRequest extends BaseComponent
 {
     /** The request cycle to which this request belongs */
+    @UmlAggregation
     private final JettyMicroservletRequestCycle cycle;
 
     /** Servlet request */
@@ -65,7 +70,7 @@ public class JettyMicroservletRequest extends BaseComponent
      * @param cycle The request cycle for the {@link Microservlet}
      * @param request The Java Servlet API HTTP request object
      */
-    public JettyMicroservletRequest(JettyMicroservletRequestCycle cycle, HttpServletRequest request)
+    public JettyMicroservletRequest(final JettyMicroservletRequestCycle cycle, final HttpServletRequest request)
     {
         this.cycle = cycle;
         this.request = request;
@@ -79,10 +84,10 @@ public class JettyMicroservletRequest extends BaseComponent
         if (properties == null)
         {
             // Get the full request URI,
-            var uri = URI.create(request.getRequestURI());
+            final var uri = URI.create(request.getRequestURI());
 
             // parse the path in pairs, adding each to the properties map,
-            var path = FilePath.filePath(uri);
+            final var path = FilePath.filePath(uri);
             for (int i = 0; i < path.size(); i += 2)
             {
                 properties.put(path.get(i), path.get(i + 1));
@@ -101,10 +106,10 @@ public class JettyMicroservletRequest extends BaseComponent
     public FilePath path()
     {
         // Get the full request URI,
-        var uri = request.getRequestURI();
+        final var uri = request.getRequestURI();
 
         // and the context path,
-        String contextPath = request.getContextPath();
+        final String contextPath = request.getContextPath();
         ensure(uri.startsWith(contextPath));
 
         // then return the URI without the context path
@@ -118,29 +123,30 @@ public class JettyMicroservletRequest extends BaseComponent
      * @param <T> The object type
      * @return The deserialized object, or null if deserialization failed
      */
-    public <T> T readObject(Class<T> requestType)
+    public <T> T readObject(final Class<T> requestType)
     {
         try
         {
             // Read JSON object from servlet input
-            var in = request.getInputStream();
-            var object = cycle.gson().fromJson(IO.string(in), requestType);
+            final var in = request.getInputStream();
+            final var object = cycle.gson().fromJson(IO.string(in), requestType);
 
             // and validate it if we can
             if (object instanceof Validatable)
             {
                 ((Validatable) object).validator().validate(this);
             }
-            
+
             return object;
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             problem(e, "Unable to read JSON request from servlet input stream");
             return null;
         }
     }
 
+    @Override
     public String toString()
     {
         return new ObjectFormatter(this).toString();

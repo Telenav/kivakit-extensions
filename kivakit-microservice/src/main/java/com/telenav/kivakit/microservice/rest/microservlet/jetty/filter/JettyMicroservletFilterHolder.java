@@ -19,9 +19,12 @@
 package com.telenav.kivakit.microservice.rest.microservlet.jetty.filter;
 
 import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import org.eclipse.jetty.servlet.FilterHolder;
 
 /**
@@ -34,8 +37,10 @@ import org.eclipse.jetty.servlet.FilterHolder;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
+@UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletFilterHolder extends FilterHolder implements ComponentMixin
 {
+    @UmlAggregation
     private final JettyMicroservletFilter filter;
 
     public JettyMicroservletFilterHolder(final MicroserviceRestApplication application)
@@ -48,7 +53,7 @@ public class JettyMicroservletFilterHolder extends FilterHolder implements Compo
         return filter;
     }
 
-    public void mount(String path, Microservlet<?, ?> microservlet)
+    public void mount(final String path, final Microservlet<?, ?> microservlet)
     {
         filter.mount(path, microservlet);
     }

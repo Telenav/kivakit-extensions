@@ -3,23 +3,32 @@ package com.telenav.kivakit.microservice.rest.microservlet;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.conversion.Converter;
 import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlRelation;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
  * A microservlet responds to GET and POST requests made to the {@link JettyMicroservletFilter}.
  */
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
+@UmlClassDiagram(diagram = DiagramMicroservlet.class)
+@UmlRelation(label = "attaches", referent = JettyMicroservletRequestCycle.class)
 public abstract class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent
 {
     /** The type of the request object */
+    @UmlRelation(label = "references sub-class", referent = MicroservletRequest.class)
     private final Class<? extends Request> requestType;
 
     /** The type of the response object */
+    @UmlRelation(label = "references sub-class", referent = MicroservletResponse.class)
     private final Class<? extends Response> responseType;
 
     /** A thread local variable holding the request cycle for a given thread using this servlet */
@@ -29,7 +38,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      * @param requestType The Request type
      * @param responseType The Response type
      */
-    public Microservlet(Class<? extends Request> requestType, Class<? extends Response> responseType)
+    public Microservlet(final Class<? extends Request> requestType, final Class<? extends Response> responseType)
     {
         this.requestType = requestType;
         this.responseType = responseType;
@@ -39,7 +48,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      * Attaches a request cycle to this servlet. The association is thread-local so that {@link Microservlet}s are
      * thread-safe but also have access to request cycle information.
      */
-    public void attach(JettyMicroservletRequestCycle cycle)
+    public void attach(final JettyMicroservletRequestCycle cycle)
     {
         this.cycle.set(cycle);
     }
@@ -69,7 +78,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * This method is unsupported unless overridden
      */
-    public Response onGet(Request request)
+    public Response onGet(final Request request)
     {
         return unsupported("Microservlet $ does not support method: GET", objectName());
     }
@@ -77,7 +86,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * This method is unsupported unless overridden
      */
-    public Response onPost(Request request)
+    public Response onPost(final Request request)
     {
         return unsupported("Microservlet $ does not support method: POST", objectName());
     }
@@ -107,7 +116,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as an int
      */
-    protected int asInt(String key)
+    protected int asInt(final String key)
     {
         return parameters().asInt(key);
     }
@@ -115,7 +124,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as a long
      */
-    protected long asLong(String key)
+    protected long asLong(final String key)
     {
         return parameters().asLong(key);
     }
@@ -123,7 +132,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as an object
      */
-    protected <T> T asObject(String key, Converter<String, T> converter)
+    protected <T> T asObject(final String key, final Converter<String, T> converter)
     {
         return converter.convert(get(key));
     }
@@ -131,11 +140,11 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as an object
      */
-    protected <T> T asObject(String key, Class<Converter<String, T>> converterType)
+    protected <T> T asObject(final String key, final Class<Converter<String, T>> converterType)
     {
         try
         {
-            var converter = converterType
+            final var converter = converterType
                     .getConstructor(Listener.class)
                     .newInstance(this);
 
@@ -159,7 +168,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key
      */
-    protected String get(String key)
+    protected String get(final String key)
     {
         return parameters().get(key);
     }

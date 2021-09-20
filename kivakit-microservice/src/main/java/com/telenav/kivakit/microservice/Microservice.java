@@ -6,6 +6,7 @@ import com.telenav.kivakit.configuration.settings.deployment.Deployment;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.project.Project;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
@@ -18,6 +19,8 @@ import com.telenav.kivakit.web.swagger.JettySwaggerIndex;
 import com.telenav.kivakit.web.swagger.JettySwaggerOpenApi;
 import com.telenav.kivakit.web.swagger.JettySwaggerWebJar;
 import com.telenav.kivakit.web.wicket.JettyWicket;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlRelation;
 
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 
@@ -121,6 +124,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @author jonathanl (shibo)
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice extends Application implements Startable
 {
     /**
@@ -151,6 +155,7 @@ public abstract class Microservice extends Application implements Startable
         return running;
     }
 
+    @UmlRelation(label = "has")
     public abstract MicroserviceMetadata metadata();
 
     /**
@@ -168,10 +173,10 @@ public abstract class Microservice extends Application implements Startable
             final var port = has(PORT) ? get(PORT) : settings().port();
 
             // create the Jetty server.
-            var server = listenTo(new JettyServer().port(port));
+            final var server = listenTo(new JettyServer().port(port));
 
             // If there's an Apache Wicket web application,
-            var webApplication = webApplication();
+            final var webApplication = webApplication();
             if (webApplication != null)
             {
                 // mount them on the server.
@@ -179,7 +184,7 @@ public abstract class Microservice extends Application implements Startable
             }
 
             // If there are static resources,
-            var staticAssets = staticAssets();
+            final var staticAssets = staticAssets();
             if (staticAssets != null)
             {
                 // mount them on the server.
@@ -191,7 +196,7 @@ public abstract class Microservice extends Application implements Startable
             if (restApplication != null)
             {
                 // and there are static OpenAPI assets,
-                var openApiAssets = openApiAssets();
+                final var openApiAssets = openApiAssets();
                 if (openApiAssets != null)
                 {
                     // mount them on the server.
@@ -269,6 +274,7 @@ public abstract class Microservice extends Application implements Startable
         return null;
     }
 
+    @UmlRelation(label = "has")
     private MicroserviceSettings settings()
     {
         return require(MicroserviceSettings.class);

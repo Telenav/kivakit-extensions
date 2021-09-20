@@ -10,9 +10,9 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class MicroserviceJerseyGsonSerializer extends JerseyGsonSerializer
+public class MicroserviceJerseyGsonSerializer extends JerseyGsonSerializer<Object>
 {
-    public MicroserviceJerseyGsonSerializer(MicroserviceRestApplication application)
+    public MicroserviceJerseyGsonSerializer(final MicroserviceRestApplication application)
     {
         super(application.gsonFactory());
     }

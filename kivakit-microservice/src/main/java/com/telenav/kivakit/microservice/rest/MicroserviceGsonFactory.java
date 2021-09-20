@@ -21,8 +21,10 @@ package com.telenav.kivakit.microservice.rest;
 import com.google.gson.GsonBuilder;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 
@@ -31,6 +33,7 @@ import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.For
  *
  * @author jonathanl (shibo)
  */
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
 public class MicroserviceGsonFactory extends GsonFactory implements ComponentMixin
 {
     @Override

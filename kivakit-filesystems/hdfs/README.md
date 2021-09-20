@@ -91,8 +91,7 @@ any application.
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystems.hdfs*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/hdfs/documentation/diagrams/com.telenav.kivakit.filesystems.hdfs.svg)  
-[*com.telenav.kivakit.filesystems.hdfs.project*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/hdfs/documentation/diagrams/com.telenav.kivakit.filesystems.hdfs.project.svg)
+[*com.telenav.kivakit.filesystems.hdfs*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-filesystems/hdfs/documentation/diagrams/com.telenav.kivakit.filesystems.hdfs.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -107,8 +106,8 @@ Javadoc coverage for this project is 89.1%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*FileSystemsHdfsProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.hdfs/com/telenav/kivakit/filesystems/hdfs/project/FileSystemsHdfsProject.html) |  |  
 | [*HdfsFile*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.hdfs/com/telenav/kivakit/filesystems/hdfs/HdfsFile.html) |  |  
+| [*HdfsFileSystemProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.hdfs/com/telenav/kivakit/filesystems/hdfs/HdfsFileSystemProject.html) |  |  
 | [*HdfsFileSystemService*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.hdfs/com/telenav/kivakit/filesystems/hdfs/HdfsFileSystemService.html) |  |  
 | [*HdfsFolder*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.hdfs/com/telenav/kivakit/filesystems/hdfs/HdfsFolder.html) |  |  
 | [*HdfsProxyClient*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.filesystems.hdfs/com/telenav/kivakit/filesystems/hdfs/HdfsProxyClient.html) |  |  

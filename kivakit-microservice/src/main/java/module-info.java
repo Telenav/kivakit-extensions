@@ -16,5 +16,5 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.rest.microservlet.jetty.filter;
     exports com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi;
     exports com.telenav.kivakit.microservice.rest.microservlet.model;
-    exports com.telenav.kivakit.microservice.rest.microservlet.model.methods;
+    exports com.telenav.kivakit.microservice.rest.microservlet.model.requests;
 }

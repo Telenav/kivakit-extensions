@@ -6,6 +6,9 @@ import com.telenav.kivakit.kernel.interfaces.messaging.Transmittable;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,20 +19,23 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jonathanl (shibo)
  */
+@UmlClassDiagram(diagram = DiagramJetty.class)
 public final class JettyMicroserviceResponse extends BaseComponent
 {
     /** The request cycle to which this response belongs */
+    @UmlAggregation
     private final JettyMicroservletRequestCycle cycle;
 
     /** Servlet response */
     private final HttpServletResponse response;
 
-    public JettyMicroserviceResponse(JettyMicroservletRequestCycle cycle, HttpServletResponse response)
+    public JettyMicroserviceResponse(final JettyMicroservletRequestCycle cycle, final HttpServletResponse response)
     {
         this.cycle = cycle;
         this.response = response;
     }
 
+    @Override
     public String toString()
     {
         return new ObjectFormatter(this).toString();
@@ -64,10 +70,10 @@ public final class JettyMicroserviceResponse extends BaseComponent
         try
         {
             // then output JSON for the object to the servlet output stream.
-            var out = this.response.getOutputStream();
+            final var out = response.getOutputStream();
             out.println(cycle.gson().toJson(object));
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             problem(e, "Unable to write JSON response to servlet output stream");
         }

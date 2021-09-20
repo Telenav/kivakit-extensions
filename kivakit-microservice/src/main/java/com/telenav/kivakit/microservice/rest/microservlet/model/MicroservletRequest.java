@@ -2,7 +2,10 @@ package com.telenav.kivakit.microservice.rest.microservlet.model;
 
 import com.telenav.kivakit.component.Component;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
+@UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public interface MicroservletRequest extends Component, Validatable
 {
     /**

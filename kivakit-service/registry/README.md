@@ -116,7 +116,7 @@ Javadoc coverage for this project is 93.9%.
 | [*ServiceRegistryGsonFactory*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/serialization/ServiceRegistryGsonFactory.html) |  |  
 | [*ServiceRegistryJerseySerializer*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/serialization/ServiceRegistryJerseySerializer.html) |  |  
 | [*ServiceRegistryKryoTypes*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/project/ServiceRegistryKryoTypes.html) |  |  
-| [*ServiceRegistryProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/project/ServiceRegistryProject.html) |  |  
+| [*ServiceRegistryProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/ServiceRegistryProject.html) |  |  
 | [*ServiceRegistryProtocol*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/protocol/ServiceRegistryProtocol.html) |  |  
 | [*ServiceRegistrySettings*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/ServiceRegistrySettings.html) | ServiceRegistrySettings.properties |  
 | [*ServiceRegistryStore*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.registry/com/telenav/kivakit/service/registry/store/ServiceRegistryStore.html) |  |  

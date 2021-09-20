@@ -3,9 +3,12 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle;
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jonathanl (shibo)
  */
+@UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletRequestCycle extends BaseComponent
 {
     /** The REST application that owns this request cycle */
@@ -36,9 +40,11 @@ public class JettyMicroservletRequestCycle extends BaseComponent
     private Microservlet<?, ?> servlet;
 
     /** The request */
+    @UmlAggregation
     private final JettyMicroservletRequest request;
 
     /** The response **/
+    @UmlAggregation
     private final JettyMicroserviceResponse response;
 
     /** A Gson instance provided by the {@link MicroserviceRestApplication}'s factory */

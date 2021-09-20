@@ -1,7 +1,10 @@
 package com.telenav.kivakit.microservice;
 
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
 
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
 public class MicroserviceMetadata
 {
     private String name;
@@ -14,11 +17,11 @@ public class MicroserviceMetadata
     {
     }
 
-    protected MicroserviceMetadata(MicroserviceMetadata that)
+    protected MicroserviceMetadata(final MicroserviceMetadata that)
     {
-        this.name = that.name;
-        this.description = that.description;
-        this.version = that.version;
+        name = that.name;
+        description = that.description;
+        version = that.version;
     }
 
     public String description()
@@ -36,23 +39,23 @@ public class MicroserviceMetadata
         return version;
     }
 
-    public MicroserviceMetadata withDescription(String description)
+    public MicroserviceMetadata withDescription(final String description)
     {
-        var copy = copy();
+        final var copy = copy();
         copy.description = description;
         return copy;
     }
 
-    public MicroserviceMetadata withName(String name)
+    public MicroserviceMetadata withName(final String name)
     {
-        var copy = copy();
+        final var copy = copy();
         copy.name = name;
         return copy;
     }
 
-    public MicroserviceMetadata withVersion(Version version)
+    public MicroserviceMetadata withVersion(final Version version)
     {
-        var copy = copy();
+        final var copy = copy();
         copy.version = version;
         return copy;
     }
