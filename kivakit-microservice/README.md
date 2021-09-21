@@ -50,9 +50,16 @@ This module provides an easy way to create a microservice with a REST and web in
 
 ### Public API
 
-The following tables catalog the public API for *kivakit-microservice*. All of the other classes in this module are private implementation details.
+The following sections catalog the public API for *kivakit-microservice*.
 
-#### Microservice API
+#### Microservice Mini-framework
+
+A [*Microservice*](https://martinfowler.com/articles/microservices.html) is a small, independent cloud service providing a limited, focused API. The *kivakit-microservice* mini-framework makes it easy to create a microservice that has:
+
+ - Jersey + JSON + Swagger REST interface
+ - Apache Wicket web interface
+
+The public API classes in this mini-framework are:
 
 | Class | Purpose |
 |-------|---------|
@@ -63,7 +70,15 @@ The following tables catalog the public API for *kivakit-microservice*. All of t
 | MicroserviceRestApplication | Base class for REST applications |
 | MicroserviceGsonFactory | Factory that produces configured Gson objects for JSON serialization |
 
-#### Microservlet API
+#### Microservlet Mini-framework
+
+A *Microservlet* is a handler for HTTP REST methods that can be *mounted* on a specific path in a *MicroserviceRestApplication*. Each method (GET, POST, etc.) takes a subclass of *MicroserviceRequest* and returns a *MicroserviceResponse*. In general, it is not necessary to directly implement a *Microservlet*. Instead, a request class can be directly mounted on a rest application path like this:
+
+    mount("api/1.0/create-robot", CreateRobotRequest.class);
+
+KivaKit will create an anonymous *Microservlet* that instantiates and uses a *CreateRobotRequest* object to handle requests.
+
+The public API classes in this mini-framework are:
 
 | Class | Purpose |
 |-------|---------|
@@ -73,6 +88,69 @@ The following tables catalog the public API for *kivakit-microservice*. All of t
 | MicroservletResponse | Holds the response to a request |
 
 [//]: # (end-user-text)
+
+### REST Parameters and OpenAPI
+
+Path and query parameters are automatically converted into a JSON object by KivaKit. This request:
+
+    GET /api/1.0/create-robot/name/rapunzel
+    
+is identical to this request:
+
+    GET /api/1.0/create-robot?name=rapunzel
+    
+is identical to this request:
+
+    POST /api/1.0/create-robot
+    
+    {
+        "name" : "rapunzel"
+    }
+
+Because path and query parameters are handled in this way, onGet() and onPost() take no parameters. In addition, in Swagger, the OpenAPI @Operation annotation does not require any @Parameter arguments. All arguments to KivaKit request handlers are defined by @Schema annotations on the relevant classes.
+
+### Request and Response Scoping
+
+It can be very convenient to use nested classes to implement request and response classes. It's also possible in many cases to avoid "POJOs" (Plain Old Java Objects) and their getters and setters.
+
+For example:
+
+    public class MultiplyRequest extends MicroservletPostRequest
+    {
+        public static class Response extends MicroservletResponse
+        {
+            private int result;
+            
+            public int result()
+            {
+                return result;
+            }
+        }
+        
+        private final int a;
+        private final int b;
+        
+        public MultiplyRequest(int a, int b)
+        {
+            this.a = a;
+            this.b = b;
+        }
+        
+        public Response onPost()
+        {
+            final var response = listenTo(new Response());        
+            response.result = a * b;
+            return response;
+        }
+    
+        @Override
+        public Class<Response> responseType()
+        {
+            return Response.class;
+        }
+    }
+    
+Here, the *MultipleRequest* object directly contains the *a* and *b* multiplicands, which are immutable and initialized by the constructor. The nested *Response* class contains the *result* value. Since the *Response* is nested inside the request, the request has access to its private *result* variable, so there is no need for a *result(int)* setter method. The only accessor is the *result()* method for accessing the result of the operation.
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
