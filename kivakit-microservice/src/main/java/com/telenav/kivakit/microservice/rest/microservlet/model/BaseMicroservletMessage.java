@@ -11,7 +11,11 @@ import com.telenav.kivakit.microservice.rest.microservlet.model.requests.Microse
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
+ * <b>Not public API</b>
+ *
+ * <p>
  * Base class for all microservlet request and response classes.
+ * </p>
  *
  * @author jonathanl (shibo)
  * @see BaseMicroservletRequest

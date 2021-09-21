@@ -40,6 +40,8 @@ import java.net.URI;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
+ * <b>Not public API</b>
+ * <p>
  * Represents a request to a microservlet.
  *
  * <p>

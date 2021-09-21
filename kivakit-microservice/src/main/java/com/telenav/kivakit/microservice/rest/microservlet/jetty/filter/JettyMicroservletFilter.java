@@ -27,6 +27,8 @@ import java.util.Set;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
+ * <b>Not public API</b>
+ *
  * <p>
  * A Java Servlet API filter that handles {@link Microservlet} requests.
  * </p>

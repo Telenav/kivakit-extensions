@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * <b>Not public API</b>
+ * <p>
  * Microservice response abstraction, holding a problem and a result object. The {@link #onTransmitting(Transmittable)}
  * method captures any problems that are broadcast to this response object.
  *

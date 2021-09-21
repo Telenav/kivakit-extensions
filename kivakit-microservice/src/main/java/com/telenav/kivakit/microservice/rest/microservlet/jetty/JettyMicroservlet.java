@@ -39,7 +39,18 @@ import static javax.servlet.DispatcherType.INCLUDE;
 import static javax.servlet.DispatcherType.REQUEST;
 
 /**
+ * <b>Not public API</b>
+ *
+ * <p>
  * A Jetty filter for Apache Wicket applications. The Wicket {@link WebApplication} class is passed to the constructor.
+ * </p>
+ *
+ * <p><b>NOTE</b></p>
+ *
+ * <p>
+ * All classes in the <i>com.telenav.kivakit.microservice.rest.microservlet.jetty</i> package are implementation details
+ * and not part of the public microservlet API.
+ * </p>
  *
  * @author jonathanl (shibo)
  */

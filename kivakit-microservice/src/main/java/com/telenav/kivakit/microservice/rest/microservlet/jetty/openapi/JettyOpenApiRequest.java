@@ -34,6 +34,8 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
+ * <b>Not public API</b>
+ * <p>
  * A {@link MicroservletGetRequest} request that produces an {@link OpenAPI} definition for a {@link
  * JettyMicroservlet}.
  */

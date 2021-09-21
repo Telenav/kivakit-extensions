@@ -48,6 +48,30 @@ This module provides an abstraction for developing microservices.
 
 This module provides an easy way to create a microservice with a REST and web interface.
 
+### Public API
+
+The following tables catalog the public API for *kivakit-microservice*. All of the other classes in this module are private implementation details.
+
+#### Microservice API
+
+| Class | Purpose |
+|-------|---------|
+| Microservice | Application base class for microservices |
+| MicroserviceMetadata | Metadata describing a microservice |
+| MicroserviceSettings | Settings for microservices applications |
+| MicroserviceWebApplication | Apache Wicket application base class |
+| MicroserviceRestApplication | Base class for REST applications |
+| MicroserviceGsonFactory | Factory that produces configured Gson objects for JSON serialization |
+
+#### Microservlet API
+
+| Class | Purpose |
+|-------|---------|
+| Microservlet | Request handler mounted on a path via MicroserviceRestApplication |
+| MicroservletGetRequest | Base class for a GET request handler |
+| MicroservletPostRequest | Base class for a POST request handler |
+| MicroservletResponse | Holds the response to a request |
+
 [//]: # (end-user-text)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
