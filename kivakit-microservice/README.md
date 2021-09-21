@@ -150,7 +150,7 @@ For example:
         }
     }
     
-Here, the *MultipleRequest* object directly contains the *a* and *b* multiplicands, which are immutable and initialized by the constructor. The nested *Response* class contains the *result* value. Since the *Response* is nested inside the request, the request has access to its private *result* variable, so there is no need for a *result(int)* setter method. The only accessor is the *result()* method for accessing the result of the operation.
+Here, the *MultiplyRequest* object directly contains the *a* and *b* multiplicands, which are immutable and initialized by the constructor. The nested *Response* class contains the *result* value. Since the *Response* is nested inside the request, the request has access to its private *result* variable, so there is no need for a *result(int)* setter method. The only accessor is the *result()* method for accessing the result of the operation.
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
