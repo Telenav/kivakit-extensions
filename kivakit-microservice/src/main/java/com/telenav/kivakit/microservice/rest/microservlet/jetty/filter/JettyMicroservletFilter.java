@@ -8,6 +8,7 @@ import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.model.ProblemReportingMixin;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -52,7 +53,7 @@ import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletFilter implements Filter, ComponentMixin
+public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemReportingMixin
 {
     /** Map from path to microservlet */
     @UmlAggregation(referent = Microservlet.class, label = "mounts on paths", referentCardinality = "many")
@@ -112,7 +113,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
                 }
                 catch (final Exception e)
                 {
-                    cycle.response().problem(SC_INTERNAL_SERVER_ERROR, e, "REST $ method to $ failed", method.name(), microservlet.objectName());
+                    problem(SC_INTERNAL_SERVER_ERROR, e, "REST $ method to $ failed", method.name(), microservlet.objectName());
                 }
             }
             else
@@ -124,7 +125,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
                 }
                 catch (final Exception e)
                 {
-                    cycle.response().problem(SC_INTERNAL_SERVER_ERROR, e, "Exception thrown by filter chain");
+                    problem(SC_INTERNAL_SERVER_ERROR, e, "Exception thrown by filter chain");
                 }
             }
         }
@@ -231,7 +232,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
             break;
 
             default:
-                response.problem(SC_METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
+                problem(SC_METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
                 break;
         }
     }

@@ -5,9 +5,10 @@ import com.telenav.kivakit.component.Component;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
+import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletDeleteRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletPostRequest;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -24,20 +25,17 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
  * @see MicroservletResponse
  * @see MicroservletGetRequest
  * @see MicroservletPostRequest
+ * @see MicroservletDeleteRequest
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-public abstract class BaseMicroservletMessage extends BaseComponent implements Component, Validatable
+public abstract class BaseMicroservletMessage extends BaseComponent implements
+        Component, Validatable, ProblemReportingMixin
 {
-    public Problem problem(int status, final String text, final Object... arguments)
+    public void metric(String name, Object value)
     {
-        var response = JettyMicroservletRequestCycle.cycle().response();
-        return response.problem(status, text, arguments);
-    }
-
-    public Problem problem(int status, Throwable exception, final String text, final Object... arguments)
-    {
-        var response = JettyMicroservletRequestCycle.cycle().response();
-        return response.problem(status, exception, text, arguments);
+        var metric = new Metric(name, value);
+        var json = JettyMicroservletRequestCycle.cycle().gson().toJson(metric);
+        Message.println("metric: $", json);
     }
 
     @Override

@@ -63,7 +63,7 @@ import javax.servlet.ServletResponse;
  *     <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
  *     <li>If the HTTP request method is POST, the {@link Microservlet#onPost(MicroservletRequest)} method is called</li>
  *     <li>If the HTTP request method is GET, the {@link Microservlet#onGet(MicroservletRequest)} method is called</li>
- *     <li>The return value from onPost() or onGet() is passed to {@link JettyMicroserviceResponse#writeObject(Object)}, which:</li>
+ *     <li>The return value from onPost() or onGet() is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
  *     <ol>
  *         <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
  *         <li>Converts the object to JSON using the {@link Gson} object provided by {@link MicroserviceRestApplication#gsonFactory()}</li>

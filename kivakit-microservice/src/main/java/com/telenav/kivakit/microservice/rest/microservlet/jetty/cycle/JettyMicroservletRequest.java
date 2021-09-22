@@ -25,10 +25,10 @@ import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.model.ProblemReportingMixin;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
@@ -59,7 +59,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
  * @see BaseComponent
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletRequest extends BaseComponent
+public class JettyMicroservletRequest extends BaseComponent implements ProblemReportingMixin
 {
     /** The request cycle to which this request belongs */
     @UmlAggregation
@@ -135,16 +135,6 @@ public class JettyMicroservletRequest extends BaseComponent
 
         // then return the URI without the context path
         return FilePath.parseFilePath(uri.substring(contextPath.length()));
-    }
-
-    public Problem problem(int status, final String text, final Object... arguments)
-    {
-        return cycle.response().problem(status, text, arguments);
-    }
-
-    public Problem problem(int status, Throwable exception, final String text, final Object... arguments)
-    {
-        return cycle.response().problem(status, exception, text, arguments);
     }
 
     /**

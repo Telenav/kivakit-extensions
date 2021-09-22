@@ -7,6 +7,7 @@ import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.model.ProblemReportingMixin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
@@ -33,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletRequestCycle extends BaseComponent
+public class JettyMicroservletRequestCycle extends BaseComponent implements ProblemReportingMixin
 {
     /** A thread local variable holding the request cycle for a given thread using this servlet */
     private static final ThreadLocal<JettyMicroservletRequestCycle> cycle = new ThreadLocal<>();
