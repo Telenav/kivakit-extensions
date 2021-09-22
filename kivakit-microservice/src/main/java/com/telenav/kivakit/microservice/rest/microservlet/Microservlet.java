@@ -2,6 +2,7 @@ package com.telenav.kivakit.microservice.rest.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.conversion.Converter;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
@@ -34,6 +35,9 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /** A thread local variable holding the request cycle for a given thread using this servlet */
     private final ThreadLocal<JettyMicroservletRequestCycle> cycle = new ThreadLocal<>();
 
+    /** The set of methods that this microservlet supports */
+    private ObjectSet<MicroservletRequest.HttpMethod> supportedMethods = ObjectSet.of(MicroservletRequest.HttpMethod.GET, MicroservletRequest.HttpMethod.POST, MicroservletRequest.HttpMethod.DELETE);
+
     /**
      * @param requestType The Request type
      * @param responseType The Response type
@@ -51,6 +55,12 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     public void attach(final JettyMicroservletRequestCycle cycle)
     {
         this.cycle.set(cycle);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Response delete(final MicroservletRequest request)
+    {
+        return onDelete((Request) request);
     }
 
     /**
@@ -73,6 +83,14 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     public Response get(final MicroservletRequest request)
     {
         return onGet((Request) request);
+    }
+
+    /**
+     * This method is unsupported unless overridden
+     */
+    public Response onDelete(final Request request)
+    {
+        return unsupported("Microservlet $ does not support method: DELETE", objectName());
     }
 
     /**
@@ -111,6 +129,28 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     public Class<? extends Response> responseType()
     {
         return responseType;
+    }
+
+    /**
+     * @param methods The set of methods that this microservlet supports
+     */
+    public Microservlet<Request, Response> supportedMethods(ObjectSet<MicroservletRequest.HttpMethod> methods)
+    {
+        this.supportedMethods = methods;
+        return this;
+    }
+
+    public ObjectSet<MicroservletRequest.HttpMethod> supportedMethods()
+    {
+        return supportedMethods;
+    }
+
+    /**
+     * @return True if the given HTTP method is supported
+     */
+    public boolean supports(MicroservletRequest.HttpMethod method)
+    {
+        return supportedMethods.contains(method);
     }
 
     /**

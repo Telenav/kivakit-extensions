@@ -131,7 +131,8 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
         for (final var path : filter.paths())
         {
             // and add a PathItem to the list of paths.
-            paths.addPathItem(path.join(), pathItem(filter.microservlet(path)));
+            var method = HttpMethod.valueOf(path.last().toUpperCase());
+            paths.addPathItem(path.withoutLast().join(), pathItem(filter.microservlet(path, method)));
         }
 
         // Add the paths to the OpenAPI object

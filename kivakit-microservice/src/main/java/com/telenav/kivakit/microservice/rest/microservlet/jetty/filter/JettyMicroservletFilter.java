@@ -94,7 +94,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
         final var cycle = listenTo(new JettyMicroservletRequestCycle(restApplication, httpRequest, httpResponse));
 
         // resolve the microservlet at the requested path,
-        final var microservlet = resolve(cycle.request().path());
+        final var microservlet = resolve(cycle.request().path(), MicroservletRequest.HttpMethod.valueOf(httpRequest.getMethod().toUpperCase()));
         if (microservlet != null)
         {
             try
@@ -126,9 +126,9 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
     {
     }
 
-    public Microservlet<?, ?> microservlet(final FilePath path)
+    public Microservlet<?, ?> microservlet(final FilePath path, MicroservletRequest.HttpMethod method)
     {
-        return pathToMicroservlet.get(path);
+        return pathToMicroservlet.get(path.withChild(method.name().toLowerCase()));
     }
 
     /**
@@ -136,7 +136,19 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
      */
     public final void mount(final String path, final Microservlet<?, ?> microservlet)
     {
-        pathToMicroservlet.put(FilePath.parseFilePath("/api/" + Application.get().version() + "/" + path), microservlet);
+        for (var method : microservlet.supportedMethods())
+        {
+            final FilePath filePath = FilePath.parseFilePath("/api/" + Application.get().version()
+                    + "/" + path
+                    + "/" + method.name().toLowerCase());
+            var existing = pathToMicroservlet.get(filePath);
+            if (existing != null)
+            {
+                problem("There is already a $ microservlet mounted on $: ${class}",
+                        method, filePath.withoutLast(), existing.getClass()).throwAsIllegalStateException();
+            }
+            pathToMicroservlet.put(filePath, microservlet);
+        }
     }
 
     public Set<FilePath> paths()
@@ -205,11 +217,11 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
      * @param path The mount path
      * @return The microservlet at the given path, or null if the path does not map to any microservlet
      */
-    private Microservlet<?, ?> resolve(FilePath path)
+    private Microservlet<?, ?> resolve(FilePath path, MicroservletRequest.HttpMethod method)
     {
         for (; path.isNonEmpty(); path = path.withoutLast())
         {
-            final var microservlet = microservlet(path);
+            final var microservlet = microservlet(path, method);
             if (microservlet != null)
             {
                 return microservlet;

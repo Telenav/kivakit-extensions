@@ -21,6 +21,7 @@ package com.telenav.kivakit.microservice.rest;
 import com.google.gson.Gson;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
@@ -34,6 +35,7 @@ import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicr
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
+import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletDeleteRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletPostRequest;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
@@ -131,6 +133,14 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
             mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
             {
                 @Override
+                @SuppressWarnings("unchecked")
+                public Response onDelete(final Request request)
+                {
+                    // and if the microservlet receives a DELETE request, return the value of the request object.
+                    return (Response) ((MicroservletDeleteRequest) request).onDelete();
+                }
+
+                @Override
                 public Response onGet(final Request request)
                 {
                     // and if the microservlet receives a GET request, return the value of the request object,
@@ -144,7 +154,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
                     // and if the microservlet receives a POST request, return the value of the request object.
                     return (Response) ((MicroservletPostRequest) request).onPost();
                 }
-            }));
+            }).supportedMethods(ObjectSet.of(request.httpMethod())));
         }
     }
 
