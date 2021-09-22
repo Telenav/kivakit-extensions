@@ -23,11 +23,11 @@ import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilterHolder;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyFilter;
+import com.telenav.kivakit.web.jetty.JettyServer;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
-import org.apache.wicket.protocol.http.WebApplication;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
@@ -42,7 +42,11 @@ import static javax.servlet.DispatcherType.REQUEST;
  * <b>Not public API</b>
  *
  * <p>
- * A Jetty filter for Apache Wicket applications. The Wicket {@link WebApplication} class is passed to the constructor.
+ * A {@link JettyServer} filter plugin for {@link Microservlet}s.
+ * </p>
+ *
+ * <p>
+ * Creates a {@link JettyMicroservletFilterHolder} that creates a {@link JettyMicroservletFilter}.
  * </p>
  *
  * <p><b>NOTE</b></p>
@@ -56,7 +60,7 @@ import static javax.servlet.DispatcherType.REQUEST;
  */
 @LexakaiJavadoc(complete = true)
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservlet extends BaseJettyFilter
+public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
 {
     /** The Jetty holder for an instance of {@link JettyMicroservletFilter} */
     @UmlAggregation
@@ -65,7 +69,7 @@ public class JettyMicroservlet extends BaseJettyFilter
     /**
      * @param application The REST application
      */
-    public JettyMicroservlet(final MicroserviceRestApplication application)
+    public MicroservletJettyFilterPlugin(final MicroserviceRestApplication application)
     {
         super(application.getClass().getSimpleName());
 

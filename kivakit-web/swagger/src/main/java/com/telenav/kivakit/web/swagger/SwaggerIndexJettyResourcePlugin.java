@@ -19,7 +19,7 @@
 package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.resource.resources.packaged.PackageResource;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResource;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -34,7 +34,7 @@ import java.io.IOException;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettySwaggerIndex extends BaseJettyResource
+public class SwaggerIndexJettyResourcePlugin extends BaseJettyResourcePlugin
 {
     /**
      * Servlet that produces the Swagger index
@@ -60,9 +60,9 @@ public class JettySwaggerIndex extends BaseJettyResource
     /**
      * @param port The port where Swagger is running
      */
-    public JettySwaggerIndex(final int port)
+    public SwaggerIndexJettyResourcePlugin(final int port)
     {
-        super("[JettySwaggerIndex port = " + port + "]");
+        super("[SwaggerIndexJettyResourcePlugin port = " + port + "]");
         this.port = port;
     }
 
@@ -74,7 +74,7 @@ public class JettySwaggerIndex extends BaseJettyResource
 
     String index()
     {
-        return PackageResource.of(JettySwaggerIndex.class, "assets/index.html")
+        return PackageResource.of(SwaggerIndexJettyResourcePlugin.class, "assets/index.html")
                 .reader()
                 .string()
                 .replaceAll("PORT", Integer.toString(port));

@@ -5,7 +5,9 @@ import com.telenav.kivakit.component.Component;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletPostRequest;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -26,6 +28,18 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public abstract class BaseMicroservletMessage extends BaseComponent implements Component, Validatable
 {
+    public Problem problem(int status, final String text, final Object... arguments)
+    {
+        var response = JettyMicroservletRequestCycle.cycle().response();
+        return response.problem(status, text, arguments);
+    }
+
+    public Problem problem(int status, Throwable exception, final String text, final Object... arguments)
+    {
+        var response = JettyMicroservletRequestCycle.cycle().response();
+        return response.problem(status, exception, text, arguments);
+    }
+
     @Override
     public Validator validator(final ValidationType type)
     {

@@ -25,8 +25,10 @@ import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
@@ -38,6 +40,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 /**
  * <b>Not public API</b>
@@ -63,19 +66,19 @@ public class JettyMicroservletRequest extends BaseComponent
     private final JettyMicroservletRequestCycle cycle;
 
     /** Servlet request */
-    private final HttpServletRequest request;
+    private final HttpServletRequest httpRequest;
 
     /** The properties for the request, from the path and/or query parameters */
     private PropertyMap properties;
 
     /**
      * @param cycle The request cycle for the {@link Microservlet}
-     * @param request The Java Servlet API HTTP request object
+     * @param httpRequest The Java Servlet API HTTP request object
      */
-    public JettyMicroservletRequest(final JettyMicroservletRequestCycle cycle, final HttpServletRequest request)
+    public JettyMicroservletRequest(final JettyMicroservletRequestCycle cycle, final HttpServletRequest httpRequest)
     {
         this.cycle = cycle;
-        this.request = request;
+        this.httpRequest = httpRequest;
     }
 
     /**
@@ -85,18 +88,34 @@ public class JettyMicroservletRequest extends BaseComponent
     {
         if (properties == null)
         {
-            // Get the full request URI,
-            final var uri = URI.create(request.getRequestURI());
-
-            // parse the path in pairs, adding each to the properties map,
-            final var path = FilePath.filePath(uri);
-            for (int i = 0; i < path.size(); i += 2)
+            properties = PropertyMap.create();
+            try
             {
-                properties.put(path.get(i), path.get(i + 1));
-            }
 
-            // then add any query parameters to the map.
-            properties.addAll(QueryParameters.parse(uri.getQuery()).asMap());
+                // Get the full request URI,
+                final var uri = URI.create(httpRequest.getRequestURI());
+
+                // parse the path in pairs, adding each to the properties map,
+                final var path = FilePath.filePath(uri);
+                if (path.size() % 2 != 0)
+                {
+                    problem(SC_BAD_REQUEST, "Path parameters must be paired");
+                }
+                else
+                {
+                    for (int i = 0; i < path.size(); i += 2)
+                    {
+                        properties.put(path.get(i), path.get(i + 1));
+                    }
+
+                    // then add any query parameters to the map.
+                    properties.addAll(QueryParameters.parse(uri.getQuery()).asMap());
+                }
+            }
+            catch (Exception e)
+            {
+                problem(SC_BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
+            }
         }
         return properties;
     }
@@ -108,42 +127,57 @@ public class JettyMicroservletRequest extends BaseComponent
     public FilePath path()
     {
         // Get the full request URI,
-        final var uri = request.getRequestURI();
+        final var uri = httpRequest.getRequestURI();
 
         // and the context path,
-        final String contextPath = request.getContextPath();
+        final String contextPath = httpRequest.getContextPath();
         ensure(uri.startsWith(contextPath));
 
         // then return the URI without the context path
         return FilePath.parseFilePath(uri.substring(contextPath.length()));
     }
 
+    public Problem problem(int status, final String text, final Object... arguments)
+    {
+        return cycle.response().problem(status, text, arguments);
+    }
+
+    public Problem problem(int status, Throwable exception, final String text, final Object... arguments)
+    {
+        return cycle.response().problem(status, exception, text, arguments);
+    }
+
     /**
      * Retrieves an object from the JSON in the servlet request input stream.
      *
-     * @param requestType The type of object to deserialize from JSON
      * @param <T> The object type
+     * @param requestType The type of object to deserialize from JSON
      * @return The deserialized object, or null if deserialization failed
      */
-    public <T> T readObject(final Class<T> requestType)
+    public <T extends MicroservletRequest> T readObject(final Class<T> requestType)
     {
+        final var response = cycle.response();
+
         try
         {
             // Read JSON object from servlet input
-            final var in = request.getInputStream();
-            final var object = cycle.gson().fromJson(IO.string(in), requestType);
+            final var in = this.httpRequest.getInputStream();
+            final String json = IO.string(in);
+            final var request = cycle.gson().fromJson(json, requestType);
 
-            // and validate it if we can
-            if (object instanceof Validatable)
+            // If the request is invalid (any problems go into the response object),
+            if (!request.isValid(response))
             {
-                ((Validatable) object).validator().validate(this);
+                // then we have an invalid response
+                response.problem(SC_BAD_REQUEST, "Invalid request object: $", json);
+                return null;
             }
 
-            return object;
+            return request;
         }
         catch (final Exception e)
         {
-            problem(e, "Unable to read JSON request from servlet input stream");
+            problem(SC_BAD_REQUEST, e, "Unable to read JSON request from servlet input stream: $", e.getMessage());
             return null;
         }
     }

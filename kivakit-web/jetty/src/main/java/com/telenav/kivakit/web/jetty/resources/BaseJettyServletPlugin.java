@@ -19,31 +19,24 @@
 package com.telenav.kivakit.web.jetty.resources;
 
 import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
-import org.eclipse.jetty.servlet.FilterHolder;
-
-import javax.servlet.DispatcherType;
-import java.util.EnumSet;
+import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
- * Base class for request handlers that filter requests and then pass them on to other request handlers and finally
- * servlets. The kind of requests that the filter intercepts is determined by {@link #dispatchers()}.
+ * Base class for servlet request handlers.
  *
  * @author jonathanl (shibo)
  */
-public abstract class BaseJettyFilter extends BaseJettyRequestHandler
+@LexakaiJavadoc(complete = true)
+public abstract class BaseJettyServletPlugin extends BaseJettyRequestHandler
 {
-    public BaseJettyFilter(final String name)
+    public BaseJettyServletPlugin(final String name)
     {
         super(name);
     }
 
     /**
-     * @return The set of request types that this filter handles
+     * @return Jetty-specific adaptor for servlets
      */
-    public abstract EnumSet<DispatcherType> dispatchers();
-
-    /**
-     * @return Jetty-specific adaptor for filters
-     */
-    public abstract FilterHolder holder();
+    public abstract ServletHolder holder();
 }

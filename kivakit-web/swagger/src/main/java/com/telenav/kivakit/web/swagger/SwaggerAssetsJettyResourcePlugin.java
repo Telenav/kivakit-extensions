@@ -16,28 +16,22 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.web.jetty.resources;
+package com.telenav.kivakit.web.swagger;
 
-import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
+import com.telenav.kivakit.resource.resources.packaged.Package;
+import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
- * Base class for request handlers that serve up file resources.
+ * Provides the Swagger JavaScript resources required to show Swagger documentation.
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseJettyResource extends BaseJettyRequestHandler
+public class SwaggerAssetsJettyResourcePlugin extends AssetsJettyResourcePlugin
 {
-    public BaseJettyResource(final String name)
+    public SwaggerAssetsJettyResourcePlugin()
     {
-        super(name);
+        super(Package.of(SwaggerAssetsJettyResourcePlugin.class, "assets"));
     }
-
-    /**
-     * @return The Jetty-specific holder of a static resource servlet, normally {@link DefaultServlet}.
-     */
-    public abstract ServletHolder holder();
 }

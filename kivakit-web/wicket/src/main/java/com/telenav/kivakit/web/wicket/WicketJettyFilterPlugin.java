@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.wicket;
 
-import com.telenav.kivakit.web.jetty.resources.BaseJettyFilter;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -39,7 +39,7 @@ import static javax.servlet.DispatcherType.REQUEST;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyWicket extends BaseJettyFilter
+public class WicketJettyFilterPlugin extends BaseJettyFilterPlugin
 {
     /** Wicket-specific definition of a web application */
     private Class<? extends WebApplication> applicationClass;
@@ -47,13 +47,13 @@ public class JettyWicket extends BaseJettyFilter
     /** Wicket web application */
     private WebApplication application;
 
-    public JettyWicket(final Class<? extends WebApplication> applicationClass)
+    public WicketJettyFilterPlugin(final Class<? extends WebApplication> applicationClass)
     {
         super(applicationClass.getSimpleName());
         this.applicationClass = ensureNotNull(applicationClass);
     }
 
-    public JettyWicket(WebApplication application)
+    public WicketJettyFilterPlugin(WebApplication application)
     {
         super(application.getClass().getSimpleName());
         this.application = ensureNotNull(application);

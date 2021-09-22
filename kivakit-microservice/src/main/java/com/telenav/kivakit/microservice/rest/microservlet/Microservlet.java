@@ -32,9 +32,6 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     @UmlRelation(label = "references sub-class", referent = MicroservletResponse.class)
     private final Class<? extends Response> responseType;
 
-    /** A thread local variable holding the request cycle for a given thread using this servlet */
-    private final ThreadLocal<JettyMicroservletRequestCycle> cycle = new ThreadLocal<>();
-
     /** The set of methods that this microservlet supports */
     private ObjectSet<MicroservletRequest.HttpMethod> supportedMethods = ObjectSet.of(MicroservletRequest.HttpMethod.GET, MicroservletRequest.HttpMethod.POST, MicroservletRequest.HttpMethod.DELETE);
 
@@ -46,15 +43,6 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     {
         this.requestType = requestType;
         this.responseType = responseType;
-    }
-
-    /**
-     * Attaches a request cycle to this servlet. The association is thread-local so that {@link Microservlet}s are
-     * thread-safe but also have access to request cycle information.
-     */
-    public void attach(final JettyMicroservletRequestCycle cycle)
-    {
-        this.cycle.set(cycle);
     }
 
     @SuppressWarnings("unchecked")
@@ -69,14 +57,6 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     public String description()
     {
         return "No description available";
-    }
-
-    /**
-     * Detaches any attached request cycle from this microservlet
-     */
-    public void detach()
-    {
-        attach(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -198,14 +178,6 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     }
 
     /**
-     * @return The active request cycle for the calling thread
-     */
-    protected JettyMicroservletRequestCycle cycle()
-    {
-        return cycle.get();
-    }
-
-    /**
      * @return The parameter value for the given key
      */
     protected String get(final String key)
@@ -218,6 +190,6 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      */
     protected PropertyMap parameters()
     {
-        return cycle().request().parameters();
+        return JettyMicroservletRequestCycle.cycle().request().parameters();
     }
 }

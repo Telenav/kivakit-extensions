@@ -28,7 +28,7 @@ import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
@@ -55,9 +55,9 @@ import javax.servlet.ServletResponse;
  * <p><b>Flow of Control</b></p>
  *
  * <ol>
- *     <li>{@link MicroserviceRestApplication} creates a {@link JettyMicroservlet}</li>
+ *     <li>{@link MicroserviceRestApplication} creates a {@link MicroservletJettyFilterPlugin}</li>
  *     <li>In the {@link MicroserviceRestApplication} subclass constructor, to <i>mount*()</i> methods are used to bind {@link Microservlet}s to paths</li>
- *     <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link JettyMicroservlet}</li>
+ *     <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyFilterPlugin}</li>
  *     <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} method parses the request path and parameters</li>
  *     <li>The request path is used to resolve any {@link Microservlet} mounted on the path</li>
  *     <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
@@ -82,7 +82,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
 
     /** The Jetty microservlet filter plugin for this REST application */
     @UmlAggregation
-    private final JettyMicroservlet jettyMicroservlet;
+    private final MicroservletJettyFilterPlugin jettyMicroservlet;
 
     /**
      * @param microservice The microservice that is creating this REST application
@@ -90,7 +90,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     public MicroserviceRestApplication(final Microservice microservice)
     {
         this.microservice = microservice;
-        jettyMicroservlet = new JettyMicroservlet(this);
+        jettyMicroservlet = new MicroservletJettyFilterPlugin(this);
 
         register(new JerseyGsonSerializer<>(gsonFactory()));
 

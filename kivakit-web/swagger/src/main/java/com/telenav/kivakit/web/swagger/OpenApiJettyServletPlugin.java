@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.swagger;
 
-import com.telenav.kivakit.web.jetty.resources.BaseJettyServlet;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.OpenApiServlet;
@@ -35,13 +35,13 @@ import java.util.Set;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettySwaggerOpenApi extends BaseJettyServlet
+public class OpenApiJettyServletPlugin extends BaseJettyServletPlugin
 {
     private final Application application;
 
-    public JettySwaggerOpenApi(final Application application)
+    public OpenApiJettyServletPlugin(final Application application)
     {
-        super("[JettySwaggerOpenApi application = " + application.getClass().getSimpleName() + "]");
+        super("[OpenApiJettyServletPlugin application = " + application.getClass().getSimpleName() + "]");
 
         this.application = application;
     }

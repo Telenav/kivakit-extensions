@@ -35,6 +35,34 @@ import javax.servlet.http.HttpServletResponse;
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletRequestCycle extends BaseComponent
 {
+    /** A thread local variable holding the request cycle for a given thread using this servlet */
+    private static final ThreadLocal<JettyMicroservletRequestCycle> cycle = new ThreadLocal<>();
+
+    /**
+     * Attaches a request cycle to the current thread. This allows the cycle to be looked up anywhere in the code, as
+     * some code does not have a request cycle parameter.
+     */
+    public static void attach(final JettyMicroservletRequestCycle cycle)
+    {
+        JettyMicroservletRequestCycle.cycle.set(cycle);
+    }
+
+    /**
+     * @return The request cycle for the calling thread
+     */
+    public static JettyMicroservletRequestCycle cycle()
+    {
+        return cycle.get();
+    }
+
+    /**
+     * Detaches any request cycle from this thread
+     */
+    public static void detach()
+    {
+        attach((JettyMicroservletRequestCycle) null);
+    }
+
     /** The REST application that owns this request cycle */
     private final MicroserviceRestApplication application;
 

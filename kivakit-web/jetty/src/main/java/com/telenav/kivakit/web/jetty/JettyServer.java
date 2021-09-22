@@ -21,9 +21,9 @@ package com.telenav.kivakit.web.jetty;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyFilter;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResource;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyServlet;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -100,34 +100,34 @@ public class JettyServer extends BaseRepeater
     private int port;
 
     /** The filters to install when Jetty starts */
-    private final List<BaseJettyFilter> filters = new ArrayList<>();
+    private final List<BaseJettyFilterPlugin> filters = new ArrayList<>();
 
     /** The servlets to install when Jetty starts */
-    private final List<BaseJettyServlet> servlets = new ArrayList<>();
+    private final List<BaseJettyServletPlugin> servlets = new ArrayList<>();
 
     /** The static resources to install when Jetty starts */
-    private final List<BaseJettyResource> resources = new ArrayList<>();
+    private final List<BaseJettyResourcePlugin> resources = new ArrayList<>();
 
     public JettyServer()
     {
         configureLogging();
     }
 
-    public JettyServer mount(final String path, final BaseJettyFilter filter)
+    public JettyServer mount(final String path, final BaseJettyFilterPlugin filter)
     {
         filter.path(path);
         filters.add(filter);
         return this;
     }
 
-    public JettyServer mount(final String path, final BaseJettyServlet servlet)
+    public JettyServer mount(final String path, final BaseJettyServletPlugin servlet)
     {
         servlet.path(path);
         servlets.add(servlet);
         return this;
     }
 
-    public JettyServer mount(final String path, final BaseJettyResource resource)
+    public JettyServer mount(final String path, final BaseJettyResourcePlugin resource)
     {
         resource.path(path);
         resources.add(resource);

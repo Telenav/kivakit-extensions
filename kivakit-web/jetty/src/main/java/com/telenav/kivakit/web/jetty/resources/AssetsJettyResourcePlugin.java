@@ -4,13 +4,13 @@ import com.telenav.kivakit.resource.ResourceFolder;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-public class JettyAssets extends BaseJettyResource
+public class AssetsJettyResourcePlugin extends BaseJettyResourcePlugin
 {
     private final ResourceFolder folder;
 
-    public JettyAssets(final ResourceFolder folder)
+    public AssetsJettyResourcePlugin(final ResourceFolder folder)
     {
-        super("[JettyAssets path = " + folder.toString() + "]");
+        super("[AssetsJettyResourcePlugin path = " + folder.toString() + "]");
         this.folder = folder;
     }
 

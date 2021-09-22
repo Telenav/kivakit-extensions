@@ -19,29 +19,29 @@
 package com.telenav.kivakit.web.jersey;
 
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyServlet;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 /**
- * {@link BaseJettyServlet} plugin that can be added to {@link JettyServer} to serve REST resources from the {@link
- * ResourceConfig} application passed to the constructor.
+ * {@link BaseJettyServletPlugin} plugin that can be added to {@link JettyServer} to serve REST resources from the
+ * {@link ResourceConfig} application passed to the constructor.
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyJersey extends BaseJettyServlet
+public class JerseyJettyServletPlugin extends BaseJettyServletPlugin
 {
     private final ResourceConfig application;
 
     /**
      * @param application The REST application
      */
-    public JettyJersey(final ResourceConfig application)
+    public JerseyJettyServletPlugin(final ResourceConfig application)
     {
-        super("[JettyJersey application = " + application.getClass().getSimpleName() + "]");
+        super("[JerseyJettyServletPlugin application = " + application.getClass().getSimpleName() + "]");
 
         this.application = application;
     }

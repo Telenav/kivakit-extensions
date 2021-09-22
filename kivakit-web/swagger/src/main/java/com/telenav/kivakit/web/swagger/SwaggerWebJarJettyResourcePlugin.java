@@ -19,7 +19,7 @@
 package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.kernel.language.types.Classes;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResource;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -33,13 +33,13 @@ import javax.ws.rs.core.Application;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettySwaggerWebJar extends BaseJettyResource
+public class SwaggerWebJarJettyResourcePlugin extends BaseJettyResourcePlugin
 {
     private final Application application;
 
-    public JettySwaggerWebJar(final Application application)
+    public SwaggerWebJarJettyResourcePlugin(final Application application)
     {
-        super("[JettySwaggerWebJar application = " + application.getClass().getSimpleName() + "]");
+        super("[SwaggerWebJarJettyResourcePlugin application = " + application.getClass().getSimpleName() + "]");
 
         this.application = application;
     }

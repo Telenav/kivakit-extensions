@@ -4,7 +4,7 @@ import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.JettyMicroservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletErrors;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
@@ -37,7 +37,7 @@ import java.util.function.Function;
  * <b>Not public API</b>
  * <p>
  * A {@link MicroservletGetRequest} request that produces an {@link OpenAPI} definition for a {@link
- * JettyMicroservlet}.
+ * MicroservletJettyFilterPlugin}.
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyOpenApiRequest extends MicroservletGetRequest

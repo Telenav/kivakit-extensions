@@ -11,14 +11,14 @@ import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
-import com.telenav.kivakit.web.jersey.JettyJersey;
+import com.telenav.kivakit.web.jersey.JerseyJettyServletPlugin;
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.jetty.resources.JettyAssets;
-import com.telenav.kivakit.web.swagger.JettySwaggerAssets;
-import com.telenav.kivakit.web.swagger.JettySwaggerIndex;
-import com.telenav.kivakit.web.swagger.JettySwaggerOpenApi;
-import com.telenav.kivakit.web.swagger.JettySwaggerWebJar;
-import com.telenav.kivakit.web.wicket.JettyWicket;
+import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.OpenApiJettyServletPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerIndexJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
+import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 
@@ -180,7 +180,7 @@ public abstract class Microservice extends Application implements Startable
             if (webApplication != null)
             {
                 // mount them on the server.
-                server.mount("/*", new JettyWicket(webApplication));
+                server.mount("/*", new WicketJettyFilterPlugin(webApplication));
             }
 
             // If there are static resources,
@@ -188,7 +188,7 @@ public abstract class Microservice extends Application implements Startable
             if (staticAssets != null)
             {
                 // mount them on the server.
-                server.mount("/assets/*", new JettyAssets(staticAssets));
+                server.mount("/assets/*", new AssetsJettyResourcePlugin(staticAssets));
             }
 
             // If there is a Jersey REST application,
@@ -200,17 +200,17 @@ public abstract class Microservice extends Application implements Startable
                 if (openApiAssets != null)
                 {
                     // mount them on the server.
-                    server.mount("/open-api/assets/*", new JettyAssets(openApiAssets));
+                    server.mount("/open-api/assets/*", new AssetsJettyResourcePlugin(openApiAssets));
                 }
 
                 // Mount Swagger resources for the REST application.
-                server.mount("/open-api/*", new JettySwaggerOpenApi(restApplication));
-                server.mount("/docs/*", new JettySwaggerIndex(port));
-                server.mount("/swagger/webapp/*", new JettySwaggerAssets());
-                server.mount("/swagger/webjar/*", new JettySwaggerWebJar(restApplication));
+                server.mount("/open-api/*", new OpenApiJettyServletPlugin(restApplication));
+                server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
+                server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
+                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication));
 
                 // Mount the REST application.
-                server.mount("/*", new JettyJersey(restApplication));
+                server.mount("/*", new JerseyJettyServletPlugin(restApplication));
             }
 
             // Start the server.

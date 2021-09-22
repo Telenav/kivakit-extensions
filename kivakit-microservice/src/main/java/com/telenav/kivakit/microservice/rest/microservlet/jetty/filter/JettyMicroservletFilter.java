@@ -24,7 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest.HttpMethod.GET;
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 
 /**
  * <b>Not public API</b>
@@ -89,35 +91,46 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
         // Cast request and response to HTTP subclasses,
         final var httpRequest = (HttpServletRequest) servletRequest;
         final var httpResponse = (HttpServletResponse) servletResponse;
+        final var method = MicroservletRequest.HttpMethod.valueOf(httpRequest.getMethod());
 
         // create microservlet request cycle,
         final var cycle = listenTo(new JettyMicroservletRequestCycle(restApplication, httpRequest, httpResponse));
 
-        // resolve the microservlet at the requested path,
-        final var microservlet = resolve(cycle.request().path(), MicroservletRequest.HttpMethod.valueOf(httpRequest.getMethod().toUpperCase()));
-        if (microservlet != null)
+        // attach it to the current thread,
+        JettyMicroservletRequestCycle.attach(cycle);
+
+        try
         {
-            try
+            // resolve the microservlet at the requested path,
+            final var microservlet = resolve(cycle.request().path(), MicroservletRequest.HttpMethod.valueOf(httpRequest.getMethod()));
+            if (microservlet != null)
             {
-                // and attach the request cycle to the (stateless) microservlet via thread-local map.
-                handleRequest(httpRequest.getMethod(), cycle, microservlet);
+                try
+                {
+                    // and handle the request
+                    handleRequest(method, cycle, microservlet);
+                }
+                catch (final Exception e)
+                {
+                    cycle.response().problem(SC_INTERNAL_SERVER_ERROR, e, "REST $ method to $ failed", method.name(), microservlet.objectName());
+                }
             }
-            catch (final Exception e)
+            else
             {
-                problem(e, "REST $ method to $ failed", httpRequest.getMethod(), microservlet.objectName());
+                try
+                {
+                    // If there is no microservlet, pass the request down the filter chain.
+                    filterChain.doFilter(servletRequest, servletResponse);
+                }
+                catch (final Exception e)
+                {
+                    cycle.response().problem(SC_INTERNAL_SERVER_ERROR, e, "Exception thrown by filter chain");
+                }
             }
         }
-        else
+        finally
         {
-            try
-            {
-                // If there is no microservlet, pass the request down the filter chain.
-                filterChain.doFilter(servletRequest, servletResponse);
-            }
-            catch (final Exception e)
-            {
-                warning(e, "Exception thrown by filter chain");
-            }
+            JettyMicroservletRequestCycle.detach();
         }
     }
 
@@ -126,6 +139,11 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
     {
     }
 
+    /**
+     * @param path The request path
+     * @param method The request method
+     * @return Any microservice at the given path with the given request method, or null if none exists
+     */
     public Microservlet<?, ?> microservlet(final FilePath path, MicroservletRequest.HttpMethod method)
     {
         return pathToMicroservlet.get(path.withChild(method.name().toLowerCase()));
@@ -151,11 +169,17 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
         }
     }
 
+    /**
+     * @return The set of all microservice paths. This includes an automatically appended HTTP method name.
+     */
     public Set<FilePath> paths()
     {
         return pathToMicroservlet.keySet();
     }
 
+    /**
+     * @return The REST application that installed this filter
+     */
     public MicroserviceRestApplication restApplication()
     {
         return restApplication;
@@ -164,50 +188,52 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin
     /**
      * Handles GET and POST methods to the given microservlet.
      *
-     * @param method The method, either GET or POST
+     * @param method The HTTP request method
      * @param cycle The request cycle
      * @param microservlet The microservlet to call
      */
-    private void handleRequest(final String method,
+    private void handleRequest(final MicroservletRequest.HttpMethod method,
                                final JettyMicroservletRequestCycle cycle,
                                final Microservlet<?, ?> microservlet)
     {
-        // Attach the request cycle to the microservlet and vice versa,
-        microservlet.attach(cycle);
-        cycle.attach(microservlet);
+        // get the response object,
+        var response = cycle.response();
 
         // and if the request method is
         switch (method)
         {
-            case "POST":
+            case POST:
             {
                 // then convert the posted JSON to an object of the request type,
-                final var request = listenTo(cycle.request().readObject(microservlet.requestType()));
+                final var request = (MicroservletRequest) listenTo(cycle.request().readObject(microservlet.requestType()));
 
                 // and respond with the object returned from onPost.
-                cycle.response().writeObject(microservlet.post(request));
+                if (request != null)
+                {
+                    response.writeObject(microservlet.post(request));
+                }
             }
             break;
 
-            case "GET":
+            case GET:
+            case DELETE:
             {
                 // then turn parameters into a JSON object and then treat that like it was POSTed.
                 final var json = cycle.request().parameters().asJson();
                 final var request = cycle.gson().fromJson(json, microservlet.requestType());
 
                 // Respond with the object returned from onGet.
-                cycle.response().writeObject(microservlet.get(request));
+                if (request != null)
+                {
+                    response.writeObject(method == GET ? microservlet.get(request) : microservlet.delete(request));
+                }
             }
             break;
 
-            case "PUT":
-            case "DELETE":
-                unsupported();
+            default:
+                response.problem(SC_METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
                 break;
         }
-
-        // Detach the request cycle.
-        microservlet.detach();
     }
 
     /**
