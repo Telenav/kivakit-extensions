@@ -3,12 +3,15 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.filter;
 import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.kernel.language.time.PreciseDuration;
+import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.ProblemReportingMixin;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.MetricReportingMixin;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -53,7 +56,7 @@ import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemReportingMixin
+public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemReportingMixin, MetricReportingMixin
 {
     /** Map from path to microservlet */
     @UmlAggregation(referent = Microservlet.class, label = "mounts on paths", referentCardinality = "many")
@@ -108,8 +111,16 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
             {
                 try
                 {
-                    // and handle the request
+                    // record the start time,
+                    var start = Time.now();
+                    var startCpuTime = PreciseDuration.cpuTime();
+
+                    // handle the request,
                     handleRequest(method, cycle, microservlet);
+
+                    // and report how long the request took.
+                    metric("request-wall-clock-time", start.elapsedSince());
+                    metric("request-cpu-time", PreciseDuration.cpuTime().minus(startCpuTime));
                 }
                 catch (final Exception e)
                 {
@@ -131,6 +142,8 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         }
         finally
         {
+            cycle.reportMetrics();
+
             JettyMicroservletRequestCycle.detach();
         }
     }

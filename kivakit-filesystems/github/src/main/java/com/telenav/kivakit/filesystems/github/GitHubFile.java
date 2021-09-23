@@ -19,6 +19,7 @@
 package com.telenav.kivakit.filesystems.github;
 
 import com.telenav.kivakit.filesystem.spi.FileService;
+import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -51,6 +52,12 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
 
     @Override
     public boolean chmod(final PosixFilePermission... permissions)
+    {
+        return unsupported();
+    }
+
+    @Override
+    public Time created()
     {
         return unsupported();
     }

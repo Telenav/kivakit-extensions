@@ -8,11 +8,15 @@ import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.model.ProblemReportingMixin;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.MetricReporter;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.ScalarMetric;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <b>Not public API</b>
@@ -70,6 +74,9 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     /** The microservlet that is attached to this request cycle via {@link #attach(Microservlet)} */
     private Microservlet<?, ?> servlet;
 
+    /** List of reported metrics for this request cycle */
+    private final List<ScalarMetric<?>> metrics = new ArrayList<>(16);
+
     /** The request */
     @UmlAggregation
     private final JettyMicroservletRequest request;
@@ -93,6 +100,14 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
         this.application = application;
         this.request = listenTo(new JettyMicroservletRequest(this, request));
         this.response = listenTo(new JettyMicroserviceResponse(this, response));
+    }
+
+    /**
+     * Adds the given metric to this request cycle
+     */
+    public void add(final ScalarMetric<?> metric)
+    {
+        metrics.add(metric);
     }
 
     /**
@@ -120,6 +135,18 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     public Gson gson()
     {
         return gson.get();
+    }
+
+    /**
+     * Sends metrics to the metric service
+     */
+    public void reportMetrics()
+    {
+        var reporter = lookup(MetricReporter.class);
+        if (reporter != null)
+        {
+            reporter.report(metrics);
+        }
     }
 
     /**
