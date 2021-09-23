@@ -68,9 +68,9 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
     /** Models for which to make schemas */
     private final Set<Class<?>> models = new HashSet<>();
 
-    public JettyOpenApiRequest(final JettyMicroservletFilter filter)
+    public JettyOpenApiRequest()
     {
-        this.filter = filter;
+        this.filter = require(JettyMicroservletFilter.class);
     }
 
     /**

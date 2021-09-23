@@ -8,6 +8,7 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.MetricReporter;
 import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.reporters.console.ConsoleMetricReporter;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
@@ -16,7 +17,6 @@ import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.web.jersey.JerseyJettyServletPlugin;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
-import com.telenav.kivakit.web.swagger.OpenApiJettyServletPlugin;
 import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
 import com.telenav.kivakit.web.swagger.SwaggerIndexJettyResourcePlugin;
 import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
@@ -208,7 +208,7 @@ public abstract class Microservice extends Application implements Startable
                 }
 
                 // Mount Swagger resources for the REST application.
-                server.mount("/open-api/*", new OpenApiJettyServletPlugin(restApplication));
+                server.mount("/*", registerObject(new MicroservletJettyFilterPlugin(restApplication)));
                 server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
                 server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication));

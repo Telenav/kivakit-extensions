@@ -45,7 +45,7 @@ public class JettyMicroservletFilterHolder extends FilterHolder implements Compo
 
     public JettyMicroservletFilterHolder(final MicroserviceRestApplication application)
     {
-        setFilter(listenTo(filter = new JettyMicroservletFilter(application)));
+        setFilter(filter = listenTo(new JettyMicroservletFilter(application)));
     }
 
     public JettyMicroservletFilter filter()

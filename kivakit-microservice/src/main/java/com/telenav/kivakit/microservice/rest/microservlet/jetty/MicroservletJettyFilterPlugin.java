@@ -64,7 +64,7 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
 {
     /** The Jetty holder for an instance of {@link JettyMicroservletFilter} */
     @UmlAggregation
-    private JettyMicroservletFilterHolder filterHolder;
+    private final JettyMicroservletFilterHolder filterHolder;
 
     /**
      * @param application The REST application
@@ -73,7 +73,7 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
     {
         super(application.getClass().getSimpleName());
 
-        application.listenTo(new JettyMicroservletFilterHolder(application));
+        application.listenTo(filterHolder = new JettyMicroservletFilterHolder(application));
     }
 
     /**

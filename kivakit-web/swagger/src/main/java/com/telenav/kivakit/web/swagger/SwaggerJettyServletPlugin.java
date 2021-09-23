@@ -35,13 +35,13 @@ import java.util.Set;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class OpenApiJettyServletPlugin extends BaseJettyServletPlugin
+public class SwaggerJettyServletPlugin extends BaseJettyServletPlugin
 {
     private final Application application;
 
-    public OpenApiJettyServletPlugin(final Application application)
+    public SwaggerJettyServletPlugin(final Application application)
     {
-        super("[OpenApiJettyServletPlugin application = " + application.getClass().getSimpleName() + "]");
+        super("[SwaggerJettyServletPlugin application = " + application.getClass().getSimpleName() + "]");
 
         this.application = application;
     }

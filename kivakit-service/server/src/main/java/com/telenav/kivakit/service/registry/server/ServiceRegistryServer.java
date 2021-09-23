@@ -34,9 +34,9 @@ import com.telenav.kivakit.service.registry.server.webapp.ServiceRegistryWebAppl
 import com.telenav.kivakit.service.registry.store.ServiceRegistryStore;
 import com.telenav.kivakit.web.jersey.JerseyJettyServletPlugin;
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.swagger.OpenApiJettyServletPlugin;
 import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
 import com.telenav.kivakit.web.swagger.SwaggerIndexJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerJettyServletPlugin;
 import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
 import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -147,7 +147,7 @@ public class ServiceRegistryServer extends Server
         listenTo(new JettyServer())
                 .port(port)
                 .mount("/*", new WicketJettyFilterPlugin(ServiceRegistryWebApplication.class))
-                .mount("/open-api/*", new OpenApiJettyServletPlugin(application))
+                .mount("/open-api/*", new SwaggerJettyServletPlugin(application))
                 .mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port))
                 .mount("/webapp/*", new SwaggerAssetsJettyResourcePlugin())
                 .mount("/webjar/*", new SwaggerWebJarJettyResourcePlugin(application))

@@ -1,10 +1,10 @@
 package com.telenav.kivakit.microservice.rest.microservlet.jetty.filter;
 
 import com.google.gson.Gson;
-import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.kernel.language.time.PreciseDuration;
 import com.telenav.kivakit.kernel.language.time.Time;
+import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
@@ -66,12 +66,17 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     @UmlAggregation
     private final MicroserviceRestApplication restApplication;
 
+    /** The name of this object for debugging purposes */
+    private String objectName;
+
     /**
      * @param restApplication The REST application that is using this filter
      */
     public JettyMicroservletFilter(final MicroserviceRestApplication restApplication)
     {
         this.restApplication = restApplication;
+
+        registerObject(this);
     }
 
     @Override
@@ -168,11 +173,19 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
      */
     public final void mount(final String path, final Microservlet<?, ?> microservlet)
     {
+        final var microservice = restApplication().microservice();
+
+        var apiPath = path;
+        if (!path.startsWith("/"))
+        {
+            final var version = microservice.version();
+            apiPath = "/api/" + version.major() + "." + version.minor() + "/" + path;
+        }
+
         for (var method : microservlet.supportedMethods())
         {
-            final FilePath filePath = FilePath.parseFilePath("/api/" + Application.get().version()
-                    + "/" + path
-                    + "/" + method.name().toLowerCase());
+            final Version version = restApplication.microservice().version();
+            final FilePath filePath = FilePath.parseFilePath(apiPath + "/" + method.name().toLowerCase());
             var existing = pathToMicroservlet.get(filePath);
             if (existing != null)
             {
@@ -180,7 +193,18 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                         method, filePath.withoutLast(), existing.getClass()).throwAsIllegalStateException();
             }
             pathToMicroservlet.put(filePath, microservlet);
+            information("Mounted $ on $", microservlet.name(), filePath);
         }
+    }
+
+    public void objectName(String objectName)
+    {
+        this.objectName = objectName;
+    }
+
+    public String objectName()
+    {
+        return objectName;
     }
 
     /**

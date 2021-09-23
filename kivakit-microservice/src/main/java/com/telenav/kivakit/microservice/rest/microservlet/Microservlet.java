@@ -2,6 +2,7 @@ package com.telenav.kivakit.microservice.rest.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.conversion.Converter;
+import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
@@ -22,7 +23,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 @UmlRelation(label = "attaches", referent = JettyMicroservletRequestCycle.class)
-public abstract class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent
+public abstract class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent implements Named
 {
     /** The type of the request object */
     @UmlRelation(label = "references sub-class", referent = MicroservletRequest.class)
@@ -63,6 +64,12 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     public Response get(final MicroservletRequest request)
     {
         return onGet((Request) request);
+    }
+
+    @Override
+    public String name()
+    {
+        return "[Microservlet requestType = " + requestType().getName() + "]";
     }
 
     /**

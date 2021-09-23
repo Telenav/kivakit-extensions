@@ -80,30 +80,26 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     @UmlAggregation
     private final Microservice microservice;
 
-    /** The Jetty microservlet filter plugin for this REST application */
-    @UmlAggregation
-    private final MicroservletJettyFilterPlugin jettyMicroservlet;
-
     /**
      * @param microservice The microservice that is creating this REST application
      */
     public MicroserviceRestApplication(final Microservice microservice)
     {
         this.microservice = microservice;
-        jettyMicroservlet = new MicroservletJettyFilterPlugin(this);
+        microservice.listenTo(this);
 
-        register(new JerseyGsonSerializer<>(gsonFactory()));
+        registerObject(new JerseyGsonSerializer<>(gsonFactory()));
 
-        mount("/open-api", JettyOpenApiRequest.class);
+        mount("/open-api/swagger.json", JettyOpenApiRequest.class);
     }
 
     /**
      * @return Factory that can create a {@link Gson} instance for serializing JSON object
      */
     @UmlRelation(label = "creates")
-    public MicroserviceGsonFactory gsonFactory()
+    public MicroserviceRestApplicationGsonFactory gsonFactory()
     {
-        return new MicroserviceGsonFactory();
+        return new MicroserviceRestApplicationGsonFactory();
     }
 
     /**
@@ -115,7 +111,9 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     }
 
     /**
-     * Mounts the given request class on the given path
+     * Mounts the given request class on the given path. If the path does not start with a slash ('/'), the relative
+     * path is expanded to /api/[version.major].[version.minor]/[path], where the version is retrieved from {@link
+     * Microservice#version()}.
      *
      * @param path The path to mount on
      * @param requestType The type of the request
@@ -167,7 +165,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     @UmlRelation(label = "mounts", referent = Microservlet.class)
     public void mount(final String path, final Microservlet<?, ?> microservlet)
     {
-        jettyMicroservlet.mount(path, microservlet);
+        require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
     }
 
     /**
