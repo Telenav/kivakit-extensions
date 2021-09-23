@@ -24,7 +24,12 @@ public class JavaFolderTest extends UnitTest {
 
         try {
             FolderService folder = new JavaFolder("/Users/yyzhou/jfs_test");
-            final var aa = folder.files();
+            final boolean w = folder.isWritable();
+            System.out.println(w);
+
+//            FolderService folder1 = new JavaFolder("/Users/yyzhou/jfs_test1");
+//            folder.copyTo()
+
             for (FileService f : folder.files()) {
                 System.out.println(f.path().toString());
             }

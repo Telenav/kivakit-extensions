@@ -2,49 +2,38 @@ package com.telenav.kivakit.filesystem.jfs;
 
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.resource.CopyMode;
+import com.telenav.kivakit.resource.WritableResource;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.attribute.PosixFilePermission;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 public class JavaFileSystemObject extends BaseWritableResource implements FileSystemObjectService
 {
-
     // True if it's a folder
     private final boolean isFolder;
 
-    private FileSystem jfs;
+    protected final Path javaPath;
 
     public JavaFileSystemObject(final FilePath path, final boolean isFolder) {
+        super(path);
 
-        super(normalize(path));
-
+        this.javaPath = path.asJavaPath();
         this.isFolder = isFolder;
     }
 
-    FileSystem jfs() {
-        if (jfs == null) {
-            Path filepath = Paths.get(path().toString());
-            Map<String,String> env = new HashMap<>();
-            try {
-                jfs = FileSystems.newFileSystem(filepath, (ClassLoader) null);
-            }
-            catch (final Exception ex) {
-                ex.printStackTrace();
-                System.out.println(ex.getMessage());
-            }
-        }
-
-        return jfs;
+    public JavaFileSystemObject(final Path path) {
+        super((normalize(path)));
+        this.javaPath = path;
+        this.isFolder = Files.isDirectory(this.javaPath);
     }
 
     @Override
@@ -54,17 +43,17 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
 
     @Override
     public InputStream onOpenForReading() {
-        return null;
+        return unsupported();
     }
 
     @Override
     public Boolean isWritable() {
-        return null;
+        return Files.isWritable(this.javaPath);
     }
 
     @Override
     public OutputStream onOpenForWriting() {
-        return null;
+        return unsupported();
     }
 
     @Override
@@ -74,21 +63,31 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
 
     @Override
     public FolderService parent() {
-        final var parent = path().parent();
-        if (parent != null) {
-            return new JavaFolder(parent);
-        }
-        return null;
+        return new JavaFolder(this.javaPath.getParent());
     }
 
     @Override
     public FolderService root() {
-        return null;
+        return new JavaFolder(this.javaPath.getRoot());
     }
 
-    private static FilePath normalize(final FilePath path)
-    {
-        return path;
+    @Override
+    public boolean chmod(PosixFilePermission... permissions) {
+        return FileSystemObjectService.super.chmod(permissions);
     }
 
+    private static FilePath normalize(final Path path) {
+        return FilePath.filePath(path);
+    }
+
+    @Override
+    public void copyTo(WritableResource destination, CopyMode mode, ProgressReporter reporter) {
+        try {
+            Files.copy(this.javaPath, destination.path().asJavaPath());
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+    }
 }

@@ -4,13 +4,15 @@ import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
+import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.resource.CopyMode;
+import com.telenav.kivakit.resource.WritableResource;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,11 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
     }
 
     public JavaFolder(final String path) {
-        this(FilePath.parseFilePath(path));
+        super(FilePath.parseFilePath(path), true);
+    }
+
+    public JavaFolder(final Path path) {
+        super(path);
     }
 
     @Override
@@ -65,8 +71,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
     public Iterable<FolderService> folders() {
         final List<FolderService> folders = new ArrayList<>();
         try {
-            Path root = path().asJavaPath();
-            DirectoryStream<Path> directory = Files.newDirectoryStream(root);
+            DirectoryStream<Path> directory = Files.newDirectoryStream(javaPath);
             for (Path p : directory) {
                 if (Files.isDirectory(p)) {
                     folders.add(new JavaFolder(p.toString()));
@@ -85,7 +90,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
     public List<FileService> nestedFiles(Matcher<FilePath> matcher) {
         final List<FileService> files = new ArrayList<>();
         try {
-            Files.walk(path().asJavaPath())
+            Files.walk(javaPath)
                     .filter(Files::isRegularFile)
                     .forEach(f -> {
                         FilePath filePath = FilePath.filePath(f);
@@ -106,7 +111,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
     public List<FolderService> nestedFolders(Matcher<FilePath> matcher) {
         final List<FolderService> folders = new ArrayList<>();
         try {
-            Files.walk(path().asJavaPath())
+            Files.walk(javaPath)
                     .filter(Files::isDirectory)
                     .forEach(f -> {
                         FilePath filePath = FilePath.filePath(f);
@@ -124,8 +129,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
 
     @Override
     public boolean isEmpty() {
-        Path root = path().asJavaPath();
-        try (DirectoryStream<Path> directory = Files.newDirectoryStream(root)) {
+        try (DirectoryStream<Path> directory = Files.newDirectoryStream(javaPath)) {
             return !directory.iterator().hasNext();
         }
         catch (Exception ex) {
@@ -134,6 +138,11 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
         }
 
         return false;
+    }
+
+    @Override
+    public void copyTo(WritableResource destination, CopyMode mode, ProgressReporter reporter) {
+        super.copyTo(destination, mode, reporter);
     }
 }
 

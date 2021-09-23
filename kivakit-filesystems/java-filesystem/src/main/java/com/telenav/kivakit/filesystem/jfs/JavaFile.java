@@ -1,22 +1,14 @@
 package com.telenav.kivakit.filesystem.jfs;
 
 import com.telenav.kivakit.filesystem.spi.FileService;
-import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.kernel.interfaces.comparison.Filter;
-import com.telenav.kivakit.kernel.interfaces.messaging.Transmittable;
-import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.kernel.messaging.Broadcaster;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.resource.CopyMode;
-import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.resource.WritableResource;
-import com.telenav.kivakit.resource.compression.Codec;
+import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.resource.path.FilePath;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class JavaFile extends JavaFileSystemObject implements FileService{
 
@@ -28,93 +20,65 @@ public class JavaFile extends JavaFileSystemObject implements FileService{
         super(FilePath.parseFilePath(path), false);
     }
 
-    @Override
-    public InputStream onOpenForReading() {
-        return null;
+    public JavaFile(final Path path) {
+        super(path);
     }
 
     @Override
-    public Boolean isWritable() {
+    public InputStream onOpenForReading() {
+        try {
+            return Files.newInputStream(javaPath);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+
         return null;
     }
 
     @Override
     public OutputStream onOpenForWriting() {
+        try {
+            return Files.newOutputStream(javaPath);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+
         return null;
-    }
-
-    @Override
-    public void addListener(Listener listener, Filter<Transmittable> filter) {
-
-    }
-
-    @Override
-    public void clearListeners() {
-
-    }
-
-    @Override
-    public boolean hasListeners() {
-        return false;
-    }
-
-    @Override
-    public Broadcaster messageSource() {
-        return null;
-    }
-
-    @Override
-    public void messageSource(Broadcaster parent) {
-
-    }
-
-    @Override
-    public void removeListener(Listener listener) {
-
-    }
-
-    @Override
-    public void onMessage(Message message) {
-
     }
 
     @Override
     public boolean renameTo(FileService that) {
-        return false;
-    }
 
-    @Override
-    public Codec codec() {
-        return null;
+        try {
+            Files.move(this.javaPath, that.path().asJavaPath());
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+
+        return false;
     }
 
     @Override
     public boolean exists() {
-        return false;
+        return Files.exists(javaPath);
     }
 
     @Override
-    public Resource materialized(ProgressReporter reporter) {
-        return null;
-    }
+    public Bytes sizeInBytes() {
+        try {
+            return Bytes.bytes(Files.size(this.javaPath));
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
 
-    @Override
-    public boolean isFolder() {
-        return false;
-    }
-
-    @Override
-    public FolderService parent() {
-        return null;
-    }
-
-    @Override
-    public FolderService root() {
-        return null;
-    }
-
-    @Override
-    public void copyTo(WritableResource destination, CopyMode mode, ProgressReporter reporter) {
-
+        return Bytes._0;
     }
 }
