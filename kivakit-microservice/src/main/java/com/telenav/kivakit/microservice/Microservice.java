@@ -8,6 +8,8 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.MetricReporter;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.reporters.console.ConsoleMetricReporter;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
@@ -141,6 +143,8 @@ public abstract class Microservice extends Application implements Startable
     public Microservice(final MicroserviceProject... project)
     {
         super(project);
+
+        registerObject(reporter());
     }
 
     @Override
@@ -272,6 +276,11 @@ public abstract class Microservice extends Application implements Startable
     protected MicroserviceWebApplication webApplication()
     {
         return null;
+    }
+
+    MetricReporter reporter()
+    {
+        return new ConsoleMetricReporter();
     }
 
     @UmlRelation(label = "has")

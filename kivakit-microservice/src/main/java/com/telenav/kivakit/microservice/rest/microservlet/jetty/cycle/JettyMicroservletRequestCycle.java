@@ -8,8 +8,8 @@ import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.model.ProblemReportingMixin;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.Metric;
 import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.MetricReporter;
-import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.ScalarMetric;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
@@ -75,7 +75,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     private Microservlet<?, ?> servlet;
 
     /** List of reported metrics for this request cycle */
-    private final List<ScalarMetric<?>> metrics = new ArrayList<>(16);
+    private final List<Metric<?>> metrics = new ArrayList<>(16);
 
     /** The request */
     @UmlAggregation
@@ -105,7 +105,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     /**
      * Adds the given metric to this request cycle
      */
-    public void add(final ScalarMetric<?> metric)
+    public void add(final Metric<?> metric)
     {
         metrics.add(metric);
     }

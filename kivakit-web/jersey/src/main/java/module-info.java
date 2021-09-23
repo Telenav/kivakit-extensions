@@ -8,7 +8,6 @@ open module kivakit.web.jersey
     // Java
     requires transitive java.xml.bind;
     requires transitive java.ws.rs;
-    requires transitive java.activation;
     requires transitive jakarta.activation;
 
     // Jersey

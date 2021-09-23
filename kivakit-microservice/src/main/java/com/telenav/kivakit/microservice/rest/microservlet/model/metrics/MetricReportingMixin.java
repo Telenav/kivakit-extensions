@@ -4,11 +4,19 @@ import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicro
 
 public interface MetricReportingMixin
 {
-    default void metric(String name, Object value)
+    /**
+     * Reports the given name, value pair as a {@link ScalarMetric} to the request cycle.
+     */
+    default <T> void metric(String name, T value)
     {
-        var metric = new ScalarMetric(name, value);
-        final var cycle = JettyMicroservletRequestCycle.cycle();
-        var json = cycle.gson().toJson(metric);
-        cycle.add(metric);
+        metric(new ScalarMetric<>(name, value));
+    }
+
+    /**
+     * Reports the given metric to the request cycle.
+     */
+    default <T> void metric(Metric<T> metric)
+    {
+        JettyMicroservletRequestCycle.cycle().add(metric);
     }
 }

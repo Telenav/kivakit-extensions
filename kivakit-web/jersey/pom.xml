@@ -37,13 +37,6 @@
             <artifactId>kivakit-serialization-json</artifactId>
         </dependency>
 
-        <!-- Java -->
-
-        <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
-        </dependency>
-
         <!-- Jersey -->
 
         <dependency>
@@ -58,8 +51,8 @@
         <!-- XML -->
 
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
         <dependency>
             <groupId>jakarta.activation</groupId>

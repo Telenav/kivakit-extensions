@@ -7,5 +7,5 @@ public interface MetricReporter
     /**
      * @param metrics The list of metrics to report
      */
-    void report(List<ScalarMetric<?>> metrics);
+    void report(List<Metric<?>> metrics);
 }
