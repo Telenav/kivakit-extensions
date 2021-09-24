@@ -49,6 +49,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+
 /**
  * Base class for KivaKit microservice REST applications.
  *
@@ -89,8 +91,6 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         microservice.listenTo(this);
 
         register(new JerseyGsonSerializer<>(gsonFactory()));
-
-        mount("/open-api/swagger.json", JettyOpenApiRequest.class);
     }
 
     /**
@@ -128,6 +128,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         {
             // then mount an anonymous microservlet on the given path,
             final Class<Response> responseType = (Class<Response>) request.responseType();
+            ensureNotNull(responseType, "Request class ${class} has no response type", requestType);
             mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
             {
                 @Override
@@ -166,6 +167,14 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     public void mount(final String path, final Microservlet<?, ?> microservlet)
     {
         require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
+    }
+
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        mount("/open-api/swagger.json", JettyOpenApiRequest.class);
     }
 
     /**

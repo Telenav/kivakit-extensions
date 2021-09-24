@@ -403,7 +403,7 @@ public final class IntToLongMap extends PrimitiveMap implements PrimitiveScalarM
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

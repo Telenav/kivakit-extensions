@@ -6,4 +6,8 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public abstract class MicroservletResponse extends BaseMicroservletMessage
 {
+    public String toJson()
+    {
+        return gson().toJson(this);
+    }
 }

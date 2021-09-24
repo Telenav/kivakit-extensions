@@ -209,7 +209,7 @@ public final class ByteArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

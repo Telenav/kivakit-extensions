@@ -1295,11 +1295,6 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return Method.NONE;
     }
 
-    @MustBeInvokedByOverriders
-    protected void onInitialize()
-    {
-    }
-
     protected final void size(final int size)
     {
         this.size = size;

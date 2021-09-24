@@ -333,7 +333,7 @@ public final class StringToIntMap extends PrimitiveMap
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

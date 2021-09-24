@@ -401,7 +401,7 @@ public final class LongToLongMap extends PrimitiveMap implements PrimitiveScalar
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

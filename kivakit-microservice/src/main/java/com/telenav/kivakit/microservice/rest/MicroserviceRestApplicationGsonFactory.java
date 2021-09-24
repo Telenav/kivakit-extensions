@@ -46,6 +46,8 @@ public class MicroserviceRestApplicationGsonFactory extends GsonFactory implemen
 
         onAddSerializers(builder);
 
+        builder.setPrettyPrinting();
+
         return builder;
     }
 

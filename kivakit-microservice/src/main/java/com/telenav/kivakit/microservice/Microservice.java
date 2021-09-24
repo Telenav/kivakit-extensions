@@ -144,6 +144,7 @@ public abstract class Microservice extends Application implements Startable
     {
         super(project);
 
+        register(this);
         register(reporter());
     }
 
@@ -161,6 +162,13 @@ public abstract class Microservice extends Application implements Startable
 
     @UmlRelation(label = "has")
     public abstract MicroserviceMetadata metadata();
+
+    /**
+     * Called to initialize the microservice before it's running
+     */
+    public void onInitialize()
+    {
+    }
 
     /**
      * {@inheritDoc}
@@ -213,8 +221,11 @@ public abstract class Microservice extends Application implements Startable
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
                 server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication));
 
-                // Mount the REST application.
+                // Mount the REST application
                 server.mount("/*", new JerseyJettyServletPlugin(restApplication));
+
+                // and initialize it.
+                restApplication.initialize();
             }
 
             // Start the server.
@@ -223,13 +234,6 @@ public abstract class Microservice extends Application implements Startable
             running = true;
         }
         return true;
-    }
-
-    /**
-     * Called to initialize the microservice before it's running
-     */
-    protected void onInitialize()
-    {
     }
 
     @Override

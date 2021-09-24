@@ -209,6 +209,12 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
     }
 
     @Override
+    public void onInitialize()
+    {
+        arrays = new ArrayList<>(2048);
+    }
+
+    @Override
     public PackedPrimitiveArray.OverflowHandling overflow()
     {
         return overflow;
@@ -294,14 +300,6 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
     {
         return "[" + getClass().getSimpleName() + " name = " + objectName() + ", size = " + size() + "]\n" +
                 toString(index -> Long.toString(getLong(index)));
-    }
-
-    @Override
-    protected void onInitialize()
-    {
-        super.onInitialize();
-        super.onInitialize();
-        arrays = new ArrayList<>(2048);
     }
 
     private PackedArray array(final long index)

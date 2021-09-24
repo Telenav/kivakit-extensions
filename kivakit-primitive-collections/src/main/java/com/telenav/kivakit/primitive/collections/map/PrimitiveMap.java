@@ -660,7 +660,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
 
     @Override
     @MustBeInvokedByOverriders
-    protected void onInitialize()
+    public void onInitialize()
     {
         hashingStrategy = DefaultHashingStrategy.of(initialSize());
         initialSize(hashingStrategy.recommendedSize());

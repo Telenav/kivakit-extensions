@@ -244,7 +244,7 @@ public final class LongToIntFixedMultiMap extends PrimitiveMultiMap implements P
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

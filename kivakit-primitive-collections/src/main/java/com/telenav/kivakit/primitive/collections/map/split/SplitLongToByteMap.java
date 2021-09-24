@@ -360,7 +360,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         children = new LongToByteMap[initialChildCountAsInt()];

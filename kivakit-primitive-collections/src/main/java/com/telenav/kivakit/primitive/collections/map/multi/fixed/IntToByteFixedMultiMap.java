@@ -245,7 +245,7 @@ public final class IntToByteFixedMultiMap extends PrimitiveMultiMap implements P
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

@@ -352,7 +352,7 @@ public final class SplitIntToIntMap extends SplitPrimitiveMap implements Primiti
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         children = new IntToIntMap[initialChildCountAsInt()];

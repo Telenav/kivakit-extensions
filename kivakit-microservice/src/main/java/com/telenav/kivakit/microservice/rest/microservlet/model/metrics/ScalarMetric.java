@@ -1,5 +1,7 @@
 package com.telenav.kivakit.microservice.rest.microservlet.model.metrics;
 
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "A named measurement of some value")
@@ -18,14 +20,21 @@ public class ScalarMetric<T> extends BaseMetric<T>
     }
 
     @Override
+    @KivaKitIncludeProperty
     public T measurement()
     {
         return measurement;
     }
 
     @Override
+    @KivaKitIncludeProperty
     public String name()
     {
         return name;
+    }
+
+    public String toString()
+    {
+        return new ObjectFormatter(this).toString();
     }
 }

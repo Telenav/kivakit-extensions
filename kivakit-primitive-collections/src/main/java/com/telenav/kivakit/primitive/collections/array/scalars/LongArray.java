@@ -378,7 +378,7 @@ public final class LongArray extends PrimitiveArray implements LongList
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         data = newLongArray(this, "allocated");

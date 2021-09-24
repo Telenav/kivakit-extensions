@@ -293,7 +293,7 @@ public final class SplitByteArray extends PrimitiveSplitArray implements ByteLis
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         childSize = initialChildSizeAsInt();

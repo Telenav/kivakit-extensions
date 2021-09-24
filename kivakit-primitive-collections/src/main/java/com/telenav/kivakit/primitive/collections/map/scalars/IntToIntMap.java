@@ -429,7 +429,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

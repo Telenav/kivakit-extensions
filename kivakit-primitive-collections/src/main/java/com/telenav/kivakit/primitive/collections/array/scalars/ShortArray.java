@@ -365,7 +365,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         data = newShortArray(this, "allocated");

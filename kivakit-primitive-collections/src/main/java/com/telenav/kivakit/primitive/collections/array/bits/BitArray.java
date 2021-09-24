@@ -101,6 +101,20 @@ public final class BitArray extends PrimitiveArray implements Named
         return bytes.compress(method);
     }
 
+    @Override
+    public void onInitialize()
+    {
+        if (bytes == null)
+        {
+            final var bytes = new ByteArray(objectName() + ".bytes");
+            bytes.initialSize(initialSize().dividedBy(8))
+                    .maximumSize(maximumSize().dividedBy(8))
+                    .hasNullByte(false);
+            bytes.initialize();
+            this.bytes = bytes;
+        }
+    }
+
     /**
      * @return A reader that reads the bits in this bit array
      */
@@ -170,21 +184,6 @@ public final class BitArray extends PrimitiveArray implements Named
                 size(size() + 8);
             }
         };
-    }
-
-    @Override
-    protected void onInitialize()
-    {
-        if (bytes == null)
-        {
-            super.onInitialize();
-            final var bytes = new ByteArray(objectName() + ".bytes");
-            bytes.initialSize(initialSize().dividedBy(8))
-                    .maximumSize(maximumSize().dividedBy(8))
-                    .hasNullByte(false);
-            bytes.initialize();
-            this.bytes = bytes;
-        }
     }
 
     private byte getByte(final int index)

@@ -109,7 +109,7 @@ public class PackedStringStore extends PrimitiveCollection
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         indexes = new SplitIntArray(objectName() + ".indexes");

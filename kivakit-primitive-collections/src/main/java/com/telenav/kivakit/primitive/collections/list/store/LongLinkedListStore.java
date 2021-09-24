@@ -214,7 +214,7 @@ public class LongLinkedListStore extends PrimitiveListStore
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

@@ -15,6 +15,7 @@ import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
@@ -42,8 +43,8 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      */
     public Microservlet(final Class<? extends Request> requestType, final Class<? extends Response> responseType)
     {
-        this.requestType = requestType;
-        this.responseType = responseType;
+        this.requestType = ensureNotNull(requestType);
+        this.responseType = ensureNotNull(responseType);
     }
 
     @SuppressWarnings("unchecked")
@@ -69,7 +70,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     @Override
     public String name()
     {
-        return "[Microservlet requestType = " + requestType().getName() + "]";
+        return "[Microservlet requestType = " + requestType().getSimpleName() + "]";
     }
 
     /**

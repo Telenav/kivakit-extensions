@@ -12,8 +12,8 @@ import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResp
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletPostRequest;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import io.swagger.v3.core.converter.ModelConverters;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -28,10 +28,14 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import org.apache.wicket.util.string.Strings;
 
 import java.lang.annotation.Annotation;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * <b>Not public API</b>
@@ -45,32 +49,37 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
     /**
      * Response to OpenAPI request
      */
-    public class Response extends MicroservletResponse
+    public static class Response extends MicroservletResponse
     {
         @SuppressWarnings("FieldCanBeLocal")
-        private final OpenAPI openAPI;
+        private OpenAPI openAPI;
 
         public Response()
         {
-            openAPI = openApi();
+        }
+
+        public Response(JettyOpenApiRequest request)
+        {
+            openAPI = request.openApi();
         }
 
         public OpenAPI openAPI()
         {
             return openAPI;
         }
-    }
 
-    /** The Java Servlet API filter */
-    @UmlAggregation
-    private final JettyMicroservletFilter filter;
+        @Override
+        public String toJson()
+        {
+            return gson().toJson(openAPI);
+        }
+    }
 
     /** Models for which to make schemas */
     private final Set<Class<?>> models = new HashSet<>();
 
     public JettyOpenApiRequest()
     {
-        this.filter = require(JettyMicroservletFilter.class);
     }
 
     /**
@@ -79,7 +88,7 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
     @Override
     public MicroservletResponse onGet()
     {
-        return new Response();
+        return new Response(this);
     }
 
     /**
@@ -87,7 +96,7 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
      */
     public OpenAPI openApi()
     {
-        final var api = new OpenAPI();
+        final var api = initialize(new OpenAPI());
 
         // Add metadata
         addInfo(api);
@@ -116,7 +125,7 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
      */
     private void addInfo(final OpenAPI api)
     {
-        api.info(filter.restApplication().openApiInfo());
+        api.info(filter().restApplication().openApiInfo());
     }
 
     /**
@@ -128,11 +137,18 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
         final var paths = new Paths();
 
         // Got through each mount path that the filter has,
-        for (final var path : filter.paths())
+        for (final var path : filter().paths())
         {
             // and add a PathItem to the list of paths.
-            var method = HttpMethod.valueOf(path.last().toUpperCase());
-            paths.addPathItem(path.withoutLast().join(), pathItem(filter.microservlet(path, method)));
+            final var microservlet = filter().microservlet(path);
+            if (microservlet != null)
+            {
+                paths.addPathItem(path.path().join(), pathItem(microservlet));
+            }
+            else
+            {
+                problem(SC_INTERNAL_SERVER_ERROR, "Unable to locate microservlet $ $", path.method(), path.path());
+            }
         }
 
         // Add the paths to the OpenAPI object
@@ -148,8 +164,26 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
         final var schemas = api.getComponents().getSchemas();
         for (final var model : models)
         {
-            schemas.putAll(ModelConverters.getInstance().read(model));
+            if (model != null)
+            {
+                schemas.putAll(ModelConverters.getInstance().read(model));
+            }
+            else
+            {
+                problem(SC_INTERNAL_SERVER_ERROR, "Model is null");
+            }
         }
+    }
+
+    private JettyMicroservletFilter filter()
+    {
+        return require(JettyMicroservletFilter.class);
+    }
+
+    private OpenAPI initialize(final OpenAPI api)
+    {
+        api.components(new Components().schemas(new HashMap<>()));
+        return api;
     }
 
     private <T extends Annotation> String methodAnnotationValue(
@@ -234,6 +268,8 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
     @SuppressWarnings("unchecked")
     private PathItem pathItem(final Microservlet<?, ?> microservlet)
     {
+        ensureNotNull(microservlet);
+
         // Create the path item and give it the microservlet's description,
         final var item = new PathItem();
         item.description(microservlet.description());
@@ -243,8 +279,8 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
         final var responseType = microservlet.responseType();
 
         // add them to the set of models,
-        models.add(requestType);
-        models.add(responseType);
+        models.add(ensureNotNull(requestType));
+        models.add(ensureNotNull(responseType));
 
         // and if it's a get request,
         if (requestType.isAssignableFrom(MicroservletGetRequest.class))
@@ -269,7 +305,7 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
     private Content requestContent(final Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
-        models.add(requestType);
+        models.add(ensureNotNull(requestType));
 
         // then return an application/json content object that refers to the request type's schema.
         return new Content()
@@ -284,7 +320,7 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
     private ApiResponse responseSuccess(final Class<? extends MicroservletResponse> responseType)
     {
         // Add the response type to the set of models,
-        models.add(responseType);
+        models.add(ensureNotNull(responseType));
 
         // and return a 200 response with the schema for the response type.
         return newResponse("200", schema(responseType));
