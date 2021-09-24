@@ -16,38 +16,58 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JavaFolder extends JavaFileSystemObject implements FolderService {
+// @yinyin a little comment and add your name as @author
+public class JavaFolder extends JavaFileSystemObject implements FolderService
+{
 
-    public JavaFolder(final FilePath path) {
+    public JavaFolder(final FilePath path)
+    {
         super(path, true);
     }
 
-    public JavaFolder(final String path) {
+    public JavaFolder(final String path)
+    {
         super(FilePath.parseFilePath(path), true);
     }
 
-    public JavaFolder(final Path path) {
+    public JavaFolder(final Path path)
+    {
         super(path);
     }
 
     @Override
-    public FileService file(FileName name) {
+    public void copyTo(WritableResource destination, CopyMode mode, ProgressReporter reporter)
+    {
+        super.copyTo(destination, mode, reporter);
+    }
+
+    @Override
+    public FileService file(FileName name)
+    {
         return new JavaFile(path().withChild(name.name()));
     }
 
     @Override
-    public List<FileService> files() {
+    public List<FileService> files()
+    {
+        // @yinyin use var whenever possible like: var files = new ArrayList<FileService>();
         final List<FileService> files = new ArrayList<>();
-        try {
+        try
+        {
+            // @yinyin use var whenever possible like: var root = path().asJavaPath();
             Path root = path().asJavaPath();
             DirectoryStream<Path> directory = Files.newDirectoryStream(root);
-            for (Path p : directory) {
-                if (! Files.isDirectory(p)) {
+            for (Path p : directory)
+            {
+                if (!Files.isDirectory(p))
+                {
                     files.add(new JavaFile(p.toString()));
                 }
             }
         }
-        catch (final Exception ex) {
+        catch (final Exception ex)
+        {
+            // @yinyin use problem()
             ex.printStackTrace();
             System.out.println(ex.getMessage());
         }
@@ -56,29 +76,39 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
     }
 
     @Override
-    public FolderService folder(FileName folder) {
-        FilePath folderPath = path().withChild(folder.name());
-        return new JavaFolder(folderPath);
-    }
-
-    @Override
-    public FolderService folder(Folder folder) {
+    public FolderService folder(Folder folder)
+    {
         FilePath folderPath = path().withChild(folder.toString());
         return new JavaFolder(folderPath);
     }
 
     @Override
-    public Iterable<FolderService> folders() {
+    public FolderService folder(FileName folder)
+    {
+        // @yinyin var
+        FilePath folderPath = path().withChild(folder.name());
+        return new JavaFolder(folderPath);
+    }
+
+    @Override
+    public Iterable<FolderService> folders()
+    {
         final List<FolderService> folders = new ArrayList<>();
-        try {
+        try
+        {
             DirectoryStream<Path> directory = Files.newDirectoryStream(javaPath);
-            for (Path p : directory) {
-                if (Files.isDirectory(p)) {
-                    folders.add(new JavaFolder(p.toString()));
+            // @yinyin p -> path, directory -> paths
+            for (Path p : directory)
+            {
+                if (Files.isDirectory(p))
+                {
+                    folders.add(new JavaFolder(p));
                 }
             }
         }
-        catch (final Exception ex) {
+        catch (final Exception ex)
+        {
+            // @yinyin use problem()
             ex.printStackTrace();
             System.out.println(ex.getMessage());
         }
@@ -87,52 +117,16 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
     }
 
     @Override
-    public List<FileService> nestedFiles(Matcher<FilePath> matcher) {
-        final List<FileService> files = new ArrayList<>();
-        try {
-            Files.walk(javaPath)
-                    .filter(Files::isRegularFile)
-                    .forEach(f -> {
-                        FilePath filePath = FilePath.filePath(f);
-                        if (matcher.matches(filePath)) {
-                            files.add(new JavaFile(filePath));
-                        }
-                    });
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
-        }
-
-        return files;
-    }
-
-    @Override
-    public List<FolderService> nestedFolders(Matcher<FilePath> matcher) {
-        final List<FolderService> folders = new ArrayList<>();
-        try {
-            Files.walk(javaPath)
-                    .filter(Files::isDirectory)
-                    .forEach(f -> {
-                        FilePath filePath = FilePath.filePath(f);
-                        if (matcher.matches(filePath)) {
-                            folders.add(new JavaFolder(filePath));
-                        }
-                    });
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
-        }
-        return folders;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        try (DirectoryStream<Path> directory = Files.newDirectoryStream(javaPath)) {
+    public boolean isEmpty()
+    {
+        // @yinyin return !folders().iterator().hasNext(); and remove the rest of this code
+        try (DirectoryStream<Path> directory = Files.newDirectoryStream(javaPath))
+        {
             return !directory.iterator().hasNext();
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
+            // @yinyin use problem()
             ex.printStackTrace();
             System.out.println(ex.getMessage());
         }
@@ -141,8 +135,57 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService {
     }
 
     @Override
-    public void copyTo(WritableResource destination, CopyMode mode, ProgressReporter reporter) {
-        super.copyTo(destination, mode, reporter);
+    public List<FileService> nestedFiles(Matcher<FilePath> matcher)
+    {
+        final List<FileService> files = new ArrayList<>();
+        try
+        {
+            // @yinyin cool
+            Files.walk(javaPath)
+                    .filter(Files::isRegularFile)
+                    .forEach(f ->
+                    {
+                        FilePath filePath = FilePath.filePath(f);
+                        if (matcher.matches(filePath))
+                        {
+                            files.add(new JavaFile(filePath));
+                        }
+                    });
+        }
+        catch (Exception ex)
+        {
+            // @yinyin use problem()
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+
+        return files;
+    }
+
+    @Override
+    public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
+    {
+        final List<FolderService> folders = new ArrayList<>();
+        try
+        {
+            Files.walk(javaPath)
+                    .filter(Files::isDirectory)
+                    .forEach(f ->
+                    {
+                        FilePath filePath = FilePath.filePath(f);
+                        if (matcher.matches(filePath))
+                        {
+                            folders.add(new JavaFolder(filePath));
+                        }
+                    });
+        }
+        catch (Exception ex)
+        {
+            // @yinyin use problem()
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
+        }
+        return folders;
     }
 }
 
