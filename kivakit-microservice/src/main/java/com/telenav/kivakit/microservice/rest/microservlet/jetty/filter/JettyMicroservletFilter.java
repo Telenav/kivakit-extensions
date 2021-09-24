@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.kernel.language.time.PreciseDuration;
 import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
@@ -76,7 +75,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     {
         this.restApplication = restApplication;
 
-        registerObject(this);
+        register(this);
     }
 
     @Override
@@ -117,8 +116,8 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 try
                 {
                     // record the start time,
-                    var start = Time.now();
-                    var startCpuTime = PreciseDuration.cpuTime();
+                    final var start = Time.now();
+                    final var startCpuTime = PreciseDuration.cpuTime();
 
                     // handle the request,
                     handleRequest(method, cycle, microservlet);
@@ -163,7 +162,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
      * @param method The request method
      * @return Any microservice at the given path with the given request method, or null if none exists
      */
-    public Microservlet<?, ?> microservlet(final FilePath path, MicroservletRequest.HttpMethod method)
+    public Microservlet<?, ?> microservlet(final FilePath path, final MicroservletRequest.HttpMethod method)
     {
         return pathToMicroservlet.get(path.withChild(method.name().toLowerCase()));
     }
@@ -182,11 +181,10 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
             apiPath = "/api/" + version.major() + "." + version.minor() + "/" + path;
         }
 
-        for (var method : microservlet.supportedMethods())
+        for (final var method : microservlet.supportedMethods())
         {
-            final Version version = restApplication.microservice().version();
-            final FilePath filePath = FilePath.parseFilePath(apiPath + "/" + method.name().toLowerCase());
-            var existing = pathToMicroservlet.get(filePath);
+            final var filePath = FilePath.parseFilePath(apiPath + "/" + method.name().toLowerCase());
+            final var existing = pathToMicroservlet.get(filePath);
             if (existing != null)
             {
                 problem("There is already a $ microservlet mounted on $: ${class}",
@@ -197,11 +195,13 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         }
     }
 
-    public void objectName(String objectName)
+    @Override
+    public void objectName(final String objectName)
     {
         this.objectName = objectName;
     }
 
+    @Override
     public String objectName()
     {
         return objectName;
@@ -235,7 +235,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                                final Microservlet<?, ?> microservlet)
     {
         // get the response object,
-        var response = cycle.response();
+        final var response = cycle.response();
 
         // and if the request method is
         switch (method)
@@ -281,7 +281,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
      * @param path The mount path
      * @return The microservlet at the given path, or null if the path does not map to any microservlet
      */
-    private Microservlet<?, ?> resolve(FilePath path, MicroservletRequest.HttpMethod method)
+    private Microservlet<?, ?> resolve(FilePath path, final MicroservletRequest.HttpMethod method)
     {
         for (; path.isNonEmpty(); path = path.withoutLast())
         {

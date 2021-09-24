@@ -88,7 +88,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         this.microservice = microservice;
         microservice.listenTo(this);
 
-        registerObject(new JerseyGsonSerializer<>(gsonFactory()));
+        register(new JerseyGsonSerializer<>(gsonFactory()));
 
         mount("/open-api/swagger.json", JettyOpenApiRequest.class);
     }

@@ -381,7 +381,7 @@ public class ServiceRegistryRestResource extends BaseRestResource
     public Response onVersion()
     {
         final String output = "KivaKit Service Registry "
-                + Settings.of(this).require(ServiceRegistrySettings.class).version()
+                + Settings.of(this).requireSettings(ServiceRegistrySettings.class).version()
                 + "\n"
                 + "KivaKit "
                 + KivaKit.get().projectVersion()

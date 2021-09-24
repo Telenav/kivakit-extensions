@@ -358,7 +358,7 @@ public class ServiceRegistryClient extends BaseComponent
     /**
      * Convenience method that registers a service of the given type using the current KivaKit {@link Application} or
      * {@link Server} to fill in the service version and to create an application identifier and service description. If
-     * this method is called from an application that is not using the kivakit-application base classes, a best effort
+     * this method is called from an application that is not using the kivakit-application base classes, the best effort
      * is made to fill in service registration details.
      *
      * @param scope The scope within which the service should be visible

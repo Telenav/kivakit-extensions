@@ -144,7 +144,7 @@ public abstract class Microservice extends Application implements Startable
     {
         super(project);
 
-        registerObject(reporter());
+        register(reporter());
     }
 
     @Override
@@ -208,7 +208,7 @@ public abstract class Microservice extends Application implements Startable
                 }
 
                 // Mount Swagger resources for the REST application.
-                server.mount("/*", registerObject(new MicroservletJettyFilterPlugin(restApplication)));
+                server.mount("/*", register(new MicroservletJettyFilterPlugin(restApplication)));
                 server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
                 server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication));
