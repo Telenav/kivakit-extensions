@@ -36,23 +36,21 @@ import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.For
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public class MicroserviceRestApplicationGsonFactory extends GsonFactory implements ComponentMixin
 {
-    @Override
-    protected final GsonBuilder addSerializers(final GsonBuilder builder)
+    protected void onAddSerializers(final GsonBuilder builder)
     {
-        addSerializer(builder, Problem.class, new ProblemGsonSerializer(WITHOUT_EXCEPTION));
+        super.onAddSerializers(builder);
 
+        addSerializer(builder, Problem.class, new ProblemGsonSerializer(WITHOUT_EXCEPTION));
+    }
+
+    @Override
+    protected void onInitialize(final GsonBuilder builder)
+    {
+        super.onInitialize(builder);
+        
         builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         builder.disableHtmlEscaping();
-
-        onAddSerializers(builder);
-
         builder.setPrettyPrinting();
-
-        return builder;
-    }
-
-    protected GsonBuilder onAddSerializers(final GsonBuilder builder)
-    {
-        return builder;
     }
 }
+

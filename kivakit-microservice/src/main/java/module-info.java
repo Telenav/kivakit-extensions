@@ -19,4 +19,6 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.rest.microservlet.model.requests;
     exports com.telenav.kivakit.microservice.rest.microservlet.model.metrics;
     exports com.telenav.kivakit.microservice.rest.microservlet.model.metrics.aggregates;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader;
 }

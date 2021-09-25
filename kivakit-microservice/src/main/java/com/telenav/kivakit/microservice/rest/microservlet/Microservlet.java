@@ -38,8 +38,8 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     private ObjectSet<MicroservletRequest.HttpMethod> supportedMethods = ObjectSet.of(MicroservletRequest.HttpMethod.GET, MicroservletRequest.HttpMethod.POST, MicroservletRequest.HttpMethod.DELETE);
 
     /**
-     * @param requestType The Request type
-     * @param responseType The Response type
+     * @param requestType The request type
+     * @param responseType The response type
      */
     public Microservlet(final Class<? extends Request> requestType, final Class<? extends Response> responseType)
     {

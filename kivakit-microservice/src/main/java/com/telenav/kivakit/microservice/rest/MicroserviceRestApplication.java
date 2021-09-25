@@ -18,12 +18,14 @@
 
 package com.telenav.kivakit.microservice.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
@@ -128,9 +130,16 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         {
             // then mount an anonymous microservlet on the given path,
             final Class<Response> responseType = (Class<Response>) request.responseType();
-            ensureNotNull(responseType, "Request class ${class} has no response type", requestType);
+            ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
             mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
             {
+                @Override
+                @JsonProperty
+                public String description()
+                {
+                    return Message.format("Anonymous microservlet for ${class}", requestType());
+                }
+
                 @Override
                 @SuppressWarnings("unchecked")
                 public Response onDelete(final Request request)
@@ -178,13 +187,13 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     }
 
     /**
-     * OpenAPI {@link Info} for this REST application. This method can be overridden to provide more detail that what is
-     * in {@link MicroserviceMetadata}.
+     * OpenAPI {@link Info} for the microservice. This method can be overridden to provide more detail that what is in
+     * {@link MicroserviceMetadata}.
      */
     public Info openApiInfo()
     {
         // Get the microservice metadata,
-        final var metadata = microservice.metadata();
+        final var metadata = require(Microservice.class).metadata();
 
         // and add it to the OpenAPI object.
         return new Info()

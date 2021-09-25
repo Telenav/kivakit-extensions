@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
@@ -56,6 +57,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     private final HttpServletResponse httpResponse;
 
     /** Error messages that were reported to this response via {@link #problem(int, String, Object...)} */
+    @Expose
     @JsonProperty
     @SuppressWarnings("FieldCanBeLocal")
     @UmlAggregation

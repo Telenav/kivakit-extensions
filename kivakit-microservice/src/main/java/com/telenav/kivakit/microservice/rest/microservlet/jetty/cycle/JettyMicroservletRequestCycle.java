@@ -20,15 +20,21 @@ import java.util.List;
 
 /**
  * <b>Not public API</b>
+ *
  * <p>
  * Represents a request / response cycle for a microservlet.
+ * </p>
+ *
+ * <p><b>Request and Response</b></p>
+ *
  * <p>
  * Provides the {@link JettyMicroservletRequest} and {@link JettyMicroserviceResponse} via {@link #request()} and {@link
  * #response()}. Also provides a {@link Gson} instance created by the application's factory for serialization of request
  * and response objects.
  * </p>
  *
- * <p><b>Binding</b></p>
+ * <p><b>Microservlet Binding</b></p>
+ *
  * <p>
  * The {@link #attach(Microservlet)} method is called by {@link JettyMicroservletFilter} to attach the {@link
  * Microservlet} handling this request cycle. The {@link Microservlet} cannot be a parameter to the constructor because
