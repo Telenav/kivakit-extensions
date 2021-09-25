@@ -21,10 +21,11 @@ package com.telenav.kivakit.service.registry.protocol.update;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.protocol.BaseRequest;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter.Format.MULTILINE;
 import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProtocol.NETWORK_REGISTRY_UPDATE;
@@ -35,11 +36,12 @@ import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProto
  *
  * @author jonathanl (shibo)
  */
-@Schema
+@OpenApiIncludeType(description = "Request to update a service entry in the network registry")
 @LexakaiJavadoc(complete = true)
 public class NetworkRegistryUpdateRequest extends BaseRequest
 {
     @JsonProperty
+    @OpenApiIncludeMember(description = "The service to update")
     private Service service;
 
     @Override

@@ -34,8 +34,7 @@
         </dependency>
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-web-jersey</artifactId>
-            <version>${kivakit.version}</version>
+            <artifactId>kivakit-microservice</artifactId>
         </dependency>
 
     </dependencies>

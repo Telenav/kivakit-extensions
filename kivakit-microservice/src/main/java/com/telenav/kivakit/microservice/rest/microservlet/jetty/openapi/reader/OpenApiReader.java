@@ -2,10 +2,10 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExclude;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiInclude;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiSchema;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExcludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiRequestHandler;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 
@@ -14,17 +14,17 @@ import io.swagger.v3.oas.models.OpenAPI;
  *
  * <p><b>Annotations</b></p>
  * <ul>
- *     <li>@OpenApiExclude - Excludes a member from a supertype</li>
- *     <li>@OpenApiInclude - Includes a member from the current class or any supertype</li>
- *     <li>@OpenApiRequest - Used to annotate onGet, onPost or onDelete request methods</li>
- *     <li>@OpenApiSchema - Used to describe a request or response class</li>
+ *     <li>@OpenApiExcludeMember - Excludes a member from a supertype</li>
+ *     <li>@OpenApiIncludeMember - Includes a member from the current class or any supertype</li>
+ *     <li>@OpenApiRequestHandler - Used to annotate onGet, onPost or onDelete request methods</li>
+ *     <li>@OpenApiIncludeType - Used to describe a request or response class</li>
  * </ul>
  *
  * @author jonathanl (shibo)
- * @see OpenApiInclude
- * @see OpenApiExclude
- * @see OpenApiRequest
- * @see OpenApiSchema
+ * @see OpenApiIncludeMember
+ * @see OpenApiExcludeMember
+ * @see OpenApiRequestHandler
+ * @see OpenApiIncludeType
  */
 public class OpenApiReader extends BaseComponent
 {

@@ -5,6 +5,7 @@ import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiRequestHandler;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletErrors;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
@@ -19,7 +20,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
-import org.apache.wicket.util.string.Strings;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
@@ -82,11 +82,9 @@ public class OpenApiPathReader extends BaseComponent
     {
         // then create an operation and populate it with the summary and description of the request,
         final var operation = new Operation();
-        final var annotationReader = require(OpenApiAnnotationReader.class);
-        operation.summary(annotationReader.readAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::summary));
-        operation.description(annotationReader.readAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::description));
-        operation.operationId(annotationReader.readAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::operationId));
-        operation.deprecated(Strings.isTrue(annotationReader.readAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, op -> Boolean.toString(op.deprecated()))));
+        final var annotationReader = new OpenApiAnnotationReader();
+        operation.summary(annotationReader.readAnnotationValue(requestType, methodName, OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
+        operation.description(annotationReader.readAnnotationValue(requestType, methodName, OpenApiRequestHandler.class, OpenApiRequestHandler::description));
 
         // add success and error responses,
         operation.responses(new ApiResponses()
@@ -123,8 +121,8 @@ public class OpenApiPathReader extends BaseComponent
         {
             // add them to the set of schema models,
             require(OpenApiSchemaReader.class)
-                    .add(Type.of(requestType))
-                    .add(Type.of(responseType));
+                    .add(Type.forClass(requestType))
+                    .add(Type.forClass(responseType));
 
             // and if it's a get request,
             if (MicroservletGetRequest.class.isAssignableFrom(requestType))
@@ -153,7 +151,7 @@ public class OpenApiPathReader extends BaseComponent
     private Content newRequestContent(final Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
-        require(OpenApiSchemaReader.class).add(Type.of(requestType));
+        require(OpenApiSchemaReader.class).add(Type.forClass(requestType));
 
         // then return an application/json content object that refers to the request type's schema.
         return new Content()
@@ -182,10 +180,11 @@ public class OpenApiPathReader extends BaseComponent
     private ApiResponse newResponseSuccess(final Class<? extends MicroservletResponse> responseType)
     {
         // Add the response type to the set of models,
-        require(OpenApiSchemaReader.class).add(ensureNotNull(Type.of(responseType)));
+        require(OpenApiSchemaReader.class)
+                .add(ensureNotNull(Type.forClass(responseType)));
 
         // and return a 200 response with the schema for the response type.
-        return newResponseItem("200", schema(responseType));
+        return newResponseItem("Success", schema(responseType));
     }
 
     /**
@@ -193,7 +192,7 @@ public class OpenApiPathReader extends BaseComponent
      */
     private Schema<?> schema(final Class<?> model)
     {
-        return require(OpenApiSchemaReader.class).readSchema(Type.of(model));
+        return require(OpenApiSchemaReader.class).readSchema(Type.forClass(model));
     }
 
     /**

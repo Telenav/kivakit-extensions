@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 @Repeatable(OpenApiIncludeFromSuperTypeRepeater.class)
-public @interface OpenApiIncludeFromSuperType
+public @interface OpenApiIncludeMemberFromSuperType
 {
     /**
      * @return The allowable values for the annotated member

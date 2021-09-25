@@ -20,6 +20,7 @@ package com.telenav.kivakit.microservice.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
+import com.telenav.kivakit.configuration.lookup.RegistryTrait;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
@@ -92,7 +93,9 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         this.microservice = microservice;
         microservice.listenTo(this);
 
-        register(new JerseyGsonSerializer<>(gsonFactory()));
+        // The cast here is required because the Jersey base class also has a register method
+        ((RegistryTrait) this).register(this);
+        ((RegistryTrait) this).register(new JerseyGsonSerializer<>(gsonFactory()));
     }
 
     /**

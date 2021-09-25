@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface OpenApiRequest
+public @interface OpenApiRequestHandler
 {
     /**
      * @return A full description of this request

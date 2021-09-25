@@ -1,6 +1,7 @@
 open module kivakit.service.server
 {
     // KivaKit
+    requires transitive kivakit.microservice;
     requires transitive kivakit.service.client;
     requires transitive kivakit.web.jetty;
     requires transitive kivakit.web.wicket;

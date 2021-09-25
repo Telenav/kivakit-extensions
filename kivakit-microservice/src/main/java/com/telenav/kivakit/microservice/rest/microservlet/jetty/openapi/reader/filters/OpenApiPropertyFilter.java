@@ -2,8 +2,9 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.
 
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.reflection.property.PropertyFilter;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExclude;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiInclude;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExcludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMemberFromSuperType;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
@@ -14,7 +15,7 @@ import java.lang.reflect.Method;
  * <b>Not public API</b>
  *
  * <p>
- * Property filter that includes getters and fields marked with {@link OpenApiInclude}
+ * Property filter that includes getters and fields marked with {@link OpenApiIncludeMember}
  * </p>
  *
  * @author jonathanl (shibo)
@@ -66,7 +67,7 @@ public class OpenApiPropertyFilter implements PropertyFilter
     private boolean exclude(final Type<?> type, final AnnotatedElement member)
     {
         // Get any exclude annotation
-        final var exclude = type.annotation(OpenApiExclude.class);
+        final var exclude = type.annotation(OpenApiExcludeMember.class);
 
         // and for each member name excluded by the annotation,
         for (final var excludedMemberName : exclude.value())
@@ -83,7 +84,8 @@ public class OpenApiPropertyFilter implements PropertyFilter
 
     /**
      * @param member The member to check
-     * @return True if the member is included by @{@link OpenApiInclude} and not excluded by {@link OpenApiExclude}.
+     * @return True if the member is included by @{@link OpenApiIncludeMember} and not excluded by {@link
+     * OpenApiExcludeMember}.
      */
     private boolean include(final AnnotatedElement member)
     {
@@ -95,9 +97,20 @@ public class OpenApiPropertyFilter implements PropertyFilter
             {
                 return false;
             }
+
+            // For each @OpenApiIncludeMemberFromSuperType annotation,
+            for (var annotation : at.annotations(OpenApiIncludeMemberFromSuperType.class))
+            {
+                // if the name matches this member,
+                if (annotation.member().equals(((Member) member).getName()))
+                {
+                    // then include it.
+                    return true;
+                }
+            }
         }
 
-        // The member is included if it has an @OpenApiInclude annotation.
-        return member.getAnnotation(OpenApiInclude.class) != null;
+        // The member is included if it has an @OpenApiIncludeMember annotation.
+        return member.getAnnotation(OpenApiIncludeMember.class) != null;
     }
 }

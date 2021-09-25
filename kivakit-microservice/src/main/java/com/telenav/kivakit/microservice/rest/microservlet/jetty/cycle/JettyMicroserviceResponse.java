@@ -9,11 +9,11 @@ import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletErrors;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -61,6 +61,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     @JsonProperty
     @SuppressWarnings("FieldCanBeLocal")
     @UmlAggregation
+    @OpenApiIncludeMember(description = "Error messages when status is 500 (SC_INTERNAL_SERVER_ERROR)")
     private final MicroservletErrors errors = new MicroservletErrors();
 
     public JettyMicroserviceResponse(final JettyMicroservletRequestCycle cycle, final HttpServletResponse httpResponse)
@@ -100,7 +101,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
      * @return The version of the microservice that is responding to a request
      */
     @KivaKitIncludeProperty
-    @Schema(description = "The microservice version")
+    @OpenApiIncludeMember(description = "The microservice version")
     public Version version()
     {
         return cycle.application()

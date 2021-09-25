@@ -2,9 +2,9 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.reflection.Type;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExclude;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiInclude;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiSchema;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExcludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiPropertyFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiTypeFilter;
 import io.swagger.v3.oas.models.media.ArraySchema;
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureFalse;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
@@ -33,9 +34,9 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  * </p>
  *
  * @author jonathanl (shibo)
- * @see OpenApiSchema
- * @see OpenApiExclude
- * @see OpenApiInclude
+ * @see OpenApiIncludeType
+ * @see OpenApiExcludeMember
+ * @see OpenApiIncludeMember
  */
 @SuppressWarnings("rawtypes") public class OpenApiSchemaReader extends BaseComponent
 {
@@ -52,6 +53,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      */
     public OpenApiSchemaReader add(final Type<?> model)
     {
+        ensureFalse(model.is(Class.class));
         models.add(ensureNotNull(model));
         return this;
     }
@@ -121,60 +123,69 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      */
     private Schema<?> readObject(final Type<?> type)
     {
-        final var annotation = type.annotation(OpenApiSchema.class);
-
-        final var schema = new Schema<>();
-
-        // Add object attributes,
-        schema.type("object");
-        schema.name(type.simpleName());
-        schema.$ref("#/components/schemas/" + type.simpleName());
-        schema.description(annotation.description());
-        schema.setDeprecated(annotation.deprecated());
-        schema.setTitle(annotation.title());
-
-        // and if the type is an enum,
-        if (type.isEnum())
+        final var annotation = type.annotation(OpenApiIncludeType.class);
+        if (annotation != null)
         {
-            // add the enum values.
-            schema.setEnum(List.of(type.enumValues()));
-        }
+            final var schema = new Schema<>();
 
-        // For each property
-        final var properties = new HashMap<String, Schema>();
-        final var required = new ArrayList<String>();
-        for (final var property : type.properties(new OpenApiPropertyFilter(type)))
-        {
-            // add its schema by name.
-            final Schema<?> propertySchema = readSchema(Type.of(property.type()));
-            if (propertySchema != null)
+            // Add object attributes,
+            schema.type("object");
+            schema.name(type.simpleName());
+            schema.$ref("#/components/schemas/" + type.simpleName());
+            schema.description(annotation.description());
+            schema.setDeprecated(annotation.deprecated() ? true : null);
+            schema.setTitle(annotation.title());
+
+            // and if the type is an enum,
+            if (type.isEnum())
             {
-                final var includeAnnotation = type.annotation(OpenApiInclude.class);
-
-                propertySchema.name(property.name());
-                propertySchema.setDefault(includeAnnotation.defaultValue());
-                propertySchema.nullable(includeAnnotation.nullable());
-                propertySchema.description(includeAnnotation.description());
-                propertySchema.example(includeAnnotation.example());
-
-                if (includeAnnotation.required())
-                {
-                    required.add(property.name());
-                }
-
-                final var reference = includeAnnotation.reference();
-                if (reference != null)
-                {
-                    propertySchema.$ref(reference);
-                }
-
-                properties.put(property.name(), propertySchema);
+                // add the enum values.
+                schema.setEnum(List.of(type.enumValues()));
             }
-        }
-        schema.required(required);
-        schema.properties(properties);
 
-        return schema;
+            // For each property
+            final var properties = new HashMap<String, Schema>();
+            final var required = new ArrayList<String>();
+            for (final var property : type.properties(new OpenApiPropertyFilter(type)))
+            {
+                // add its schema by name.
+                final Schema<?> propertySchema = readSchema(Type.forClass(property.type()));
+                if (propertySchema != null)
+                {
+                    final var includeAnnotation = type.annotation(OpenApiIncludeMember.class);
+
+                    propertySchema.name(property.name());
+                    propertySchema.setDefault(includeAnnotation.defaultValue());
+                    propertySchema.nullable(includeAnnotation.nullable());
+                    propertySchema.description(includeAnnotation.description());
+                    propertySchema.example(includeAnnotation.example());
+                    propertySchema.deprecated(includeAnnotation.deprecated() ? true : null);
+
+                    if (includeAnnotation.required())
+                    {
+                        required.add(property.name());
+                    }
+
+                    final var reference = includeAnnotation.reference();
+                    if (reference != null)
+                    {
+                        propertySchema.$ref(reference);
+                    }
+
+                    properties.put(property.name(), propertySchema);
+                }
+            }
+            schema.required(required);
+            schema.properties(properties);
+
+            return schema;
+        }
+        else
+        {
+            warning("Type is missing @OpenApiIncludeType annotation: $", type);
+        }
+
+        return null;
     }
 
     /**

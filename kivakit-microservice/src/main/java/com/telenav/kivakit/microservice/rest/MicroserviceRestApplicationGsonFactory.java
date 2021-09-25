@@ -47,7 +47,7 @@ public class MicroserviceRestApplicationGsonFactory extends GsonFactory implemen
     protected void onInitialize(final GsonBuilder builder)
     {
         super.onInitialize(builder);
-        
+
         builder.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         builder.disableHtmlEscaping();
         builder.setPrettyPrinting();

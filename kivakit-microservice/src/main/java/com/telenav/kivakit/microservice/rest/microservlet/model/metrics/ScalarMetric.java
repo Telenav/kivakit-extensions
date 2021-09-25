@@ -2,9 +2,9 @@ package com.telenav.kivakit.microservice.rest.microservlet.model.metrics;
 
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 
-@Schema(description = "A named measurement of some value")
+@OpenApiIncludeType(description = "A named measurement of some value")
 public class ScalarMetric<T> extends BaseMetric<T>
 {
     /** The name of the measurement */

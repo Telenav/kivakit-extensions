@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * <b>Not public API</b>
  *
  * <p>
- * Allows the @{@link OpenApiIncludeFromSuperType} annotation to be used multiple times on a type
+ * Allows the @{@link OpenApiIncludeMemberFromSuperType} annotation to be used multiple times on a type
  * </p>
  *
  * @author jonathanl (shibo)
@@ -18,5 +18,5 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE })
 public @interface OpenApiIncludeFromSuperTypeRepeater
 {
-    OpenApiIncludeFromSuperType[] value();
+    OpenApiIncludeMemberFromSuperType[] value();
 }

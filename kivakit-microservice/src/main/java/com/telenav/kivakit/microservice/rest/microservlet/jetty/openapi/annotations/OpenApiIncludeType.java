@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface OpenApiSchema
+public @interface OpenApiIncludeType
 {
     /**
      * @return True if this schema is deprecated
@@ -22,7 +22,7 @@ public @interface OpenApiSchema
     /**
      * @return Description of this schema
      */
-    String description() default "";
+    String description();
 
     /**
      * @return Title of this schema

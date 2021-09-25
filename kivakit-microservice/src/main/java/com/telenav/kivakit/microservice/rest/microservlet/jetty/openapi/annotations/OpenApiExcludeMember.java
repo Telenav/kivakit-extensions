@@ -19,7 +19,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
-public @interface OpenApiExclude
+public @interface OpenApiExcludeMember
 {
     /**
      * @return The names of the methods or fields in any supertype that are to be excluded from the OpenAPI

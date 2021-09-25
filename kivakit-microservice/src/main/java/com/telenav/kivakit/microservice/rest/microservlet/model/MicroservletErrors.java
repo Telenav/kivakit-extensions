@@ -2,8 +2,9 @@ package com.telenav.kivakit.microservice.rest.microservlet.model;
 
 import com.telenav.kivakit.kernel.messaging.listeners.MessageList;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMemberFromSuperType;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.messaging.Message.Status.RESULT_COMPROMISED;
 
@@ -13,7 +14,8 @@ import static com.telenav.kivakit.kernel.messaging.Message.Status.RESULT_COMPROM
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-@Schema(description = "List of error messages")
+@OpenApiIncludeType(description = "List of error messages")
+@OpenApiIncludeMemberFromSuperType(member = "list", description = "List of error messages")
 public class MicroservletErrors extends MessageList
 {
     public MicroservletErrors()
