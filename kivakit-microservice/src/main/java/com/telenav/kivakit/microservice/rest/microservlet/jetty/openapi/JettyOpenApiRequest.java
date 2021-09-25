@@ -33,17 +33,17 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
 
         public JettyOpenApiResponse()
         {
-            openApi = new OpenApiReader().read();
+            openApi = listenTo(new OpenApiReader()).read();
         }
 
         @Override
         public String toJson()
         {
-            var factory = JettyMicroservletRequestCycle.cycle()
+            final var factory = JettyMicroservletRequestCycle.cycle()
                     .application()
                     .gsonFactory();
 
-            var builder = factory.builder();
+            final var builder = factory.builder();
             factory.addSerializers(builder);
             builder.setPrettyPrinting();
             return builder.create().toJson(openApi);

@@ -9,5 +9,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface OpenApiSchema
 {
+    boolean deprecated() default false;
+
     String description() default "";
+
+    boolean nullable() default false;
+
+    String title() default "";
 }

@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
@@ -41,7 +42,7 @@ public class OpenApiPathReader extends BaseComponent
         final var paths = new Paths();
 
         // Got through each mount path that the filter has,
-        var filter = require(JettyMicroservletFilter.class);
+        final var filter = require(JettyMicroservletFilter.class);
         for (final var path : filter.paths())
         {
             // and add a PathItem to the list of paths.
@@ -81,7 +82,7 @@ public class OpenApiPathReader extends BaseComponent
     {
         // then create an operation and populate it with the summary and description of the request,
         final var operation = new Operation();
-        var annotationReader = require(OpenApiAnnotationReader.class);
+        final var annotationReader = require(OpenApiAnnotationReader.class);
         operation.summary(annotationReader.readAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::summary));
         operation.description(annotationReader.readAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::description));
         operation.operationId(annotationReader.readAnnotationValue(requestType, methodName, io.swagger.v3.oas.annotations.Operation.class, io.swagger.v3.oas.annotations.Operation::operationId));
@@ -122,8 +123,8 @@ public class OpenApiPathReader extends BaseComponent
         {
             // add them to the set of schema models,
             require(OpenApiSchemaReader.class)
-                    .add(requestType)
-                    .add(responseType);
+                    .add(Type.of(requestType))
+                    .add(Type.of(responseType));
 
             // and if it's a get request,
             if (MicroservletGetRequest.class.isAssignableFrom(requestType))
@@ -152,7 +153,7 @@ public class OpenApiPathReader extends BaseComponent
     private Content newRequestContent(final Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
-        require(OpenApiSchemaReader.class).add(requestType);
+        require(OpenApiSchemaReader.class).add(Type.of(requestType));
 
         // then return an application/json content object that refers to the request type's schema.
         return new Content()
@@ -166,7 +167,7 @@ public class OpenApiPathReader extends BaseComponent
      */
     private ApiResponse newResponseItem(final String description, final Schema<?> schema)
     {
-        var item = new ApiResponse().description(description);
+        final var item = new ApiResponse().description(description);
         if (schema != null)
         {
             item.content(new Content().addMediaType("application/json", new MediaType().schema(schema)));
@@ -181,7 +182,7 @@ public class OpenApiPathReader extends BaseComponent
     private ApiResponse newResponseSuccess(final Class<? extends MicroservletResponse> responseType)
     {
         // Add the response type to the set of models,
-        require(OpenApiSchemaReader.class).add(ensureNotNull(responseType));
+        require(OpenApiSchemaReader.class).add(ensureNotNull(Type.of(responseType)));
 
         // and return a 200 response with the schema for the response type.
         return newResponseItem("200", schema(responseType));
@@ -192,7 +193,7 @@ public class OpenApiPathReader extends BaseComponent
      */
     private Schema<?> schema(final Class<?> model)
     {
-        return require(OpenApiSchemaReader.class).read(model);
+        return require(OpenApiSchemaReader.class).readSchema(Type.of(model));
     }
 
     /**

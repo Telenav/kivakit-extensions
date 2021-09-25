@@ -2,12 +2,18 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.reflection.Type;
-import io.swagger.v3.oas.models.Components;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExclude;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiInclude;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiSchema;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiPropertyFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiTypeFilter;
+import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,16 +23,23 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  * <b>Not public API</b>
  *
  * <p>
- * Reads OpenAPI Schema models from the set of model classes added to this reader with {@link #add(Class)}
+ * Reads OpenAPI Schema models from annotated Java types.
+ * </p>
+ *
+ * <p>
+ * * The {@link #read()} method reads all schemas rom the set of model classes added to this reader with {@link
+ * #add(Type)}. The {@link #readSchema(Type)} method reads the schema for a single type.
  * </p>
  *
  * @author jonathanl (shibo)
+ * @see OpenApiSchema
+ * @see OpenApiExclude
+ * @see OpenApiInclude
  */
 @SuppressWarnings("rawtypes") public class OpenApiSchemaReader extends BaseComponent
 {
-
     /** Models for which to make schemas */
-    private final Set<Class<?>> models = new HashSet<>();
+    private final Set<Type<?>> models = new HashSet<>();
 
     public OpenApiSchemaReader()
     {
@@ -36,97 +49,161 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
     /**
      * Adds the given model to this reader. Models found by {@link OpenApiPathReader} are added via this method.
      */
-    public OpenApiSchemaReader add(final Class<?> model)
+    public OpenApiSchemaReader add(final Type<?> model)
     {
         models.add(ensureNotNull(model));
         return this;
     }
 
     /**
-     * @return A {@link Components} object containing all schemas added to this reader via {@link #add(Class)}.
+     * @return A map from schema name to {@link Schema} for all schemas found recursively in all models added to this
+     * reader via {@link #add(Type)}.
      */
-    public Components read()
+    public Map<String, Schema> read()
     {
-        var components = new Components();
+        final var schemas = new HashMap<String, Schema>();
 
-        var schemas = new HashMap<String, Schema>();
-        for (var model : models)
+        models.forEach(model ->
         {
-            read(schemas, model);
-        }
+            final var schema = readSchema(model);
+            if (schema != null)
+            {
+                schemas.put(model.simpleName(), schema);
+            }
+        });
 
-        components.schemas(schemas);
-
-        return components;
+        return schemas;
     }
 
-    public Schema<?> read(final Map<String, Schema> schemas,
-                          final Class<?> model)
+    /**
+     * Reads the schema of a model type. Supports primitive types, arrays and objects.
+     *
+     * @param type The model type
+     * @return The OpenApi {@link Schema} or null if the type is ignored
+     */
+    public Schema<?> readSchema(final Type<?> type)
     {
-        var schema = new Schema<>();
-        var type = Type.of(model);
-
-        if (isPrimitive(schema, type))
+        if (new OpenApiTypeFilter().accepts(type))
         {
-            return schema;
+            var schema = readPrimitive(type);
+            if (schema == null)
+            {
+                schema = readArray(type);
+                if (schema == null)
+                {
+                    return readObject(type);
+                }
+            }
         }
+        return null;
+    }
 
+    /**
+     * @param type The type
+     * @return An object {@link Schema} if the given type is an array, null otherwise
+     */
+    private Schema readArray(final Type<?> type)
+    {
         if (type.is(Array.class))
         {
-
+            final var schema = new ArraySchema();
+            schema.type("array");
+            schema.items(readSchema(type.arrayElementType()));
+            return schema;
         }
+        return null;
+    }
 
+    /**
+     * @param type The type to read from
+     * @return The object {@link Schema}.
+     */
+    private Schema<?> readObject(final Type<?> type)
+    {
+        final var annotation = type.annotation(OpenApiSchema.class);
+
+        final var schema = new Schema<>();
+
+        // Add object attributes,
         schema.type("object");
-        for (var property : type.properties(new OpenApiPropertyFilter()))
+        schema.name(type.simpleName());
+        schema.$ref("#/components/schemas/" + type.simpleName());
+        schema.description(annotation.description());
+        schema.setDeprecated(annotation.deprecated());
+        schema.setTitle(annotation.title());
+        schema.setNullable(annotation.nullable());
+
+        // and if the type is an enum,
+        if (type.isEnum())
         {
-            var name = property.type().getSimpleName();
-            schemas.put()
+            // add the enum values.
+            schema.setEnum(List.of(type.enumValues()));
         }
+
+        // For each property
+        final var properties = new HashMap<String, Schema>();
+        for (final var property : type.properties(new OpenApiPropertyFilter(type)))
+        {
+            // add its schema by name.
+            final Schema<?> propertySchema = readSchema(Type.of(property.type()));
+            if (propertySchema != null)
+            {
+                properties.put(property.name(), propertySchema);
+            }
+        }
+        schema.properties(properties);
 
         return schema;
     }
 
-    private boolean isPrimitive(final Schema<Object> schema, final Type<Object> type)
+    /**
+     * Populates the given schema object with a type and format if the type parameter is a primitive value class.
+     *
+     * @param type The type of object
+     * @return The schema for the object if it is primitive or null if it is not
+     */
+    private Schema readPrimitive(final Type<?> type)
     {
+        final var schema = new Schema<>();
         if (type.is(Double.class))
         {
             schema.type("number");
             schema.format("double");
-            return true;
+            return schema;
         }
         if (type.is(Float.class))
         {
             schema.type("number");
             schema.format("float");
-            return true;
+            return schema;
         }
         if (type.is(Long.class))
         {
             schema.type("integer");
             schema.format("int64");
-            return true;
+            return schema;
         }
         if (type.is(Integer.class))
         {
             schema.type("integer");
             schema.format("int32");
-            return true;
+            return schema;
         }
         if (type.is(Short.class))
         {
             schema.type("integer");
-            return true;
+            return schema;
         }
         if (type.is(Character.class))
         {
             schema.type("integer");
-            return true;
+            return schema;
         }
         if (type.is(Byte.class))
         {
             schema.type("integer");
-            return true;
+            return schema;
         }
-        return false;
+        return null;
     }
 }
