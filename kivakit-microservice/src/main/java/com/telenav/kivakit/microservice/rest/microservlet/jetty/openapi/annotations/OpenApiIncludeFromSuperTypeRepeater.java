@@ -8,24 +8,15 @@ import java.lang.annotation.Target;
 /**
  * <b>Not public API</b>
  *
+ * <p>
+ * Allows the @{@link OpenApiIncludeFromSuperType} annotation to be used multiple times on a type
+ * </p>
+ *
  * @author jonathanl (shibo)
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface OpenApiSchema
+@Target({ ElementType.TYPE })
+public @interface OpenApiIncludeFromSuperTypeRepeater
 {
-    /**
-     * @return True if this schema is deprecated
-     */
-    boolean deprecated() default false;
-
-    /**
-     * @return Description of this schema
-     */
-    String description() default "";
-
-    /**
-     * @return Title of this schema
-     */
-    String title() default "";
+    OpenApiIncludeFromSuperType[] value();
 }

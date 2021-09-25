@@ -1,21 +1,22 @@
 package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations;
 
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
-
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation can be used to indicate that methods or fields should be included in the OpenAPI specification
- * produced by {@link JettyOpenApiRequest}.
+ * This annotation can be used to indicate members that should be included in the OpenAPI specification for this REST
+ * application. When applied to a field or method, no member name is needed. When applied to a class it will include the
+ * names of fields and/or methods from the superclass.
  *
  * @author jonathanl (shibo)
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD, ElementType.METHOD })
-public @interface OpenApiInclude
+@Target({ ElementType.TYPE })
+@Repeatable(OpenApiIncludeFromSuperTypeRepeater.class)
+public @interface OpenApiIncludeFromSuperType
 {
     /**
      * @return The allowable values for the annotated member
@@ -38,9 +39,9 @@ public @interface OpenApiInclude
     String example() default "";
 
     /**
-     * @return True if this members value is nullable
+     * @return The name of a superclass member to annotate (omitted when annotating fields and methods)
      */
-    boolean nullable() default false;
+    String member();
 
     /**
      * @return Reference to a schema for this member

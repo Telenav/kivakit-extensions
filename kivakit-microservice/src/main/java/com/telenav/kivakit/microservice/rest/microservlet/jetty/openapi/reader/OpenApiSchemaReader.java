@@ -11,6 +11,7 @@ import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -131,7 +132,6 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
         schema.description(annotation.description());
         schema.setDeprecated(annotation.deprecated());
         schema.setTitle(annotation.title());
-        schema.setNullable(annotation.nullable());
 
         // and if the type is an enum,
         if (type.isEnum())
@@ -142,15 +142,36 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
 
         // For each property
         final var properties = new HashMap<String, Schema>();
+        final var required = new ArrayList<String>();
         for (final var property : type.properties(new OpenApiPropertyFilter(type)))
         {
             // add its schema by name.
             final Schema<?> propertySchema = readSchema(Type.of(property.type()));
             if (propertySchema != null)
             {
+                final var includeAnnotation = type.annotation(OpenApiInclude.class);
+
+                propertySchema.name(property.name());
+                propertySchema.setDefault(includeAnnotation.defaultValue());
+                propertySchema.nullable(includeAnnotation.nullable());
+                propertySchema.description(includeAnnotation.description());
+                propertySchema.example(includeAnnotation.example());
+
+                if (includeAnnotation.required())
+                {
+                    required.add(property.name());
+                }
+
+                final var reference = includeAnnotation.reference();
+                if (reference != null)
+                {
+                    propertySchema.$ref(reference);
+                }
+
                 properties.put(property.name(), propertySchema);
             }
         }
+        schema.required(required);
         schema.properties(properties);
 
         return schema;
