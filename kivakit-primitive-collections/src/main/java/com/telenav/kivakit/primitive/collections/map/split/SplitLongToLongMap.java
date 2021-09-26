@@ -359,7 +359,7 @@ public final class SplitLongToLongMap extends SplitPrimitiveMap implements Primi
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         children = new LongToLongMap[initialChildCountAsInt()];

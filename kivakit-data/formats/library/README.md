@@ -60,8 +60,7 @@ This module provides packages for use in processing data formats.
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.data.formats.library*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-data/formats/library/documentation/diagrams/com.telenav.kivakit.data.formats.library.svg)  
-[*com.telenav.kivakit.data.formats.library.project*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-data/formats/library/documentation/diagrams/com.telenav.kivakit.data.formats.library.project.svg)
+[*com.telenav.kivakit.data.formats.library*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-data/formats/library/documentation/diagrams/com.telenav.kivakit.data.formats.library.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -77,7 +76,7 @@ Javadoc coverage for this project is 92.9%.
 | Class | Documentation Sections |
 |---|---|
 | [*DataFormat*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.library/com/telenav/kivakit/data/formats/library/DataFormat.html) |  |  
-| [*DataFormatsLibraryProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.library/com/telenav/kivakit/data/formats/library/project/DataFormatsLibraryProject.html) |  |  
+| [*DataFormatProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.library/com/telenav/kivakit/data/formats/library/DataFormatProject.html) |  |  
 
 [//]: # (start-user-text)
 

@@ -32,13 +32,13 @@ import com.telenav.kivakit.service.registry.server.project.lexakai.diagrams.Diag
 import com.telenav.kivakit.service.registry.server.rest.ServiceRegistryRestApplication;
 import com.telenav.kivakit.service.registry.server.webapp.ServiceRegistryWebApplication;
 import com.telenav.kivakit.service.registry.store.ServiceRegistryStore;
-import com.telenav.kivakit.web.jersey.JettyJersey;
+import com.telenav.kivakit.web.jersey.JerseyJettyServletPlugin;
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.swagger.JettySwaggerAssets;
-import com.telenav.kivakit.web.swagger.JettySwaggerIndex;
-import com.telenav.kivakit.web.swagger.JettySwaggerOpenApi;
-import com.telenav.kivakit.web.swagger.JettySwaggerWebJar;
-import com.telenav.kivakit.web.wicket.JettyWicket;
+import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerIndexJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerJettyServletPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
+import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.UmlNote;
@@ -146,12 +146,12 @@ public class ServiceRegistryServer extends Server
         // and start up Jetty with Swagger, Jersey and Wicket.
         listenTo(new JettyServer())
                 .port(port)
-                .mount("/*", new JettyWicket(ServiceRegistryWebApplication.class))
-                .mount("/open-api/*", new JettySwaggerOpenApi(application))
-                .mount("/docs/*", new JettySwaggerIndex(port))
-                .mount("/webapp/*", new JettySwaggerAssets())
-                .mount("/webjar/*", new JettySwaggerWebJar(application))
-                .mount("/*", new JettyJersey(application))
+                .mount("/*", new WicketJettyFilterPlugin(ServiceRegistryWebApplication.class))
+                .mount("/open-api/*", new SwaggerJettyServletPlugin(application))
+                .mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port))
+                .mount("/webapp/*", new SwaggerAssetsJettyResourcePlugin())
+                .mount("/webjar/*", new SwaggerWebJarJettyResourcePlugin(application))
+                .mount("/*", new JerseyJettyServletPlugin(application))
                 .start();
     }
 

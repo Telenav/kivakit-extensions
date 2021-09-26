@@ -23,6 +23,7 @@ import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystems.hdfs.proxy.converters.UserGroupInformationConverter;
 import com.telenav.kivakit.filesystems.hdfs.proxy.project.lexakai.diagrams.DiagramHdfsProxy;
+import com.telenav.kivakit.kernel.KernelProject;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
@@ -30,7 +31,6 @@ import com.telenav.kivakit.kernel.language.threading.locks.Monitor;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.kernel.KernelProject;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -446,7 +446,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
         try
         {
             // Register proxy server settings
-            registerSettingsObject(new HdfsProxyServerSettings()
+            registerSettings(new HdfsProxyServerSettings()
                     .configurationFolder(get(CONFIGURATION_FOLDER))
                     .user(get(USERNAME)));
 

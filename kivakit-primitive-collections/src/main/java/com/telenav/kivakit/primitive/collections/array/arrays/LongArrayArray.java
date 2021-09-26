@@ -209,7 +209,7 @@ public final class LongArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         store = new LongArray(objectName() + ".bytes");

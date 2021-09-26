@@ -255,7 +255,7 @@ public final class LongToIntMultiMap extends PrimitiveMultiMap implements IntMul
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

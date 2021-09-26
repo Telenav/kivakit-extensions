@@ -35,10 +35,6 @@
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
-        </dependency>
 
         <!-- Swagger -->
 
@@ -70,7 +66,7 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
         </dependency>
-        
+
         <!-- XML -->
 
         <dependency>

@@ -6,18 +6,23 @@ import com.telenav.kivakit.configuration.settings.deployment.Deployment;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.project.Project;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.MetricReporter;
+import com.telenav.kivakit.microservice.rest.microservlet.model.metrics.reporters.console.ConsoleMetricReporter;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
-import com.telenav.kivakit.web.jersey.JettyJersey;
+import com.telenav.kivakit.web.jersey.JerseyJettyServletPlugin;
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.jetty.resources.JettyAssets;
-import com.telenav.kivakit.web.swagger.JettySwaggerAssets;
-import com.telenav.kivakit.web.swagger.JettySwaggerIndex;
-import com.telenav.kivakit.web.swagger.JettySwaggerOpenApi;
-import com.telenav.kivakit.web.swagger.JettySwaggerWebJar;
-import com.telenav.kivakit.web.wicket.JettyWicket;
+import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerIndexJettyResourcePlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
+import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlRelation;
 
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 
@@ -121,6 +126,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @author jonathanl (shibo)
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice extends Application implements Startable
 {
     /**
@@ -137,6 +143,9 @@ public abstract class Microservice extends Application implements Startable
     public Microservice(final MicroserviceProject... project)
     {
         super(project);
+
+        register(this);
+        register(reporter());
     }
 
     @Override
@@ -149,6 +158,16 @@ public abstract class Microservice extends Application implements Startable
     public boolean isRunning()
     {
         return running;
+    }
+
+    @UmlRelation(label = "has")
+    public abstract MicroserviceMetadata metadata();
+
+    /**
+     * Called to initialize the microservice before it's running
+     */
+    public void onInitialize()
+    {
     }
 
     /**
@@ -166,22 +185,22 @@ public abstract class Microservice extends Application implements Startable
             final var port = has(PORT) ? get(PORT) : settings().port();
 
             // create the Jetty server.
-            var server = listenTo(new JettyServer().port(port));
+            final var server = listenTo(new JettyServer().port(port));
 
             // If there's an Apache Wicket web application,
-            var webApplication = webApplication();
+            final var webApplication = webApplication();
             if (webApplication != null)
             {
                 // mount them on the server.
-                server.mount("/*", new JettyWicket(webApplication));
+                server.mount("/*", new WicketJettyFilterPlugin(webApplication));
             }
 
             // If there are static resources,
-            var staticAssets = staticAssets();
+            final var staticAssets = staticAssets();
             if (staticAssets != null)
             {
                 // mount them on the server.
-                server.mount("/assets/*", new JettyAssets(staticAssets));
+                server.mount("/assets/*", new AssetsJettyResourcePlugin(staticAssets));
             }
 
             // If there is a Jersey REST application,
@@ -189,21 +208,24 @@ public abstract class Microservice extends Application implements Startable
             if (restApplication != null)
             {
                 // and there are static OpenAPI assets,
-                var openApiAssets = openApiAssets();
+                final var openApiAssets = openApiAssets();
                 if (openApiAssets != null)
                 {
                     // mount them on the server.
-                    server.mount("/open-api/assets/*", new JettyAssets(openApiAssets));
+                    server.mount("/open-api/assets/*", new AssetsJettyResourcePlugin(openApiAssets));
                 }
 
                 // Mount Swagger resources for the REST application.
-                server.mount("/open-api/*", new JettySwaggerOpenApi(restApplication));
-                server.mount("/docs/*", new JettySwaggerIndex(port));
-                server.mount("/swagger/webapp/*", new JettySwaggerAssets());
-                server.mount("/swagger/webjar/*", new JettySwaggerWebJar(restApplication));
+                server.mount("/*", register(new MicroservletJettyFilterPlugin(restApplication)));
+                server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
+                server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
+                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication));
 
-                // Mount the REST application.
-                server.mount("/*", new JettyJersey(restApplication));
+                // Mount the REST application
+                server.mount("/*", new JerseyJettyServletPlugin(restApplication));
+
+                // and initialize it.
+                restApplication.initialize();
             }
 
             // Start the server.
@@ -214,22 +236,13 @@ public abstract class Microservice extends Application implements Startable
         return true;
     }
 
-    protected abstract MicroserviceMetadata metadata();
-
-    /**
-     * Called to initialize the microservice before it Time start = Time.now();s running
-     */
-    protected void onInitialize()
-    {
-    }
-
     @Override
     protected final void onRun()
     {
-        // Let the microservice initialize,
+        // Initialize this microservice,
         onInitialize();
 
-        // then start it.
+        // then start it running.
         start();
     }
 
@@ -243,12 +256,9 @@ public abstract class Microservice extends Application implements Startable
     }
 
     /**
-     * @return The REST application, if any
+     * @return The REST application
      */
-    protected MicroserviceRestApplication restApplication()
-    {
-        return null;
-    }
+    protected abstract MicroserviceRestApplication restApplication();
 
     /**
      * @return The resource folder containing static assets. The resources will be mounted on <i>/assets</i>.
@@ -272,6 +282,12 @@ public abstract class Microservice extends Application implements Startable
         return null;
     }
 
+    MetricReporter reporter()
+    {
+        return new ConsoleMetricReporter();
+    }
+
+    @UmlRelation(label = "has")
     private MicroserviceSettings settings()
     {
         return require(MicroserviceSettings.class);

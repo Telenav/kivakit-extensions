@@ -10,6 +10,16 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice;
     exports com.telenav.kivakit.microservice.rest;
     exports com.telenav.kivakit.microservice.web;
-    exports com.telenav.kivakit.microservice.rest.methods;
-    exports com.telenav.kivakit.microservice.rest.servlet;
+    exports com.telenav.kivakit.microservice.rest.microservlet;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.filter;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi;
+    exports com.telenav.kivakit.microservice.rest.microservlet.model;
+    exports com.telenav.kivakit.microservice.rest.microservlet.model.requests;
+    exports com.telenav.kivakit.microservice.rest.microservlet.model.metrics;
+    exports com.telenav.kivakit.microservice.rest.microservlet.model.metrics.aggregates;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader;
+    exports com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters;
 }

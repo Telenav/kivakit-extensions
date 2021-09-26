@@ -402,7 +402,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         childSize = initialChildSizeAsInt();

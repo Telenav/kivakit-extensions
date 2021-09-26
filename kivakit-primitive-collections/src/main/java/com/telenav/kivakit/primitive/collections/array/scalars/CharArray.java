@@ -74,18 +74,6 @@ public final class CharArray extends PrimitiveArray implements CharList
         }
 
         @Override
-        protected CharArray onToValue(final String value)
-        {
-            final var array = new CharArray("converted");
-            array.initialize();
-            for (var index = 0; index < value.length(); index++)
-            {
-                array.add(value.charAt(index));
-            }
-            return array;
-        }
-
-        @Override
         protected String onToString(final CharArray array)
         {
             final var strings = new StringList(Maximum.maximum(array.size()));
@@ -95,6 +83,18 @@ public final class CharArray extends PrimitiveArray implements CharList
                 strings.add(Character.toString(values.next()));
             }
             return strings.join(separators.current());
+        }
+
+        @Override
+        protected CharArray onToValue(final String value)
+        {
+            final var array = new CharArray("converted");
+            array.initialize();
+            for (var index = 0; index < value.length(); index++)
+            {
+                array.add(value.charAt(index));
+            }
+            return array;
         }
     }
 
@@ -258,6 +258,15 @@ public final class CharArray extends PrimitiveArray implements CharList
      * {@inheritDoc}
      */
     @Override
+    public void onInitialize()
+    {
+        data = newCharArray(this, "allocated");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void read(final Kryo kryo, final Input input)
     {
         super.read(kryo, input);
@@ -358,16 +367,6 @@ public final class CharArray extends PrimitiveArray implements CharList
         kryo.writeObject(output, data);
         kryo.writeObject(output, offset);
         kryo.writeObject(output, cursor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onInitialize()
-    {
-        super.onInitialize();
-        data = newCharArray(this, "allocated");
     }
 
     /** Returns true if this is not a read-only sub-array */

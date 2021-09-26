@@ -85,8 +85,7 @@ More details about logging are available at [*kivakit-kernel logging*](../../kiv
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)  
-[*com.telenav.kivakit.logs.file.project*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.project.svg)
+[*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -104,7 +103,7 @@ Javadoc coverage for this project is 83.3%.
 | [*BaseRolloverTextLog*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.html) |  |  
 | [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.Rollover.html) |  |  
 | [*FileLog*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/FileLog.html) |  |  
-| [*LogsFileProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/project/LogsFileProject.html) |  |  
+| [*FileLogProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/FileLogProject.html) |  |  
 
 [//]: # (start-user-text)
 

@@ -77,7 +77,7 @@ public interface ServiceRegistry extends ComponentMixin
     Result<Set<Application.Identifier>> discoverApplications(Scope scope);
 
     /**
-     * @return All of the hosts that have registered services
+     * @return All the hosts that have registered services
      */
     default Result<Set<Host>> discoverHosts()
     {

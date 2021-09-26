@@ -23,12 +23,13 @@ import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludePro
 import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.language.strings.formatting.KivaKitFormatProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
 import com.telenav.kivakit.service.registry.protocol.BaseResponse;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter.Format.MULTILINE;
 
@@ -37,13 +38,13 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
  *
  * @author jonathanl (shibo)
  */
-@Schema(description = "The service that was found running on the given port")
+@OpenApiIncludeType(description = "The service that was found running on the given port")
 @UmlClassDiagram(diagram = DiagramRest.class)
 @LexakaiJavadoc(complete = true)
 public class DiscoverPortServiceResponse extends BaseResponse<Service>
 {
     @JsonProperty
-    @Schema(description = "The service running on the given port, or null if no service was found")
+    @OpenApiIncludeMember(description = "The service running on the given port, or null if no service was found")
     private Service service;
 
     @KivaKitIncludeProperty

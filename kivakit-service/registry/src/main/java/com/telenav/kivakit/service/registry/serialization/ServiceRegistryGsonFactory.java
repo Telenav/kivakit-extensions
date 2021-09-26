@@ -46,13 +46,12 @@ public class ServiceRegistryGsonFactory extends GsonFactory
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
     @Override
-    protected GsonBuilder addSerializers(final GsonBuilder builder)
+    protected void onAddSerializers(final GsonBuilder builder)
     {
         addSerializer(builder, Port.class, serializer(new Port.Converter(LOGGER)));
         addSerializer(builder, Application.Identifier.class, new ApplicationIdentifierGsonSerializer());
         addSerializer(builder, ServiceType.class, new ServiceTypeGsonSerializer());
         addSerializer(builder, Problem.class, new ProblemGsonSerializer(WITH_EXCEPTION));
         addSerializer(builder, Time.class, new TimeInMillisecondsGsonSerializer());
-        return builder;
     }
 }

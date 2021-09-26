@@ -21,11 +21,12 @@ package com.telenav.kivakit.service.registry.protocol.register;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.protocol.BaseRequest;
 import com.telenav.kivakit.service.registry.protocol.ServiceRegistryProtocol;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter.Format.MULTILINE;
 
@@ -34,14 +35,13 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
  *
  * @author jonathanl (shibo)
  */
-@Schema
+@OpenApiIncludeType(description = "Request to register a service and receive a port lease")
 @LexakaiJavadoc(complete = true)
 public class RegisterServiceRequest extends BaseRequest
 {
     /** The potentially unbound service to register or renew */
     @JsonProperty
-    @Schema(description = "The service that should be registered and allocated a port",
-            required = true)
+    @OpenApiIncludeMember(description = "The service that should be registered and allocated a port")
     private Service service;
 
     public RegisterServiceRequest(final Service service)

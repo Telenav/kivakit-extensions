@@ -21,12 +21,13 @@ package com.telenav.kivakit.service.registry.protocol.discover;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
 import com.telenav.kivakit.service.registry.protocol.BaseRequest;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter.Format.MULTILINE;
 import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProtocol.DISCOVER_PORT_SERVICE;
@@ -37,14 +38,13 @@ import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProto
  *
  * @author jonathanl (shibo)
  */
-@Schema(description = "A request to determine what service, if any, is running on the given host and port.")
+@OpenApiIncludeType(description = "A request to determine what service, if any, is running on the given host and port.")
 @UmlClassDiagram(diagram = DiagramRest.class)
 @LexakaiJavadoc(complete = true)
 public class DiscoverPortServiceRequest extends BaseRequest
 {
     @JsonProperty
-    @Schema(description = "The port to examine",
-            required = true)
+    @OpenApiIncludeMember(description = "The port to examine")
     private Port port;
 
     @Override

@@ -173,6 +173,24 @@ public final class IntArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        store = new IntArray(objectName() + ".bytes");
+        store.initialSize(initialSizeAsInt());
+        indexes = new IntArray(objectName() + ".indexes");
+        sizes = new IntArray(objectName() + ".sizes");
+
+        store.initialize();
+        indexes.initialize();
+        sizes.initialize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void read(final Kryo kryo, final Input input)
     {
         super.read(kryo, input);
@@ -202,22 +220,5 @@ public final class IntArrayArray extends PrimitiveArrayArray
         kryo.writeObject(output, indexes);
         kryo.writeObject(output, sizes);
         kryo.writeObject(output, store);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onInitialize()
-    {
-        super.onInitialize();
-        store = new IntArray(objectName() + ".bytes");
-        store.initialSize(initialSizeAsInt());
-        indexes = new IntArray(objectName() + ".indexes");
-        sizes = new IntArray(objectName() + ".sizes");
-
-        store.initialize();
-        indexes.initialize();
-        sizes.initialize();
     }
 }

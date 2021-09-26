@@ -296,7 +296,7 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

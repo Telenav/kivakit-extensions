@@ -401,7 +401,7 @@ public final class IntToByteMap extends PrimitiveMap implements PrimitiveScalarM
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

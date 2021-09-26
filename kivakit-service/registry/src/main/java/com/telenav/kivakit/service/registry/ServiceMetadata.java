@@ -21,12 +21,13 @@ package com.telenav.kivakit.service.registry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRegistry;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Metadata describing a {@link Service}.
@@ -46,30 +47,27 @@ import io.swagger.v3.oas.annotations.media.Schema;
  *
  * @author jonathanl (shibo)
  */
-@Schema(description = "Metadata describing a service")
+@OpenApiIncludeType(description = "Metadata describing a service")
 @UmlClassDiagram(diagram = DiagramRegistry.class)
 @LexakaiJavadoc(complete = true)
 public class ServiceMetadata
 {
     @JsonProperty
-    @Schema(description = "A description of the service",
-            required = true)
+    @OpenApiIncludeMember(description = "A description of the service")
     private String description;
 
     @JsonProperty
-    @Schema(description = "The service version",
-            required = true)
+    @OpenApiIncludeMember(description = "The service version")
     @UmlAggregation(label = "service version")
     private Version version;
 
     @JsonProperty
-    @Schema(description = "The version of the KivaKit that the service is running, if any")
+    @OpenApiIncludeMember(description = "The version of the KivaKit that the service is running, if any")
     @UmlAggregation(label = "kivakit version")
     private Version kivakitVersion;
 
     @JsonProperty
-    @Schema(description = "An email address to which concerns about the service can be directed",
-            required = true)
+    @OpenApiIncludeMember(description = "An email address to which concerns about the service can be directed")
     @UmlAggregation(label = "contact email")
     private EmailAddress contactEmail;
 

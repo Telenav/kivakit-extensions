@@ -12,7 +12,6 @@ open module kivakit.web.swagger
     requires transitive io.github.classgraph;
     requires transitive java.ws.rs;
     requires transitive jakarta.activation;
-    requires transitive java.activation;
 
     // Module exports
     exports com.telenav.kivakit.web.swagger;

@@ -1,9 +1,8 @@
 open module kivakit.service.registry
 {
     // KivaKit
-    requires transitive kivakit.application;
+    requires transitive kivakit.microservice;
     requires transitive kivakit.network.core;
-    requires transitive kivakit.web.jersey;
 
     // Jackson
     requires transitive com.fasterxml.jackson.annotation;

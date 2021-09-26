@@ -254,7 +254,7 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 
