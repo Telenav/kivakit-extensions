@@ -126,6 +126,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
         try
         {
             // then output JSON for the object to the servlet output stream.
+            this.httpResponse.setContentType("application/json");
             this.httpResponse.getOutputStream().println(response.toJson());
         }
         catch (final Exception e)

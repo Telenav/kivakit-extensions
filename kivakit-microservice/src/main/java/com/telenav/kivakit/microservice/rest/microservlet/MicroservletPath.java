@@ -48,7 +48,7 @@ public class MicroservletPath implements RegistryTrait
 
     public String key()
     {
-        return path + "/" + method.name();
+        return path() + ":" + method.name();
     }
 
     public HttpMethod method()
