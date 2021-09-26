@@ -113,20 +113,26 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
         return resolved;
     }
 
-    @SuppressWarnings("unchecked")
     private Schema copy(Schema that)
     {
         var copy = new Schema<>();
-        copy.set$ref(that.get$ref());
-        copy.setDefault(that.getDefault());
-        copy.setDeprecated(that.getDeprecated());
-        copy.setDescription(that.getDescription());
-        copy.setEnum(that.getEnum());
-        copy.setFormat(that.getFormat());
-        copy.setName(that.getName());
-        copy.setTitle(that.getTitle());
-        copy.setType(that.getType());
+        copy(that, copy);
         return copy;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void copy(Schema from, Schema to)
+    {
+        to.set$ref(from.get$ref());
+        to.setDefault(from.getDefault());
+        to.deprecated(from.getDeprecated());
+        to.description(from.getDescription());
+        to.setEnum(from.getEnum());
+        to.format(from.getFormat());
+        to.name(from.getName());
+        to.title(from.getTitle());
+        to.type(from.getType());
+        to.properties(from.getProperties());
     }
 
     /**
@@ -207,38 +213,40 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
                 else
                 {
                     // otherwise, read the property's schema,
-                    var ignored = readSchema(property.type());
-                    if (ignored != null)
+                    var propertyTypeSchema = readSchema(property.type());
+                    final var includeAnnotation = field.annotation(OpenApiIncludeMember.class);
+                    if (includeAnnotation != null)
                     {
-                        final var includeAnnotation = field.annotation(OpenApiIncludeMember.class);
-                        if (includeAnnotation != null)
+                        var propertySchema = new Schema();
+                        propertySchema.name(property.name());
+                        if (propertyTypeSchema != null)
                         {
-                            var propertySchema = new Schema();
-                            if (ignored.getType().equals("object"))
+                            if (propertyTypeSchema.getType().equals("object"))
                             {
+                                propertySchema.type("object");
                                 propertySchema.$ref(reference(property.type()));
                             }
-
-                            propertySchema.name(property.name());
-                            propertySchema.setDefault(includeAnnotation.defaultValue());
-                            propertySchema.nullable(includeAnnotation.nullable() ? true : null);
-                            propertySchema.description(includeAnnotation.description());
-                            propertySchema.example(includeAnnotation.example());
-                            propertySchema.deprecated(includeAnnotation.deprecated() ? true : null);
-
-                            if (includeAnnotation.required())
-                            {
-                                required.add(property.name());
-                            }
-
-                            final var reference = includeAnnotation.reference();
-                            if (!Strings.isEmpty(reference))
-                            {
-                                propertySchema.$ref(reference);
-                            }
-
-                            properties.put(property.name(), propertySchema);
+                            propertySchema.type(propertyTypeSchema.getType());
+                            propertySchema.format(propertyTypeSchema.getFormat());
                         }
+                        propertySchema.setDefault(includeAnnotation.defaultValue());
+                        propertySchema.nullable(includeAnnotation.nullable() ? true : null);
+                        propertySchema.description(includeAnnotation.description());
+                        propertySchema.example(includeAnnotation.example());
+                        propertySchema.deprecated(includeAnnotation.deprecated() ? true : null);
+
+                        if (includeAnnotation.required())
+                        {
+                            required.add(property.name());
+                        }
+
+                        final var reference = includeAnnotation.reference();
+                        if (!Strings.isEmpty(reference))
+                        {
+                            propertySchema.$ref(reference);
+                        }
+
+                        properties.put(property.name(), propertySchema);
                     }
                 }
             }
