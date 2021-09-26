@@ -6,11 +6,13 @@ import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicro
 import com.telenav.kivakit.microservice.rest.microservlet.serialization.ArraySerializer;
 import com.telenav.kivakit.microservice.rest.microservlet.serialization.ListSerializer;
 import com.telenav.kivakit.microservice.rest.microservlet.serialization.MapSerializer;
+import com.telenav.kivakit.microservice.rest.microservlet.serialization.SetSerializer;
 import com.telenav.kivakit.microservice.rest.microservlet.serialization.StringSerializer;
 import io.swagger.v3.oas.models.OpenAPI;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class OpenApiSerializer
 {
@@ -23,10 +25,11 @@ public class OpenApiSerializer
         final var builder = factory.builder();
         factory.addSerializers(builder);
         builder.setPrettyPrinting();
-        builder.registerTypeHierarchyAdapter(Collection.class, new ListSerializer());
+        builder.registerTypeHierarchyAdapter(List.class, new ListSerializer());
+        builder.registerTypeHierarchyAdapter(Set.class, new SetSerializer());
+        builder.registerTypeHierarchyAdapter(Map.class, new MapSerializer());
         builder.registerTypeAdapter(Object[].class, new ArraySerializer<>());
         builder.registerTypeAdapter(String.class, new StringSerializer());
-        builder.registerTypeAdapter(Map.class, new MapSerializer());
         builder.setExclusionStrategies(new ExclusionStrategy()
         {
             @Override

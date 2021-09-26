@@ -18,13 +18,13 @@ public class MapSerializer implements JsonSerializer<Map<?, ?>>
             return null;
         }
 
-        var element = new JsonObject();
+        var object = new JsonObject();
 
         for (var at : map.keySet())
         {
-            element.add(at.toString(), context.serialize(map.get(at)));
+            object.add(at.toString(), context.serialize(map.get(at)));
         }
 
-        return element;
+        return object;
     }
 }

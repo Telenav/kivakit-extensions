@@ -128,7 +128,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     void mount(final String path, final Class<Request> requestType)
     {
         // Create a request object, so we can get the response type,
-        final var request = Classes.newInstance(this, requestType);
+        final var request = listenTo(Classes.newInstance(this, requestType));
         if (request != null)
         {
             // then mount an anonymous microservlet on the given path,

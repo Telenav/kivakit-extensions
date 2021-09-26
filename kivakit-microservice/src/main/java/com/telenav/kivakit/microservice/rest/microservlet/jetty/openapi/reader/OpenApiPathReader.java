@@ -121,8 +121,8 @@ public class OpenApiPathReader extends BaseComponent
         {
             // add them to the set of schema models,
             require(OpenApiSchemaReader.class)
-                    .add(Type.forClass(requestType))
-                    .add(Type.forClass(responseType));
+                    .addModelToRead(Type.forClass(requestType))
+                    .addModelToRead(Type.forClass(responseType));
 
             // and if it's a get request,
             if (MicroservletGetRequest.class.isAssignableFrom(requestType))
@@ -135,7 +135,7 @@ public class OpenApiPathReader extends BaseComponent
             if (MicroservletPostRequest.class.isAssignableFrom(requestType))
             {
                 // add a post operation description.
-                item.get(newOperation("onPost", requestType, responseType));
+                item.post(newOperation("onPost", requestType, responseType));
             }
             return item;
         }
@@ -151,7 +151,7 @@ public class OpenApiPathReader extends BaseComponent
     private Content newRequestContent(final Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
-        require(OpenApiSchemaReader.class).add(Type.forClass(requestType));
+        require(OpenApiSchemaReader.class).addModelToRead(Type.forClass(requestType));
 
         // then return an application/json content object that refers to the request type's schema.
         return new Content()
@@ -180,10 +180,10 @@ public class OpenApiPathReader extends BaseComponent
     {
         // Add the response type to the set of models,
         require(OpenApiSchemaReader.class)
-                .add(ensureNotNull(Type.forClass(responseType)));
+                .addModelToRead(ensureNotNull(Type.forClass(responseType)));
 
         // and return a 200 response with the schema for the response type.
-        return newResponseItem("Success", schema(responseType));
+        return newResponseItem("Success", new Schema<>().$ref(OpenApiSchemaReader.reference(Type.forClass(responseType))));
     }
 
     /**
@@ -199,7 +199,7 @@ public class OpenApiPathReader extends BaseComponent
      */
     private Schema<?> schemaError()
     {
-        return schema(MicroservletErrors.class)
+        return new Schema<>()
                 .$ref("#/components/schemas/MicroservletErrors");
     }
 }

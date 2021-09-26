@@ -172,9 +172,9 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     {
         try
         {
-            final var converter = converterType
+            final var converter = listenTo(converterType
                     .getConstructor(Listener.class)
-                    .newInstance(this);
+                    .newInstance(this));
 
             return asObject(key, converter);
         }

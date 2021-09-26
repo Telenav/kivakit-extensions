@@ -16,6 +16,10 @@ public class OpenApiTypeFilter implements Filter<Type<?>>
     @Override
     public boolean accepts(final Type<?> type)
     {
-        return type.hasAnnotation(OpenApiIncludeType.class) || type.isDescendantOf(Collection.class);
+        return type.isPrimitive()
+                || type.is(String.class)
+                || type.isEnum()
+                || type.hasAnnotation(OpenApiIncludeType.class)
+                || type.isDescendantOf(Collection.class);
     }
 }

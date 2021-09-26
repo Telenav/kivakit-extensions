@@ -239,6 +239,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 // and respond with the object returned from onPost.
                 if (request != null)
                 {
+                    listenTo(request);
                     response.writeObject(microservlet.post(request));
                 }
             }
@@ -254,6 +255,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 // Respond with the object returned from onGet.
                 if (request != null)
                 {
+                    listenTo(request);
                     response.writeObject(method == GET ? microservlet.get(request) : microservlet.delete(request));
                 }
             }

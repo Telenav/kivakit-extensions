@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.rest.microservlet.model;
 
 import com.google.gson.Gson;
-import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
@@ -28,8 +28,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
  * @see MicroservletDeleteRequest
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-public abstract class BaseMicroservletMessage implements
-        ComponentMixin, Validatable, ProblemReportingMixin, MetricReportingMixin
+public abstract class BaseMicroservletMessage extends BaseComponent implements Validatable, ProblemReportingMixin, MetricReportingMixin
 {
     public Gson gson()
     {

@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.MicroservletJettyFilterPlugin;
@@ -31,9 +32,9 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
         @Expose
         private final OpenAPI api;
 
-        public JettyOpenApiResponse()
+        public JettyOpenApiResponse(Listener listener)
         {
-            api = listenTo(new OpenApiReader()).read();
+            api = listener.listenTo(new OpenApiReader()).read();
         }
 
         @Override
@@ -49,7 +50,7 @@ public class JettyOpenApiRequest extends MicroservletGetRequest
     @Override
     public MicroservletResponse onGet()
     {
-        return new JettyOpenApiResponse();
+        return new JettyOpenApiResponse(this);
     }
 
     /**
