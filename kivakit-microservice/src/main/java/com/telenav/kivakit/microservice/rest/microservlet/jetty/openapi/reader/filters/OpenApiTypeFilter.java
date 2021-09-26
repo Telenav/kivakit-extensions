@@ -4,6 +4,8 @@ import com.telenav.kivakit.kernel.interfaces.comparison.Filter;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 
+import java.util.Collection;
+
 /**
  * <b>Not public API</b>
  *
@@ -14,6 +16,6 @@ public class OpenApiTypeFilter implements Filter<Type<?>>
     @Override
     public boolean accepts(final Type<?> type)
     {
-        return type.hasAnnotation(OpenApiIncludeType.class);
+        return type.hasAnnotation(OpenApiIncludeType.class) || type.isDescendantOf(Collection.class);
     }
 }

@@ -169,7 +169,6 @@ public class OpenApiPathReader extends BaseComponent
         if (schema != null)
         {
             item.content(new Content().addMediaType("application/json", new MediaType().schema(schema)));
-            item.$ref("#/components/schemas/" + schema.getName());
         }
         return item;
     }
@@ -200,6 +199,7 @@ public class OpenApiPathReader extends BaseComponent
      */
     private Schema<?> schemaError()
     {
-        return schema(MicroservletErrors.class);
+        return schema(MicroservletErrors.class)
+                .$ref("#/components/schemas/MicroservletErrors");
     }
 }

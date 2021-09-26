@@ -12,6 +12,7 @@ import io.swagger.v3.oas.models.media.Schema;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -91,11 +92,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             var schema = readPrimitive(type);
             if (schema == null)
             {
-                schema = readArray(type);
-                if (schema == null)
-                {
-                    return readObject(type);
-                }
+                return readObject(type);
             }
         }
         return null;
@@ -105,13 +102,22 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      * @param type The type
      * @return An object {@link Schema} if the given type is an array, null otherwise
      */
-    private Schema readArray(final Type<?> type)
+    private Schema readArray(final Type<?> type, Type<?> typeParameter)
     {
         if (type.is(Array.class))
         {
             final var schema = new ArraySchema();
             schema.type("array");
             schema.items(readSchema(type.arrayElementType()));
+            return schema;
+        }
+        if (type.isDescendantOf(Collection.class))
+        {
+            final var schema = new ArraySchema();
+            schema.type("array");
+            final var typeParameterSchema = readSchema(typeParameter);
+            typeParameterSchema.$ref(reference(typeParameter));
+            schema.items(typeParameterSchema);
             return schema;
         }
         return null;
@@ -131,7 +137,6 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             // Add object attributes,
             schema.type("object");
             schema.name(type.simpleName());
-            schema.$ref("#/components/schemas/" + type.simpleName());
             schema.description(annotation.description());
             schema.setDeprecated(annotation.deprecated() ? true : null);
             schema.setTitle(annotation.title());
@@ -148,31 +153,50 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             final var required = new ArrayList<String>();
             for (final var property : type.properties(new OpenApiPropertyFilter(type)))
             {
-                // add its schema by name.
-                final Schema<?> propertySchema = readSchema(Type.forClass(property.type()));
-                if (propertySchema != null)
+                var field = property.field();
+                if (field.type().isDescendantOf(Collection.class) || field.type().isArray())
                 {
-                    final var includeAnnotation = type.annotation(OpenApiIncludeMember.class);
-
-                    propertySchema.name(property.name());
-                    propertySchema.setDefault(includeAnnotation.defaultValue());
-                    propertySchema.nullable(includeAnnotation.nullable());
-                    propertySchema.description(includeAnnotation.description());
-                    propertySchema.example(includeAnnotation.example());
-                    propertySchema.deprecated(includeAnnotation.deprecated() ? true : null);
-
-                    if (includeAnnotation.required())
+                    final var parameters = field.genericTypeParameters();
+                    if (parameters.size() == 1)
                     {
-                        required.add(property.name());
+                        properties.put(property.name(), readArray(field.type(), parameters.get(0)));
                     }
-
-                    final var reference = includeAnnotation.reference();
-                    if (reference != null)
+                }
+                else
+                {
+                    // add its schema by name.
+                    final Schema<?> propertySchema = readSchema(property.type());
+                    if (propertySchema != null)
                     {
-                        propertySchema.$ref(reference);
-                    }
+                        final var includeAnnotation = type.annotation(OpenApiIncludeMember.class);
+                        if (includeAnnotation != null)
+                        {
+                            if (propertySchema.getType().equals("object"))
+                            {
+                                propertySchema.$ref(reference(property.type()));
+                            }
 
-                    properties.put(property.name(), propertySchema);
+                            propertySchema.name(property.name());
+                            propertySchema.setDefault(includeAnnotation.defaultValue());
+                            propertySchema.nullable(includeAnnotation.nullable());
+                            propertySchema.description(includeAnnotation.description());
+                            propertySchema.example(includeAnnotation.example());
+                            propertySchema.deprecated(includeAnnotation.deprecated() ? true : null);
+
+                            if (includeAnnotation.required())
+                            {
+                                required.add(property.name());
+                            }
+
+                            final var reference = includeAnnotation.reference();
+                            if (reference != null)
+                            {
+                                propertySchema.$ref(reference);
+                            }
+
+                            properties.put(property.name(), propertySchema);
+                        }
+                    }
                 }
             }
             schema.required(required);
@@ -237,5 +261,10 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             return schema;
         }
         return null;
+    }
+
+    private String reference(final Type<?> typeParameter)
+    {
+        return "#/components/schemas/" + typeParameter.simpleName();
     }
 }
