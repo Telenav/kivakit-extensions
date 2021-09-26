@@ -6,7 +6,6 @@ import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiRequestHandler;
-import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletErrors;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
@@ -91,7 +90,7 @@ public class OpenApiPathReader extends BaseComponent
                 .addApiResponse("200", newResponseSuccess(responseType))
                 .addApiResponse("403", newResponseItem("Forbidden", null))
                 .addApiResponse("404", newResponseItem("Not Found", null))
-                .addApiResponse("500", newResponseItem("Server Error", schemaError())));
+                .addApiResponse("500", newResponseItem("Server Error", require(OpenApiSchemaReader.class).schemaError())));
 
         operation.requestBody(new RequestBody().content(newRequestContent(requestType)));
 
@@ -184,22 +183,5 @@ public class OpenApiPathReader extends BaseComponent
 
         // and return a 200 response with the schema for the response type.
         return newResponseItem("Success", new Schema<>().$ref(OpenApiSchemaReader.reference(Type.forClass(responseType))));
-    }
-
-    /**
-     * @return The {@link Schema} for the given model
-     */
-    private Schema<?> schema(final Class<?> model)
-    {
-        return require(OpenApiSchemaReader.class).readSchema(Type.forClass(model));
-    }
-
-    /**
-     * @return The {@link Schema} for {@link MicroservletErrors}s.
-     */
-    private Schema<?> schemaError()
-    {
-        return new Schema<>()
-                .$ref("#/components/schemas/MicroservletErrors");
     }
 }

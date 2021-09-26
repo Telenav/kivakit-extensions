@@ -2,6 +2,7 @@ package com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
+import com.telenav.kivakit.kernel.language.reflection.Member;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExcludeMember;
@@ -9,6 +10,7 @@ import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotati
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiPropertyFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiTypeFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletErrors;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 
@@ -113,6 +115,14 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
         return resolved;
     }
 
+    /**
+     * @return The {@link Schema} for {@link MicroservletErrors}s.
+     */
+    public Schema<?> schemaError()
+    {
+        return readSchema(Type.forClass(MicroservletErrors.class));
+    }
+
     private Schema copy(Schema that)
     {
         var copy = new Schema<>();
@@ -136,26 +146,37 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
     }
 
     /**
-     * @param type The type
+     * @param member The member
      * @return An object {@link Schema} if the given type is an array, null otherwise
      */
-    private Schema readArray(final Type<?> type, Type<?> typeParameter)
+    private Schema readArray(final Member member, Type<?> typeParameter)
     {
+        Schema elementTypeSchema = null;
+        final Type<?> type = member.type();
         if (type.is(Array.class))
         {
-            final var schema = new ArraySchema();
-            schema.type("array");
-            schema.items(readSchema(type.arrayElementType()));
-            return schema;
+            elementTypeSchema = readSchema(type.arrayElementType());
         }
         if (type.isDescendantOf(Collection.class))
         {
+            final var parameters = member.genericTypeParameters();
+            if (parameters.size() == 1)
+            {
+                elementTypeSchema = copy(readSchema(parameters.get(0)));
+            }
+            else
+            {
+                problem("Member must have exactly one type parameters: $", member);
+            }
+        }
+
+        if (elementTypeSchema != null)
+        {
             final var schema = new ArraySchema();
             schema.type("array");
-            final var typeParameterSchema = copy(readSchema(typeParameter));
-            typeParameterSchema.$ref(reference(typeParameter));
-            schema.items(typeParameterSchema);
-            return schema;
+            return schema.items(new Schema().name(typeParameter.name())
+                    .type(elementTypeSchema.getType())
+                    .$ref(reference(typeParameter)));
         }
         return null;
     }
@@ -196,39 +217,40 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             final var required = new ArrayList<String>();
             for (final var property : type.properties(new OpenApiPropertyFilter(type)))
             {
-                // get the field,
-                var field = property.field();
+                // get the member,
+                var member = property.member();
 
                 // and if it's a collection or array,
-                if (field.type().isDescendantOf(Collection.class) || field.type().isArray())
+                if (member.type().isDescendantOf(Collection.class) || member.type().isArray())
                 {
                     // get the generic type parameter,
-                    final var parameters = field.genericTypeParameters();
+                    final var parameters = member.genericTypeParameters();
                     if (parameters.size() == 1)
                     {
-                        // and add the field as an array of the type parameter type.
-                        properties.put(property.name(), readArray(field.type(), parameters.get(0)));
+                        // and add the member as an array of the type parameter type.
+                        properties.put(property.name(), readArray(member, parameters.get(0)));
                     }
                 }
                 else
                 {
                     // otherwise, read the property's schema,
                     var propertyTypeSchema = readSchema(property.type());
-                    final var includeAnnotation = field.annotation(OpenApiIncludeMember.class);
+                    var propertySchema = new Schema();
+                    propertySchema.name(property.name());
+
+                    if (propertyTypeSchema != null)
+                    {
+                        propertySchema.type(propertyTypeSchema.getType());
+                        if (propertyTypeSchema.getType().equals("object"))
+                        {
+                            propertySchema.$ref(reference(property.type()));
+                        }
+                        propertySchema.format(propertyTypeSchema.getFormat());
+                    }
+
+                    final var includeAnnotation = member.annotation(OpenApiIncludeMember.class);
                     if (includeAnnotation != null)
                     {
-                        var propertySchema = new Schema();
-                        propertySchema.name(property.name());
-                        if (propertyTypeSchema != null)
-                        {
-                            if (propertyTypeSchema.getType().equals("object"))
-                            {
-                                propertySchema.type("object");
-                                propertySchema.$ref(reference(property.type()));
-                            }
-                            propertySchema.type(propertyTypeSchema.getType());
-                            propertySchema.format(propertyTypeSchema.getFormat());
-                        }
                         propertySchema.setDefault(includeAnnotation.defaultValue());
                         propertySchema.nullable(includeAnnotation.nullable() ? true : null);
                         propertySchema.description(includeAnnotation.description());

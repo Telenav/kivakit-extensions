@@ -946,7 +946,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
                     if (method != null)
                     {
                         final var caller = method.type();
-                        who = caller.getSimpleName();
+                        who = caller.simpleName();
                     }
                     else
                     {
