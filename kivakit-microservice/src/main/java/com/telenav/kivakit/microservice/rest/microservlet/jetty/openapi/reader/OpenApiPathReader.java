@@ -182,6 +182,6 @@ public class OpenApiPathReader extends BaseComponent
                 .addModelToRead(ensureNotNull(Type.forClass(responseType)));
 
         // and return a 200 response with the schema for the response type.
-        return newResponseItem("Success", new Schema<>().$ref(OpenApiSchemaReader.reference(Type.forClass(responseType))));
+        return newResponseItem("Success", new Schema<>().$ref(new ReferenceResolver().reference(Type.forClass(responseType))));
     }
 }

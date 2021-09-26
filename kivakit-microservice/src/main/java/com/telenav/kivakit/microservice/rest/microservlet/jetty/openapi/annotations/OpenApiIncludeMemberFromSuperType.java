@@ -39,6 +39,11 @@ public @interface OpenApiIncludeMemberFromSuperType
     String example() default "";
 
     /**
+     * @return The type of the member if it is an array
+     */
+    Class<?> genericType() default Void.class;
+
+    /**
      * @return The name of a superclass member to annotate (omitted when annotating fields and methods)
      */
     String member();

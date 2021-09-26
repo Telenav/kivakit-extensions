@@ -18,11 +18,6 @@ import java.lang.annotation.Target;
 public @interface OpenApiIncludeMember
 {
     /**
-     * @return The allowable values for the annotated member
-     */
-    String[] allowableValues() default {};
-
-    /**
      * @return The default value for the annotated member
      */
     String defaultValue() default "";
@@ -48,6 +43,11 @@ public @interface OpenApiIncludeMember
     String format() default "";
 
     /**
+     * @return The generic type for an array or list member whose generic type cannot be determined
+     */
+    Class<?> genericType() default Void.class;
+
+    /**
      * @return True if this members value is nullable
      */
     boolean nullable() default false;
@@ -61,6 +61,11 @@ public @interface OpenApiIncludeMember
      * @return True if the annotated member is required
      */
     boolean required() default true;
+
+    /**
+     * @return Title for this member
+     */
+    String title() default "";
 
     /**
      * @return The type of the member

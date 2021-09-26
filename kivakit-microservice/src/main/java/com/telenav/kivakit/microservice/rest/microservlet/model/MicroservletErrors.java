@@ -1,8 +1,10 @@
 package com.telenav.kivakit.microservice.rest.microservlet.model;
 
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.listeners.MessageList;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMemberFromSuperType;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -14,12 +16,30 @@ import static com.telenav.kivakit.kernel.messaging.Message.Status.RESULT_COMPROM
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-@OpenApiIncludeType(description = "List of error messages")
-@OpenApiIncludeMemberFromSuperType(member = "list", description = "List of error messages")
+@OpenApiIncludeType(
+        description = "List of problems, warnings and other error messages in the event of a server failure")
 public class MicroservletErrors extends MessageList
 {
+    @OpenApiIncludeMember(
+            description = "Error list",
+            example = "[ \"Invalid start time\" ]",
+            genericType = String.class)
+    private final StringList errors = new StringList();
+
     public MicroservletErrors()
     {
         super(message -> message.isWorseThanOrEqualTo(RESULT_COMPROMISED));
+    }
+
+    public StringList errors()
+    {
+        return errors;
+    }
+
+    @Override
+    public void onMessage(final Message message)
+    {
+        super.onMessage(message);
+        errors.add(message.formatted());
     }
 }

@@ -61,7 +61,8 @@ public final class JettyMicroserviceResponse extends BaseComponent
     @JsonProperty
     @SuppressWarnings("FieldCanBeLocal")
     @UmlAggregation
-    @OpenApiIncludeMember(description = "Error messages when status is 500 (SC_INTERNAL_SERVER_ERROR)")
+    @OpenApiIncludeMember(title = "Errors messages",
+                          description = "Error messages when status is 500 (SC_INTERNAL_SERVER_ERROR)")
     private final MicroservletErrors errors = new MicroservletErrors();
 
     public JettyMicroserviceResponse(final JettyMicroservletRequestCycle cycle, final HttpServletResponse httpResponse)
@@ -101,7 +102,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
      * @return The version of the microservice that is responding to a request
      */
     @KivaKitIncludeProperty
-    @OpenApiIncludeMember(description = "The microservice version")
+    @OpenApiIncludeMember(title = "Version", description = "The microservice version from metadata")
     public Version version()
     {
         return cycle.application()

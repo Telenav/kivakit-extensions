@@ -69,13 +69,16 @@ public class OpenApiPropertyFilter implements PropertyFilter
         // Get any exclude annotation
         final var exclude = type.annotation(OpenApiExcludeMember.class);
 
-        // and for each member name excluded by the annotation,
-        for (final var excludedMemberName : exclude.value())
+        if (exclude != null)
         {
-            // exclude the member if its excludedMemberName matches.
-            if (excludedMemberName.equals(((Member) member).getName()))
+            // and for each member name excluded by the annotation,
+            for (final var excludedMemberName : exclude.value())
             {
-                return true;
+                // exclude the member if its excludedMemberName matches.
+                if (excludedMemberName.equals(((Member) member).getName()))
+                {
+                    return true;
+                }
             }
         }
 
@@ -90,7 +93,7 @@ public class OpenApiPropertyFilter implements PropertyFilter
     private boolean include(final AnnotatedElement member)
     {
         // For all super types of this type,
-        for (final var at : type.superTypes())
+        for (final var at : type.superTypes().with(type))
         {
             // don't include if the type is excluded,
             if (exclude(at, member))

@@ -4,9 +4,9 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.reflection.Member;
 import com.telenav.kivakit.kernel.language.reflection.Type;
-import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiExcludeMember;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeMemberFromSuperType;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.annotations.OpenApiIncludeType;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiPropertyFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.reader.filters.OpenApiTypeFilter;
@@ -18,7 +18,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureFalse;
@@ -43,11 +42,6 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  */
 @SuppressWarnings("rawtypes") public class OpenApiSchemaReader extends BaseComponent
 {
-    public static String reference(final Type<?> typeParameter)
-    {
-        return "#/components/schemas/" + typeParameter.type().getSimpleName();
-    }
-
     /** Models for which to make schemas */
     private final ObjectSet<Type<?>> modelsToRead = new ObjectSet<>();
 
@@ -120,37 +114,29 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      */
     public Schema<?> schemaError()
     {
-        return readSchema(Type.forClass(MicroservletErrors.class));
+        var schema = readSchema(Type.forClass(MicroservletErrors.class));
+        return new Schema<>()
+                .name("errors")
+                .type("object")
+                .description(schema.getDescription())
+                .title(schema.getTitle())
+                .$ref(new ReferenceResolver().reference(Type.forClass(MicroservletErrors.class)));
     }
 
-    private Schema copy(Schema that)
+    private boolean isArrayType(final Member member)
     {
-        var copy = new Schema<>();
-        copy(that, copy);
-        return copy;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void copy(Schema from, Schema to)
-    {
-        to.set$ref(from.get$ref());
-        to.setDefault(from.getDefault());
-        to.deprecated(from.getDeprecated());
-        to.description(from.getDescription());
-        to.setEnum(from.getEnum());
-        to.format(from.getFormat());
-        to.name(from.getName());
-        to.title(from.getTitle());
-        to.type(from.getType());
-        to.properties(from.getProperties());
+        return member.type().isDescendantOf(Collection.class) || member.type().isArray();
     }
 
     /**
      * @param member The member
+     * @param typeParameter The name of the member's type parameter (if any)
      * @return An object {@link Schema} if the given type is an array, null otherwise
      */
     private Schema readArray(final Member member, Type<?> typeParameter)
     {
+        ensureNotNull(member);
+
         Schema elementTypeSchema = null;
         final Type<?> type = member.type();
         if (type.is(Array.class))
@@ -159,14 +145,14 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
         }
         if (type.isDescendantOf(Collection.class))
         {
-            final var parameters = member.genericTypeParameters();
-            if (parameters.size() == 1)
+            final Schema<?> typeParameterSchema = readSchema(typeParameter);
+            if (typeParameterSchema != null)
             {
-                elementTypeSchema = copy(readSchema(parameters.get(0)));
+                elementTypeSchema = new SchemaCopier().copy(typeParameterSchema);
             }
             else
             {
-                problem("Member must have exactly one type parameters: $", member);
+                problem("Unable to read schema for: $", typeParameter);
             }
         }
 
@@ -174,10 +160,12 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
         {
             final var schema = new ArraySchema();
             schema.type("array");
-            return schema.items(new Schema().name(typeParameter.name())
+            new AnnotationReader().copyToSchema(member, schema);
+            return schema.items(new Schema()
                     .type(elementTypeSchema.getType())
-                    .$ref(reference(typeParameter)));
+                    .$ref(new ReferenceResolver().reference(typeParameter)));
         }
+
         return null;
     }
 
@@ -187,7 +175,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      */
     private Schema<?> readObject(final Type<?> type)
     {
-        var primitiveSchema = readPrimitive(type);
+        var primitiveSchema = new PrimitiveReader().readPrimitive(type);
         if (primitiveSchema != null)
         {
             return primitiveSchema;
@@ -202,14 +190,15 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             schema.type("object");
             schema.name(type.type().getSimpleName());
             schema.description(annotation.description());
-            schema.setDeprecated(annotation.deprecated() ? true : null);
-            schema.setTitle(annotation.title());
+            schema.deprecated(annotation.deprecated() ? true : null);
+            schema.title(annotation.title());
 
             // and if the type is an enum,
             if (type.isEnum())
             {
                 // add the enum values.
-                schema.setEnum(List.of(type.enumValues()));
+                schema.setEnum(new ArrayList<>(type.enumValues()));
+                schema.type("string");
             }
 
             // For each property
@@ -219,16 +208,37 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             {
                 // get the member,
                 var member = property.member();
+                final var includeAnnotation = member.annotation(OpenApiIncludeMember.class);
 
                 // and if it's a collection or array,
-                if (member.type().isDescendantOf(Collection.class) || member.type().isArray())
+                if (isArrayType(member))
                 {
-                    // get the generic type parameter,
-                    final var parameters = member.genericTypeParameters();
-                    if (parameters.size() == 1)
+                    final var superTypeInclude = type.annotation(OpenApiIncludeMemberFromSuperType.class);
+                    if (superTypeInclude != null && superTypeInclude.genericType() != null)
                     {
-                        // and add the member as an array of the type parameter type.
-                        properties.put(property.name(), readArray(member, parameters.get(0)));
+                        properties.put(property.name(), readArray(member, Type.forClass(superTypeInclude.genericType())));
+                    }
+                    else
+                    {
+                        // get the generic type parameter,
+                        final var parameters = member.genericTypeParameters();
+                        if (parameters.size() == 1)
+                        {
+                            // and add the member as an array of the type parameter type.
+                            properties.put(property.name(), readArray(member, parameters.get(0)));
+                        }
+                        else
+                        {
+                            var genericType = includeAnnotation.genericType();
+                            if (genericType != Void.class)
+                            {
+                                properties.put(property.name(), readArray(member, Type.forClass(genericType)));
+                            }
+                            else
+                            {
+                                problem("Could not determine generic type parameter for: $.$", type.simpleName(), member.name());
+                            }
+                        }
                     }
                 }
                 else
@@ -241,33 +251,23 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
                     if (propertyTypeSchema != null)
                     {
                         propertySchema.type(propertyTypeSchema.getType());
-                        if (propertyTypeSchema.getType().equals("object"))
+                        if (propertyTypeSchema.getType().equals("object")
+                                || (propertyTypeSchema.getEnum() != null && !propertyTypeSchema.getEnum().isEmpty()))
                         {
-                            propertySchema.$ref(reference(property.type()));
+                            propertySchema.$ref(new ReferenceResolver().reference(property.type()));
+                            new SchemaCopier().copy(propertyTypeSchema, propertySchema);
                         }
                         propertySchema.format(propertyTypeSchema.getFormat());
                     }
 
-                    final var includeAnnotation = member.annotation(OpenApiIncludeMember.class);
                     if (includeAnnotation != null)
                     {
-                        propertySchema.setDefault(includeAnnotation.defaultValue());
-                        propertySchema.nullable(includeAnnotation.nullable() ? true : null);
-                        propertySchema.description(includeAnnotation.description());
-                        propertySchema.example(includeAnnotation.example());
-                        propertySchema.deprecated(includeAnnotation.deprecated() ? true : null);
-
+                        propertySchema.name(property.name());
+                        new AnnotationReader().copyToSchema(member, propertySchema);
                         if (includeAnnotation.required())
                         {
                             required.add(property.name());
                         }
-
-                        final var reference = includeAnnotation.reference();
-                        if (!Strings.isEmpty(reference))
-                        {
-                            propertySchema.$ref(reference);
-                        }
-
                         properties.put(property.name(), propertySchema);
                     }
                 }
@@ -283,62 +283,6 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             warning("Type is missing @OpenApiIncludeType annotation: $", type);
         }
 
-        return null;
-    }
-
-    /**
-     * Populates the given schema object with a type and format if the type parameter is a primitive value class.
-     *
-     * @param type The type of object
-     * @return The schema for the object if it is primitive or null if it is not
-     */
-    private Schema readPrimitive(final Type<?> type)
-    {
-        final var schema = new Schema<>();
-        if (type.is(String.class))
-        {
-            schema.type("string");
-            return schema;
-        }
-        if (type.is(Double.class) || type.is(double.class))
-        {
-            schema.type("number");
-            schema.format("double");
-            return schema;
-        }
-        if (type.is(Float.class) || type.is(float.class))
-        {
-            schema.type("number");
-            schema.format("float");
-            return schema;
-        }
-        if (type.is(Long.class) || type.is(long.class))
-        {
-            schema.type("integer");
-            schema.format("int64");
-            return schema;
-        }
-        if (type.is(Integer.class) || type.is(int.class))
-        {
-            schema.type("integer");
-            schema.format("int32");
-            return schema;
-        }
-        if (type.is(Short.class) || type.is(short.class))
-        {
-            schema.type("integer");
-            return schema;
-        }
-        if (type.is(Character.class) || type.is(char.class))
-        {
-            schema.type("integer");
-            return schema;
-        }
-        if (type.is(Byte.class) || type.is(byte.class))
-        {
-            schema.type("integer");
-            return schema;
-        }
         return null;
     }
 }
