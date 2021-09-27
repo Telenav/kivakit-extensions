@@ -31,16 +31,16 @@ import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroserviceResponse;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.JettyOpenApiRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
-import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletDeleteRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletGetRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.model.requests.MicroservletPostRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.cycle.JettyMicroserviceResponse;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.cycle.JettyMicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletDeleteRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -48,6 +48,7 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.swagger.v3.oas.models.info.Info;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -55,28 +56,58 @@ import javax.servlet.ServletResponse;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
- * Base class for KivaKit microservice REST applications.
+ * Base class for KivaKit microservice REST applications. {@link Microservlet} request handlers ({@link
+ * MicroservletGetRequest}, {@link MicroservletPostRequest} or {@link MicroservletDeleteRequest}) can be installed with
+ * {@link #mount(String, Class)} or {@link #mount(String, Microservlet)} in the {@link #onInitialize()} method. The
+ * {@link #gsonFactory()} method can be overridden to provide an application-specific {@link Gson} serializer. The
+ * {@link #openApiInfo()} class can optionally be overridden to provide OpenAPI details beyond those provided by the
+ * {@link Microservice} via {@link MicroserviceMetadata}.
  *
- * <p><b>Flow of Control</b></p>
+ * <p><b>Internal Details - Flow of Control</b></p>
  *
  * <ol>
- *     <li>{@link MicroserviceRestApplication} creates a {@link MicroservletJettyFilterPlugin}</li>
- *     <li>In the {@link MicroserviceRestApplication} subclass constructor, to <i>mount*()</i> methods are used to bind {@link Microservlet}s to paths</li>
- *     <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyFilterPlugin}</li>
- *     <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} method parses the request path and parameters</li>
- *     <li>The request path is used to resolve any {@link Microservlet} mounted on the path</li>
- *     <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
- *     <li>If the HTTP request method is POST, the {@link Microservlet#onPost(MicroservletRequest)} method is called</li>
- *     <li>If the HTTP request method is GET, the {@link Microservlet#onGet(MicroservletRequest)} method is called</li>
- *     <li>The return value from onPost() or onGet() is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
+ *     <li>Initializing</li>
  *     <ol>
- *         <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
- *         <li>Converts the object to JSON using the {@link Gson} object provided by {@link MicroserviceRestApplication#gsonFactory()}</li>
- *         <li>Writes the JSON object to the servlet response output stream</li>
+ *         <li>{@link MicroserviceRestApplication} creates a {@link MicroservletJettyFilterPlugin}</li>
+ *         <li>In the {@link MicroserviceRestApplication#onInitialize()} method, <i>mount*()</i> methods are used to bind
+ *         {@link MicroservletRequest} handlers to paths</li>
+ *     </ol>
+ *     <li>Receiving requests</li>
+ *     <ol>
+ *         <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyFilterPlugin}</li>
+ *         <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} resolves any
+ *         {@link Microservlet} mounted on the request path. If no microservlet is found, the request is passed to the next
+ *         {@link Filter} in the filter chain</li>
+ *         <li>Request parameters are processed</li>
+ *         <ol>
+ *             <li>If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
+ *             <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
+ *             <li>If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
+ *         </ol>
+ *     </ol>
+ *
+ *     <li>Handling requests</li>
+ *     <ol>
+ *         <li>If the HTTP request method is GET, the {@link Microservlet#onGet(MicroservletRequest)} method is called</li>
+ *         <li>If the HTTP request method is POST, the {@link Microservlet#onPost(MicroservletRequest)} method is called</li>
+ *         <li>If the HTTP request method is DELETE, the {@link Microservlet#onDelete(MicroservletRequest)} method is called</li>
+ *     </ol>
+ *     <li>Producing a response</li>
+ *     <ol>
+ *         <li>The request handler's return value is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
+ *         <ol>
+ *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
+ *             <li>Converts the object to JSON using the {@link Gson} object provided by {@link MicroserviceRestApplication#gsonFactory()}</li>
+ *             <li>Writes the JSON object to the servlet response output stream</li>
+ *         </ol>
  *     </ol>
  * </ol>
  *
  * @author jonathanl (shibo)
+ * @see MicroserviceRestApplicationGsonFactory
+ * @see MicroservletPostRequest
+ * @see MicroservletGetRequest
+ * @see MicroservletDeleteRequest
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class MicroserviceRestApplication extends BaseRestApplication
@@ -127,10 +158,12 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(final String path, final Class<Request> requestType)
     {
-        // Create a request object, so we can get the response type,
-        final var request = listenTo(Classes.newInstance(this, requestType));
+        // Create a request object, so we can get the response type and HTTP method,
+        final var request = Classes.newInstance(this, requestType);
         if (request != null)
         {
+            listenTo(request);
+
             // then mount an anonymous microservlet on the given path,
             final Class<Response> responseType = (Class<Response>) request.responseType();
             ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
@@ -166,6 +199,10 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
                     return (Response) ((MicroservletPostRequest) request).onPost();
                 }
             }).supportedMethods(ObjectSet.of(request.httpMethod())));
+        }
+        else
+        {
+            problem("Could not create request object: ${class}", requestType);
         }
     }
 

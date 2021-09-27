@@ -22,7 +22,7 @@ This module provides an abstraction for developing microservices.
 
 ### Index
 
-[**Summary**](#summary)  
+[**Summary**](#summary)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -56,8 +56,8 @@ The following sections catalog the public API for *kivakit-microservice*.
 
 A [*Microservice*](https://martinfowler.com/articles/microservices.html) is a small, independent cloud service providing a limited, focused API. The *kivakit-microservice* mini-framework makes it easy to create a microservice that has:
 
- - Jersey + JSON + Swagger REST interface
- - Apache Wicket web interface
+- Jersey + JSON + Swagger REST interface
+- Apache Wicket web interface
 
 The public API classes in this mini-framework are:
 
@@ -94,11 +94,11 @@ The public API classes in this mini-framework are:
 Path and query parameters are automatically converted into a JSON object by KivaKit. This request:
 
     GET /api/1.0/create-robot/name/rapunzel
-    
+
 is identical to this request:
 
     GET /api/1.0/create-robot?name=rapunzel
-    
+
 is identical to this request:
 
     POST /api/1.0/create-robot
@@ -149,7 +149,7 @@ For example:
             return Response.class;
         }
     }
-    
+
 Here, the *MultiplyRequest* object directly contains the *a* and *b* multiplicands, which are immutable and initialized by the constructor. The nested *Response* class contains the *result* value. Since the *Response* is nested inside the request, the request has access to its private *result* variable, so there is no need for a *result(int)* setter method. The only accessor is the *result()* method for accessing the result of the operation.
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -171,22 +171,21 @@ Here, the *MultiplyRequest* object directly contains the *a* and *b* multiplican
 [*com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.svg)  
 [*com.telenav.kivakit.microservice.rest.microservlet.jetty.filter*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.svg)  
 [*com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.rest.microservlet.jetty.openapi.svg)  
-[*com.telenav.kivakit.microservice.rest.microservlet.model*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.rest.microservlet.model.svg)  
-[*com.telenav.kivakit.microservice.rest.microservlet.model.requests*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.rest.microservlet.model.requests.svg)  
+[*com.telenav.kivakit.microservice.rest.microservlet.cycle*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.rest.microservlet.model.svg)  
+[*com.telenav.kivakit.microservice.rest.microservlet.cycle.requests*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.rest.microservlet.model.requests.svg)  
 [*com.telenav.kivakit.microservice.web*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.web.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 63.6%.  
-  
+Javadoc coverage for this project is 63.6%.
+
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
 
+The following significant classes are undocumented:
 
-The following significant classes are undocumented:  
-
-- JettyOpenApiRequest  
+- JettyOpenApiRequest
 - Microservlet
 
 | Class | Documentation Sections |
@@ -220,7 +219,6 @@ The following significant classes are undocumented:
 | [*MicroservletResponse*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/rest/microservlet/model/MicroservletResponse.html) |  |  
 
 [//]: # (start-user-text)
-
 
 
 [//]: # (end-user-text)

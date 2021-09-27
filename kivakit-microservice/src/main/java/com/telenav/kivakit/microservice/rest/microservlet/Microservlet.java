@@ -7,10 +7,11 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.cycle.JettyMicroservletRequestCycle;
-import com.telenav.kivakit.microservice.rest.microservlet.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.model.MicroservletResponse;
+import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.cycle.JettyMicroservletRequestCycle;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletDeleteRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -19,7 +20,29 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
- * A microservlet responds to GET and POST requests made to the {@link JettyMicroservletFilter}.
+ * A microservlet responds to GET, POST and DELETE requests with {@link #onGet(MicroservletRequest)}, {@link
+ * #onPost(MicroservletRequest)} and {@link #onDelete(MicroservletRequest)}. The response object must be a subclass of
+ * {@link MicroservletResponse}.
+ *
+ * <p>The request and response type for a microservlet are provided by {@link #requestType()} and a {@link
+ * #responseType()}. The set of supported HTTP methods (a {@link Microservlet} can implement more than one), are
+ * available through {@link #supportedMethods()} and {@link #supports(MicroservletRequest.HttpMethod)}. Parameters to a
+ * microservlet can be retrieved in a subclass with {@link #parameters()} and the as*() methods.
+ * </p>
+ *
+ * <p><b>IMPORTANT NOTE</b></p>
+ * <p>
+ * For most applications, it isn't necessary (or desirable) to directly subclass {@link Microservlet}. Instead a request
+ * handler ({@link MicroservletGetRequest}, {@link MicroservletPostRequest} or {@link MicroservletDeleteRequest}) should
+ * be mounted directly on a {@link MicroserviceRestApplication} with the {@link MicroserviceRestApplication#mount(String,
+ * Class)} or {@link MicroserviceRestApplication#mount(String, Microservlet)} method.
+ * </p>
+ *
+ * @author jonathanl (shibo)
+ * @see MicroservletRequest
+ * @see MicroservletResponse
+ * @see MicroservletRequest.HttpMethod
+ * @see PropertyMap
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
