@@ -86,17 +86,21 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
      */
     public PropertyMap parameters()
     {
+        return parameters(null);
+    }
+
+    /**
+     * @return Parameters to this request
+     */
+    public PropertyMap parameters(FilePath path)
+    {
         if (properties == null)
         {
             properties = PropertyMap.create();
+
             try
             {
-
-                // Get the full request URI,
-                final var uri = URI.create(httpRequest.getRequestURI());
-
-                // parse the path in pairs, adding each to the properties map,
-                final var path = FilePath.filePath(uri);
+                // Parse the path in pairs, adding each to the properties map,
                 if (path.size() % 2 != 0)
                 {
                     problem(SC_BAD_REQUEST, "Path parameters must be paired");
@@ -109,6 +113,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
                     }
 
                     // then add any query parameters to the map.
+                    final var uri = URI.create(httpRequest.getRequestURI());
                     properties.addAll(QueryParameters.parse(uri.getQuery()).asMap());
                 }
             }

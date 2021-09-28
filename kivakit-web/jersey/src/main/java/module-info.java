@@ -14,6 +14,7 @@ open module kivakit.web.jersey
     requires transitive jersey.common;
     requires transitive jersey.container.servlet.core;
     requires transitive jersey.server;
+    requires transitive jersey.hk2;
 
     // JSON
     requires transitive gson;

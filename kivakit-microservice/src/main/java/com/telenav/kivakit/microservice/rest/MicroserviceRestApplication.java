@@ -138,6 +138,14 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         return new MicroserviceRestApplicationGsonFactory();
     }
 
+    @Override
+    public void initialize()
+    {
+        mount("/open-api/swagger.json", JettyOpenApiRequest.class);
+        
+        onInitialize();
+    }
+
     /**
      * @return The microservice to which this rest application belongs
      */
@@ -147,11 +155,26 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     }
 
     /**
-     * Mounts the given request class on the given path. If the path does not start with a slash ('/'), the relative
-     * path is expanded to /api/[version.major].[version.minor]/[path], where the version is retrieved from {@link
-     * Microservice#version()}.
+     * Mounts the given microservlet on the given path
      *
-     * @param path The path to mount on
+     * @param path The path to the microservlet. If the path is not absolute (doesn't start with a '/'), it is prefixed
+     * with: "/api/[major.version].[minor.version]/". For example, the path "users" in microservlet version 3.1 will
+     * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
+     * @param microservlet The microservlet to mount
+     */
+    @UmlRelation(label = "mounts", referent = Microservlet.class)
+    public void mount(final String path, final Microservlet<?, ?> microservlet)
+    {
+        require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
+    }
+
+    /**
+     * Mounts the given request class on the given path.
+     *
+     * @param path The path to the given microservlet request handler (requestType). If the path is not absolute
+     * (doesn't start with a '/'), it is prefixed with: "/api/[major.version].[minor.version]/", where the version is
+     * retrieved from {@link Microservice#version()}. For example, the path "users" in microservlet version 3.1 will
+     * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
      * @param requestType The type of the request
      */
     @SuppressWarnings("unchecked")
@@ -204,26 +227,6 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         {
             problem("Could not create request object: ${class}", requestType);
         }
-    }
-
-    /**
-     * Mounts the given microservlet on the given path
-     *
-     * @param path The path to the microservlet
-     * @param microservlet The microservlet to mounds
-     */
-    @UmlRelation(label = "mounts", referent = Microservlet.class)
-    public void mount(final String path, final Microservlet<?, ?> microservlet)
-    {
-        require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
-    }
-
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        mount("/open-api/swagger.json", JettyOpenApiRequest.class);
     }
 
     /**
