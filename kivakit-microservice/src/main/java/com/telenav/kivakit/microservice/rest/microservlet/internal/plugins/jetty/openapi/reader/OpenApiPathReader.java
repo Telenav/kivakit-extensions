@@ -3,11 +3,11 @@ package com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jett
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiRequestHandler;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
 import io.swagger.v3.oas.models.Operation;
@@ -48,7 +48,7 @@ public class OpenApiPathReader extends BaseComponent
             final var microservlet = filter.microservlet(path);
             if (microservlet != null)
             {
-                paths.addPathItem(path.path().join(), newPathItem(microservlet));
+                paths.addPathItem(path.resolvedPath().join(), newPathItem(microservlet));
             }
             else
             {
