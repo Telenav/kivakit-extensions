@@ -5,6 +5,7 @@ open module kivakit.microservice
     requires transitive kivakit.web.wicket;
     requires transitive kivakit.web.jersey;
     requires transitive kivakit.web.swagger;
+    requires transitive kivakit.test;
 
     // Module exports
     exports com.telenav.kivakit.microservice;

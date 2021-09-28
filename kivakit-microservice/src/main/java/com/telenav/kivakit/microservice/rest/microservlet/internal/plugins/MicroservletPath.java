@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.rest.microservlet.internal.plugins;
 
 import com.telenav.kivakit.configuration.lookup.RegistryTrait;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest.HttpMethod;
@@ -35,7 +36,7 @@ public class MicroservletPath implements RegistryTrait
     {
         if (object instanceof MicroservletPath)
         {
-            MicroservletPath that = (MicroservletPath) object;
+            var that = (MicroservletPath) object;
             return this.key().equals(that.key());
         }
         return false;
@@ -54,7 +55,7 @@ public class MicroservletPath implements RegistryTrait
 
     public String key()
     {
-        return path() + ":" + method.name();
+        return resolvedPath() + ":" + method.name();
     }
 
     public HttpMethod method()
@@ -64,10 +65,15 @@ public class MicroservletPath implements RegistryTrait
 
     public FilePath path()
     {
+        return path;
+    }
+
+    public FilePath resolvedPath()
+    {
         if (!path.startsWith("/"))
         {
             final var version = require(Microservice.class).version();
-            var apiPath = "/api/" + version.major() + "." + version.minor() + "/" + path;
+            var apiPath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
             return FilePath.parseFilePath(apiPath);
         }
         return path;
@@ -76,7 +82,7 @@ public class MicroservletPath implements RegistryTrait
     @Override
     public String toString()
     {
-        return path().toString();
+        return this.path.isEmpty() ? "" : resolvedPath().toString();
     }
 
     public MicroservletPath withoutLast()
