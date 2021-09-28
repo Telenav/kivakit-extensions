@@ -1,4 +1,4 @@
-package com.telenav.kivakit.filesystem.jfs;
+package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
