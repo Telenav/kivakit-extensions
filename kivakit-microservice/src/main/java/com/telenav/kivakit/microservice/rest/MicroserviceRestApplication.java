@@ -18,35 +18,230 @@
 
 package com.telenav.kivakit.microservice.rest;
 
-import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.microservice.rest.servlet.JettyMicroserviceFilter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.Gson;
+import com.telenav.kivakit.configuration.lookup.RegistryTrait;
+import com.telenav.kivakit.kernel.data.validation.Validatable;
+import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
+import com.telenav.kivakit.kernel.language.types.Classes;
+import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.microservice.Microservice;
+import com.telenav.kivakit.microservice.MicroserviceMetadata;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
+import com.telenav.kivakit.microservice.rest.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.cycle.JettyMicroserviceResponse;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.cycle.JettyMicroservletRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletDeleteRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
+import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
 import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
+import com.telenav.lexakai.annotations.UmlClassDiagram;
+import com.telenav.lexakai.annotations.associations.UmlAggregation;
+import com.telenav.lexakai.annotations.associations.UmlRelation;
+import io.swagger.v3.oas.models.info.Info;
 
-import javax.ws.rs.ApplicationPath;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
- * REST interface for the KivaKit example microservice
+ * Base class for KivaKit microservice REST applications. {@link Microservlet} request handlers ({@link
+ * MicroservletGetRequest}, {@link MicroservletPostRequest} or {@link MicroservletDeleteRequest}) can be installed with
+ * {@link #mount(String, Class)} or {@link #mount(String, Microservlet)} in the {@link #onInitialize()} method. The
+ * {@link #gsonFactory()} method can be overridden to provide an application-specific {@link Gson} serializer. The
+ * {@link #openApiInfo()} class can optionally be overridden to provide OpenAPI details beyond those provided by the
+ * {@link Microservice} via {@link MicroserviceMetadata}.
+ *
+ * <p><b>Internal Details - Flow of Control</b></p>
+ *
+ * <ol>
+ *     <li>Initializing</li>
+ *     <ol>
+ *         <li>{@link MicroserviceRestApplication} creates a {@link MicroservletJettyFilterPlugin}</li>
+ *         <li>In the {@link MicroserviceRestApplication#onInitialize()} method, <i>mount*()</i> methods are used to bind
+ *         {@link MicroservletRequest} handlers to paths</li>
+ *     </ol>
+ *     <li>Receiving requests</li>
+ *     <ol>
+ *         <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyFilterPlugin}</li>
+ *         <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} resolves any
+ *         {@link Microservlet} mounted on the request path. If no microservlet is found, the request is passed to the next
+ *         {@link Filter} in the filter chain</li>
+ *         <li>Request parameters are processed</li>
+ *         <ol>
+ *             <li>If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
+ *             <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
+ *             <li>If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
+ *         </ol>
+ *     </ol>
+ *
+ *     <li>Handling requests</li>
+ *     <ol>
+ *         <li>If the HTTP request method is GET, the {@link Microservlet#onGet(MicroservletRequest)} method is called</li>
+ *         <li>If the HTTP request method is POST, the {@link Microservlet#onPost(MicroservletRequest)} method is called</li>
+ *         <li>If the HTTP request method is DELETE, the {@link Microservlet#onDelete(MicroservletRequest)} method is called</li>
+ *     </ol>
+ *     <li>Producing a response</li>
+ *     <ol>
+ *         <li>The request handler's return value is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
+ *         <ol>
+ *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
+ *             <li>Converts the object to JSON using the {@link Gson} object provided by {@link MicroserviceRestApplication#gsonFactory()}</li>
+ *             <li>Writes the JSON object to the servlet response output stream</li>
+ *         </ol>
+ *     </ol>
+ * </ol>
  *
  * @author jonathanl (shibo)
+ * @see MicroserviceRestApplicationGsonFactory
+ * @see MicroservletPostRequest
+ * @see MicroservletGetRequest
+ * @see MicroservletDeleteRequest
  */
-@ApplicationPath("/api")
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class MicroserviceRestApplication extends BaseRestApplication
 {
-    private final JettyMicroserviceFilter filter = new JettyMicroserviceFilter(this);
-
-    public MicroserviceRestApplication()
-    {
-        register(new JerseyGsonSerializer<>(gsonFactory()));
-    }
-
-    public abstract MicroserviceGsonFactory gsonFactory();
+    /** The microservice that owns this REST application */
+    @UmlAggregation
+    private final Microservice microservice;
 
     /**
-     * Mounts the given request method on the given path. Paths descend from the root of the server.
+     * @param microservice The microservice that is creating this REST application
      */
-    protected final void mount(String path, Class<? extends MicroserviceRestRequest<?>> request)
+    public MicroserviceRestApplication(final Microservice microservice)
     {
-        filter.mount("/api/" + Application.get().version() + "/" + path, request);
+        this.microservice = microservice;
+        microservice.listenTo(this);
+
+        // The cast here is required because the Jersey base class also has a register method
+        ((RegistryTrait) this).register(this);
+        ((RegistryTrait) this).register(new JerseyGsonSerializer<>(gsonFactory()));
+    }
+
+    /**
+     * @return Factory that can create a {@link Gson} instance for serializing JSON object
+     */
+    @UmlRelation(label = "creates")
+    public MicroserviceRestApplicationGsonFactory gsonFactory()
+    {
+        return new MicroserviceRestApplicationGsonFactory();
+    }
+
+    @Override
+    public void initialize()
+    {
+        mount("/open-api/swagger.json", JettyOpenApiRequest.class);
+        
+        onInitialize();
+    }
+
+    /**
+     * @return The microservice to which this rest application belongs
+     */
+    public Microservice microservice()
+    {
+        return microservice;
+    }
+
+    /**
+     * Mounts the given microservlet on the given path
+     *
+     * @param path The path to the microservlet. If the path is not absolute (doesn't start with a '/'), it is prefixed
+     * with: "/api/[major.version].[minor.version]/". For example, the path "users" in microservlet version 3.1 will
+     * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
+     * @param microservlet The microservlet to mount
+     */
+    @UmlRelation(label = "mounts", referent = Microservlet.class)
+    public void mount(final String path, final Microservlet<?, ?> microservlet)
+    {
+        require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
+    }
+
+    /**
+     * Mounts the given request class on the given path.
+     *
+     * @param path The path to the given microservlet request handler (requestType). If the path is not absolute
+     * (doesn't start with a '/'), it is prefixed with: "/api/[major.version].[minor.version]/", where the version is
+     * retrieved from {@link Microservice#version()}. For example, the path "users" in microservlet version 3.1 will
+     * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
+     * @param requestType The type of the request
+     */
+    @SuppressWarnings("unchecked")
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    void mount(final String path, final Class<Request> requestType)
+    {
+        // Create a request object, so we can get the response type and HTTP method,
+        final var request = Classes.newInstance(this, requestType);
+        if (request != null)
+        {
+            listenTo(request);
+
+            // then mount an anonymous microservlet on the given path,
+            final Class<Response> responseType = (Class<Response>) request.responseType();
+            ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
+            mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
+            {
+                @Override
+                @JsonProperty
+                public String description()
+                {
+                    return Message.format("Anonymous microservlet for ${class}", requestType());
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public Response onDelete(final Request request)
+                {
+                    // and if the microservlet receives a DELETE request, return the value of the request object.
+                    return (Response) ((MicroservletDeleteRequest) request).onDelete();
+                }
+
+                @Override
+                public Response onGet(final Request request)
+                {
+                    // and if the microservlet receives a GET request, return the value of the request object,
+                    return (Response) ((MicroservletGetRequest) request).onGet();
+                }
+
+                @Override
+                @SuppressWarnings("unchecked")
+                public Response onPost(final Request request)
+                {
+                    // and if the microservlet receives a POST request, return the value of the request object.
+                    return (Response) ((MicroservletPostRequest) request).onPost();
+                }
+            }).supportedMethods(ObjectSet.of(request.httpMethod())));
+        }
+        else
+        {
+            problem("Could not create request object: ${class}", requestType);
+        }
+    }
+
+    /**
+     * OpenAPI {@link Info} for the microservice. This method can be overridden to provide more detail that what is in
+     * {@link MicroserviceMetadata}.
+     */
+    public Info openApiInfo()
+    {
+        // Get the microservice metadata,
+        final var metadata = require(Microservice.class).metadata();
+
+        // and add it to the OpenAPI object.
+        return new Info()
+                .version(metadata.version().toString())
+                .description(metadata.description())
+                .title(metadata.name());
     }
 }

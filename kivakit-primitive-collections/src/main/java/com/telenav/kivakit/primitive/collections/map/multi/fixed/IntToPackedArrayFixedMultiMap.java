@@ -350,7 +350,7 @@ public final class IntToPackedArrayFixedMultiMap extends PrimitiveMultiMap imple
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

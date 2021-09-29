@@ -402,7 +402,7 @@ public final class LongToByteMap extends PrimitiveMap implements PrimitiveScalar
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

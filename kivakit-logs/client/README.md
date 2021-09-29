@@ -84,11 +84,11 @@ The following significant classes are undocumented:
 | [*ClientLogFrame*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/ClientLogFrame.html) |  |  
 | [*ClientLogFrame.ExitMode*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/ClientLogFrame.ExitMode.html) |  |  
 | [*ClientLogPanel*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/view/ClientLogPanel.html) |  |  
+| [*ClientLogProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/ClientLogProject.html) |  |  
 | [*Connection*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/network/Connection.html) |  |  
 | [*ConnectionPanel*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/view/panels/connection/ConnectionPanel.html) |  |  
 | [*Connector*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/network/Connector.html) |  |  
 | [*Connector.State*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/network/Connector.State.html) |  |  
-| [*LogsClientProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/project/LogsClientProject.html) |  |  
 | [*LogsClientTheme*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/project/LogsClientTheme.html) |  |  
 | [*Receiver*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/network/Receiver.html) |  |  
 | [*Receiver.State*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.client/com/telenav/kivakit/logs/client/network/Receiver.State.html) |  |  

@@ -60,6 +60,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
+[*com.telenav.kivakit.ui.desktop*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.svg)  
 [*com.telenav.kivakit.ui.desktop.component*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.component.svg)  
 [*com.telenav.kivakit.ui.desktop.component.dialog.message*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.component.dialog.message.svg)  
 [*com.telenav.kivakit.ui.desktop.component.dropdown*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.component.dropdown.svg)  
@@ -90,7 +91,6 @@ None
 [*com.telenav.kivakit.ui.desktop.graphics.image*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.graphics.image.svg)  
 [*com.telenav.kivakit.ui.desktop.layout*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.layout.svg)  
 [*com.telenav.kivakit.ui.desktop.model*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.model.svg)  
-[*com.telenav.kivakit.ui.desktop.project*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.project.svg)  
 [*com.telenav.kivakit.ui.desktop.theme*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.theme.svg)  
 [*com.telenav.kivakit.ui.desktop.theme.darcula*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.theme.darcula.svg)  
 [*com.telenav.kivakit.ui.desktop.theme.vanhelsing*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-ui/desktop/documentation/diagrams/com.telenav.kivakit.ui.desktop.theme.vanhelsing.svg)
@@ -144,6 +144,7 @@ The following significant classes are undocumented:
 | [*CoordinateSystem*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/graphics/drawing/CoordinateSystem.html) |  |  
 | [*Coordinated*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/graphics/drawing/Coordinated.html) |  |  
 | [*CpuUse*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/component/health/CpuUse.html) |  |  
+| [*DesktopUiProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/DesktopUiProject.html) |  |  
 | [*Dot*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/graphics/drawing/drawables/Dot.html) |  |  
 | [*Drawable*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/graphics/drawing/Drawable.html) |  |  
 | [*DrawingCoordinateSystem*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/graphics/drawing/geometry/DrawingCoordinateSystem.html) |  |  
@@ -210,7 +211,6 @@ The following significant classes are undocumented:
 | [*Style*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/graphics/drawing/style/Style.html) |  |  
 | [*Text*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/graphics/drawing/drawables/Text.html) |  |  
 | [*TitledPanel*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/component/panel/titled/TitledPanel.html) |  |  
-| [*UiSwingProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/project/UiSwingProject.html) |  |  
 | [*VerticalBox*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/layout/VerticalBox.html) |  |  
 | [*VerticalBoxLayout*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/layout/VerticalBoxLayout.html) |  |  
 | [*VerticalFlowLayout*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.ui.desktop/com/telenav/kivakit/ui/desktop/layout/VerticalFlowLayout.html) |  |  

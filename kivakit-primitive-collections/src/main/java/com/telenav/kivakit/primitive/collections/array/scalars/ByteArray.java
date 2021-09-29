@@ -222,6 +222,15 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * {@inheritDoc}
      */
     @Override
+    public void onInitialize()
+    {
+        data = newByteArray(this, "allocated");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void read(final Kryo kryo, final Input input)
     {
         super.read(kryo, input);
@@ -310,6 +319,11 @@ public class ByteArray extends PrimitiveArray implements ByteList
             }
 
             @Override
+            public void onInitialize()
+            {
+            }
+
+            @Override
             public byte safeGet(final int index)
             {
                 return outer.safeGet(offset + index);
@@ -325,11 +339,6 @@ public class ByteArray extends PrimitiveArray implements ByteList
             public int size()
             {
                 return size;
-            }
-
-            @Override
-            protected void onInitialize()
-            {
             }
         };
         array.initialize();
@@ -364,16 +373,6 @@ public class ByteArray extends PrimitiveArray implements ByteList
         kryo.writeObject(output, isSubArray);
         kryo.writeObject(output, data);
         kryo.writeObject(output, cursor);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onInitialize()
-    {
-        super.onInitialize();
-        data = newByteArray(this, "allocated");
     }
 
     /** Returns true if this is not a read-only sub-array */

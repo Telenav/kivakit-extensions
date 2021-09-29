@@ -23,12 +23,13 @@ import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludePro
 import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.language.strings.formatting.KivaKitFormatProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
 import com.telenav.kivakit.service.registry.protocol.BaseResponse;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter.Format.MULTILINE;
 
@@ -37,12 +38,13 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
  *
  * @author jonathanl (shibo)
  */
-@Schema
+@OpenApiIncludeType(description = "Response to a renew service request")
 @UmlClassDiagram(diagram = DiagramRest.class)
 @LexakaiJavadoc(complete = true)
 public class RenewServiceResponse extends BaseResponse<Service>
 {
     @JsonProperty
+    @OpenApiIncludeMember(description = "The service that was renewed")
     private Service service;
 
     @KivaKitIncludeProperty

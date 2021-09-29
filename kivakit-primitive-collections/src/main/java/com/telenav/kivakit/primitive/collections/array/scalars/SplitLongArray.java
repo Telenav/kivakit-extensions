@@ -242,7 +242,7 @@ public final class SplitLongArray extends PrimitiveSplitArray implements LongLis
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         childSize = initialChildSizeAsInt();

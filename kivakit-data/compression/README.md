@@ -90,7 +90,7 @@ The following significant classes are undocumented:
 | [*Codec*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/Codec.html) |  |  
 | [*CodedSymbol*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/codecs/huffman/tree/CodedSymbol.html) |  |  
 | [*DataCompressionKryoTypes*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/project/DataCompressionKryoTypes.html) |  |  
-| [*DataCompressionProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/project/DataCompressionProject.html) |  |  
+| [*DataCompressionProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/DataCompressionProject.html) |  |  
 | [*DataCompressionUnitTest*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/project/DataCompressionUnitTest.html) |  |  
 | [*FastHuffmanDecoder*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/codecs/huffman/FastHuffmanDecoder.html) |  |  
 | [*FastHuffmanDecoder.Table*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.compression/com/telenav/kivakit/data/compression/codecs/huffman/FastHuffmanDecoder.Table.html) |  |  

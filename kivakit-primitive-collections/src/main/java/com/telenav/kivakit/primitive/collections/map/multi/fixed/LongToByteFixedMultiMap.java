@@ -237,7 +237,7 @@ public final class LongToByteFixedMultiMap extends PrimitiveMultiMap implements 
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

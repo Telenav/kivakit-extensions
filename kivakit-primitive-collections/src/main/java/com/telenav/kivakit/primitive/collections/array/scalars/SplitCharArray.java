@@ -228,7 +228,7 @@ public final class SplitCharArray extends PrimitiveSplitArray implements CharLis
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         childSize = initialChildSizeAsInt();

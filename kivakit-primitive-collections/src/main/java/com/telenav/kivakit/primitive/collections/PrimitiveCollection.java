@@ -946,7 +946,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
                     if (method != null)
                     {
                         final var caller = method.type();
-                        who = caller.getSimpleName();
+                        who = caller.simpleName();
                     }
                     else
                     {
@@ -1293,11 +1293,6 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     protected Method onCompress(final Method method)
     {
         return Method.NONE;
-    }
-
-    @MustBeInvokedByOverriders
-    protected void onInitialize()
-    {
     }
 
     protected final void size(final int size)

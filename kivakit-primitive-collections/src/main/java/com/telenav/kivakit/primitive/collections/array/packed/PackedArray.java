@@ -420,7 +420,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

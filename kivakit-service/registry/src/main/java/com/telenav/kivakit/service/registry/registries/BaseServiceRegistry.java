@@ -131,7 +131,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
     /** True if the registry has been started and is running */
     private boolean running;
 
-    /** Lock access to data structures */
+    /** Lock accesses to data structures */
     private transient final ReadWriteLock lock = new ReadWriteLock();
 
     private ServiceRegistryUpdater updater;
@@ -411,7 +411,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
             // remove it from the set of registered ports,
             registeredPorts.remove(port.number());
 
-            // then add it to the map of reserved ports. If the expired service comes back on line before
+            // then add it to the map of reserved ports. If the expired service comes back online before
             // PORT_RESERVATION_TIME expires, it will still be able to reclaim its port. After then, the
             // port will be re-used.
             reservedPortToExpirationTime.put(port.number(), Time.now());

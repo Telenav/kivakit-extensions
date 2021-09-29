@@ -22,11 +22,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
 import com.telenav.kivakit.service.registry.protocol.BaseResponse;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,13 +39,13 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
  *
  * @author jonathanl (shibo)
  */
-@Schema(description = "The applications discovered by a DiscoverApplicationsRequest")
+@OpenApiIncludeType(description = "The set of application identifiers discovered")
 @UmlClassDiagram(diagram = DiagramRest.class)
 @LexakaiJavadoc(complete = true)
 public class DiscoverApplicationsResponse extends BaseResponse<Set<Application.Identifier>>
 {
     @JsonProperty
-    @Schema(description = "The applications that were found")
+    @OpenApiIncludeMember(description = "The applications that were found")
     private Set<Application.Identifier> applications = new HashSet<>();
 
     @KivaKitIncludeProperty

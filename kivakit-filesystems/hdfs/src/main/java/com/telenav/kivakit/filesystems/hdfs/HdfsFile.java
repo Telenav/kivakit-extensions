@@ -72,6 +72,12 @@ public class HdfsFile extends BaseWritableResource implements FileService
     }
 
     @Override
+    public Time created()
+    {
+        return unsupported();
+    }
+
+    @Override
     public boolean delete()
     {
         return retry(() -> proxy().deleteFile(pathAsString()))

@@ -254,7 +254,7 @@ public class PackedStringArray extends PrimitiveArray
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         asciiCharacters = new SplitByteArray(objectName() + ".ascii");

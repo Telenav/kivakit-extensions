@@ -25,13 +25,14 @@ import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.language.collections.Collections;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.network.core.cluster.ClusterIdentifier;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRegistry;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.visibility.UmlExcludeSuperTypes;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -51,8 +52,8 @@ import static com.telenav.kivakit.service.registry.Scope.Type.NETWORK;
  *
  * @author jonathanl (shibo)
  */
-@Schema(description = "The scope of visibility of a service, used to limit what services are discovered by a locate request.",
-        example = "NETWORK")
+@OpenApiIncludeType(
+        description = "The scope of visibility of a service, used to limit what services are discovered by a locate request.")
 @UmlClassDiagram(diagram = DiagramRegistry.class)
 @UmlExcludeSuperTypes
 @LexakaiJavadoc(complete = true)
@@ -108,8 +109,7 @@ public class Scope implements Named, Comparable<Scope>
     /**
      * The type of scope
      */
-    @Schema(description = "The type of scope",
-            example = "CLUSTER")
+    @OpenApiIncludeType(description = "The type of scope")
     @UmlClassDiagram(diagram = DiagramRegistry.class)
     @LexakaiJavadoc(complete = true)
     public enum Type
@@ -134,14 +134,13 @@ public class Scope implements Named, Comparable<Scope>
 
     /** The scope type, either local, a particular host, a cluster or the whole network */
     @JsonProperty
-    @Schema(description = "The type of scope",
-            required = true)
+    @OpenApiIncludeMember(description = "The type of scope")
     @UmlAggregation
     private Type type;
 
     /** The name of a cluster, if any */
     @JsonProperty
-    @Schema(description = "A cluster identifier, if the scope type is CLUSTER")
+    @OpenApiIncludeMember(description = "A cluster identifier, if the scope type is CLUSTER")
     @UmlAggregation
     private ClusterIdentifier cluster;
 

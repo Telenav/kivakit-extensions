@@ -28,6 +28,8 @@ import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachineHealth;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRegistry;
@@ -35,7 +37,6 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.visibility.UmlExcludeSuperTypes;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -80,9 +81,10 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
  *
  * @author jonathanl (shibo)
  */
-@Schema(description = "A particular type of service belonging to an application and running on a TCP/IP port on a host. "
-        + "There can be multiple services running on a network, on a cluster, on a host and within an application. "
-        + "Each service has metadata describing itself and declares a scope within which it should be visible. ")
+@OpenApiIncludeType(
+        description = "A particular type of service belonging to an application and running on a TCP/IP port on a host. "
+                + "There can be multiple services running on a network, on a cluster, on a host and within an application. "
+                + "Each service has metadata describing itself and declares a scope within which it should be visible. ")
 @UmlClassDiagram(diagram = DiagramRegistry.class)
 @UmlExcludeSuperTypes
 @LexakaiJavadoc(complete = true)
@@ -91,31 +93,28 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     public static final Port UNBOUND = Host.local().port(0);
 
     @JsonProperty
-    @Schema(description = "The application that is running the service",
-            required = true)
+    @OpenApiIncludeMember(description = "The application that is running the service")
     @UmlAggregation
     private Application.Identifier application;
 
     @JsonProperty
-    @Schema(description = "The scope that the service is visible to",
-            required = true)
+    @OpenApiIncludeMember(description = "The scope that the service is visible to")
     @UmlAggregation(label = "visibility")
     private Scope scope;
 
     @JsonProperty
-    @Schema(description = "Metadata describing the service",
-            required = true)
+    @OpenApiIncludeMember(description = "Metadata describing the service")
     @UmlAggregation
     private ServiceMetadata metadata;
 
     @JsonProperty
-    @Schema(description = "The type of service",
-            required = true)
+    @OpenApiIncludeMember(description = "The type of service")
     @UmlAggregation(label = "provided service")
     private ServiceType type;
 
     @JsonProperty
-    @Schema(description = "The port that has been allocated for use by the service on the local host by the local KivaKit registry")
+    @OpenApiIncludeMember(
+            description = "The port that has been allocated for use by the service on the local host by the local KivaKit registry")
     @UmlAggregation(label = "allocated port")
     private Port port;
 

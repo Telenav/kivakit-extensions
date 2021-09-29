@@ -19,18 +19,18 @@
 package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyFilter;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResource;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyServlet;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
  * Base class for all types of Jetty request handlers. Has a {@link #name()} and {@link #path()}.
  *
  * @author jonathanl (shibo)
- * @see BaseJettyFilter
- * @see BaseJettyResource
- * @see BaseJettyServlet
+ * @see BaseJettyFilterPlugin
+ * @see BaseJettyResourcePlugin
+ * @see BaseJettyServletPlugin
  */
 @LexakaiJavadoc(complete = true)
 public abstract class BaseJettyRequestHandler implements Named

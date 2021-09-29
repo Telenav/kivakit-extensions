@@ -279,7 +279,7 @@ public final class LongToObjectMap<T> extends PrimitiveMap
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         keys = newLongArray(this, "allocated");

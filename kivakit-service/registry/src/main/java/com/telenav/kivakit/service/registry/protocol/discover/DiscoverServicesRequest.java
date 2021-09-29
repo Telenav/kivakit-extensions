@@ -22,13 +22,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.ServiceType;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
 import com.telenav.kivakit.service.registry.protocol.BaseRequest;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter.Format.MULTILINE;
 import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProtocol.DISCOVER_SERVICES;
@@ -42,7 +43,7 @@ import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProto
  *
  * @author jonathanl (shibo)
  */
-@Schema(description = "A request to locate all services matching the given criteria")
+@OpenApiIncludeType(description = "A request to locate all services matching the given criteria")
 @UmlClassDiagram(diagram = DiagramRest.class)
 @LexakaiJavadoc(complete = true)
 public class DiscoverServicesRequest extends BaseRequest
@@ -50,8 +51,7 @@ public class DiscoverServicesRequest extends BaseRequest
     /**
      * The type of search to perform
      */
-    @Schema(description = "The type of search",
-            required = true)
+    @OpenApiIncludeType(description = "The type of search")
     @LexakaiJavadoc(complete = true)
     public enum SearchType
     {
@@ -66,21 +66,20 @@ public class DiscoverServicesRequest extends BaseRequest
     }
 
     @JsonProperty
-    @Schema(description = "The scope of the search",
-            required = true)
+    @OpenApiIncludeMember(description = "The scope of the search")
     private Scope scope;
 
     @JsonProperty
-    @Schema(description = "The type of search to conduct: ALL_SERVICES, APPLICATION_SERVICES or SERVICES_OF_TYPE",
-            required = true)
+    @OpenApiIncludeMember(
+            description = "The type of search to conduct: ALL_SERVICES, APPLICATION_SERVICES or SERVICES_OF_TYPE")
     private SearchType type;
 
     @JsonProperty
-    @Schema(description = "The type of services to search for, if the search type is SERVICES_OF_TYPE")
+    @OpenApiIncludeMember(description = "The type of services to search for, if the search type is SERVICES_OF_TYPE")
     private ServiceType serviceType;
 
     @JsonProperty
-    @Schema(description = "The application to search, if the search type is APPLICATION_SERVICES")
+    @OpenApiIncludeMember(description = "The application to search, if the search type is APPLICATION_SERVICES")
     private Application.Identifier application;
 
     public DiscoverServicesRequest application(final Application.Identifier application)

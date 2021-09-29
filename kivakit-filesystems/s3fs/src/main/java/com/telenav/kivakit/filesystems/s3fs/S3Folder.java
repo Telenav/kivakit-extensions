@@ -97,6 +97,12 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
+    public Time created()
+    {
+        return unsupported();
+    }
+
+    @Override
     public boolean delete()
     {
         if (!isEmpty())

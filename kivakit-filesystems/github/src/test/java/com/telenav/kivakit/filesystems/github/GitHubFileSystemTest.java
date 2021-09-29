@@ -22,7 +22,7 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testFile()
     {
-        var file = listenTo(new GitHubFile("github://Telenav/lexakai/develop/README.md"));
+        final var file = listenTo(new GitHubFile("github://Telenav/lexakai/develop/README.md"));
         ensure(file.reader().get().contains("lexakai"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }
@@ -30,8 +30,8 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testFiles()
     {
-        var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var files = folder.files();
+        final var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
+        final var files = folder.files();
         ensure(!files.isEmpty());
         ensure(files.contains(folder.file(FileName.parse("README.md"))));
         ensure(files.contains(folder.file(FileName.parse("pom.xml"))));
@@ -40,8 +40,8 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testNestedFiles()
     {
-        var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var files = folder.nestedFiles(new All<>());
+        final var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
+        final var files = folder.nestedFiles(new All<>());
         ensure(!files.isEmpty());
         ensure(files.contains(folder.file(FileName.parse("README.md"))));
         ensure(files.contains(folder.file(FileName.parse("pom.xml"))));
@@ -51,19 +51,19 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testNestedFolders()
     {
-        var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var folders = folder.nestedFolders(new All<>());
+        final var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
+        final var folders = folder.nestedFolders(new All<>());
         ensure(!folders.isEmpty());
         ensure(folders.contains(folder.folder(FileName.parse("documentation"))));
         ensure(folders.contains(folder.folder(FileName.parse("legal"))));
         ensure(folders.contains(folder.folder(FileName.parse("src")).folder(FileName.parse("main"))));
     }
 
-    @Ignore
+    @Test
     public void testPrivateFile()
     {
-        var token = "";
-        var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
+        final var token = "";
+        final var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
         ensure(file.reader().get().contains("30909955"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }

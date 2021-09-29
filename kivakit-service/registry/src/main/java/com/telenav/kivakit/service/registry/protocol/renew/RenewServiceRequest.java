@@ -21,10 +21,11 @@ package com.telenav.kivakit.service.registry.protocol.renew;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.protocol.BaseRequest;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import io.swagger.v3.oas.annotations.media.Schema;
 
 import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter.Format.MULTILINE;
 import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProtocol.RENEW_SERVICE;
@@ -34,12 +35,13 @@ import static com.telenav.kivakit.service.registry.protocol.ServiceRegistryProto
  *
  * @author jonathanl (shibo)
  */
-@Schema
+@OpenApiIncludeType(description = "Request to renew a service's lease on a port")
 @LexakaiJavadoc(complete = true)
 public class RenewServiceRequest extends BaseRequest
 {
     /** The service to renew */
     @JsonProperty
+    @OpenApiIncludeMember(description = "The service to renew")
     private Service service;
 
     public RenewServiceRequest(final Service service)

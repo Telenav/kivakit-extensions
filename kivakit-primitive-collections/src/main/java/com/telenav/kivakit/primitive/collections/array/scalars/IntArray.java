@@ -359,7 +359,7 @@ public final class IntArray extends PrimitiveArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         data = newIntArray(this, "allocated");

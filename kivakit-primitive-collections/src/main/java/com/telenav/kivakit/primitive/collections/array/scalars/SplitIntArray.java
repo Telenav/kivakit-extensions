@@ -240,7 +240,7 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
     }
 
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         childSize = initialChildSizeAsInt();

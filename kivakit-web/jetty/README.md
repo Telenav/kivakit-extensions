@@ -61,7 +61,6 @@ None
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.web.jetty*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.svg)  
-[*com.telenav.kivakit.web.jetty.project*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.project.svg)  
 [*com.telenav.kivakit.web.jetty.resources*](https://www.kivakit.org/1.1.0-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.resources.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -81,9 +80,9 @@ Javadoc coverage for this project is 75.0%.
 | [*BaseJettyRequestHandler*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/BaseJettyRequestHandler.html) |  |  
 | [*BaseJettyResource*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyResource.html) |  |  
 | [*BaseJettyServlet*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyServlet.html) |  |  
+| [*JettyAssets*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/JettyAssets.html) |  |  
+| [*JettyProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/JettyProject.html) |  |  
 | [*JettyServer*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/JettyServer.html) | Example: |  
-| [*JettyStaticResources*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/JettyStaticResources.html) |  |  
-| [*WebJettyProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/project/WebJettyProject.html) |  |  
 | [*WebUnitTest*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/WebUnitTest.html) |  |  
 
 [//]: # (start-user-text)

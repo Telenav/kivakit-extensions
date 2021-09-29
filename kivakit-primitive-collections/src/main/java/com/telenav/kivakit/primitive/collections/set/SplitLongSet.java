@@ -287,7 +287,7 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
         children = new LongSet[initialChildCountAsInt()];

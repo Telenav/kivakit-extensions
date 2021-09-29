@@ -19,6 +19,7 @@
 package com.telenav.kivakit.web.jersey;
 
 import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -28,6 +29,6 @@ import org.glassfish.jersey.server.ResourceConfig;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseRestApplication extends ResourceConfig implements ComponentMixin
+public abstract class BaseRestApplication extends ResourceConfig implements ComponentMixin, Initializable
 {
 }

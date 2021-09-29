@@ -376,7 +376,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 

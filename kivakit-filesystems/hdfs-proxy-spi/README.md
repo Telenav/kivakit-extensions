@@ -66,7 +66,7 @@ Service provider interface for HDFS proxy.
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 1.1.0-SNAPSHOT%.  
+Javadoc coverage for this project is 100.0%.  
   
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
 

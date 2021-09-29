@@ -96,6 +96,12 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
+    public Time created()
+    {
+        return unsupported();
+    }
+
+    @Override
     public boolean delete()
     {
         return retry(() -> proxy().deleteFolder(pathAsString()))

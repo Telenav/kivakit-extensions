@@ -274,7 +274,7 @@ public final class IntToIntFixedMultiMap extends PrimitiveMultiMap implements In
      * {@inheritDoc}
      */
     @Override
-    protected void onInitialize()
+    public void onInitialize()
     {
         super.onInitialize();
 
