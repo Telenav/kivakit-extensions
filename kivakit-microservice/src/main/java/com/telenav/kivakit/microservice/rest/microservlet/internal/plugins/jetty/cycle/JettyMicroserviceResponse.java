@@ -6,6 +6,7 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
@@ -62,7 +63,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     @SuppressWarnings("FieldCanBeLocal")
     @UmlAggregation
     @OpenApiIncludeMember(title = "Errors messages",
-                          description = "Error messages when status is 500 (SC_INTERNAL_SERVER_ERROR)")
+                          description = "A list of formatted error messages")
     private final MicroservletErrors errors = new MicroservletErrors();
 
     public JettyMicroserviceResponse(final JettyMicroservletRequestCycle cycle, final HttpServletResponse httpResponse)
@@ -75,6 +76,15 @@ public final class JettyMicroserviceResponse extends BaseComponent
         status(SC_OK);
     }
 
+    @Override
+    public void onMessage(final Message message)
+    {
+        if (status() == SC_OK && message.isWorseThanOrEqualTo(Problem.class))
+        {
+            status(SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public Problem problem(int status, final String text, final Object... arguments)
     {
         status(status);
@@ -85,6 +95,11 @@ public final class JettyMicroserviceResponse extends BaseComponent
     {
         status(status);
         return super.problem(exception, text + ": " + exception.getMessage(), arguments);
+    }
+
+    public int status()
+    {
+        return httpResponse.getStatus();
     }
 
     public void status(final int status)
@@ -120,7 +135,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
         if (!response.isValid(response))
         {
             // then we have an invalid response
-            problem(SC_INTERNAL_SERVER_ERROR, "Response object is invalid");
+            problem("Response object is invalid");
         }
 
         try

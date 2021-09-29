@@ -21,6 +21,11 @@ import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_FORBIDDEN;
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
+import static org.apache.http.HttpStatus.SC_NOT_FOUND;
+import static org.apache.http.HttpStatus.SC_OK;
 
 /**
  * <b>Not public API</b>
@@ -59,6 +64,11 @@ public class OpenApiPathReader extends BaseComponent
         return paths;
     }
 
+    private void addErrorResponse(ApiResponses responses, int code, String description)
+    {
+        responses.addApiResponse(Integer.toString(code), newResponseItem(description, require(OpenApiSchemaReader.class).schemaError()));
+    }
+
     /**
      * @return True if the request type should be ignored
      */
@@ -86,11 +96,15 @@ public class OpenApiPathReader extends BaseComponent
         operation.description(annotationReader.readAnnotationValue(requestType, methodName, OpenApiRequestHandler.class, OpenApiRequestHandler::description));
 
         // add success and error responses,
-        operation.responses(new ApiResponses()
-                .addApiResponse("200", newResponseSuccess(responseType))
-                .addApiResponse("403", newResponseItem("Forbidden", null))
-                .addApiResponse("404", newResponseItem("Not Found", null))
-                .addApiResponse("500", newResponseItem("Server Error", require(OpenApiSchemaReader.class).schemaError())));
+        final var responses = new ApiResponses()
+                .addApiResponse(Integer.toString(SC_OK), newResponseSuccess(responseType))
+                .addApiResponse(Integer.toString(SC_FORBIDDEN), newResponseItem("Forbidden", null))
+                .addApiResponse(Integer.toString(SC_NOT_FOUND), newResponseItem("Not Found", null));
+
+        addErrorResponse(responses, SC_INTERNAL_SERVER_ERROR, "Server Error");
+        addErrorResponse(responses, SC_BAD_REQUEST, "Invalid Request");
+
+        operation.responses(responses);
 
         operation.requestBody(new RequestBody().content(newRequestContent(requestType)));
 

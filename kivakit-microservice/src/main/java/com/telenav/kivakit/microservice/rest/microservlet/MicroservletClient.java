@@ -7,6 +7,7 @@ import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplicationGsonFactory;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrors;
 import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
 import com.telenav.kivakit.network.core.Port;
@@ -114,10 +115,29 @@ public class MicroservletClient extends BaseComponent
 
     private <T> T fromJson(final BaseHttpResource resource, final Class<T> type)
     {
-        final String json = resource.reader().string();
-        if (!Strings.isEmpty(json))
+        // Read the status code first
+        var status = resource.status();
+        if (status.isOkay())
         {
-            return gsonFactory.newInstance().fromJson(json, type);
+            final String json = resource.reader().string();
+            if (!Strings.isEmpty(json))
+            {
+                return gsonFactory.newInstance().fromJson(json, type);
+            }
+        }
+        if (status.hasAssociatedErrorMessages())
+        {
+            final String json = resource.reader().string();
+            if (!Strings.isEmpty(json))
+            {
+                gsonFactory.newInstance()
+                        .fromJson(json, MicroservletErrors.class)
+                        .send(this);
+            }
+            else
+            {
+                problem("Failed with status code: $", status);
+            }
         }
         problem("Unable to read and deserialize JSON object of type ${class} from: $", type, resource);
         return null;

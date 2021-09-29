@@ -1,8 +1,10 @@
 package com.telenav.kivakit.microservice.rest.microservlet.internal.plugins;
 
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.listeners.MessageList;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
@@ -23,7 +25,7 @@ public class MicroservletErrors extends MessageList
 {
     @OpenApiIncludeMember(
             description = "Error list",
-            example = "[ \"Invalid start time\" ]",
+            example = "[ \"Unable to process request because [...]\" ]",
             genericType = String.class)
     private final StringList errors = new StringList();
 
@@ -42,5 +44,18 @@ public class MicroservletErrors extends MessageList
     {
         super.onMessage(message);
         errors.add(message.formatted());
+    }
+
+    /**
+     * Sends the errors in this object to the given listener as {@link Problem}s.
+     *
+     * @param listener The listener to send to
+     */
+    public void send(Listener listener)
+    {
+        for (var error : errors)
+        {
+            listener.problem(error);
+        }
     }
 }

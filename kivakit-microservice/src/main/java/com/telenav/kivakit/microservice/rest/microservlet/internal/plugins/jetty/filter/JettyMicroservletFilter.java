@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest.HttpMethod.GET;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 
 /**
@@ -140,7 +139,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 }
                 catch (final Exception e)
                 {
-                    problem(SC_INTERNAL_SERVER_ERROR, e, "REST $ method to $ failed", method.name(), resolved.microservlet.name());
+                    problem(e, "REST $ method to $ failed", method.name(), resolved.microservlet.name());
                 }
             }
             else
@@ -152,7 +151,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 }
                 catch (final Exception e)
                 {
-                    problem(SC_INTERNAL_SERVER_ERROR, e, "Exception thrown by filter chain");
+                    problem(e, "Exception thrown by filter chain");
                 }
             }
         }
