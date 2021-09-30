@@ -18,29 +18,53 @@
 
 package com.telenav.kivakit.filesystem.java;
 
+import com.telenav.kivakit.filesystem.File;
+import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.DiskService;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FileSystemService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
+import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.path.FilePath;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Paths;
 
-// @yinyin a little comment and add your name as @author
+/**
+ * <b>Not public API</b>
+ * <p>
+ * Implementation of the {@link FileSystemService} SPI to provide java.nio filesystem access through the KIVAKIT resource API. This
+ * service accepts {@link FilePath}s that supported by default local filesystem and it provides implementations of {@link FileService} and
+ * {@link FolderService} which are used by {@link File} and {@link Folder} to provide transparent access to file system
+ *
+ * @author yinyinz
+ * @see JavaFile
+ * @see JavaFolder
+ * @see Resource
+ * @see File
+ * @see Folder
+ */
 public class JavaFileSystemService implements FileSystemService
 {
     @Override
     public boolean accepts(FilePath path)
     {
-        // @yinyin this should do
-        return path.startsWith("java:");
+        try
+        {
+            Paths.get(path.asString());
+        }
+        catch (InvalidPathException | NullPointerException ex)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public DiskService diskService(FilePath path)
     {
-        // @yinyin We should be able to implement this (I think)
-        return unsupported();
+        return new JavaDisk(new JavaFolder(path));
     }
 
     @Override

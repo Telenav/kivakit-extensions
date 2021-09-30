@@ -34,7 +34,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-// @yinyin a little comment and add your name as @author
+/**
+ * <b>Not public API</b>
+ * <p>
+ * Implementation of {@link FolderService} used to provide {@link JavaFileSystemService}.
+ *
+ * @author yinyinz
+ */
 public class JavaFolder extends JavaFileSystemObject implements FolderService
 {
 
@@ -68,12 +74,10 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public List<FileService> files()
     {
-        // @yinyin use var whenever possible like: var files = new ArrayList<FileService>();
         final List<FileService> files = new ArrayList<>();
         try
         {
-            // @yinyin use var whenever possible like: var root = path().asJavaPath();
-            Path root = path().asJavaPath();
+            var root = path().asJavaPath();
             DirectoryStream<Path> directory = Files.newDirectoryStream(root);
             for (Path p : directory)
             {
@@ -83,11 +87,9 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
                 }
             }
         }
-        catch (final Exception ex)
+        catch (final Exception e)
         {
-            // @yinyin use problem()
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
+            problem(e, "Unable to list files in: $", path());
         }
 
         return files;
@@ -103,8 +105,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public FolderService folder(FileName folder)
     {
-        // @yinyin var
-        FilePath folderPath = path().withChild(folder.name());
+        var folderPath = path().withChild(folder.name());
         return new JavaFolder(folderPath);
     }
 
@@ -114,21 +115,18 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FolderService> folders = new ArrayList<>();
         try
         {
-            DirectoryStream<Path> directory = Files.newDirectoryStream(javaPath);
-            // @yinyin p -> path, directory -> paths
-            for (Path p : directory)
+            DirectoryStream<Path> paths = Files.newDirectoryStream(javaPath);
+            for (Path path : paths)
             {
-                if (Files.isDirectory(p))
+                if (Files.isDirectory(path))
                 {
-                    folders.add(new JavaFolder(p));
+                    folders.add(new JavaFolder(path));
                 }
             }
         }
-        catch (final Exception ex)
+        catch (final Exception e)
         {
-            // @yinyin use problem()
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
+            problem(e, "Unable to list folders in: $", path());
         }
 
         return folders;
@@ -137,19 +135,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public boolean isEmpty()
     {
-        // @yinyin return !folders().iterator().hasNext(); and remove the rest of this code
-        try (DirectoryStream<Path> directory = Files.newDirectoryStream(javaPath))
-        {
-            return !directory.iterator().hasNext();
-        }
-        catch (Exception ex)
-        {
-            // @yinyin use problem()
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
-        }
-
-        return false;
+        return !folders().iterator().hasNext();
     }
 
     @Override
@@ -158,8 +144,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FileService> files = new ArrayList<>();
         try
         {
-            // @yinyin cool
-            Files.walk(javaPath)
+            Files.walk(this.javaPath)
                     .filter(Files::isRegularFile)
                     .forEach(f ->
                     {
@@ -170,11 +155,9 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
                         }
                     });
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            // @yinyin use problem()
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
+            problem(e, "Unable to list nested files in: $", path());
         }
 
         return files;
@@ -186,7 +169,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FolderService> folders = new ArrayList<>();
         try
         {
-            Files.walk(javaPath)
+            Files.walk(this.javaPath)
                     .filter(Files::isDirectory)
                     .forEach(f ->
                     {
@@ -197,12 +180,11 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
                         }
                     });
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            // @yinyin use problem()
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
+            problem(e, "Unable to list nested folders in: $", path());
         }
+
         return folders;
     }
 }

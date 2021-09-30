@@ -37,7 +37,11 @@ import java.nio.file.attribute.PosixFilePermission;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
-// @yinyin a little comment and add your name as @author
+/**
+ * Base functionality common to both {@link JavaFile} and {@link JavaFolder}.
+ *
+ * @author yinyinz
+ */
 public class JavaFileSystemObject extends BaseWritableResource implements FileSystemObjectService
 {
     // True if it's a folder
@@ -75,7 +79,6 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
         }
         catch (Exception e)
         {
-            // @yinyin report errors like this where possible and they will go into the messaging system...
             problem(e, "Unable to copy $ to $ ($)", path(), destination.path(), mode);
         }
     }
@@ -128,7 +131,8 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public Time created() {
+    public Time created()
+    {
         try
         {
             FileTime creationTime = (FileTime) Files.getAttribute(this.javaPath, "creationTime");
@@ -141,4 +145,6 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
 
         return null;
     }
+
+    public Path toJavaPath() { return this.javaPath; }
 }
