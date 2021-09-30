@@ -27,7 +27,7 @@
         <module>hdfs</module>
         <module>s3fs</module>
         <module>github</module>
-        <module>java-filesystem</module>
+        <module>java</module>
 
     </modules>
 
