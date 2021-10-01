@@ -1,6 +1,9 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.kernel.data.validation.BaseValidator;
+import com.telenav.kivakit.kernel.data.validation.ValidationType;
+import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
@@ -17,6 +20,46 @@ import org.junit.Test;
 
 public class MicroservletTest extends UnitTest
 {
+    public static class TestGarbageRequest extends MicroservletPostRequest
+    {
+        @Expose
+        private String trash;
+
+        public TestGarbageRequest(String trash)
+        {
+            this.trash = trash;
+        }
+
+        public TestGarbageRequest()
+        {
+        }
+
+        @Override
+        public MicroservletResponse onPost()
+        {
+            return new TestResponse(-1);
+        }
+
+        @Override
+        public Class<? extends MicroservletResponse> responseType()
+        {
+            return TestResponse.class;
+        }
+
+        @Override
+        public Validator validator(final ValidationType type)
+        {
+            return new BaseValidator()
+            {
+                @Override
+                protected void onValidate()
+                {
+                    problem("This request is garbage!");
+                }
+            };
+        }
+    }
+
     public static class TestGetRequest extends MicroservletGetRequest
     {
         public TestGetRequest()
@@ -118,6 +161,7 @@ public class MicroservletTest extends UnitTest
         {
             mount("test", TestPostRequest.class);
             mount("test", TestGetRequest.class);
+            mount("garbage", TestGarbageRequest.class);
         }
     }
 
@@ -129,6 +173,10 @@ public class MicroservletTest extends UnitTest
         microservice.waitForReady();
         var client = listenTo(new MicroservletClient(
                 microservice.restApplication().gsonFactory(), Host.local().http(8086), microservice.version()));
+
+        var garbageRequest = new TestGarbageRequest("This request is nonsense");
+        var response4 = client.post("garbage", TestResponse.class, garbageRequest);
+        ensureNull(response4);
 
         // Test POST
         var request = new TestPostRequest(7, 8);

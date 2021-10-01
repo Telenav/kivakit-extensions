@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.telenav.kivakit.microservice.rest.microservlet.MicroservletRequest.HttpMethod.GET;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 
 /**
@@ -140,7 +139,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 }
                 catch (final Exception e)
                 {
-                    problem(SC_INTERNAL_SERVER_ERROR, e, "REST $ method to $ failed", method.name(), resolved.microservlet.name());
+                    problem(e, "REST $ method to $ failed", method.name(), resolved.microservlet.name());
                 }
             }
             else
@@ -152,7 +151,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 }
                 catch (final Exception e)
                 {
-                    problem(SC_INTERNAL_SERVER_ERROR, e, "Exception thrown by filter chain");
+                    problem(e, "Exception thrown by filter chain");
                 }
             }
         }
@@ -186,15 +185,15 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         final var microservice = restApplication().microservice();
         for (final var method : microservlet.supportedMethods())
         {
-            var servletPath = new MicroservletPath(path, method);
-            final var existing = pathToMicroservlet.get(servletPath);
+            var microservletPath = new MicroservletPath(path, method);
+            final var existing = pathToMicroservlet.get(microservletPath);
             if (existing != null)
             {
                 problem("There is already a $ microservlet mounted on $: ${class}",
-                        method, servletPath, existing.getClass()).throwAsIllegalStateException();
+                        method, microservletPath, existing.getClass()).throwAsIllegalStateException();
             }
-            pathToMicroservlet.put(servletPath, microservlet);
-            information("Mounted $ microservlet $ => $", method.name(), servletPath, microservlet.name());
+            pathToMicroservlet.put(microservletPath, microservlet);
+            information("Mounted $ microservlet $ => $", method.name(), microservletPath, microservlet.name());
         }
     }
 
@@ -240,6 +239,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         // Get the response object, microservlet, path and parameters,
         final var response = cycle.response();
         final var microservlet = resolved.microservlet;
+        final var requestType = microservlet.requestType();
         final var parameters = cycle.request().parameters(resolved.parameters.path());
 
         // and if the request method is
@@ -252,12 +252,12 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 if (!parameters.isEmpty())
                 {
                     // converting any parameters to a JSON request object,
-                    request = cycle.gson().fromJson(parameters.asJson(), microservlet.requestType());
+                    request = cycle.gson().fromJson(parameters.asJson(), requestType);
                 }
                 else
                 {
                     // or if there are no parameters, converting the posted entity.
-                    request = listenTo(cycle.request().readObject(microservlet.requestType()));
+                    request = cycle.request().readObject(requestType);
                 }
 
                 // Then, we respond with the object returned from onPost().
@@ -266,6 +266,10 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                     listenTo(request);
                     response.writeObject(microservlet.post(request));
                 }
+                else
+                {
+                    response.writeObject(null);
+                }
             }
             break;
 
@@ -273,13 +277,17 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
             case DELETE:
             {
                 // then turn parameters into a JSON object and then treat that like it was POSTed.
-                final var request = cycle.gson().fromJson(parameters.asJson(), microservlet.requestType());
+                final var request = cycle.gson().fromJson(parameters.asJson(), requestType);
 
                 // Respond with the object returned from onGet.
                 if (request != null)
                 {
                     listenTo(request);
                     response.writeObject(method == GET ? microservlet.get(request) : microservlet.delete(request));
+                }
+                else
+                {
+                    response.writeObject(null);
                 }
             }
             break;

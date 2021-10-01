@@ -56,7 +56,10 @@ The following sections catalog the public API for *kivakit-microservice*.
 
 A [*Microservice*](https://martinfowler.com/articles/microservices.html) is a small, independent cloud service providing a limited, focused API. The *kivakit-microservice* mini-framework makes it easy to create a microservice that has:
 
-- Jersey + JSON + Swagger REST interface
+- JSON Microservlet REST service
+
++ Swagger OpenAPI specification
+
 - Apache Wicket web interface
 
 The public API classes in this mini-framework are:
@@ -203,8 +206,6 @@ The following significant classes are undocumented:
 | [*Microservice*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/Microservice.html) | Creating a Microservice |  
 | | Example |  
 | | Mount Paths |  
-| [*MicroserviceGsonFactory*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/rest/MicroserviceGsonFactory.html) |  |  
-| [*MicroserviceJerseyGsonSerializer*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/rest/MicroserviceJerseyGsonSerializer.html) |  |  
 | [*MicroserviceMetadata*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceMetadata.html) |  |  
 | [*MicroserviceProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceProject.html) |  |  
 | [*MicroserviceRestApplication*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/rest/MicroserviceRestApplication.html) | Flow of Control |  

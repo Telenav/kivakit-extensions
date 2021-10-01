@@ -3,7 +3,6 @@ open module kivakit.microservice
     // KivaKit
     requires transitive kivakit.application;
     requires transitive kivakit.web.wicket;
-    requires transitive kivakit.web.jersey;
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.test;
 

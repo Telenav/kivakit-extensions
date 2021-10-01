@@ -4,7 +4,7 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.reflection.Member;
 import com.telenav.kivakit.kernel.language.reflection.Type;
-import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrors;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.openapi.reader.filters.OpenApiPropertyFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.openapi.reader.filters.OpenApiTypeFilter;
 import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiExcludeMember;
@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureFalse;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
@@ -46,7 +48,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
     private final ObjectSet<Type<?>> modelsToRead = new ObjectSet<>();
 
     /** The schemas that we've resolved */
-    private final Map<String, Schema> resolvedSchemas = new HashMap<>();
+    private final SortedMap<String, Schema> resolvedSchemas = new TreeMap<>();
 
     public OpenApiSchemaReader()
     {
@@ -110,17 +112,17 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
     }
 
     /**
-     * @return The {@link Schema} for {@link MicroservletErrors}s.
+     * @return The {@link Schema} for {@link MicroservletErrorResponse}s.
      */
     public Schema<?> schemaError()
     {
-        var schema = readSchema(Type.forClass(MicroservletErrors.class));
+        var schema = readSchema(Type.forClass(MicroservletErrorResponse.class));
         return new Schema<>()
                 .name("errors")
                 .type("object")
                 .description(schema.getDescription())
                 .title(schema.getTitle())
-                .$ref(new ReferenceResolver().reference(Type.forClass(MicroservletErrors.class)));
+                .$ref(new ReferenceResolver().reference(Type.forClass(MicroservletErrorResponse.class)));
     }
 
     private boolean isArrayType(final Member member)

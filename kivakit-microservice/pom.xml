@@ -38,10 +38,6 @@
         </dependency>
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-web-jersey</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-web-swagger</artifactId>
         </dependency>
         <dependency>

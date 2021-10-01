@@ -20,9 +20,10 @@ package com.telenav.kivakit.microservice.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
-import com.telenav.kivakit.configuration.lookup.RegistryTrait;
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.messaging.Listener;
@@ -41,8 +42,6 @@ import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletDeleteRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
-import com.telenav.kivakit.web.jersey.BaseRestApplication;
-import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -110,11 +109,14 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  * @see MicroservletDeleteRequest
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class MicroserviceRestApplication extends BaseRestApplication
+public abstract class MicroserviceRestApplication extends BaseComponent implements Initializable
 {
     /** The microservice that owns this REST application */
     @UmlAggregation
     private final Microservice microservice;
+
+    /** True while the constructor is running */
+    private boolean mountAllowed = false;
 
     /**
      * @param microservice The microservice that is creating this REST application
@@ -124,9 +126,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         this.microservice = microservice;
         microservice.listenTo(this);
 
-        // The cast here is required because the Jersey base class also has a register method
-        ((RegistryTrait) this).register(this);
-        ((RegistryTrait) this).register(new JerseyGsonSerializer<>(gsonFactory()));
+        this.register(this);
     }
 
     /**
@@ -138,12 +138,24 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         return new MicroserviceRestApplicationGsonFactory();
     }
 
+    /**
+     * Mount OpenAPI request handler and initialize the rest application. This method cannot be overridden. Override
+     * {@link #onInitialize()} instead.
+     */
     @Override
-    public void initialize()
+    public final void initialize()
     {
-        mount("/open-api/swagger.json", JettyOpenApiRequest.class);
-        
-        onInitialize();
+        mountAllowed = true;
+        try
+        {
+            mount("/open-api/swagger.json", JettyOpenApiRequest.class);
+
+            onInitialize();
+        }
+        finally
+        {
+            mountAllowed = false;
+        }
     }
 
     /**
@@ -165,7 +177,14 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
     @UmlRelation(label = "mounts", referent = Microservlet.class)
     public void mount(final String path, final Microservlet<?, ?> microservlet)
     {
-        require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
+        if (mountAllowed)
+        {
+            require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
+        }
+        else
+        {
+            problem("Request handlers must be mounted in onInitialize()");
+        }
     }
 
     /**
@@ -177,55 +196,59 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
      * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
      * @param requestType The type of the request
      */
-    @SuppressWarnings("unchecked")
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(final String path, final Class<Request> requestType)
     {
-        // Create a request object, so we can get the response type and HTTP method,
-        final var request = Classes.newInstance(this, requestType);
-        if (request != null)
+        if (mountAllowed)
         {
-            listenTo(request);
-
-            // then mount an anonymous microservlet on the given path,
-            final Class<Response> responseType = (Class<Response>) request.responseType();
-            ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-            mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
+            // Create a request object, so we can get the response type and HTTP method,
+            final var request = Classes.newInstance(this, requestType);
+            if (request != null)
             {
-                @Override
-                @JsonProperty
-                public String description()
-                {
-                    return Message.format("Anonymous microservlet for ${class}", requestType());
-                }
+                listenTo(request);
 
-                @Override
-                @SuppressWarnings("unchecked")
-                public Response onDelete(final Request request)
+                // then mount an anonymous microservlet on the given path,
+                final Class<Response> responseType = (Class<Response>) request.responseType();
+                ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
+                mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
-                    // and if the microservlet receives a DELETE request, return the value of the request object.
-                    return (Response) ((MicroservletDeleteRequest) request).onDelete();
-                }
+                    @Override
+                    @JsonProperty
+                    public String description()
+                    {
+                        return Message.format("Anonymous microservlet for ${class}", requestType());
+                    }
 
-                @Override
-                public Response onGet(final Request request)
-                {
-                    // and if the microservlet receives a GET request, return the value of the request object,
-                    return (Response) ((MicroservletGetRequest) request).onGet();
-                }
+                    @Override
+                    public Response onDelete(final Request request)
+                    {
+                        // and if the microservlet receives a DELETE request, return the value of the request object.
+                        return (Response) ((MicroservletDeleteRequest) request).onDelete();
+                    }
 
-                @Override
-                @SuppressWarnings("unchecked")
-                public Response onPost(final Request request)
-                {
-                    // and if the microservlet receives a POST request, return the value of the request object.
-                    return (Response) ((MicroservletPostRequest) request).onPost();
-                }
-            }).supportedMethods(ObjectSet.of(request.httpMethod())));
+                    @Override
+                    public Response onGet(final Request request)
+                    {
+                        // and if the microservlet receives a GET request, return the value of the request object,
+                        return (Response) ((MicroservletGetRequest) request).onGet();
+                    }
+
+                    @Override
+                    public Response onPost(final Request request)
+                    {
+                        // and if the microservlet receives a POST request, return the value of the request object.
+                        return (Response) ((MicroservletPostRequest) request).onPost();
+                    }
+                }).supportedMethods(ObjectSet.of(request.httpMethod())));
+            }
+            else
+            {
+                problem("Could not create request object: ${class}", requestType);
+            }
         }
         else
         {
-            problem("Could not create request object: ${class}", requestType);
+            problem("Request handlers must be mounted in onInitialize()");
         }
     }
 

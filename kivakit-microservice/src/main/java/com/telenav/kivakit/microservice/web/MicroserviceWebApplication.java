@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.microservice.web;
 
+import com.telenav.kivakit.microservice.Microservice;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.settings.ExceptionSettings;
 
@@ -30,6 +31,13 @@ import static org.apache.wicket.RuntimeConfigurationType.DEVELOPMENT;
  */
 public abstract class MicroserviceWebApplication extends WebApplication
 {
+    /**
+     * The microservice parameter to this class is ignored for now
+     */
+    public MicroserviceWebApplication(Microservice ignored)
+    {
+    }
+
     @Override
     public void init()
     {
