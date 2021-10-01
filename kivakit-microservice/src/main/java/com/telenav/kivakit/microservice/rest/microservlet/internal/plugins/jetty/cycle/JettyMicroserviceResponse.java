@@ -11,7 +11,7 @@ import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrors;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -64,7 +64,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     @UmlAggregation
     @OpenApiIncludeMember(title = "Errors messages",
                           description = "A list of formatted error messages")
-    private final MicroservletErrors errors = new MicroservletErrors();
+    private final MicroservletErrorResponse errors = new MicroservletErrorResponse();
 
     public JettyMicroserviceResponse(final JettyMicroservletRequestCycle cycle, final HttpServletResponse httpResponse)
     {
@@ -127,22 +127,32 @@ public final class JettyMicroserviceResponse extends BaseComponent
     }
 
     /**
-     * Writes the given response object to the servlet output stream in JSON format.
+     * Writes the given response object to the servlet output stream in JSON format. If the request is invalid, or the
+     * response is null or invalid, a {@link MicroservletErrorResponse} is sent with the captured error messages.
+     *
+     * @param response The response to write to the HTTP output stream
      */
     public void writeObject(final MicroservletResponse response)
     {
-        // If the response is invalid (any problems go into the response object),
-        if (!response.isValid(response))
+        // Validate the response
+        if (response != null)
         {
-            // then we have an invalid response
-            problem("Response object is invalid");
+            // and if the response is invalid (any problems go into the response object),
+            if (!response.isValid(response))
+            {
+                // then transmit a problem message.
+                problem("Response object is invalid");
+            }
         }
+
+        // Get either the response JSON or the errors JSON if there are errors or there is no response,
+        var json = errors.isEmpty() && response != null ? response.toJson() : errors.toJson();
 
         try
         {
-            // then output JSON for the object to the servlet output stream.
+            // then send the JSON to the servlet output stream.
             this.httpResponse.setContentType("application/json");
-            this.httpResponse.getOutputStream().println(response.toJson());
+            this.httpResponse.getOutputStream().println(json);
         }
         catch (final Exception e)
         {

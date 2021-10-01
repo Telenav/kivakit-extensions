@@ -7,7 +7,7 @@ import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplicationGsonFactory;
-import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrors;
+import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrorResponse;
 import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
 import com.telenav.kivakit.network.core.Port;
@@ -100,9 +100,11 @@ public class MicroservletClient extends BaseComponent
             {
                 try
                 {
-                    post.setEntity(new StringEntity(request == null ? "{}" : gsonFactory.newInstance().toJson(request)));
+                    final StringEntity entity = new StringEntity(request == null ? "{}" : gsonFactory.newInstance().toJson(request));
+                    entity.setContentType("application/json");
+                    post.setEntity(entity);
                     post.setHeader("Accept", "application/json");
-                    post.setHeader("Content-type", "application/json");
+                    post.setHeader("Content-Type", "application/json");
                 }
                 catch (Exception e)
                 {
@@ -115,31 +117,28 @@ public class MicroservletClient extends BaseComponent
 
     private <T> T fromJson(final BaseHttpResource resource, final Class<T> type)
     {
-        // Read the status code first
+        // Execute the request and read the status code
         var status = resource.status();
+
+        // and if the status is okay,
         if (status.isOkay())
         {
-            final String json = resource.reader().string();
-            if (!Strings.isEmpty(json))
-            {
-                return gsonFactory.newInstance().fromJson(json, type);
-            }
+            // then return the JSON payload.
+            return readResponse(resource, type);
         }
+
+        // If the status code indicates that there are associated error messages,
         if (status.hasAssociatedErrorMessages())
         {
-            final String json = resource.reader().string();
-            if (!Strings.isEmpty(json))
+            // then read the errors,
+            var errors = readResponse(resource, MicroservletErrorResponse.class);
+            if (errors != null)
             {
-                gsonFactory.newInstance()
-                        .fromJson(json, MicroservletErrors.class)
-                        .send(this);
-            }
-            else
-            {
-                problem("Failed with status code: $", status);
+                // and send them to listeners of this client.
+                errors.send(this);
             }
         }
-        problem("Unable to read and deserialize JSON object of type ${class} from: $", type, resource);
+
         return null;
     }
 
@@ -154,5 +153,26 @@ public class MicroservletClient extends BaseComponent
         }
 
         return new NetworkLocation(port.path(path));
+    }
+
+    private <T> T readResponse(BaseHttpResource resource, Class<T> type)
+    {
+        if ("application/json".equals(resource.contentType()))
+        {
+            final String json = resource.reader().string();
+            if (!Strings.isEmpty(json))
+            {
+                return gsonFactory.newInstance().fromJson(json, type);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        {
+            problem("Response content type is not application/json, but instead: $", resource.contentType());
+            return null;
+        }
     }
 }

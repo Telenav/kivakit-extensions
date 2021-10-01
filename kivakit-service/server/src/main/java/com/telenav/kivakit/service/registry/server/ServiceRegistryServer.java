@@ -150,7 +150,7 @@ public class ServiceRegistryServer extends Server
                 .mount("/open-api/*", new SwaggerJettyServletPlugin(application))
                 .mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port))
                 .mount("/webapp/*", new SwaggerAssetsJettyResourcePlugin())
-                .mount("/webjar/*", new SwaggerWebJarJettyResourcePlugin(application))
+                .mount("/webjar/*", new SwaggerWebJarJettyResourcePlugin(application.getClass()))
                 .mount("/*", new JerseyJettyServletPlugin(application))
                 .start();
     }

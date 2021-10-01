@@ -24,24 +24,21 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import javax.ws.rs.core.Application;
-
 /**
- * Provides the Swagger JavaScript resources required to show Swagger documentation for the given REST {@link
- * Application}.
+ * Provides the Swagger JavaScript resources required to show Swagger documentation for the given REST application.
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
 public class SwaggerWebJarJettyResourcePlugin extends BaseJettyResourcePlugin
 {
-    private final Application application;
+    private final Class<?> restApplication;
 
-    public SwaggerWebJarJettyResourcePlugin(final Application application)
+    public SwaggerWebJarJettyResourcePlugin(final Class<?> restApplication)
     {
-        super("[SwaggerWebJarJettyResourcePlugin application = " + application.getClass().getSimpleName() + "]");
+        super("[SwaggerWebJarJettyResourcePlugin application = " + restApplication.getSimpleName() + "]");
 
-        this.application = application;
+        this.restApplication = restApplication;
     }
 
     @Override
@@ -57,6 +54,6 @@ public class SwaggerWebJarJettyResourcePlugin extends BaseJettyResourcePlugin
     String resourceBase()
     {
         final var path = "META-INF/resources/webjars/swagger-ui/3.51.2";
-        return Classes.resourceUri(application.getClass(), path).toString();
+        return Classes.resourceUri(restApplication, path).toString();
     }
 }

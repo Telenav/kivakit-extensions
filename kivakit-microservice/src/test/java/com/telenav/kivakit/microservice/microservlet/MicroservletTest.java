@@ -22,10 +22,12 @@ public class MicroservletTest extends UnitTest
 {
     public static class TestGarbageRequest extends MicroservletPostRequest
     {
+        @Expose
         private String trash;
 
         public TestGarbageRequest(String trash)
         {
+            this.trash = trash;
         }
 
         public TestGarbageRequest()
@@ -159,6 +161,7 @@ public class MicroservletTest extends UnitTest
         {
             mount("test", TestPostRequest.class);
             mount("test", TestGetRequest.class);
+            mount("garbage", TestGarbageRequest.class);
         }
     }
 
@@ -172,7 +175,7 @@ public class MicroservletTest extends UnitTest
                 microservice.restApplication().gsonFactory(), Host.local().http(8086), microservice.version()));
 
         var garbageRequest = new TestGarbageRequest("This request is nonsense");
-        var response4 = client.post("test", TestResponse.class, garbageRequest);
+        var response4 = client.post("garbage", TestResponse.class, garbageRequest);
         ensureNull(response4);
 
         // Test POST

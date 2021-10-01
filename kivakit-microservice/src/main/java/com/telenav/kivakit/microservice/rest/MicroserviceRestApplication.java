@@ -20,9 +20,10 @@ package com.telenav.kivakit.microservice.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
-import com.telenav.kivakit.configuration.lookup.RegistryTrait;
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.messaging.Listener;
@@ -41,8 +42,6 @@ import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletDeleteRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
-import com.telenav.kivakit.web.jersey.BaseRestApplication;
-import com.telenav.kivakit.web.jersey.JerseyGsonSerializer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -110,7 +109,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  * @see MicroservletDeleteRequest
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class MicroserviceRestApplication extends BaseRestApplication
+public abstract class MicroserviceRestApplication extends BaseComponent implements Initializable
 {
     /** The microservice that owns this REST application */
     @UmlAggregation
@@ -124,9 +123,7 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         this.microservice = microservice;
         microservice.listenTo(this);
 
-        // The cast here is required because the Jersey base class also has a register method
-        ((RegistryTrait) this).register(this);
-        ((RegistryTrait) this).register(new JerseyGsonSerializer<>(gsonFactory()));
+        this.register(this);
     }
 
     /**
@@ -138,11 +135,15 @@ public abstract class MicroserviceRestApplication extends BaseRestApplication
         return new MicroserviceRestApplicationGsonFactory();
     }
 
+    /**
+     * Mount OpenAPI request handler and initialize the rest application. This method cannot be overridden. Override
+     * {@link #onInitialize()} instead.
+     */
     @Override
-    public void initialize()
+    public final void initialize()
     {
         mount("/open-api/swagger.json", JettyOpenApiRequest.class);
-        
+
         onInitialize();
     }
 

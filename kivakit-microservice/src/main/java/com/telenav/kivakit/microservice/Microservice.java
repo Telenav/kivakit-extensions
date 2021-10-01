@@ -16,7 +16,6 @@ import com.telenav.kivakit.microservice.rest.microservlet.metrics.reporters.none
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
-import com.telenav.kivakit.web.jersey.JerseyJettyServletPlugin;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
 import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
@@ -64,7 +63,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *         <td>/</td><td>&nbsp;</td></td><td>Apache Wicket web application</td>
  *     </tr>
  *     <tr>
- *         <td>/</td><td>&nbsp;</td><td>Jersey REST application</td>
+ *         <td>/</td><td>&nbsp;</td><td>Microservlet REST application</td>
  *     </tr>
  *     <tr>
  *         <td>/assets</td><td>&nbsp;</td><td>Static resources</td>
@@ -76,10 +75,10 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *         <td>/open-api/assets</td><td>&nbsp;</td><td>Static resources for use in OpenAPI definitions</td>
  *     </tr>
  *     <tr>
- *         <td>/open-api/</td><td>&nbsp;</td><td>Open API definition</td>
+ *         <td>/open-api/swagger.json</td><td>&nbsp;</td><td>Open API definition</td>
  *     </tr>
  *     <tr>
- *         <td>/swagger/webapp</td><td>&nbsp;</td><td>Swagger static resources</td>
+ *         <td>/swagger/webapp</td><td>&nbsp;</td><td>Swagger application</td>
  *     </tr>
  *     <tr>
  *         <td>/swagger/webjar</td><td>&nbsp;</td><td>Swagger design webjar</td>
@@ -109,21 +108,15 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     }
  *
  *     &#064;Override
- *     public String description()
- *     {
- *         return "My microservice";
- *     }
- *
- *     &#064;Override
  *     public MyRestApplication restApplication()
  *     {
- *         return new MyRestApplication();
+ *         return new MyRestApplication(this);
  *     }
  *
  *     &#064;Override
  *     public MyWebApplication webApplication()
  *     {
- *         return new MyWebApplication();
+ *         return new MyWebApplication(this);
  *     }
  * }
  * </pre>
@@ -245,7 +238,7 @@ public abstract class Microservice extends Application implements Startable
                 server.mount("/assets/*", new AssetsJettyResourcePlugin(staticAssets));
             }
 
-            // If there is a Jersey REST application,
+            // If there is a microservlet REST application,
             final var restApplication = listenTo(restApplication());
             if (restApplication != null)
             {
@@ -261,10 +254,7 @@ public abstract class Microservice extends Application implements Startable
                 server.mount("/*", register(new MicroservletJettyFilterPlugin(restApplication)));
                 server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
-                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication));
-
-                // Mount the REST application
-                server.mount("/*", new JerseyJettyServletPlugin(restApplication));
+                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication.getClass()));
 
                 // and initialize it.
                 restApplication.initialize();

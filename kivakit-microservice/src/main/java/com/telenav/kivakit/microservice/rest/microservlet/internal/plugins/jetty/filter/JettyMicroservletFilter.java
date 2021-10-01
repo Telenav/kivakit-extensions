@@ -239,6 +239,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         // Get the response object, microservlet, path and parameters,
         final var response = cycle.response();
         final var microservlet = resolved.microservlet;
+        final var requestType = microservlet.requestType();
         final var parameters = cycle.request().parameters(resolved.parameters.path());
 
         // and if the request method is
@@ -251,12 +252,12 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 if (!parameters.isEmpty())
                 {
                     // converting any parameters to a JSON request object,
-                    request = cycle.gson().fromJson(parameters.asJson(), microservlet.requestType());
+                    request = cycle.gson().fromJson(parameters.asJson(), requestType);
                 }
                 else
                 {
                     // or if there are no parameters, converting the posted entity.
-                    request = listenTo(cycle.request().readObject(microservlet.requestType()));
+                    request = cycle.request().readObject(requestType);
                 }
 
                 // Then, we respond with the object returned from onPost().
@@ -265,6 +266,10 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                     listenTo(request);
                     response.writeObject(microservlet.post(request));
                 }
+                else
+                {
+                    response.writeObject(null);
+                }
             }
             break;
 
@@ -272,13 +277,17 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
             case DELETE:
             {
                 // then turn parameters into a JSON object and then treat that like it was POSTed.
-                final var request = cycle.gson().fromJson(parameters.asJson(), microservlet.requestType());
+                final var request = cycle.gson().fromJson(parameters.asJson(), requestType);
 
                 // Respond with the object returned from onGet.
                 if (request != null)
                 {
                     listenTo(request);
                     response.writeObject(method == GET ? microservlet.get(request) : microservlet.delete(request));
+                }
+                else
+                {
+                    response.writeObject(null);
                 }
             }
             break;
