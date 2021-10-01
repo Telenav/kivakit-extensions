@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureFalse;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
@@ -46,7 +48,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
     private final ObjectSet<Type<?>> modelsToRead = new ObjectSet<>();
 
     /** The schemas that we've resolved */
-    private final Map<String, Schema> resolvedSchemas = new HashMap<>();
+    private final SortedMap<String, Schema> resolvedSchemas = new TreeMap<>();
 
     public OpenApiSchemaReader()
     {
