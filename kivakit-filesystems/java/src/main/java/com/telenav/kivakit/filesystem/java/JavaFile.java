@@ -49,26 +49,27 @@ public class JavaFile extends JavaFileSystemObject implements FileService, Compo
     @Override
     public boolean exists()
     {
-        return Files.exists(this.javaPath);
+        return Files.exists(toJavaPath());
     }
 
     @Override
     public InputStream onOpenForReading()
     {
-        return tryCatch(() -> Files.newInputStream(this.javaPath), "Could not open for reading: $", path());
+        return tryCatch(() -> Files.newInputStream(toJavaPath()), "Could not open for reading: $", path());
     }
 
     @Override
     public OutputStream onOpenForWriting()
     {
-        return tryCatch(() -> Files.newOutputStream(this.javaPath), "Could not open for writing: $", path());
+        return tryCatch(() -> Files.newOutputStream(toJavaPath()), "Could not open for writing: $", path());
     }
 
     @Override
     public boolean renameTo(FileService that)
     {
-        return tryCatch(() -> {
-                    Files.move(this.javaPath, that.path().asJavaPath());
+        return tryCatch(() ->
+                {
+                    Files.move(toJavaPath(), that.path().asJavaPath());
                     return true;
                 }
                 , "Could not move from: $, to: $", path(), that.path());
@@ -77,6 +78,6 @@ public class JavaFile extends JavaFileSystemObject implements FileService, Compo
     @Override
     public Bytes sizeInBytes()
     {
-        return  tryCatchThrow(() -> Bytes.bytes(Files.size(this.javaPath)), "Cannot determine file size: $", path());
+        return tryCatchThrow(() -> Bytes.bytes(Files.size(toJavaPath())), "Cannot determine file size: $", path());
     }
 }

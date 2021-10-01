@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.filesystem.java;
 
+import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.filesystem.spi.DiskService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 
-import java.nio.file.FileStore;
 import java.nio.file.Files;
 
 /**
@@ -32,7 +32,7 @@ import java.nio.file.Files;
  *
  * @author yinyinz
  */
-public class JavaDisk implements DiskService
+public class JavaDisk implements DiskService, ComponentMixin
 {
     private final JavaFolder root;
 
@@ -44,15 +44,11 @@ public class JavaDisk implements DiskService
     @Override
     public Bytes free()
     {
-        try {
-            FileStore store = Files.getFileStore(this.root.toJavaPath());
+        return tryCatch(() ->
+        {
+            var store = Files.getFileStore(this.root.toJavaPath());
             return Bytes.bytes(store.getUnallocatedSpace());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-
-        return null;
+        }, "Unable to get disk free space: $", root.path());
     }
 
     @Override
@@ -64,28 +60,20 @@ public class JavaDisk implements DiskService
     @Override
     public Bytes size()
     {
-        try {
-            FileStore store = Files.getFileStore(this.root.toJavaPath());
+        return tryCatch(() ->
+        {
+            var store = Files.getFileStore(this.root.toJavaPath());
             return Bytes.bytes(store.getTotalSpace());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-
-        return null;
+        }, "Unable to get disk size: $", root.path());
     }
 
     @Override
     public Bytes usable()
     {
-        try {
-            FileStore store = Files.getFileStore(this.root.toJavaPath());
+        return tryCatch(() ->
+        {
+            var store = Files.getFileStore(this.root.toJavaPath());
             return Bytes.bytes(store.getUsableSpace());
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-
-        return null;
+        }, "Unable to get disk usable size: $", root.path());
     }
 }

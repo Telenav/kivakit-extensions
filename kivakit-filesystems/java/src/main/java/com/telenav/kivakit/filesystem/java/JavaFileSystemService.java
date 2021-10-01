@@ -33,9 +33,10 @@ import java.nio.file.Paths;
 /**
  * <b>Not public API</b>
  * <p>
- * Implementation of the {@link FileSystemService} SPI to provide java.nio filesystem access through the KIVAKIT resource API. This
- * service accepts {@link FilePath}s that supported by default local filesystem and it provides implementations of {@link FileService} and
- * {@link FolderService} which are used by {@link File} and {@link Folder} to provide transparent access to file system
+ * Implementation of the {@link FileSystemService} SPI to provide java.nio filesystem access through the KIVAKIT
+ * resource API. This service accepts {@link FilePath}s that supported by default local filesystem and it provides
+ * implementations of {@link FileService} and {@link FolderService} which are used by {@link File} and {@link Folder} to
+ * provide transparent access to file system
  *
  * @author yinyinz
  * @see JavaFile
@@ -55,6 +56,8 @@ public class JavaFileSystemService implements FileSystemService
         }
         catch (InvalidPathException | NullPointerException ex)
         {
+            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             return false;
         }
 

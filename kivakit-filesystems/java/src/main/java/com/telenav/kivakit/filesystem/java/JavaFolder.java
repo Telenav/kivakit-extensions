@@ -28,7 +28,6 @@ import com.telenav.kivakit.resource.WritableResource;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -78,12 +77,12 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         try
         {
             var root = path().asJavaPath();
-            DirectoryStream<Path> directory = Files.newDirectoryStream(root);
-            for (Path p : directory)
+            var paths = Files.newDirectoryStream(root);
+            for (Path path : paths)
             {
-                if (!Files.isDirectory(p))
+                if (!Files.isDirectory(path))
                 {
-                    files.add(new JavaFile(p.toString()));
+                    files.add(new JavaFile(path.toString()));
                 }
             }
         }
@@ -115,7 +114,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FolderService> folders = new ArrayList<>();
         try
         {
-            DirectoryStream<Path> paths = Files.newDirectoryStream(javaPath);
+            var paths = Files.newDirectoryStream(toJavaPath());
             for (Path path : paths)
             {
                 if (Files.isDirectory(path))
@@ -144,11 +143,11 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FileService> files = new ArrayList<>();
         try
         {
-            Files.walk(this.javaPath)
+            Files.walk(toJavaPath())
                     .filter(Files::isRegularFile)
                     .forEach(f ->
                     {
-                        FilePath filePath = FilePath.filePath(f);
+                        var filePath = FilePath.filePath(f);
                         if (matcher.matches(filePath))
                         {
                             files.add(new JavaFile(filePath));
@@ -169,11 +168,11 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FolderService> folders = new ArrayList<>();
         try
         {
-            Files.walk(this.javaPath)
+            Files.walk(toJavaPath())
                     .filter(Files::isDirectory)
                     .forEach(f ->
                     {
-                        FilePath filePath = FilePath.filePath(f);
+                        var filePath = FilePath.filePath(f);
                         if (matcher.matches(filePath))
                         {
                             folders.add(new JavaFolder(filePath));

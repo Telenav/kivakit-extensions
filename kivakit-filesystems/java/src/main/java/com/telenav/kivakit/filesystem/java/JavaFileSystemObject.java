@@ -47,7 +47,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     // True if it's a folder
     private final boolean isFolder;
 
-    protected final Path javaPath;
+    private final Path javaPath;
 
     public JavaFileSystemObject(final FilePath path, final boolean isFolder)
     {
@@ -146,5 +146,8 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
         return null;
     }
 
-    public Path toJavaPath() { return this.javaPath; }
+    public Path toJavaPath()
+    {
+        return this.javaPath;
+    }
 }
