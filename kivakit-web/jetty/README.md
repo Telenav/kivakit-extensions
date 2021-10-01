@@ -76,11 +76,11 @@ Javadoc coverage for this project is 75.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*BaseJettyFilter*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyFilter.html) |  |  
+| [*AssetsJettyResourcePlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/AssetsJettyResourcePlugin.html) |  |  
+| [*BaseJettyFilterPlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyFilterPlugin.html) |  |  
 | [*BaseJettyRequestHandler*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/BaseJettyRequestHandler.html) |  |  
-| [*BaseJettyResource*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyResource.html) |  |  
-| [*BaseJettyServlet*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyServlet.html) |  |  
-| [*JettyAssets*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/JettyAssets.html) |  |  
+| [*BaseJettyResourcePlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyResourcePlugin.html) |  |  
+| [*BaseJettyServletPlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyServletPlugin.html) |  |  
 | [*JettyProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/JettyProject.html) |  |  
 | [*JettyServer*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/JettyServer.html) | Example: |  
 | [*WebUnitTest*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/WebUnitTest.html) |  |  

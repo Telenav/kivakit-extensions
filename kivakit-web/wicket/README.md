@@ -91,12 +91,12 @@ Javadoc coverage for this project is 87.5%.
 | [*Components*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/library/Components.html) |  |  
 | [*FeedbackPanel*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/feedback/FeedbackPanel.html) |  |  
 | [*HeaderPanel*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/header/HeaderPanel.html) |  |  
-| [*JettyWicket*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/JettyWicket.html) |  |  
 | [*JettyWicketFilterHolder*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/JettyWicketFilterHolder.html) |  |  
 | [*JettyWicketProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/JettyWicketProject.html) |  |  
 | [*KivaKitTheme*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/theme/KivaKitTheme.html) |  |  
 | [*MessageColor*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/behaviors/status/MessageColor.html) |  |  
 | [*UpdatingContainer*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/refresh/UpdatingContainer.html) |  |  
+| [*WicketJettyFilterPlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/WicketJettyFilterPlugin.html) |  |  
 
 [//]: # (start-user-text)
 

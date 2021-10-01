@@ -85,7 +85,7 @@ Javadoc coverage for this project is 81.3%.
 | [*BaseRestApplication*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/BaseRestApplication.html) |  |  
 | [*BaseRestResource*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/BaseRestResource.html) |  |  
 | [*JerseyGsonSerializer*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyGsonSerializer.html) |  |  
-| [*JettyJersey*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JettyJersey.html) |  |  
+| [*JerseyJettyServletPlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyJettyServletPlugin.html) |  |  
 | [*JettyJerseyProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JettyJerseyProject.html) |  |  
 
 [//]: # (start-user-text)

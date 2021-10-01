@@ -87,12 +87,12 @@ Javadoc coverage for this project is 75.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*JettySwaggerAssets*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/JettySwaggerAssets.html) |  |  
-| [*JettySwaggerIndex*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/JettySwaggerIndex.html) |  |  
-| [*JettySwaggerIndex.IndexServlet*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/JettySwaggerIndex.IndexServlet.html) |  |  
-| [*JettySwaggerOpenApi*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/JettySwaggerOpenApi.html) |  |  
 | [*JettySwaggerProject*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/JettySwaggerProject.html) |  |  
-| [*JettySwaggerWebJar*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/JettySwaggerWebJar.html) |  |  
+| [*SwaggerAssetsJettyResourcePlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerAssetsJettyResourcePlugin.html) |  |  
+| [*SwaggerIndexJettyResourcePlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerIndexJettyResourcePlugin.html) |  |  
+| [*SwaggerIndexJettyResourcePlugin.IndexServlet*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerIndexJettyResourcePlugin.IndexServlet.html) |  |  
+| [*SwaggerJettyServletPlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerJettyServletPlugin.html) |  |  
+| [*SwaggerWebJarJettyResourcePlugin*](https://www.kivakit.org/1.1.0-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerWebJarJettyResourcePlugin.html) |  |  
 
 [//]: # (start-user-text)
 
