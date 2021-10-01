@@ -6,6 +6,7 @@ import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.configuration.settings.deployment.Deployment;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
+import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
@@ -266,6 +267,12 @@ public abstract class Microservice extends Application implements Startable
             running = true;
         }
         return true;
+    }
+
+    @Override
+    public Version version()
+    {
+        return metadata().version();
     }
 
     /**

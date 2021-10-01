@@ -100,7 +100,7 @@ public class MicroservletClient extends BaseComponent
             {
                 try
                 {
-                    final StringEntity entity = new StringEntity(request == null ? "{}" : gsonFactory.newInstance().toJson(request));
+                    final var entity = new StringEntity(request == null ? "{}" : gsonFactory.newInstance().toJson(request));
                     entity.setContentType("application/json");
                     post.setEntity(entity);
                     post.setHeader("Accept", "application/json");

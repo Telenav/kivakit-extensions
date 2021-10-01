@@ -185,15 +185,15 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         final var microservice = restApplication().microservice();
         for (final var method : microservlet.supportedMethods())
         {
-            var servletPath = new MicroservletPath(path, method);
-            final var existing = pathToMicroservlet.get(servletPath);
+            var microservletPath = new MicroservletPath(path, method);
+            final var existing = pathToMicroservlet.get(microservletPath);
             if (existing != null)
             {
                 problem("There is already a $ microservlet mounted on $: ${class}",
-                        method, servletPath, existing.getClass()).throwAsIllegalStateException();
+                        method, microservletPath, existing.getClass()).throwAsIllegalStateException();
             }
-            pathToMicroservlet.put(servletPath, microservlet);
-            information("Mounted $ microservlet $ => $", method.name(), servletPath, microservlet.name());
+            pathToMicroservlet.put(microservletPath, microservlet);
+            information("Mounted $ microservlet $ => $", method.name(), microservletPath, microservlet.name());
         }
     }
 

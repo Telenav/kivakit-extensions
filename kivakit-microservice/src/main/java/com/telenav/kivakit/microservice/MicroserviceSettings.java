@@ -11,7 +11,7 @@ public class MicroserviceSettings
     @KivaKitPropertyConverter(IntegerConverter.class)
     private int port;
 
-    int port()
+    public int port()
     {
         return port;
     }
