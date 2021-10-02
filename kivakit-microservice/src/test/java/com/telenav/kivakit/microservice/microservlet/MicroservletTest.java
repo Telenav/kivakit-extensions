@@ -8,8 +8,8 @@ import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
+import com.telenav.kivakit.microservice.rest.MicroserviceGsonFactory;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.rest.MicroserviceRestApplicationGsonFactory;
 import com.telenav.kivakit.microservice.rest.microservlet.MicroservletClient;
 import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
@@ -151,9 +151,9 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroserviceRestApplicationGsonFactory gsonFactory()
+        public MicroserviceGsonFactory gsonFactory()
         {
-            return new MicroserviceRestApplicationGsonFactory();
+            return new MicroserviceGsonFactory();
         }
 
         @Override

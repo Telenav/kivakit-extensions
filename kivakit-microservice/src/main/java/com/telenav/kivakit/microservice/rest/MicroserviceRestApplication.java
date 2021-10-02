@@ -103,7 +103,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  * </ol>
  *
  * @author jonathanl (shibo)
- * @see MicroserviceRestApplicationGsonFactory
+ * @see MicroserviceGsonFactory
  * @see MicroservletPostRequest
  * @see MicroservletGetRequest
  * @see MicroservletDeleteRequest
@@ -133,9 +133,9 @@ public abstract class MicroserviceRestApplication extends BaseComponent implemen
      * @return Factory that can create a {@link Gson} instance for serializing JSON object
      */
     @UmlRelation(label = "creates")
-    public MicroserviceRestApplicationGsonFactory gsonFactory()
+    public MicroserviceGsonFactory gsonFactory()
     {
-        return new MicroserviceRestApplicationGsonFactory();
+        return new MicroserviceGsonFactory();
     }
 
     /**

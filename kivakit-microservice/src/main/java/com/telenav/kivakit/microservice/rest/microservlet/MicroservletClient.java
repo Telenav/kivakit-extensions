@@ -5,8 +5,8 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.microservice.rest.MicroserviceGsonFactory;
 import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.rest.MicroserviceRestApplicationGsonFactory;
 import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.MicroservletErrorResponse;
 import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
@@ -40,14 +40,14 @@ public class MicroservletClient extends BaseComponent
     private final Version version;
 
     /** {@link Gson} factory for reading and writing JSON object */
-    private final MicroserviceRestApplicationGsonFactory gsonFactory;
+    private final MicroserviceGsonFactory gsonFactory;
 
     /**
      * @param gsonFactory A factory that creates {@link Gson} objects to use when reading and writing JSON objects
      * @param port The (host and) port of the remote REST service to communicate with
      * @param version The version of the remote REST service
      */
-    public MicroservletClient(MicroserviceRestApplicationGsonFactory gsonFactory, Port port, Version version)
+    public MicroservletClient(MicroserviceGsonFactory gsonFactory, Port port, Version version)
     {
         this.gsonFactory = gsonFactory;
         this.port = port;
