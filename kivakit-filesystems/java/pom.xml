@@ -17,7 +17,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>kivakit-java-filesystem</artifactId>
+    <artifactId>kivakit-filesystem-java</artifactId>
     <packaging>jar</packaging>
     <name>KivaKit Extensions - Filesystems - Java Filesystem</name>
 

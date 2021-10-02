@@ -76,9 +76,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FileService> files = new ArrayList<>();
         try
         {
-            var root = path().asJavaPath();
-            var paths = Files.newDirectoryStream(root);
-            for (Path path : paths)
+            for (Path path : Files.newDirectoryStream(toJavaPath()))
             {
                 if (!Files.isDirectory(path))
                 {
@@ -114,8 +112,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         final List<FolderService> folders = new ArrayList<>();
         try
         {
-            var paths = Files.newDirectoryStream(toJavaPath());
-            for (Path path : paths)
+            for (Path path : Files.newDirectoryStream(toJavaPath()))
             {
                 if (Files.isDirectory(path))
                 {

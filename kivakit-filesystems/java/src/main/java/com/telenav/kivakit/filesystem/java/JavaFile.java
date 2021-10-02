@@ -47,12 +47,6 @@ public class JavaFile extends JavaFileSystemObject implements FileService, Compo
     }
 
     @Override
-    public boolean exists()
-    {
-        return Files.exists(toJavaPath());
-    }
-
-    @Override
     public InputStream onOpenForReading()
     {
         return tryCatch(() -> Files.newInputStream(toJavaPath()), "Could not open for reading: $", path());

@@ -2,31 +2,36 @@ package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.filesystem.spi.DiskService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.test.UnitTest;
+import org.junit.Before;
 import org.junit.Test;
 
-import java.nio.file.FileStore;
-import java.nio.file.Files;
+import java.nio.file.Paths;
 
-public class JavaDiskTest extends UnitTest {
+public class JavaDiskTest extends UnitTest
+{
+    private String path = ".";
+
+    @Before
+    public void beforeMethod()
+    {
+        // use kivakit-extension/kivakit-extensions/kivakit-filesystems as default test case
+        path = Paths.get("").toAbsolutePath().getParent().toString();
+    }
 
     @Test
-    public void testJavaFile()
+    public void testJavaDisk()
     {
-        JavaFileSystemService jfsService = new JavaFileSystemService();
-        String testFolderPath = "/Users/yyzhou/jfs_test";
-        DiskService disk = jfsService.diskService(FilePath.parseFilePath(testFolderPath));
+        DiskService disk = new JavaDisk(path);
 
         FolderService root = disk.root();
-        System.out.println(root.path().toString());
 
-        try {
-            FileStore store = Files.getFileStore(root.path().asJavaPath());
-            System.out.println("available=" + store.getUsableSpace()
-                    + ", total=" + store.getTotalSpace());
-        } catch (Exception e) {
-            System.out.println("error querying space: " + e.toString());
-        }
+        var totalSize = disk.size();
+        var freeSize = disk.free();
+        var usableSize = disk.usable();
+
+        ensure(totalSize.isNonZero());
+        ensure(totalSize.isGreaterThan(freeSize));
+        ensure(freeSize.isGreaterThanOrEqualTo(usableSize));
     }
 }

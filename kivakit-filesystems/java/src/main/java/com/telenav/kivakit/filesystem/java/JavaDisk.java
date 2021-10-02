@@ -36,6 +36,12 @@ public class JavaDisk implements DiskService, ComponentMixin
 {
     private final JavaFolder root;
 
+    public JavaDisk(final String path)
+    {
+        var folder = new JavaFolder(path);
+        this.root = (JavaFolder) folder.root();
+    }
+
     public JavaDisk(final JavaFolder folder)
     {
         this.root = (JavaFolder) folder.root();

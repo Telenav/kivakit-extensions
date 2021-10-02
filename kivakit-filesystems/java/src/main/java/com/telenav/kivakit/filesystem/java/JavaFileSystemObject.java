@@ -108,6 +108,12 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
+    public boolean exists()
+    {
+        return Files.exists(this.javaPath);
+    }
+
+    @Override
     public FolderService parent()
     {
         return new JavaFolder(this.javaPath.getParent());
