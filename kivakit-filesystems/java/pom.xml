@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 <!--                                                                                                                 -->
 <!--  © 2011-2021 Telenav, Inc.                                                                                      -->
@@ -5,30 +6,30 @@
 <!--                                                                                                                 -->
 <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
-<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://maven.apache.org/POM/4.0.0"
+<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xmlns = "http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>kivakit-extensions</artifactId>
+        <artifactId>kivakit-filesystems</artifactId>
         <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <name>KivaKit Extensions - Filesystems</name>
-
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>kivakit-filesystems</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>kivakit-filesystem-java</artifactId>
+    <packaging>jar</packaging>
+    <name>KivaKit Extensions - Filesystems - Java Filesystem</name>
 
-    <modules>
+    <dependencies>
 
-        <module>hdfs-proxy-spi</module>
-        <module>hdfs-proxy</module>
-        <module>hdfs</module>
-        <module>s3fs</module>
-        <module>github</module>
-        <module>java</module>
+        <!-- KivaKit -->
 
-    </modules>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-component</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>
