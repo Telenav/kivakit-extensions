@@ -67,6 +67,12 @@ public class S3File extends S3FileSystemObject implements FileService
     }
 
     @Override
+    public boolean isRemote()
+    {
+        return true;
+    }
+
+    @Override
     public Boolean isWritable()
     {
         return true;

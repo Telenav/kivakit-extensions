@@ -231,6 +231,12 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
+    public boolean isRemote()
+    {
+        return true;
+    }
+
+    @Override
     public Boolean isWritable()
     {
         return false;

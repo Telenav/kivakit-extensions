@@ -20,8 +20,11 @@ package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
+import com.telenav.kivakit.kernel.language.paths.Nio;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.time.Time;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.WritableResource;
 import com.telenav.kivakit.resource.path.FilePath;
@@ -30,38 +33,64 @@ import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFilePermission;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
  * Base functionality common to both {@link JavaFile} and {@link JavaFolder}.
  *
  * @author yinyinz
+ * @author jonathanl (shibo)
  */
 public class JavaFileSystemObject extends BaseWritableResource implements FileSystemObjectService
 {
-    // True if it's a folder
-    private final boolean isFolder;
+    /** Java NIO filesystem */
+    private FileSystem filesystem;
 
-    private final Path javaPath;
+    /** Java NIO path on the given filesystem */
+    private Path path;
 
-    public JavaFileSystemObject(final FilePath path, final boolean isFolder)
+    public JavaFileSystemObject(final FilePath path)
     {
         super(path);
 
-        this.javaPath = path.asJavaPath();
-        this.isFolder = isFolder;
-    }
+        final var pathString = path.toString();
+        if (pathString.contains("!/"))
+        {
+            final String head = Paths.head(pathString, "!/");
+            final String tail = Paths.tail(pathString, "!/");
 
-    public JavaFileSystemObject(final Path path)
-    {
-        super((normalize(path)));
-        this.javaPath = path;
-        this.isFolder = Files.isDirectory(this.javaPath);
+            var uri = URI.create(head);
+            this.filesystem = Nio.filesystem(Listener.none(), uri);
+            if (filesystem != null)
+            {
+                this.path = filesystem.getPath(tail);
+            }
+        }
+        else
+        {
+            // Start with the whole path and work backwards, removing the last component of the path each time,
+            for (var at = path; !at.isEmpty(); at = at.withoutLast())
+            {
+                // until we find a filesystem.
+                var uri = URI.create(at.toString());
+                this.filesystem = Nio.filesystem(Listener.none(), uri);
+                if (filesystem != null)
+                {
+                    this.path = path().last(path().size() - at.size()).withoutSchemes().asJavaPath();
+                    break;
+                }
+            }
+        }
+
+        ensureNotNull(this.filesystem, "Not a valid Java filesystem");
     }
 
     @Override
@@ -75,7 +104,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     {
         try
         {
-            Files.copy(this.javaPath, destination.path().asJavaPath());
+            Files.copy(javaPath(), destination.path().asJavaPath());
         }
         catch (Exception e)
         {
@@ -84,15 +113,48 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
+    public Time created()
+    {
+        try
+        {
+            var creationTime = (FileTime) Files.getAttribute(javaPath(), "creationTime");
+            return Time.milliseconds(creationTime.toMillis());
+        }
+        catch (IOException e)
+        {
+            problem(e, "Unable to determine file creation time of: $", javaPath());
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean exists()
+    {
+        return Files.exists(javaPath());
+    }
+
+    @Override
     public boolean isFolder()
     {
-        return isFolder;
+        return this instanceof JavaFolder;
+    }
+
+    @Override
+    public boolean isRemote()
+    {
+        return FileSystemObjectService.super.isRemote();
     }
 
     @Override
     public Boolean isWritable()
     {
-        return Files.isWritable(this.javaPath);
+        return Files.isWritable(javaPath());
+    }
+
+    public Path javaPath()
+    {
+        return filesystem.getPath(this.path.toString()).toAbsolutePath();
     }
 
     @Override
@@ -108,15 +170,9 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public boolean exists()
-    {
-        return Files.exists(this.javaPath);
-    }
-
-    @Override
     public FolderService parent()
     {
-        return new JavaFolder(this.javaPath.getParent());
+        return new JavaFolder(path().parent());
     }
 
     @Override
@@ -128,32 +184,6 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     @Override
     public FolderService root()
     {
-        return new JavaFolder(this.javaPath.getRoot());
-    }
-
-    private static FilePath normalize(final Path path)
-    {
-        return FilePath.filePath(path);
-    }
-
-    @Override
-    public Time created()
-    {
-        try
-        {
-            FileTime creationTime = (FileTime) Files.getAttribute(this.javaPath, "creationTime");
-            return Time.milliseconds(creationTime.toMillis());
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public Path toJavaPath()
-    {
-        return this.javaPath;
+        return new JavaFolder(path().root());
     }
 }

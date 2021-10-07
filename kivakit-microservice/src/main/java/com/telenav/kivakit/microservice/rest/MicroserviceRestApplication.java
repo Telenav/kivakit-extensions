@@ -196,6 +196,7 @@ public abstract class MicroserviceRestApplication extends BaseComponent implemen
      * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
      * @param requestType The type of the request
      */
+    @SuppressWarnings("unchecked")
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(final String path, final Class<Request> requestType)
     {

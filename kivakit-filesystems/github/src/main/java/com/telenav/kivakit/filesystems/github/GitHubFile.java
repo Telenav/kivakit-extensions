@@ -63,6 +63,12 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
     }
 
     @Override
+    public boolean isRemote()
+    {
+        return true;
+    }
+
+    @Override
     public Boolean isWritable()
     {
         return false;

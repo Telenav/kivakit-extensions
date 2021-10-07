@@ -38,40 +38,34 @@ public class JavaFile extends JavaFileSystemObject implements FileService, Compo
 {
     public JavaFile(final FilePath path)
     {
-        super(path, false);
-    }
-
-    public JavaFile(final String path)
-    {
-        super(FilePath.parseFilePath(path), false);
+        super(path);
     }
 
     @Override
     public InputStream onOpenForReading()
     {
-        return tryCatch(() -> Files.newInputStream(toJavaPath()), "Could not open for reading: $", path());
+        return tryCatch(() -> Files.newInputStream(javaPath()), "Could not open for reading: $", path());
     }
 
     @Override
     public OutputStream onOpenForWriting()
     {
-        return tryCatch(() -> Files.newOutputStream(toJavaPath()), "Could not open for writing: $", path());
+        return tryCatch(() -> Files.newOutputStream(javaPath()), "Could not open for writing: $", path());
     }
 
     @Override
     public boolean renameTo(FileService that)
     {
         return tryCatch(() ->
-                {
-                    Files.move(toJavaPath(), that.path().asJavaPath());
-                    return true;
-                }
-                , "Could not move from: $, to: $", path(), that.path());
+        {
+            Files.move(javaPath(), that.path().asJavaPath());
+            return true;
+        }, "Could not move from: $, to: $", path(), that.path());
     }
 
     @Override
     public Bytes sizeInBytes()
     {
-        return tryCatchThrow(() -> Bytes.bytes(Files.size(toJavaPath())), "Cannot determine file size: $", path());
+        return tryCatchDefault(() -> Bytes.bytes(Files.size(javaPath())), Bytes._0);
     }
 }

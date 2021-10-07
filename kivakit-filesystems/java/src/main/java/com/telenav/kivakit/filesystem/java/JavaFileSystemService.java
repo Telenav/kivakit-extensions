@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.filesystem.java;
 
+import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.DiskService;
@@ -27,8 +28,9 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.path.FilePath;
 
-import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
+
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 
 /**
  * <b>Not public API</b>
@@ -45,40 +47,50 @@ import java.nio.file.Paths;
  * @see File
  * @see Folder
  */
-public class JavaFileSystemService implements FileSystemService
+public class JavaFileSystemService implements FileSystemService, ComponentMixin
 {
+    public static final String SCHEME = "java:";
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean accepts(FilePath path)
     {
-        try
+        // If the path starts with "java:" then it's a JavaFileSystem path,
+        if (path.startsWith(SCHEME))
         {
-            Paths.get(path.asString());
-        }
-        catch (InvalidPathException | NullPointerException ex)
-        {
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
-            return false;
+            try
+            {
+                // so strip off the "java:" scheme and see if Java recognizes the remainder of the path.
+                Paths.get(path.withoutPrefix(SCHEME).asString());
+                return true;
+            }
+            catch (Exception e)
+            {
+                // The path is invalid.
+                problem(e, "Invalid Java filesystem path: $", path);
+            }
         }
 
-        return true;
+        return false;
     }
 
     @Override
     public DiskService diskService(FilePath path)
     {
-        return new JavaDisk(new JavaFolder(path));
+        return unsupported();
     }
 
     @Override
     public FileService fileService(FilePath path)
     {
-        return new JavaFile(path);
+        return new JavaFile(path.withoutPrefix(SCHEME));
     }
 
     @Override
     public FolderService folderService(FilePath path)
     {
-        return new JavaFolder(path);
+        return new JavaFolder(path.withoutPrefix(SCHEME));
     }
 }
