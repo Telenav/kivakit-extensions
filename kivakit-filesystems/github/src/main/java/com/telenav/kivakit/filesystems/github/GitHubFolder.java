@@ -112,6 +112,12 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
+    public boolean isRemote()
+    {
+        return true;
+    }
+
+    @Override
     public Boolean isWritable()
     {
         return false;

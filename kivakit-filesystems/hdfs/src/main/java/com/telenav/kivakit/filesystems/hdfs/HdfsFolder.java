@@ -190,6 +190,12 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
+    public boolean isRemote()
+    {
+        return true;
+    }
+
+    @Override
     public Boolean isWritable()
     {
         return exists() && retry(() -> proxy().isWritable(pathAsString())).orDefault(false, "Unable to determine if $ is writable", this);

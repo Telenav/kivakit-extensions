@@ -22,11 +22,13 @@ import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
+import com.telenav.kivakit.kernel.language.paths.Nio;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.WritableResource;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,18 +44,7 @@ import java.util.List;
  */
 public class JavaFolder extends JavaFileSystemObject implements FolderService
 {
-
     public JavaFolder(final FilePath path)
-    {
-        super(path, true);
-    }
-
-    public JavaFolder(final String path)
-    {
-        super(FilePath.parseFilePath(path), true);
-    }
-
-    public JavaFolder(final Path path)
     {
         super(path);
     }
@@ -73,29 +64,21 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public List<FileService> files()
     {
-        final List<FileService> files = new ArrayList<>();
-        try
+        final var files = new ArrayList<FileService>();
+        for (var at : Nio.filesAndFolders(this, javaPath()))
         {
-            for (Path path : Files.newDirectoryStream(toJavaPath()))
+            if (!Files.isDirectory(at))
             {
-                if (!Files.isDirectory(path))
-                {
-                    files.add(new JavaFile(path.toString()));
-                }
+                files.add(file(at));
             }
         }
-        catch (final Exception e)
-        {
-            problem(e, "Unable to list files in: $", path());
-        }
-
         return files;
     }
 
     @Override
     public FolderService folder(Folder folder)
     {
-        FilePath folderPath = path().withChild(folder.toString());
+        var folderPath = path().withChild(folder.toString());
         return new JavaFolder(folderPath);
     }
 
@@ -107,47 +90,39 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     }
 
     @Override
-    public Iterable<FolderService> folders()
+    public List<FolderService> folders()
     {
-        final List<FolderService> folders = new ArrayList<>();
-        try
+        final var folders = new ArrayList<FolderService>();
+        for (var at : Nio.filesAndFolders(this, javaPath()))
         {
-            for (Path path : Files.newDirectoryStream(toJavaPath()))
+            if (Files.isDirectory(at) || at.equals("/"))
             {
-                if (Files.isDirectory(path))
-                {
-                    folders.add(new JavaFolder(path));
-                }
+                folders.add(folder(fileName(at)));
             }
         }
-        catch (final Exception e)
-        {
-            problem(e, "Unable to list folders in: $", path());
-        }
-
         return folders;
     }
 
     @Override
     public boolean isEmpty()
     {
-        return !folders().iterator().hasNext();
+        return !folders().isEmpty() && !files().isEmpty();
     }
 
     @Override
     public List<FileService> nestedFiles(Matcher<FilePath> matcher)
     {
-        final List<FileService> files = new ArrayList<>();
+        final var files = new ArrayList<FileService>();
         try
         {
-            Files.walk(toJavaPath())
+            Files.walk(javaPath())
                     .filter(Files::isRegularFile)
-                    .forEach(f ->
+                    .forEach(at ->
                     {
-                        var filePath = FilePath.filePath(f);
+                        var filePath = FilePath.filePath(at);
                         if (matcher.matches(filePath))
                         {
-                            files.add(new JavaFile(filePath));
+                            files.add(file(at));
                         }
                     });
         }
@@ -162,14 +137,14 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
     {
-        final List<FolderService> folders = new ArrayList<>();
+        final var folders = new ArrayList<FolderService>();
         try
         {
-            Files.walk(toJavaPath())
+            Files.walk(javaPath())
                     .filter(Files::isDirectory)
-                    .forEach(f ->
+                    .forEach(at ->
                     {
-                        var filePath = FilePath.filePath(f);
+                        var filePath = FilePath.filePath(at);
                         if (matcher.matches(filePath))
                         {
                             folders.add(new JavaFolder(filePath));
@@ -182,6 +157,17 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
         }
 
         return folders;
+    }
+
+    private FileService file(Path path)
+    {
+        return file(fileName(path));
+    }
+
+    @NotNull
+    private FileName fileName(final Path at)
+    {
+        return FileName.parse(at.getFileName().toString());
     }
 }
 
