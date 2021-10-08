@@ -36,7 +36,7 @@ public class MicroservletError
      * A hierarchical error code per IETF RFC 7807. For example, "errors/authentication/incorrect-password".
      */
     @OpenApiIncludeMember(description = "A hierarchical error code per IETF RFC 7807",
-                          example = "errors/authentication/incorrect-password",
+                          example = "errors/authentication/my-error",
                           required = false)
     private final String code;
 
@@ -44,7 +44,7 @@ public class MicroservletError
      * The type of error, such as Problem, Warning or Alert.
      */
     @OpenApiIncludeMember(
-            description = "The KivaKit message type used by the Java microservlet client (can be ignored)",
+            description = "The message type such as Problem or Warning. Used by the microservice REST client and can be ignored",
             example = "Problem")
     private final String type;
 
@@ -52,7 +52,7 @@ public class MicroservletError
      * Details of the problem
      */
     @OpenApiIncludeMember(description = "A formatted description of the error",
-                          example = "Was not able to authenticate the user because of 2FA adoption")
+                          example = "This is a description of the problem that occurred")
     private final String message;
 
     protected MicroservletError(final String code, final String type, final String message)
