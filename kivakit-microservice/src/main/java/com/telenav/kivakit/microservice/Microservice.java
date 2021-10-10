@@ -9,11 +9,11 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
-import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.rest.microservlet.metrics.MetricReporter;
-import com.telenav.kivakit.microservice.rest.microservlet.metrics.reporters.console.ConsoleMetricReporter;
-import com.telenav.kivakit.microservice.rest.microservlet.metrics.reporters.none.NullMetricReporter;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.microservlet.metrics.MetricReporter;
+import com.telenav.kivakit.microservice.microservlet.metrics.reporters.console.ConsoleMetricReporter;
+import com.telenav.kivakit.microservice.microservlet.metrics.reporters.none.NullMetricReporter;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
@@ -46,7 +46,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     <li>Create the {@link Microservice} subclass in the application's main(String[]) method</li>
  *     <li>Call {@link #run(String[])}, passing in the arguments to main()</li>
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
- *     <li>Override {@link #restApplication()} to provide the microservice's {@link MicroserviceRestApplication} subclass</li>
+ *     <li>Override {@link #restApplication()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
  *     <li>Override {@link #description()} to provide a description of the microservice for display in administrative user interfaces</li>
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
  *     <li>Optionally, override {@link #openApiAssetsFolder()} to provide any package or folder for OpenAPI specification .yaml files</li>
@@ -130,7 +130,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see MetricReporter
  * @see ConsoleMetricReporter
  * @see MicroserviceSettings
- * @see MicroserviceRestApplication
+ * @see MicroserviceRestService
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
@@ -200,7 +200,13 @@ public abstract class Microservice extends Application implements Startable
     /**
      * @return The REST application for this microservice
      */
-    public abstract MicroserviceRestApplication restApplication();
+    public abstract MicroserviceRestService restApplication();
+
+    @UmlRelation(label = "has")
+    public MicroserviceSettings settings()
+    {
+        return require(MicroserviceSettings.class);
+    }
 
     /**
      * <b>Not public API</b>
@@ -350,11 +356,5 @@ public abstract class Microservice extends Application implements Startable
     protected MicroserviceWebApplication webApplication()
     {
         return null;
-    }
-
-    @UmlRelation(label = "has")
-    private MicroserviceSettings settings()
-    {
-        return require(MicroserviceSettings.class);
     }
 }

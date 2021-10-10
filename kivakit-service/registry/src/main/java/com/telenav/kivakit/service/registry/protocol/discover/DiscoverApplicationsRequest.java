@@ -20,8 +20,8 @@ package com.telenav.kivakit.service.registry.protocol.discover;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
 import com.telenav.kivakit.service.registry.protocol.BaseRequest;

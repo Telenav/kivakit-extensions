@@ -8,19 +8,15 @@ import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
-import com.telenav.kivakit.microservice.rest.MicroserviceGsonFactory;
-import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletClient;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactory;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
 
 public class MicroservletTest extends UnitTest
 {
-    public static class TestGarbageRequest extends MicroservletPostRequest
+    public static class TestGarbageRequest extends BaseMicroservletRequest
     {
         @Expose
         private String trash;
@@ -35,7 +31,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroservletResponse onPost()
+        public MicroservletResponse onRequest()
         {
             return new TestResponse(-1);
         }
@@ -60,14 +56,14 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestGetRequest extends MicroservletGetRequest
+    public static class TestGetRequest extends BaseMicroservletRequest
     {
         public TestGetRequest()
         {
         }
 
         @Override
-        public MicroservletResponse onGet()
+        public MicroservletResponse onRequest()
         {
             return new TestResponse(42);
         }
@@ -91,13 +87,13 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroserviceRestApplication restApplication()
+        public MicroserviceRestService restApplication()
         {
-            return new TestRestApplication(this);
+            return new TestRestService(this);
         }
     }
 
-    public static class TestPostRequest extends MicroservletPostRequest
+    public static class TestPostRequest extends BaseMicroservletRequest
     {
         @Expose
         int a;
@@ -116,7 +112,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroservletResponse onPost()
+        public MicroservletResponse onRequest()
         {
             return new TestResponse(a * b);
         }
@@ -128,7 +124,7 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestResponse extends MicroservletResponse
+    public static class TestResponse extends BaseMicroservletResponse
     {
         @Expose
         int result;
@@ -143,9 +139,9 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestRestApplication extends MicroserviceRestApplication
+    public static class TestRestService extends MicroserviceRestService
     {
-        public TestRestApplication(final Microservice microservice)
+        public TestRestService(final Microservice microservice)
         {
             super(microservice);
         }
@@ -159,9 +155,9 @@ public class MicroservletTest extends UnitTest
         @Override
         public void onInitialize()
         {
-            mount("test", TestPostRequest.class);
-            mount("test", TestGetRequest.class);
-            mount("garbage", TestGarbageRequest.class);
+            mount("test", HttpMethod.POST, TestPostRequest.class);
+            mount("test", HttpMethod.GET, TestGetRequest.class);
+            mount("garbage", HttpMethod.POST, TestGarbageRequest.class);
         }
     }
 

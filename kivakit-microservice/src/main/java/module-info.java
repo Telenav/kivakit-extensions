@@ -6,13 +6,24 @@ open module kivakit.microservice
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.test;
 
+    requires grpc.api;
+    requires grpc.stub;
+    requires grpc.netty;
+    requires grpc.protobuf;
+
+    requires com.google.protobuf;
+    requires protostuff.core;
+    requires protostuff.runtime;
+    requires protostuff.api;
+    requires java.annotation;
+
     // Module exports
     exports com.telenav.kivakit.microservice;
-    exports com.telenav.kivakit.microservice.rest;
     exports com.telenav.kivakit.microservice.web;
-    exports com.telenav.kivakit.microservice.rest.microservlet;
-    exports com.telenav.kivakit.microservice.rest.microservlet.metrics;
-    exports com.telenav.kivakit.microservice.rest.microservlet.metrics.aggregates;
-    exports com.telenav.kivakit.microservice.rest.microservlet.openapi;
-    exports com.telenav.kivakit.microservice.rest.microservlet.requests;
+    exports com.telenav.kivakit.microservice.microservlet;
+    exports com.telenav.kivakit.microservice.microservlet.grpc;
+    exports com.telenav.kivakit.microservice.microservlet.rest;
+    exports com.telenav.kivakit.microservice.microservlet.rest.openapi;
+    exports com.telenav.kivakit.microservice.microservlet.metrics;
+    exports com.telenav.kivakit.microservice.microservlet.metrics.aggregates;
 }
