@@ -2,16 +2,18 @@ package com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jett
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
+import com.google.gson.GsonBuilder;
 import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.cycle.JettyMicroservletRequestCycle;
-import io.swagger.v3.oas.models.OpenAPI;
+import com.telenav.kivakit.serialization.json.GsonFactory;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class OpenApiSerializer
+public class OpenApiGsonFactory extends GsonFactory
 {
-    public String toJson(OpenAPI api)
+    @Override
+    public GsonBuilder builder()
     {
         final var factory = JettyMicroservletRequestCycle.cycle()
                 .application()
@@ -40,6 +42,6 @@ public class OpenApiSerializer
             }
         });
 
-        return builder.create().toJson(api);
+        return builder;
     }
 }

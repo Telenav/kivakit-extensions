@@ -20,6 +20,12 @@
     <artifactId>kivakit-microservice</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+
+        <protostuff.version>1.1.6</protostuff.version>
+
+    </properties>
+
     <dependencies>
 
         <!-- KivaKit -->
@@ -44,6 +50,17 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-web-wicket</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- Protobuf -->
 
@@ -52,15 +69,15 @@
             <artifactId>protobuf-java</artifactId>
             <version>3.18.1</version>
         </dependency>
+
+        <!-- This merged JAR file is built by the kivakit-protostuff-merged project -->
+
         <dependency>
-            <groupId>com.dyuproject.protostuff</groupId>
-            <artifactId>protostuff-core</artifactId>
-            <version>1.1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.dyuproject.protostuff</groupId>
-            <artifactId>protostuff-runtime</artifactId>
-            <version>1.1.6</version>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-protostuff-merged</artifactId>
+            <version>1.1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/kivakit-protostuff-merged-1.1.0.jar</systemPath>
         </dependency>
 
         <!-- GRPC -->
@@ -78,29 +95,45 @@
                     <groupId>com.google.protobuf</groupId>
                     <artifactId>protobuf-java</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
             </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-netty</artifactId>
 			<version>1.41.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-stub</artifactId>
 			<version>1.41.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 
     </dependencies>
 
     <build>
-      <extensions>
-        <extension>
-          <groupId>kr.motd.maven</groupId>
-          <artifactId>os-maven-plugin</artifactId>
-          <version>1.6.1</version>
-        </extension>
-      </extensions>
+        <extensions>
+            <extension>
+              <groupId>kr.motd.maven</groupId>
+              <artifactId>os-maven-plugin</artifactId>
+              <version>1.6.1</version>
+            </extension>
+        </extensions>
         <plugins>
             <plugin>
               <groupId>org.xolstice.maven.plugins</groupId>
@@ -123,6 +156,26 @@
                   </goals>
                 </execution>
               </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <groupId>com.telenav.kivakit</groupId>
+                    <artifactId>kivakit-protostuff-merged</artifactId>
+                    <file>${project.basedir}/lib/kivakit-protostuff-merged-1.1.0.jar</file>
+                    <version>1.1.0</version>
+                    <packaging>jar</packaging>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>install</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

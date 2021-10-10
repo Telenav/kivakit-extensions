@@ -12,13 +12,10 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-public abstract class BaseMicroservletRequest extends BaseComponent implements MicroservletRequest
+public abstract class BaseMicroservletRequest extends BaseComponent implements
+        MicroservletRequest,
+        MicroservletRequestHandler
 {
-    /**
-     * @return The response to this request
-     */
-    public abstract MicroservletResponse onRespond();
-
     @Override
     public Validator validator(final ValidationType type)
     {

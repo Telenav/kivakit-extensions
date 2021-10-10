@@ -3,14 +3,17 @@ package com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jett
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactorySource;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.openapi.reader.OpenApiReader;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.openapi.serialization.OpenApiSerializer;
+import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.openapi.serialization.OpenApiGsonFactory;
 import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
+import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import io.swagger.v3.oas.models.OpenAPI;
 
@@ -27,7 +30,7 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
     /**
      * Response to OpenAPI request
      */
-    public static class JettyOpenApiResponse extends MicroservletResponse
+    public static class JettyOpenApiResponse extends BaseMicroservletResponse implements MicroserviceGsonFactorySource
     {
         @SuppressWarnings("FieldCanBeLocal")
         @Expose
@@ -39,9 +42,9 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
         }
 
         @Override
-        public String toJson()
+        public GsonFactory gsonFactory()
         {
-            return new OpenApiSerializer().toJson(api);
+            return new OpenApiGsonFactory();
         }
     }
 

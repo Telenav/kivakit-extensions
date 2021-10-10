@@ -18,7 +18,7 @@ public interface MicroservletRequest extends
         Component,
         ProblemReportingTrait,
         MetricReportingTrait,
-        MicroservletResponder
+        MicroservletRequestHandler
 {
     /**
      * @return The type of the response for this request

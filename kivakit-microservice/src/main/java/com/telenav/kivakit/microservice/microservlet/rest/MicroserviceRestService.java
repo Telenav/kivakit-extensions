@@ -175,11 +175,11 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param microservlet The microservlet to mount
      */
     @UmlRelation(label = "mounts", referent = Microservlet.class)
-    public void mount(final String path, final Microservlet<?, ?> microservlet)
+    public void mount(final String path, HttpMethod method, final Microservlet<?, ?> microservlet)
     {
         if (mountAllowed)
         {
-            require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
+            require(MicroservletJettyFilterPlugin.class).mount(path, method, microservlet);
         }
         else
         {
@@ -211,7 +211,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                 // then mount an anonymous microservlet on the given path,
                 final var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                mount(path, listenTo(new Microservlet<Request, Response>(requestType, responseType)
+                mount(path, method, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
                     @JsonProperty

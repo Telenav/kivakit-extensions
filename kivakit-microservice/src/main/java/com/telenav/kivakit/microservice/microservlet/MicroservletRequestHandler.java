@@ -4,15 +4,15 @@ import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroser
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
- * Creates a {@link MicroservletResponse} when {@link #onRespond()} is called.
+ * Creates a {@link MicroservletResponse} when {@link #onRequest()} is called.
  *
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-public interface MicroservletResponder
+public interface MicroservletRequestHandler
 {
     /**
      * @return The response to this microservlet request
      */
-    MicroservletResponse onRespond();
+    MicroservletResponse onRequest();
 }

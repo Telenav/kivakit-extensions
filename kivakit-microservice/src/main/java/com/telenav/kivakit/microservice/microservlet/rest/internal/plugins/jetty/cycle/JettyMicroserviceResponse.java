@@ -10,9 +10,11 @@ import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactorySource;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
+import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
@@ -162,8 +164,24 @@ public final class JettyMicroserviceResponse extends BaseComponent
         }
     }
 
-    private String toJson(Object object)
+    /**
+     * @param response The response object to be serialized
+     * @return The object serialized into JSON format, using the application {@link GsonFactory}. This behavior can be
+     * overridden by implement {@link MicroserviceGsonFactorySource} to provide a custom {@link GsonFactory} for a given
+     * response object.
+     */
+    private String toJson(Object response)
     {
-        return cycle.gson().toJson(object);
+        // If the response object has a custom GsonFactory,
+        if (response instanceof MicroserviceGsonFactorySource)
+        {
+            // use that to convert the response to JSON,
+            return ((MicroserviceGsonFactorySource) response).gson().toJson(response);
+        }
+        else
+        {
+            // otherwise, use the GsonFactory, provided by the application through the request cycle.
+            return cycle.gson().toJson(response);
+        }
     }
 }

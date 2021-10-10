@@ -5,17 +5,17 @@ open module kivakit.microservice
     requires transitive kivakit.web.wicket;
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.test;
+    requires transitive kivakit.protostuff.merged;
 
-    requires grpc.api;
-    requires grpc.stub;
-    requires grpc.netty;
-    requires grpc.protobuf;
+    requires transitive java.annotation;
 
-    requires com.google.protobuf;
-    requires protostuff.core;
-    requires protostuff.runtime;
-    requires protostuff.api;
-    requires java.annotation;
+    requires transitive grpc.api;
+    requires transitive grpc.stub;
+    requires transitive grpc.netty;
+    requires transitive grpc.protobuf;
+
+    requires transitive com.google.protobuf;
+    requires transitive com.google.common;
 
     // Module exports
     exports com.telenav.kivakit.microservice;
