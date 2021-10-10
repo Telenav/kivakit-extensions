@@ -12,6 +12,8 @@ open module kivakit.logs.client
     requires transitive kivakit.service.client;
     requires transitive kivakit.network.core;
 
+    requires org.jetbrains.annotations;
+
     // Java
     requires java.desktop;
     requires java.prefs;

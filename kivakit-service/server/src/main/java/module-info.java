@@ -12,16 +12,16 @@ open module kivakit.service.server
     requires transitive java.prefs;
 
     // Wicket
-    requires transitive wicket.extensions;
-    requires transitive wicket.jquery.ui;
-    requires transitive wicket.jquery.ui.core;
-    requires transitive wicket.util;
+    requires wicket.extensions;
+    requires wicket.jquery.ui;
+    requires wicket.jquery.ui.core;
+    requires wicket.util;
 
     // Serialization
     requires transitive org.danekja.jdk.serializable.functional;
 
     // Swagger annotations
-    requires transitive io.swagger.v3.oas.annotations;
+    requires io.swagger.v3.oas.annotations;
 
     // Module exports
     exports com.telenav.kivakit.service.registry.server.project.lexakai.diagrams;

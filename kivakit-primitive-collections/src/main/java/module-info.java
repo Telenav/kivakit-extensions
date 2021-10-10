@@ -5,6 +5,10 @@ open module kivakit.primitive.collections
     requires transitive kivakit.test;
     requires transitive kivakit.collections;
 
+    requires kryo;
+    requires de.javakaffee.kryoserializers;
+    requires org.jetbrains.annotations;
+
     // Module exports
     exports com.telenav.kivakit.primitive.collections;
     exports com.telenav.kivakit.primitive.collections.array;

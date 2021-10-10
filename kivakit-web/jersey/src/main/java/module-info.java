@@ -11,13 +11,13 @@ open module kivakit.web.jersey
     requires transitive jakarta.activation;
 
     // Jersey
-    requires transitive jersey.common;
-    requires transitive jersey.container.servlet.core;
-    requires transitive jersey.server;
-    requires transitive jersey.hk2;
+    requires jersey.common;
+    requires jersey.container.servlet.core;
+    requires jersey.server;
+    requires jersey.hk2;
 
     // JSON
-    requires transitive gson;
+    requires gson;
 
     // XML
     requires transitive com.fasterxml.jackson.core;

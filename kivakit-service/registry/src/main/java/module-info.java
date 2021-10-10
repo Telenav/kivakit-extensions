@@ -7,6 +7,9 @@ open module kivakit.service.registry
     // Jackson
     requires transitive com.fasterxml.jackson.annotation;
 
+    requires org.jetbrains.annotations;
+    requires gson;
+
     // Module exports
     exports com.telenav.kivakit.service.registry;
     exports com.telenav.kivakit.service.registry.project;

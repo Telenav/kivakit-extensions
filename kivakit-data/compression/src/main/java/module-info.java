@@ -4,6 +4,8 @@ open module kivakit.data.compression
     requires transitive kivakit.resource;
     requires transitive kivakit.primitive.collections;
 
+    requires org.jetbrains.annotations;
+
     // Module exports
     exports com.telenav.kivakit.data.compression.codecs.huffman.character;
     exports com.telenav.kivakit.data.compression.codecs.huffman.list;

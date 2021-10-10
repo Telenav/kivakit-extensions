@@ -4,11 +4,11 @@ open module kivakit.web.swagger
     requires transitive kivakit.web.jersey;
 
     // Swagger
-    requires transitive io.swagger.v3.core;
-    requires transitive io.swagger.v3.jaxrs2;
-    requires transitive io.swagger.v3.oas.annotations;
-    requires transitive io.swagger.v3.oas.models;
-    requires transitive io.swagger.v3.oas.integration;
+    requires io.swagger.v3.core;
+    requires io.swagger.v3.jaxrs2;
+    requires io.swagger.v3.oas.annotations;
+    requires io.swagger.v3.oas.models;
+    requires io.swagger.v3.oas.integration;
     requires transitive io.github.classgraph;
     requires transitive java.ws.rs;
     requires transitive jakarta.activation;

@@ -10,6 +10,8 @@ open module kivakit.logs.server
     requires transitive kivakit.service.registry;
     requires transitive kivakit.service.client;
 
+    requires org.jetbrains.annotations;
+
     // Module exports
     exports com.telenav.kivakit.logs.server;
     exports com.telenav.kivakit.logs.server.project;

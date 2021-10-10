@@ -5,9 +5,9 @@ open module kivakit.web.wicket
     requires transitive kivakit.component;
 
     // Wicket
-    requires transitive wicket.core;
-    requires transitive wicket.util;
-    requires transitive wicket.request;
+    requires wicket.core;
+    requires wicket.util;
+    requires wicket.request;
 
     // Module exports
     exports com.telenav.kivakit.web.wicket.behaviors.status;

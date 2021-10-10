@@ -6,8 +6,8 @@ open module kivakit.service.client
     requires transitive kivakit.network.http;
 
     // Jersey and XML binding
-    requires transitive jersey.client;
-    requires transitive jersey.media.json.jackson;
+    requires jersey.client;
+    requires jersey.media.json.jackson;
     requires transitive com.fasterxml.jackson.core;
     requires transitive java.ws.rs;
     requires transitive jakarta.activation;
