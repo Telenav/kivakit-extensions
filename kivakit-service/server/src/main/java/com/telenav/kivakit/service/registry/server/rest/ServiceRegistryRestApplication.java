@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.service.registry.server.rest;
 
+import com.telenav.kivakit.configuration.lookup.Registry;
 import com.telenav.kivakit.service.registry.serialization.ServiceRegistryJerseySerializer;
 import com.telenav.kivakit.service.registry.server.ServiceRegistryServer;
 import com.telenav.kivakit.web.jersey.BaseRestApplication;
@@ -37,7 +38,7 @@ public class ServiceRegistryRestApplication extends BaseRestApplication
 {
     public ServiceRegistryRestApplication()
     {
-        register(new ServiceRegistryRestResource());
-        register(new ServiceRegistryJerseySerializer<>());
+        Registry.of(this).register(new ServiceRegistryRestResource());
+        Registry.of(this).register(new ServiceRegistryJerseySerializer<>());
     }
 }

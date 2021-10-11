@@ -22,6 +22,7 @@ open module kivakit.web.jersey
     // XML
     requires transitive com.fasterxml.jackson.core;
     requires transitive com.fasterxml.jackson.databind;
+    requires java.logging;
 
     // Module exports
     exports com.telenav.kivakit.web.jersey;
