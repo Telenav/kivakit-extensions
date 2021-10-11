@@ -39,6 +39,7 @@ public abstract class MicroserviceWebApplication extends WebApplication
     }
 
     @Override
+    @SuppressWarnings("DuplicatedCode")
     public void init()
     {
         if (getConfigurationType() == DEVELOPMENT)

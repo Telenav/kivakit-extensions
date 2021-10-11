@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.microservlet.rest.openapi;
 
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.openapi.OpenApiIncludeMemberFromSuperTypeRepeater;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.openapi.OpenApiIncludeMemberFromSuperTypeRepeater;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;

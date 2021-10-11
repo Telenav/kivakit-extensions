@@ -6,18 +6,21 @@ open module kivakit.microservice
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.test;
     requires kivakit.protostuff.merged;
+    requires kivakit.grpc.merged;
 
     requires java.annotation;
+    requires javax.servlet.api;
 
-    requires grpc.api;
-    requires grpc.stub;
-    requires grpc.netty;
-    requires grpc.protobuf;
+    requires org.jetbrains.annotations;
+
+    requires wicket.core;
 
     requires io.swagger.v3.core;
     requires io.swagger.v3.oas.models;
-    requires gson;
-    requires javax.servlet.api;
+
+    requires org.apache.httpcomponents.httpclient;
+    requires org.apache.httpcomponents.httpcore;
+
     requires org.eclipse.jetty.servlet;
 
     requires com.google.protobuf;
@@ -30,6 +33,6 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.microservlet.grpc;
     exports com.telenav.kivakit.microservice.microservlet.rest;
     exports com.telenav.kivakit.microservice.microservlet.rest.openapi;
-    exports com.telenav.kivakit.microservice.microservlet.metrics;
-    exports com.telenav.kivakit.microservice.microservlet.metrics.aggregates;
+    exports com.telenav.kivakit.microservice.metrics;
+    exports com.telenav.kivakit.microservice.metrics.aggregates;
 }

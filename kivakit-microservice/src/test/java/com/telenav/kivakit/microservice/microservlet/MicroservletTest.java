@@ -87,7 +87,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroserviceRestService restApplication()
+        public MicroserviceRestService restService()
         {
             return new TestRestService(this);
         }
@@ -168,7 +168,7 @@ public class MicroservletTest extends UnitTest
         KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086" }));
         microservice.waitForReady();
         var client = listenTo(new MicroservletClient(
-                microservice.restApplication().gsonFactory(), Host.local().http(8086), microservice.version()));
+                microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
 
         var garbageRequest = new TestGarbageRequest("This request is nonsense");
         var response4 = client.post("garbage", TestResponse.class, garbageRequest);

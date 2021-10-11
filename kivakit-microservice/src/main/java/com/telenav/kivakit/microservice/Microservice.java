@@ -8,12 +8,13 @@ import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.metrics.MetricReporter;
+import com.telenav.kivakit.microservice.metrics.reporters.console.ConsoleMetricReporter;
+import com.telenav.kivakit.microservice.metrics.reporters.none.NullMetricReporter;
+import com.telenav.kivakit.microservice.microservlet.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.microservlet.metrics.MetricReporter;
-import com.telenav.kivakit.microservice.microservlet.metrics.reporters.console.ConsoleMetricReporter;
-import com.telenav.kivakit.microservice.microservlet.metrics.reporters.none.NullMetricReporter;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
@@ -46,7 +47,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     <li>Create the {@link Microservice} subclass in the application's main(String[]) method</li>
  *     <li>Call {@link #run(String[])}, passing in the arguments to main()</li>
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
- *     <li>Override {@link #restApplication()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
+ *     <li>Override {@link #restService()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
  *     <li>Override {@link #description()} to provide a description of the microservice for display in administrative user interfaces</li>
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
  *     <li>Optionally, override {@link #openApiAssetsFolder()} to provide any package or folder for OpenAPI specification .yaml files</li>
@@ -169,6 +170,14 @@ public abstract class Microservice extends Application implements Startable
     }
 
     /**
+     * @return Any GRPC service for this microservice
+     */
+    public MicroserviceGrpcService grpService()
+    {
+        return null;
+    }
+
+    /**
      * This method implements the {@link Startable#isRunning()} method. It returns true if the service is running and
      * false otherwise. The {@link #start()} method should not be called, as this microservice will start running
      * automatically when the {@link Application#run(String[])} method is called from the Java <i>main(String[])</i>
@@ -198,9 +207,12 @@ public abstract class Microservice extends Application implements Startable
     }
 
     /**
-     * @return The REST application for this microservice
+     * @return Any REST service for this microservice
      */
-    public abstract MicroserviceRestService restApplication();
+    public MicroserviceRestService restService()
+    {
+        return null;
+    }
 
     @UmlRelation(label = "has")
     public MicroserviceSettings settings()
@@ -246,8 +258,8 @@ public abstract class Microservice extends Application implements Startable
             }
 
             // If there is a microservlet REST application,
-            final var restApplication = listenTo(restApplication());
-            if (restApplication != null)
+            final var restService = listenTo(restService());
+            if (restService != null)
             {
                 // and there are static OpenAPI assets,
                 final var openApiAssets = openApiAssetsFolder();
@@ -258,16 +270,34 @@ public abstract class Microservice extends Application implements Startable
                 }
 
                 // Mount Swagger resources for the REST application.
-                server.mount("/*", register(new MicroservletJettyFilterPlugin(restApplication)));
+                server.mount("/*", register(new MicroservletJettyFilterPlugin(restService)));
                 server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
-                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication.getClass()));
+                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restService.getClass()));
 
-                // and initialize it.
-                restApplication.initialize();
+                // Initialize the REST service.
+                restService.initialize();
             }
 
-            // Start the server.
+            // If there is a GRPC service,
+            var grpcService = listenTo(grpService());
+            if (grpcService != null)
+            {
+                // initialize it,
+                grpcService.initialize();
+
+                // and start it up.
+                grpcService.start();
+            }
+
+            // If we don't have either a REST or a GRPC service,
+            if (restService == null && grpcService == null)
+            {
+                // then warn about that.
+                warning("No REST or GRPC service is available for this microservice");
+            }
+
+            // Start Jetty server.
             announce("Microservice server starting on port ${integer}", port);
             server.start();
             running = true;
@@ -279,6 +309,14 @@ public abstract class Microservice extends Application implements Startable
     public Version version()
     {
         return metadata().version();
+    }
+
+    /**
+     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
+     */
+    public MicroserviceWebApplication webApplication()
+    {
+        return null;
     }
 
     /**
@@ -313,11 +351,11 @@ public abstract class Microservice extends Application implements Startable
     /**
      * @return The resource folder containing static assets for reference by OpenAPI .yaml files and KivaKit OpenApi
      * annotations. For example, a microservice might want to include an OAS .yaml file. If this method is not
-     * overridden, the default folder will be the "assets" sub-package of tshe rest application's package.
+     * overridden, the default folder will be the "assets" sub-package of the rest application's package.
      */
     protected ResourceFolder openApiAssetsFolder()
     {
-        return Package.of(restApplication().getClass(), "assets");
+        return Package.of(restService().getClass(), "assets");
     }
 
     /**
@@ -348,13 +386,5 @@ public abstract class Microservice extends Application implements Startable
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
         return ObjectSet.of(PORT);
-    }
-
-    /**
-     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
-     */
-    protected MicroserviceWebApplication webApplication()
-    {
-        return null;
     }
 }

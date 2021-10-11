@@ -29,14 +29,15 @@ import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
+import com.telenav.kivakit.microservice.internal.microservlet.MicroservletMountTarget;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.cycle.JettyMicroservletRequest;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.cycle.JettyMicroserviceResponse;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.cycle.JettyMicroservletRequest;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -47,6 +48,8 @@ import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService.HttpMethod.GET;
@@ -118,6 +121,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     /** True while the constructor is running */
     private boolean mountAllowed = false;
 
+    private final Map<String, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
+
     /**
      * @param microservice The microservice that is creating this REST application
      */
@@ -126,7 +131,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         this.microservice = microservice;
         microservice.listenTo(this);
 
-        this.register(this);
+        register(this);
     }
 
     /**
@@ -172,17 +177,21 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param path The path to the microservlet. If the path is not absolute (doesn't start with a '/'), it is prefixed
      * with: "/api/[major.version].[minor.version]/". For example, the path "users" in microservlet version 3.1 will
      * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
+     * @param method The HTTP method to which the microservlet should respond
      * @param microservlet The microservlet to mount
      */
     @UmlRelation(label = "mounts", referent = Microservlet.class)
     public void mount(final String path, HttpMethod method, final Microservlet<?, ?> microservlet)
     {
+        // If we're in onInitialize(),
         if (mountAllowed)
         {
+            // mount the microservlet,
             require(MicroservletJettyFilterPlugin.class).mount(path, method, microservlet);
         }
         else
         {
+            // otherwise complain.
             problem("Request handlers must be mounted in onInitialize()");
         }
     }
@@ -194,20 +203,20 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * (doesn't start with a '/'), it is prefixed with: "/api/[major.version].[minor.version]/", where the version is
      * retrieved from {@link Microservice#version()}. For example, the path "users" in microservlet version 3.1 will
      * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
+     * @param method The HTTP method to which the microservlet should respond
      * @param requestType The type of the request
      */
     @SuppressWarnings("unchecked")
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(final String path, HttpMethod method, final Class<Request> requestType)
     {
+        // If we're in onInitialize(),
         if (mountAllowed)
         {
-            // Create a request object, so we can get the response type and HTTP method,
-            final var request = Classes.newInstance(this, requestType);
+            // create a request object, so we can get the response type and HTTP method,
+            final var request = listenTo(Classes.newInstance(this, requestType));
             if (request != null)
             {
-                listenTo(request);
-
                 // then mount an anonymous microservlet on the given path,
                 final var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
@@ -227,6 +236,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                         return (Response) request.onRequest();
                     }
                 }));
+
+                pathToRequest.put(path, requestType);
             }
             else
             {
@@ -236,6 +247,17 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         else
         {
             problem("Request handlers must be mounted in onInitialize()");
+        }
+    }
+
+    /**
+     * Mounts all paths that have been mounted on this REST service on the given mount target.
+     */
+    public void mountAll(final MicroservletMountTarget target)
+    {
+        for (var path : pathToRequest.keySet())
+        {
+            target.mount(path, pathToRequest.get(path));
         }
     }
 

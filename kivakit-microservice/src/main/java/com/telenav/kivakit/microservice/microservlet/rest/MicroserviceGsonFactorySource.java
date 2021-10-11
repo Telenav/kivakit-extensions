@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.microservlet.rest;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 
 /**

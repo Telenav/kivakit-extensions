@@ -61,13 +61,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- Protobuf -->
-
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.18.1</version>
+            <version>${protobuf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- This merged JAR file is built by the kivakit-protostuff-merged project -->
@@ -83,46 +86,12 @@
         <!-- GRPC -->
 
         <dependency>
-			<groupId>io.grpc</groupId>
-			<artifactId>grpc-protobuf</artifactId>
-			<version>1.41.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.errorprone</groupId>
-                    <artifactId>error_prone_annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.protobuf</groupId>
-                    <artifactId>protobuf-java</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-		</dependency>
-		<dependency>
-			<groupId>io.grpc</groupId>
-			<artifactId>grpc-netty</artifactId>
-			<version>1.41.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-		</dependency>
-		<dependency>
-			<groupId>io.grpc</groupId>
-			<artifactId>grpc-stub</artifactId>
-			<version>1.41.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-		</dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-grpc-merged</artifactId>
+            <version>1.1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/kivakit-grpc-merged-1.1.0.jar</systemPath>
+        </dependency>
 
     </dependencies>
 
@@ -165,6 +134,26 @@
                     <groupId>com.telenav.kivakit</groupId>
                     <artifactId>kivakit-protostuff-merged</artifactId>
                     <file>${project.basedir}/lib/kivakit-protostuff-merged-1.1.0.jar</file>
+                    <version>1.1.0</version>
+                    <packaging>jar</packaging>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <phase>install</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <configuration>
+                    <groupId>com.telenav.kivakit</groupId>
+                    <artifactId>kivakit-grpc-merged</artifactId>
+                    <file>${project.basedir}/lib/kivakit-grpc-merged-1.1.0.jar</file>
                     <version>1.1.0</version>
                     <packaging>jar</packaging>
                 </configuration>

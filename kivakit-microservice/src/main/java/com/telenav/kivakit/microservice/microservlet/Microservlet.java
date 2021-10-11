@@ -5,7 +5,8 @@ import com.telenav.kivakit.kernel.data.conversion.Converter;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.cycle.JettyMicroservletRequestCycle;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService.HttpMethod;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
@@ -28,8 +29,8 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
  * <p>
  * For most applications, it isn't necessary (or desirable) to directly subclass {@link Microservlet}. Instead a ({@link
  * MicroservletRequest} request handler should be mounted directly on a {@link MicroserviceRestService} with the {@link
- * MicroserviceRestService#mount(String, MicroserviceRestService.HttpMethod, Class)} or {@link
- * MicroserviceRestService#mount(String, Microservlet)} method.
+ * MicroserviceRestService#mount(String, HttpMethod, Class)} or {@link MicroserviceRestService#mount(String, HttpMethod,
+ * Microservlet)} method.
  * </p>
  *
  * @author jonathanl (shibo)
