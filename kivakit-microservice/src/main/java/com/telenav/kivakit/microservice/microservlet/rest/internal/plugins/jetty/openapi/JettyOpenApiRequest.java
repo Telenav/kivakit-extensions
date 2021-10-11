@@ -7,6 +7,7 @@ import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactorySource;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.microservlet.rest.internal.plugins.jetty.openapi.reader.OpenApiReader;
@@ -30,7 +31,9 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
     /**
      * Response to OpenAPI request
      */
-    public static class JettyOpenApiResponse extends BaseMicroservletResponse implements MicroserviceGsonFactorySource
+    public static class JettyOpenApiResponse extends BaseMicroservletResponse implements
+            MicroserviceGsonFactorySource,
+            MicroserviceGsonObjectSource
     {
         @SuppressWarnings("FieldCanBeLocal")
         @Expose
@@ -45,6 +48,12 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
         public GsonFactory gsonFactory()
         {
             return new OpenApiGsonFactory();
+        }
+
+        @Override
+        public Object gsonObject()
+        {
+            return api;
         }
     }
 

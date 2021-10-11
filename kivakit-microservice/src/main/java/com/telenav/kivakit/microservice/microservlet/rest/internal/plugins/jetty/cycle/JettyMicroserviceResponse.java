@@ -11,6 +11,7 @@ import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactorySource;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
@@ -172,16 +173,26 @@ public final class JettyMicroserviceResponse extends BaseComponent
      */
     private String toJson(Object response)
     {
+        // We will serialize the response object itself by default.
+        var objectToSerialize = response;
+
+        // If the response object provides another object to serialize,
+        if (response instanceof MicroserviceGsonObjectSource)
+        {
+            // then make that the object to serialize.
+            objectToSerialize = ((MicroserviceGsonObjectSource) response).gsonObject();
+        }
+
         // If the response object has a custom GsonFactory,
         if (response instanceof MicroserviceGsonFactorySource)
         {
             // use that to convert the response to JSON,
-            return ((MicroserviceGsonFactorySource) response).gson().toJson(response);
+            return ((MicroserviceGsonFactorySource) response).gson().toJson(objectToSerialize);
         }
         else
         {
             // otherwise, use the GsonFactory, provided by the application through the request cycle.
-            return cycle.gson().toJson(response);
+            return cycle.gson().toJson(objectToSerialize);
         }
     }
 }

@@ -14,6 +14,12 @@ open module kivakit.microservice
     requires grpc.netty;
     requires grpc.protobuf;
 
+    requires io.swagger.v3.core;
+    requires io.swagger.v3.oas.models;
+    requires gson;
+    requires javax.servlet.api;
+    requires org.eclipse.jetty.servlet;
+
     requires com.google.protobuf;
     requires com.google.common;
 
