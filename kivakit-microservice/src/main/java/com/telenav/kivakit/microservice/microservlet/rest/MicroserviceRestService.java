@@ -53,10 +53,10 @@ import static com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRes
 
 /**
  * Base class for KivaKit microservice REST applications. {@link Microservlet}s can be installed with {@link
- * #mount(String, Microservlet)}. ({@link MicroservletRequest} handlers must be installed with {@link #mount(String,
- * HttpMethod, Class)} in the {@link Microservice#onInitialize()} method. The {@link #gsonFactory()} method can be
- * overridden to provide an application-specific {@link Gson} serializer. The {@link #openApiInfo()} class can
- * optionally be overridden to provide OpenAPI details beyond those provided by the {@link Microservice} via {@link
+ * #mount(String, HttpMethod, Microservlet)}. ({@link MicroservletRequest} handlers must be installed with {@link
+ * #mount(String, HttpMethod, Class)} in the {@link Microservice#onInitialize()} method. The {@link #gsonFactory()}
+ * method can be overridden to provide an application-specific {@link Gson} serializer. The {@link #openApiInfo()} class
+ * can optionally be overridden to provide OpenAPI details beyond those provided by the {@link Microservice} via {@link
  * MicroserviceMetadata}.
  *
  * <p><b>Internal Details - Flow of Control</b></p>
