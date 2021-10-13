@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader.OpenApiReader;
@@ -55,6 +56,11 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
         {
             return api;
         }
+    }
+
+    public JettyOpenApiRequest()
+    {
+        super(Version.parse("1.0"));
     }
 
     /**

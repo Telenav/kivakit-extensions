@@ -4,7 +4,6 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -30,9 +29,9 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
     /** The minimum minor version of the service we require */
     private byte minorVersion;
 
-    public BaseMicroservletRequest()
+    public BaseMicroservletRequest(Version version)
     {
-        version(require(Microservice.class).version());
+        version(version);
     }
 
     @Override

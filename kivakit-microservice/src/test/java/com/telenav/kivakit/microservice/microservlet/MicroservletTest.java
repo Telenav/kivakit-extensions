@@ -8,8 +8,8 @@ import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestClient;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroservletRestClient;
 import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.test.UnitTest;
@@ -24,11 +24,13 @@ public class MicroservletTest extends UnitTest
 
         public TestGarbageRequest(String trash)
         {
+            super(Version.parse("1.0"));
             this.trash = trash;
         }
 
         public TestGarbageRequest()
         {
+            super(null);
         }
 
         @Override
@@ -61,6 +63,7 @@ public class MicroservletTest extends UnitTest
     {
         public TestGetRequest()
         {
+            super(Version.parse("1.0"));
         }
 
         @Override
@@ -104,12 +107,14 @@ public class MicroservletTest extends UnitTest
 
         public TestPostRequest(final int a, final int b)
         {
+            super(Version.parse("1.0"));
             this.a = a;
             this.b = b;
         }
 
         public TestPostRequest()
         {
+            super(Version.parse("1.0"));
         }
 
         @Override
@@ -169,7 +174,7 @@ public class MicroservletTest extends UnitTest
         KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086" }));
         microservice.waitForReady();
 
-        var client = listenTo(new MicroservletRestClient(
+        var client = listenTo(new MicroserviceRestClient(
                 microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
 
         var garbageRequest = new TestGarbageRequest("This request is nonsense");

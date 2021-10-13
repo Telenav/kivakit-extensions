@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet.grpc;
 
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
@@ -14,7 +15,7 @@ import io.grpc.ManagedChannelBuilder;
  *
  * @author jonathanl (shibo)
  */
-public class MicroserviceGrpcClient
+public class MicroserviceGrpcClient extends BaseComponent
 {
     private final Port port;
 

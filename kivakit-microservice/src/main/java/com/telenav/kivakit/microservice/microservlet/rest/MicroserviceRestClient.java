@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author jonathanl (shibo)
  */
-public class MicroservletRestClient extends BaseComponent
+public class MicroserviceRestClient extends BaseComponent
 {
     /** The remote host and port number */
     private final Port port;
@@ -48,7 +48,7 @@ public class MicroservletRestClient extends BaseComponent
      * @param port The (host and) port of the remote REST service to communicate with
      * @param version The version of the remote REST service
      */
-    public MicroservletRestClient(MicroserviceGsonFactory gsonFactory, Port port, Version version)
+    public MicroserviceRestClient(MicroserviceGsonFactory gsonFactory, Port port, Version version)
     {
         this.gsonFactory = gsonFactory;
         this.port = port;

@@ -20,7 +20,7 @@ import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.L
 
 /**
  * GRPC protocol service that allows {@link MicroservletRequestHandler}s to be mounted with {@link #mount(String,
- * Class)} in the {@link #onInitialize()} method (only). The service is created in {@link Microservice#grpcService()}
+ * Class)} in the {@link #onInitialize()} method (only). The service is created in {@link Microservice#grpService()} ()}
  * automatically started by the microservice framework on startup.
  *
  * @author jonathanl (shibo)

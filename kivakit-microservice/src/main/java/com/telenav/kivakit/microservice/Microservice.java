@@ -161,7 +161,6 @@ public abstract class Microservice extends Application implements Startable, Sto
     {
         super(project);
 
-        register(this);
         register(metricReporter());
     }
 
