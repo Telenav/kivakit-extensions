@@ -22,6 +22,7 @@ open module kivakit.microservice
     requires org.apache.httpcomponents.httpcore;
 
     requires org.eclipse.jetty.servlet;
+    requires gson;
 
     requires com.google.protobuf;
     requires com.google.common;
@@ -35,4 +36,5 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.microservlet.rest.openapi;
     exports com.telenav.kivakit.microservice.metrics;
     exports com.telenav.kivakit.microservice.metrics.aggregates;
+    exports com.telenav.kivakit.microservice.microservlet.rest.gson;
 }

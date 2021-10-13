@@ -43,6 +43,22 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
     {
     }
 
+    /**
+     * @return The given bytes deserialized into the given request type
+     */
+    public Object deserialize(Class<?> type, ByteString bytes)
+    {
+        var schema = requestTypeToSchema.get(type);
+        if (schema == null)
+        {
+            schema = RuntimeSchema.getSchema(type);
+            requestTypeToSchema.put(type, schema);
+        }
+        final var request = schema.newMessage();
+        ProtobufIOUtil.mergeFrom(bytes.toByteArray(), request, (Schema<Object>) schema);
+        return request;
+    }
+
     public void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType)
     {
         pathToRequestType.put(ensureNotNull(path), requestHandlerType);
@@ -77,25 +93,9 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
     }
 
     /**
-     * @return The given bytes deserialized into the given request type
-     */
-    private Object deserialize(Class<?> type, ByteString bytes)
-    {
-        var schema = requestTypeToSchema.get(type);
-        if (schema == null)
-        {
-            schema = RuntimeSchema.getSchema(type);
-            requestTypeToSchema.put(type, schema);
-        }
-        final var request = schema.newMessage();
-        ProtobufIOUtil.mergeFrom(bytes.toByteArray(), request, (Schema<Object>) schema);
-        return request;
-    }
-
-    /**
      * @return The bytes from serializing the given response object
      */
-    private ByteString serialize(Class<?> type, Object object)
+    public ByteString serialize(Class<?> type, Object object)
     {
         var schema = responseTypeToSchema.get(type);
         if (schema == null)

@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.microservlet.rest;
+package com.telenav.kivakit.microservice.microservlet.rest.gson;
 
 import com.google.gson.GsonBuilder;
 import com.telenav.kivakit.component.ComponentMixin;

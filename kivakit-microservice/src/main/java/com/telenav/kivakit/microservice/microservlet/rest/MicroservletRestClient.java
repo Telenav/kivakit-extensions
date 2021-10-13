@@ -1,12 +1,14 @@
-package com.telenav.kivakit.microservice.microservlet;
+package com.telenav.kivakit.microservice.microservlet.rest;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactory;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
 import com.telenav.kivakit.network.core.Port;
@@ -30,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author jonathanl (shibo)
  */
-public class MicroservletClient extends BaseComponent
+public class MicroservletRestClient extends BaseComponent
 {
     /** The remote host and port number */
     private final Port port;
@@ -46,7 +48,7 @@ public class MicroservletClient extends BaseComponent
      * @param port The (host and) port of the remote REST service to communicate with
      * @param version The version of the remote REST service
      */
-    public MicroservletClient(MicroserviceGsonFactory gsonFactory, Port port, Version version)
+    public MicroservletRestClient(MicroserviceGsonFactory gsonFactory, Port port, Version version)
     {
         this.gsonFactory = gsonFactory;
         this.port = port;
@@ -112,6 +114,11 @@ public class MicroservletClient extends BaseComponent
             }
         };
         return fromJson(post, responseType);
+    }
+
+    public Version version()
+    {
+        return version;
     }
 
     private <T> T fromJson(final BaseHttpResource resource, final Class<T> type)

@@ -2,16 +2,16 @@ package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jett
 
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader.OpenApiReader;
+import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.serialization.OpenApiGsonFactory;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactorySource;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader.OpenApiReader;
-import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.serialization.OpenApiGsonFactory;
+import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactorySource;
+import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.serialization.json.GsonFactory;

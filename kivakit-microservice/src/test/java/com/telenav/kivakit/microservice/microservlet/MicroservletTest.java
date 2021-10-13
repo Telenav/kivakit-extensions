@@ -8,8 +8,9 @@ import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceGsonFactory;
 import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.microservlet.rest.MicroservletRestClient;
+import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
@@ -167,7 +168,7 @@ public class MicroservletTest extends UnitTest
         final var microservice = listenTo(new TestMicroservice());
         KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086" }));
         microservice.waitForReady();
-        var client = listenTo(new MicroservletClient(
+        var client = listenTo(new MicroservletRestClient(
                 microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
 
         var garbageRequest = new TestGarbageRequest("This request is nonsense");

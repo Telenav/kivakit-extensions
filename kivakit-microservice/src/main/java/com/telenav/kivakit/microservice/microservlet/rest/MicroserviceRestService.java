@@ -38,6 +38,7 @@ import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
