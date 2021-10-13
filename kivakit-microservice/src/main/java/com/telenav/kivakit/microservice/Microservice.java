@@ -5,7 +5,9 @@ import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.configuration.settings.deployment.Deployment;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
+import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
@@ -135,7 +137,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class Microservice extends Application implements Startable
+public abstract class Microservice extends Application implements Startable, Stoppable
 {
     /**
      * Command line switch for what port to run on. This will override any value from {@link MicroserviceSettings} that
@@ -148,6 +150,9 @@ public abstract class Microservice extends Application implements Startable
 
     /** True if this microservice is running */
     private boolean running;
+
+    /** Jetty web server */
+    private JettyServer server;
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -239,7 +244,7 @@ public abstract class Microservice extends Application implements Startable
             final var port = has(PORT) ? get(PORT) : settings().port();
 
             // create the Jetty server.
-            final var server = listenTo(new JettyServer().port(port));
+            server = listenTo(new JettyServer().port(port));
 
             // If there's an Apache Wicket web application,
             final var webApplication = webApplication();
@@ -303,6 +308,12 @@ public abstract class Microservice extends Application implements Startable
             running = true;
         }
         return true;
+    }
+
+    @Override
+    public void stop(final Duration wait)
+    {
+        server.stop(wait);
     }
 
     @Override

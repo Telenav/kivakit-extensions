@@ -20,12 +20,6 @@
     <artifactId>kivakit-microservice</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-
-        <protostuff.version>1.1.6</protostuff.version>
-
-    </properties>
-
     <dependencies>
 
         <!-- KivaKit -->
@@ -53,7 +47,6 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.errorprone</groupId>
@@ -64,7 +57,6 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>${protobuf.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.errorprone</groupId>
@@ -73,14 +65,13 @@
             </exclusions>
         </dependency>
 
-        <!-- This merged JAR file is built by the kivakit-protostuff-merged project -->
+        <!-- These merged JAR files are built by the kivakit-protostuff-merged project -->
+
+        <!-- Protostuff -->
 
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-protostuff-merged</artifactId>
-            <version>1.1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/kivakit-protostuff-merged-1.1.0.jar</systemPath>
         </dependency>
 
         <!-- GRPC -->
@@ -88,9 +79,6 @@
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-grpc-merged</artifactId>
-            <version>1.1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/kivakit-grpc-merged-1.1.0.jar</systemPath>
         </dependency>
 
     </dependencies>
@@ -100,20 +88,22 @@
             <extension>
               <groupId>kr.motd.maven</groupId>
               <artifactId>os-maven-plugin</artifactId>
-              <version>1.6.1</version>
+              <version>${maven-os-plugin.version}</version>
             </extension>
         </extensions>
         <plugins>
             <plugin>
               <groupId>org.xolstice.maven.plugins</groupId>
               <artifactId>protobuf-maven-plugin</artifactId>
-              <version>0.6.1</version>
+              <version>${maven-protobuf-plugin.version}</version>
               <configuration>
-                <protocArtifact>
+                <!--suppress MavenModelInspection -->
+                  <protocArtifact>
                   com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
                 </protocArtifact>
                 <pluginId>grpc-java</pluginId>
-                <pluginArtifact>
+                  <!--suppress MavenModelInspection -->
+                  <pluginArtifact>
                   io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
                 </pluginArtifact>
               </configuration>
@@ -126,46 +116,7 @@
                 </execution>
               </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>3.0.0-M1</version>
-                <configuration>
-                    <groupId>com.telenav.kivakit</groupId>
-                    <artifactId>kivakit-protostuff-merged</artifactId>
-                    <file>${project.basedir}/lib/kivakit-protostuff-merged-1.1.0.jar</file>
-                    <version>1.1.0</version>
-                    <packaging>jar</packaging>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>install</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>3.0.0-M1</version>
-                <configuration>
-                    <groupId>com.telenav.kivakit</groupId>
-                    <artifactId>kivakit-grpc-merged</artifactId>
-                    <file>${project.basedir}/lib/kivakit-grpc-merged-1.1.0.jar</file>
-                    <version>1.1.0</version>
-                    <packaging>jar</packaging>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>install-file</goal>
-                        </goals>
-                        <phase>install</phase>
-                    </execution>
-                </executions>
-            </plugin>
+
         </plugins>
     </build>
 

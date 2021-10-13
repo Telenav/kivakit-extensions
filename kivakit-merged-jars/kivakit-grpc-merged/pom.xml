@@ -20,7 +20,7 @@
 
         This project is here solely to build the grpc project into a single JAR to resolve the split package
         problem between grpc-api and grpc-context. The JAR should be built and then manually installed in the
-        microservice project in the lib folder.
+        kivakit-merged-jars project in the lib folder.
 
      -->
 
