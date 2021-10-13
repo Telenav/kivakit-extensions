@@ -168,6 +168,7 @@ public class MicroservletTest extends UnitTest
         final var microservice = listenTo(new TestMicroservice());
         KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086" }));
         microservice.waitForReady();
+
         var client = listenTo(new MicroservletRestClient(
                 microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
 
@@ -187,5 +188,7 @@ public class MicroservletTest extends UnitTest
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
         ensureEqual(27, response3.result);
+
+        microservice.stop();
     }
 }
