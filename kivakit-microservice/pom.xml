@@ -44,6 +44,12 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-web-wicket</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-core</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

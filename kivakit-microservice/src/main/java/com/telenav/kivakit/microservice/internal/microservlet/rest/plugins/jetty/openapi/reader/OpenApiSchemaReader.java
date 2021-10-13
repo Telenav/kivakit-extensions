@@ -7,10 +7,10 @@ import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader.filters.OpenApiPropertyFilter;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader.filters.OpenApiTypeFilter;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiExcludeMember;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMemberFromSuperType;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMemberFromSuperType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import io.swagger.v3.oas.models.media.ArraySchema;
 import io.swagger.v3.oas.models.media.Schema;
 

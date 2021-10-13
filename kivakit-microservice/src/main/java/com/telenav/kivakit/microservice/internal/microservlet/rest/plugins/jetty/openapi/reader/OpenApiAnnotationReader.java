@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.language.strings.Strings;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import org.apache.wicket.util.string.Strings;
 
 import java.lang.annotation.Annotation;
 import java.util.function.Function;

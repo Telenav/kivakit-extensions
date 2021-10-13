@@ -1,10 +1,12 @@
 open module kivakit.web.jetty
 {
     // KivaKit
+    requires transitive kivakit.component;
     requires transitive kivakit.network.http;
+    requires kivakit.test;
 
     // Jetty
-    requires javax.servlet.api;
+    requires transitive javax.servlet.api;
     requires org.eclipse.jetty.server;
     requires org.eclipse.jetty.servlet;
     requires org.eclipse.jetty.util;

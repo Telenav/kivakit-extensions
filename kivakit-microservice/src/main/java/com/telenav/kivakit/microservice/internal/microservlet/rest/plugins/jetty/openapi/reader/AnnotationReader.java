@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jett
 
 import com.telenav.kivakit.kernel.language.reflection.Member;
 import com.telenav.kivakit.kernel.language.strings.Strings;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import io.swagger.v3.oas.models.media.Schema;
 
 public class AnnotationReader

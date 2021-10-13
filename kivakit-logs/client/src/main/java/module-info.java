@@ -6,11 +6,11 @@ open module kivakit.logs.client
     provides Log with ClientLog;
 
     // KivaKit
-    requires transitive kivakit.ui.desktop;
-    requires transitive kivakit.logs.server;
-    requires transitive kivakit.primitive.collections;
-    requires transitive kivakit.service.client;
-    requires transitive kivakit.network.core;
+    requires kivakit.ui.desktop;
+    requires kivakit.logs.server;
+    requires kivakit.primitive.collections;
+    requires kivakit.service.client;
+    requires kivakit.network.core;
 
     requires org.jetbrains.annotations;
 

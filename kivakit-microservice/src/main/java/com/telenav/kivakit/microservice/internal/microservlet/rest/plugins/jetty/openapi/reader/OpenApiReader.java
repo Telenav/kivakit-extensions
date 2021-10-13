@@ -1,11 +1,11 @@
 package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiExcludeMember;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeType;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiRequestHandler;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 

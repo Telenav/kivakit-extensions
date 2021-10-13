@@ -2,7 +2,6 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.Component;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
-import com.telenav.kivakit.kernel.language.values.version.Versioned;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.cycle.ProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.metrics.MetricReportingTrait;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
@@ -19,8 +18,7 @@ public interface MicroservletRequest extends
         Component,
         ProblemReportingTrait,
         MetricReportingTrait,
-        MicroservletRequestHandler,
-        Versioned
+        MicroservletRequestHandler
 {
     /**
      * @return The type of the response for this request

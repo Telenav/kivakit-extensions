@@ -1,15 +1,15 @@
 open module kivakit.service.server
 {
     // KivaKit
-    requires transitive kivakit.microservice;
-    requires transitive kivakit.service.client;
-    requires transitive kivakit.web.jetty;
-    requires transitive kivakit.web.wicket;
-    requires transitive kivakit.web.jersey;
-    requires transitive kivakit.web.swagger;
+    requires kivakit.microservice;
+    requires kivakit.service.client;
+    requires kivakit.web.jetty;
+    requires kivakit.web.wicket;
+    requires kivakit.web.jersey;
+    requires kivakit.web.swagger;
 
     // Java
-    requires transitive java.prefs;
+    requires java.prefs;
 
     // Wicket
     requires wicket.extensions;
@@ -18,7 +18,7 @@ open module kivakit.service.server
     requires wicket.util;
 
     // Serialization
-    requires transitive org.danekja.jdk.serializable.functional;
+    requires org.danekja.jdk.serializable.functional;
 
     // Swagger annotations
     requires io.swagger.v3.oas.annotations;

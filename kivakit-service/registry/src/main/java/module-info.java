@@ -5,9 +5,9 @@ open module kivakit.service.registry
     requires transitive kivakit.network.core;
 
     // Jackson
-    requires transitive com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.annotation;
 
-    requires org.jetbrains.annotations;
+    // JSON
     requires gson;
 
     // Module exports

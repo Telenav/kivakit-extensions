@@ -20,8 +20,8 @@ package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jett
 
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService.HttpMethod;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;

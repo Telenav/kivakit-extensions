@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.internal.microservlet;
 
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
-import com.telenav.kivakit.microservice.microservlet.grpc.MicroserviceGrpcService;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 
 /**
  * <b>Not public API</b>

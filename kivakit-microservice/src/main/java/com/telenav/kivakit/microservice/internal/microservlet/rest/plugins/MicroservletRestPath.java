@@ -4,7 +4,7 @@ import com.telenav.kivakit.configuration.lookup.RegistryTrait;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService.HttpMethod;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
 import com.telenav.kivakit.resource.path.FilePath;
 
 import java.util.Objects;

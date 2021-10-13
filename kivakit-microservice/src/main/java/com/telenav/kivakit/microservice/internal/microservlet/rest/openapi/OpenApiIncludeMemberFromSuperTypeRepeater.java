@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.microservlet.rest.openapi;
 
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMemberFromSuperType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMemberFromSuperType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

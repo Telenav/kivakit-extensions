@@ -1,7 +1,6 @@
 package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.reader.OpenApiReader;
@@ -10,10 +9,10 @@ import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactorySource;
-import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonObjectSource;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiExcludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactorySource;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -56,11 +55,6 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
         {
             return api;
         }
-    }
-
-    public JettyOpenApiRequest()
-    {
-        super(Version.parse("1.0"));
     }
 
     /**

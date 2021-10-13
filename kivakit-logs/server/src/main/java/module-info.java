@@ -6,11 +6,9 @@ open module kivakit.logs.server
     provides Log with ServerLog;
 
     // KivaKit
-    requires transitive kivakit.network.socket;
-    requires transitive kivakit.service.registry;
-    requires transitive kivakit.service.client;
-
-    requires org.jetbrains.annotations;
+    requires kivakit.network.socket;
+    requires kivakit.service.registry;
+    requires kivakit.service.client;
 
     // Module exports
     exports com.telenav.kivakit.logs.server;

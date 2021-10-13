@@ -2,9 +2,7 @@ open module kivakit.data.compression
 {
     // KivaKit
     requires transitive kivakit.resource;
-    requires transitive kivakit.primitive.collections;
-
-    requires org.jetbrains.annotations;
+    requires kivakit.primitive.collections;
 
     // Module exports
     exports com.telenav.kivakit.data.compression.codecs.huffman.character;

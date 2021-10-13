@@ -14,8 +14,8 @@ import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty
 import com.telenav.kivakit.microservice.metrics.MetricReporter;
 import com.telenav.kivakit.microservice.metrics.reporters.console.ConsoleMetricReporter;
 import com.telenav.kivakit.microservice.metrics.reporters.none.NullMetricReporter;
-import com.telenav.kivakit.microservice.microservlet.grpc.MicroserviceGrpcService;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;

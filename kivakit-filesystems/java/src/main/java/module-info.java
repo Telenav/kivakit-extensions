@@ -7,9 +7,8 @@ open module kivakit.filesystems.java
 
     // KivaKit
     requires transitive kivakit.component;
-
-    requires org.jetbrains.annotations;
-
+    requires transitive kivakit.test;
+    
     // Module exports
     exports com.telenav.kivakit.filesystem.java;
 }

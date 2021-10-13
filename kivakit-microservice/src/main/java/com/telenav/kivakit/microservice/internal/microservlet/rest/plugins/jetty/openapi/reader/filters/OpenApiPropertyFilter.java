@@ -2,9 +2,9 @@ package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jett
 
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.reflection.property.PropertyFilter;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiExcludeMember;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeMemberFromSuperType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMemberFromSuperType;
 
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;

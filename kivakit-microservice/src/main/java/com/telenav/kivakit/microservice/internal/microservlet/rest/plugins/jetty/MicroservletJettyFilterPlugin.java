@@ -19,7 +19,7 @@
 package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty;
 
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.filter.JettyMicroservletFilterHolder;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;

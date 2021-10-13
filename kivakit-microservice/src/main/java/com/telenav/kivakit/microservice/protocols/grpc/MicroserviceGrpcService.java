@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.microservlet.grpc;
+package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
@@ -11,7 +11,7 @@ import com.telenav.kivakit.microservice.internal.microservlet.MicroservletMountT
 import com.telenav.kivakit.microservice.internal.microservlet.grpc.MicroservletGrpcResponder;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;

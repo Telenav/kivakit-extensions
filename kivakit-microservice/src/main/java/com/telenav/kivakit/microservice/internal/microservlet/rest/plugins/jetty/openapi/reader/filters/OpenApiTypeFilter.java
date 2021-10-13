@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jett
 
 import com.telenav.kivakit.kernel.interfaces.comparison.Filter;
 import com.telenav.kivakit.kernel.language.reflection.Type;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 
 import java.util.Collection;
 

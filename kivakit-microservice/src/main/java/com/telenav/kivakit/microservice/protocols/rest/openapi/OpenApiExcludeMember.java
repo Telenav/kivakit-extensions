@@ -1,6 +1,6 @@
-package com.telenav.kivakit.microservice.microservlet.rest.openapi;
+package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
-import com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.JettyOpenApiRequest;
 
 import java.lang.annotation.ElementType;

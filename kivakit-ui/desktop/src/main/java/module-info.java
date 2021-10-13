@@ -1,14 +1,14 @@
 open module kivakit.ui.desktop
 {
     // KivaKit
-    requires transitive kivakit.resource;
-
+    requires kivakit.resource;
+    requires kivakit.test;
+    
+    // Java
     requires transitive java.desktop;
 
     // Darcula scheme
-    requires transitive com.formdev.flatlaf;
-
-    requires org.jetbrains.annotations;
+    requires com.formdev.flatlaf;
 
     // Module exports
     exports com.telenav.kivakit.ui.desktop.component.dialog.message;

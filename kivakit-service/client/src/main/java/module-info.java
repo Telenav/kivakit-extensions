@@ -8,9 +8,9 @@ open module kivakit.service.client
     // Jersey and XML binding
     requires jersey.client;
     requires jersey.media.json.jackson;
-    requires transitive com.fasterxml.jackson.core;
-    requires transitive java.ws.rs;
-    requires transitive jakarta.activation;
+    requires com.fasterxml.jackson.core;
+    requires java.ws.rs;
+    requires jakarta.activation;
 
     // Module exports
     exports com.telenav.kivakit.service.registry.client;

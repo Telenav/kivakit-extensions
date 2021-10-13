@@ -8,7 +8,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.MicroservletRestPath;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.JettyOpenApiRequest;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiRequestHandler;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;

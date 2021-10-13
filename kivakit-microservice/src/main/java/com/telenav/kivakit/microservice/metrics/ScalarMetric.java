@@ -3,7 +3,7 @@ package com.telenav.kivakit.microservice.metrics;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.metrics.BaseMetric;
-import com.telenav.kivakit.microservice.microservlet.rest.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 
 @OpenApiIncludeType(description = "A named measurement of some value")
 public class ScalarMetric<T> extends BaseMetric<T>

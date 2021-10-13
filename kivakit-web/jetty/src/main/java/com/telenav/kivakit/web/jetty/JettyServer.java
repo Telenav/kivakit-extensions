@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.web.jetty;
 
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
@@ -90,7 +90,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyServer extends BaseRepeater implements Startable, Stoppable
+public class JettyServer extends BaseComponent implements Startable, Stoppable
 {
     public static void configureLogging()
     {

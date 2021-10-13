@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.microservlet.grpc;
+package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.values.version.Version;

@@ -1,11 +1,11 @@
 open module mesakit.tools.applications.log.viewer
 {
     // KivaKit
-    requires transitive kivakit.application;
-    requires transitive kivakit.network.core;
-    requires transitive kivakit.logs.client;
-    requires transitive kivakit.logs.server;
-    requires transitive kivakit.ui.desktop;
+    requires kivakit.application;
+    requires kivakit.network.core;
+    requires kivakit.logs.client;
+    requires kivakit.logs.server;
+    requires kivakit.ui.desktop;
 
     // Module exports
     exports com.telenav.kivakit.logs.viewer;

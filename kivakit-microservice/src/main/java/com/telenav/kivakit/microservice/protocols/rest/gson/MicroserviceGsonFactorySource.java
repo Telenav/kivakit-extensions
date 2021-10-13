@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.microservlet.rest.gson;
+package com.telenav.kivakit.microservice.protocols.rest.gson;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.openapi.JettyOpenApiRequest;

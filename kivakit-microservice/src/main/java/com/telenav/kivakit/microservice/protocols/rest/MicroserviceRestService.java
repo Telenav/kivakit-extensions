@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.microservlet.rest;
+package com.telenav.kivakit.microservice.protocols.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
@@ -24,7 +24,7 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
-import com.telenav.kivakit.kernel.language.types.Classes;
+import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.Microservice;
@@ -38,7 +38,7 @@ import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactory;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -53,7 +53,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRestService.HttpMethod.GET;
+import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.GET;
 
 /**
  * Base class for KivaKit microservice REST applications. {@link Microservlet}s can be installed with {@link
@@ -105,7 +105,7 @@ import static com.telenav.kivakit.microservice.microservlet.rest.MicroserviceRes
  * @see MicroserviceGsonFactory
  * @see MicroservletRequest
  */
-@UmlClassDiagram(diagram = DiagramMicroservice.class)
+@SuppressWarnings("RedundantSuppression") @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class MicroserviceRestService extends BaseComponent implements Initializable
 {
     public enum HttpMethod
@@ -207,7 +207,6 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param method The HTTP method to which the microservlet should respond
      * @param requestType The type of the request
      */
-    @SuppressWarnings("unchecked")
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(final String path, HttpMethod method, final Class<Request> requestType)
     {
@@ -215,7 +214,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         if (mountAllowed)
         {
             // create a request object, so we can get the response type and HTTP method,
-            final var request = listenTo(Classes.newInstance(this, requestType));
+            final var request = listenTo(Type.forClass(requestType).newInstance());
             if (request != null)
             {
                 // then mount an anonymous microservlet on the given path,
@@ -252,8 +251,11 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
+     * <b>Not public API</b>
+     * <p>
      * Mounts all paths that have been mounted on this REST service on the given mount target.
      */
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public void mountAll(final MicroservletMountTarget target)
     {
         for (var path : pathToRequest.keySet())

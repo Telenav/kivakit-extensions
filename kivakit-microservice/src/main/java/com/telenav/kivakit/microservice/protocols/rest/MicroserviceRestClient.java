@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.microservlet.rest;
+package com.telenav.kivakit.microservice.protocols.rest;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
@@ -8,7 +8,7 @@ import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.microservlet.rest.gson.MicroserviceGsonFactory;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
 import com.telenav.kivakit.network.core.Port;
