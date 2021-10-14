@@ -6,10 +6,8 @@ open module kivakit.filesystems.github
     provides FileSystemService with GitHubFileSystemService;
 
     // KivaKit
-    requires transitive kivakit.component;
-
-    // XML
-    requires transitive com.fasterxml.jackson.annotation;
+    requires kivakit.component;
+    requires kivakit.test;
 
     // GitHub API
     requires github.api;

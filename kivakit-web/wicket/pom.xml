@@ -33,11 +33,23 @@
             <artifactId>kivakit-web-jetty</artifactId>
         </dependency>
 
+        <!-- Servlet API -->
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+
         <!-- Apache Wicket -->
 
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-request</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.wicket</groupId>

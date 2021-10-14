@@ -18,9 +18,11 @@
 
 package com.telenav.kivakit.web.jetty;
 
+import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
@@ -88,7 +90,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyServer extends BaseRepeater
+public class JettyServer extends BaseComponent implements Startable, Stoppable
 {
     public static void configureLogging()
     {
@@ -108,9 +110,18 @@ public class JettyServer extends BaseRepeater
     /** The static resources to install when Jetty starts */
     private final List<BaseJettyResourcePlugin> resources = new ArrayList<>();
 
+    /** Jetty server instance */
+    private Server server;
+
     public JettyServer()
     {
         configureLogging();
+    }
+
+    @Override
+    public boolean isRunning()
+    {
+        return server != null;
     }
 
     public JettyServer mount(final String path, final BaseJettyFilterPlugin filter)
@@ -141,17 +152,34 @@ public class JettyServer extends BaseRepeater
         return this;
     }
 
-    public void start()
+    public boolean start()
     {
         try
         {
             // Create and start Jetty
             server().start();
             narrate("Jetty started on port ${integer}", port);
+            return true;
         }
         catch (final Exception e)
         {
             throw new Problem(e, "Couldn't start embedded Jetty web server").asException();
+        }
+    }
+
+    @Override
+    public void stop(final Duration wait)
+    {
+        if (isRunning())
+        {
+            try
+            {
+                server.stop();
+            }
+            catch (Exception e)
+            {
+                warning("Unable to stop Jetty server");
+            }
         }
     }
 
@@ -166,46 +194,49 @@ public class JettyServer extends BaseRepeater
 
     private Server server()
     {
-        // Create Jetty server and add HTTP connector to it,
-        final var server = new Server();
-        server.addConnector(httpConnector(server));
-
-        // create a "ServletContextHandler", which is a really confusing name that really means
-        // something like "the place where you can register all kinds of stuff that the server
-        // will use when handling requests, including but not limited to servlets"
-        final var servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContext.setContextPath("/");
-        servletContext.setServer(server);
-        servletContext.setSessionHandler(new SessionHandler());
-        servletContext.setResourceBase(".");
-
-        // then for each JettyResource,
-        resources.forEach(resource ->
+        if (server == null)
         {
-            // add it to the servlet context at the given path,
-            servletContext.addServlet(resource.holder(), resource.path());
-            narrate("Mounted resource $ => $", resource.path(), resource.name());
-        });
+            // Create Jetty server and add HTTP connector to it,
+            server = new Server();
+            server.addConnector(httpConnector(server));
+            server.setStopAtShutdown(true);
 
-        // and for each JettyFilter,
-        filters.forEach(filter ->
-        {
-            // add it to the servlet context at the given path,
-            servletContext.addFilter(filter.holder(), filter.path(), filter.dispatchers());
-            narrate("Mounted filter $ => $", filter.path(), filter.name());
-        });
+            // create a "ServletContextHandler", which is a really confusing name that really means
+            // something like "the place where you can register all kinds of stuff that the server
+            // will use when handling requests, including but not limited to servlets"
+            final var servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
+            servletContext.setContextPath("/");
+            servletContext.setServer(server);
+            servletContext.setSessionHandler(new SessionHandler());
+            servletContext.setResourceBase(".");
 
-        // and for each JettyServlet,
-        servlets.forEach(servlet ->
-        {
-            // add it to the servlet context at the given path,
-            servletContext.addServlet(servlet.holder(), servlet.path());
-            narrate("Mounted servlet $ => $", servlet.path(), servlet.name());
-        });
+            // then for each JettyResource,
+            resources.forEach(resource ->
+            {
+                // add it to the servlet context at the given path,
+                servletContext.addServlet(resource.holder(), resource.path());
+                narrate("Mounted resource $ => $", resource.path(), resource.name());
+            });
 
-        // and finally, add the servlet context as the handler for server requests.
-        server.setHandler(servletContext);
+            // and for each JettyFilter,
+            filters.forEach(filter ->
+            {
+                // add it to the servlet context at the given path,
+                servletContext.addFilter(filter.holder(), filter.path(), filter.dispatchers());
+                narrate("Mounted filter $ => $", filter.path(), filter.name());
+            });
 
+            // and for each JettyServlet,
+            servlets.forEach(servlet ->
+            {
+                // add it to the servlet context at the given path,
+                servletContext.addServlet(servlet.holder(), servlet.path());
+                narrate("Mounted servlet $ => $", servlet.path(), servlet.name());
+            });
+
+            // and finally, add the servlet context as the handler for server requests.
+            server.setHandler(servletContext);
+        }
         return server;
     }
 }

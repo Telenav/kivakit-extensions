@@ -2,12 +2,14 @@ open module kivakit.web.wicket
 {
     // KivaKit
     requires transitive kivakit.web.jetty;
-    requires transitive kivakit.component;
 
     // Wicket
     requires transitive wicket.core;
     requires transitive wicket.util;
     requires transitive wicket.request;
+
+    // Jetty
+    requires org.eclipse.jetty.servlet;
 
     // Module exports
     exports com.telenav.kivakit.web.wicket.behaviors.status;

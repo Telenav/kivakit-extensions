@@ -45,6 +45,85 @@
             <artifactId>kivakit-web-wicket</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- These merged JAR files are built by the kivakit-protostuff-merged project -->
+
+        <!-- Protostuff -->
+
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-protostuff-merged</artifactId>
+        </dependency>
+
+        <!-- GRPC -->
+
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-grpc-merged</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+              <groupId>kr.motd.maven</groupId>
+              <artifactId>os-maven-plugin</artifactId>
+              <version>${maven-os-plugin.version}</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+              <groupId>org.xolstice.maven.plugins</groupId>
+              <artifactId>protobuf-maven-plugin</artifactId>
+              <version>${maven-protobuf-plugin.version}</version>
+              <configuration>
+                <!--suppress MavenModelInspection -->
+                  <protocArtifact>
+                  com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
+                </protocArtifact>
+                <pluginId>grpc-java</pluginId>
+                  <!--suppress MavenModelInspection -->
+                  <pluginArtifact>
+                  io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+                </pluginArtifact>
+              </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>compile</goal>
+                    <goal>compile-custom</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>

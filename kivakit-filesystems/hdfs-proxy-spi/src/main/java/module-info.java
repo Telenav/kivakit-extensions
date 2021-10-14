@@ -3,7 +3,8 @@ open module kivakit.filesystems.hdfs.proxy.spi
     // KivaKit
     requires transitive kivakit.kernel;
 
-    requires transitive java.rmi;
+    // Java
+    requires java.rmi;
 
     // Module exports
     exports com.telenav.kivakit.filesystems.hdfs.proxy.spi;

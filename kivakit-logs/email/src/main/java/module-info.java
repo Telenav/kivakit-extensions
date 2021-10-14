@@ -6,7 +6,7 @@ open module kivakit.logs.email
     provides Log with EmailLog;
 
     // KivaKit
-    requires transitive kivakit.network.email;
+    requires kivakit.network.email;
 
     // Module exports
     exports com.telenav.kivakit.logs.email;

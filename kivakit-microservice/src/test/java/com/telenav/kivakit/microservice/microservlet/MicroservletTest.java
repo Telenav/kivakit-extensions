@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.configuration.lookup.Registry;
 import com.telenav.kivakit.kernel.data.validation.BaseValidator;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
@@ -8,19 +9,19 @@ import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
-import com.telenav.kivakit.microservice.rest.MicroserviceGsonFactory;
-import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletClient;
-import com.telenav.kivakit.microservice.rest.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletGetRequest;
-import com.telenav.kivakit.microservice.rest.microservlet.requests.MicroservletPostRequest;
+import com.telenav.kivakit.microservice.MicroserviceSettings;
+import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
+import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
 
 public class MicroservletTest extends UnitTest
 {
-    public static class TestGarbageRequest extends MicroservletPostRequest
+    public static class TestGarbageRequest extends BaseMicroservletRequest
     {
         @Expose
         private String trash;
@@ -35,7 +36,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroservletResponse onPost()
+        public MicroservletResponse onRequest()
         {
             return new TestResponse(-1);
         }
@@ -60,14 +61,14 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestGetRequest extends MicroservletGetRequest
+    public static class TestGetRequest extends BaseMicroservletRequest
     {
         public TestGetRequest()
         {
         }
 
         @Override
-        public MicroservletResponse onGet()
+        public MicroservletResponse onRequest()
         {
             return new TestResponse(42);
         }
@@ -91,13 +92,19 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroserviceRestApplication restApplication()
+        public MicroserviceGrpcService onNewGrpcService()
         {
-            return new TestRestApplication(this);
+            return new MicroserviceGrpcService(this);
+        }
+
+        @Override
+        public MicroserviceRestService onNewRestService()
+        {
+            return new TestRestService(this);
         }
     }
 
-    public static class TestPostRequest extends MicroservletPostRequest
+    public static class TestPostRequest extends BaseMicroservletRequest
     {
         @Expose
         int a;
@@ -116,7 +123,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroservletResponse onPost()
+        public MicroservletResponse onRequest()
         {
             return new TestResponse(a * b);
         }
@@ -128,7 +135,7 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestResponse extends MicroservletResponse
+    public static class TestResponse extends BaseMicroservletResponse
     {
         @Expose
         int result;
@@ -143,9 +150,9 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestRestApplication extends MicroserviceRestApplication
+    public static class TestRestService extends MicroserviceRestService
     {
-        public TestRestApplication(final Microservice microservice)
+        public TestRestService(final Microservice microservice)
         {
             super(microservice);
         }
@@ -159,20 +166,24 @@ public class MicroservletTest extends UnitTest
         @Override
         public void onInitialize()
         {
-            mount("test", TestPostRequest.class);
-            mount("test", TestGetRequest.class);
-            mount("garbage", TestGarbageRequest.class);
+            mount("test", HttpMethod.POST, TestPostRequest.class);
+            mount("test", HttpMethod.GET, TestGetRequest.class);
+            mount("garbage", HttpMethod.POST, TestGarbageRequest.class);
         }
     }
 
     @Test
     public void test()
     {
+        Registry.of(this).register(new MicroserviceSettings().port(8086).grpcPort(8087));
+
         final var microservice = listenTo(new TestMicroservice());
-        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086" }));
+
+        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087" }));
         microservice.waitForReady();
-        var client = listenTo(new MicroservletClient(
-                microservice.restApplication().gsonFactory(), Host.local().http(8086), microservice.version()));
+
+        var client = listenTo(new MicroserviceRestClient(
+                microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
 
         var garbageRequest = new TestGarbageRequest("This request is nonsense");
         var response4 = client.post("garbage", TestResponse.class, garbageRequest);
@@ -190,5 +201,11 @@ public class MicroservletTest extends UnitTest
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
         ensureEqual(27, response3.result);
+
+        var grpcClient = listenTo(new MicroserviceGrpcClient(Host.local().port(8087), microservice.version()));
+        var response5 = grpcClient.request("test", request, TestResponse.class);
+        ensureEqual(56, response5.result);
+
+        microservice.stop();
     }
 }

@@ -23,8 +23,8 @@ import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludePro
 import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.language.strings.formatting.KivaKitFormatProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.rest.microservlet.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.project.lexakai.diagrams.DiagramRest;
 import com.telenav.kivakit.service.registry.protocol.BaseResponse;

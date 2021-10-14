@@ -28,6 +28,10 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-configuration</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-test</artifactId>
+        </dependency>
 
         <!-- S3 -->
 

@@ -11,6 +11,26 @@ public class MicroserviceSettings
     @KivaKitPropertyConverter(IntegerConverter.class)
     private int port;
 
+    @KivaKitPropertyConverter(IntegerConverter.class)
+    private int grpcPort;
+
+    public MicroserviceSettings grpcPort(final int grpcPort)
+    {
+        this.grpcPort = grpcPort;
+        return this;
+    }
+
+    public int grpcPort()
+    {
+        return grpcPort;
+    }
+
+    public MicroserviceSettings port(final int port)
+    {
+        this.port = port;
+        return this;
+    }
+
     public int port()
     {
         return port;

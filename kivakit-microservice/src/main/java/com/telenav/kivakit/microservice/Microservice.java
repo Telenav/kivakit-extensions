@@ -5,15 +5,19 @@ import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.configuration.settings.deployment.Deployment;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
+import com.telenav.kivakit.kernel.language.objects.Lazy;
+import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.metrics.MetricReporter;
+import com.telenav.kivakit.microservice.metrics.reporters.console.ConsoleMetricReporter;
+import com.telenav.kivakit.microservice.metrics.reporters.none.NullMetricReporter;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
-import com.telenav.kivakit.microservice.rest.MicroserviceRestApplication;
-import com.telenav.kivakit.microservice.rest.microservlet.internal.plugins.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.rest.microservlet.metrics.MetricReporter;
-import com.telenav.kivakit.microservice.rest.microservlet.metrics.reporters.console.ConsoleMetricReporter;
-import com.telenav.kivakit.microservice.rest.microservlet.metrics.reporters.none.NullMetricReporter;
+import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
+import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
@@ -25,6 +29,7 @@ import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
 import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
@@ -46,12 +51,12 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     <li>Create the {@link Microservice} subclass in the application's main(String[]) method</li>
  *     <li>Call {@link #run(String[])}, passing in the arguments to main()</li>
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
- *     <li>Override {@link #restApplication()} to provide the microservice's {@link MicroserviceRestApplication} subclass</li>
+ *     <li>Override {@link #onNewRestService()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
  *     <li>Override {@link #description()} to provide a description of the microservice for display in administrative user interfaces</li>
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
  *     <li>Optionally, override {@link #openApiAssetsFolder()} to provide any package or folder for OpenAPI specification .yaml files</li>
  *     <li>Optionally, override {@link #staticAssetsFolder()} to provide a package or folder with static resources</li>
- *     <li>Optionally, override {@link #webApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
+ *     <li>Optionally, override {@link #onCreateWebApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
  * </ol>
  *
  * <p><b>Mount Paths</b></p>
@@ -130,23 +135,41 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see MetricReporter
  * @see ConsoleMetricReporter
  * @see MicroserviceSettings
- * @see MicroserviceRestApplication
+ * @see MicroserviceRestService
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class Microservice extends Application implements Startable
+public abstract class Microservice extends Application implements Startable, Stoppable
 {
     /**
-     * Command line switch for what port to run on. This will override any value from {@link MicroserviceSettings} that
-     * is loaded from a {@link Deployment}.
+     * Command line switch for what port to run any REST service on. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> PORT =
             integerSwitchParser("port", "The port to use")
                     .optional()
                     .build();
 
+    /**
+     * Command line switch for what port to run any GRPC service on. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     */
+    private final SwitchParser<Integer> GRPC_PORT =
+            integerSwitchParser("grpc-port", "The port to use")
+                    .optional()
+                    .build();
+
     /** True if this microservice is running */
     private boolean running;
+
+    /** Jetty web server */
+    private JettyServer server;
+
+    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
+
+    private final Lazy<WebApplication> webApplication = Lazy.of(this::onCreateWebApplication);
+
+    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -155,7 +178,6 @@ public abstract class Microservice extends Application implements Startable
     {
         super(project);
 
-        register(this);
         register(metricReporter());
     }
 
@@ -166,6 +188,11 @@ public abstract class Microservice extends Application implements Startable
     public String description()
     {
         return metadata().description();
+    }
+
+    public MicroserviceGrpcService grpcService()
+    {
+        return grpcService.get();
     }
 
     /**
@@ -189,6 +216,14 @@ public abstract class Microservice extends Application implements Startable
     public abstract MicroserviceMetadata metadata();
 
     /**
+     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
+     */
+    public MicroserviceWebApplication onCreateWebApplication()
+    {
+        return null;
+    }
+
+    /**
      * Called to initialize the microservice before it's running. This is a good place to register objects with {@link
      * #register(Object)} or {@link #register(Object, Enum)}. While settings can be registered in this method, for most
      * microservices, it will make more sense to use the more automatic method provided by {@link Deployment}s.
@@ -198,9 +233,31 @@ public abstract class Microservice extends Application implements Startable
     }
 
     /**
-     * @return The REST application for this microservice
+     * @return Any GRPC service for this microservice
      */
-    public abstract MicroserviceRestApplication restApplication();
+    public MicroserviceGrpcService onNewGrpcService()
+    {
+        return null;
+    }
+
+    /**
+     * @return Any REST service for this microservice
+     */
+    public MicroserviceRestService onNewRestService()
+    {
+        return null;
+    }
+
+    public MicroserviceRestService restService()
+    {
+        return restService.get();
+    }
+
+    @UmlRelation(label = "has")
+    public MicroserviceSettings settings()
+    {
+        return require(MicroserviceSettings.class);
+    }
 
     /**
      * <b>Not public API</b>
@@ -217,11 +274,18 @@ public abstract class Microservice extends Application implements Startable
             // Show command line arguments,
             showCommandLine();
 
-            // get the port to run on,
-            final var port = has(PORT) ? get(PORT) : settings().port();
+            // get any port overrides from the command line,
+            if (has(PORT))
+            {
+                settings().port(get(PORT));
+            }
+            if (has(GRPC_PORT))
+            {
+                settings().grpcPort(get(GRPC_PORT));
+            }
 
             // create the Jetty server.
-            final var server = listenTo(new JettyServer().port(port));
+            server = listenTo(new JettyServer().port(settings().port()));
 
             // If there's an Apache Wicket web application,
             final var webApplication = webApplication();
@@ -240,10 +304,11 @@ public abstract class Microservice extends Application implements Startable
             }
 
             // If there is a microservlet REST application,
-            final var restApplication = listenTo(restApplication());
-            if (restApplication != null)
+            final var restService = restService();
+            if (restService != null)
             {
                 // and there are static OpenAPI assets,
+                listenTo(restService);
                 final var openApiAssets = openApiAssetsFolder();
                 if (openApiAssets != null)
                 {
@@ -252,17 +317,36 @@ public abstract class Microservice extends Application implements Startable
                 }
 
                 // Mount Swagger resources for the REST application.
-                server.mount("/*", register(new MicroservletJettyFilterPlugin(restApplication)));
-                server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
+                server.mount("/*", register(new MicroservletJettyFilterPlugin(restService)));
+                server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(settings().port()));
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
-                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restApplication.getClass()));
+                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restService.getClass()));
 
-                // and initialize it.
-                restApplication.initialize();
+                // Initialize the REST service.
+                restService.initialize();
             }
 
-            // Start the server.
-            announce("Microservice server starting on port ${integer}", port);
+            // If there is a GRPC service,
+            var grpcService = grpcService();
+            if (grpcService != null)
+            {
+                // initialize it,
+                listenTo(grpcService);
+                grpcService.initialize();
+
+                // and start it up.
+                grpcService.start();
+            }
+
+            // If we don't have either a REST or a GRPC service,
+            if (restService == null && grpcService == null)
+            {
+                // then warn about that.
+                warning("No REST or GRPC service is available for this microservice");
+            }
+
+            // Start Jetty server.
+            announce("Microservice Jetty server starting on port ${integer}", settings().port());
             server.start();
             running = true;
         }
@@ -270,9 +354,20 @@ public abstract class Microservice extends Application implements Startable
     }
 
     @Override
+    public void stop(final Duration wait)
+    {
+        server.stop(wait);
+    }
+
+    @Override
     public Version version()
     {
         return metadata().version();
+    }
+
+    public WebApplication webApplication()
+    {
+        return webApplication.get();
     }
 
     /**
@@ -307,11 +402,11 @@ public abstract class Microservice extends Application implements Startable
     /**
      * @return The resource folder containing static assets for reference by OpenAPI .yaml files and KivaKit OpenApi
      * annotations. For example, a microservice might want to include an OAS .yaml file. If this method is not
-     * overridden, the default folder will be the "assets" sub-package of tshe rest application's package.
+     * overridden, the default folder will be the "assets" sub-package of the rest application's package.
      */
     protected ResourceFolder openApiAssetsFolder()
     {
-        return Package.of(restApplication().getClass(), "assets");
+        return Package.of(restService().getClass(), "assets");
     }
 
     /**
@@ -341,20 +436,6 @@ public abstract class Microservice extends Application implements Startable
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.of(PORT);
-    }
-
-    /**
-     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
-     */
-    protected MicroserviceWebApplication webApplication()
-    {
-        return null;
-    }
-
-    @UmlRelation(label = "has")
-    private MicroserviceSettings settings()
-    {
-        return require(MicroserviceSettings.class);
+        return ObjectSet.of(PORT, GRPC_PORT);
     }
 }

@@ -1,27 +1,30 @@
 open module kivakit.web.jersey
 {
     // KivaKit
-    requires transitive kivakit.component;
-    requires transitive kivakit.serialization.json;
     requires transitive kivakit.web.jetty;
+    requires transitive kivakit.serialization.json;
 
     // Java
-    requires transitive java.xml.bind;
     requires transitive java.ws.rs;
-    requires transitive jakarta.activation;
+    requires java.xml.bind;
+    requires jakarta.activation;
 
     // Jersey
-    requires transitive jersey.common;
-    requires transitive jersey.container.servlet.core;
-    requires transitive jersey.server;
-    requires transitive jersey.hk2;
+    requires jersey.common;
+    requires jersey.container.servlet.core;
+    requires jersey.server;
+    requires jersey.hk2;
+
+    // Jetty
+    requires org.eclipse.jetty.servlet;
 
     // JSON
-    requires transitive gson;
+    requires gson;
 
     // XML
-    requires transitive com.fasterxml.jackson.core;
-    requires transitive com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires java.logging;
 
     // Module exports
     exports com.telenav.kivakit.web.jersey;

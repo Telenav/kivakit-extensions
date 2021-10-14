@@ -2,8 +2,8 @@ open module kivakit.primitive.collections
 {
     // KivaKit
     requires transitive kivakit.serialization.kryo;
-    requires transitive kivakit.test;
     requires transitive kivakit.collections;
+    requires kivakit.test;
 
     // Module exports
     exports com.telenav.kivakit.primitive.collections;

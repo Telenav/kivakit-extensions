@@ -5,7 +5,10 @@ open module kivakit.service.registry
     requires transitive kivakit.network.core;
 
     // Jackson
-    requires transitive com.fasterxml.jackson.annotation;
+    requires com.fasterxml.jackson.annotation;
+
+    // JSON
+    requires gson;
 
     // Module exports
     exports com.telenav.kivakit.service.registry;

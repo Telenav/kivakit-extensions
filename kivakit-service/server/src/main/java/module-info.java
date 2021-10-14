@@ -1,27 +1,27 @@
 open module kivakit.service.server
 {
     // KivaKit
-    requires transitive kivakit.microservice;
-    requires transitive kivakit.service.client;
-    requires transitive kivakit.web.jetty;
-    requires transitive kivakit.web.wicket;
-    requires transitive kivakit.web.jersey;
-    requires transitive kivakit.web.swagger;
+    requires kivakit.microservice;
+    requires kivakit.service.client;
+    requires kivakit.web.jetty;
+    requires kivakit.web.wicket;
+    requires kivakit.web.jersey;
+    requires kivakit.web.swagger;
 
     // Java
-    requires transitive java.prefs;
+    requires java.prefs;
 
     // Wicket
-    requires transitive wicket.extensions;
-    requires transitive wicket.jquery.ui;
-    requires transitive wicket.jquery.ui.core;
-    requires transitive wicket.util;
+    requires wicket.extensions;
+    requires wicket.jquery.ui;
+    requires wicket.jquery.ui.core;
+    requires wicket.util;
 
     // Serialization
-    requires transitive org.danekja.jdk.serializable.functional;
+    requires org.danekja.jdk.serializable.functional;
 
     // Swagger annotations
-    requires transitive io.swagger.v3.oas.annotations;
+    requires io.swagger.v3.oas.annotations;
 
     // Module exports
     exports com.telenav.kivakit.service.registry.server.project.lexakai.diagrams;
