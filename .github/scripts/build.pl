@@ -31,7 +31,8 @@ my $github = "https://github.com/Telenav";
 clone("$github/kivakit", "dependency");
 clone("$github/kivakit-extensions", "build");
 
-system("./kivakit/tools/library/install-merged-jars.sh");
+system("mvn --quiet install:install-file -DgroupId=com.telenav.kivakit -DartifactId=kivakit-grpc-merged -Dfile=./kivakit-extensions/kivakit-merged-jars/lib/kivakit-grpc-merged-1.1.0.jar -Dversion=1.1.0 -Dpackaging=jar");
+system("mvn --quiet install:install-file -DgroupId=com.telenav.kivakit -DartifactId=kivakit-protostuff-merged -Dfile=./kivakit-extensions/kivakit-merged-jars/lib/kivakit-protostuff-merged-1.1.0.jar -Dversion=1.1.0 -Dpackaging=jar");
 
 build_kivakit($build_type);
 build_kivakit_extensions($build_type);
