@@ -32,5 +32,7 @@ my $github = "https://github.com/Telenav";
 clone("$github/kivakit", "dependency");
 clone("$github/kivakit-extensions", "build");
 
+bash "$ENV{'KIVAKIT_HOME'}/tools/library/install-merged-jars.sh"
+
 build_kivakit($build_type);
 build_kivakit_extensions($build_type);
