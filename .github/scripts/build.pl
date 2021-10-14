@@ -20,7 +20,6 @@ if (!-d "cactus-build")
 }
 
 require "./cactus-build/.github/scripts/build-include.pl";
-#require "$ENV{'KIVAKIT_WORKSPACE'}/cactus-build/.github/scripts/build-include.pl";
 
 #
 # Clone repositories and build
@@ -32,7 +31,7 @@ my $github = "https://github.com/Telenav";
 clone("$github/kivakit", "dependency");
 clone("$github/kivakit-extensions", "build");
 
-system("$ENV{'KIVAKIT_WORKSPACE'}/kivakit/tools/library/install-merged-jars.sh");
+system("./kivakit/tools/library/install-merged-jars.sh");
 
 build_kivakit($build_type);
 build_kivakit_extensions($build_type);
