@@ -7,16 +7,17 @@ import com.telenav.kivakit.configuration.settings.deployment.Deployment;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
+import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
-import com.telenav.kivakit.microservice.internal.microservlet.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.metrics.MetricReporter;
 import com.telenav.kivakit.microservice.metrics.reporters.console.ConsoleMetricReporter;
 import com.telenav.kivakit.microservice.metrics.reporters.none.NullMetricReporter;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
@@ -28,6 +29,7 @@ import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
 import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
@@ -49,12 +51,12 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     <li>Create the {@link Microservice} subclass in the application's main(String[]) method</li>
  *     <li>Call {@link #run(String[])}, passing in the arguments to main()</li>
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
- *     <li>Override {@link #restService()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
+ *     <li>Override {@link #onNewRestService()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
  *     <li>Override {@link #description()} to provide a description of the microservice for display in administrative user interfaces</li>
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
  *     <li>Optionally, override {@link #openApiAssetsFolder()} to provide any package or folder for OpenAPI specification .yaml files</li>
  *     <li>Optionally, override {@link #staticAssetsFolder()} to provide a package or folder with static resources</li>
- *     <li>Optionally, override {@link #webApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
+ *     <li>Optionally, override {@link #onCreateWebApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
  * </ol>
  *
  * <p><b>Mount Paths</b></p>
@@ -154,6 +156,12 @@ public abstract class Microservice extends Application implements Startable, Sto
     /** Jetty web server */
     private JettyServer server;
 
+    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
+
+    private final Lazy<WebApplication> webApplication = Lazy.of(this::onCreateWebApplication);
+
+    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
+
     /**
      * Initializes this microservice and any project(s) it depends on
      */
@@ -173,12 +181,9 @@ public abstract class Microservice extends Application implements Startable, Sto
         return metadata().description();
     }
 
-    /**
-     * @return Any GRPC service for this microservice
-     */
-    public MicroserviceGrpcService grpService()
+    public MicroserviceGrpcService grpcService()
     {
-        return null;
+        return grpcService.get();
     }
 
     /**
@@ -202,6 +207,14 @@ public abstract class Microservice extends Application implements Startable, Sto
     public abstract MicroserviceMetadata metadata();
 
     /**
+     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
+     */
+    public MicroserviceWebApplication onCreateWebApplication()
+    {
+        return null;
+    }
+
+    /**
      * Called to initialize the microservice before it's running. This is a good place to register objects with {@link
      * #register(Object)} or {@link #register(Object, Enum)}. While settings can be registered in this method, for most
      * microservices, it will make more sense to use the more automatic method provided by {@link Deployment}s.
@@ -211,11 +224,24 @@ public abstract class Microservice extends Application implements Startable, Sto
     }
 
     /**
-     * @return Any REST service for this microservice
+     * @return Any GRPC service for this microservice
      */
-    public MicroserviceRestService restService()
+    public MicroserviceGrpcService onNewGrpcService()
     {
         return null;
+    }
+
+    /**
+     * @return Any REST service for this microservice
+     */
+    public MicroserviceRestService onNewRestService()
+    {
+        return null;
+    }
+
+    public MicroserviceRestService restService()
+    {
+        return restService.get();
     }
 
     @UmlRelation(label = "has")
@@ -262,10 +288,11 @@ public abstract class Microservice extends Application implements Startable, Sto
             }
 
             // If there is a microservlet REST application,
-            final var restService = listenTo(restService());
+            final var restService = restService();
             if (restService != null)
             {
                 // and there are static OpenAPI assets,
+                listenTo(restService);
                 final var openApiAssets = openApiAssetsFolder();
                 if (openApiAssets != null)
                 {
@@ -284,10 +311,11 @@ public abstract class Microservice extends Application implements Startable, Sto
             }
 
             // If there is a GRPC service,
-            var grpcService = listenTo(grpService());
+            var grpcService = grpcService();
             if (grpcService != null)
             {
                 // initialize it,
+                listenTo(grpcService);
                 grpcService.initialize();
 
                 // and start it up.
@@ -321,12 +349,9 @@ public abstract class Microservice extends Application implements Startable, Sto
         return metadata().version();
     }
 
-    /**
-     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
-     */
-    public MicroserviceWebApplication webApplication()
+    public WebApplication webApplication()
     {
-        return null;
+        return webApplication.get();
     }
 
     /**

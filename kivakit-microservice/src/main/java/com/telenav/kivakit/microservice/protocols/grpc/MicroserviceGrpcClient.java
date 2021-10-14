@@ -4,7 +4,7 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
-import com.telenav.kivakit.microservice.internal.microservlet.grpc.MicroservletGrpcResponder;
+import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.core.Port;

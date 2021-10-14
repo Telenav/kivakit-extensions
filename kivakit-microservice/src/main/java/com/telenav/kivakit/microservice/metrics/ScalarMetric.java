@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.metrics;
 
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.microservice.internal.microservlet.rest.metrics.BaseMetric;
+import com.telenav.kivakit.microservice.internal.protocols.rest.metrics.BaseMetric;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 
 @OpenApiIncludeType(description = "A named measurement of some value")

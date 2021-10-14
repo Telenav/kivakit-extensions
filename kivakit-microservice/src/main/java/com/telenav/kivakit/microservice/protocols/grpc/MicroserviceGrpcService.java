@@ -7,8 +7,8 @@ import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.microservice.Microservice;
-import com.telenav.kivakit.microservice.internal.microservlet.MicroservletMountTarget;
-import com.telenav.kivakit.microservice.internal.microservlet.grpc.MicroservletGrpcResponder;
+import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
+import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -20,8 +20,8 @@ import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.L
 
 /**
  * GRPC protocol service that allows {@link MicroservletRequestHandler}s to be mounted with {@link #mount(String,
- * Class)} in the {@link #onInitialize()} method (only). The service is created in {@link Microservice#grpService()} ()}
- * automatically started by the microservice framework on startup.
+ * Class)} in the {@link #onInitialize()} method (only). The service is created in {@link
+ * Microservice#onNewGrpcService()} ()} automatically started by the microservice framework on startup.
  *
  * @author jonathanl (shibo)
  */
@@ -55,17 +55,18 @@ public class MicroserviceGrpcService extends BaseComponent implements
     @Override
     public void initialize()
     {
-        // Look up any REST service,
-        var restFilter = lookup(MicroserviceRestService.class);
-        if (restFilter != null)
-        {
-            // and mount all the request handlers in that service on this service,
-            restFilter.mountAll(this);
-        }
-
-        mountAllowed = true;
         try
         {
+            mountAllowed = true;
+
+            // Look up any REST service,
+            var restService = lookup(MicroserviceRestService.class);
+            if (restService != null)
+            {
+                // and mount all the request handlers in that service on this service,
+                restService.mountAll(this);
+            }
+
             // then allow the user to add or override request handlers.
             onInitialize();
         }
@@ -119,7 +120,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         final int port = microservice.settings().grpcPort();
 
         server = ServerBuilder.forPort(port)
-                .addService(new MicroservletGrpcResponder())
+                .addService(responder)
                 .build();
 
         if (tryCatch(server::start, "Unable to start server") != null)

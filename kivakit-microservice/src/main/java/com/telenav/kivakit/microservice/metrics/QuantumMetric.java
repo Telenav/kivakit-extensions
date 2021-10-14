@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.metrics;
 
 import com.telenav.kivakit.kernel.interfaces.factory.MapFactory;
 import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.microservice.internal.microservlet.rest.metrics.BaseMetric;
+import com.telenav.kivakit.microservice.internal.protocols.rest.metrics.BaseMetric;
 
 public abstract class QuantumMetric<T extends Quantizable> extends BaseMetric<T> implements AggregateMetric<T>
 {

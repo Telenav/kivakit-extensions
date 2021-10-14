@@ -34,7 +34,7 @@
         </dependency>
 
         <!-- Servlet API -->
-        
+
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>

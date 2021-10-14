@@ -88,7 +88,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroserviceRestService restService()
+        public MicroserviceRestService onNewRestService()
         {
             return new TestRestService(this);
         }
