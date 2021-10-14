@@ -1,6 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
@@ -9,6 +11,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.core.Port;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqual;
 
@@ -28,12 +31,18 @@ public class MicroserviceGrpcClient extends BaseComponent
     // Create a GRPC channel,
     private final ManagedChannel channel;
 
+    /** The default version to use for non-absolute paths */
+    private final Version version;
+
     /**
      * @param port The GRPC server port
+     * @param version The default version to use for non-absolute request paths (paths not starting with a slash). For
+     * example, if version is 1.0, a request path of "testing" would resolve to "/api/1.0/testing".
      */
-    public MicroserviceGrpcClient(Port port)
+    public MicroserviceGrpcClient(Port port, Version version)
     {
         this.port = port;
+        this.version = version;
 
         channel = ManagedChannelBuilder.forAddress(port.host().name(), port.number())
                 .usePlaintext()
@@ -59,7 +68,7 @@ public class MicroserviceGrpcClient extends BaseComponent
 
         // pack the path and the request object into an (internal) request protobuf object,
         var protobufRequest = MicroservletGrpcRequestProtobuf.newBuilder()
-                .setPath(path)
+                .setPath(normalizePath(path))
                 .setObject(object)
                 .build();
 
@@ -95,7 +104,7 @@ public class MicroserviceGrpcClient extends BaseComponent
 
         // pack the path and the request object into an (internal) request protobuf object,
         var protobufRequest = MicroservletGrpcRequestProtobuf.newBuilder()
-                .setPath(path)
+                .setPath(normalizePath(path))
                 .setObject(object)
                 .build();
 
@@ -107,5 +116,18 @@ public class MicroserviceGrpcClient extends BaseComponent
     public void stop()
     {
         channel.shutdown();
+    }
+
+    @NotNull
+    private String normalizePath(String path)
+    {
+        // If the path is not absolute,
+        if (!path.startsWith("/"))
+        {
+            // then turn it into /api/[major].[minor]/path
+            path = Message.format("/api/$.$/$", version.major(), version.minor(), path);
+        }
+
+        return path;
     }
 }

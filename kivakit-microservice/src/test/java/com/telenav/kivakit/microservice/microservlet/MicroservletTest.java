@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.configuration.lookup.Registry;
 import com.telenav.kivakit.kernel.data.validation.BaseValidator;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
@@ -8,7 +9,9 @@ import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
+import com.telenav.kivakit.microservice.MicroserviceSettings;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
+import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
@@ -89,6 +92,12 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
+        public MicroserviceGrpcService onNewGrpcService()
+        {
+            return new MicroserviceGrpcService(this);
+        }
+
+        @Override
         public MicroserviceRestService onNewRestService()
         {
             return new TestRestService(this);
@@ -166,8 +175,11 @@ public class MicroservletTest extends UnitTest
     @Test
     public void test()
     {
+        Registry.of(this).register(new MicroserviceSettings().port(8086).grpcPort(8087));
+
         final var microservice = listenTo(new TestMicroservice());
-        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpcPort=8087" }));
+
+        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087" }));
         microservice.waitForReady();
 
         var client = listenTo(new MicroserviceRestClient(
@@ -190,7 +202,7 @@ public class MicroservletTest extends UnitTest
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
         ensureEqual(27, response3.result);
 
-        var grpcClient = new MicroserviceGrpcClient(Host.local().port(8087));
+        var grpcClient = listenTo(new MicroserviceGrpcClient(Host.local().port(8087), microservice.version()));
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 

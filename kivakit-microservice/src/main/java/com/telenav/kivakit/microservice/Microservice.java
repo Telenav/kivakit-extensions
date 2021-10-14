@@ -281,7 +281,7 @@ public abstract class Microservice extends Application implements Startable, Sto
             }
             if (has(GRPC_PORT))
             {
-                settings().port(get(GRPC_PORT));
+                settings().grpcPort(get(GRPC_PORT));
             }
 
             // create the Jetty server.
