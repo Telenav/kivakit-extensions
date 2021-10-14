@@ -142,11 +142,20 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 public abstract class Microservice extends Application implements Startable, Stoppable
 {
     /**
-     * Command line switch for what port to run on. This will override any value from {@link MicroserviceSettings} that
-     * is loaded from a {@link Deployment}.
+     * Command line switch for what port to run any REST service on. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> PORT =
             integerSwitchParser("port", "The port to use")
+                    .optional()
+                    .build();
+
+    /**
+     * Command line switch for what port to run any GRPC service on. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     */
+    private final SwitchParser<Integer> GRPC_PORT =
+            integerSwitchParser("grpc-port", "The port to use")
                     .optional()
                     .build();
 
@@ -265,11 +274,18 @@ public abstract class Microservice extends Application implements Startable, Sto
             // Show command line arguments,
             showCommandLine();
 
-            // get the port to run on,
-            final var port = has(PORT) ? get(PORT) : settings().port();
+            // get any port overrides from the command line,
+            if (has(PORT))
+            {
+                settings().port(get(PORT));
+            }
+            if (has(GRPC_PORT))
+            {
+                settings().port(get(GRPC_PORT));
+            }
 
             // create the Jetty server.
-            server = listenTo(new JettyServer().port(port));
+            server = listenTo(new JettyServer().port(settings().port()));
 
             // If there's an Apache Wicket web application,
             final var webApplication = webApplication();
@@ -302,7 +318,7 @@ public abstract class Microservice extends Application implements Startable, Sto
 
                 // Mount Swagger resources for the REST application.
                 server.mount("/*", register(new MicroservletJettyFilterPlugin(restService)));
-                server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port));
+                server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(settings().port()));
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
                 server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restService.getClass()));
 
@@ -330,7 +346,7 @@ public abstract class Microservice extends Application implements Startable, Sto
             }
 
             // Start Jetty server.
-            announce("Microservice server starting on port ${integer}", port);
+            announce("Microservice Jetty server starting on port ${integer}", settings().port());
             server.start();
             running = true;
         }
@@ -420,6 +436,6 @@ public abstract class Microservice extends Application implements Startable, Sto
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.of(PORT);
+        return ObjectSet.of(PORT, GRPC_PORT);
     }
 }

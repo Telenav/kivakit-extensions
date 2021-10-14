@@ -49,7 +49,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     public MicroserviceGrpcService(Microservice microservice)
     {
         this.microservice = microservice;
-        this.responder = new MicroservletGrpcResponder();
+        this.responder = listenTo(new MicroservletGrpcResponder());
     }
 
     @Override

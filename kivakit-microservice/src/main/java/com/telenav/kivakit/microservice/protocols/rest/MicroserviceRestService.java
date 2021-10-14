@@ -269,7 +269,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     {
         for (var path : pathToRequest.keySet())
         {
-            target.mount(path.path().toString(), pathToRequest.get(path));
+            target.mount(path.resolvedPath().asString(), pathToRequest.get(path));
         }
     }
 
