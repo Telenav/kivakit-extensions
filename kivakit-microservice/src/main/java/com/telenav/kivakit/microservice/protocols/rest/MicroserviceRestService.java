@@ -106,7 +106,8 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * @see MicroserviceGsonFactory
  * @see MicroservletRequest
  */
-@SuppressWarnings("RedundantSuppression") @UmlClassDiagram(diagram = DiagramMicroservice.class)
+@SuppressWarnings({ "RedundantSuppression", "unused", "unchecked" })
+@UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class MicroserviceRestService extends BaseComponent implements Initializable
 {
     public enum HttpMethod

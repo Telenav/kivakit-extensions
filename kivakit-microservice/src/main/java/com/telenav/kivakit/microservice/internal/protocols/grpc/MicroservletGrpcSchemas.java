@@ -9,7 +9,7 @@ import com.google.protobuf.ByteString;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MicroservletGrpcSchemas
+@SuppressWarnings("unchecked") public class MicroservletGrpcSchemas
 {
     /** Cache of request schemas */
     private static final Map<Class<?>, Schema<?>> requestTypeToSchema = new ConcurrentHashMap<>();

@@ -142,7 +142,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     {
         if (server != null)
         {
-            server.shutdown();
+            server.shutdownNow();
         }
     }
 }

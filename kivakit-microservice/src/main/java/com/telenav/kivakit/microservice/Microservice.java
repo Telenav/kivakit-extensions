@@ -357,6 +357,7 @@ public abstract class Microservice extends Application implements Startable, Sto
     public void stop(final Duration wait)
     {
         server.stop(wait);
+        grpcService().stop();
     }
 
     @Override
