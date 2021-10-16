@@ -23,7 +23,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testFile()
     {
         final var file = listenTo(new GitHubFile("github://Telenav/lexakai/develop/README.md"));
-        ensure(file.reader().get().contains("lexakai"));
+        ensure(file.string().contains("lexakai"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }
 
@@ -64,7 +64,7 @@ public class GitHubFileSystemTest extends UnitTest
     {
         final var token = "";
         final var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
-        ensure(file.reader().get().contains("30909955"));
+        ensure(file.string().contains("30909955"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }
 }
