@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.kernel.language.time.Frequency;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.math.statistics.AverageDuration;
@@ -14,11 +14,11 @@ public class MicroservletRequestStatisticsAggregator extends BaseComponent
 {
     private final Map<String, AverageDuration> duration = new ConcurrentHashMap<>();
 
-    private final Duration every;
+    private final Frequency every;
 
     private Time last = Time.now();
 
-    public MicroservletRequestStatisticsAggregator(Duration every)
+    public MicroservletRequestStatisticsAggregator(Frequency every)
     {
         this.every = every;
     }
@@ -31,7 +31,7 @@ public class MicroservletRequestStatisticsAggregator extends BaseComponent
 
         synchronized (this)
         {
-            if (last.elapsedSince().isGreaterThan(every))
+            if (last.elapsedSince().isGreaterThan(every.cycleLength()))
             {
                 var paths = StringList.stringList();
                 for (var key : duration.keySet())
