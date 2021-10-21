@@ -183,6 +183,18 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         }
     }
 
+    public void waitForTermination()
+    {
+        try
+        {
+            server.join();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     private ServerConnector httpConnector(final Server server)
     {
         // Return an HTTP Jetty server connector for the port that was specified

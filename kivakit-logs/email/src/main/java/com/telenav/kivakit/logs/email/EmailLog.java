@@ -41,7 +41,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
-import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITH_EXCEPTION;
 
 /**
  * A {@link Log} service provider that sends emails. Configuration occurs via the command line. See {@link
@@ -77,6 +76,8 @@ public class EmailLog extends BaseTextLog
     @Override
     public void configure(final Map<String, String> properties)
     {
+        super.configure(properties);
+
         // Subject
         subject = properties.get("subject");
         if (subject == null)
@@ -135,7 +136,7 @@ public class EmailLog extends BaseTextLog
         final var email = new Email();
         email.to(to);
         email.from(from);
-        email.body(new EmailBody(format(entry, WITH_EXCEPTION)));
+        email.body(new EmailBody(formatted(entry)));
         email.subject(subject);
         if (sender == null)
         {

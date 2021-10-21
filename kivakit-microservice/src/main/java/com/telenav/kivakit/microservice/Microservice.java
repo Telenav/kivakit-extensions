@@ -349,6 +349,9 @@ public abstract class Microservice extends Application implements Startable, Sto
             announce("Microservice Jetty server starting on port ${integer}", settings().port());
             server.start();
             running = true;
+
+            // and wait for it to be terminated.
+            server.waitForTermination();
         }
         return true;
     }

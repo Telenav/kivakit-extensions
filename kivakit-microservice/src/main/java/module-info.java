@@ -6,6 +6,7 @@ open module kivakit.microservice
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.protostuff.merged;
     requires transitive kivakit.grpc.merged;
+    requires transitive kivakit.math;
     requires kivakit.test;
 
     // Java

@@ -3,6 +3,7 @@ package com.telenav.kivakit.microservice.microservlet;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -17,9 +18,21 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
         MicroservletRequest,
         MicroservletRequestHandler
 {
-    public BaseMicroservletRequest()
-    {
+    private static MicroservletRequestStatisticsAggregator aggregator =
+            new MicroservletRequestStatisticsAggregator(Duration.seconds(30));
 
+    private String path;
+
+    @Override
+    public void onStatistics(MicroservletRequestStatistics statistics)
+    {
+        announce("Request: $", statistics);
+        aggregator.add(this, statistics);
+    }
+
+    public void path(final String path)
+    {
+        this.path = path;
     }
 
     @Override

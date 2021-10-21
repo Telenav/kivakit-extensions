@@ -33,7 +33,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
-import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITH_EXCEPTION;
 
 /**
  * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a {@link
@@ -135,8 +134,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
             }
         }
 
-        final var formatted = format(entry, WITH_EXCEPTION);
-        out().println(formatted);
+        out().println(formatted(entry));
         out().flush();
     }
 

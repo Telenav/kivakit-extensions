@@ -54,7 +54,7 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
 
             // Next call the user's code and get a response, capturing any errors.
             var errors = new MicroservletErrorResponse();
-            var response = errors.listenTo(request).onRequest();
+            var response = errors.listenTo(request).request(path);
 
             // Turn the MicroservletErrorResponse and MicroservletResponse into a GrpcResponseProtobuf
             var responseProtobuf = MicroservletGrpcResponseProtobuf.newBuilder()

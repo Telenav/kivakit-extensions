@@ -15,4 +15,25 @@ public interface MicroservletRequestHandler
      * @return The response to this microservlet request
      */
     MicroservletResponse onRequest();
+
+    /**
+     * Called with request statistics for each request
+     */
+    void onStatistics(MicroservletRequestStatistics statistics);
+
+    default MicroservletResponse request(String path)
+    {
+        var statistics = new MicroservletRequestStatistics();
+        statistics.path(path);
+        try
+        {
+            statistics.start();
+            return onRequest();
+        }
+        finally
+        {
+            statistics.end();
+            onStatistics(statistics);
+        }
+    }
 }
