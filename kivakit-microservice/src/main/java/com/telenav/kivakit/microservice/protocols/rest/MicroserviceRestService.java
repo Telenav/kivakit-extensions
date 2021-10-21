@@ -243,7 +243,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                     @SuppressWarnings("unchecked")
                     public Response onRequest(final Request request)
                     {
-                        return (Response) request.onRequest();
+                        return (Response) request.request(path);
                     }
                 }));
 

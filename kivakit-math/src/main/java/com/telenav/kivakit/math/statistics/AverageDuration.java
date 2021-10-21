@@ -38,4 +38,10 @@ public class AverageDuration extends Average
     {
         return Duration.milliseconds(average());
     }
+
+    @Override
+    public String toString()
+    {
+        return averageDuration().toString();
+    }
 }

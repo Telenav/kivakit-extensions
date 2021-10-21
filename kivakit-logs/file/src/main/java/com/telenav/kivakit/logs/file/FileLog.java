@@ -55,6 +55,8 @@ public class FileLog extends BaseRolloverTextLog
     @Override
     public void configure(final Map<String, String> properties)
     {
+        super.configure(properties);
+        
         final var path = properties.get("file");
         if (path != null)
         {
@@ -97,7 +99,9 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        return File.parse(file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
+        var newFile = File.parse(file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
+        System.out.println("Creating new FileLog output file: " + newFile);
+        return newFile;
     }
 }
