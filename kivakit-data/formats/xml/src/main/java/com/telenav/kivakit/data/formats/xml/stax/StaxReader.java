@@ -16,7 +16,6 @@ import javax.xml.stream.events.XMLEvent;
 import java.io.Closeable;
 import java.io.InputStream;
 
-import static com.telenav.kivakit.data.formats.xml.stax.StaxReader.AtEndOfDocument.STOP;
 import static com.telenav.kivakit.data.formats.xml.stax.StaxReader.Match.FOUND;
 import static com.telenav.kivakit.data.formats.xml.stax.StaxReader.Match.NOT_FOUND;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
@@ -44,15 +43,6 @@ public class StaxReader extends BaseComponent implements Closeable
         {
             return fail(e, "Unable to read XML resource: $", resource);
         }
-    }
-
-    /**
-     * What to do at the end of the document
-     */
-    public enum AtEndOfDocument
-    {
-        STOP,
-        THROW_EXCEPTION
     }
 
     /**
@@ -92,13 +82,10 @@ public class StaxReader extends BaseComponent implements Closeable
     private final InputStream in;
 
     /** The current XML path */
-    private StaxPath path;
+    private final StaxPath path = new StaxPath();
 
     /** The current event */
     private XMLEvent at;
-
-    /** True if reading should stop at the end of the document, false if an exception should be thrown */
-    private AtEndOfDocument atEndOfDocument = STOP;
 
     /**
      * @param reader The Java STAX event reader
@@ -123,15 +110,7 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public boolean atEnd()
     {
-        return at.isEndDocument();
-    }
-
-    /**
-     * @param atEndOfDocument What to do if the end of document is reached unexpectedly
-     */
-    public void atEndOfDocument(final AtEndOfDocument atEndOfDocument)
-    {
-        this.atEndOfDocument = atEndOfDocument;
+        return at == null;
     }
 
     @Override
@@ -175,7 +154,7 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public boolean hasNext()
     {
-        return reader.hasNext();
+        return !atEnd() && reader.hasNext();
     }
 
     public boolean isAtCharacters()
@@ -209,12 +188,11 @@ public class StaxReader extends BaseComponent implements Closeable
     }
 
     /**
-     * @return The next event, or an exception. If {@link #atEndOfDocument(AtEndOfDocument)} is true, returns null at
-     * the end of the document instead.
+     * @return The next event, or null if there are no more events
      */
     public XMLEvent next()
     {
-        return tryCatchThrow(() ->
+        try
         {
             at = reader.nextEvent();
             if (at.isStartElement())
@@ -225,13 +203,17 @@ public class StaxReader extends BaseComponent implements Closeable
             {
                 path.pop();
             }
-            if (at.isEndDocument() && atEndOfDocument == STOP)
+            if (at.isEndDocument())
             {
                 return null;
             }
+        }
+        catch (Exception e)
+        {
+            at = null;
+        }
 
-            return at;
-        }, "Could not read next event");
+        return at;
     }
 
     /**
@@ -241,7 +223,7 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public XMLEvent next(Matcher matcher)
     {
-        for (; hasNext() && !atEnd(); next())
+        for (; hasNext(); next())
         {
             switch (matcher.matcher(at))
             {
@@ -257,7 +239,7 @@ public class StaxReader extends BaseComponent implements Closeable
             }
         }
 
-        return atEnd() ? null : fail("Out of input");
+        return !hasNext() ? null : fail("Out of input");
     }
 
     /**

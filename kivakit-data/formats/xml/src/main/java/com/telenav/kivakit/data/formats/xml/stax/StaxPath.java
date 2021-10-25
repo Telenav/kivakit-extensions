@@ -27,4 +27,10 @@ public class StaxPath extends StringPath
     {
         return (StaxPath) super.withChild(element);
     }
+
+    @Override
+    protected StaxPath copy()
+    {
+        return new StaxPath();
+    }
 }
