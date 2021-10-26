@@ -38,6 +38,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequestStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
@@ -272,6 +273,29 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         {
             target.mount(path.resolvedPath().asString(), pathToRequest.get(path));
         }
+    }
+
+    /**
+     * Called to give statistics for each request
+     *
+     * @param statistics The statistics
+     */
+    public void onRequestStatistics(MicroservletRequestStatistics statistics)
+    {
+    }
+
+    /**
+     * Called for every request to this rest service after producing a response
+     */
+    public void onRequested(final MicroservletRequest request, HttpMethod method)
+    {
+    }
+
+    /**
+     * Called for every request to this rest service, before activity begins on producing a response
+     */
+    public void onRequesting(final MicroservletRequest request, HttpMethod method)
+    {
     }
 
     /**

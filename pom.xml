@@ -11,7 +11,7 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>superpom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <relativePath>../kivakit/superpom</relativePath>
     </parent>
 
@@ -102,6 +102,7 @@
         <module>kivakit-web</module>
         <module>kivakit-service</module>
         <module>kivakit-filesystems</module>
+        <module>kivakit-metrics</module>
         <module>kivakit-microservice</module>
 
     </modules>

@@ -19,7 +19,7 @@ public interface MicroservletRequestHandler
     /**
      * Called with request statistics for each request
      */
-    void onStatistics(MicroservletRequestStatistics statistics);
+    void onRequestStatistics(MicroservletRequestStatistics statistics);
 
     default MicroservletResponse request(String path)
     {
@@ -33,7 +33,7 @@ public interface MicroservletRequestHandler
         finally
         {
             statistics.end();
-            onStatistics(statistics);
+            onRequestStatistics(statistics);
         }
     }
 }

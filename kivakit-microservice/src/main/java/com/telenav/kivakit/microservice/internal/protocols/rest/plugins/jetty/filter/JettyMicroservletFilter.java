@@ -5,7 +5,6 @@ import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.kernel.language.time.PreciseDuration;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
-import com.telenav.kivakit.microservice.internal.protocols.rest.metrics.MetricReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -53,7 +52,7 @@ import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemReportingTrait, MetricReportingTrait
+public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemReportingTrait
 {
     private static class ResolvedMicroservlet
     {
@@ -131,10 +130,6 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
 
                     // handle the request,
                     handleRequest(method, cycle, resolved);
-
-                    // and report how long the request took.
-                    metric("request-wall-clock-time", start.elapsedSince());
-                    metric("request-cpu-time", PreciseDuration.cpuTime().minus(startCpuTime));
                 }
                 catch (final Exception e)
                 {
@@ -156,8 +151,6 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         }
         finally
         {
-            cycle.reportMetrics();
-
             JettyMicroservletRequestCycle.detach();
         }
     }
@@ -259,7 +252,9 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 if (request != null)
                 {
                     listenTo(request);
+                    restApplication.onRequesting(request, method);
                     response.writeObject(microservlet.request(request));
+                    restApplication.onRequested(request, method);
                 }
                 else
                 {
@@ -278,7 +273,9 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 if (request != null)
                 {
                     listenTo(request);
+                    restApplication.onRequesting(request, method);
                     response.writeObject(microservlet.request(request));
+                    restApplication.onRequested(request, method);
                 }
                 else
                 {

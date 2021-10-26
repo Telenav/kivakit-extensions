@@ -18,7 +18,7 @@ open module kivakit.web.swagger
     requires io.swagger.v3.oas.integration;
     requires io.github.classgraph;
     requires java.ws.rs;
-    requires jakarta.activation;
+    requires transitive jakarta.activation;
 
     // Module exports
     exports com.telenav.kivakit.web.swagger;

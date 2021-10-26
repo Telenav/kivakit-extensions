@@ -9,6 +9,7 @@ package com.telenav.kivakit.logs.server;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.KivaKit;
+import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
 import com.telenav.kivakit.kernel.language.io.ProgressiveInput;
 import com.telenav.kivakit.kernel.language.io.ProgressiveOutput;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
@@ -39,7 +40,6 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.LAST;
@@ -106,7 +106,7 @@ public class ServerLog extends BaseTextLog
     }
 
     @Override
-    public void configure(final Map<String, String> properties)
+    public void configure(final VariableMap<String> properties)
     {
         final var maximum = properties.get("maximum-entries");
         if (maximum != null)

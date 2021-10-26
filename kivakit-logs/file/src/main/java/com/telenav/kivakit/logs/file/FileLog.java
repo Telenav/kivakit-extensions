@@ -19,17 +19,20 @@
 package com.telenav.kivakit.logs.file;
 
 import com.telenav.kivakit.filesystem.File;
+import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
 import com.telenav.kivakit.kernel.language.strings.StringTo;
+import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.kernel.language.vm.Console;
 import com.telenav.kivakit.kernel.logging.Log;
 import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.logs.file.project.lexakai.diagrams.DiagramLogsFile;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
-import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 
@@ -52,27 +55,31 @@ public class FileLog extends BaseRolloverTextLog
 {
     private File file;
 
+    private Duration maximumLogFileAge;
+
     @Override
-    public void configure(final Map<String, String> properties)
+    public void configure(final VariableMap<String> properties)
     {
         super.configure(properties);
-        
+
         final var path = properties.get("file");
         if (path != null)
         {
             try
             {
                 file = File.parse(path);
+
                 final var rollover = properties.get("rollover");
                 if (rollover != null)
                 {
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
                 }
-                final var maximumSize = properties.get("maximum-size");
-                if (maximumSize != null)
-                {
-                    maximumLogSize(Bytes.parse(maximumSize));
-                }
+
+                maximumLogFileAge = properties.asObject("maximum-age",
+                        new Duration.Converter(Listener.none()), Duration.MAXIMUM);
+
+                maximumLogSize(properties.asObject("maximum-size",
+                        new Bytes.Converter(Listener.none()), Bytes.MAXIMUM));
             }
             catch (final Exception e)
             {
@@ -101,7 +108,15 @@ public class FileLog extends BaseRolloverTextLog
     {
         var newFile = File.parse(file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
-        System.out.println("Creating new FileLog output file: " + newFile);
+        final var console = Console.get();
+        console.printLine("Creating new FileLog output file: " + newFile);
+        var folder = newFile.parent();
+        console.printLine("Pruning files older than $ from: $", maximumLogFileAge, folder);
+        folder.files(file -> file.isOlderThan(maximumLogFileAge)).forEach(at ->
+        {
+            console.printLine("Removed $", at);
+            at.delete();
+        });
         return newFile;
     }
 }
