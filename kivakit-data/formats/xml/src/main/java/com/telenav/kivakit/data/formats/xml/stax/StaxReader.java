@@ -19,6 +19,7 @@ import java.io.InputStream;
 import static com.telenav.kivakit.data.formats.xml.stax.StaxReader.Match.FOUND;
 import static com.telenav.kivakit.data.formats.xml.stax.StaxReader.Match.NOT_FOUND;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 
 /**
@@ -33,10 +34,12 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public static StaxReader open(Resource resource)
     {
+        ensureNotNull(resource);
+
         var factory = XMLInputFactory.newInstance();
         try
         {
-            var in = resource.openForReading();
+            var in = ensureNotNull(resource.openForReading(), "Could not open for reading: $", resource);
             return new StaxReader(factory.createXMLEventReader(in), in);
         }
         catch (XMLStreamException e)
@@ -87,6 +90,9 @@ public class StaxReader extends BaseComponent implements Closeable
     /** The current event */
     private XMLEvent at;
 
+    /** The number of events that have been observed. */
+    private int events;
+
     /**
      * @param reader The Java STAX event reader
      * @param in The input stream that the reader is processing
@@ -110,7 +116,7 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public boolean atEnd()
     {
-        return at == null;
+        return events > 0 && at == null;
     }
 
     @Override
@@ -146,7 +152,7 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public XMLEvent findNext(StaxPath path)
     {
-        return next(ignored -> isInside(path) ? FOUND : NOT_FOUND);
+        return next(ignored -> this.path.isInside(path) ? FOUND : NOT_FOUND);
     }
 
     /**
@@ -174,17 +180,12 @@ public class StaxReader extends BaseComponent implements Closeable
 
     public boolean isAtOpenTag()
     {
-        return at().isStartElement();
+        return at != null && at().isStartElement();
     }
 
-    /**
-     * @return True if the current XML path is inside the given path. For example, if the current path is a/b/c and the
-     * given path is a/b/c or /a/b/c/d, this method would return true. However, if the path was a/b, it would return
-     * false.
-     */
-    public boolean isInside(StaxPath path)
+    public boolean isInside(final StaxPath path)
     {
-        return path().startsWith(path);
+        return this.path.isInside(path);
     }
 
     /**
@@ -195,9 +196,10 @@ public class StaxReader extends BaseComponent implements Closeable
         try
         {
             at = reader.nextEvent();
+            events++;
             if (at.isStartElement())
             {
-                path.push(at.asStartElement().getName().toString());
+                path.push(at.asStartElement().getName().getLocalPart());
             }
             if (at.isEndElement())
             {
@@ -267,7 +269,7 @@ public class StaxReader extends BaseComponent implements Closeable
     }
 
     /**
-     * @param path The path to stay inside
+     * @param path The path to stay at or under (inside)
      * @param matcher The matcher to call
      * @return The next matching element inside the given path, or null if the element couldn't be found before leaving
      * the scope represented by the given path. If the element isn't found, the element returned by {@link #at()} will
@@ -277,8 +279,9 @@ public class StaxReader extends BaseComponent implements Closeable
     {
         return next(event ->
         {
-            if (!isInside(path))
+            if (!this.path.isInside(path))
             {
+                next();
                 return Match.STOP;
             }
 
