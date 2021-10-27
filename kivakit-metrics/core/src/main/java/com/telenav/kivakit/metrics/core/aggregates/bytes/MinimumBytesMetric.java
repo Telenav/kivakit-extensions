@@ -10,6 +10,7 @@ public class MinimumBytesMetric extends MinimumMetric<Bytes>
         super(Bytes::bytes);
     }
 
+    @Override
     public MinimumBytesMetric description(final String description)
     {
         return (MinimumBytesMetric) super.description(description);
@@ -25,5 +26,11 @@ public class MinimumBytesMetric extends MinimumMetric<Bytes>
     public MinimumBytesMetric type(final MetricType type)
     {
         return (MinimumBytesMetric) super.type(type);
+    }
+
+    @Override
+    public MinimumBytesMetric unit(final String unit)
+    {
+        return (MinimumBytesMetric) super.unit(unit);
     }
 }

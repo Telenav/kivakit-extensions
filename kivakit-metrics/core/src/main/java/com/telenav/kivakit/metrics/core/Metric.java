@@ -37,4 +37,9 @@ public interface Metric<T> extends Named, CreatedAt, Quantizable
      * @return The type of measurement
      */
     MetricType type();
+
+    /**
+     * @return The metric unit
+     */
+    String unit();
 }

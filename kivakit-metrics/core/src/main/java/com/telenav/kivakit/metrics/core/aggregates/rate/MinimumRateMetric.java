@@ -10,6 +10,7 @@ public class MinimumRateMetric extends MinimumMetric<Rate>
         super(Rate::perSecond);
     }
 
+    @Override
     public MinimumRateMetric description(final String description)
     {
         return (MinimumRateMetric) super.description(description);
@@ -25,5 +26,11 @@ public class MinimumRateMetric extends MinimumMetric<Rate>
     public MinimumRateMetric type(final MetricType type)
     {
         return (MinimumRateMetric) super.type(type);
+    }
+
+    @Override
+    public MinimumRateMetric unit(final String unit)
+    {
+        return (MinimumRateMetric) super.unit(unit);
     }
 }

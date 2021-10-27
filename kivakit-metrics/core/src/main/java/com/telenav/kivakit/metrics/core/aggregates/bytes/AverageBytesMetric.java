@@ -26,4 +26,10 @@ public class AverageBytesMetric extends AverageMetric<Bytes>
     {
         return (AverageBytesMetric) super.type(type);
     }
+
+    @Override
+    public AverageBytesMetric unit(final String unit)
+    {
+        return (AverageBytesMetric) super.unit(unit);
+    }
 }

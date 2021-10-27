@@ -32,6 +32,10 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-prometheus-merged</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-web-jetty</artifactId>
+        </dependency>
 
     </dependencies>
 

@@ -68,9 +68,15 @@ public class ScalarMetric<T extends Quantizable> extends BaseMetric<T>
         return (ScalarMetric<T>) super.type(type);
     }
 
+    @Override
+    public ScalarMetric<T> unit(final String unit)
+    {
+        return (ScalarMetric<T>) super.unit(unit);
+    }
+
     public ScalarMetric<T> withMeasurement(T measurement)
     {
-        var copy = new ScalarMetric<T>(this);
+        var copy = new ScalarMetric<>(this);
         copy.measurement = measurement;
         return copy;
     }

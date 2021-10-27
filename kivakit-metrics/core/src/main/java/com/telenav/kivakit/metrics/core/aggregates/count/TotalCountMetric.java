@@ -10,6 +10,7 @@ public class TotalCountMetric extends TotalMetric<Count>
         super(Count::count);
     }
 
+    @Override
     public TotalCountMetric description(final String description)
     {
         return (TotalCountMetric) super.description(description);
@@ -25,5 +26,11 @@ public class TotalCountMetric extends TotalMetric<Count>
     public TotalCountMetric type(final MetricType type)
     {
         return (TotalCountMetric) super.type(type);
+    }
+
+    @Override
+    public TotalCountMetric unit(final String unit)
+    {
+        return (TotalCountMetric) super.unit(unit);
     }
 }

@@ -10,6 +10,7 @@ public class MinimumDurationMetric extends MinimumMetric<Duration>
         super(Duration::seconds);
     }
 
+    @Override
     public MinimumDurationMetric description(final String description)
     {
         return (MinimumDurationMetric) super.description(description);
@@ -25,5 +26,11 @@ public class MinimumDurationMetric extends MinimumMetric<Duration>
     public MinimumDurationMetric type(final MetricType type)
     {
         return (MinimumDurationMetric) super.type(type);
+    }
+
+    @Override
+    public MinimumDurationMetric unit(final String unit)
+    {
+        return (MinimumDurationMetric) super.unit(unit);
     }
 }

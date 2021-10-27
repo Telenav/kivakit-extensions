@@ -10,6 +10,7 @@ public class MinimumCountMetric extends MinimumMetric<Count>
         super(Count::count);
     }
 
+    @Override
     public MinimumCountMetric description(final String description)
     {
         return (MinimumCountMetric) super.description(description);
@@ -25,5 +26,11 @@ public class MinimumCountMetric extends MinimumMetric<Count>
     public MinimumCountMetric type(final MetricType type)
     {
         return (MinimumCountMetric) super.type(type);
+    }
+
+    @Override
+    public MinimumCountMetric unit(final String unit)
+    {
+        return (MinimumCountMetric) super.unit(unit);
     }
 }

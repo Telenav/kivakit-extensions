@@ -10,6 +10,7 @@ public class TotalBytesMetric extends TotalMetric<Bytes>
         super(Bytes::bytes);
     }
 
+    @Override
     public TotalBytesMetric description(final String description)
     {
         return (TotalBytesMetric) super.description(description);
@@ -25,5 +26,11 @@ public class TotalBytesMetric extends TotalMetric<Bytes>
     public TotalBytesMetric type(final MetricType type)
     {
         return (TotalBytesMetric) super.type(type);
+    }
+
+    @Override
+    public TotalBytesMetric unit(final String unit)
+    {
+        return (TotalBytesMetric) super.unit(unit);
     }
 }

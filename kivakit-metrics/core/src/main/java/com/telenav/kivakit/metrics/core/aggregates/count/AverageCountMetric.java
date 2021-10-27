@@ -26,4 +26,10 @@ public class AverageCountMetric extends AverageMetric<Count>
     {
         return (AverageCountMetric) super.type(type);
     }
+
+    @Override
+    public AverageCountMetric unit(final String unit)
+    {
+        return (AverageCountMetric) super.unit(unit);
+    }
 }

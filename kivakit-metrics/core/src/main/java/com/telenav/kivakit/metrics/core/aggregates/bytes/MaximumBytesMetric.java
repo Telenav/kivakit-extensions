@@ -26,4 +26,10 @@ public class MaximumBytesMetric extends MaximumMetric<Bytes>
     {
         return (MaximumBytesMetric) super.type(type);
     }
+
+    @Override
+    public MaximumBytesMetric unit(final String unit)
+    {
+        return (MaximumBytesMetric) super.unit(unit);
+    }
 }

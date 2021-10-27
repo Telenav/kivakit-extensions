@@ -16,28 +16,29 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.web.jetty.resources;
+package com.telenav.kivakit.metrics.prometheus;
 
-import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
+import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import io.prometheus.client.exporter.MetricsServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
- * Base class for servlet request handlers.
+ * Produces the swagger.json OpenAPI interface description for the given application.
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseJettyServletPlugin extends BaseJettyRequestHandler implements ComponentMixin
+public class PrometheusJettyServletPlugin extends BaseJettyServletPlugin
 {
-    public BaseJettyServletPlugin(final String name)
+    public PrometheusJettyServletPlugin()
     {
-        super(name);
+        super("[PrometheusJettyServletPlugin]");
     }
 
-    /**
-     * @return Jetty-specific adaptor for servlets
-     */
-    public abstract ServletHolder holder();
+    @Override
+    public ServletHolder holder()
+    {
+        return new ServletHolder(new MetricsServlet());
+    }
 }

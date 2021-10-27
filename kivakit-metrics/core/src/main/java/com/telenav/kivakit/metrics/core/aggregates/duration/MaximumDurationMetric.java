@@ -10,6 +10,7 @@ public class MaximumDurationMetric extends MaximumMetric<Duration>
         super(Duration::seconds);
     }
 
+    @Override
     public MaximumDurationMetric description(final String description)
     {
         return (MaximumDurationMetric) super.description(description);
@@ -25,5 +26,11 @@ public class MaximumDurationMetric extends MaximumMetric<Duration>
     public MaximumDurationMetric type(final MetricType type)
     {
         return (MaximumDurationMetric) super.type(type);
+    }
+
+    @Override
+    public MaximumDurationMetric unit(final String unit)
+    {
+        return (MaximumDurationMetric) super.unit(unit);
     }
 }

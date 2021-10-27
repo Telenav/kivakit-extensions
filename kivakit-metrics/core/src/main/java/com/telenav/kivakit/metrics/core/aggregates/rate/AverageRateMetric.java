@@ -10,6 +10,7 @@ public class AverageRateMetric extends AverageMetric<Rate>
         super(Rate::perSecond);
     }
 
+    @Override
     public AverageRateMetric description(final String description)
     {
         return (AverageRateMetric) super.description(description);
@@ -25,5 +26,11 @@ public class AverageRateMetric extends AverageMetric<Rate>
     public AverageRateMetric type(final MetricType type)
     {
         return (AverageRateMetric) super.type(type);
+    }
+
+    @Override
+    public AverageRateMetric unit(final String unit)
+    {
+        return (AverageRateMetric) super.unit(unit);
     }
 }

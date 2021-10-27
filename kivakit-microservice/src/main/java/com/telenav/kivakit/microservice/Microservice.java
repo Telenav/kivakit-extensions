@@ -338,6 +338,8 @@ public abstract class Microservice extends Application implements Startable, Sto
                 warning("No REST or GRPC service is available for this microservice");
             }
 
+            onMountJettyPlugins(server);
+
             // Start Jetty server.
             announce("Microservice Jetty server starting on port ${integer}", settings().port());
             server.start();
@@ -365,6 +367,10 @@ public abstract class Microservice extends Application implements Startable, Sto
     public WebApplication webApplication()
     {
         return webApplication.get();
+    }
+
+    protected void onMountJettyPlugins(JettyServer server)
+    {
     }
 
     /**

@@ -26,4 +26,10 @@ public class MaximumCountMetric extends MaximumMetric<Count>
     {
         return (MaximumCountMetric) super.type(type);
     }
+
+    @Override
+    public MaximumCountMetric unit(final String unit)
+    {
+        return (MaximumCountMetric) super.unit(unit);
+    }
 }

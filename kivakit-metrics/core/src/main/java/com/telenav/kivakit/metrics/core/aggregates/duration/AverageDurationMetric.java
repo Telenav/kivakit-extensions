@@ -26,4 +26,10 @@ public class AverageDurationMetric extends AverageMetric<Duration>
     {
         return (AverageDurationMetric) super.type(type);
     }
+
+    @Override
+    public AverageDurationMetric unit(final String unit)
+    {
+        return (AverageDurationMetric) super.unit(unit);
+    }
 }

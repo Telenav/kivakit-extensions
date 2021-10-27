@@ -10,6 +10,7 @@ public class MaximumRateMetric extends MaximumMetric<Rate>
         super(Rate::perSecond);
     }
 
+    @Override
     public MaximumRateMetric description(final String description)
     {
         return (MaximumRateMetric) super.description(description);
@@ -25,5 +26,11 @@ public class MaximumRateMetric extends MaximumMetric<Rate>
     public MaximumRateMetric type(final MetricType type)
     {
         return (MaximumRateMetric) super.type(type);
+    }
+
+    @Override
+    public MaximumRateMetric unit(final String unit)
+    {
+        return (MaximumRateMetric) super.unit(unit);
     }
 }

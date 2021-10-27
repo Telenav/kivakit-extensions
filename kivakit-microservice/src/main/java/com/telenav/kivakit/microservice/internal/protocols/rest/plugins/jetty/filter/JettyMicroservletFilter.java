@@ -8,6 +8,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemRep
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequestStatistics;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
@@ -224,69 +225,82 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                                final JettyMicroservletRequestCycle cycle,
                                final ResolvedMicroservlet resolved)
     {
-        // Get the response object, microservlet, path and parameters,
-        final var response = cycle.response();
-        final var microservlet = resolved.microservlet;
-        final var requestType = microservlet.requestType();
-        final var parameters = cycle.request().parameters(resolved.parameters.path());
+        var statistics = new MicroservletRequestStatistics();
+        statistics.start();
+        statistics.path(resolved.path.key());
 
-        // and if the request method is
-        switch (method)
+        try
         {
-            case POST:
+
+            // Get the response object, microservlet, path and parameters,
+            final var response = cycle.response();
+            final var microservlet = resolved.microservlet;
+            final var requestType = microservlet.requestType();
+            final var parameters = cycle.request().parameters(resolved.parameters.path());
+
+            // and if the request method is
+            switch (method)
             {
-                // then convert the posted JSON to an object of the request type,
-                final MicroservletRequest request;
-                if (!parameters.isEmpty())
+                case POST:
                 {
-                    // converting any parameters to a JSON request object,
-                    request = cycle.gson().fromJson(parameters.asJson(), requestType);
-                }
-                else
-                {
-                    // or if there are no parameters, converting the posted entity.
-                    request = cycle.request().readObject(requestType);
-                }
+                    // then convert the posted JSON to an object of the request type,
+                    final MicroservletRequest request;
+                    if (!parameters.isEmpty())
+                    {
+                        // converting any parameters to a JSON request object,
+                        request = cycle.gson().fromJson(parameters.asJson(), requestType);
+                    }
+                    else
+                    {
+                        // or if there are no parameters, converting the posted entity.
+                        request = cycle.request().readObject(requestType);
+                    }
 
-                // Then, we respond with the object returned from onPost().
-                if (request != null)
-                {
-                    listenTo(request);
-                    restApplication.onRequesting(request, method);
-                    response.writeObject(microservlet.request(request));
-                    restApplication.onRequested(request, method);
+                    // Then, we respond with the object returned from onPost().
+                    if (request != null)
+                    {
+                        listenTo(request);
+                        restApplication.onRequesting(request, method);
+                        response.writeObject(microservlet.request(request));
+                        restApplication.onRequested(request, method);
+                    }
+                    else
+                    {
+                        response.writeObject(null);
+                    }
                 }
-                else
-                {
-                    response.writeObject(null);
-                }
-            }
-            break;
-
-            case GET:
-            case DELETE:
-            {
-                // then turn parameters into a JSON object and then treat that like it was POSTed.
-                final var request = cycle.gson().fromJson(parameters.asJson(), requestType);
-
-                // Respond with the object returned from onGet.
-                if (request != null)
-                {
-                    listenTo(request);
-                    restApplication.onRequesting(request, method);
-                    response.writeObject(microservlet.request(request));
-                    restApplication.onRequested(request, method);
-                }
-                else
-                {
-                    response.writeObject(null);
-                }
-            }
-            break;
-
-            default:
-                problem(SC_METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
                 break;
+
+                case GET:
+                case DELETE:
+                {
+                    // then turn parameters into a JSON object and then treat that like it was POSTed.
+                    final var request = cycle.gson().fromJson(parameters.asJson(), requestType);
+
+                    // Respond with the object returned from onGet.
+                    if (request != null)
+                    {
+                        listenTo(request);
+                        restApplication.onRequesting(request, method);
+                        response.writeObject(microservlet.request(request));
+                        restApplication.onRequested(request, method);
+                    }
+                    else
+                    {
+                        response.writeObject(null);
+                    }
+                }
+                break;
+
+                default:
+                    problem(SC_METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
+                    break;
+            }
+        }
+        finally
+        {
+            statistics.end();
+            restApplication.onRequestStatistics(statistics);
         }
     }
 

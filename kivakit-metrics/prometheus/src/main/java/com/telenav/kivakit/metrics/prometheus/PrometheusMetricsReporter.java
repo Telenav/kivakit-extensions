@@ -1,11 +1,14 @@
 package com.telenav.kivakit.metrics.prometheus;
 
+import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.MetricsReporter;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Gauge;
 import io.prometheus.client.Histogram;
 import io.prometheus.client.SimpleCollector;
+import io.prometheus.client.hotspot.DefaultExports;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +18,16 @@ import java.util.Map;
  *
  * @author jonathanl (shibo)
  */
-public class PrometheusMetricsReporter implements MetricsReporter
+public class PrometheusMetricsReporter extends BaseComponent implements MetricsReporter
 {
     /** Collectors (gauges, counters and histograms) for each metric by name */
     private Map<String, SimpleCollector<?>> collectors = new HashMap<>();
+
+    public PrometheusMetricsReporter(Listener listener)
+    {
+        DefaultExports.initialize();
+        listener.listenTo(this);
+    }
 
     /**
      * {@inheritDoc}
@@ -50,11 +59,13 @@ public class PrometheusMetricsReporter implements MetricsReporter
         {
             counter = Counter.build()
                     .name(metric.name())
+                    .unit(metric.unit())
                     .help(metric.description())
-                    .create();
+                    .register();
 
             collectors.put(metric.name(), counter);
         }
+        
         counter.inc(metric.quantum());
     }
 
@@ -64,8 +75,9 @@ public class PrometheusMetricsReporter implements MetricsReporter
         {
             histogram = Histogram.build()
                     .name(metric.name())
+                    .unit(metric.unit())
                     .help(metric.description())
-                    .create();
+                    .register();
 
             collectors.put(metric.name(), histogram);
         }
@@ -79,8 +91,9 @@ public class PrometheusMetricsReporter implements MetricsReporter
         {
             gauge = Gauge.build()
                     .name(metric.name())
+                    .unit(metric.unit())
                     .help(metric.description())
-                    .create();
+                    .register();
 
             collectors.put(metric.name(), gauge);
         }

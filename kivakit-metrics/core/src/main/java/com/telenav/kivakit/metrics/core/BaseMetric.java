@@ -19,6 +19,9 @@ public abstract class BaseMetric<T> implements Metric<T>
     /** A human readable description of the metric */
     private String description;
 
+    /** The unit of the metric */
+    private String unit;
+
     /** The kind of metric */
     private MetricType type;
 
@@ -31,6 +34,7 @@ public abstract class BaseMetric<T> implements Metric<T>
         this.name = that.name;
         this.description = that.description;
         this.type = that.type;
+        this.unit = that.unit;
     }
 
     @Override
@@ -72,5 +76,17 @@ public abstract class BaseMetric<T> implements Metric<T>
     public MetricType type()
     {
         return type;
+    }
+
+    @Override
+    public String unit()
+    {
+        return unit;
+    }
+
+    public BaseMetric<T> unit(final String unit)
+    {
+        this.unit = unit;
+        return this;
     }
 }
