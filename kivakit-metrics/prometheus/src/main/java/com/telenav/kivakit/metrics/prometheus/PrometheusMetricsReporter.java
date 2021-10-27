@@ -65,7 +65,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
 
             collectors.put(metric.name(), counter);
         }
-        
+
         counter.inc(metric.quantum());
     }
 
@@ -82,7 +82,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
             collectors.put(metric.name(), histogram);
         }
 
-        histogram.observe(metric.quantum());
+        histogram.observe(metric.doubleQuantum());
     }
 
     private void level(final Metric<?> metric, Gauge gauge)

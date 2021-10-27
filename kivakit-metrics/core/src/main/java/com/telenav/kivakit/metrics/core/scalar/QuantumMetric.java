@@ -7,29 +7,30 @@ import com.telenav.kivakit.metrics.core.AggregateMetric;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 
 /**
- * A scalar metric is a single measurement (as opposed to an {@link AggregateMetric}) with a name and a value.
+ * A quantum metric is a single measurement (as opposed to an {@link AggregateMetric}) with a {@link #name()}, {@link
+ * #type()}, {@link #unit()}, {@link #description()} and {@link #measurement()}.
  *
  * @author jonathanl (shibo)
  */
-public class ScalarMetric<T extends Quantizable> extends BaseMetric<T>
+public class QuantumMetric<T extends Quantizable> extends BaseMetric<T>
 {
     /** The measurement value */
     private T measurement;
 
-    public ScalarMetric(ScalarMetric<T> that)
+    public QuantumMetric(QuantumMetric<T> that)
     {
         super(that);
         this.measurement = that.measurement;
     }
 
-    public ScalarMetric()
+    public QuantumMetric()
     {
     }
 
     @Override
-    public ScalarMetric<T> description(final String description)
+    public QuantumMetric<T> description(final String description)
     {
-        return (ScalarMetric<T>) super.description(description);
+        return (QuantumMetric<T>) super.description(description);
     }
 
     @Override
@@ -46,9 +47,9 @@ public class ScalarMetric<T extends Quantizable> extends BaseMetric<T>
     }
 
     @Override
-    public ScalarMetric<T> name(final String name)
+    public QuantumMetric<T> name(final String name)
     {
-        return (ScalarMetric<T>) super.name(name);
+        return (QuantumMetric<T>) super.name(name);
     }
 
     @Override
@@ -63,20 +64,20 @@ public class ScalarMetric<T extends Quantizable> extends BaseMetric<T>
     }
 
     @Override
-    public ScalarMetric<T> type(final MetricType type)
+    public QuantumMetric<T> type(final MetricType type)
     {
-        return (ScalarMetric<T>) super.type(type);
+        return (QuantumMetric<T>) super.type(type);
     }
 
     @Override
-    public ScalarMetric<T> unit(final String unit)
+    public QuantumMetric<T> unit(final String unit)
     {
-        return (ScalarMetric<T>) super.unit(unit);
+        return (QuantumMetric<T>) super.unit(unit);
     }
 
-    public ScalarMetric<T> withMeasurement(T measurement)
+    public QuantumMetric<T> withMeasurement(T measurement)
     {
-        var copy = new ScalarMetric<>(this);
+        var copy = new QuantumMetric<T>(this);
         copy.measurement = measurement;
         return copy;
     }
