@@ -5,8 +5,6 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.metrics.Metric;
-import com.telenav.kivakit.microservice.metrics.MetricReporter;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -15,8 +13,6 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <b>Not public API</b>
@@ -80,9 +76,6 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     /** The microservlet that is attached to this request cycle via {@link #attach(Microservlet)} */
     private Microservlet<?, ?> servlet;
 
-    /** List of reported metrics for this request cycle */
-    private final List<Metric<?>> metrics = new ArrayList<>(16);
-
     /** The request */
     @UmlAggregation
     private final JettyMicroservletRequest request;
@@ -106,14 +99,6 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
         this.application = application;
         this.request = listenTo(new JettyMicroservletRequest(this, request));
         this.response = listenTo(new JettyMicroserviceResponse(this, response));
-    }
-
-    /**
-     * Adds the given metric to this request cycle
-     */
-    public void add(final Metric<?> metric)
-    {
-        metrics.add(metric);
     }
 
     /**
@@ -141,18 +126,6 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     public Gson gson()
     {
         return gson.get();
-    }
-
-    /**
-     * Sends metrics to the metric service
-     */
-    public void reportMetrics()
-    {
-        var reporter = lookup(MetricReporter.class);
-        if (reporter != null)
-        {
-            reporter.report(metrics);
-        }
     }
 
     /**
