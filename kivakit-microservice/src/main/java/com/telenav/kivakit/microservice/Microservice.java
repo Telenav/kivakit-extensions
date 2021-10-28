@@ -12,9 +12,6 @@ import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.metrics.MetricReporter;
-import com.telenav.kivakit.microservice.metrics.reporters.console.ConsoleMetricReporter;
-import com.telenav.kivakit.microservice.metrics.reporters.none.NullMetricReporter;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -132,8 +129,6 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see Switch
  * @see ResourceFolder
  * @see MicroserviceMetadata
- * @see MetricReporter
- * @see ConsoleMetricReporter
  * @see MicroserviceSettings
  * @see MicroserviceRestService
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
@@ -177,8 +172,6 @@ public abstract class Microservice extends Application implements Startable, Sto
     public Microservice(final Project... project)
     {
         super(project);
-
-        register(metricReporter());
     }
 
     /**
@@ -345,6 +338,8 @@ public abstract class Microservice extends Application implements Startable, Sto
                 warning("No REST or GRPC service is available for this microservice");
             }
 
+            onMountJettyPlugins(server);
+
             // Start Jetty server.
             announce("Microservice Jetty server starting on port ${integer}", settings().port());
             server.start();
@@ -374,13 +369,8 @@ public abstract class Microservice extends Application implements Startable, Sto
         return webApplication.get();
     }
 
-    /**
-     * @return The {@link MetricReporter} implementation to use. If no metric reporter is provided, {@link
-     * NullMetricReporter} will be used.
-     */
-    protected MetricReporter metricReporter()
+    protected void onMountJettyPlugins(JettyServer server)
     {
-        return new NullMetricReporter();
     }
 
     /**

@@ -4,8 +4,8 @@ open module kivakit.microservice
     requires transitive kivakit.application;
     requires transitive kivakit.web.wicket;
     requires transitive kivakit.web.swagger;
-    requires transitive kivakit.protostuff.merged;
-    requires transitive kivakit.grpc.merged;
+    requires kivakit.protostuff.merged;
+    requires kivakit.grpc.merged;
     requires transitive kivakit.math;
     requires kivakit.test;
 
@@ -19,7 +19,7 @@ open module kivakit.microservice
     requires java.sql;
 
     // JSON
-    requires transitive gson;
+    requires gson;
 
     // Protocols
     requires org.apache.httpcomponents.httpclient;
@@ -39,7 +39,5 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.protocols.grpc;
     exports com.telenav.kivakit.microservice.protocols.rest;
     exports com.telenav.kivakit.microservice.protocols.rest.openapi;
-    exports com.telenav.kivakit.microservice.metrics;
-    exports com.telenav.kivakit.microservice.metrics.aggregates;
     exports com.telenav.kivakit.microservice.protocols.rest.gson;
 }

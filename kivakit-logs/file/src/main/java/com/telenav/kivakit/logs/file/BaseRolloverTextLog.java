@@ -75,6 +75,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     protected BaseRolloverTextLog()
     {
         maximumLogSize(Bytes.megabytes(50));
+
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
         {
             flush(Duration.ONE_MINUTE);
@@ -150,11 +151,14 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         switch (rollover)
         {
             case NONE:
-                return Time.MAXIMUM;
+                return Time.now().plus(Duration.ONE_MINUTE); // Time.MAXIMUM;
+
             case DAILY:
                 return Time.now().localTime().startOfTomorrow();
+
             case HOURLY:
                 return Time.now().localTime().startOfNextHour();
+
             default:
                 return unsupported();
         }

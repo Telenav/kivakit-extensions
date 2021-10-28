@@ -19,6 +19,7 @@
 package com.telenav.kivakit.logs.email;
 
 import com.telenav.kivakit.configuration.lookup.Registry;
+import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
 import com.telenav.kivakit.kernel.logging.Log;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
@@ -37,7 +38,6 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
@@ -74,7 +74,7 @@ public class EmailLog extends BaseTextLog
     private String subject;
 
     @Override
-    public void configure(final Map<String, String> properties)
+    public void configure(final VariableMap<String> properties)
     {
         super.configure(properties);
 

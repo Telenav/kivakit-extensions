@@ -7,6 +7,7 @@
 
 package com.telenav.kivakit.logs.client;
 
+import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
 import com.telenav.kivakit.kernel.language.threading.latches.CompletionLatch;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.kernel.logging.LogEntry;
@@ -15,7 +16,6 @@ import com.telenav.kivakit.logs.server.ServerLogProject;
 
 import javax.swing.SwingUtilities;
 import java.awt.Image;
-import java.util.Map;
 
 import static com.telenav.kivakit.logs.client.ClientLogFrame.ExitMode.EXIT_ON_CLOSE;
 
@@ -42,7 +42,7 @@ public class ClientLog extends BaseLog
     }
 
     @Override
-    public void configure(final Map<String, String> properties)
+    public void configure(final VariableMap<String> properties)
     {
         final var maximum = properties.get("maximum-entries");
         if (maximum != null)

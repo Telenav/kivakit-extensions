@@ -105,7 +105,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         }
         else
         {
-            // otherwise complain.
+            // otherwise, complain.
             problem("Request handlers must be mounted in onInitialize()");
         }
     }

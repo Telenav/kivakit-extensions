@@ -26,7 +26,7 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
     private String path;
 
     @Override
-    public void onStatistics(MicroservletRequestStatistics statistics)
+    public void onRequestStatistics(MicroservletRequestStatistics statistics)
     {
         announce("Request: $", statistics);
         aggregator.compareAndSet(null, new MicroservletRequestStatisticsAggregator(statisticsReportingFrequency()));
@@ -46,6 +46,6 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
 
     protected Frequency statisticsReportingFrequency()
     {
-        return Frequency.every(Duration.seconds(5));//.minutes(5));
+        return Frequency.every(Duration.minutes(5));
     }
 }

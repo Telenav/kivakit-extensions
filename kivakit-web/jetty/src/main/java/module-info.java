@@ -11,7 +11,7 @@ open module kivakit.web.jetty
     requires org.eclipse.jetty.servlet;
     requires org.eclipse.jetty.util;
     requires org.eclipse.jetty.webapp;
-    requires jakarta.activation;
+    requires transitive jakarta.activation;
 
     // Module exports
     exports com.telenav.kivakit.web.jetty;
