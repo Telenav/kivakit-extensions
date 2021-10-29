@@ -31,7 +31,7 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test()
     {
-        final var store = new IntLinkedListStore("test");
+        var store = new IntLinkedListStore("test");
         store.initialize();
 
         var list = IntLinkedListStore.NEW_LIST;
@@ -39,17 +39,17 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
         list = store.add(list, 2);
         list = store.add(list, 3);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             var value = 3;
             while (iterator.hasNext())
             {
-                final var next = iterator.next();
+                var next = iterator.next();
                 ensureEqual(value--, next);
             }
         }
         list = store.remove(list, 2);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             ensure(iterator.hasNext());
             ensureEqual(3, iterator.next());
             ensure(iterator.hasNext());
@@ -58,14 +58,14 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
         }
         list = store.remove(list, 3);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             ensure(iterator.hasNext());
             ensureEqual(1, iterator.next());
             ensureFalse(iterator.hasNext());
         }
         list = store.remove(list, 1);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             ensureFalse(iterator.hasNext());
         }
     }
@@ -73,7 +73,7 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test2()
     {
-        final var store = new IntLinkedListStore("test");
+        var store = new IntLinkedListStore("test");
         store.initialize();
 
         var list = IntLinkedListStore.NEW_LIST;
@@ -81,17 +81,17 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
         list = store.add(list, 2);
         list = store.add(list, 3);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             var value = 3;
             while (iterator.hasNext())
             {
-                final var next = iterator.next();
+                var next = iterator.next();
                 ensureEqual(value--, next);
             }
         }
         list = store.remove(list, 1);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             ensure(iterator.hasNext());
             ensureEqual(3, iterator.next());
             ensure(iterator.hasNext());
@@ -100,14 +100,14 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
         }
         list = store.remove(list, 3);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             ensure(iterator.hasNext());
             ensureEqual(2, iterator.next());
             ensureFalse(iterator.hasNext());
         }
         list = store.remove(list, 2);
         {
-            final var iterator = store.list(list);
+            var iterator = store.list(list);
             ensureFalse(iterator.hasNext());
         }
     }
@@ -115,13 +115,13 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testRandom()
     {
-        final var store = new IntLinkedListStore("test");
+        var store = new IntLinkedListStore("test");
         store.initialize();
 
-        final var list1 = new MutableValue<>(IntLinkedListStore.NEW_LIST);
-        final var list2 = new MutableValue<>(IntLinkedListStore.NEW_LIST);
+        var list1 = new MutableValue<>(IntLinkedListStore.NEW_LIST);
+        var list2 = new MutableValue<>(IntLinkedListStore.NEW_LIST);
 
-        final var values = randomIntList(ALLOW_REPEATS);
+        var values = randomIntList(ALLOW_REPEATS);
         values.forEach(value ->
         {
             list1.set(store.add(list1.get(), value));
@@ -132,21 +132,21 @@ public class IntLinkedListStoreTest extends PrimitiveCollectionsUnitTest
         Collections.reverse(values);
 
         // Ensure list 1
-        final var list1Values = store.list(list1.get());
-        final var iterator1 = values.iterator();
+        var list1Values = store.list(list1.get());
+        var iterator1 = values.iterator();
         while (list1Values.hasNext())
         {
-            final var value = list1Values.next();
+            var value = list1Values.next();
             ensureEqual(iterator1.next(), value);
         }
         ensure(!iterator1.hasNext());
 
         // Ensure list 2
-        final var list2Values = store.list(list1.get());
-        final var iterator2 = values.iterator();
+        var list2Values = store.list(list1.get());
+        var iterator2 = values.iterator();
         while (list2Values.hasNext())
         {
-            final var value = list2Values.next();
+            var value = list2Values.next();
             ensureEqual(iterator2.next(), value);
         }
         ensure(!iterator2.hasNext());

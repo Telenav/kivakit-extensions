@@ -23,7 +23,7 @@ public class DropDownRenderer extends DefaultListCellRenderer
     {
         super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        final var theme = KivaKitTheme.get();
+        var theme = KivaKitTheme.get();
         if (isSelected)
         {
             theme.styleSelection().applyColors(this);

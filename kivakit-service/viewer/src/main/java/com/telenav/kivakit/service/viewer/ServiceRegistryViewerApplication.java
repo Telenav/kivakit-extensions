@@ -87,7 +87,7 @@ public class ServiceRegistryViewerApplication extends Application
         else
         {
             var lines = new StringList();
-            final var format = "%-24s %-8s %-32s %-48s %s";
+            var format = "%-24s %-8s %-32s %-48s %s";
             lines.add("");
             lines.add(String.format(format, "renewed", "port", "service", "application", "description"));
             lines.add(AsciiArt.line(200));

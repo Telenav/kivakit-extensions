@@ -27,9 +27,9 @@ public class LongToLongFixedMultiMapTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test()
     {
-        final var map = new LongToByteFixedMultiMap("map");
+        var map = new LongToByteFixedMultiMap("map");
         map.initialize();
-        final var bytes = new ByteArray("bytes");
+        var bytes = new ByteArray("bytes");
         bytes.initialize();
         bytes.add((byte) 1);
         bytes.add((byte) 2);

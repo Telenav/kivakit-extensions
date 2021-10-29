@@ -27,7 +27,7 @@ public class AverageDurationTest extends UnitTest
     @Test
     public void test()
     {
-        final var average = new AverageDuration();
+        var average = new AverageDuration();
         for (var i = 0; i <= 10; i++)
         {
             average.add(Duration.seconds(i));

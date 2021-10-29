@@ -26,18 +26,18 @@ public class AverageTest extends UnitTest
     @Test
     public void testAverage_addAverages()
     {
-        final var totalAverage = new Average();
+        var totalAverage = new Average();
         var total = 0D;
         var totalSampleCount = 0D;
 
         for (var i = 0; i < 100; i++)
         {
-            final var average = new Average();
-            final var sampleCount = randomInt(0, 1000);
+            var average = new Average();
+            var sampleCount = randomInt(0, 1000);
             var tempTotal = 0D;
             for (var j = 0; j < sampleCount; j++)
             {
-                final var currentValue = randomValueFactory().newDouble(-10000, 10000);
+                var currentValue = randomValueFactory().newDouble(-10000, 10000);
                 tempTotal += currentValue;
                 average.add(currentValue);
             }
@@ -53,12 +53,12 @@ public class AverageTest extends UnitTest
     {
         for (var i = 0; i < 100; i++)
         {
-            final var average = new Average();
-            final var sampleCount = randomInt(1, 1000);
+            var average = new Average();
+            var sampleCount = randomInt(1, 1000);
             var total = 0;
             for (var j = 0; j < sampleCount; j++)
             {
-                final var currentValue = randomInt(-10000, 10000);
+                var currentValue = randomInt(-10000, 10000);
                 total += currentValue;
                 average.add(currentValue);
             }

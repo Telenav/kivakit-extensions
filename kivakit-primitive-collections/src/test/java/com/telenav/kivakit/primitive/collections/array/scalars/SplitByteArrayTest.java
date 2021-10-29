@@ -34,9 +34,9 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testAdd()
     {
-        final var array = array();
+        var array = array();
         array.hasNullByte(false);
-        final var values = randomByteList(ALLOW_REPEATS);
+        var values = randomByteList(ALLOW_REPEATS);
         values.forEach(array::add);
         resetIndex();
         values.forEach(value -> ensureEqual(array.get(nextIndex()), value));
@@ -51,7 +51,7 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testClear()
     {
-        final var array = array();
+        var array = array();
         array.hasNullByte(false);
         randomBytes(NO_REPEATS, Count.count(250), array::add);
         randomIndexes(NO_REPEATS, Count.count(250), index ->
@@ -84,10 +84,10 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testEqualsHashCode()
     {
-        final var map = new HashMap<SplitByteArray, Integer>();
+        var map = new HashMap<SplitByteArray, Integer>();
         loop(() ->
         {
-            final var array = array();
+            var array = array();
             randomBytes(ALLOW_REPEATS, Count._32, array::add);
             map.put(array, 99);
             ensureEqual(99, map.get(array));
@@ -97,17 +97,17 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testFirstLast()
     {
-        final var array = array();
+        var array = array();
 
         ensureThrows(array::first);
         ensureThrows(array::last);
 
-        final var last = new MutableInteger(Integer.MIN_VALUE);
+        var last = new MutableInteger(Integer.MIN_VALUE);
 
         resetIndex();
         randomBytes(ALLOW_REPEATS, value ->
         {
-            final var index = nextIndex();
+            var index = nextIndex();
             array.set(index, value);
             last.maximum(index);
             ensureEqual(array.get(0), array.first());
@@ -119,12 +119,12 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     public void testGetSet()
     {
         {
-            final var array = array();
+            var array = array();
 
             resetIndex();
             randomBytes(ALLOW_REPEATS, value ->
             {
-                final var index = nextIndex();
+                var index = nextIndex();
                 array.set(index, value);
                 ensureEqual(array.get(index), value);
             });
@@ -132,20 +132,20 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
             resetIndex();
             randomBytes(ALLOW_REPEATS, value ->
             {
-                final var index = nextIndex();
+                var index = nextIndex();
                 array.set(index, value);
                 ensureEqual(array.get(index), value);
             });
         }
         {
-            final var array = new SplitByteArray("test");
+            var array = new SplitByteArray("test");
             array.nullByte((byte) -1);
             array.initialize();
             randomBytes(NO_REPEATS, value -> value != -1, array::add);
             loop(() ->
             {
-                final var index = randomIndex();
-                final var value = array.safeGet(index);
+                var index = randomIndex();
+                var value = array.safeGet(index);
                 ensureEqual(index >= array.size(), array.isNull(value));
             });
         }
@@ -154,14 +154,14 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testIsNull()
     {
-        final var array = array();
-        final var nullValue = randomValueFactory().newByte();
+        var array = array();
+        var nullValue = randomValueFactory().newByte();
         array.nullByte(nullValue);
         ensure(array.hasNullByte());
         resetIndex();
         randomBytes(ALLOW_REPEATS, value -> value != array.nullByte(), value ->
         {
-            final var index = nextIndex();
+            var index = nextIndex();
 
             array.set(index, value);
             ensure(!array.isNull(array.get(index)));
@@ -174,7 +174,7 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testIteration()
     {
-        final var array = array();
+        var array = array();
 
         array.add((byte) 0);
         array.add((byte) 1);
@@ -201,7 +201,7 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSerialization()
     {
-        final var array = array();
+        var array = array();
         randomBytes(ALLOW_REPEATS, array::add);
         serializationTest(array);
     }
@@ -210,7 +210,7 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
     public void testSizeIsEmpty()
     {
         {
-            final var array = array();
+            var array = array();
 
             ensure(array.isEmpty());
             ensure(array.size() == 0);
@@ -226,12 +226,12 @@ public class SplitByteArrayTest extends PrimitiveCollectionsUnitTest
             ensure(array.size() == 1001);
         }
         {
-            final var array = array();
-            final var maximum = new MutableInteger(Integer.MIN_VALUE);
+            var array = array();
+            var maximum = new MutableInteger(Integer.MIN_VALUE);
             resetIndex();
             randomBytes(ALLOW_REPEATS, value ->
             {
-                final var index = nextIndex();
+                var index = nextIndex();
                 maximum.maximum(index);
                 array.set(index, value);
                 ensure(array.size() == maximum.get() + 1);

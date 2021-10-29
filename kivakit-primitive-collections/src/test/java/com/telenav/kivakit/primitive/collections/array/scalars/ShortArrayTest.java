@@ -34,9 +34,9 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testAdd()
     {
-        final var array = array();
+        var array = array();
         array.hasNullShort(false);
-        final var values = randomShortList(ALLOW_REPEATS);
+        var values = randomShortList(ALLOW_REPEATS);
         values.forEach(array::add);
         resetIndex();
         values.forEach(value -> ensureEqual(array.get(nextIndex()), value));
@@ -51,7 +51,7 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testClear()
     {
-        final var array = array();
+        var array = array();
         array.hasNullShort(false);
         randomShorts(NO_REPEATS, array::add);
         randomIndexes(NO_REPEATS, index ->
@@ -84,10 +84,10 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testEqualsHashCode()
     {
-        final var map = new HashMap<ShortArray, Integer>();
+        var map = new HashMap<ShortArray, Integer>();
         loop(() ->
         {
-            final var array = array();
+            var array = array();
             randomShorts(ALLOW_REPEATS, Count._32, array::add);
             map.put(array, 99);
             ensureEqual(99, map.get(array));
@@ -97,17 +97,17 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testFirstLast()
     {
-        final var array = array();
+        var array = array();
 
         ensureThrows(array::first);
         ensureThrows(array::last);
 
-        final var last = new MutableInteger(Integer.MIN_VALUE);
+        var last = new MutableInteger(Integer.MIN_VALUE);
 
         resetIndex();
         randomShorts(ALLOW_REPEATS, value ->
         {
-            final var index = nextIndex();
+            var index = nextIndex();
             array.set(index, value);
             last.maximum(index);
             ensureEqual(array.get(0), array.first());
@@ -118,12 +118,12 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testGetSet()
     {
-        final var array = array();
+        var array = array();
 
         resetIndex();
         randomShorts(ALLOW_REPEATS, value ->
         {
-            final var index = nextIndex();
+            var index = nextIndex();
             array.set(index, value);
             ensureEqual(array.get(index), value);
         });
@@ -131,7 +131,7 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
         resetIndex();
         randomShorts(ALLOW_REPEATS, value ->
         {
-            final var index = nextIndex();
+            var index = nextIndex();
             array.set(index, value);
             ensureEqual(array.get(index), value);
         });
@@ -141,8 +141,8 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
         randomShorts(NO_REPEATS, value -> value != -1, array::add);
         loop(() ->
         {
-            final var index = randomIndex();
-            final var value = array.safeGet(index);
+            var index = randomIndex();
+            var value = array.safeGet(index);
             ensureEqual(index >= array.size(), array.isNull(value));
         });
     }
@@ -150,14 +150,14 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testIsNull()
     {
-        final var array = array();
-        final var nullValue = randomValueFactory().newShort();
+        var array = array();
+        var nullValue = randomValueFactory().newShort();
         array.nullShort(nullValue);
         ensure(array.hasNullShort());
         resetIndex();
         randomShorts(ALLOW_REPEATS, value -> value != array.nullShort(), value ->
         {
-            final var index = nextIndex();
+            var index = nextIndex();
 
             array.set(index, value);
             ensure(!array.isNull(array.get(index)));
@@ -170,7 +170,7 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testIteration()
     {
-        final var array = array();
+        var array = array();
         array.hasNullShort(false);
 
         array.add((short) 0);
@@ -200,7 +200,7 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     {
         if (!isQuickTest())
         {
-            final var array = array();
+            var array = array();
             randomShorts(ALLOW_REPEATS, array::add);
             serializationTest(array);
         }
@@ -209,7 +209,7 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSizeIsEmpty()
     {
-        final var array = array();
+        var array = array();
 
         ensure(array.isEmpty());
         ensure(array.size() == 0);
@@ -227,11 +227,11 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
         ensure(array.isEmpty());
         ensure(array.size() == 0);
 
-        final var maximum = new MutableInteger(Integer.MIN_VALUE);
+        var maximum = new MutableInteger(Integer.MIN_VALUE);
         resetIndex();
         randomShorts(ALLOW_REPEATS, value ->
         {
-            final var index = nextIndex();
+            var index = nextIndex();
             maximum.maximum(index);
             array.set(index, value);
             ensure(array.size() == maximum.get() + 1);
@@ -241,17 +241,17 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSubArray()
     {
-        final var array = array();
+        var array = array();
         randomShorts(ALLOW_REPEATS, array::add);
-        final var last = array.size() - 1;
-        final var offset = Math.abs(randomInt(0, last));
-        final var length = Math.abs(randomInt(0, last - offset));
+        var last = array.size() - 1;
+        var offset = Math.abs(randomInt(0, last));
+        var length = Math.abs(randomInt(0, last - offset));
 
         ensure(offset < array.size());
         ensure(length >= 0);
         ensure(offset + length < array.size());
 
-        final var subArray = array.subArray(offset, length);
+        var subArray = array.subArray(offset, length);
 
         for (var i = 0; i < length; i++)
         {
@@ -261,7 +261,7 @@ public class ShortArrayTest extends PrimitiveCollectionsUnitTest
 
     private ShortArray array()
     {
-        final var array = new ShortArray("test");
+        var array = new ShortArray("test");
         array.nullShort(Short.MIN_VALUE);
         array.initialize();
         return array;

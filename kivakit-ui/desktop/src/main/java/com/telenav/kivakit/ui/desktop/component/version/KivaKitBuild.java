@@ -15,8 +15,8 @@ public class KivaKitBuild extends KivaKitPanel
         setOpaque(false);
         setLayout(new BorderLayout());
 
-        final var kivakit = KivaKit.get();
-        final var text = "KivaKit " + kivakit.projectVersion().withoutRelease() + " " + kivakit.build().name();
+        var kivakit = KivaKit.get();
+        var text = "KivaKit " + kivakit.projectVersion().withoutRelease() + " " + kivakit.build().name();
         add(newSmallFadedLabel(text), BorderLayout.EAST);
     }
 }

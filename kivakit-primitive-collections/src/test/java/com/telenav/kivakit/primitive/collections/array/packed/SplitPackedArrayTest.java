@@ -29,7 +29,7 @@ public class SplitPackedArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void accessTest()
     {
-        final var values = new PackedArray("test");
+        var values = new PackedArray("test");
         values.bits(BitCount._3, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
         values.initialize();
 
@@ -57,23 +57,23 @@ public class SplitPackedArrayTest extends PrimitiveCollectionsUnitTest
         for (var bits = 1; bits <= Long.SIZE; bits++)
         {
             // Create packed array with given bit length
-            final var count = BitCount.bitCount(bits);
-            final var values = new PackedArray("test");
+            var count = BitCount.bitCount(bits);
+            var values = new PackedArray("test");
             values.initialSize(32);
             values.bits(count, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
             values.initialize();
 
             // Loop through all indexes
-            final var mask = oneBits(values.bits());
+            var mask = oneBits(values.bits());
             for (var index = 0; index < values.initialSizeAsInt(); index++)
             {
                 // and test storage of a range of values
-                final var maximum = 1 << bits;
+                var maximum = 1 << bits;
                 for (var i = 0; i < 32; i++)
                 {
-                    final var value = Math.abs(randomInt(0, maximum - 1));
-                    final var left = values.safeGet(index - 1);
-                    final var right = values.safeGet(index + 1);
+                    var value = Math.abs(randomInt(0, maximum - 1));
+                    var left = values.safeGet(index - 1);
+                    var right = values.safeGet(index + 1);
                     values.set(index, value);
                     ensureEqual((value & mask), values.get(index));
                     ensureEqual(left, values.safeGet(index - 1));
@@ -87,7 +87,7 @@ public class SplitPackedArrayTest extends PrimitiveCollectionsUnitTest
     public void nullTest()
     {
         {
-            final var values = new SplitPackedArray("test");
+            var values = new SplitPackedArray("test");
             values.bits(BitCount.bitCount(3), PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
             values.initialChildSize(100);
             values.nullLong(7);
@@ -106,7 +106,7 @@ public class SplitPackedArrayTest extends PrimitiveCollectionsUnitTest
             ensure(values.isNull(values.get(22)));
         }
         {
-            final var values = new PackedArray("test");
+            var values = new PackedArray("test");
             values.bits(BitCount._8, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
             values.nullLong(255);
             values.initialize();
@@ -123,7 +123,7 @@ public class SplitPackedArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSerialization()
     {
-        final var values = new PackedArray("test");
+        var values = new PackedArray("test");
         values.bits(BitCount._3, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
         values.initialize();
 

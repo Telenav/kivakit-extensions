@@ -28,7 +28,7 @@ public class ColorConverterTest extends UnitTest
     @Test
     public void test()
     {
-        final var converter = new Color.ColorConverter(Listener.none());
+        var converter = new Color.ColorConverter(Listener.none());
         ensureEqual(Color.RED, converter.convert("ffff0000"));
         ensureEqual(Color.GREEN, converter.convert("ff00ff00"));
         ensureEqual(Color.BLUE, converter.convert("ff0000ff"));

@@ -34,9 +34,9 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testAdd()
     {
-        final var array = array();
+        var array = array();
         array.hasNullInt(false);
-        final var values = randomIntList(ALLOW_REPEATS);
+        var values = randomIntList(ALLOW_REPEATS);
         values.forEach(array::add);
         resetIndex();
         values.forEach(value -> ensureEqual(array.get(nextIndex()), value));
@@ -51,7 +51,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testClear()
     {
-        final var array = array();
+        var array = array();
         array.hasNullInt(false);
         randomInts(NO_REPEATS, array::add);
         randomIndexes(NO_REPEATS, index ->
@@ -84,10 +84,10 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testEqualsHashCode()
     {
-        final var map = new HashMap<IntArray, Integer>();
+        var map = new HashMap<IntArray, Integer>();
         loop(() ->
         {
-            final var array = array();
+            var array = array();
             randomInts(ALLOW_REPEATS, Count._32, array::add);
             map.put(array, 99);
             ensureEqual(99, map.get(array));
@@ -97,12 +97,12 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testFirstLast()
     {
-        final var array = array();
+        var array = array();
 
         ensureThrows(array::first);
         ensureThrows(array::last);
 
-        final var last = new MutableInteger(Integer.MIN_VALUE);
+        var last = new MutableInteger(Integer.MIN_VALUE);
 
         resetIndex();
         randomInts(ALLOW_REPEATS, value ->
@@ -118,7 +118,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testGetSet()
     {
-        final var array = array();
+        var array = array();
 
         resetIndex();
         randomInts(ALLOW_REPEATS, value ->
@@ -142,7 +142,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
         loop(() ->
         {
             final int index = randomInt(0, 100_000);
-            final var value = array.safeGet(index);
+            var value = array.safeGet(index);
             ensureEqual(index >= array.size(), array.isNull(value));
         });
     }
@@ -150,8 +150,8 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testIsNull()
     {
-        final var array = array();
-        final var nullValue = randomInt();
+        var array = array();
+        var nullValue = randomInt();
         array.nullInt(nullValue);
         ensure(array.hasNullInt());
         resetIndex();
@@ -170,7 +170,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testIteration()
     {
-        final var array = array();
+        var array = array();
         array.hasNullInt(false);
 
         array.add(0);
@@ -197,7 +197,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSerialization()
     {
-        final var array = array();
+        var array = array();
         randomInts(ALLOW_REPEATS, array::add);
         serializationTest(array);
     }
@@ -205,7 +205,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSizeIsEmpty()
     {
-        final var array = array();
+        var array = array();
 
         ensure(array.isEmpty());
         ensure(array.size() == 0);
@@ -223,7 +223,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
         ensure(array.isEmpty());
         ensure(array.size() == 0);
 
-        final var maximum = new MutableInteger(Integer.MIN_VALUE);
+        var maximum = new MutableInteger(Integer.MIN_VALUE);
         resetIndex();
         randomInts(ALLOW_REPEATS, value ->
         {
@@ -237,15 +237,15 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSubArray()
     {
-        final var array = array();
+        var array = array();
         randomInts(ALLOW_REPEATS, array::add);
-        final var last = array.size() - 1;
+        var last = array.size() - 1;
         final int offset = Math.abs(randomInt(0, last));
         final int length = Math.abs(randomInt(0, last - offset));
         ensure(offset < array.size());
         ensure(length >= 0);
         ensure(offset + length < array.size());
-        final var subArray = array.subArray(offset, length);
+        var subArray = array.subArray(offset, length);
         for (int i = 0; i < length; i++)
         {
             ensureEqual(array.get(offset + i), subArray.get(i));
@@ -254,7 +254,7 @@ public class IntArrayTest extends PrimitiveCollectionsUnitTest
 
     private IntArray array()
     {
-        final var array = new IntArray("test");
+        var array = new IntArray("test");
         array.initialize();
         return array;
     }

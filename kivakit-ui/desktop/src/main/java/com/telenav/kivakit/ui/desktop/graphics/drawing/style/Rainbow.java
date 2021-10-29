@@ -59,7 +59,7 @@ public class Rainbow implements Iterator<Style>
         {
             index = 0;
         }
-        final var color = COLORS.get(index++);
+        var color = COLORS.get(index++);
         return Style.create()
                 .withTextColor(color)
                 .withFillColor(color);

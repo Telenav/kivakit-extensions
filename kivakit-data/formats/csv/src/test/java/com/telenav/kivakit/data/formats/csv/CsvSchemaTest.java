@@ -26,8 +26,8 @@ public class CsvSchemaTest extends UnitTest
     @Test
     public void testColumnForName()
     {
-        final var identifierColumn = CsvColumn.of("roadSectionIdentifier");
-        final var shapesColumn = CsvColumn.of("roadSectionShapes");
+        var identifierColumn = CsvColumn.of("roadSectionIdentifier");
+        var shapesColumn = CsvColumn.of("roadSectionShapes");
         final CsvSchema schema = CsvSchema.of(identifierColumn, shapesColumn);
         ensureEqual(identifierColumn, schema.columnForName("roadSectionIdentifier"));
         ensureEqual(shapesColumn, schema.columnForName("roadSectionShapes"));

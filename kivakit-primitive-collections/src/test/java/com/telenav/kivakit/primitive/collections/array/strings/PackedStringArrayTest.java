@@ -28,13 +28,13 @@ public class PackedStringArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testMixed()
     {
-        final var a = new PackedStringArray("test");
+        var a = new PackedStringArray("test");
         a.initialize();
         ensure(a.size() == 0);
-        final var a1 = a.add("test");
-        final var a2 = a.add("test\u1234");
-        final var a3 = a.add("test\u0085");
-        final var a4 = a.add("foobar");
+        var a1 = a.add("test");
+        var a2 = a.add("test\u1234");
+        var a3 = a.add("test\u0085");
+        var a4 = a.add("foobar");
         a.compress(CompressibleCollection.Method.RESIZE);
         ensureEqual("test", a.get(a1));
         ensureEqual("foobar", a.get(a4));
@@ -45,13 +45,13 @@ public class PackedStringArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testMultiple()
     {
-        final var a = new PackedStringArray("test");
+        var a = new PackedStringArray("test");
         a.initialize();
         ensure(a.size() == 0);
-        final var a1 = a.add("test");
-        final var a2 = a.add("test");
-        final var a3 = a.add("test");
-        final var a4 = a.add("foobar");
+        var a1 = a.add("test");
+        var a2 = a.add("test");
+        var a3 = a.add("test");
+        var a4 = a.add("foobar");
         a.compress(CompressibleCollection.Method.RESIZE);
         ensureEqual("test", a.get(a1));
         ensureEqual("foobar", a.get(a4));
@@ -62,10 +62,10 @@ public class PackedStringArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSimple()
     {
-        final var a = new PackedStringArray("test");
+        var a = new PackedStringArray("test");
         a.initialize();
         ensure(a.size() == 0);
-        final var a1 = a.add("test");
+        var a1 = a.add("test");
         ensure(a.size() == 1);
         a.compress(CompressibleCollection.Method.RESIZE);
         ensureEqual("test", a.get(a1));

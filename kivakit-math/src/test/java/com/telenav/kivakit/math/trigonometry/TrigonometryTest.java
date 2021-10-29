@@ -30,7 +30,7 @@ public class TrigonometryTest extends UnitTest
     public void testArcTangent()
     {
         var error = 0D;
-        final var delta = 1.0;
+        var delta = 1.0;
         for (double y = -100; y < 100; y += delta)
         {
             for (double x = -100; x < 100; x += delta)

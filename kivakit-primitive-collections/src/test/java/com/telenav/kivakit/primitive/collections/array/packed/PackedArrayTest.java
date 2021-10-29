@@ -27,7 +27,7 @@ public class PackedArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testAccess()
     {
-        final var values = new PackedArray("test");
+        var values = new PackedArray("test");
         values.bits(BitCount._3, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
         values.initialize();
 
@@ -48,7 +48,7 @@ public class PackedArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testBig()
     {
-        final var values = new PackedArray("test");
+        var values = new PackedArray("test");
         values.bits(BitCount._34, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
         values.initialize();
         for (var i = 0; i < 100; i++)
@@ -67,22 +67,22 @@ public class PackedArrayTest extends PrimitiveCollectionsUnitTest
             trace("Testing " + bits + " bit array");
 
             // Create packed array with given bit length
-            final var count = BitCount.bitCount(bits);
+            var count = BitCount.bitCount(bits);
 
-            final var values = new PackedArray("test");
+            var values = new PackedArray("test");
             values.initialSize(32);
             values.bits(count, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
             values.initialize();
 
             // Maximum value is (2 ^ bits) - 1
-            final var maximum = bits >= 63 ? Long.MAX_VALUE : (1L << bits) - 1;
+            var maximum = bits >= 63 ? Long.MAX_VALUE : (1L << bits) - 1;
 
             // Loop through all indexes
             for (var i = 0; i < values.initialSizeAsInt(); i++)
             {
                 // and test storage of a range of values
-                final var iterations = 32;
-                final var step = Math.max(1, (maximum / iterations) + 1);
+                var iterations = 32;
+                var step = Math.max(1, (maximum / iterations) + 1);
                 for (var value = 0L; value < maximum && value >= 0; value += step)
                 {
                     final Long left = values.safeGet(i - 1);
@@ -101,7 +101,7 @@ public class PackedArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testNoOverflow()
     {
-        final var values = new PackedArray("test");
+        var values = new PackedArray("test");
         values.bits(BitCount._3, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
         values.hasNullLong(false);
         values.initialize();
@@ -113,7 +113,7 @@ public class PackedArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testNull()
     {
-        final var values = new PackedArray("test");
+        var values = new PackedArray("test");
         values.bits(BitCount._3, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
         values.nullLong(7);
         values.initialize();
@@ -139,7 +139,7 @@ public class PackedArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testOverflow()
     {
-        final var values = new PackedArray("test");
+        var values = new PackedArray("test");
         values.bits(BitCount._3, PackedPrimitiveArray.OverflowHandling.ALLOW_OVERFLOW);
         values.hasNullLong(false);
         values.initialize();
@@ -155,7 +155,7 @@ public class PackedArrayTest extends PrimitiveCollectionsUnitTest
     {
         if (!isQuickTest())
         {
-            final var values = new PackedArray("test");
+            var values = new PackedArray("test");
             values.initialSize(100);
             values.bits(BitCount._3, PackedPrimitiveArray.OverflowHandling.NO_OVERFLOW);
             values.initialize();

@@ -31,9 +31,9 @@ public class BitArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test()
     {
-        final var bits = new BitArray("test");
+        var bits = new BitArray("test");
         bits.initialize();
-        final BitWriter writer = bits.writer();
+        BitWriter writer = bits.writer();
         for (var i = 0; i < 8; i++)
         {
             writer.write(i, 5);
@@ -41,7 +41,7 @@ public class BitArrayTest extends PrimitiveCollectionsUnitTest
         IO.close(writer);
         ensureEqual("00000 00001 00010 00011 00100 00101 00110 00111".replaceAll(" ", ""),
                 bits.toBitString().replaceAll(" ", ""));
-        final BitReader reader = bits.reader();
+        BitReader reader = bits.reader();
         for (var i = 0; i < 8; i++)
         {
             ensureEqual(i, reader.read(5));
@@ -52,17 +52,17 @@ public class BitArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test32Bit()
     {
-        final var bits = new BitArray("test");
+        var bits = new BitArray("test");
         bits.initialize();
 
-        final BitWriter writer = bits.writer();
+        BitWriter writer = bits.writer();
         writer.write(47677740, 32);
         writer.close();
 
         ensureEqual("00000010110101111000000100101100", bits.toBitString().replaceAll(" ", ""));
 
-        final BitReader reader = bits.reader();
-        final var read = reader.read(32);
+        BitReader reader = bits.reader();
+        var read = reader.read(32);
         ensureEqual(47677740, read);
         reader.close();
     }
@@ -70,9 +70,9 @@ public class BitArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testExhaustive()
     {
-        final var bits = new BitArray("test");
+        var bits = new BitArray("test");
         bits.initialize();
-        final BitWriter writer = bits.writer();
+        BitWriter writer = bits.writer();
         for (var i = 0; i < 1_000; i++)
         {
             for (var j = 1; j <= 32; j++)
@@ -82,12 +82,12 @@ public class BitArrayTest extends PrimitiveCollectionsUnitTest
         }
         IO.close(writer);
 
-        final BitReader reader = bits.reader();
+        BitReader reader = bits.reader();
         for (var i = 0; i < 1_000; i++)
         {
             for (var j = 1; j <= 32; j++)
             {
-                final int mask = (int) Bits.oneBits(Count.count(j));
+                int mask = (int) Bits.oneBits(Count.count(j));
                 ensureEqual(i & mask, reader.read(j));
             }
         }
@@ -97,13 +97,13 @@ public class BitArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testReadByBytes()
     {
-        final var bits = new BitArray("test");
+        var bits = new BitArray("test");
         bits.initialize();
-        final BitWriter writer = bits.writer();
+        BitWriter writer = bits.writer();
         writer.write(0xf0f0f0f0, 32);
         IO.close(writer);
-        final BitReader reader = bits.reader();
-        final var read = reader.read(32);
+        BitReader reader = bits.reader();
+        var read = reader.read(32);
         ensureEqual(0xf0f0f0f0, read);
         IO.close(reader);
     }
@@ -111,27 +111,27 @@ public class BitArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void testSeek()
     {
-        final var bits = new BitArray("test");
+        var bits = new BitArray("test");
         bits.initialize();
-        final BitWriter writer = bits.writer();
-        final long start = writer.cursor();
+        BitWriter writer = bits.writer();
+        long start = writer.cursor();
         ensureEqual(0L, start);
         writer.write(5, 5);
-        final long middle = writer.cursor();
+        long middle = writer.cursor();
         ensureEqual(5L, middle);
         writer.write(10, 5);
-        final long end = writer.cursor();
+        long end = writer.cursor();
         ensureEqual(10L, end);
         IO.close(writer);
-        final BitReader reader = bits.reader();
+        BitReader reader = bits.reader();
         ensureEqual(0L, reader.cursor());
         reader.cursor(middle);
         ensureEqual(middle, reader.cursor());
-        final int ten = reader.read(5);
+        int ten = reader.read(5);
         ensureEqual(10, ten);
         reader.cursor(start);
         ensureEqual(start, reader.cursor());
-        final int five = reader.read(5);
+        int five = reader.read(5);
         ensureEqual(5, five);
     }
 }

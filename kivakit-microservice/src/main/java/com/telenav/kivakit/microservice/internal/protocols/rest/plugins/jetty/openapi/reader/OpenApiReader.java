@@ -30,11 +30,11 @@ public class OpenApiReader extends BaseComponent
 {
     public OpenAPI read()
     {
-        final var api = new OpenAPI();
+        var api = new OpenAPI();
 
-        final var restApplication = require(MicroserviceRestService.class);
-        final var schemaReader = listenTo(new OpenApiSchemaReader());
-        final var pathReader = listenTo(new OpenApiPathReader());
+        var restApplication = require(MicroserviceRestService.class);
+        var schemaReader = listenTo(new OpenApiSchemaReader());
+        var pathReader = listenTo(new OpenApiPathReader());
 
         api.info(restApplication.openApiInfo());
         api.paths(pathReader.read());

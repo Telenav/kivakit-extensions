@@ -26,7 +26,7 @@ public class LongToLongMultiMapTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test()
     {
-        final var map = new LongToLongMultiMap("test");
+        var map = new LongToLongMultiMap("test");
         map.initialize();
         for (long i = 0; i < 100; i++)
         {
@@ -37,19 +37,19 @@ public class LongToLongMultiMapTest extends PrimitiveCollectionsUnitTest
         }
         for (long i = 0; i < 100; i++)
         {
-            final var values = map.get(i);
+            var values = map.get(i);
             for (long j = 0; j < 10; j++)
             {
                 // values are added to the list in reverse order
                 ensureEqual(j, values.get((int) (9 - j)));
             }
-            final var iterator = map.iterator(i);
+            var iterator = map.iterator(i);
             if (iterator != null)
             {
                 long expected = 9;
                 while (iterator.hasNext())
                 {
-                    final var value = iterator.next();
+                    var value = iterator.next();
                     ensureEqual(expected--, value);
                 }
             }

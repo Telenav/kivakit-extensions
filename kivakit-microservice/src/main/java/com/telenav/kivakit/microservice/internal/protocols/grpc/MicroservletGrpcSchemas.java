@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
             schema = RuntimeSchema.getSchema(type);
             requestTypeToSchema.put(type, schema);
         }
-        final var request = schema.newMessage();
+        var request = schema.newMessage();
         ProtobufIOUtil.mergeFrom(bytes.toByteArray(), request, (Schema<Object>) schema);
         return request;
     }

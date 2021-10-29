@@ -27,7 +27,7 @@ public class SuccessRateTest extends UnitTest
     @Test
     public void test()
     {
-        final var rate = new SuccessRate();
+        var rate = new SuccessRate();
         rate.attempt();
         ensureEqual(Percent.of(0), rate.successRate());
         rate.success();

@@ -22,7 +22,7 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testFile()
     {
-        final var file = listenTo(new GitHubFile("github://Telenav/lexakai/develop/README.md"));
+        var file = listenTo(new GitHubFile("github://Telenav/lexakai/develop/README.md"));
         ensure(file.string().contains("lexakai"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }
@@ -30,8 +30,8 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testFiles()
     {
-        final var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        final var files = folder.files();
+        var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
+        var files = folder.files();
         ensure(!files.isEmpty());
         ensure(files.contains(folder.file(FileName.parse("README.md"))));
         ensure(files.contains(folder.file(FileName.parse("pom.xml"))));
@@ -40,8 +40,8 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testNestedFiles()
     {
-        final var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        final var files = folder.nestedFiles(new All<>());
+        var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
+        var files = folder.nestedFiles(new All<>());
         ensure(!files.isEmpty());
         ensure(files.contains(folder.file(FileName.parse("README.md"))));
         ensure(files.contains(folder.file(FileName.parse("pom.xml"))));
@@ -51,8 +51,8 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testNestedFolders()
     {
-        final var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        final var folders = folder.nestedFolders(new All<>());
+        var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
+        var folders = folder.nestedFolders(new All<>());
         ensure(!folders.isEmpty());
         ensure(folders.contains(folder.folder(FileName.parse("documentation"))));
         ensure(folders.contains(folder.folder(FileName.parse("legal"))));
@@ -62,8 +62,8 @@ public class GitHubFileSystemTest extends UnitTest
     @Test
     public void testPrivateFile()
     {
-        final var token = "";
-        final var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
+        var token = "";
+        var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
         ensure(file.string().contains("30909955"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }

@@ -57,13 +57,13 @@ public class HuffmanStringListCodecTest extends DataCompressionUnitTest
         //
         //    input: [ohkh, m, ohkh, m, gxafxac, ohkh, gxafxac, m, m, gxafxac, ohkh, m, gxafxac, gxafxac, gxafxac, ohkh, m, m, m]
 
-        final var stringSymbols = new Symbols<>(new CountMap<String>()
+        var stringSymbols = new Symbols<>(new CountMap<String>()
                 .add("m", Objects.requireNonNull(Count.parse("8,524")))
                 .add("gxafxac", Objects.requireNonNull(Count.parse("9,202"))));
 
-        final var string = HuffmanStringCodec.from(stringSymbols, Maximum._8);
+        var string = HuffmanStringCodec.from(stringSymbols, Maximum._8);
 
-        final var characterSymbols = new Symbols<>(new CountMap<Character>()
+        var characterSymbols = new Symbols<>(new CountMap<Character>()
                 .add('m', Objects.requireNonNull(Count.parse("10,826")))
                 .add('d', Objects.requireNonNull(Count.parse("8,154")))
                 .add('j', Objects.requireNonNull(Count.parse("8,098")))
@@ -72,9 +72,9 @@ public class HuffmanStringListCodecTest extends DataCompressionUnitTest
                 .add(HuffmanCharacterCodec.ESCAPE, Count._1024)
                 .add(HuffmanCharacterCodec.END_OF_STRING, Count._1024), HuffmanCharacterCodec.ESCAPE, Minimum._1);
 
-        final var character = HuffmanCharacterCodec.from(characterSymbols, Maximum._8);
+        var character = HuffmanCharacterCodec.from(characterSymbols, Maximum._8);
 
-        final var codec = new HuffmanStringListCodec(string, character);
+        var codec = new HuffmanStringListCodec(string, character);
 
         test(codec, Lists.arrayList("ohkh", "m", "ohkh", "m", "gxafxac", "ohkh", "gxafxac",
                 "m", "m", "gxafxac", "ohkh", "m", "gxafxac", "gxafxac", "gxafxac", "ohkh", "m", "m", "m"));
@@ -85,9 +85,9 @@ public class HuffmanStringListCodecTest extends DataCompressionUnitTest
     @Test
     public void testDecode()
     {
-        final var string = HuffmanStringCodec.from(properties("string.codec"));
-        final var character = HuffmanCharacterCodec.from(properties("character.codec"), HuffmanCharacterCodec.ESCAPE);
-        final var codec = new HuffmanStringListCodec(string, character);
+        var string = HuffmanStringCodec.from(properties("string.codec"));
+        var character = HuffmanCharacterCodec.from(properties("character.codec"), HuffmanCharacterCodec.ESCAPE);
+        var codec = new HuffmanStringListCodec(string, character);
 
         test(codec, Lists.arrayList("bicycle", "barrier", "highway", "banana"));
         test(codec, Lists.arrayList("oneway", "turkey", "foot", "access", "footway"));
@@ -97,24 +97,24 @@ public class HuffmanStringListCodecTest extends DataCompressionUnitTest
     @Test
     public void testRandom()
     {
-        final var progress = Progress.create(Listener.none(), "codec");
+        var progress = Progress.create(Listener.none(), "codec");
         loop(10, codecNumber ->
         {
-            final var stringSymbols = randomStringSymbols(2, 16, 1, 32);
-            final var string = HuffmanStringCodec.from(stringSymbols, Maximum._8);
+            var stringSymbols = randomStringSymbols(2, 16, 1, 32);
+            var string = HuffmanStringCodec.from(stringSymbols, Maximum._8);
 
-            final var characterSymbols = randomCharacterSymbols(1, 25);
-            final var character = HuffmanCharacterCodec.from(characterSymbols, Maximum._8);
+            var characterSymbols = randomCharacterSymbols(1, 25);
+            var character = HuffmanCharacterCodec.from(characterSymbols, Maximum._8);
 
-            final var codec = new HuffmanStringListCodec(string, character);
+            var codec = new HuffmanStringListCodec(string, character);
 
-            final var choices = stringSymbols.symbols();
+            var choices = stringSymbols.symbols();
             choices.addAll(randomStringSymbols(2, 8, 1, 32).symbols());
 
-            final var test = Progress.create(Listener.none(), "test");
+            var test = Progress.create(Listener.none(), "test");
             loop(100, testNumber ->
             {
-                final var input = new ArrayList<String>();
+                var input = new ArrayList<String>();
                 loop(1, 32, () -> input.add(choices.get(randomInt(0, choices.size() - 1))));
                 test(codec, input);
                 test.next();
@@ -124,10 +124,10 @@ public class HuffmanStringListCodecTest extends DataCompressionUnitTest
     }
 
     @Override
-    protected void test( Codec<String> codec, final List<String> symbols)
+    protected void test(Codec<String> codec, List<String> symbols)
     {
-        final var data = encode(codec, symbols);
-        final var decoded = new ArrayList<>();
+        var data = encode(codec, symbols);
+        var decoded = new ArrayList<>();
         loop(symbols.size(), () -> decoded.add(null));
         data.reset();
         codec.decode(data, (index, value) ->
