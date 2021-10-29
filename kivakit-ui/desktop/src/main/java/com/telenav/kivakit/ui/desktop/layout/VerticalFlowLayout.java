@@ -1,7 +1,8 @@
 package com.telenav.kivakit.ui.desktop.layout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 /**
  * @author jonathanl (shibo)
@@ -12,7 +13,7 @@ public class VerticalFlowLayout
 
     private final JComponent parent;
 
-    public VerticalFlowLayout(final JComponent parent)
+    public VerticalFlowLayout(JComponent parent)
     {
         this.parent = parent;
 
@@ -26,7 +27,7 @@ public class VerticalFlowLayout
         constraints.gridy = 0;
     }
 
-    public VerticalFlowLayout add(final JComponent child)
+    public VerticalFlowLayout add(JComponent child)
     {
         parent.add(child, constraints);
         constraints.gridy++;

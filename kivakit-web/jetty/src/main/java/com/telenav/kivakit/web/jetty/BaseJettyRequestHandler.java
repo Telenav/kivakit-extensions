@@ -39,7 +39,7 @@ public abstract class BaseJettyRequestHandler implements Named
 
     private final String name;
 
-    public BaseJettyRequestHandler(final String name)
+    public BaseJettyRequestHandler(String name)
     {
         this.name = name;
     }
@@ -50,7 +50,7 @@ public abstract class BaseJettyRequestHandler implements Named
         return name;
     }
 
-    protected void path(final String path)
+    protected void path(String path)
     {
         this.path = path;
     }

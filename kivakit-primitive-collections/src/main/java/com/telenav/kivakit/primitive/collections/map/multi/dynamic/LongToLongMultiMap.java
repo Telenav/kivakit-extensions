@@ -48,25 +48,25 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
     /** Map from key to lists index */
     private SplitLongToIntMap indexes;
 
-    public LongToLongMultiMap(final String objectName)
+    public LongToLongMultiMap(String objectName)
     {
         super(objectName);
     }
 
-    protected LongToLongMultiMap()
+    private LongToLongMultiMap()
     {
     }
 
     /**
      * Adds the given value to the list for the given key
      */
-    public void add(final long key, final long value)
+    public void add(long key, long value)
     {
         if (ensureHasRoomFor(1))
         {
-            final var indexes = this.indexes;
+            var indexes = this.indexes;
             var index = indexes.get(key);
-            final var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
+            var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
             index = values.add(head, value);
             indexes.put(key, index);
         }
@@ -75,9 +75,9 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
     /**
      * @return True if this map contains a list for the given key
      */
-    public boolean containsKey(final long key)
+    public boolean containsKey(long key)
     {
-        final var indexes = this.indexes;
+        var indexes = this.indexes;
         return !indexes.isNull(indexes.get(key));
     }
 
@@ -86,13 +86,13 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
      * than {@link #iterator(long)}.
      */
     @Override
-    public LongArray get(final long key)
+    public LongArray get(long key)
     {
-        final var array = new LongArray("get");
+        var array = new LongArray("get");
         array.initialSize(initialChildSizeAsInt());
         array.initialize();
 
-        final var iterator = iterator(key);
+        var iterator = iterator(key);
         if (iterator != null)
         {
             while (iterator.hasNext())
@@ -104,13 +104,13 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
     }
 
     @Override
-    public PrimitiveList getPrimitiveList(final long key)
+    public PrimitiveList getPrimitiveList(long key)
     {
         return get(key);
     }
 
     @Override
-    public boolean isScalarKeyNull(final long key)
+    public boolean isScalarKeyNull(long key)
     {
         return isNull(key);
     }
@@ -118,9 +118,9 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
     /**
      * @return An iterator over the list of longs for the given key
      */
-    public LongIterator iterator(final long key)
+    public LongIterator iterator(long key)
     {
-        final var index = indexes.get(key);
+        var index = indexes.get(key);
         if (!indexes.isNull(index))
         {
             return values.list(index);
@@ -137,7 +137,7 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (method == CompressibleCollection.Method.RESIZE)
         {
@@ -152,58 +152,72 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
         }
     }
 
-    /**
-     * Adds all the given values to the list for the given key
-     */
-    public void putAll(final long key, final long[] values)
-    {
-        if (ensureHasRoomFor(1))
-        {
-            final var indexes = this.indexes;
-            var index = indexes.get(key);
-            final var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
-            index = this.values.addAll(head, values);
-            indexes.put(key, index);
-        }
-    }
-
     @Override
-    public void putAll(final long key, final List<? extends Quantizable> values)
+    public void onInitialize()
     {
-        if (ensureHasRoomFor(1))
-        {
-            final var indexes = this.indexes;
-            var index = indexes.get(key);
-            final var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
-            index = this.values.addAll(head, values);
-            indexes.put(key, index);
-        }
+        super.onInitialize();
+
+        indexes = new SplitLongToIntMap(objectName() + ".indexes");
+        indexes.initialSize(initialSize());
+        indexes.initialize();
+
+        values = new LongLinkedListStore(objectName() + ".values");
+        indexes.initialSize(initialSize());
+        values.initialize();
     }
 
     /**
      * Adds all the given values to the list for the given key
      */
-    @Override
-    public void putAll(final long key, final LongArray values)
+    public void putAll(long key, long[] values)
     {
         if (ensureHasRoomFor(1))
         {
-            final var indexes = this.indexes;
+            var indexes = this.indexes;
             var index = indexes.get(key);
-            final var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
+            var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
             index = this.values.addAll(head, values);
             indexes.put(key, index);
         }
     }
 
     @Override
-    public void putPrimitiveList(final long key, final PrimitiveList values)
+    public void putAll(long key, List<? extends Quantizable> values)
+    {
+        if (ensureHasRoomFor(1))
+        {
+            var indexes = this.indexes;
+            var index = indexes.get(key);
+            var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
+            index = this.values.addAll(head, values);
+            indexes.put(key, index);
+        }
+    }
+
+    /**
+     * Adds all the given values to the list for the given key
+     */
+    @Override
+    public void putAll(long key, LongArray values)
+    {
+        if (ensureHasRoomFor(1))
+        {
+            var indexes = this.indexes;
+            var index = indexes.get(key);
+            var head = indexes.isNull(index) ? LongLinkedListStore.NEW_LIST : index;
+            index = this.values.addAll(head, values);
+            indexes.put(key, index);
+        }
+    }
+
+    @Override
+    public void putPrimitiveList(long key, PrimitiveList values)
     {
         putAll(key, (LongArray) values);
     }
 
     @Override
-    public void putPrimitiveList(final long key, final List<? extends Quantizable> values)
+    public void putPrimitiveList(long key, List<? extends Quantizable> values)
     {
         putAll(key, values);
     }
@@ -212,7 +226,7 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -235,7 +249,7 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
         return "[" + getClass().getSimpleName() + " name = " + objectName() + ", size = " + size() + "]\n" +
                 toString(keys(), key ->
                         {
-                            final var list = get(key);
+                            var list = get(key);
                             return list.iterator();
                         },
                         (key, values) -> values == null ? "null" : key + " -> " + values);
@@ -245,25 +259,11 @@ public final class LongToLongMultiMap extends PrimitiveMultiMap implements LongM
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
         kryo.writeObject(output, values);
         kryo.writeObject(output, indexes);
-    }
-
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        indexes = new SplitLongToIntMap(objectName() + ".indexes");
-        indexes.initialSize(initialSize());
-        indexes.initialize();
-
-        values = new LongLinkedListStore(objectName() + ".values");
-        indexes.initialSize(initialSize());
-        values.initialize();
     }
 }

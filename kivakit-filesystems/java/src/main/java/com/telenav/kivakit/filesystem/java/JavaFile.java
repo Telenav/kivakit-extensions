@@ -36,7 +36,7 @@ import java.nio.file.Files;
  */
 public class JavaFile extends JavaFileSystemObject implements FileService, ComponentMixin
 {
-    public JavaFile(final FilePath path)
+    public JavaFile(FilePath path)
     {
         super(path);
     }

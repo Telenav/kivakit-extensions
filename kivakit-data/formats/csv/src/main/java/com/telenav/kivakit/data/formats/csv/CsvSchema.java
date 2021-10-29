@@ -43,7 +43,7 @@ import java.util.List;
 @LexakaiJavadoc(complete = true)
 public class CsvSchema extends BaseRepeater
 {
-    public static CsvSchema of(final CsvColumn<?>... columns)
+    public static CsvSchema of(CsvColumn<?>... columns)
     {
         return new CsvSchema(columns);
     }
@@ -64,7 +64,7 @@ public class CsvSchema extends BaseRepeater
     /**
      * Constructs a schema with the given columns
      */
-    protected CsvSchema(final CsvColumn<?>... columns)
+    protected CsvSchema(CsvColumn<?>... columns)
     {
         addAll(columns);
     }
@@ -72,7 +72,7 @@ public class CsvSchema extends BaseRepeater
     /**
      * Adds a column to this schema
      */
-    public CsvSchema add(final CsvColumn<?> column)
+    public CsvSchema add(CsvColumn<?> column)
     {
         if (column != null)
         {
@@ -88,9 +88,9 @@ public class CsvSchema extends BaseRepeater
     /**
      * Adds a list of columns to this schema
      */
-    public void addAll(final List<? extends CsvColumn<?>> columns)
+    public void addAll(List<? extends CsvColumn<?>> columns)
     {
-        for (final CsvColumn<?> column : columns)
+        for (CsvColumn<?> column : columns)
         {
             add(column);
         }
@@ -99,9 +99,9 @@ public class CsvSchema extends BaseRepeater
     /**
      * Adds the given columns to this schema
      */
-    public CsvSchema addAll(final CsvColumn<?>... columns)
+    public CsvSchema addAll(CsvColumn<?>... columns)
     {
-        for (final var column : columns)
+        for (var column : columns)
         {
             add(column);
         }
@@ -111,7 +111,7 @@ public class CsvSchema extends BaseRepeater
     /**
      * @return The named column or null if no such column exists
      */
-    public CsvColumn<?> columnForName(final String name)
+    public CsvColumn<?> columnForName(String name)
     {
         return columnForName.get(name);
     }
@@ -119,7 +119,7 @@ public class CsvSchema extends BaseRepeater
     /**
      * @return True if this schema contains the given column
      */
-    public boolean contains(final CsvColumn<?> column)
+    public boolean contains(CsvColumn<?> column)
     {
         return included.contains(column);
     }

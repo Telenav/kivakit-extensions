@@ -32,17 +32,17 @@ import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCo
  */
 public class DrawingHeight extends DrawingLength
 {
-    public static DrawingHeight height(final Coordinated coordinates, final double units)
+    public static DrawingHeight height(Coordinated coordinates, double units)
     {
         return new DrawingHeight(coordinates, units);
     }
 
-    public static DrawingHeight pixels(final double units)
+    public static DrawingHeight pixels(double units)
     {
         return height(PIXELS, units);
     }
 
-    protected DrawingHeight(final Coordinated coordinates, final double units)
+    protected DrawingHeight(Coordinated coordinates, double units)
     {
         super(coordinates, units);
     }
@@ -59,19 +59,19 @@ public class DrawingHeight extends DrawingLength
     }
 
     @Override
-    public DrawingHeight scaledBy(final Percent percent)
+    public DrawingHeight scaledBy(Percent percent)
     {
         return (DrawingHeight) super.scaledBy(percent);
     }
 
     @Override
-    public DrawingHeight scaledBy(final double scaleFactor)
+    public DrawingHeight scaledBy(double scaleFactor)
     {
         return (DrawingHeight) super.scaledBy(scaleFactor);
     }
 
     @Override
-    public DrawingHeight toCoordinates(final Coordinated that)
+    public DrawingHeight toCoordinates(Coordinated that)
     {
         return coordinates().toCoordinates(that, this);
     }
@@ -83,7 +83,7 @@ public class DrawingHeight extends DrawingLength
     }
 
     @Override
-    protected DrawingHeight newInstance(final double units)
+    protected DrawingHeight newInstance(double units)
     {
         return height(units);
     }

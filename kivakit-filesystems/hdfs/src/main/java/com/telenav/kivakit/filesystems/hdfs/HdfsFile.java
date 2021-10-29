@@ -60,13 +60,13 @@ public class HdfsFile extends BaseWritableResource implements FileService
     @UmlAggregation
     private HdfsProxy proxy;
 
-    public HdfsFile(final FilePath path)
+    public HdfsFile(FilePath path)
     {
         this.path = path;
     }
 
     @Override
-    public boolean chmod(final PosixFilePermission... permissions)
+    public boolean chmod(PosixFilePermission... permissions)
     {
         return unsupported();
     }
@@ -118,7 +118,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
     }
 
     @Override
-    public boolean lastModified(final Time modified)
+    public boolean lastModified(Time modified)
     {
         return retry(() -> proxy().lastModified(pathAsString(), modified.asMilliseconds()))
                 .orDefault(this, false, "Unable to set last modified time of $ to $", this, modified);
@@ -141,7 +141,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
     @Override
     public HdfsFolder parent()
     {
-        final var parent = path().parent();
+        var parent = path().parent();
         if (parent != null)
         {
             return new HdfsFolder(parent);
@@ -156,7 +156,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
     }
 
     @Override
-    public boolean renameTo(final FileService that)
+    public boolean renameTo(FileService that)
     {
         if (isOnSameFileSystem(that))
         {
@@ -165,7 +165,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
         return fatal("Cannot rename $ to $ across filesystems", this, that);
     }
 
-    public boolean renameTo(final HdfsFile to)
+    public boolean renameTo(HdfsFile to)
     {
         return retry(() -> proxy().rename(pathAsString(), to.path().toString()))
                 .orDefault(this, false, "Unable to rename $ to $", this, to);
@@ -184,7 +184,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
         {
             size = retry(() ->
             {
-                final var length = proxy().length(pathAsString());
+                var length = proxy().length(pathAsString());
                 return length < 0 ? null : Bytes.bytes(length);
             }).orDefault(this, Bytes._0, "Unable to get size of $", this);
         }
@@ -211,7 +211,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
         return proxy;
     }
 
-    private <T> Unchecked<T> retry(final Unchecked<T> code)
+    private <T> Unchecked<T> retry(Unchecked<T> code)
     {
         return Retry.retry(code, 16, Duration.seconds(15), () -> proxy = null);
     }

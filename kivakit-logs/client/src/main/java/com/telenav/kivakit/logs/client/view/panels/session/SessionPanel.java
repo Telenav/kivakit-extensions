@@ -29,7 +29,7 @@ public class SessionPanel extends KivaKitPanel
     /** The sessions to choose from */
     private JComboBox<Session> sessionDropDown;
 
-    public SessionPanel(final ClientLogPanel parent)
+    public SessionPanel(ClientLogPanel parent)
     {
         this.parent = parent;
 
@@ -49,7 +49,7 @@ public class SessionPanel extends KivaKitPanel
         updateSessionDropDown();
     }
 
-    public void newSession(final Session session)
+    public void newSession(Session session)
     {
         SessionStore.get().add(session);
         parent.tablePanel().clear();
@@ -59,15 +59,15 @@ public class SessionPanel extends KivaKitPanel
 
     private JButton deleteSessionButton()
     {
-        final var button = KivaKitTheme.get().newButton("Delete Session");
+        var button = KivaKitTheme.get().newButton("Delete Session");
         button.addActionListener(event ->
         {
             // Get the selected session
-            final var session = (Session) sessionDropDown().getSelectedItem();
+            var session = (Session) sessionDropDown().getSelectedItem();
             if (session != null)
             {
                 // and its index
-                final var index = sessionDropDown().getSelectedIndex();
+                var index = sessionDropDown().getSelectedIndex();
 
                 // and if the session is live
                 if (parent.connector().isConnected())
@@ -86,7 +86,7 @@ public class SessionPanel extends KivaKitPanel
                 updateSessionDropDown();
 
                 // and select the nearest item
-                final var count = sessionDropDown().getItemCount();
+                var count = sessionDropDown().getItemCount();
                 if (count > 0)
                 {
                     sessionDropDown().setSelectedIndex(Math.min(count - 1, index));
@@ -114,14 +114,14 @@ public class SessionPanel extends KivaKitPanel
                 if (event.getStateChange() == ItemEvent.SELECTED)
                 {
                     // get the selected session,
-                    final var session = (Session) sessionDropDown.getSelectedItem();
+                    var session = (Session) sessionDropDown.getSelectedItem();
                     if (session != null)
                     {
                         // clear the log panel
                         parent.clear();
 
                         // load the session's log entries
-                        final var entries = SessionStore.get().entries(session);
+                        var entries = SessionStore.get().entries(session);
                         if (entries != null)
                         {
                             // and add any entries
@@ -140,11 +140,11 @@ public class SessionPanel extends KivaKitPanel
 
     private void updateSessionDropDown()
     {
-        final var sessions = new ArrayList<>(SessionStore.get().sessions());
+        var sessions = new ArrayList<>(SessionStore.get().sessions());
         sessions.sort(Comparator.naturalOrder());
         Collections.reverse(sessions);
         sessionDropDown().removeAllItems();
-        for (final var session : sessions)
+        for (var session : sessions)
         {
             sessionDropDown().addItem(session);
         }

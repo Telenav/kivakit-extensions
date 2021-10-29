@@ -41,7 +41,7 @@ public interface PrimitiveIterator
         return (int) hash;
     }
 
-    default boolean identical(final PrimitiveIterator that)
+    default boolean identical(PrimitiveIterator that)
     {
         while (hasNext())
         {

@@ -42,14 +42,14 @@ public class OpenApiPathReader extends BaseComponent
      */
     public Paths read()
     {
-        final var paths = new Paths();
+        var paths = new Paths();
 
         // Got through each mount path that the filter has,
-        final var filter = require(JettyMicroservletFilter.class);
-        for (final var path : filter.paths())
+        var filter = require(JettyMicroservletFilter.class);
+        for (var path : filter.paths())
         {
             // and add a PathItem to the list of paths.
-            final var microservlet = filter.microservlet(path);
+            var microservlet = filter.microservlet(path);
             if (microservlet != null)
             {
                 paths.addPathItem(path.resolvedPath().join(), newPathItem(path, microservlet));
@@ -71,7 +71,7 @@ public class OpenApiPathReader extends BaseComponent
     /**
      * @return True if the request type should be ignored
      */
-    private boolean ignoreRequestType(final Class<? extends MicroservletRequest> requestType)
+    private boolean ignoreRequestType(Class<? extends MicroservletRequest> requestType)
     {
         return JettyOpenApiRequest.class.isAssignableFrom(requestType);
     }
@@ -83,17 +83,17 @@ public class OpenApiPathReader extends BaseComponent
      * @param responseType The response type
      * @return The OpenAPI {@link Operation} model
      */
-    private Operation newOperation(final Class<? extends MicroservletRequest> requestType,
-                                   final Class<? extends MicroservletResponse> responseType)
+    private Operation newOperation(Class<? extends MicroservletRequest> requestType,
+                                   Class<? extends MicroservletResponse> responseType)
     {
         // then create an operation and populate it with the summary and description of the request,
-        final var operation = new Operation();
-        final var annotationReader = new OpenApiAnnotationReader();
+        var operation = new Operation();
+        var annotationReader = new OpenApiAnnotationReader();
         operation.summary(annotationReader.readAnnotationValue(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
         operation.description(annotationReader.readAnnotationValue(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::description));
 
         // add success and error responses,
-        final var responses = new ApiResponses()
+        var responses = new ApiResponses()
                 .addApiResponse(Integer.toString(SC_OK), newResponseSuccess(responseType))
                 .addApiResponse(Integer.toString(SC_FORBIDDEN), newResponseItem("Forbidden", null))
                 .addApiResponse(Integer.toString(SC_NOT_FOUND), newResponseItem("Not Found", null));
@@ -116,18 +116,18 @@ public class OpenApiPathReader extends BaseComponent
      * @return The {@link PathItem}
      */
     private PathItem newPathItem(
-            final MicroservletRestPath path,
-            final Microservlet<?, ?> microservlet)
+            MicroservletRestPath path,
+            Microservlet<?, ?> microservlet)
     {
         ensureNotNull(microservlet);
 
         // Create the path item and give it the microservlet's description,
-        final var item = new PathItem();
+        var item = new PathItem();
         item.description(microservlet.description());
 
         // get the request and response types,
-        final var requestType = microservlet.requestType();
-        final var responseType = microservlet.responseType();
+        var requestType = microservlet.requestType();
+        var responseType = microservlet.responseType();
 
         if (!ignoreRequestType(requestType))
         {
@@ -162,7 +162,7 @@ public class OpenApiPathReader extends BaseComponent
     /**
      * @return A {@link Content} object for the given request type
      */
-    private Content newRequestContent(final Class<? extends MicroservletRequest> requestType)
+    private Content newRequestContent(Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
         require(OpenApiSchemaReader.class).addModelToRead(Type.forClass(requestType));
@@ -177,9 +177,9 @@ public class OpenApiPathReader extends BaseComponent
     /**
      * @return A new {@link ApiResponse} for the given description and schema.
      */
-    private ApiResponse newResponseItem(final String description, final Schema<?> schema)
+    private ApiResponse newResponseItem(String description, Schema<?> schema)
     {
-        final var item = new ApiResponse().description(description);
+        var item = new ApiResponse().description(description);
         if (schema != null)
         {
             item.content(new Content().addMediaType("application/json", new MediaType().schema(schema)));
@@ -190,7 +190,7 @@ public class OpenApiPathReader extends BaseComponent
     /**
      * @return An {@link ApiResponse} description for the given response type.
      */
-    private ApiResponse newResponseSuccess(final Class<? extends MicroservletResponse> responseType)
+    private ApiResponse newResponseSuccess(Class<? extends MicroservletResponse> responseType)
     {
         // Add the response type to the set of models,
         require(OpenApiSchemaReader.class)

@@ -36,7 +36,7 @@ import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.For
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public class MicroserviceGsonFactory extends GsonFactory implements ComponentMixin
 {
-    protected void onAddSerializers(final GsonBuilder builder)
+    protected void onAddSerializers(GsonBuilder builder)
     {
         super.onAddSerializers(builder);
 
@@ -44,7 +44,7 @@ public class MicroserviceGsonFactory extends GsonFactory implements ComponentMix
     }
 
     @Override
-    protected void onInitialize(final GsonBuilder builder)
+    protected void onInitialize(GsonBuilder builder)
     {
         super.onInitialize(builder);
 
@@ -53,4 +53,3 @@ public class MicroserviceGsonFactory extends GsonFactory implements ComponentMix
         builder.setPrettyPrinting();
     }
 }
-

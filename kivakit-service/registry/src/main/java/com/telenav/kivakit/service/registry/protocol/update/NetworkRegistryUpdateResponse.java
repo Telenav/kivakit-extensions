@@ -45,7 +45,7 @@ public class NetworkRegistryUpdateResponse extends BaseResponse<Boolean>
     @OpenApiIncludeMember(description = "True if the caller was added to the network registry")
     private boolean added;
 
-    public NetworkRegistryUpdateResponse added(final boolean added)
+    public NetworkRegistryUpdateResponse added(boolean added)
     {
         this.added = added;
         return this;
@@ -64,7 +64,7 @@ public class NetworkRegistryUpdateResponse extends BaseResponse<Boolean>
     }
 
     @Override
-    protected void value(final Boolean value)
+    protected void value(Boolean value)
     {
         added = value;
     }

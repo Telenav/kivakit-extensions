@@ -18,37 +18,37 @@ public class CsvPropertyFilter implements PropertyFilter
 {
     private final CsvSchema schema;
 
-    public CsvPropertyFilter(final CsvSchema schema)
+    public CsvPropertyFilter(CsvSchema schema)
     {
         this.schema = schema;
     }
 
     @Override
-    public boolean includeAsGetter(final Method method)
+    public boolean includeAsGetter(Method method)
     {
         return schema.columnForName(method.getName()) != null;
     }
 
     @Override
-    public boolean includeAsSetter(final Method method)
+    public boolean includeAsSetter(Method method)
     {
         return schema.columnForName(method.getName()) != null;
     }
 
     @Override
-    public boolean includeField(final Field field)
+    public boolean includeField(Field field)
     {
         return schema.columnForName(field.getName()) != null;
     }
 
     @Override
-    public String nameForField(final Field field)
+    public String nameForField(Field field)
     {
         return field.getName();
     }
 
     @Override
-    public String nameForMethod(final Method method)
+    public String nameForMethod(Method method)
     {
         return method.getName();
     }

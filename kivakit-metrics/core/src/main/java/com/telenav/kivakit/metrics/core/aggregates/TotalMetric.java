@@ -5,7 +5,7 @@ import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
 
 public class TotalMetric<T extends Quantizable> extends AggregateQuantumMetric<T>
 {
-    public TotalMetric(final MapFactory<Double, T> factory)
+    public TotalMetric(MapFactory<Double, T> factory)
     {
         super(factory);
     }

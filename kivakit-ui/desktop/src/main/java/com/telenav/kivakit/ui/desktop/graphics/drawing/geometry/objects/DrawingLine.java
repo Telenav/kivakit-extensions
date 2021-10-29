@@ -35,7 +35,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  */
 public class DrawingLine extends DrawingObject
 {
-    public static DrawingLine line(final DrawingPoint a, final DrawingPoint b)
+    public static DrawingLine line(DrawingPoint a, DrawingPoint b)
     {
         ensure(a.inSameCoordinateSystem(b));
 
@@ -46,7 +46,7 @@ public class DrawingLine extends DrawingObject
 
     private final DrawingPoint b;
 
-    protected DrawingLine(final DrawingPoint a, final DrawingPoint b)
+    protected DrawingLine(DrawingPoint a, DrawingPoint b)
     {
         super(a.coordinates());
 
@@ -66,9 +66,9 @@ public class DrawingLine extends DrawingObject
 
     public DrawingSlope slope()
     {
-        final var point = b.minus(a);
-        final var opposite = point.y();
-        final var adjacent = point.x();
+        var point = b.minus(a);
+        var opposite = point.y();
+        var adjacent = point.x();
         return DrawingSlope.radians(Math.atan(opposite / adjacent));
     }
 

@@ -11,25 +11,25 @@ public class MaximumRateMetric extends MaximumMetric<Rate>
     }
 
     @Override
-    public MaximumRateMetric description(final String description)
+    public MaximumRateMetric description(String description)
     {
         return (MaximumRateMetric) super.description(description);
     }
 
     @Override
-    public MaximumRateMetric name(final String name)
+    public MaximumRateMetric name(String name)
     {
         return (MaximumRateMetric) super.name(name);
     }
 
     @Override
-    public MaximumRateMetric type(final MetricType type)
+    public MaximumRateMetric type(MetricType type)
     {
         return (MaximumRateMetric) super.type(type);
     }
 
     @Override
-    public MaximumRateMetric unit(final String unit)
+    public MaximumRateMetric unit(String unit)
     {
         return (MaximumRateMetric) super.unit(unit);
     }

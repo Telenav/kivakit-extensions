@@ -60,12 +60,12 @@ public final class LongSet extends PrimitiveSet implements LongCollection
     /** The values */
     private long[] values;
 
-    public LongSet(final String name)
+    public LongSet(String name)
     {
         super(name);
     }
 
-    protected LongSet()
+    private LongSet()
     {
     }
 
@@ -73,7 +73,7 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * Adds the given value to this set
      */
     @Override
-    public boolean add(final long value)
+    public boolean add(long value)
     {
         assert !isNull(value);
         assert compressionMethod() != Method.FREEZE;
@@ -81,7 +81,7 @@ public final class LongSet extends PrimitiveSet implements LongCollection
         if (ensureHasRoomFor(1))
         {
             // Get the index of any existing value (or the next null slot if it doesn't exist)
-            final var index = index(values, value);
+            var index = index(values, value);
 
             // If we couldn't find it
             if (isEmpty(values[index]))
@@ -117,7 +117,7 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * @return True if this set contains the given value
      */
     @Override
-    public boolean contains(final long value)
+    public boolean contains(long value)
     {
         return contains(values, value);
     }
@@ -126,16 +126,16 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof LongSet)
         {
-            final var that = (LongSet) object;
+            var that = (LongSet) object;
             if (size() != that.size())
             {
                 return false;
             }
-            final var values = values();
+            var values = values();
             while (values.hasNext())
             {
                 if (!that.contains(values.next()))
@@ -167,7 +167,7 @@ public final class LongSet extends PrimitiveSet implements LongCollection
     }
 
     @Override
-    public Method onCompress(final Method method)
+    public Method onCompress(Method method)
     {
         if (method == Method.RESIZE)
         {
@@ -175,8 +175,8 @@ public final class LongSet extends PrimitiveSet implements LongCollection
         }
         else
         {
-            final var frozenValues = newLongArray(this, "froze", size());
-            final var keys = iterator();
+            var frozenValues = newLongArray(this, "froze", size());
+            var keys = iterator();
             for (var i = 0; keys.hasNext(); i++)
             {
                 frozenValues[i] = keys.next();
@@ -192,7 +192,18 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        values = newLongArray(this, "allocated");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -205,12 +216,12 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * @return True if the value was removed and false if it was not found
      */
     @Override
-    public boolean remove(final long value)
+    public boolean remove(long value)
     {
         assert compressionMethod() != Method.FREEZE;
 
         // Get index of value
-        final var index = index(values, value);
+        var index = index(values, value);
 
         // If the value was found,
         if (!isEmpty(values[index]))
@@ -245,7 +256,7 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -256,10 +267,10 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * {@inheritDoc}
      */
     @Override
-    protected void copy(final PrimitiveMap uncast)
+    protected void copy(PrimitiveMap uncast)
     {
         super.copy(uncast);
-        final var that = (LongSet) uncast;
+        var that = (LongSet) uncast;
         values = that.values;
     }
 
@@ -267,14 +278,14 @@ public final class LongSet extends PrimitiveSet implements LongCollection
      * {@inheritDoc}
      */
     @Override
-    protected void copyEntries(final PrimitiveMap uncast, final ProgressReporter reporter)
+    protected void copyEntries(PrimitiveMap uncast, ProgressReporter reporter)
     {
-        final var that = (LongSet) uncast;
-        final var indexes = nonEmptyIndexes(that.values);
+        var that = (LongSet) uncast;
+        var indexes = nonEmptyIndexes(that.values);
         while (indexes.hasNext())
         {
-            final var index = indexes.next();
-            final var value = that.values[index];
+            var index = indexes.next();
+            var value = that.values[index];
             if (!isNull(value))
             {
                 add(value);
@@ -290,17 +301,6 @@ public final class LongSet extends PrimitiveSet implements LongCollection
     protected PrimitiveMap newMap()
     {
         return new LongSet(objectName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        values = newLongArray(this, "allocated");
     }
 
     /**

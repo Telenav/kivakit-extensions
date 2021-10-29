@@ -61,7 +61,7 @@ public abstract class BaseBitReader implements BitReader
      * @param bytes List of bytes to read from
      * @param size The number of bits stored in the bytes array
      */
-    protected BaseBitReader(final ByteList bytes, final Count size)
+    protected BaseBitReader(ByteList bytes, Count size)
     {
         this.bytes = bytes;
         this.size = size.asInt();
@@ -85,7 +85,7 @@ public abstract class BaseBitReader implements BitReader
      * Seeks to the given bit index
      */
     @Override
-    public void cursor(final long index)
+    public void cursor(long index)
     {
         // Set the bit cursor,
         cursor = index;
@@ -107,7 +107,7 @@ public abstract class BaseBitReader implements BitReader
     public boolean hasNext()
     {
         // Get the size of the entire bitstream (or -1 if it is unknown, as in the case of an InputStream)
-        final var size = size();
+        var size = size();
 
         // and if the size is unknown, we have a next if we haven't finished the current byte or if there is
         // a next one from input stream lookahead, otherwise if we know the size, we have a next bit if the
@@ -163,7 +163,7 @@ public abstract class BaseBitReader implements BitReader
         }
 
         // get the bit
-        final var value = (current & mask) != 0;
+        var value = (current & mask) != 0;
 
         // and advance to the next bit
         mask >>>= 1;
@@ -176,7 +176,7 @@ public abstract class BaseBitReader implements BitReader
      * {@inheritDoc}
      */
     @Override
-    public final int readFlexibleInt(final int smallBitCount, final int bigBitCount)
+    public final int readFlexibleInt(int smallBitCount, int bigBitCount)
     {
         if (readBit())
         {
@@ -192,7 +192,7 @@ public abstract class BaseBitReader implements BitReader
      * @return A long value of the specified size in bits
      */
     @Override
-    public final long readLong(final int bits)
+    public final long readLong(int bits)
     {
         var value = 0L;
         var mask = 1L << (bits - 1);
@@ -229,7 +229,7 @@ public abstract class BaseBitReader implements BitReader
     /**
      * Sets the position (in bytes) of the next byte that will be read
      */
-    protected void byteCursor(final long position)
+    protected void byteCursor(long position)
     {
         byteCursor = (int) position;
     }

@@ -29,7 +29,7 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 @LexakaiJavadoc(complete = true)
 public class AverageDuration extends Average
 {
-    public void add(final Duration duration)
+    public void add(Duration duration)
     {
         super.add(duration.asMilliseconds());
     }

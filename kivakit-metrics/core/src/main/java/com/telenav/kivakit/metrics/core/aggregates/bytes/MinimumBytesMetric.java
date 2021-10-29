@@ -11,25 +11,25 @@ public class MinimumBytesMetric extends MinimumMetric<Bytes>
     }
 
     @Override
-    public MinimumBytesMetric description(final String description)
+    public MinimumBytesMetric description(String description)
     {
         return (MinimumBytesMetric) super.description(description);
     }
 
     @Override
-    public MinimumBytesMetric name(final String name)
+    public MinimumBytesMetric name(String name)
     {
         return (MinimumBytesMetric) super.name(name);
     }
 
     @Override
-    public MinimumBytesMetric type(final MetricType type)
+    public MinimumBytesMetric type(MetricType type)
     {
         return (MinimumBytesMetric) super.type(type);
     }
 
     @Override
-    public MinimumBytesMetric unit(final String unit)
+    public MinimumBytesMetric unit(String unit)
     {
         return (MinimumBytesMetric) super.unit(unit);
     }

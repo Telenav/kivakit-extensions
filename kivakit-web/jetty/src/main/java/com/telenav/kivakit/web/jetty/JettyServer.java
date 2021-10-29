@@ -124,28 +124,28 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         return server != null;
     }
 
-    public JettyServer mount(final String path, final BaseJettyFilterPlugin filter)
+    public JettyServer mount(String path, BaseJettyFilterPlugin filter)
     {
         filter.path(path);
         filters.add(filter);
         return this;
     }
 
-    public JettyServer mount(final String path, final BaseJettyServletPlugin servlet)
+    public JettyServer mount(String path, BaseJettyServletPlugin servlet)
     {
         servlet.path(path);
         servlets.add(servlet);
         return this;
     }
 
-    public JettyServer mount(final String path, final BaseJettyResourcePlugin resource)
+    public JettyServer mount(String path, BaseJettyResourcePlugin resource)
     {
         resource.path(path);
         resources.add(resource);
         return this;
     }
 
-    public JettyServer port(final int port)
+    public JettyServer port(int port)
     {
         ensure(port > 0);
         this.port = port;
@@ -161,14 +161,14 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
             narrate("Jetty started on port ${integer}", port);
             return true;
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throw new Problem(e, "Couldn't start embedded Jetty web server").asException();
         }
     }
 
     @Override
-    public void stop(final Duration wait)
+    public void stop(Duration wait)
     {
         if (isRunning())
         {
@@ -195,10 +195,10 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         }
     }
 
-    private ServerConnector httpConnector(final Server server)
+    private ServerConnector httpConnector(Server server)
     {
         // Return an HTTP Jetty server connector for the port that was specified
-        final ServerConnector http = new ServerConnector(server);
+        ServerConnector http = new ServerConnector(server);
         http.setPort(port);
         http.setIdleTimeout(Duration.hours(1).asMilliseconds());
         return http;
@@ -216,7 +216,7 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
             // create a "ServletContextHandler", which is a really confusing name that really means
             // something like "the place where you can register all kinds of stuff that the server
             // will use when handling requests, including but not limited to servlets"
-            final var servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
+            var servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
             servletContext.setContextPath("/");
             servletContext.setServer(server);
             servletContext.setSessionHandler(new SessionHandler());

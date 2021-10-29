@@ -34,7 +34,7 @@ public class SwaggerWebJarJettyResourcePlugin extends BaseJettyResourcePlugin
 {
     private final Class<?> restApplication;
 
-    public SwaggerWebJarJettyResourcePlugin(final Class<?> restApplication)
+    public SwaggerWebJarJettyResourcePlugin(Class<?> restApplication)
     {
         super("[SwaggerWebJarJettyResourcePlugin application = " + restApplication.getSimpleName() + "]");
 
@@ -44,7 +44,7 @@ public class SwaggerWebJarJettyResourcePlugin extends BaseJettyResourcePlugin
     @Override
     public ServletHolder holder()
     {
-        final var holder = new ServletHolder(name(), new DefaultServlet());
+        var holder = new ServletHolder(name(), new DefaultServlet());
         holder.setInitParameter("resourceBase", resourceBase());
         holder.setInitParameter("dirAllowed", "false");
         holder.setInitParameter("pathInfoOnly", "true");

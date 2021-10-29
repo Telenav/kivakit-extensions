@@ -67,35 +67,35 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     {
         private final Separators separators;
 
-        public Converter(final Listener listener, final Separators separators)
+        public Converter(Listener listener, Separators separators)
         {
             super(listener);
             this.separators = separators;
         }
 
         @Override
-        protected ShortArray onToValue(final String value)
+        protected String onToString(ShortArray array)
         {
-            final var elements = StringList.split(value, separators.current());
-            final var array = new ShortArray("converted");
-            array.initialize();
-            for (final var element : elements)
-            {
-                array.add(Short.parseShort(element));
-            }
-            return array;
-        }
-
-        @Override
-        protected String onToString(final ShortArray array)
-        {
-            final var strings = new StringList(Maximum.maximum(array.size()));
-            final var values = array.iterator();
+            var strings = new StringList(Maximum.maximum(array.size()));
+            var values = array.iterator();
             while (values.hasNext())
             {
                 strings.add(Short.toString(values.next()));
             }
             return strings.join(separators.current());
+        }
+
+        @Override
+        protected ShortArray onToValue(String value)
+        {
+            var elements = StringList.split(value, separators.current());
+            var array = new ShortArray("converted");
+            array.initialize();
+            for (var element : elements)
+            {
+                array.add(Short.parseShort(element));
+            }
+            return array;
         }
     }
 
@@ -114,19 +114,19 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     /** True if this array is a read-only sub-array of some parent array */
     private boolean isSubArray;
 
-    public ShortArray(final String objectName)
+    public ShortArray(String objectName)
     {
         super(objectName);
     }
 
-    protected ShortArray()
+    private ShortArray()
     {
     }
 
     /**
      * Constructor for constructing read-only sub-arrays that share data with their parent.
      */
-    private ShortArray(final String name, final short[] data, final int offset, final int size)
+    private ShortArray(String name, short[] data, int offset, int size)
     {
         this(name);
 
@@ -141,7 +141,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final short value)
+    public boolean add(short value)
     {
         assert isWritable();
 
@@ -177,7 +177,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * Sets the element at the given index to the current null value
      */
     @Override
-    public void clear(final int index)
+    public void clear(int index)
     {
         set(index, nullShort());
     }
@@ -185,7 +185,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     /**
      * Positions the add cursor
      */
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
@@ -202,11 +202,11 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof ShortArray)
         {
-            final var that = (ShortArray) object;
+            var that = (ShortArray) object;
             if (size() == that.size())
             {
                 return iterator().identical(that.iterator());
@@ -219,7 +219,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * @return The value at the given logical index.
      */
     @Override
-    public short get(final int index)
+    public short get(int index)
     {
         assert index >= 0;
         assert index < size();
@@ -230,7 +230,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     /**
      * @return The value at the given index as an unsigned value
      */
-    public int getUnsigned(final int index)
+    public int getUnsigned(int index)
     {
         return get(index) & 0xffff;
     }
@@ -245,7 +245,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (size() < data.length)
         {
@@ -259,7 +259,17 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+        data = newShortArray(this, "allocated");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -273,7 +283,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * @return The value at the given index or the null value if the index is out of bounds
      */
     @Override
-    public short safeGet(final int index)
+    public short safeGet(int index)
     {
         assert index >= 0;
         if (index < size())
@@ -284,7 +294,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
@@ -293,12 +303,12 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * Sets a value at the given index, possibly extending the array size.
      */
     @Override
-    public void set(final int index, final short value)
+    public void set(int index, short value)
     {
         assert isWritable();
 
-        final var newSize = index + 1;
-        final var size = size();
+        var newSize = index + 1;
+        var size = size();
 
         // If the given index is past the end of storage,
         if (newSize > data.length)
@@ -320,7 +330,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, (short) value);
     }
@@ -328,9 +338,9 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     /**
      * @return A read-only sub-array which shares underlying data with this array.
      */
-    public ShortArray subArray(final int index, final int size)
+    public ShortArray subArray(int index, int size)
     {
-        final var array = new ShortArray(objectName(), data, offset + index, size);
+        var array = new ShortArray(objectName(), data, offset + index, size);
         array.initialSize(0);
         array.initialize();
         array.data = data;
@@ -351,7 +361,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -361,16 +371,6 @@ public final class ShortArray extends PrimitiveArray implements ShortList
         kryo.writeObject(output, cursor);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        data = newShortArray(this, "allocated");
-    }
-
     /** Returns true if this is not a read-only sub-array */
     private boolean isWritable()
     {
@@ -378,7 +378,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
     }
 
     /** Resizes this dynamic array to the given size */
-    private void resize(final int size)
+    private void resize(int size)
     {
         assert size >= size();
 
@@ -386,7 +386,7 @@ public final class ShortArray extends PrimitiveArray implements ShortList
         if (isWritable())
         {
             // so create a new short[] of the right size,
-            final var data = newShortArray(this, "resized", size);
+            var data = newShortArray(this, "resized", size);
 
             // copy the data from this array to the new array,
             System.arraycopy(this.data, 0, data, 0, size());

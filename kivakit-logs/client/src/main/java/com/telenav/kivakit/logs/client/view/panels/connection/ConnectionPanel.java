@@ -32,7 +32,7 @@ public class ConnectionPanel extends KivaKitPanel
 
     private boolean updatingComboBox;
 
-    public ConnectionPanel(final Connector connector)
+    public ConnectionPanel(Connector connector)
     {
         this.connector = connector;
 
@@ -63,7 +63,7 @@ public class ConnectionPanel extends KivaKitPanel
         return connectComboBox;
     }
 
-    private void connectTo(final Service service)
+    private void connectTo(Service service)
     {
         if (service != null)
         {
@@ -79,28 +79,21 @@ public class ConnectionPanel extends KivaKitPanel
     private void refreshConnections()
     {
         // Locate all KivaKit server logs services on the network
-        final var client = LOGGER.listenTo(new ServiceRegistryClient());
-        final var services = client.discoverServices(Scope.localhost(), ServerLog.SERVER_LOG)
+        var client = LOGGER.listenTo(new ServiceRegistryClient());
+        var services = client.discoverServices(Scope.localhost(), ServerLog.SERVER_LOG)
                 .with(client.discoverServices(Scope.network(), ServerLog.SERVER_LOG), Sets::union);
         if (!services.failed())
         {
             // and add them to the dropdown, preserving the selected service if possible
             updatingComboBox = true;
-            final var selected = (Service) connectComboBox.getSelectedItem();
+            var selected = (Service) connectComboBox.getSelectedItem();
             connectComboBox().removeAllItems();
             connectComboBox().addItem(null);
-            for (final var service : ObjectList.objectList(services.get()).sorted())
+            for (var service : ObjectList.objectList(services.get()).sorted())
             {
                 connectComboBox().addItem(service);
             }
-            if (selected != null)
-            {
-                connectComboBox.setSelectedItem(selected);
-            }
-            else
-            {
-                connectComboBox.setSelectedItem(null);
-            }
+            connectComboBox.setSelectedItem(selected);
         }
     }
 }

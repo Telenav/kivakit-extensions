@@ -22,8 +22,8 @@ import com.telenav.kivakit.kernel.interfaces.value.Source;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Glitch;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.kernel.messaging.messages.status.activity.StepSuccess;
 import com.telenav.kivakit.kernel.messaging.messages.status.Warning;
+import com.telenav.kivakit.kernel.messaging.messages.status.activity.StepSuccess;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 import com.telenav.kivakit.ui.desktop.component.dropdown.DropDownRenderer;
 import com.telenav.kivakit.ui.desktop.graphics.drawing.style.Color;
@@ -81,37 +81,37 @@ public abstract class KivaKitTheme
         return theme;
     }
 
-    public static void set(final KivaKitTheme theme)
+    public static void set(KivaKitTheme theme)
     {
         KivaKitTheme.theme = theme;
         theme.initialize();
     }
 
-    public final JButton applyTo(final JButton button)
+    public final JButton applyTo(JButton button)
     {
         styleButton().apply(button);
         return button;
     }
 
-    public final JTableHeader applyTo(final JTableHeader header)
+    public final JTableHeader applyTo(JTableHeader header)
     {
         styleTableHeader().apply(header);
         return header;
     }
 
-    public final JEditorPane applyTo(final JEditorPane editor)
+    public final JEditorPane applyTo(JEditorPane editor)
     {
         styleTextArea().apply(editor);
         styleSelection().applyToSelectionStyle(editor);
         return editor;
     }
 
-    public <T> JComboBox<T> applyTo(final JComboBox<T> dropdown)
+    public <T> JComboBox<T> applyTo(JComboBox<T> dropdown)
     {
         return applyTo(dropdown, -1);
     }
 
-    public <T> JComboBox<T> applyTo(final JComboBox<T> dropdown, final int preferredWidth)
+    public <T> JComboBox<T> applyTo(JComboBox<T> dropdown, int preferredWidth)
     {
         dropdown.setMaximumRowCount(50);
         if (preferredWidth > 0)
@@ -123,7 +123,7 @@ public abstract class KivaKitTheme
         return dropdown;
     }
 
-    public <T> JList<T> applyTo(final JList<T> list)
+    public <T> JList<T> applyTo(JList<T> list)
     {
         styleList().apply(list);
         styleSelection().applyToSelectionStyle(list);
@@ -131,7 +131,7 @@ public abstract class KivaKitTheme
         return list;
     }
 
-    public JTable applyTo(final JTable table)
+    public JTable applyTo(JTable table)
     {
         styleTableHeader().apply(table.getTableHeader());
         styleTable().apply(table);
@@ -139,44 +139,44 @@ public abstract class KivaKitTheme
         return table;
     }
 
-    public JCheckBox applyTo(final JCheckBox checkbox)
+    public JCheckBox applyTo(JCheckBox checkbox)
     {
         styleLabel().apply(checkbox);
         return checkbox;
     }
 
-    public JTextField applyTo(final JTextField field)
+    public JTextField applyTo(JTextField field)
     {
         styleTextField().apply(field);
         field.setCaretColor(colorCaret().asAwtColor());
         return field;
     }
 
-    public final JLabel applyToComponentLabel(final JLabel label)
+    public final JLabel applyToComponentLabel(JLabel label)
     {
         styleComponentLabel().apply(label);
         return label;
     }
 
-    public JPanel applyToContainerPanel(final JPanel panel)
+    public JPanel applyToContainerPanel(JPanel panel)
     {
         return panel;
     }
 
-    public JTextField applyToSearchField(final JTextField field)
+    public JTextField applyToSearchField(JTextField field)
     {
         styleTextField().apply(field);
         field.setCaretColor(colorCaret().asAwtColor());
         return field;
     }
 
-    public KivaKitPanel applyToShadedPanel(final KivaKitPanel panel)
+    public KivaKitPanel applyToShadedPanel(KivaKitPanel panel)
     {
         colorPanel().applyAsBackground(panel);
         return panel;
     }
 
-    public KivaKitPanel applyToShadedSubPanel(final KivaKitPanel panel)
+    public KivaKitPanel applyToShadedSubPanel(KivaKitPanel panel)
     {
         colorSubPanel().applyAsBackground(panel);
         return panel;
@@ -230,16 +230,16 @@ public abstract class KivaKitTheme
         return Margins.of(10);
     }
 
-    public final JButton newButton(final String text, final ActionListener listener)
+    public final JButton newButton(String text, ActionListener listener)
     {
-        final var button = newButton(text);
+        var button = newButton(text);
         button.addActionListener(listener);
         return button;
     }
 
-    public final JButton newButton(final String text, final Source<Boolean> enabled, final ActionListener listener)
+    public final JButton newButton(String text, Source<Boolean> enabled, ActionListener listener)
     {
-        final var button = new JButton(text)
+        var button = new JButton(text)
         {
             @Override
             public boolean isEnabled()
@@ -252,17 +252,17 @@ public abstract class KivaKitTheme
         return button;
     }
 
-    public final JButton newButton(final String text)
+    public final JButton newButton(String text)
     {
         return applyTo(new JButton(text));
     }
 
-    public final JCheckBox newCheckBox(final String text)
+    public final JCheckBox newCheckBox(String text)
     {
         return applyTo(new JCheckBox(text));
     }
 
-    public final JLabel newComponentLabel(final String text)
+    public final JLabel newComponentLabel(String text)
     {
         return applyToComponentLabel(new JLabel(text));
     }
@@ -272,17 +272,17 @@ public abstract class KivaKitTheme
         return (KivaKitPanel) applyToContainerPanel(new KivaKitPanel());
     }
 
-    public KivaKitPanel newContainerPanel(final LayoutManager layout)
+    public KivaKitPanel newContainerPanel(LayoutManager layout)
     {
         return (KivaKitPanel) applyToContainerPanel(new KivaKitPanel(layout));
     }
 
-    public <T> JComboBox<T> newDropDown(final ComboBoxModel<T> model)
+    public <T> JComboBox<T> newDropDown(ComboBoxModel<T> model)
     {
         return new JComboBox<>(model);
     }
 
-    public <T> JComboBox<T> newDropDown(final T[] values, final Source<Boolean> enabled)
+    public <T> JComboBox<T> newDropDown(T[] values, Source<Boolean> enabled)
     {
         return new JComboBox<>(values)
         {
@@ -294,7 +294,7 @@ public abstract class KivaKitTheme
         };
     }
 
-    public <T> JComboBox<T> newDropDown(final ComboBoxModel<T> model, final Source<Boolean> enabled)
+    public <T> JComboBox<T> newDropDown(ComboBoxModel<T> model, Source<Boolean> enabled)
     {
         return new JComboBox<>(model)
         {
@@ -306,28 +306,28 @@ public abstract class KivaKitTheme
         };
     }
 
-    public <T> JComboBox<T> newDropDown(final T[] values)
+    public <T> JComboBox<T> newDropDown(T[] values)
     {
         return new JComboBox<>(values);
     }
 
     public final JSeparator newHorizontalSeparator()
     {
-        final var separator = new JSeparator(HORIZONTAL);
+        var separator = new JSeparator(HORIZONTAL);
         colorSeparator().applyAsForeground(separator);
         return separator;
     }
 
-    public JLabel newInformationLabel(final String text)
+    public JLabel newInformationLabel(String text)
     {
-        final var label = newComponentLabel(text);
+        var label = newComponentLabel(text);
         styleInformationLabel().apply(label);
         return label;
     }
 
-    public JLabel newListCellRenderer(final String text, final boolean isSelected)
+    public JLabel newListCellRenderer(String text, boolean isSelected)
     {
-        final var renderer = newComponentLabel(text);
+        var renderer = newComponentLabel(text);
         renderer.setOpaque(true);
 
         if (isSelected)
@@ -341,27 +341,27 @@ public abstract class KivaKitTheme
         return renderer;
     }
 
-    public final JLabel newNote(final String text)
+    public final JLabel newNote(String text)
     {
-        final var label = newComponentLabel(text);
+        var label = newComponentLabel(text);
         styleNote().apply(label);
         return label;
     }
 
     public final JProgressBar newProgressBar()
     {
-        final var bar = new JProgressBar(HORIZONTAL);
+        var bar = new JProgressBar(HORIZONTAL);
         bar.setOpaque(false);
         bar.setMinimum(0);
         styleProgressBar().apply(bar);
         return bar;
     }
 
-    public JScrollPane newScrollPane(final JComponent child, final AdjustmentListener listener)
+    public JScrollPane newScrollPane(JComponent child, AdjustmentListener listener)
     {
-        final var scrollPane = new JScrollPane(child, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_NEVER);
+        var scrollPane = new JScrollPane(child, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_NEVER);
         styleTable().fillColor().applyAsBackground(scrollPane);
-        final var scrollbar = scrollPane.getVerticalScrollBar();
+        var scrollbar = scrollPane.getVerticalScrollBar();
         scrollbar.setPreferredSize(new Dimension(15, scrollbar.getWidth()));
         scrollbar.addAdjustmentListener(listener);
         return scrollPane;
@@ -372,7 +372,7 @@ public abstract class KivaKitTheme
         return applyToSearchField(newTextField());
     }
 
-    public JTextField newSearchField(final Source<Boolean> enabled)
+    public JTextField newSearchField(Source<Boolean> enabled)
     {
         return applyToSearchField(newTextField(enabled));
     }
@@ -392,9 +392,9 @@ public abstract class KivaKitTheme
         return new JTabbedPane();
     }
 
-    public final JTextField newTextField(final int characters, final Source<Boolean> enabled)
+    public final JTextField newTextField(int characters, Source<Boolean> enabled)
     {
-        final var field = new JTextField(characters)
+        var field = new JTextField(characters)
         {
             @Override
             public boolean isEnabled()
@@ -405,9 +405,9 @@ public abstract class KivaKitTheme
         return applyTo(field);
     }
 
-    public final JTextField newTextField(final int characters)
+    public final JTextField newTextField(int characters)
     {
-        final var field = characters < 0 ? new JTextField() : new JTextField(characters);
+        var field = characters < 0 ? new JTextField() : new JTextField(characters);
         return applyTo(field);
     }
 
@@ -416,23 +416,23 @@ public abstract class KivaKitTheme
         return applyTo(newTextField(0));
     }
 
-    public final JTextField newTextField(final Source<Boolean> enabled)
+    public final JTextField newTextField(Source<Boolean> enabled)
     {
         return applyTo(newTextField(0, enabled));
     }
 
     public final JSeparator newVerticalSeparator()
     {
-        final var separator = new JSeparator(JSeparator.VERTICAL);
+        var separator = new JSeparator(JSeparator.VERTICAL);
         colorSeparator().applyAsForeground(separator);
         return separator;
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
-    public JSplitPane newVerticalSplitPane(final JPanel top, final JPanel bottom)
+    public JSplitPane newVerticalSplitPane(JPanel top, JPanel bottom)
     {
 
-        final var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, top, bottom);
+        var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, top, bottom);
         splitPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         splitPane.setOneTouchExpandable(false);
         splitPane.setResizeWeight(0.75);
@@ -440,17 +440,17 @@ public abstract class KivaKitTheme
         return splitPane;
     }
 
-    public void popupInformation(final JFrame frame, final String title, final String message)
+    public void popupInformation(JFrame frame, String title, String message)
     {
         UIManager.put("OptionPane.background", new ColorUIResource(colorPanel().asAwtColor()));
         UIManager.put("Panel.background", new ColorUIResource(colorPanel().asAwtColor()));
 
-        final JOptionPane option = new JOptionPane("<html><h4><font color='#f0f0f0'>" + message + "</font></h4></html>",
+        JOptionPane option = new JOptionPane("<html><h4><font color='#f0f0f0'>" + message + "</font></h4></html>",
                 JOptionPane.INFORMATION_MESSAGE);
 
         styleLabel().apply(option);
 
-        final JDialog dialog = option.createDialog(frame, title);
+        JDialog dialog = option.createDialog(frame, title);
         dialog.setVisible(true);
         dialog.dispose();
     }
@@ -469,7 +469,7 @@ public abstract class KivaKitTheme
 
     public abstract Style styleList();
 
-    public Style styleMessage(final Class<? extends Message> type)
+    public Style styleMessage(Class<? extends Message> type)
     {
         if (type == Problem.class)
         {

@@ -28,7 +28,7 @@ public class Node<T> extends Tree<T>
 {
     public Tree<T> left, right;
 
-    public Node(final Tree<T> left, final Tree<T> right)
+    public Node(Tree<T> left, Tree<T> right)
     {
         super(left.frequency() + right.frequency());
         this.left = left;
@@ -40,7 +40,7 @@ public class Node<T> extends Tree<T>
     }
 
     @Override
-    public CodedSymbol<T> decode(final BitReader bits)
+    public CodedSymbol<T> decode(BitReader bits)
     {
         if (bits.hasNext())
         {

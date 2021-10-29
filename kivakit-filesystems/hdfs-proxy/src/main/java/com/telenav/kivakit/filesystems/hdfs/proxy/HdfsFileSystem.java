@@ -105,7 +105,7 @@ class HdfsFileSystem extends BaseComponent
     /**
      * Loads
      */
-    public synchronized static HdfsFileSystem of(final FilePath path)
+    public synchronized static HdfsFileSystem of(FilePath path)
     {
         return filesystems.computeIfAbsent(cluster(path), ignored -> new HdfsFileSystem(path.root()));
     }
@@ -116,7 +116,7 @@ class HdfsFileSystem extends BaseComponent
     // The HDFS file system
     private FileSystem fileSystem;
 
-    private HdfsFileSystem(final FilePath root)
+    private HdfsFileSystem(FilePath root)
     {
         this.root = root;
 
@@ -133,10 +133,10 @@ class HdfsFileSystem extends BaseComponent
     /**
      * @return The cluster name such as "navhacluster" from an HDFS path like hdfs://navhacluster
      */
-    private static String cluster(final FilePath path)
+    private static String cluster(FilePath path)
     {
-        final var pattern = java.util.regex.Pattern.compile("hdfs://([^/]*)");
-        final var matcher = pattern.matcher(path.toString());
+        var pattern = java.util.regex.Pattern.compile("hdfs://([^/]*)");
+        var matcher = pattern.matcher(path.toString());
         if (matcher.lookingAt())
         {
             return matcher.group(1);
@@ -151,19 +151,19 @@ class HdfsFileSystem extends BaseComponent
         {
             try
             {
-                final var instance = InstanceIdentifier.of(root.first());
-                final var settings = require(HdfsProxyServerSettings.class, instance);
+                var instance = InstanceIdentifier.of(root.first());
+                var settings = require(HdfsProxyServerSettings.class, instance);
                 fileSystem = settings.user().doAs((PrivilegedExceptionAction<FileSystem>) () ->
                 {
                     DEBUG.trace("Initializing HDFS at $", root);
-                    final var uri = URI.create(root.toString());
-                    final var configuration = hdfsConfiguration(root);
+                    var uri = URI.create(root.toString());
+                    var configuration = hdfsConfiguration(root);
                     configuration.set("fs.hdfs.impl", org.apache.hadoop.hdfs.DistributedFileSystem.class.getName());
                     configuration.set("fs.file.impl", org.apache.hadoop.fs.LocalFileSystem.class.getName());
                     return FileSystem.get(uri, configuration);
                 });
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 LOGGER.problem(e, "Unable to initialize HDFS filesystem");
             }
@@ -171,22 +171,22 @@ class HdfsFileSystem extends BaseComponent
         return fileSystem;
     }
 
-    Path hdfsPath(final FilePath path)
+    Path hdfsPath(FilePath path)
     {
-        final var rootString = root.toString();
-        final var pathString = path.toString();
+        var rootString = root.toString();
+        var pathString = path.toString();
         return new Path("/" + pathString.substring(rootString.length()));
     }
 
-    private Configuration hdfsConfiguration(final FilePath path)
+    private Configuration hdfsConfiguration(FilePath path)
     {
         // If the user defines KIVAKIT_HDFS_CONFIGURATION_FOLDER,
         ResourceFolder configurationFolder = null;
-        final var property = JavaVirtualMachine.property("KIVAKIT_HDFS_CONFIGURATION_FOLDER");
+        var property = JavaVirtualMachine.property("KIVAKIT_HDFS_CONFIGURATION_FOLDER");
         if (property != null)
         {
             // see if the folder exists or can be created
-            final var folder = Folder.parse(property);
+            var folder = Folder.parse(property);
             if (folder != null)
             {
                 folder.mkdirs();
@@ -202,15 +202,15 @@ class HdfsFileSystem extends BaseComponent
         if (configurationFolder == null)
         {
             // then try the resource specified in the HdfsProxyServerSettings configuration,
-            final var settings = require(HdfsProxyServerSettings.class);
+            var settings = require(HdfsProxyServerSettings.class);
             configurationFolder = settings.configurationFolder();
         }
 
         ensureNotNull(configurationFolder, "Cannot initialize HDFS as no HdfsProxyServerSettings was provided");
 
         // Get resource folder holding site configuration file
-        final var siteConfiguration = configurationFolder.resource("/hdfs-site.xml");
-        final var configuration = new Configuration();
+        var siteConfiguration = configurationFolder.resource("/hdfs-site.xml");
+        var configuration = new Configuration();
         if (siteConfiguration.exists())
         {
             // try to load site configuration from file

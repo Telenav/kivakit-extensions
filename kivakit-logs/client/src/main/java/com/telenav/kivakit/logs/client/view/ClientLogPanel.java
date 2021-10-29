@@ -90,7 +90,7 @@ public class ClientLogPanel extends KivaKitPanel
 
     private Session connectedSession;
 
-    public ClientLogPanel(final ClientLogFrame frame, final ClientLog log, final Count maximumEntries)
+    public ClientLogPanel(ClientLogFrame frame, ClientLog log, Count maximumEntries)
     {
         this.frame = frame;
         this.log = log;
@@ -99,9 +99,9 @@ public class ClientLogPanel extends KivaKitPanel
 
         receiver = statusPanel().listenTo(new Receiver());
 
-        final Consumer<Connector.State> connectionStateListener = connectionStateListener();
-        final Consumer<VersionedObject<?>> objectListener = objectListener(log);
-        final Consumer<Session> newSessionListener = newSessionListener();
+        Consumer<Connector.State> connectionStateListener = connectionStateListener();
+        Consumer<VersionedObject<?>> objectListener = objectListener(log);
+        Consumer<Session> newSessionListener = newSessionListener();
         connector = statusPanel().listenTo(new Connector
                 (
                         receiver,
@@ -120,7 +120,7 @@ public class ClientLogPanel extends KivaKitPanel
         sessionPanel.loadSessions();
     }
 
-    public void addAll(final List<LogEntry> toAdd)
+    public void addAll(List<LogEntry> toAdd)
     {
         if (connector.isConnected())
         {
@@ -165,7 +165,7 @@ public class ClientLogPanel extends KivaKitPanel
     }
 
     @Override
-    public <T extends Broadcaster> T listenTo(final T broadcaster)
+    public <T extends Broadcaster> T listenTo(T broadcaster)
     {
         return statusPanel().listenTo(broadcaster);
     }
@@ -175,12 +175,12 @@ public class ClientLogPanel extends KivaKitPanel
         return log;
     }
 
-    public void say(final String message, final Object... arguments)
+    public void say(String message, Object... arguments)
     {
         statusPanel.status(message, arguments);
     }
 
-    public void say(final Duration stayFor, final String message, final Object... arguments)
+    public void say(Duration stayFor, String message, Object... arguments)
     {
         statusPanel().status(stayFor, message, arguments);
     }
@@ -224,22 +224,22 @@ public class ClientLogPanel extends KivaKitPanel
 
     public void updateTitle()
     {
-        final var currentSession = sessionPanel().currentSession();
-        final var entries = currentSession != null ? currentSession.entries().size() : 0;
+        var currentSession = sessionPanel().currentSession();
+        var entries = currentSession != null ? currentSession.entries().size() : 0;
         frame.title(Message.format("MesaKit Log Viewer ($) - Viewing $ Entries",
                 connector().isConnected() ? connector().connectedPort() : "Disconnected", entries));
     }
 
-    protected JSplitPane splitPane(final JPanel one, final JPanel two)
+    protected JSplitPane splitPane(JPanel one, JPanel two)
     {
-        final var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, one, two);
+        var splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, one, two);
         splitPane.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         splitPane.setOneTouchExpandable(false);
         splitPane.setResizeWeight(0.75);
         splitPane.setContinuousLayout(true);
         SwingUtilities.invokeLater(() ->
         {
-            final var screen = Toolkit.getDefaultToolkit().getScreenSize();
+            var screen = Toolkit.getDefaultToolkit().getScreenSize();
             splitPane.setDividerLocation((int) (screen.getHeight() * 0.45));
         });
         return splitPane;
@@ -247,8 +247,8 @@ public class ClientLogPanel extends KivaKitPanel
 
     protected JPanel splitPanePanel()
     {
-        final var splitPanePanel = new JPanel();
-        final var splitPane = splitPane(tablePanel(), consolePanel());
+        var splitPanePanel = new JPanel();
+        var splitPane = splitPane(tablePanel(), consolePanel());
         splitPane.setDividerSize(12);
         splitPanePanel.setLayout(new BoxLayout(splitPanePanel, BoxLayout.X_AXIS));
         splitPanePanel.add(splitPane);
@@ -269,14 +269,14 @@ public class ClientLogPanel extends KivaKitPanel
     }
 
     @NotNull
-    private Consumer<Connection> handleConnection(final Consumer<VersionedObject<?>> objectListener,
-                                                  final Consumer<Session> newSessionListener)
+    private Consumer<Connection> handleConnection(Consumer<VersionedObject<?>> objectListener,
+                                                  Consumer<Session> newSessionListener)
     {
         return connection ->
         {
-            final var reporter = Progress.create();
-            final var progressiveInput = new ProgressiveInput(connection.input(), reporter);
-            final var progress = new ProgressPanel(reporter, 150, status ->
+            var reporter = Progress.create();
+            var progressiveInput = new ProgressiveInput(connection.input(), reporter);
+            var progress = new ProgressPanel(reporter, 150, status ->
             {
                 if (status == CANCELLED)
                 {
@@ -296,11 +296,11 @@ public class ClientLogPanel extends KivaKitPanel
     }
 
     @NotNull
-    private Consumer<VersionedObject<?>> objectListener(final ClientLog log)
+    private Consumer<VersionedObject<?>> objectListener(ClientLog log)
     {
         return versionedObject ->
         {
-            final var object = versionedObject.get();
+            var object = versionedObject.get();
             if (object instanceof LogEntry)
             {
                 log.log((LogEntry) object);

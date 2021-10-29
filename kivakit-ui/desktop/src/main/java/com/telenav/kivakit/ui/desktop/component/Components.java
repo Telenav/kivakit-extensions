@@ -22,9 +22,9 @@ public class Components
 
     private static int debugColor;
 
-    public static void children(final Container container, final Consumer<Component> consumer)
+    public static void children(Container container, Consumer<Component> consumer)
     {
-        for (final var component : container.getComponents())
+        for (var component : container.getComponents())
         {
             consumer.accept(component);
             if (component instanceof Container)
@@ -34,21 +34,21 @@ public class Components
         }
     }
 
-    public static <T extends Component> T debugColor(final T component)
+    public static <T extends Component> T debugColor(T component)
     {
         DEBUG_COLORS[debugColor++ % DEBUG_COLORS.length].applyAsBackground(component);
         return component;
     }
 
-    public static void fadeIn(final Component component, final Color color, final Duration update, final int step)
+    public static void fadeIn(Component component, Color color, Duration update, int step)
     {
-        final var alphaVariable = new MutableCount(0);
+        var alphaVariable = new MutableCount(0);
         color.withAlpha(0).applyAsBackground(component);
-        final var completed = new CompletionLatch();
+        var completed = new CompletionLatch();
         update.every(timer ->
         {
-            final var alpha = alphaVariable.get();
-            final var newAlpha = Math.min(255, alpha + step);
+            var alpha = alphaVariable.get();
+            var newAlpha = Math.min(255, alpha + step);
             alphaVariable.set(newAlpha);
             color.withAlpha((int) newAlpha).applyAsBackground(component);
             if (newAlpha == 255)
@@ -60,15 +60,15 @@ public class Components
         completed.waitForCompletion();
     }
 
-    public static void fadeOut(final Component component, final Color color, final Duration update, final int step)
+    public static void fadeOut(Component component, Color color, Duration update, int step)
     {
-        final var alphaVariable = new MutableCount(255);
+        var alphaVariable = new MutableCount(255);
         color.withAlpha(255).applyAsBackground(component);
-        final var completed = new CompletionLatch();
+        var completed = new CompletionLatch();
         update.every(timer ->
         {
-            final var alpha = alphaVariable.get();
-            final var newAlpha = Math.max(0, alpha - step);
+            var alpha = alphaVariable.get();
+            var newAlpha = Math.max(0, alpha - step);
             alphaVariable.set(newAlpha);
             color.withAlpha((int) newAlpha).applyAsBackground(component);
             if (newAlpha == 0)
@@ -80,10 +80,10 @@ public class Components
         completed.waitForCompletion();
     }
 
-    public static <T> java.util.List<T> items(final JComboBox<T> dropdown)
+    public static <T> java.util.List<T> items(JComboBox<T> dropdown)
     {
-        final int count = dropdown.getItemCount();
-        final var items = new ArrayList<T>();
+        int count = dropdown.getItemCount();
+        var items = new ArrayList<T>();
         for (int index = 0; index < count; index++)
         {
             items.add(dropdown.getItemAt(index));

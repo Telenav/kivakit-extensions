@@ -49,41 +49,41 @@ public interface HdfsProxy extends Remote
 
     Logger LOGGER = LoggerFactory.newLogger();
 
-    boolean deleteFile(final String path) throws RemoteException;
+    boolean deleteFile(String path) throws RemoteException;
 
-    boolean deleteFolder(final String path) throws RemoteException;
+    boolean deleteFolder(String path) throws RemoteException;
 
-    boolean exists(final String path) throws RemoteException;
+    boolean exists(String path) throws RemoteException;
 
-    List<String> files(final String path) throws RemoteException;
+    List<String> files(String path) throws RemoteException;
 
-    List<String> folders(final String path) throws RemoteException;
+    List<String> folders(String path) throws RemoteException;
 
-    boolean isFile(final String path) throws RemoteException;
+    boolean isFile(String path) throws RemoteException;
 
-    boolean isFolder(final String path) throws RemoteException;
+    boolean isFolder(String path) throws RemoteException;
 
-    boolean isWritable(final String path) throws RemoteException;
+    boolean isWritable(String path) throws RemoteException;
 
-    long lastModified(final String path) throws RemoteException;
+    long lastModified(String path) throws RemoteException;
 
-    boolean lastModified(final String pathAsString, final long time) throws RemoteException;
+    boolean lastModified(String pathAsString, long time) throws RemoteException;
 
-    long length(final String path) throws RemoteException;
+    long length(String path) throws RemoteException;
 
-    boolean mkdirs(final String path) throws RemoteException;
+    boolean mkdirs(String path) throws RemoteException;
 
-    List<String> nestedFiles(final String path) throws RemoteException;
+    List<String> nestedFiles(String path) throws RemoteException;
 
-    long openForReading(final String path) throws RemoteException;
+    long openForReading(String path) throws RemoteException;
 
-    long openForWriting(final String path) throws RemoteException;
+    long openForWriting(String path) throws RemoteException;
 
-    boolean rename(final String from, final String to) throws RemoteException;
+    boolean rename(String from, String to) throws RemoteException;
 
-    String root(final String path) throws RemoteException;
+    String root(String path) throws RemoteException;
 
-    String temporaryFile(final String path, final String baseName) throws RemoteException;
+    String temporaryFile(String path, String baseName) throws RemoteException;
 
-    String temporaryFolder(final String path, final String baseName) throws RemoteException;
+    String temporaryFolder(String path, String baseName) throws RemoteException;
 }

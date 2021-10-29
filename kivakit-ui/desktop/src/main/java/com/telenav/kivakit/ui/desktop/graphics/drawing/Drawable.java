@@ -31,17 +31,17 @@ public interface Drawable
      *
      * @return The {@link Shape} that was drawn
      */
-    Shape draw(final DrawingSurface surface);
+    Shape draw(DrawingSurface surface);
 
     /**
      * @return This drawable scaled by the given scaling factor
      */
-    Drawable scaledBy(final double scaleFactor);
+    Drawable scaledBy(double scaleFactor);
 
     /**
      * @return This drawable scaled by the given scaling factor
      */
-    default Drawable scaledBy(final Percent scaleFactor)
+    default Drawable scaledBy(Percent scaleFactor)
     {
         return copy().scaledBy(scaleFactor.asZeroToOne());
     }
@@ -57,19 +57,19 @@ public interface Drawable
     @KivaKitIncludeProperty
     Style style();
 
-    Drawable withColors(final Style style);
+    Drawable withColors(Style style);
 
-    Drawable withDrawColor(final Color color);
+    Drawable withDrawColor(Color color);
 
-    Drawable withDrawStroke(final Stroke stroke);
+    Drawable withDrawStroke(Stroke stroke);
 
-    Drawable withDrawStrokeWidth(final DrawingWidth width);
+    Drawable withDrawStrokeWidth(DrawingWidth width);
 
-    Drawable withFillColor(final Color color);
+    Drawable withFillColor(Color color);
 
-    Drawable withFillStroke(final Stroke stroke);
+    Drawable withFillStroke(Stroke stroke);
 
-    Drawable withFillStrokeWidth(final DrawingWidth width);
+    Drawable withFillStrokeWidth(DrawingWidth width);
 
     /**
      * @return The location of the drawable
@@ -82,7 +82,7 @@ public interface Drawable
      */
     Drawable withLocation(DrawingPoint at);
 
-    Drawable withStyle(final Style style);
+    Drawable withStyle(Style style);
 
-    Drawable withTextColor(final Color color);
+    Drawable withTextColor(Color color);
 }

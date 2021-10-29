@@ -90,12 +90,12 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
     /** The index at which adding takes place */
     private int cursor;
 
-    public PackedArray(final String objectName)
+    public PackedArray(String objectName)
     {
         super(objectName);
     }
 
-    protected PackedArray()
+    private PackedArray()
     {
     }
 
@@ -103,7 +103,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final long value)
+    public boolean add(long value)
     {
         assert ensureHasRoomFor(1);
         set(cursor++, value);
@@ -123,7 +123,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * Sets the bit width of this array
      */
     @Override
-    public PackedArray bits(final BitCount bits, final OverflowHandling overflow)
+    public PackedArray bits(BitCount bits, OverflowHandling overflow)
     {
         ensure(bits != null);
         ensure(!bits.isZero());
@@ -151,11 +151,11 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * {@inheritDoc}
      */
     @Override
-    public void copyConfiguration(final PrimitiveCollection uncast)
+    public void copyConfiguration(PrimitiveCollection uncast)
     {
         super.copyConfiguration(uncast);
 
-        final var that = (PackedPrimitiveArray) uncast;
+        var that = (PackedPrimitiveArray) uncast;
         bits = that.bits().asInt();
         maximumAllowedValue = maximumAllowedValue(that.bits(), that.overflow());
     }
@@ -167,7 +167,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
     }
 
     @Override
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
@@ -176,11 +176,11 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof PackedArray)
         {
-            final var that = (PackedArray) object;
+            var that = (PackedArray) object;
             return Objects.equalPairs(bits, that.bits, data, that.data);
         }
         return false;
@@ -190,14 +190,14 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * @return The value at the given index
      */
     @Override
-    public long get(final int index)
+    public long get(int index)
     {
         assert index >= 0 : "Index " + index + " must be >= 0";
         assert index < size() : "Index " + index + " must be less than " + size();
 
         long value;
 
-        final var data = this.data;
+        var data = this.data;
         switch (bits)
         {
             case 32:
@@ -214,10 +214,10 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
                 break;
 
             default:
-                final var bitIndex = index * bits;
-                final var dataIndex = bitIndex / Long.SIZE;
-                final var bitOffset = bitIndex % Long.SIZE;
-                final var firstShift = this.firstShift[bitOffset];
+                var bitIndex = index * bits;
+                var dataIndex = bitIndex / Long.SIZE;
+                var bitOffset = bitIndex % Long.SIZE;
+                var firstShift = this.firstShift[bitOffset];
                 if (firstShift > 0)
                 {
                     value = (data.get(dataIndex) & firstMask[bitOffset]) >>> firstShift;
@@ -232,12 +232,12 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         return value;
     }
 
-    public long getSigned(final int index)
+    public long getSigned(int index)
     {
         // Get the value stored at the given index
-        final var storedValue = get(index);
+        var storedValue = get(index);
 
-        final int signBits = 64 - bits;
+        int signBits = 64 - bits;
         return storedValue << signBits >> signBits;
     }
 
@@ -260,20 +260,20 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         // Copy the values into an array with the lower bit count
-        final var requiredBits = requiredBits();
+        var requiredBits = requiredBits();
         if (requiredBits.isLessThan(bits()))
         {
-            final var array = new PackedArray(objectName());
+            var array = new PackedArray(objectName());
             array.copyConfiguration(this);
             array.bits(requiredBits, overflow());
             array.initialize();
 
             for (var i = 0; i < size(); i++)
             {
-                final var value = safeGet(i);
+                var value = safeGet(i);
                 if (!isNull(value))
                 {
                     array.set(i, value);
@@ -292,6 +292,18 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
     }
 
     @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        data = new LongArray(objectName() + ".data");
+        data.initialSize(Estimate._65536);
+        data.initialize();
+
+        computeShiftsAndMasks();
+    }
+
+    @Override
     public OverflowHandling overflow()
     {
         return maximumAllowedValue == Long.MAX_VALUE ? ALLOW_OVERFLOW : NO_OVERFLOW;
@@ -301,7 +313,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         data = kryo.readObject(input, LongArray.class);
@@ -320,7 +332,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * null value
      */
     @Override
-    public long safeGet(final int index)
+    public long safeGet(int index)
     {
         if (index >= 0 && index < size())
         {
@@ -330,7 +342,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
@@ -339,7 +351,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
      * Sets the value at the given index
      */
     @Override
-    public void set(final int index, long value)
+    public void set(int index, long value)
     {
         // Find the new largest and smallest values
         largestValue = Long.max(largestValue, value);
@@ -353,10 +365,10 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         ensureIndexInRange(index);
 
         // Store bits in underlying long array
-        final var bitIndex = index * bits;
-        final var dataIndex = bitIndex / Long.SIZE;
-        final var bitOffset = bitIndex % Long.SIZE;
-        final var firstShift = this.firstShift[bitOffset];
+        var bitIndex = index * bits;
+        var dataIndex = bitIndex / Long.SIZE;
+        var bitOffset = bitIndex % Long.SIZE;
+        var firstShift = this.firstShift[bitOffset];
         if (firstShift > 0)
         {
             data.setBits(dataIndex, firstMask[bitOffset], value << firstShift);
@@ -385,13 +397,13 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
                 "Unable to store " + value + " in " + bits + " bit array at index " + index;
     }
 
-    public void setInt(final int index, final int value)
+    public void setInt(int index, int value)
     {
         set(index, value);
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, value);
     }
@@ -404,7 +416,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
     }
 
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -419,18 +431,6 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         kryo.writeObject(output, maximumAllowedValue);
     }
 
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        data = new LongArray(objectName() + ".data");
-        data.initialSize(Estimate._65536);
-        data.initialize();
-
-        computeShiftsAndMasks();
-    }
-
     private void computeShiftsAndMasks()
     {
         ensure(bits > 0);
@@ -438,7 +438,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         for (var bitOffset = 0; bitOffset < Long.SIZE; bitOffset++)
         {
             // Number of bits available in the first long at the given bit offset
-            final var firstAvailableBits = Long.SIZE - bitOffset;
+            var firstAvailableBits = Long.SIZE - bitOffset;
 
             // If there's room for all the bits in the first long
             if (firstAvailableBits >= bits)
@@ -450,7 +450,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
             else
             {
                 // Compute number of bits to store in second long
-                final var secondBits = bits - firstAvailableBits;
+                var secondBits = bits - firstAvailableBits;
 
                 firstMask[bitOffset] = mask(bitOffset, bits);
                 firstShift[bitOffset] = -secondBits;
@@ -461,7 +461,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         }
     }
 
-    private void copy(final PackedArray that)
+    private void copy(PackedArray that)
     {
         super.copy(that);
         copyConfiguration(that);
@@ -476,7 +476,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         cursor = that.cursor;
     }
 
-    private boolean isValueStoredAtIndex(final int index, final long value)
+    private boolean isValueStoredAtIndex(int index, long value)
     {
         // If the value is a negative number
         if (value < 0)
@@ -488,7 +488,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         return value == get(index);
     }
 
-    private long mask(final int bitOffset, final int count)
+    private long mask(int bitOffset, int count)
     {
         var mask = 0L;
         var bit = 1L << (Long.SIZE - bitOffset - 1);
@@ -500,7 +500,7 @@ public final class PackedArray extends PrimitiveArray implements LongList, Packe
         return mask;
     }
 
-    private long maximumAllowedValue(final BitCount bits, final OverflowHandling overflow)
+    private long maximumAllowedValue(BitCount bits, OverflowHandling overflow)
     {
         return overflow == ALLOW_OVERFLOW ? Long.MAX_VALUE : bits.maximumUnsigned();
     }

@@ -31,7 +31,7 @@ import com.telenav.kivakit.logs.server.ServerLogProject;
 @SuppressWarnings("InfiniteLoopStatement")
 public class LogViewerTesterApplication extends Application
 {
-    public static void main(final String[] arguments)
+    public static void main(String[] arguments)
     {
         new LogViewerTesterApplication().run(arguments);
     }

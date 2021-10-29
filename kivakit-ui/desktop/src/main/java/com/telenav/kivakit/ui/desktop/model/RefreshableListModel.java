@@ -2,7 +2,7 @@ package com.telenav.kivakit.ui.desktop.model;
 
 import com.telenav.kivakit.kernel.language.threading.locks.ReadWriteLock;
 
-import javax.swing.*;
+import javax.swing.AbstractListModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,12 +32,12 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
      *
      * @param items an array of Object objects
      */
-    public RefreshableListModel(final E[] items)
+    public RefreshableListModel(E[] items)
     {
         this.items = new ArrayList<>(items.length);
 
         int i;
-        final int c;
+        int c;
         for (i = 0, c = items.length; i < c; i++)
         {
             this.items.add(items[i]);
@@ -54,7 +54,7 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
      *
      * @param v a Vector object ...
      */
-    public RefreshableListModel(final ArrayList<E> v)
+    public RefreshableListModel(ArrayList<E> v)
     {
         items = v;
 
@@ -70,7 +70,7 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
      * @param c the collection which contains the elements to add
      * @throws NullPointerException if {@code c} is null
      */
-    public void addAll(final Collection<? extends E> c)
+    public void addAll(Collection<? extends E> c)
     {
         lock.write(() ->
         {
@@ -79,7 +79,7 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
                 return;
             }
 
-            final int startIndex = getSize();
+            int startIndex = getSize();
 
             items.addAll(c);
             fireIntervalAdded(this, startIndex, getSize() - 1);
@@ -97,7 +97,7 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
      * currently held
      * @throws NullPointerException if {@code c} is null
      */
-    public void addAll(final int index, final Collection<? extends E> c)
+    public void addAll(int index, Collection<? extends E> c)
     {
         lock.write(() ->
         {
@@ -119,7 +119,7 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
 
     // implements javax.swing.ListModel
     @Override
-    public E getElementAt(final int index)
+    public E getElementAt(int index)
     {
         return lock.read(() ->
         {
@@ -141,7 +141,7 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
      * @return an int representing the index position, where 0 is the first position
      */
     @SuppressWarnings("SuspiciousMethodCalls")
-    public int getIndexOf(final Object anObject)
+    public int getIndexOf(Object anObject)
     {
         return lock.read(() -> items.indexOf(anObject));
     }
@@ -156,13 +156,13 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
     /**
      * Updates model without changing selection, if possible
      */
-    public void refresh(final List<E> items, final E defaultSelection)
+    public void refresh(List<E> items, E defaultSelection)
     {
         lock.write(() ->
         {
             if (!items.isEmpty())
             {
-                final var selectedBefore = selected;
+                var selectedBefore = selected;
                 removeAllElements();
                 addAll(items);
                 if (this.items.contains(selectedBefore))
@@ -187,7 +187,7 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
             if (items.size() > 0)
             {
                 final int firstIndex = 0;
-                final int lastIndex = items.size() - 1;
+                int lastIndex = items.size() - 1;
                 items.clear();
                 selected = null;
                 fireIntervalRemoved(this, firstIndex, lastIndex);
@@ -199,4 +199,3 @@ public class RefreshableListModel<E> extends AbstractListModel<E> implements Ser
         });
     }
 }
-

@@ -55,7 +55,7 @@ public class S3Output extends OutputStream
      *
      * @param object The {@link S3FileSystemObject} to which this stream is writing
      */
-    protected S3Output(final S3FileSystemObject object)
+    protected S3Output(S3FileSystemObject object)
     {
         this.object = object;
         cacheFile = cacheFile(object.path());
@@ -81,25 +81,25 @@ public class S3Output extends OutputStream
         {
             outputStream.flush();
         }
-        catch (final IOException e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void write(final byte[] bytes, final int offset, final int length) throws IOException
+    public void write(byte[] bytes, int offset, int length) throws IOException
     {
         outputStream.write(bytes, offset, length);
     }
 
     @Override
-    public void write(final int b) throws IOException
+    public void write(int b) throws IOException
     {
         outputStream.write(b);
     }
 
-    private File cacheFile(final FilePath filePath)
+    private File cacheFile(FilePath filePath)
     {
         // Flatten path being cached into a long filename by turning all file
         // system meta characters into underscores.

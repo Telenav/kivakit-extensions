@@ -20,7 +20,7 @@ public class QuantumMetric<T extends Quantizable> extends BaseMetric<T>
     public QuantumMetric(QuantumMetric<T> that)
     {
         super(that);
-        this.measurement = that.measurement;
+        measurement = that.measurement;
     }
 
     public QuantumMetric()
@@ -28,7 +28,7 @@ public class QuantumMetric<T extends Quantizable> extends BaseMetric<T>
     }
 
     @Override
-    public QuantumMetric<T> description(final String description)
+    public QuantumMetric<T> description(String description)
     {
         return (QuantumMetric<T>) super.description(description);
     }
@@ -47,7 +47,7 @@ public class QuantumMetric<T extends Quantizable> extends BaseMetric<T>
     }
 
     @Override
-    public QuantumMetric<T> name(final String name)
+    public QuantumMetric<T> name(String name)
     {
         return (QuantumMetric<T>) super.name(name);
     }
@@ -64,20 +64,20 @@ public class QuantumMetric<T extends Quantizable> extends BaseMetric<T>
     }
 
     @Override
-    public QuantumMetric<T> type(final MetricType type)
+    public QuantumMetric<T> type(MetricType type)
     {
         return (QuantumMetric<T>) super.type(type);
     }
 
     @Override
-    public QuantumMetric<T> unit(final String unit)
+    public QuantumMetric<T> unit(String unit)
     {
         return (QuantumMetric<T>) super.unit(unit);
     }
 
     public QuantumMetric<T> withMeasurement(T measurement)
     {
-        var copy = new QuantumMetric<T>(this);
+        var copy = new QuantumMetric<>(this);
         copy.measurement = measurement;
         return copy;
     }

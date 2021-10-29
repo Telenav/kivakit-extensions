@@ -70,7 +70,7 @@ public class ServiceRegistryServer extends Server
         return project.get();
     }
 
-    public static void main(final String[] arguments)
+    public static void main(String[] arguments)
     {
         get().run(arguments);
     }
@@ -89,7 +89,7 @@ public class ServiceRegistryServer extends Server
 
     private transient final Lazy<ServiceRegistry> serviceRegistry = Lazy.of(() ->
     {
-        final var registry = listenTo(get(SCOPE) == Scope.Type.NETWORK
+        var registry = listenTo(get(SCOPE) == Scope.Type.NETWORK
                 ? new NetworkServiceRegistry()
                 : new LocalServiceRegistry(get(PORT)));
 
@@ -135,13 +135,13 @@ public class ServiceRegistryServer extends Server
         showCommandLine();
 
         // Determine what port to use for the server,
-        final var settings = require(ServiceRegistrySettings.class);
-        final var port = isNetwork()
+        var settings = require(ServiceRegistrySettings.class);
+        var port = isNetwork()
                 ? settings.networkServiceRegistryPort().number()
                 : settings.localServiceRegistryPort();
 
         // create the Jersey REST application,
-        final var application = new ServiceRegistryRestApplication();
+        var application = new ServiceRegistryRestApplication();
 
         // and start up Jetty with Swagger, Jersey and Wicket.
         listenTo(new JettyServer())

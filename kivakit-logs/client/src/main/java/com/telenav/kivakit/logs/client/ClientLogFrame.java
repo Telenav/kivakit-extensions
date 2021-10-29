@@ -29,8 +29,8 @@ public class ClientLogFrame extends JFrame
 
     private final ClientLogPanel panel;
 
-    public ClientLogFrame(final ClientLog log, final Maximum maximumRows, final String title, final Image icon,
-                          final ExitMode mode)
+    public ClientLogFrame(ClientLog log, Maximum maximumRows, String title, Image icon,
+                          ExitMode mode)
     {
         super(title);
         LOGGER.listenTo(panel = new ClientLogPanel(this, log, maximumRows));
@@ -41,7 +41,7 @@ public class ClientLogFrame extends JFrame
         }
     }
 
-    public void add(final LogEntry entry)
+    public void add(LogEntry entry)
     {
         panel.tablePanel().add(entry);
     }
@@ -51,7 +51,7 @@ public class ClientLogFrame extends JFrame
         panel.clear();
     }
 
-    public void title(final String title)
+    public void title(String title)
     {
         setTitle(title);
     }

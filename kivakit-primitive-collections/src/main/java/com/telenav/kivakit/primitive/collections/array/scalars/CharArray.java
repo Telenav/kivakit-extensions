@@ -67,17 +67,17 @@ public final class CharArray extends PrimitiveArray implements CharList
     {
         private final Separators separators;
 
-        public Converter(final Listener listener, final Separators separators)
+        public Converter(Listener listener, Separators separators)
         {
             super(listener);
             this.separators = separators;
         }
 
         @Override
-        protected String onToString(final CharArray array)
+        protected String onToString(CharArray array)
         {
-            final var strings = new StringList(Maximum.maximum(array.size()));
-            final var values = array.iterator();
+            var strings = new StringList(Maximum.maximum(array.size()));
+            var values = array.iterator();
             while (values.hasNext())
             {
                 strings.add(Character.toString(values.next()));
@@ -86,9 +86,9 @@ public final class CharArray extends PrimitiveArray implements CharList
         }
 
         @Override
-        protected CharArray onToValue(final String value)
+        protected CharArray onToValue(String value)
         {
-            final var array = new CharArray("converted");
+            var array = new CharArray("converted");
             array.initialize();
             for (var index = 0; index < value.length(); index++)
             {
@@ -113,19 +113,19 @@ public final class CharArray extends PrimitiveArray implements CharList
     /** True if this array is a read-only sub-array of some parent array */
     private boolean isSubArray;
 
-    public CharArray(final String objectName)
+    public CharArray(String objectName)
     {
         super(objectName);
     }
 
-    protected CharArray()
+    private CharArray()
     {
     }
 
     /**
      * Constructor for constructing read-only sub-arrays that share data with their parent.
      */
-    private CharArray(final String name, final char[] data, final int offset, final int size)
+    private CharArray(String name, char[] data, int offset, int size)
     {
         this(name);
 
@@ -140,7 +140,7 @@ public final class CharArray extends PrimitiveArray implements CharList
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final char value)
+    public boolean add(char value)
     {
         assert isWritable();
 
@@ -176,7 +176,7 @@ public final class CharArray extends PrimitiveArray implements CharList
      * Sets the element at the given index to the current null value
      */
     @Override
-    public void clear(final int index)
+    public void clear(int index)
     {
         set(index, nullChar());
     }
@@ -184,7 +184,7 @@ public final class CharArray extends PrimitiveArray implements CharList
     /**
      * Positions the add cursor
      */
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
@@ -201,11 +201,11 @@ public final class CharArray extends PrimitiveArray implements CharList
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof CharArray)
         {
-            final var that = (CharArray) object;
+            var that = (CharArray) object;
             if (size() == that.size())
             {
                 return iterator().identical(that.iterator());
@@ -218,7 +218,7 @@ public final class CharArray extends PrimitiveArray implements CharList
      * @return The value at the given logical index.
      */
     @Override
-    public char get(final int index)
+    public char get(int index)
     {
         assert index >= 0;
         assert index < size();
@@ -229,7 +229,7 @@ public final class CharArray extends PrimitiveArray implements CharList
     /**
      * @return The value at the given index as an unsigned value
      */
-    public int getUnsigned(final int index)
+    public int getUnsigned(int index)
     {
         return get(index) & 0xffff;
     }
@@ -244,7 +244,7 @@ public final class CharArray extends PrimitiveArray implements CharList
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (size() < data.length)
         {
@@ -267,7 +267,7 @@ public final class CharArray extends PrimitiveArray implements CharList
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -281,7 +281,7 @@ public final class CharArray extends PrimitiveArray implements CharList
      * @return The value at the given index or the null value if the index is out of bounds
      */
     @Override
-    public char safeGet(final int index)
+    public char safeGet(int index)
     {
         assert index >= 0;
         if (index < size())
@@ -292,7 +292,7 @@ public final class CharArray extends PrimitiveArray implements CharList
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
@@ -301,12 +301,12 @@ public final class CharArray extends PrimitiveArray implements CharList
      * Sets a value at the given index, possibly extending the array size.
      */
     @Override
-    public void set(final int index, final char value)
+    public void set(int index, char value)
     {
         assert isWritable();
 
-        final var newSize = index + 1;
-        final var size = size();
+        var newSize = index + 1;
+        var size = size();
 
         // If the given index is past the end of storage,
         if (newSize > data.length)
@@ -328,7 +328,7 @@ public final class CharArray extends PrimitiveArray implements CharList
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, (char) value);
     }
@@ -336,9 +336,9 @@ public final class CharArray extends PrimitiveArray implements CharList
     /**
      * @return A read-only sub-array which shares underlying data with this array.
      */
-    public CharArray subArray(final int index, final int size)
+    public CharArray subArray(int index, int size)
     {
-        final var array = new CharArray(objectName(), data, offset + index, size);
+        var array = new CharArray(objectName(), data, offset + index, size);
         array.initialSize(0);
         array.initialize();
         array.data = data;
@@ -359,7 +359,7 @@ public final class CharArray extends PrimitiveArray implements CharList
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -376,7 +376,7 @@ public final class CharArray extends PrimitiveArray implements CharList
     }
 
     /** Resizes this dynamic array to the given size */
-    private void resize(final int size)
+    private void resize(int size)
     {
         assert size >= size();
 
@@ -384,7 +384,7 @@ public final class CharArray extends PrimitiveArray implements CharList
         if (isWritable())
         {
             // so create a new char[] of the right size,
-            final var data = newCharArray(this, "resized", size);
+            var data = newCharArray(this, "resized", size);
 
             // copy the data from this array to the new array,
             System.arraycopy(this.data, 0, data, 0, size());

@@ -21,7 +21,7 @@ public class JavaFolderTest extends UnitTest
     public class TxtFileMatcher implements Matcher<FilePath>
     {
         @Override
-        public boolean matches(final FilePath path)
+        public boolean matches(FilePath path)
         {
             return path.hasExtension(Extension.TXT);
         }

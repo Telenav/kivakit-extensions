@@ -11,25 +11,25 @@ public class MinimumCountMetric extends MinimumMetric<Count>
     }
 
     @Override
-    public MinimumCountMetric description(final String description)
+    public MinimumCountMetric description(String description)
     {
         return (MinimumCountMetric) super.description(description);
     }
 
     @Override
-    public MinimumCountMetric name(final String name)
+    public MinimumCountMetric name(String name)
     {
         return (MinimumCountMetric) super.name(name);
     }
 
     @Override
-    public MinimumCountMetric type(final MetricType type)
+    public MinimumCountMetric type(MetricType type)
     {
         return (MinimumCountMetric) super.type(type);
     }
 
     @Override
-    public MinimumCountMetric unit(final String unit)
+    public MinimumCountMetric unit(String unit)
     {
         return (MinimumCountMetric) super.unit(unit);
     }

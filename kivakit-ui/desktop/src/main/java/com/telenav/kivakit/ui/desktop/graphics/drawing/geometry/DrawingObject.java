@@ -43,14 +43,14 @@ public abstract class DrawingObject implements Coordinated
     /** The coordinate system for this object */
     private CoordinateSystem coordinates;
 
-    protected DrawingObject(final Coordinated coordinates)
+    protected DrawingObject(Coordinated coordinates)
     {
         ensureNotNull(coordinates);
 
         this.coordinates = coordinates.coordinates();
     }
 
-    public void coordinates(final Coordinated coordinates)
+    public void coordinates(Coordinated coordinates)
     {
         this.coordinates = coordinates.coordinates();
     }
@@ -64,47 +64,47 @@ public abstract class DrawingObject implements Coordinated
     /**
      * @return True If this object and the given object are in the same coordinate system
      */
-    public boolean inSameCoordinateSystem(final DrawingObject that)
+    public boolean inSameCoordinateSystem(DrawingObject that)
     {
         return coordinates().equals(that.coordinates());
     }
 
-    public DrawingPoint point(final double x, final double y)
+    public DrawingPoint point(double x, double y)
     {
         return DrawingPoint.point(this, x, y);
     }
 
-    public DrawingRectangle rectangle(final double x, final double y, final double dx, final double dy)
+    public DrawingRectangle rectangle(double x, double y, double dx, double dy)
     {
         return DrawingRectangle.rectangle(this, x, y, dx, dy);
     }
 
-    public DrawingRectangle toCoordinates(final DrawingRectangle that)
+    public DrawingRectangle toCoordinates(DrawingRectangle that)
     {
         return that.toCoordinates(this);
     }
 
-    public DrawingWidth toCoordinates(final DrawingWidth that)
+    public DrawingWidth toCoordinates(DrawingWidth that)
     {
         return that.toCoordinates(this);
     }
 
-    public DrawingHeight toCoordinates(final DrawingHeight that)
+    public DrawingHeight toCoordinates(DrawingHeight that)
     {
         return that.toCoordinates(this);
     }
 
-    public DrawingPoint toCoordinates(final DrawingPoint that)
+    public DrawingPoint toCoordinates(DrawingPoint that)
     {
         return that.toCoordinates(this);
     }
 
-    public DrawingSize toCoordinates(final DrawingSize that)
+    public DrawingSize toCoordinates(DrawingSize that)
     {
         return that.toCoordinates(this);
     }
 
-    public DrawingLength toCoordinates(final DrawingLength that)
+    public DrawingLength toCoordinates(DrawingLength that)
     {
         return that.toCoordinates(this);
     }
@@ -115,22 +115,22 @@ public abstract class DrawingObject implements Coordinated
         return coordinates().name();
     }
 
-    protected DrawingHeight height(final double units)
+    protected DrawingHeight height(double units)
     {
         return DrawingHeight.height(coordinates(), units);
     }
 
-    protected DrawingLength length(final double units)
+    protected DrawingLength length(double units)
     {
         return DrawingLength.length(coordinates(), units);
     }
 
-    protected DrawingSize size(final double dx, final double dy)
+    protected DrawingSize size(double dx, double dy)
     {
         return DrawingSize.size(coordinates(), dx, dy);
     }
 
-    protected DrawingWidth width(final double units)
+    protected DrawingWidth width(double units)
     {
         return DrawingWidth.width(coordinates(), units);
     }

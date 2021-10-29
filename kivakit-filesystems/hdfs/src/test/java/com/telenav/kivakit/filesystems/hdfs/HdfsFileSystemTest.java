@@ -47,8 +47,8 @@ public class HdfsFileSystemTest extends UnitTest
     @Before
     public void testBefore()
     {
-        final var kivakitVersion = KivaKit.get().kivakitVersion();
-        final var settings = new HdfsSettings()
+        var kivakitVersion = KivaKit.get().kivakitVersion();
+        var settings = new HdfsSettings()
                 .clusterName("cluster1ns")
                 .configurationFolder(Package.of(getClass(), "settings/cluster1ns"))
                 .contactEmail(EmailAddress.parse("jonathanl@telenav.com"))
@@ -63,7 +63,7 @@ public class HdfsFileSystemTest extends UnitTest
     {
         if (TEST_OSMTEAM_CLUSTER)
         {
-            final var folder = Folder.parse(osmteamZambia().toString());
+            var folder = Folder.parse(osmteamZambia().toString());
             assert folder != null;
             ensure(folder.exists());
             ensure(!folder.isEmpty());
@@ -76,7 +76,7 @@ public class HdfsFileSystemTest extends UnitTest
     {
         if (TEST_OSMTEAM_CLUSTER)
         {
-            final var hdfs = osmteamHdfs().toString();
+            var hdfs = osmteamHdfs().toString();
             ensureEqual(hdfs + "foo/bar", osmteamHdfs().folder("foo/bar").toString());
             ensureEqual(hdfs + "foo/bar/baz.txt", osmteamHdfs().file("foo/bar/baz.txt").toString());
             ensureEqual(hdfs + "foo/bar/baz.txt", osmteamHdfs().folder("foo/bar").file("baz.txt").toString());
@@ -98,7 +98,7 @@ public class HdfsFileSystemTest extends UnitTest
     {
         if (TEST_OSMTEAM_CLUSTER)
         {
-            final var folders = osmteamZambia().folders();
+            var folders = osmteamZambia().folders();
             ensure(folders.size() > 1);
         }
     }
@@ -109,9 +109,9 @@ public class HdfsFileSystemTest extends UnitTest
         if (TEST_OSMTEAM_CLUSTER)
         {
             // Read a file from the osmteam HDFS
-            final var file = osmteamHdfs().file("/graph-api/graph-server/repository/Zambia/test.txt");
+            var file = osmteamHdfs().file("/graph-api/graph-server/repository/Zambia/test.txt");
             var i = 1;
-            for (final String line : file.reader().lines())
+            for (String line : file.reader().lines())
             {
                 ensureEqual(i++, Integer.parseInt(line));
             }
@@ -120,10 +120,10 @@ public class HdfsFileSystemTest extends UnitTest
         if (TEST_NAVTEAM_CLUSTER)
         {
             // Read a file from the navteam HDFS to test using multiple HDFS filesystems
-            final var file = navteamHdfs().file("graph-api/kivakit-hdfs-unit-test-do-not-remove.txt");
+            var file = navteamHdfs().file("graph-api/kivakit-hdfs-unit-test-do-not-remove.txt");
             ensure(file.exists());
             var i = 1;
-            for (final String line : file.reader().lines())
+            for (String line : file.reader().lines())
             {
                 ensureEqual(i++, Integer.parseInt(line));
             }

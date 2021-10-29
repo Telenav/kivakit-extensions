@@ -1,7 +1,7 @@
 package com.telenav.kivakit.ui.desktop.component.panel.section;
 
-import com.telenav.kivakit.ui.desktop.component.layout.separator.HorizontalSeparator;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
+import com.telenav.kivakit.ui.desktop.component.layout.separator.HorizontalSeparator;
 import com.telenav.kivakit.ui.desktop.layout.Margins;
 import com.telenav.kivakit.ui.desktop.layout.Spacing;
 import com.telenav.kivakit.ui.desktop.layout.VerticalBoxLayout;
@@ -24,9 +24,9 @@ public class Section extends KivaKitPanel
     {
     }
 
-    public void content(final JComponent child)
+    public void content(JComponent child)
     {
-        final var title = newComponentLabel(this.title);
+        var title = newComponentLabel(this.title);
         title.setOpaque(false);
         theme().styleTitle().apply(title);
         if (icon != null)
@@ -37,7 +37,7 @@ public class Section extends KivaKitPanel
         Margins.of(5).apply(title);
         Margins.of(10).apply(child);
 
-        final var header = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        var header = new JPanel(new FlowLayout(FlowLayout.LEFT));
         header.add(title);
 
         setOpaque(false);
@@ -47,12 +47,12 @@ public class Section extends KivaKitPanel
                 .addStretched(child);
     }
 
-    public void icon(final ImageIcon icon)
+    public void icon(ImageIcon icon)
     {
         this.icon = icon;
     }
 
-    public void title(final String title)
+    public void title(String title)
     {
         this.title = title;
     }

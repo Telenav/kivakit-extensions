@@ -38,9 +38,9 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @UmlClassDiagram(diagram = DiagramPrimitiveList.class)
 public interface PrimitiveList extends Sized
 {
-    default <T> ObjectList<T> asList(final LongMapFactory<T> factory)
+    default <T> ObjectList<T> asList(LongMapFactory<T> factory)
     {
-        final var list = new ObjectList<T>();
+        var list = new ObjectList<T>();
         for (var at = 0; at < size(); at++)
         {
             list.add(factory.newInstance(getPrimitive(at)));

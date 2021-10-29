@@ -34,14 +34,14 @@ import java.util.function.Consumer;
 @LexakaiJavadoc(complete = true)
 public class UpdatingContainer extends WebMarkupContainer
 {
-    public UpdatingContainer(final String id, final Frequency frequency)
+    public UpdatingContainer(String id, Frequency frequency)
     {
         this(id, frequency, target ->
         {
         });
     }
 
-    public UpdatingContainer(final String id, final Frequency frequency, final Consumer<AjaxRequestTarget> target)
+    public UpdatingContainer(String id, Frequency frequency, Consumer<AjaxRequestTarget> target)
     {
         super(id);
         Components.update(this, frequency, target);

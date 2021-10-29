@@ -44,7 +44,7 @@ public abstract class BaseResponse<T>
         return problem != null ? Result.failed(problem) : Result.succeeded(value());
     }
 
-    public BaseResponse<T> problem(final String message, final Object... arguments)
+    public BaseResponse<T> problem(String message, Object... arguments)
     {
         problem = new Problem(message, arguments);
         return this;
@@ -56,7 +56,7 @@ public abstract class BaseResponse<T>
         return problem;
     }
 
-    public void result(final Result<T> result)
+    public void result(Result<T> result)
     {
         value(result.get());
         problem = (Problem) result.why();

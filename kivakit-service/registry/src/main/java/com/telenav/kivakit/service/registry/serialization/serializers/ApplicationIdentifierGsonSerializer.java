@@ -36,13 +36,13 @@ public class ApplicationIdentifierGsonSerializer extends PrimitiveGsonSerializer
     }
 
     @Override
-    protected Application.Identifier toObject(final String identifier)
+    protected Application.Identifier toObject(String identifier)
     {
         return new Application.Identifier(identifier);
     }
 
     @Override
-    protected String toPrimitive(final Application.Identifier application)
+    protected String toPrimitive(Application.Identifier application)
     {
         return application.identifier();
     }

@@ -65,15 +65,15 @@ public class TableModel extends AbstractTableModel
 
     final LinkedList<LogEntry> rows = new LinkedList<>();
 
-    public TableModel(final ClientLogPanel parent, final int maximumRows)
+    public TableModel(ClientLogPanel parent, int maximumRows)
     {
         this.parent = parent;
         this.maximumRows = maximumRows;
     }
 
-    public synchronized void addRows(final List<LogEntry> toAdd)
+    public synchronized void addRows(List<LogEntry> toAdd)
     {
-        final var copy = new ArrayList<>(toAdd);
+        var copy = new ArrayList<>(toAdd);
         SwingUtilities.invokeLater(() ->
         {
             while (rows.size() + copy.size() > maximumRows)
@@ -99,7 +99,7 @@ public class TableModel extends AbstractTableModel
     }
 
     @Override
-    public Class<?> getColumnClass(final int column)
+    public Class<?> getColumnClass(int column)
     {
         return COLUMN_TYPES[column];
     }
@@ -111,7 +111,7 @@ public class TableModel extends AbstractTableModel
     }
 
     @Override
-    public String getColumnName(final int column)
+    public String getColumnName(int column)
     {
         return "  " + COLUMN_NAMES[column];
     }
@@ -123,9 +123,9 @@ public class TableModel extends AbstractTableModel
     }
 
     @Override
-    public Object getValueAt(final int row, final int column)
+    public Object getValueAt(int row, int column)
     {
-        final var entry = row(row);
+        var entry = row(row);
 
         switch (column)
         {
@@ -154,12 +154,12 @@ public class TableModel extends AbstractTableModel
     }
 
     @Override
-    public boolean isCellEditable(final int rowIndex, final int columnIndex)
+    public boolean isCellEditable(int rowIndex, int columnIndex)
     {
         return false;
     }
 
-    public LogEntry row(final int which)
+    public LogEntry row(int which)
     {
         return rows.get(which);
     }

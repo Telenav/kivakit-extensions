@@ -59,9 +59,9 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
     /**
      * @return A Java 2D drawing surface for the given {@link Graphics2D} context with the given origin and size
      */
-    public static Java2dDrawingSurface surface(final String name,
-                                               final Graphics2D graphics,
-                                               final DrawingRectangle area)
+    public static Java2dDrawingSurface surface(String name,
+                                               Graphics2D graphics,
+                                               DrawingRectangle area)
     {
         ensureNotNull(graphics);
         ensureNotNull(area);
@@ -72,7 +72,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
     /** The graphics surface to draw on */
     private final Graphics2D graphics;
 
-    protected Java2dDrawingSurface(final String name, final Graphics2D graphics, final DrawingRectangle area)
+    protected Java2dDrawingSurface(String name, Graphics2D graphics, DrawingRectangle area)
     {
         super(name);
 
@@ -83,7 +83,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
 
         graphics.scale(scalingFactor(), scalingFactor());
 
-        final var hints = new HashMap<RenderingHints.Key, Object>();
+        var hints = new HashMap<RenderingHints.Key, Object>();
         hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         hints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -103,15 +103,15 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public Shape drawBox(final Style style, final DrawingPoint at, final DrawingSize size)
+    public Shape drawBox(Style style, DrawingPoint at, DrawingSize size)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
         ensureNotNull(at);
         ensureNotNull(size);
 
-        final var atLocal = at.toCoordinates(this);
-        final var sizeLocal = size.toCoordinates(this);
+        var atLocal = at.toCoordinates(this);
+        var sizeLocal = size.toCoordinates(this);
 
         return draw(style, new Rectangle2D.Double(
                 atLocal.x(),
@@ -124,29 +124,29 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public Shape drawDot(final Style style,
-                         final DrawingPoint at,
-                         final DrawingLength radius)
+    public Shape drawDot(Style style,
+                         DrawingPoint at,
+                         DrawingLength radius)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
         ensureNotNull(at);
         ensureNotNull(radius);
 
-        final var units = radius.toCoordinates(this).units();
-        final var x = (int) (at.toCoordinates(this).x() - units / 2);
-        final var y = (int) (at.toCoordinates(this).y() - units / 2);
+        var units = radius.toCoordinates(this).units();
+        var x = (int) (at.toCoordinates(this).x() - units / 2);
+        var y = (int) (at.toCoordinates(this).y() - units / 2);
 
         return draw(style, new Ellipse2D.Double(x, y, units, units));
     }
 
     @Override
-    public Shape drawImage(final DrawingPoint at, final Image image, final Composite composite)
+    public Shape drawImage(DrawingPoint at, Image image, Composite composite)
     {
-        final var x = (int) at.toCoordinates(this).rounded().x();
-        final var y = (int) at.toCoordinates(this).rounded().y();
+        var x = (int) at.toCoordinates(this).rounded().x();
+        var y = (int) at.toCoordinates(this).rounded().y();
 
-        final var original = graphics.getComposite();
+        var original = graphics.getComposite();
         graphics.setComposite(composite);
         graphics.drawImage(image, x, y, null);
         graphics.setComposite(original);
@@ -158,9 +158,9 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public Shape drawLine(final Style style,
-                          final DrawingPoint from,
-                          final DrawingPoint to)
+    public Shape drawLine(Style style,
+                          DrawingPoint from,
+                          DrawingPoint to)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -178,7 +178,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public Shape drawPath(final Style style, final Path2D path)
+    public Shape drawPath(Style style, Path2D path)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -191,11 +191,11 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public Shape drawRoundedBox(final Style style,
-                                final DrawingPoint at,
-                                final DrawingSize size,
-                                final DrawingLength cornerWidth,
-                                final DrawingLength cornerHeight)
+    public Shape drawRoundedBox(Style style,
+                                DrawingPoint at,
+                                DrawingSize size,
+                                DrawingLength cornerWidth,
+                                DrawingLength cornerHeight)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -215,18 +215,18 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public void drawText(final Style style,
-                         final DrawingPoint at,
-                         final String text)
+    public void drawText(Style style,
+                         DrawingPoint at,
+                         String text)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
         ensureNotNull(at);
         ensureNotNull(text);
 
-        final var dy = height(style, text);
-        final var x = at.toCoordinates(this).x();
-        final var y = at.toCoordinates(this).y() + dy - fontMetrics(style).getDescent();
+        var dy = height(style, text);
+        var x = at.toCoordinates(this).x();
+        var y = at.toCoordinates(this).y() + dy - fontMetrics(style).getDescent();
 
         style.textColor().applyAsTextColor(graphics);
         graphics.setFont(style.textFont());
@@ -237,9 +237,9 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public Shape textShape(final Style style,
-                           final DrawingPoint at,
-                           final String text)
+    public Shape textShape(Style style,
+                           DrawingPoint at,
+                           String text)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -248,11 +248,11 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
 
         graphics.setFont(style.textFont());
 
-        final var dy = height(style, text);
-        final var x = at.toCoordinates(this).x();
-        final var y = at.toCoordinates(this).y() + dy - fontMetrics(style).getDescent();
+        var dy = height(style, text);
+        var x = at.toCoordinates(this).x();
+        var y = at.toCoordinates(this).y() + dy - fontMetrics(style).getDescent();
 
-        final var glyphs = graphics.getFont().createGlyphVector(graphics.getFontRenderContext(), text);
+        var glyphs = graphics.getFont().createGlyphVector(graphics.getFontRenderContext(), text);
 
         return style.shape(glyphs.getOutline((float) x, (float) y));
     }
@@ -261,13 +261,13 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * {@inheritDoc}
      */
     @Override
-    public DrawingSize textSize(final Style style, final String text)
+    public DrawingSize textSize(Style style, String text)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
         ensureNotNull(text);
 
-        final var bounds = textBounds(style, text);
+        var bounds = textBounds(style, text);
         return size(bounds.getWidth(), bounds.getHeight());
     }
 
@@ -276,7 +276,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      */
     private static int scalingFactor()
     {
-        final double scale = GraphicsEnvironment.getLocalGraphicsEnvironment()
+        double scale = GraphicsEnvironment.getLocalGraphicsEnvironment()
                 .getDefaultScreenDevice()
                 .getDefaultConfiguration()
                 .getDefaultTransform()
@@ -292,7 +292,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
      * @param shape The shape to draw
      * @return The stroked shape outline of the drawing
      */
-    private Shape draw(final Style style, final Shape shape)
+    private Shape draw(Style style, Shape shape)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -322,7 +322,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
     /**
      * @return The {@link FontMetrics} for the style's {@link Font}
      */
-    private FontMetrics fontMetrics(final Style style)
+    private FontMetrics fontMetrics(Style style)
     {
         ensureNotNull(graphics);
         ensureNotNull(style);
@@ -335,7 +335,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
     /**
      * @return The height of the given text in the given style
      */
-    private double height(final Style style, final String text)
+    private double height(Style style, String text)
     {
         return textBounds(style, text).getHeight();
     }
@@ -343,7 +343,7 @@ public class Java2dDrawingSurface extends DrawingCoordinateSystem implements Dra
     /**
      * @return The bounds of the given text in the given style
      */
-    private Rectangle2D textBounds(final Style style, final String text)
+    private Rectangle2D textBounds(Style style, String text)
     {
         return fontMetrics(style).getStringBounds(text, graphics);
     }

@@ -30,7 +30,7 @@ public class Leaf<T> extends Tree<T>
     /**
      * @param symbol The leaf's symbol
      */
-    public Leaf(final CodedSymbol<T> symbol)
+    public Leaf(CodedSymbol<T> symbol)
     {
         super(symbol.frequency());
         this.symbol = symbol;
@@ -44,7 +44,7 @@ public class Leaf<T> extends Tree<T>
      * {@inheritDoc}
      */
     @Override
-    public CodedSymbol<T> decode(final BitReader bits)
+    public CodedSymbol<T> decode(BitReader bits)
     {
         return symbol;
     }

@@ -33,17 +33,17 @@ import org.apache.wicket.model.IModel;
 @LexakaiJavadoc(complete = true)
 public class MessageColor extends AttributeModifier
 {
-    public MessageColor(final IModel<Message.Status> status)
+    public MessageColor(IModel<Message.Status> status)
     {
         this(null, status);
     }
 
-    public MessageColor(final String prefix, final IModel<Message.Status> model)
+    public MessageColor(String prefix, IModel<Message.Status> model)
     {
         super("class", () ->
         {
             String className = null;
-            final var status = model.getObject();
+            var status = model.getObject();
             if (status != null)
             {
                 switch (status)

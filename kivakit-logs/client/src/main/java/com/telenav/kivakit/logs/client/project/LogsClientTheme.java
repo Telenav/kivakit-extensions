@@ -17,18 +17,18 @@ import java.awt.event.WindowEvent;
  */
 public class LogsClientTheme
 {
-    public static void configure(final JFrame frame, final ClientLogPanel panel, final Image icon)
+    public static void configure(JFrame frame, ClientLogPanel panel, Image icon)
     {
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
         frame.getContentPane().add(panel, BorderLayout.CENTER);
         frame.setLocation(100, 100);
-        final var screen = Toolkit.getDefaultToolkit().getScreenSize();
+        var screen = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setPreferredSize(new Dimension(screen.width * 4 / 5, screen.height * 4 / 5));
         frame.setMinimumSize(new Dimension(1000, 500));
         frame.addWindowListener(new WindowAdapter()
         {
             @Override
-            public void windowClosed(final WindowEvent e)
+            public void windowClosed(WindowEvent e)
             {
                 panel.log().exit();
             }

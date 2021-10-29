@@ -54,7 +54,7 @@ public class CsvWriter extends BaseRepeater implements Closeable
     /**
      * Constructs a writer with the given output destination and schema
      */
-    public CsvWriter(final PrintWriter out, final ProgressReporter reporter, final CsvSchema schema)
+    public CsvWriter(PrintWriter out, ProgressReporter reporter, CsvSchema schema)
     {
         this.out = out;
         this.reporter = reporter;
@@ -86,7 +86,7 @@ public class CsvWriter extends BaseRepeater implements Closeable
     /**
      * Writes the given CSV line
      */
-    public void write(final CsvLine line)
+    public void write(CsvLine line)
     {
         reporter.next();
         out.write(line.toString() + "\n");
@@ -95,7 +95,7 @@ public class CsvWriter extends BaseRepeater implements Closeable
     /**
      * Writes the given comment
      */
-    public void writeComment(final String comment)
+    public void writeComment(String comment)
     {
         out.println("// " + comment);
     }

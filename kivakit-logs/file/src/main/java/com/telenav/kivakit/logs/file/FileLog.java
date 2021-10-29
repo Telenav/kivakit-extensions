@@ -58,18 +58,18 @@ public class FileLog extends BaseRolloverTextLog
     private Duration maximumLogFileAge;
 
     @Override
-    public void configure(final VariableMap<String> properties)
+    public void configure(VariableMap<String> properties)
     {
         super.configure(properties);
 
-        final var path = properties.get("file");
+        var path = properties.get("file");
         if (path != null)
         {
             try
             {
                 file = File.parse(path);
 
-                final var rollover = properties.get("rollover");
+                var rollover = properties.get("rollover");
                 if (rollover != null)
                 {
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
@@ -81,7 +81,7 @@ public class FileLog extends BaseRolloverTextLog
                 maximumLogSize(properties.asObject("maximum-size",
                         new Bytes.Converter(Listener.none()), Bytes.MAXIMUM));
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 fail(e, "FileLog file parameter '" + path + "' is not valid");
             }
@@ -108,7 +108,7 @@ public class FileLog extends BaseRolloverTextLog
     {
         var newFile = File.parse(file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
-        final var console = Console.get();
+        var console = Console.get();
         console.printLine("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
         console.printLine("Pruning files older than $ from: $", maximumLogFileAge, folder);

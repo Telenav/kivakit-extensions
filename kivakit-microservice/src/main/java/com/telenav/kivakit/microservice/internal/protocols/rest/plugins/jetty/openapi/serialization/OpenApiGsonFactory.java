@@ -15,11 +15,11 @@ public class OpenApiGsonFactory extends GsonFactory
     @Override
     public GsonBuilder builder()
     {
-        final var factory = JettyMicroservletRequestCycle.cycle()
+        var factory = JettyMicroservletRequestCycle.cycle()
                 .application()
                 .gsonFactory();
 
-        final var builder = factory.builder();
+        var builder = factory.builder();
         factory.addSerializers(builder);
         builder.setPrettyPrinting();
         builder.registerTypeHierarchyAdapter(List.class, new ListSerializer());
@@ -30,13 +30,13 @@ public class OpenApiGsonFactory extends GsonFactory
         builder.setExclusionStrategies(new ExclusionStrategy()
         {
             @Override
-            public boolean shouldSkipClass(final Class<?> clazz)
+            public boolean shouldSkipClass(Class<?> clazz)
             {
                 return false;
             }
 
             @Override
-            public boolean shouldSkipField(final FieldAttributes field)
+            public boolean shouldSkipField(FieldAttributes field)
             {
                 return field.getName().equals("exampleSetFlag");
             }

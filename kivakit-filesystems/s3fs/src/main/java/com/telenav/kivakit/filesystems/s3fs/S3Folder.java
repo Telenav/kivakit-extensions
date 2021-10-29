@@ -61,18 +61,18 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     // represents its existence
     private static final FileName METADATA = FileName.parse(".metadata");
 
-    public S3Folder(final FilePath path)
+    public S3Folder(FilePath path)
     {
         super(path, true);
     }
 
-    public S3Folder(final String path)
+    public S3Folder(String path)
     {
         this(FilePath.parseFilePath(path));
     }
 
     @Override
-    public boolean chmod(final PosixFilePermission... permissions)
+    public boolean chmod(PosixFilePermission... permissions)
     {
         return unsupported();
     }
@@ -80,13 +80,13 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public S3Folder clear()
     {
-        for (final var folder : folders())
+        for (var folder : folders())
         {
             folder.clear();
             folder.delete();
         }
 
-        for (final var file : files())
+        for (var file : files())
         {
             if (!isMetadata(file.fileName()))
             {
@@ -112,7 +112,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         }
 
         // delete the meta data file
-        final var metaFile = metadataFile();
+        var metaFile = metadataFile();
         if (metaFile.exists())
         {
             metaFile.delete();
@@ -138,7 +138,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public S3File file(final FileName fileName)
+    public S3File file(FileName fileName)
     {
         return new S3File(path().withChild(fileName.name()));
     }
@@ -146,26 +146,26 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public List<FileService> files()
     {
-        final var request = ListObjectsRequest.builder()
+        var request = ListObjectsRequest.builder()
                 .bucket(bucket())
                 .build();
 
-        final var response = client().listObjects(request);
+        var response = client().listObjects(request);
 
-        final List<FileService> files = new ArrayList<>();
-        for (final var object : response.contents())
+        List<FileService> files = new ArrayList<>();
+        for (var object : response.contents())
         {
-            final var path = S3FileSystemObject.path(scheme(), bucket(), object.key());
+            var path = S3FileSystemObject.path(scheme(), bucket(), object.key());
             files.add(new S3File(path));
         }
         return files;
     }
 
     @Override
-    public List<FileService> files(final Matcher<FilePath> matcher)
+    public List<FileService> files(Matcher<FilePath> matcher)
     {
-        final List<FileService> files = new ArrayList<>();
-        for (final var file : files())
+        List<FileService> files = new ArrayList<>();
+        for (var file : files())
         {
             if (matcher.matches(file.path()))
             {
@@ -176,13 +176,13 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public S3Folder folder(final FileName name)
+    public S3Folder folder(FileName name)
     {
         return new S3Folder(FilePath.parseFilePath(child(name).toString()));
     }
 
     @Override
-    public S3Folder folder(final Folder folder)
+    public S3Folder folder(Folder folder)
     {
         return new S3Folder(FilePath.parseFilePath(child(folder).toString()));
     }
@@ -190,13 +190,13 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public List<FolderService> folders()
     {
-        final var request = ListBucketsRequest.builder().build();
-        final var response = client().listBuckets(request);
+        var request = ListBucketsRequest.builder().build();
+        var response = client().listBuckets(request);
 
-        final List<FolderService> folders = new ArrayList<>();
-        for (final var bucket : response.buckets())
+        List<FolderService> folders = new ArrayList<>();
+        for (var bucket : response.buckets())
         {
-            final var path = S3FileSystemObject.path(scheme(), bucket.name(), "");
+            var path = S3FileSystemObject.path(scheme(), bucket.name(), "");
             folders.add(new S3Folder(path));
         }
         return folders;
@@ -215,12 +215,12 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public boolean isEmpty()
     {
-        final Iterable<FolderService> folders = folders();
+        Iterable<FolderService> folders = folders();
         if (folders != null && folders().iterator().hasNext())
         {
             return false;
         }
-        for (final var file : files())
+        for (var file : files())
         {
             if (!file.fileName().equals(METADATA))
             {
@@ -255,10 +255,10 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<FileService> nestedFiles(final Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(Matcher<FilePath> matcher)
     {
-        final List<FileService> files = new ArrayList<>();
-        for (final var file : nestedFiles(this, new ArrayList<>()))
+        List<FileService> files = new ArrayList<>();
+        for (var file : nestedFiles(this, new ArrayList<>()))
         {
             if (matcher.matches(file.path()))
             {
@@ -269,10 +269,10 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public List<FolderService> nestedFolders(final Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
     {
-        final List<FolderService> folders = new ArrayList<>();
-        for (final var at : nestedFolders(this, new ArrayList<>()))
+        List<FolderService> folders = new ArrayList<>();
+        for (var at : nestedFolders(this, new ArrayList<>()))
         {
             if (matcher.matches(at.path()))
             {
@@ -283,7 +283,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public boolean renameTo(final FolderService that)
+    public boolean renameTo(FolderService that)
     {
         if (isOnSameFileSystem(that))
         {
@@ -293,15 +293,15 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return false;
     }
 
-    public boolean renameTo(final S3Folder that)
+    public boolean renameTo(S3Folder that)
     {
         if (exists() && canRenameTo(that))
         {
-            for (final var file : files())
+            for (var file : files())
             {
                 file.renameTo(that.file(file.fileName()));
             }
-            for (final var folder : folders())
+            for (var folder : folders())
             {
                 folder.renameTo(that.folder(folder.fileName()));
             }
@@ -314,7 +314,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public S3Folder root()
     {
-        final var path = path(scheme(), bucket(), "");
+        var path = path(scheme(), bucket(), "");
         return new S3Folder(path);
     }
 
@@ -325,7 +325,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public S3File temporaryFile(final FileName baseName)
+    public S3File temporaryFile(FileName baseName)
     {
         synchronized (LOCK)
         {
@@ -342,7 +342,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public S3Folder temporaryFolder(final FileName baseName)
+    public S3Folder temporaryFolder(FileName baseName)
     {
         synchronized (LOCK)
         {
@@ -359,17 +359,17 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         }
     }
 
-    private FilePath child(final FileName child)
+    private FilePath child(FileName child)
     {
         return path().withChild(child.name());
     }
 
-    private FilePath child(final Folder folder)
+    private FilePath child(Folder folder)
     {
         return path().withChild(folder.toString());
     }
 
-    private boolean isMetadata(final FileName fileName)
+    private boolean isMetadata(FileName fileName)
     {
         return fileName.equals(METADATA);
     }
@@ -379,9 +379,9 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return file(METADATA);
     }
 
-    private void mkdir(final S3Folder folder)
+    private void mkdir(S3Folder folder)
     {
-        final var file = folder.file(METADATA);
+        var file = folder.file(METADATA);
         if (!file.exists())
         {
             // Create a place holder for every folder to make sure it's a folder
@@ -390,20 +390,20 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         }
     }
 
-    private List<FileService> nestedFiles(final FolderService folder, final List<FileService> files)
+    private List<FileService> nestedFiles(FolderService folder, List<FileService> files)
     {
         files.addAll(folder.files());
-        for (final var at : folders())
+        for (var at : folders())
         {
             nestedFiles(at, files);
         }
         return files;
     }
 
-    private List<FolderService> nestedFolders(final FolderService folder, final List<FolderService> folders)
+    private List<FolderService> nestedFolders(FolderService folder, List<FolderService> folders)
     {
         folders.add(this);
-        for (final var at : folder.folders())
+        for (var at : folder.folders())
         {
             nestedFolders(at, folders);
         }

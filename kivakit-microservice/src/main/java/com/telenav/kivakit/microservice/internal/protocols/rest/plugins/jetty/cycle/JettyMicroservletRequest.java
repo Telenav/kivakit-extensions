@@ -75,7 +75,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
      * @param cycle The request cycle for the {@link Microservlet}
      * @param httpRequest The Java Servlet API HTTP request object
      */
-    public JettyMicroservletRequest(final JettyMicroservletRequestCycle cycle, final HttpServletRequest httpRequest)
+    public JettyMicroservletRequest(JettyMicroservletRequestCycle cycle, HttpServletRequest httpRequest)
     {
         this.cycle = cycle;
         this.httpRequest = httpRequest;
@@ -113,7 +113,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
                     }
 
                     // then add any query parameters to the map.
-                    final var uri = URI.create(httpRequest.getRequestURI());
+                    var uri = URI.create(httpRequest.getRequestURI());
                     properties.addAll(QueryParameters.parse(uri.getQuery()).asMap());
                 }
             }
@@ -132,10 +132,10 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
     public FilePath path()
     {
         // Get the full request URI,
-        final var uri = httpRequest.getRequestURI();
+        var uri = httpRequest.getRequestURI();
 
         // and the context path,
-        final String contextPath = httpRequest.getContextPath();
+        String contextPath = httpRequest.getContextPath();
         ensure(uri.startsWith(contextPath));
 
         // then return the URI without the context path
@@ -149,16 +149,16 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
      * @param requestType The type of object to deserialize from JSON
      * @return The deserialized object, or null if deserialization failed
      */
-    public <T extends MicroservletRequest> T readObject(final Class<T> requestType)
+    public <T extends MicroservletRequest> T readObject(Class<T> requestType)
     {
-        final var response = cycle.response();
+        var response = cycle.response();
 
         try
         {
             // Read JSON object from servlet input
-            final var in = this.httpRequest.getInputStream();
-            final String json = IO.string(in);
-            final var request = cycle.gson().fromJson(json, requestType);
+            var in = httpRequest.getInputStream();
+            String json = IO.string(in);
+            var request = cycle.gson().fromJson(json, requestType);
 
             // If the request is invalid (any problems go into the response object),
             if (!request.isValid(response))
@@ -170,7 +170,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
 
             return request;
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             problem(SC_BAD_REQUEST, e, "Unable to read JSON request from servlet input stream: $", e.getMessage());
             return null;

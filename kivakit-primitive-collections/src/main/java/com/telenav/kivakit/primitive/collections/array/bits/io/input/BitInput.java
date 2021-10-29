@@ -51,7 +51,7 @@ public class BitInput extends BaseBitReader
     /**
      * Construct from an input stream
      */
-    public BitInput(final InputStream in)
+    public BitInput(InputStream in)
     {
         this.in = in;
         next = IO.readByte(in);
@@ -77,7 +77,7 @@ public class BitInput extends BaseBitReader
     }
 
     @Override
-    protected void byteCursor(final long position)
+    protected void byteCursor(long position)
     {
         unsupported();
     }
@@ -91,7 +91,7 @@ public class BitInput extends BaseBitReader
     @Override
     protected byte nextByte()
     {
-        final var current = next;
+        var current = next;
         next = IO.readByte(in);
         cursor++;
         return (byte) current;

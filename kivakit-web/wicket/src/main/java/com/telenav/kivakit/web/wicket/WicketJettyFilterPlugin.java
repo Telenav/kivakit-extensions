@@ -47,7 +47,7 @@ public class WicketJettyFilterPlugin extends BaseJettyFilterPlugin
     /** Wicket web application */
     private WebApplication application;
 
-    public WicketJettyFilterPlugin(final Class<? extends WebApplication> applicationClass)
+    public WicketJettyFilterPlugin(Class<? extends WebApplication> applicationClass)
     {
         super(applicationClass.getSimpleName());
         this.applicationClass = ensureNotNull(applicationClass);

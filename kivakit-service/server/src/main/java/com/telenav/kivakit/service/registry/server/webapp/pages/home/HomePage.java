@@ -59,9 +59,9 @@ public class HomePage extends ServiceRegistryWebPage
 
     public HomePage()
     {
-        final IModel<String> scope = new Model<>(isLocal() ? "localhost" : "network");
+        IModel<String> scope = new Model<>(isLocal() ? "localhost" : "network");
 
-        final var services = new LoadableDetachableModel<Result<Set<Service>>>()
+        var services = new LoadableDetachableModel<Result<Set<Service>>>()
         {
             @Override
             protected Result<Set<Service>> load()
@@ -70,12 +70,12 @@ public class HomePage extends ServiceRegistryWebPage
             }
         };
 
-        final var scopes = new LoadableDetachableModel<List<String>>()
+        var scopes = new LoadableDetachableModel<List<String>>()
         {
             @Override
             protected List<String> load()
             {
-                final var scopes = Scope.names(services.getObject());
+                var scopes = Scope.names(services.getObject());
                 scopes.add(0, "network");
                 if (isLocal())
                 {
@@ -85,7 +85,7 @@ public class HomePage extends ServiceRegistryWebPage
             }
         };
 
-        final var updatingContainer = new UpdatingContainer("updating-container", WICKET_AJAX_REFRESH_FREQUENCY,
+        var updatingContainer = new UpdatingContainer("updating-container", WICKET_AJAX_REFRESH_FREQUENCY,
                 target -> services.detach());
         updatingContainer.setOutputMarkupId(true);
 
@@ -94,7 +94,7 @@ public class HomePage extends ServiceRegistryWebPage
             @Override
             public boolean isVisible()
             {
-                final var result = services.getObject();
+                var result = services.getObject();
                 return result.get() != null && result.get().isEmpty();
             }
         });
@@ -108,11 +108,11 @@ public class HomePage extends ServiceRegistryWebPage
             }
         });
 
-        final var scopeDropdown = new DropDownChoice<>("scope", new Model<>(isLocal() ? "localhost" : "network"), scopes);
+        var scopeDropdown = new DropDownChoice<>("scope", new Model<>(isLocal() ? "localhost" : "network"), scopes);
         scopeDropdown.add(new AjaxFormComponentUpdatingBehavior("change")
         {
             @Override
-            protected void onUpdate(final AjaxRequestTarget target)
+            protected void onUpdate(AjaxRequestTarget target)
             {
                 scopes.detach();
                 target.add(updatingContainer);
@@ -123,7 +123,7 @@ public class HomePage extends ServiceRegistryWebPage
         updatingContainer.add(new ListView<>("list", () -> list(scopeDropdown))
         {
             @Override
-            protected void populateItem(final ListItem<Service> item)
+            protected void populateItem(ListItem<Service> item)
             {
                 item.add(new ServicePanel("panel", updatingContainer, item.getModel()));
             }
@@ -138,15 +138,15 @@ public class HomePage extends ServiceRegistryWebPage
     }
 
     @NotNull
-    private List<Service> list(final DropDownChoice<String> scopeDropdown)
+    private List<Service> list(DropDownChoice<String> scopeDropdown)
     {
-        final var scope = scopeDropdown.getModelObject();
+        var scope = scopeDropdown.getModelObject();
         return Collections.sorted(services(scope).get());
     }
 
-    private Result<Set<Service>> services(final String scopeString)
+    private Result<Set<Service>> services(String scopeString)
     {
-        final Scope scope;
+        Scope scope;
         switch (scopeString)
         {
             case "network":
@@ -181,7 +181,7 @@ public class HomePage extends ServiceRegistryWebPage
         else
         {
             // otherwise have the client access the remote scope
-            final var client = LOGGER.listenTo(new ServiceRegistryClient());
+            var client = LOGGER.listenTo(new ServiceRegistryClient());
             return client.discoverServices(scope);
         }
     }

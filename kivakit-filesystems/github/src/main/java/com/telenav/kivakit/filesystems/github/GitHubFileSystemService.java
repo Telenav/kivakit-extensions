@@ -50,27 +50,27 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 public class GitHubFileSystemService implements FileSystemService
 {
     @Override
-    public boolean accepts(final FilePath path)
+    public boolean accepts(FilePath path)
     {
         return GitHubFileSystemObject.accepts(path.toString());
     }
 
     @Override
-    public DiskService diskService(final FilePath path)
+    public DiskService diskService(FilePath path)
     {
         return unsupported();
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public GitHubFile fileService(final FilePath path)
+    public GitHubFile fileService(FilePath path)
     {
         return new GitHubFile(path);
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public GitHubFolder folderService(final FilePath path)
+    public GitHubFolder folderService(FilePath path)
     {
         return new GitHubFolder(path);
     }

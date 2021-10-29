@@ -42,19 +42,19 @@ public class Dot extends BaseDrawable
         return dot((Style) null);
     }
 
-    public static Dot dot(final Style style)
+    public static Dot dot(Style style)
     {
         return new Dot(style);
     }
 
     private DrawingLength radius;
 
-    protected Dot(final Style style)
+    protected Dot(Style style)
     {
         super(style);
     }
 
-    private Dot(final Dot that)
+    private Dot(Dot that)
     {
         super(that);
         radius = that.radius;
@@ -67,7 +67,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Shape draw(final DrawingSurface surface)
+    public Shape draw(DrawingSurface surface)
     {
         return shape(surface.drawDot(style(), withLocation(), radius()));
     }
@@ -78,7 +78,7 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot scaledBy(final double scaleFactor)
+    public Dot scaledBy(double scaleFactor)
     {
         return withRadius(radius.scaledBy(scaleFactor));
     }
@@ -90,68 +90,68 @@ public class Dot extends BaseDrawable
     }
 
     @Override
-    public Dot withColors(final Style style)
+    public Dot withColors(Style style)
     {
         return (Dot) super.withColors(style);
     }
 
     @Override
-    public Dot withDrawColor(final Color color)
+    public Dot withDrawColor(Color color)
     {
         return (Dot) super.withDrawColor(color);
     }
 
     @Override
-    public Dot withDrawStroke(final Stroke stroke)
+    public Dot withDrawStroke(Stroke stroke)
     {
         return (Dot) super.withDrawStroke(stroke);
     }
 
     @Override
-    public Dot withDrawStrokeWidth(final DrawingWidth width)
+    public Dot withDrawStrokeWidth(DrawingWidth width)
     {
         return (Dot) super.withDrawStrokeWidth(width);
     }
 
     @Override
-    public Dot withFillColor(final Color color)
+    public Dot withFillColor(Color color)
     {
         return (Dot) super.withFillColor(color);
     }
 
     @Override
-    public Dot withFillStroke(final Stroke stroke)
+    public Dot withFillStroke(Stroke stroke)
     {
         return (Dot) super.withFillStroke(stroke);
     }
 
     @Override
-    public Dot withFillStrokeWidth(final DrawingWidth width)
+    public Dot withFillStrokeWidth(DrawingWidth width)
     {
         return (Dot) super.withFillStrokeWidth(width);
     }
 
     @Override
-    public Dot withLocation(final DrawingPoint at)
+    public Dot withLocation(DrawingPoint at)
     {
         return (Dot) super.withLocation(at);
     }
 
-    public Dot withRadius(final DrawingLength radius)
+    public Dot withRadius(DrawingLength radius)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.radius = radius;
         return copy;
     }
 
     @Override
-    public Dot withStyle(final Style style)
+    public Dot withStyle(Style style)
     {
         return (Dot) super.withStyle(style);
     }
 
     @Override
-    public Dot withTextColor(final Color color)
+    public Dot withTextColor(Color color)
     {
         return (Dot) super.withTextColor(color);
     }

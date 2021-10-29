@@ -39,11 +39,11 @@ public class HeaderPanel extends Panel
      * @param version Project version
      * @param title Header title
      */
-    public HeaderPanel(final String id, final Version version, final String title)
+    public HeaderPanel(String id, Version version, String title)
     {
         super(id);
         add(new Label("title", title));
-        final var icon = new Image("icon",
+        var icon = new Image("icon",
                 new PackageResourceReference(getClass(), "kivakit-48.png"),
                 new PackageResourceReference(getClass(), "kivakit-48-2x.png"));
         icon.setXValues("2x");

@@ -29,8 +29,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
  * <p>
  * For most applications, it isn't necessary (or desirable) to directly subclass {@link Microservlet}. Instead a ({@link
  * MicroservletRequest} request handler should be mounted directly on a {@link MicroserviceRestService} with the {@link
- * MicroserviceRestService#mount(String, HttpMethod, Class)} or {@link MicroserviceRestService#mount(String, HttpMethod,
- * Microservlet)} method.
+ * MicroserviceRestService#mount(String, HttpMethod, Class)}.
  * </p>
  *
  * @author jonathanl (shibo)
@@ -55,7 +54,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      * @param requestType The request type
      * @param responseType The response type
      */
-    public Microservlet(final Class<? extends Request> requestType, final Class<? extends Response> responseType)
+    public Microservlet(Class<? extends Request> requestType, Class<? extends Response> responseType)
     {
         this.requestType = ensureNotNull(requestType);
         this.responseType = ensureNotNull(responseType);
@@ -78,13 +77,13 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * This method is unsupported unless overridden
      */
-    public Response onRequest(final Request request)
+    public Response onRequest(Request request)
     {
         return unsupported("Microservlet has no request handling implementation", objectName());
     }
 
     @SuppressWarnings("unchecked")
-    public Response request(final MicroservletRequest request)
+    public Response request(MicroservletRequest request)
     {
         return onRequest((Request) request);
     }
@@ -108,7 +107,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as an int
      */
-    protected int asInt(final String key)
+    protected int asInt(String key)
     {
         return parameters().asInt(key);
     }
@@ -116,7 +115,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as a long
      */
-    protected long asLong(final String key)
+    protected long asLong(String key)
     {
         return parameters().asLong(key);
     }
@@ -124,7 +123,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as an object
      */
-    protected <T> T asObject(final String key, final Converter<String, T> converter)
+    protected <T> T asObject(String key, Converter<String, T> converter)
     {
         return converter.convert(get(key));
     }
@@ -132,17 +131,17 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key as an object
      */
-    protected <T> T asObject(final String key, final Class<Converter<String, T>> converterType)
+    protected <T> T asObject(String key, Class<Converter<String, T>> converterType)
     {
         try
         {
-            final var converter = listenTo(converterType
+            var converter = listenTo(converterType
                     .getConstructor(Listener.class)
                     .newInstance(this));
 
             return asObject(key, converter);
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             problem("Couldn't construct converter: $", converterType);
             return null;
@@ -152,7 +151,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * @return The parameter value for the given key
      */
-    protected String get(final String key)
+    protected String get(String key)
     {
         return parameters().get(key);
     }

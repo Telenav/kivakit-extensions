@@ -97,11 +97,11 @@ public class MicroserviceRestClient extends BaseComponent
         var post = new HttpPostResource(networkLocation(path), NetworkAccessConstraints.DEFAULT)
         {
             @Override
-            protected void onInitialize(final HttpPost post)
+            protected void onInitialize(HttpPost post)
             {
                 try
                 {
-                    final var entity = new StringEntity(request == null ? "{}" : gsonFactory.newInstance().toJson(request));
+                    var entity = new StringEntity(request == null ? "{}" : gsonFactory.newInstance().toJson(request));
                     entity.setContentType("application/json");
                     post.setEntity(entity);
                     post.setHeader("Accept", "application/json");
@@ -121,7 +121,7 @@ public class MicroserviceRestClient extends BaseComponent
         return version;
     }
 
-    private <T> T fromJson(final BaseHttpResource resource, final Class<T> type)
+    private <T> T fromJson(BaseHttpResource resource, Class<T> type)
     {
         // Execute the request and read the status code
         var status = resource.status();
@@ -165,7 +165,7 @@ public class MicroserviceRestClient extends BaseComponent
     {
         if ("application/json".equals(resource.contentType()))
         {
-            final String json = resource.reader().string();
+            String json = resource.reader().string();
             if (!Strings.isEmpty(json))
             {
                 return gsonFactory.newInstance().fromJson(json, type);

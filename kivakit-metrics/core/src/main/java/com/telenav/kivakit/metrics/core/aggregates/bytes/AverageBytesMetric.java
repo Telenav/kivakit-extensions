@@ -10,25 +10,25 @@ public class AverageBytesMetric extends AverageMetric<Bytes>
         super(Bytes::bytes);
     }
 
-    public AverageBytesMetric description(final String description)
+    public AverageBytesMetric description(String description)
     {
         return (AverageBytesMetric) super.description(description);
     }
 
     @Override
-    public AverageBytesMetric name(final String name)
+    public AverageBytesMetric name(String name)
     {
         return (AverageBytesMetric) super.name(name);
     }
 
     @Override
-    public AverageBytesMetric type(final MetricType type)
+    public AverageBytesMetric type(MetricType type)
     {
         return (AverageBytesMetric) super.type(type);
     }
 
     @Override
-    public AverageBytesMetric unit(final String unit)
+    public AverageBytesMetric unit(String unit)
     {
         return (AverageBytesMetric) super.unit(unit);
     }

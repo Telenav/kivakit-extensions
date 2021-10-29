@@ -28,7 +28,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @UmlClassDiagram(diagram = DiagramPrimitiveList.class)
 public abstract class PrimitiveListStore extends PrimitiveCollection
 {
-    public PrimitiveListStore(final String objectName)
+    public PrimitiveListStore(String objectName)
     {
         super(objectName);
     }

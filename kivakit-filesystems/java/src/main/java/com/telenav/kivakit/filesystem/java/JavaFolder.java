@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class JavaFolder extends JavaFileSystemObject implements FolderService
 {
-    public JavaFolder(final FilePath path)
+    public JavaFolder(FilePath path)
     {
         super(path);
     }
@@ -64,7 +64,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public List<FileService> files()
     {
-        final var files = new ArrayList<FileService>();
+        var files = new ArrayList<FileService>();
         for (var at : Nio.filesAndFolders(this, javaPath()))
         {
             if (!Files.isDirectory(at))
@@ -92,10 +92,10 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public List<FolderService> folders()
     {
-        final var folders = new ArrayList<FolderService>();
+        var folders = new ArrayList<FolderService>();
         for (var at : Nio.filesAndFolders(this, javaPath()))
         {
-            if (Files.isDirectory(at) || at.equals("/"))
+            if (Files.isDirectory(at) || at.toString().equals("/"))
             {
                 folders.add(folder(fileName(at)));
             }
@@ -112,7 +112,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public List<FileService> nestedFiles(Matcher<FilePath> matcher)
     {
-        final var files = new ArrayList<FileService>();
+        var files = new ArrayList<FileService>();
         try
         {
             Files.walk(javaPath())
@@ -137,7 +137,7 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @Override
     public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
     {
-        final var folders = new ArrayList<FolderService>();
+        var folders = new ArrayList<FolderService>();
         try
         {
             Files.walk(javaPath())
@@ -165,9 +165,8 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     }
 
     @NotNull
-    private FileName fileName(final Path at)
+    private FileName fileName(Path at)
     {
         return FileName.parse(at.getFileName().toString());
     }
 }
-

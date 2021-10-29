@@ -1,23 +1,24 @@
 package com.telenav.kivakit.ui.desktop.layout;
 
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.JComponent;
 
 /**
  * @author jonathanl (shibo)
  */
 public class Layouts
 {
-    public static Box leftJustify(final JComponent component)
+    public static Box leftJustify(JComponent component)
     {
-        final Box box = Box.createHorizontalBox();
+        Box box = Box.createHorizontalBox();
         box.add(component);
         box.add(Box.createHorizontalGlue());
         return box;
     }
 
-    public static Box rightJustify(final JComponent component)
+    public static Box rightJustify(JComponent component)
     {
-        final Box box = Box.createHorizontalBox();
+        Box box = Box.createHorizontalBox();
         box.add(Box.createHorizontalGlue());
         box.add(component);
         return box;

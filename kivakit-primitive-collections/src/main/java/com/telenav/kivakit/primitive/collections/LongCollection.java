@@ -69,9 +69,9 @@ public interface LongCollection extends LongIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default boolean addAll(final long[] that)
+    default boolean addAll(long[] that)
     {
-        for (final var value : that)
+        for (var value : that)
         {
             if (!add(value))
             {
@@ -84,9 +84,9 @@ public interface LongCollection extends LongIterable, Sized, NamedObject
     /**
      * Adds the given quantizable values
      */
-    default void addAll(final List<? extends Quantizable> values)
+    default void addAll(List<? extends Quantizable> values)
     {
-        for (final Quantizable value : values)
+        for (Quantizable value : values)
         {
             if (value != null)
             {
@@ -98,9 +98,9 @@ public interface LongCollection extends LongIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default boolean addAll(final LongCollection that)
+    default boolean addAll(LongCollection that)
     {
-        final var iterator = that.iterator();
+        var iterator = that.iterator();
         while (iterator.hasNext())
         {
             if (!add(iterator.next()))
@@ -123,7 +123,7 @@ public interface LongCollection extends LongIterable, Sized, NamedObject
      * @return True if this collection contains the given value. Some collections may choose not to implement this
      * method if the search is too inefficient.
      */
-    default boolean contains(final long value)
+    default boolean contains(long value)
     {
         return unsupported();
     }
@@ -131,9 +131,9 @@ public interface LongCollection extends LongIterable, Sized, NamedObject
     /**
      * @return True if this collection contains all the values in the given collection
      */
-    default boolean containsAll(final LongCollection that)
+    default boolean containsAll(LongCollection that)
     {
-        final var values = that.iterator();
+        var values = that.iterator();
         while (values.hasNext())
         {
             if (!contains(values.next()))
@@ -169,7 +169,7 @@ public interface LongCollection extends LongIterable, Sized, NamedObject
      *
      * @return True if the value was removed
      */
-    default boolean remove(final long value)
+    default boolean remove(long value)
     {
         return unsupported();
     }

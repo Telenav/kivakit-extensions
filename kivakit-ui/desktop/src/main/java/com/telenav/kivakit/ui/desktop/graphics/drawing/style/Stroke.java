@@ -62,7 +62,7 @@ public class Stroke
         return new Stroke();
     }
 
-    public static Stroke stroke(final java.awt.Stroke stroke)
+    public static Stroke stroke(java.awt.Stroke stroke)
     {
         return new Stroke(stroke);
     }
@@ -90,12 +90,12 @@ public class Stroke
     {
     }
 
-    protected Stroke(final java.awt.Stroke stroke)
+    protected Stroke(java.awt.Stroke stroke)
     {
         this.stroke = stroke;
     }
 
-    protected Stroke(final Stroke that)
+    protected Stroke(Stroke that)
     {
         stroke = that.stroke;
         width = that.width;
@@ -106,7 +106,7 @@ public class Stroke
         dashPhase = that.dashPhase;
     }
 
-    public void apply(final Graphics2D graphics)
+    public void apply(Graphics2D graphics)
     {
         graphics.setStroke(awtStroke());
     }
@@ -116,17 +116,17 @@ public class Stroke
         return new Stroke(this);
     }
 
-    public Stroke scale(final double scaleFactor)
+    public Stroke scale(double scaleFactor)
     {
         return withWidth(width().scaledBy(scaleFactor));
     }
 
-    public Stroke scale(final Percent scaleFactor)
+    public Stroke scale(Percent scaleFactor)
     {
         return withWidth(width().scaledBy(scaleFactor));
     }
 
-    public Shape stroked(final Shape shape)
+    public Shape stroked(Shape shape)
     {
         return awtStroke().createStrokedShape(shape);
     }
@@ -142,49 +142,49 @@ public class Stroke
         return width;
     }
 
-    public Stroke withCap(final int cap)
+    public Stroke withCap(int cap)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.stroke = null;
         copy.cap = cap;
         return copy;
     }
 
-    public Stroke withDash(final float[] dash)
+    public Stroke withDash(float[] dash)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.stroke = null;
         copy.dash = dash;
         return copy;
     }
 
-    public Stroke withDashPhase(final float dash)
+    public Stroke withDashPhase(float dash)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.stroke = null;
         copy.dashPhase = dashPhase;
         return copy;
     }
 
-    public Stroke withJoin(final int join)
+    public Stroke withJoin(int join)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.stroke = null;
         copy.join = join;
         return copy;
     }
 
-    public Stroke withMiterLimit(final int miterLimit)
+    public Stroke withMiterLimit(int miterLimit)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.stroke = null;
         copy.miterLimit = miterLimit;
         return copy;
     }
 
-    public Stroke withWidth(final DrawingWidth width)
+    public Stroke withWidth(DrawingWidth width)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.stroke = null;
         copy.width = width;
         return copy;

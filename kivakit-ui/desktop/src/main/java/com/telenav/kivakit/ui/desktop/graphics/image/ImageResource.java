@@ -3,7 +3,7 @@ package com.telenav.kivakit.ui.desktop.graphics.image;
 import com.telenav.kivakit.resource.resources.packaged.PackageResource;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Image;
 import java.io.IOException;
 
 /**
@@ -11,36 +11,36 @@ import java.io.IOException;
  */
 public class ImageResource
 {
-    public static ImageResource of(final PackageResource resource)
+    public static ImageResource of(PackageResource resource)
     {
         return new ImageResource(resource);
     }
 
-    public static ImageResource of(final Class<?> type, final String path)
+    public static ImageResource of(Class<?> type, String path)
     {
         return of(PackageResource.of(type, path));
     }
 
     private final PackageResource resource;
 
-    public ImageResource(final PackageResource resource)
+    public ImageResource(PackageResource resource)
     {
         this.resource = resource;
     }
 
     public Image image()
     {
-        try (final var input = resource.openForReading())
+        try (var input = resource.openForReading())
         {
             return ImageIO.read(input);
         }
-        catch (final IOException ignored)
+        catch (IOException ignored)
         {
             return null;
         }
     }
 
-    public Image image(final int width, final int height)
+    public Image image(int width, int height)
     {
         return image().getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }

@@ -60,12 +60,12 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
     /** The child sets */
     private LongSet[] children;
 
-    public SplitLongSet(final String objectName)
+    public SplitLongSet(String objectName)
     {
         super(objectName);
     }
 
-    protected SplitLongSet()
+    private SplitLongSet()
     {
     }
 
@@ -73,7 +73,7 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
      * Stores the given value under the given value
      */
     @Override
-    public boolean add(final long value)
+    public boolean add(long value)
     {
         if (set(value).add(value))
         {
@@ -87,7 +87,7 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
     public Count capacity()
     {
         var capacity = 0;
-        for (final var child : children)
+        for (var child : children)
         {
             if (child != null)
             {
@@ -108,7 +108,7 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
      * @return True if this set contains the value
      */
     @Override
-    public boolean contains(final long value)
+    public boolean contains(long value)
     {
         if (isEmpty())
         {
@@ -124,16 +124,16 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof SplitLongSet)
         {
-            final var that = (SplitLongSet) object;
+            var that = (SplitLongSet) object;
             if (size() != that.size())
             {
                 return false;
             }
-            final var values = values();
+            var values = values();
             while (values.hasNext())
             {
                 if (!that.contains(values.next()))
@@ -174,9 +174,9 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
     }
 
     @Override
-    public Method onCompress(final Method method)
+    public Method onCompress(Method method)
     {
-        for (final var child : children)
+        for (var child : children)
         {
             if (child != null)
             {
@@ -187,10 +187,20 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+        children = new LongSet[initialChildCountAsInt()];
+    }
+
+    /**
      * @see KryoSerializable
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         children = kryo.readObject(input, LongSet[].class);
@@ -201,7 +211,7 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
      *
      * @return True if the value was removed and false if it could not be found
      */
-    public boolean remove(final long value)
+    public boolean remove(long value)
     {
         if (set(value).remove(value))
         {
@@ -226,7 +236,7 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
      */
     public LongIterator values()
     {
-        final var outer = this;
+        var outer = this;
         return new LongIterator()
         {
             private int childIndex;
@@ -243,7 +253,7 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
                 values = null;
                 while (values == null && childIndex < outer.children.length)
                 {
-                    final var next = outer.children[childIndex++];
+                    var next = outer.children[childIndex++];
                     if (next != null && !next.isEmpty())
                     {
                         values = next.values();
@@ -265,41 +275,31 @@ public final class SplitLongSet extends PrimitiveSet implements LongIterable
      * @see KryoSerializable
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
         kryo.writeObject(output, children);
     }
 
     @Override
-    protected final void copyEntries(final PrimitiveMap that, final ProgressReporter reporter)
+    protected void copyEntries(PrimitiveMap that, ProgressReporter reporter)
     {
         unsupported();
     }
 
     @Override
-    protected final PrimitiveMap newMap()
+    protected PrimitiveMap newMap()
     {
         return unsupported();
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        children = new LongSet[initialChildCountAsInt()];
-    }
-
-    /**
      * @return The submap for the given value
      */
-    private LongSet set(final long value)
+    private LongSet set(long value)
     {
         // Get the child index
-        final var childIndex = hash(value) % children.length;
+        var childIndex = hash(value) % children.length;
 
         // and if there's no child
         var child = children[childIndex];

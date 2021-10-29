@@ -57,18 +57,18 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     /** Java NIO path on the given filesystem */
     private Path path;
 
-    public JavaFileSystemObject(final FilePath path)
+    public JavaFileSystemObject(FilePath path)
     {
         super(path);
 
-        final var pathString = path.toString();
+        var pathString = path.toString();
         if (pathString.contains("!/"))
         {
-            final String head = Paths.head(pathString, "!/");
-            final String tail = Paths.tail(pathString, "!/");
+            String head = Paths.head(pathString, "!/");
+            String tail = Paths.tail(pathString, "!/");
 
             var uri = URI.create(head);
-            this.filesystem = Nio.filesystem(Listener.none(), uri);
+            filesystem = Nio.filesystem(Listener.none(), uri);
             if (filesystem != null)
             {
                 this.path = filesystem.getPath(tail);
@@ -81,7 +81,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             {
                 // until we find a filesystem.
                 var uri = URI.create(at.toString());
-                this.filesystem = Nio.filesystem(Listener.none(), uri);
+                filesystem = Nio.filesystem(Listener.none(), uri);
                 if (filesystem != null)
                 {
                     this.path = path().last(path().size() - at.size()).withoutSchemes().asJavaPath();
@@ -90,7 +90,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             }
         }
 
-        ensureNotNull(this.filesystem, "Not a valid Java filesystem");
+        ensureNotNull(filesystem, "Not a valid Java filesystem");
     }
 
     @Override
@@ -154,7 +154,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
 
     public Path javaPath()
     {
-        return filesystem.getPath(this.path.toString()).toAbsolutePath();
+        return filesystem.getPath(path.toString()).toAbsolutePath();
     }
 
     @Override

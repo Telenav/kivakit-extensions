@@ -15,7 +15,7 @@ public class HorizontalSeparator extends KivaKitPanel
         this(KivaKitTheme.get().colorSeparator());
     }
 
-    public HorizontalSeparator(final Color color)
+    public HorizontalSeparator(Color color)
     {
         color.applyAsBackground(this);
         Size.heightOf(1).preferred(this);

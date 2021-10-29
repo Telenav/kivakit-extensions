@@ -56,7 +56,7 @@ public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             ensureEqual(a, b);
             b.put(99, (byte) -1);
@@ -69,7 +69,7 @@ public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             ensureEqual(a, b);
             b.compress(Method.FREEZE);
@@ -77,7 +77,7 @@ public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
         });
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             putAll(b, keys, values);
             ensureEqual(a, b);
@@ -101,11 +101,11 @@ public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((map, keys, values) ->
         {
-            final var iterator = map.keys();
+            var iterator = map.keys();
             var count = 0;
             while (iterator.hasNext())
             {
-                final var key = iterator.next();
+                var key = iterator.next();
                 ensure((map.containsKey(key)));
                 count++;
             }
@@ -119,8 +119,8 @@ public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
         withPopulatedMap((map, keys, values) ->
                 keys.forEach(key ->
                 {
-                    final var size = map.size();
-                    final var exists = map.containsKey(key);
+                    var size = map.size();
+                    var exists = map.containsKey(key);
                     map.remove(key);
                     ensure(map.isEmpty(map.get(key)));
                     if (exists)
@@ -141,12 +141,12 @@ public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((map, keys, values) ->
         {
-            final var iterator = map.values();
+            var iterator = map.values();
             var count = 0;
-            final var valueSet = new HashSet<>(values);
+            var valueSet = new HashSet<>(values);
             while (iterator.hasNext())
             {
-                final var value = iterator.next();
+                var value = iterator.next();
                 ensure((valueSet.contains(value)));
                 count++;
             }
@@ -156,24 +156,24 @@ public class SplitLongToByteMapTest extends PrimitiveCollectionsUnitTest
 
     private SplitLongToByteMap map()
     {
-        final var map = new SplitLongToByteMap("test");
+        var map = new SplitLongToByteMap("test");
         map.nullLong(Long.MIN_VALUE);
         map.nullByte(Byte.MIN_VALUE);
         map.initialize();
         return map;
     }
 
-    private void putAll(final SplitLongToByteMap map, final List<Long> keys, final List<Byte> values)
+    private void putAll(SplitLongToByteMap map, List<Long> keys, List<Byte> values)
     {
         resetIndex();
         keys.forEach(key -> map.put(key, values.get(nextIndex())));
     }
 
-    private void withPopulatedMap(final MapTest test)
+    private void withPopulatedMap(MapTest test)
     {
-        final var map = map();
-        final var keys = randomLongList(Repeats.NO_REPEATS);
-        final var values = randomByteList(Repeats.ALLOW_REPEATS);
+        var map = map();
+        var keys = randomLongList(Repeats.NO_REPEATS);
+        var values = randomByteList(Repeats.ALLOW_REPEATS);
         putAll(map, keys, values);
         test.test(map, keys, values);
     }

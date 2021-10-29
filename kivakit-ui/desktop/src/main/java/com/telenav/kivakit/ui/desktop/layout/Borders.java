@@ -16,7 +16,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
  */
 public class Borders
 {
-    public static void applyMargin(final JComponent component, final int size)
+    public static void applyMargin(JComponent component, int size)
     {
         Borders.insideMarginsOf(Margins.of(8)).apply(component);
     }
@@ -26,7 +26,7 @@ public class Borders
         return new Borders();
     }
 
-    public static Borders insideMarginsOf(final Margins margins)
+    public static Borders insideMarginsOf(Margins margins)
     {
         return create().insideMargins(margins);
     }
@@ -36,12 +36,12 @@ public class Borders
         return create().line(KivaKitTheme.get().colorBorder());
     }
 
-    public static Borders lineOf(final Color color)
+    public static Borders lineOf(Color color)
     {
         return create().line(color);
     }
 
-    public static Borders outsideMarginsOf(final Margins margins)
+    public static Borders outsideMarginsOf(Margins margins)
     {
         return create().insideMargins(margins);
     }
@@ -56,9 +56,9 @@ public class Borders
     {
     }
 
-    public Border apply(final JComponent component)
+    public Border apply(JComponent component)
     {
-        final var borders = new ArrayList<Border>();
+        var borders = new ArrayList<Border>();
         if (inside != null)
         {
             borders.add(inside.border());
@@ -88,19 +88,19 @@ public class Borders
         }
     }
 
-    public Borders insideMargins(final Margins inside)
+    public Borders insideMargins(Margins inside)
     {
         this.inside = inside;
         return this;
     }
 
-    public Borders line(final Color color)
+    public Borders line(Color color)
     {
         this.color = color;
         return this;
     }
 
-    public Borders outsideMargins(final Margins outside)
+    public Borders outsideMargins(Margins outside)
     {
         this.outside = outside;
         return this;

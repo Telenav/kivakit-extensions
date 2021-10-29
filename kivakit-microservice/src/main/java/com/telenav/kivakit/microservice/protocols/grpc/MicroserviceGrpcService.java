@@ -49,7 +49,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     public MicroserviceGrpcService(Microservice microservice)
     {
         this.microservice = microservice;
-        this.responder = listenTo(new MicroservletGrpcResponder());
+        responder = listenTo(new MicroservletGrpcResponder());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * @param requestHandlerType The type of the request handler
      */
     @UmlRelation(label = "mounts", referent = Microservlet.class)
-    public void mount(final String path, final Class<? extends MicroservletRequestHandler> requestHandlerType)
+    public void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType)
     {
         // If we're in the onInitialize() method,
         if (mountAllowed)
@@ -117,7 +117,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     {
         information("Starting GRPC server");
 
-        final int port = microservice.settings().grpcPort();
+        int port = microservice.settings().grpcPort();
 
         server = ServerBuilder.forPort(port)
                 .addService(responder)
@@ -138,7 +138,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void stop(final Duration wait)
+    public void stop(Duration wait)
     {
         if (server != null)
         {

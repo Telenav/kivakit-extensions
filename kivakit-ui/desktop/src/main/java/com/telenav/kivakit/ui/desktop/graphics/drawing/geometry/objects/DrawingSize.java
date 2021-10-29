@@ -36,12 +36,12 @@ import static com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.DrawingCo
  */
 public class DrawingSize extends DrawingObject
 {
-    public static DrawingSize pixels(final double width, final double height)
+    public static DrawingSize pixels(double width, double height)
     {
         return size(PIXELS, width, height);
     }
 
-    public static DrawingSize size(final Coordinated coordinates, final double width, final double height)
+    public static DrawingSize size(Coordinated coordinates, double width, double height)
     {
         return new DrawingSize(coordinates, width, height);
     }
@@ -50,7 +50,7 @@ public class DrawingSize extends DrawingObject
 
     private final double height;
 
-    protected DrawingSize(final Coordinated coordinates, final double width, final double height)
+    protected DrawingSize(Coordinated coordinates, double width, double height)
     {
         super(coordinates);
         this.width = width;
@@ -67,9 +67,9 @@ public class DrawingSize extends DrawingObject
         return rectangle(0, 0, width, height);
     }
 
-    public DrawingRectangle centeredIn(final DrawingRectangle that)
+    public DrawingRectangle centeredIn(DrawingRectangle that)
     {
-        final var rectangle = toCoordinates(that);
+        var rectangle = toCoordinates(that);
         return rectangle
                 .topLeft()
                 .plus(rectangle.size().minus(this).times(0.5))
@@ -86,20 +86,20 @@ public class DrawingSize extends DrawingObject
         return height;
     }
 
-    public DrawingSize minus(final DrawingSize that)
+    public DrawingSize minus(DrawingSize that)
     {
-        final var size = toCoordinates(that);
+        var size = toCoordinates(that);
         return withSize(widthInUnits() - size.widthInUnits(), heightInUnits() - size.heightInUnits());
     }
 
-    public DrawingSize plus(final double width, final double height)
+    public DrawingSize plus(double width, double height)
     {
         return withSize(this.width + width, this.height + height);
     }
 
-    public DrawingSize plus(final DrawingSize that)
+    public DrawingSize plus(DrawingSize that)
     {
-        final var size = toCoordinates(that);
+        var size = toCoordinates(that);
         return withSize(width + size.width, height + size.height);
     }
 
@@ -108,22 +108,22 @@ public class DrawingSize extends DrawingObject
         return size(Math.round(width), Math.round(height));
     }
 
-    public DrawingSize scaledBy(final double scaleFactor)
+    public DrawingSize scaledBy(double scaleFactor)
     {
         return withSize(width * scaleFactor, height * scaleFactor);
     }
 
-    public DrawingSize scaledBy(final Percent percent)
+    public DrawingSize scaledBy(Percent percent)
     {
         return withSize(percent.scale(width), percent.scale(height));
     }
 
-    public DrawingSize times(final double scaleFactor)
+    public DrawingSize times(double scaleFactor)
     {
         return withSize(widthInUnits() * scaleFactor, heightInUnits() * scaleFactor);
     }
 
-    public DrawingSize toCoordinates(final Coordinated that)
+    public DrawingSize toCoordinates(Coordinated that)
     {
         return coordinates().toCoordinates(that, this);
     }
@@ -144,17 +144,17 @@ public class DrawingSize extends DrawingObject
         return width;
     }
 
-    public DrawingSize withHeight(final double height)
+    public DrawingSize withHeight(double height)
     {
         return size(width, height);
     }
 
-    public DrawingSize withSize(final double width, final double height)
+    public DrawingSize withSize(double width, double height)
     {
         return size(width, height);
     }
 
-    public DrawingSize withWidth(final double width)
+    public DrawingSize withWidth(double width)
     {
         return size(width, height);
     }

@@ -21,7 +21,7 @@ import java.util.Map;
 public class PrometheusMetricsReporter extends BaseComponent implements MetricsReporter
 {
     /** Collectors (gauges, counters and histograms) for each metric by name */
-    private Map<String, SimpleCollector<?>> collectors = new HashMap<>();
+    private final Map<String, SimpleCollector<?>> collectors = new HashMap<>();
 
     public PrometheusMetricsReporter(Listener listener)
     {
@@ -53,7 +53,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
         }
     }
 
-    private void count(final Metric<?> metric, Counter counter)
+    private void count(Metric<?> metric, Counter counter)
     {
         if (counter == null)
         {
@@ -69,7 +69,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
         counter.inc(metric.quantum());
     }
 
-    private void histogram(final Metric<?> metric, Histogram histogram)
+    private void histogram(Metric<?> metric, Histogram histogram)
     {
         if (histogram == null)
         {
@@ -85,7 +85,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
         histogram.observe(metric.doubleQuantum());
     }
 
-    private void level(final Metric<?> metric, Gauge gauge)
+    private void level(Metric<?> metric, Gauge gauge)
     {
         if (gauge == null)
         {

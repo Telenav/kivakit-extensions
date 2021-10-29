@@ -27,7 +27,7 @@ public class MicroservletRequestStatistics
         end = Time.now();
     }
 
-    public void path(final String path)
+    public void path(String path)
     {
         this.path = path;
     }

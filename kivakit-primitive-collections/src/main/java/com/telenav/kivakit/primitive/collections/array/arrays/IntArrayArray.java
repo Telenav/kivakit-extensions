@@ -54,12 +54,12 @@ public final class IntArrayArray extends PrimitiveArrayArray
 
     private IntArray store;
 
-    public IntArrayArray(final String objectName)
+    public IntArrayArray(String objectName)
     {
         super(objectName);
     }
 
-    protected IntArrayArray()
+    private IntArrayArray()
     {
     }
 
@@ -70,7 +70,7 @@ public final class IntArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final IntIterable values)
+    public int add(IntIterable values)
     {
         return add(values.iterator());
     }
@@ -82,11 +82,11 @@ public final class IntArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final int[] values)
+    public int add(int[] values)
     {
         assert ensureHasRoomFor(1);
 
-        final var index = store.size();
+        var index = store.size();
         indexes.add(index);
         sizes.add(values.length);
         store.addAll(values);
@@ -101,11 +101,11 @@ public final class IntArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final IntIterator values)
+    public int add(IntIterator values)
     {
         assert ensureHasRoomFor(1);
 
-        final var index = store.size();
+        var index = store.size();
         indexes.add(index);
 
         // Add all the values to the store
@@ -124,11 +124,11 @@ public final class IntArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof IntArrayArray)
         {
-            final var that = (IntArrayArray) object;
+            var that = (IntArrayArray) object;
             return Objects.equalPairs(indexes, that.indexes, sizes, that.sizes, store, that.store);
         }
         return false;
@@ -137,7 +137,7 @@ public final class IntArrayArray extends PrimitiveArrayArray
     /**
      * @return The int array for the given identifier
      */
-    public IntArray get(final int identifier)
+    public IntArray get(int identifier)
     {
         return store.subArray(indexes.get(identifier), sizes.get(identifier));
     }
@@ -154,13 +154,13 @@ public final class IntArrayArray extends PrimitiveArrayArray
     /**
      * @return The size of the identified array
      */
-    public int length(final int identifier)
+    public int length(int identifier)
     {
         return sizes.get(identifier);
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         indexes.compress(method);
         sizes.compress(method);
@@ -191,7 +191,7 @@ public final class IntArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -213,7 +213,7 @@ public final class IntArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 

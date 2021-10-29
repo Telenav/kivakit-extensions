@@ -2,7 +2,7 @@ package com.telenav.kivakit.ui.desktop.component.panel.stretch;
 
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
 
-import java.awt.*;
+import java.awt.GridLayout;
 
 /**
  * @author jonathanl (shibo)

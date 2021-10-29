@@ -54,7 +54,7 @@ public class DiscoverServicesResponse extends BaseResponse<Set<Service>>
         return Sets.first(services);
     }
 
-    public DiscoverServicesResponse services(final Set<Service> services)
+    public DiscoverServicesResponse services(Set<Service> services)
     {
         this.services = services;
         return this;
@@ -73,7 +73,7 @@ public class DiscoverServicesResponse extends BaseResponse<Set<Service>>
     }
 
     @Override
-    protected void value(final Set<Service> value)
+    protected void value(Set<Service> value)
     {
         services = value;
     }

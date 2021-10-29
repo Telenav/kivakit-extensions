@@ -68,7 +68,7 @@ public interface ServiceRegistry extends ComponentMixin
      * Adds or updates registration information and renews the lease for the given service.
      */
     @NotNull
-    Result<Boolean> addOrUpdate(final Service service);
+    Result<Boolean> addOrUpdate(Service service);
 
     /**
      * @return All applications that have registered a service
@@ -81,11 +81,11 @@ public interface ServiceRegistry extends ComponentMixin
      */
     default Result<Set<Host>> discoverHosts()
     {
-        final var result = new Result<Set<Host>>();
-        final var services = discoverServices();
+        var result = new Result<Set<Host>>();
+        var services = discoverServices();
         if (services.succeeded())
         {
-            final var hosts = new HashSet<Host>();
+            var hosts = new HashSet<Host>();
             services.get().forEach(service -> hosts.add(service.port().host()));
             result.set(hosts);
             return result;
@@ -153,7 +153,7 @@ public interface ServiceRegistry extends ComponentMixin
      * @return The registered service, bound to a port
      */
     default @NotNull
-    Result<Service> register(final Service service)
+    Result<Service> register(Service service)
     {
         return unsupported();
     }
@@ -167,7 +167,7 @@ public interface ServiceRegistry extends ComponentMixin
      * </p>
      */
     default @NotNull
-    Result<Service> renew(final Service service)
+    Result<Service> renew(Service service)
     {
         return unsupported();
     }

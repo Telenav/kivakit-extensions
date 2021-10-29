@@ -2,7 +2,8 @@ package com.telenav.kivakit.ui.desktop.model;
 
 import com.telenav.kivakit.kernel.language.threading.locks.ReadWriteLock;
 
-import javax.swing.*;
+import javax.swing.AbstractListModel;
+import javax.swing.MutableComboBoxModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,12 +33,12 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
      *
      * @param items an array of Object objects
      */
-    public RefreshableComboBoxModel(final E[] items)
+    public RefreshableComboBoxModel(E[] items)
     {
         this.items = new ArrayList<>(items.length);
 
         int i;
-        final int c;
+        int c;
         for (i = 0, c = items.length; i < c; i++)
         {
             this.items.add(items[i]);
@@ -54,7 +55,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
      *
      * @param v a Vector object ...
      */
-    public RefreshableComboBoxModel(final ArrayList<E> v)
+    public RefreshableComboBoxModel(ArrayList<E> v)
     {
         items = v;
 
@@ -70,7 +71,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
      * @param c the collection which contains the elements to add
      * @throws NullPointerException if {@code c} is null
      */
-    public void addAll(final Collection<? extends E> c)
+    public void addAll(Collection<? extends E> c)
     {
         lock.write(() ->
         {
@@ -79,7 +80,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
                 return;
             }
 
-            final int startIndex = getSize();
+            int startIndex = getSize();
 
             items.addAll(c);
             fireIntervalAdded(this, startIndex, getSize() - 1);
@@ -97,7 +98,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
      * currently held
      * @throws NullPointerException if {@code c} is null
      */
-    public void addAll(final int index, final Collection<? extends E> c)
+    public void addAll(int index, Collection<? extends E> c)
     {
         lock.write(() ->
         {
@@ -119,7 +120,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
 
     // implements javax.swing.MutableComboBoxModel
     @Override
-    public void addElement(final E anObject)
+    public void addElement(E anObject)
     {
         lock.write(() ->
         {
@@ -134,7 +135,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
 
     // implements javax.swing.ListModel
     @Override
-    public E getElementAt(final int index)
+    public E getElementAt(int index)
     {
         return lock.read(() ->
         {
@@ -156,7 +157,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
      * @return an int representing the index position, where 0 is the first position
      */
     @SuppressWarnings("SuspiciousMethodCalls")
-    public int getIndexOf(final Object anObject)
+    public int getIndexOf(Object anObject)
     {
         return lock.read(() -> items.indexOf(anObject));
     }
@@ -177,7 +178,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
 
     // implements javax.swing.MutableComboBoxModel
     @Override
-    public void insertElementAt(final E anObject, final int index)
+    public void insertElementAt(E anObject, int index)
     {
         lock.write(() ->
         {
@@ -189,13 +190,13 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
     /**
      * Updates model without changing selection, if possible
      */
-    public void refresh(final List<E> items, final E defaultSelection)
+    public void refresh(List<E> items, E defaultSelection)
     {
         lock.write(() ->
         {
             if (!items.isEmpty())
             {
-                final var selectedBefore = selected;
+                var selectedBefore = selected;
                 removeAllElements();
                 addAll(items);
                 if (this.items.contains(selectedBefore))
@@ -220,7 +221,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
             if (items.size() > 0)
             {
                 final int firstIndex = 0;
-                final int lastIndex = items.size() - 1;
+                int lastIndex = items.size() - 1;
                 items.clear();
                 selected = null;
                 fireIntervalRemoved(this, firstIndex, lastIndex);
@@ -235,11 +236,11 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
     // implements javax.swing.MutableComboBoxModel
     @SuppressWarnings("SuspiciousMethodCalls")
     @Override
-    public void removeElement(final Object anObject)
+    public void removeElement(Object anObject)
     {
         lock.write(() ->
         {
-            final int index = items.indexOf(anObject);
+            int index = items.indexOf(anObject);
             if (index != -1)
             {
                 removeElementAt(index);
@@ -249,7 +250,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
 
     // implements javax.swing.MutableComboBoxModel
     @Override
-    public void removeElementAt(final int index)
+    public void removeElementAt(int index)
     {
         lock.write(() ->
         {
@@ -278,7 +279,7 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void setSelectedItem(final Object anObject)
+    public void setSelectedItem(Object anObject)
     {
         lock.write(() ->
         {
@@ -291,4 +292,3 @@ public class RefreshableComboBoxModel<E> extends AbstractListModel<E> implements
         });
     }
 }
-

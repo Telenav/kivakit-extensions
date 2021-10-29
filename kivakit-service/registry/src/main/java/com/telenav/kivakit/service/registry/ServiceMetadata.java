@@ -76,13 +76,13 @@ public class ServiceMetadata
         return contactEmail;
     }
 
-    public ServiceMetadata contactEmail(final EmailAddress contactEmail)
+    public ServiceMetadata contactEmail(EmailAddress contactEmail)
     {
         this.contactEmail = contactEmail;
         return this;
     }
 
-    public ServiceMetadata description(final String description)
+    public ServiceMetadata description(String description)
     {
         this.description = description;
         return this;
@@ -94,7 +94,7 @@ public class ServiceMetadata
         return description;
     }
 
-    public ServiceMetadata kivakitVersion(final Version version)
+    public ServiceMetadata kivakitVersion(Version version)
     {
         kivakitVersion = version;
         return this;
@@ -110,7 +110,7 @@ public class ServiceMetadata
         return version;
     }
 
-    public ServiceMetadata version(final Version version)
+    public ServiceMetadata version(Version version)
     {
         this.version = version;
         return this;

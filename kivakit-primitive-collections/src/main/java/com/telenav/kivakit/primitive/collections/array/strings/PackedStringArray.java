@@ -65,7 +65,7 @@ public class PackedStringArray extends PrimitiveArray
         ASCII,
         UNICODE;
 
-        public static Type forIdentifier(final int identifier)
+        public static Type forIdentifier(int identifier)
         {
             switch (identifier)
             {
@@ -118,7 +118,7 @@ public class PackedStringArray extends PrimitiveArray
     @JavaVirtualMachine.KivaKitExcludeFromSizeOf
     private transient CacheMap<String, Integer> pool = new CacheMap<>(Maximum._65536);
 
-    public PackedStringArray(final String objectName)
+    public PackedStringArray(String objectName)
     {
         super(objectName);
     }
@@ -143,14 +143,14 @@ public class PackedStringArray extends PrimitiveArray
         string = AsciiArt.clip(string, maximumStringLength);
 
         // Look in pool for an already-stored index
-        final var pooledIndex = pool.get(string);
+        var pooledIndex = pool.get(string);
         if (pooledIndex != null)
         {
             return pooledIndex;
         }
 
-        final var type = type(string);
-        final int arrayIndex;
+        var type = type(string);
+        int arrayIndex;
         switch (type)
         {
             case ASCII:
@@ -175,7 +175,7 @@ public class PackedStringArray extends PrimitiveArray
                 throw new IllegalStateException();
         }
         size++;
-        final var index = index(type, arrayIndex);
+        var index = index(type, arrayIndex);
         pool.put(string, index);
         return index;
     }
@@ -183,9 +183,9 @@ public class PackedStringArray extends PrimitiveArray
     /**
      * @return The string for the given identifier (returned by add)
      */
-    public String get(final int identifier)
+    public String get(int identifier)
     {
-        final var string = safeGet(identifier);
+        var string = safeGet(identifier);
         if (string == null)
         {
             throw new IllegalStateException();
@@ -193,13 +193,13 @@ public class PackedStringArray extends PrimitiveArray
         return string;
     }
 
-    public void maximumStringLength(final int maximumStringLength)
+    public void maximumStringLength(int maximumStringLength)
     {
         this.maximumStringLength = maximumStringLength;
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         pool = null;
 
@@ -210,7 +210,18 @@ public class PackedStringArray extends PrimitiveArray
     }
 
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+        asciiCharacters = new SplitByteArray(objectName() + ".ascii");
+        asciiCharacters.initialSize(Estimate._65536).initialize();
+
+        unicodeCharacters = new SplitCharArray(objectName() + ".unicode");
+        unicodeCharacters.initialSize(1024).initialize();
+    }
+
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         asciiCharacters = kryo.readObject(input, SplitByteArray.class);
@@ -221,10 +232,10 @@ public class PackedStringArray extends PrimitiveArray
     /**
      * @return The string for the given identifier (returned by add), or null if the identifier was invalid
      */
-    public String safeGet(final int identifier)
+    public String safeGet(int identifier)
     {
-        final var type = type(identifier);
-        final var start = index(identifier);
+        var type = type(identifier);
+        var start = index(identifier);
         switch (type)
         {
             case ASCII:
@@ -245,7 +256,7 @@ public class PackedStringArray extends PrimitiveArray
     }
 
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
         kryo.writeObject(output, asciiCharacters);
@@ -253,34 +264,23 @@ public class PackedStringArray extends PrimitiveArray
         kryo.writeObject(output, size);
     }
 
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        asciiCharacters = new SplitByteArray(objectName() + ".ascii");
-        asciiCharacters.initialSize(Estimate._65536).initialize();
-
-        unicodeCharacters = new SplitCharArray(objectName() + ".unicode");
-        unicodeCharacters.initialSize(1024).initialize();
-    }
-
-    private int index(final int index)
+    private int index(int index)
     {
         return index & ~(TYPE_MASK << TYPE_SHIFT);
     }
 
-    private int index(final Type type, final int index)
+    private int index(Type type, int index)
     {
         return (type.ordinal() << TYPE_SHIFT) | index;
     }
 
-    private String string(final SplitCharArray array, final int index)
+    private String string(SplitCharArray array, int index)
     {
-        final var builder = new StringBuilder();
+        var builder = new StringBuilder();
         var i = index;
         while (true)
         {
-            final var next = array.get(i++);
+            var next = array.get(i++);
             if (next == 0)
             {
                 break;
@@ -290,13 +290,13 @@ public class PackedStringArray extends PrimitiveArray
         return builder.toString();
     }
 
-    private String string(final SplitByteArray array, final int index)
+    private String string(SplitByteArray array, int index)
     {
-        final var builder = new StringBuilder();
+        var builder = new StringBuilder();
         var i = index;
         while (true)
         {
-            final var next = (char) array.get(i++);
+            var next = (char) array.get(i++);
             if (next == 0)
             {
                 break;
@@ -306,12 +306,12 @@ public class PackedStringArray extends PrimitiveArray
         return builder.toString();
     }
 
-    private Type type(final int index)
+    private Type type(int index)
     {
         return Type.forIdentifier(index >>> TYPE_SHIFT);
     }
 
-    private Type type(final String value)
+    private Type type(String value)
     {
         if (Strings.isAscii(value))
         {

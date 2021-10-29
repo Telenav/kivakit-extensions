@@ -26,7 +26,7 @@ import java.io.InputStream;
 @UmlClassDiagram(diagram = DiagramPrimitiveArrayBitIo.class)
 public class VariableReadSizeBitInput extends BitInput
 {
-    public VariableReadSizeBitInput(final InputStream in)
+    public VariableReadSizeBitInput(InputStream in)
     {
         super(in);
     }

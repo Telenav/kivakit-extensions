@@ -44,12 +44,12 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
 @LexakaiJavadoc(complete = true)
 public class CsvColumn<Type> extends Name
 {
-    public static <T> CsvColumn<T> of(final String name)
+    public static <T> CsvColumn<T> of(String name)
     {
         return CsvColumn.of(name, null);
     }
 
-    public static <T> CsvColumn<T> of(final String name, final StringConverter<T> converter)
+    public static <T> CsvColumn<T> of(String name, StringConverter<T> converter)
     {
         return new CsvColumn<>(name, converter);
     }
@@ -66,7 +66,7 @@ public class CsvColumn<Type> extends Name
     /**
      * Construct the named column
      */
-    protected CsvColumn(final String name, final StringConverter<Type> converter)
+    protected CsvColumn(String name, StringConverter<Type> converter)
     {
         super(name);
         this.converter = converter;
@@ -75,7 +75,7 @@ public class CsvColumn<Type> extends Name
     /**
      * @return The text for the given value in this column
      */
-    public String asString(final Type value, final StringConverter<Type> converter)
+    public String asString(Type value, StringConverter<Type> converter)
     {
         ensureNotNull(converter);
         return converter.unconvert(value);
@@ -84,7 +84,7 @@ public class CsvColumn<Type> extends Name
     /**
      * @return The text for the given value in this column
      */
-    public String asString(final Type value)
+    public String asString(Type value)
     {
         return asString(value, converter);
     }
@@ -92,7 +92,7 @@ public class CsvColumn<Type> extends Name
     /**
      * @return The value of the given text if it is in this column
      */
-    public ObjectList<Type> asType(final String text, final BaseListConverter<Type> converter)
+    public ObjectList<Type> asType(String text, BaseListConverter<Type> converter)
     {
         ensureNotNull(converter);
         return converter.convert(text);
@@ -101,7 +101,7 @@ public class CsvColumn<Type> extends Name
     /**
      * @return The value of the given text if it is in this column
      */
-    public Type asType(final String text, final StringConverter<Type> converter)
+    public Type asType(String text, StringConverter<Type> converter)
     {
         ensureNotNull(converter);
         return converter.convert(text);
@@ -110,7 +110,7 @@ public class CsvColumn<Type> extends Name
     /**
      * @return The value of the given text if it is in this column
      */
-    public Type asType(final String text)
+    public Type asType(String text)
     {
         return asType(text, converter);
     }
@@ -134,7 +134,7 @@ public class CsvColumn<Type> extends Name
     /**
      * Sets the index for this column
      */
-    void index(final int index)
+    void index(int index)
     {
         this.index = index;
     }
@@ -142,7 +142,7 @@ public class CsvColumn<Type> extends Name
     /**
      * Sets the schema for this column
      */
-    void schema(final CsvSchema schema)
+    void schema(CsvSchema schema)
     {
         if (this.schema != null)
         {

@@ -41,12 +41,12 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return The given x, y coordinate in an unbounded coordinate system of pixels
      */
-    public static DrawingPoint pixels(final double x, final double y)
+    public static DrawingPoint pixels(double x, double y)
     {
         return new DrawingPoint(PIXELS, x, y);
     }
 
-    public static DrawingPoint point(final Point2D point)
+    public static DrawingPoint point(Point2D point)
     {
         return pixels(point.getX(), point.getY());
     }
@@ -54,7 +54,7 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return The given x, y coordinate in the given coordinate system
      */
-    public static DrawingPoint point(final Coordinated coordinates, final double x, final double y)
+    public static DrawingPoint point(Coordinated coordinates, double x, double y)
     {
         return new DrawingPoint(coordinates, x, y);
     }
@@ -65,7 +65,7 @@ public class DrawingPoint extends DrawingObject
     /** The y coordinate */
     private final double y;
 
-    protected DrawingPoint(final Coordinated coordinates, final double x, final double y)
+    protected DrawingPoint(Coordinated coordinates, double x, double y)
     {
         super(coordinates);
 
@@ -88,11 +88,11 @@ public class DrawingPoint extends DrawingObject
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof DrawingPoint)
         {
-            final DrawingPoint that = (DrawingPoint) object;
+            DrawingPoint that = (DrawingPoint) object;
             return coordinates().equals(that.coordinates()) && x == that.x && y == that.y;
         }
         return false;
@@ -104,7 +104,7 @@ public class DrawingPoint extends DrawingObject
         return Objects.hash(coordinates(), x, y);
     }
 
-    public boolean isClose(final DrawingPoint projectedPoint, final double tolerance)
+    public boolean isClose(DrawingPoint projectedPoint, double tolerance)
     {
         return Math.abs(projectedPoint.x() - x()) < tolerance
                 && Math.abs(projectedPoint.y() - y()) < tolerance;
@@ -113,7 +113,7 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return This coordinate minus the given x and y delta values
      */
-    public DrawingPoint minus(final double dx, final double dy)
+    public DrawingPoint minus(double dx, double dy)
     {
         return point(x - dx, y - dy);
     }
@@ -121,16 +121,16 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return This coordinate's x and y values minus the given coordinate's x and y values
      */
-    public DrawingPoint minus(final DrawingPoint that)
+    public DrawingPoint minus(DrawingPoint that)
     {
-        final var point = toCoordinates(that);
+        var point = toCoordinates(that);
         return point(x - point.x, y - point.y);
     }
 
     /**
      * @return This coordinate plus the given x and y delta values
      */
-    public DrawingPoint plus(final double dx, final double dy)
+    public DrawingPoint plus(double dx, double dy)
     {
         return point(x + dx, y + dy);
     }
@@ -138,27 +138,27 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return This coordinate plus the given size as an offset
      */
-    public DrawingPoint plus(final DrawingSize that)
+    public DrawingPoint plus(DrawingSize that)
     {
-        final var size = toCoordinates(that);
+        var size = toCoordinates(that);
         return point(x + size.widthInUnits(), y + size.heightInUnits());
     }
 
     /**
      * @return This coordinate's x and y values plus the given coordinate's x and y values
      */
-    public DrawingPoint plus(final DrawingPoint that)
+    public DrawingPoint plus(DrawingPoint that)
     {
-        final var point = toCoordinates(that);
+        var point = toCoordinates(that);
         return point(x + point.x, y + point.y);
     }
 
     /**
      * @return This coordinate as a rectangle whose width and height are determined by the given size
      */
-    public DrawingRectangle rectangle(final DrawingSize that)
+    public DrawingRectangle rectangle(DrawingSize that)
     {
-        final var size = toCoordinates(that);
+        var size = toCoordinates(that);
         return rectangle(x(), y(), size.widthInUnits(), size.heightInUnits());
     }
 
@@ -173,7 +173,7 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return This coordinate with x and y values scaled by the given {@link Percent}
      */
-    public DrawingPoint scaledBy(final Percent percent)
+    public DrawingPoint scaledBy(Percent percent)
     {
         return point(percent.scale(x), percent.scale(y));
     }
@@ -181,12 +181,12 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return The width and height between this coordinate and the given one
      */
-    public DrawingSize sizeBetween(final DrawingPoint that)
+    public DrawingSize sizeBetween(DrawingPoint that)
     {
-        final var point = toCoordinates(that);
+        var point = toCoordinates(that);
 
-        final var width = Math.abs(x() - point.x());
-        final var height = Math.abs(y() - point.y());
+        var width = Math.abs(x() - point.x());
+        var height = Math.abs(y() - point.y());
 
         return size(width, height);
     }
@@ -194,7 +194,7 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return This coordinate scaled by the given scale factor
      */
-    public DrawingPoint times(final double scaleFactor)
+    public DrawingPoint times(double scaleFactor)
     {
         return point(x * scaleFactor, y * scaleFactor);
     }
@@ -202,7 +202,7 @@ public class DrawingPoint extends DrawingObject
     /**
      * @return This coordinate converted to the given coordinate system
      */
-    public DrawingPoint toCoordinates(final Coordinated that)
+    public DrawingPoint toCoordinates(Coordinated that)
     {
         return coordinates().toCoordinates(that, this);
     }

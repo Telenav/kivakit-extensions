@@ -42,15 +42,15 @@ public class WebUnitTest extends UnitTest
      * @param war The path to WAR resources
      */
     @SuppressWarnings("SameParameterValue")
-    protected void startWebServer(final int portNumber, final FilePath war)
+    protected void startWebServer(int portNumber, FilePath war)
     {
-        final HttpConfiguration http = new HttpConfiguration();
-        final Server server = new Server();
-        final ServerConnector connector = new ServerConnector(server, new HttpConnectionFactory(http));
+        HttpConfiguration http = new HttpConfiguration();
+        Server server = new Server();
+        ServerConnector connector = new ServerConnector(server, new HttpConnectionFactory(http));
         connector.setPort(portNumber);
         server.addConnector(connector);
 
-        final WebAppContext webapp = new WebAppContext();
+        WebAppContext webapp = new WebAppContext();
         webapp.setContextPath("/");
         webapp.setWar(war.asString());
         server.setHandler(webapp);
@@ -59,7 +59,7 @@ public class WebUnitTest extends UnitTest
         {
             server.start();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throw new Problem(e, "Couldn't start embedded Jetty web server").asException();
         }

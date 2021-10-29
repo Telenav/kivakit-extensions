@@ -22,7 +22,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArrayArray;
 import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
 import com.telenav.kivakit.kernel.language.objects.Hash;
 import com.telenav.kivakit.kernel.language.objects.Objects;
@@ -31,6 +30,7 @@ import com.telenav.kivakit.primitive.collections.array.scalars.IntArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.LongArray;
 import com.telenav.kivakit.primitive.collections.iteration.LongIterable;
 import com.telenav.kivakit.primitive.collections.iteration.LongIterator;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveArrayArray;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
@@ -55,12 +55,12 @@ public final class LongArrayArray extends PrimitiveArrayArray
 
     private LongArray store;
 
-    public LongArrayArray(final String objectName)
+    public LongArrayArray(String objectName)
     {
         super(objectName);
     }
 
-    protected LongArrayArray()
+    private LongArrayArray()
     {
     }
 
@@ -71,7 +71,7 @@ public final class LongArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final LongIterable values)
+    public int add(LongIterable values)
     {
         return add(values.iterator());
     }
@@ -83,11 +83,11 @@ public final class LongArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final long[] values)
+    public int add(long[] values)
     {
         assert ensureHasRoomFor(1);
 
-        final var index = store.size();
+        var index = store.size();
         indexes.add(index);
         sizes.add(values.length);
         store.addAll(values);
@@ -102,11 +102,11 @@ public final class LongArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final LongIterator values)
+    public int add(LongIterator values)
     {
         assert ensureHasRoomFor(1);
 
-        final var index = store.size();
+        var index = store.size();
         indexes.add(index);
 
         // Add all the values to the store
@@ -125,11 +125,11 @@ public final class LongArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof LongArrayArray)
         {
-            final var that = (LongArrayArray) object;
+            var that = (LongArrayArray) object;
             return Objects.equalPairs(indexes, that.indexes, sizes, that.sizes, store, that.store);
         }
         return false;
@@ -138,7 +138,7 @@ public final class LongArrayArray extends PrimitiveArrayArray
     /**
      * @return The long array for the given identifier
      */
-    public LongArray get(final int identifier)
+    public LongArray get(int identifier)
     {
         return store.subArray(indexes.get(identifier), sizes.get(identifier));
     }
@@ -155,13 +155,13 @@ public final class LongArrayArray extends PrimitiveArrayArray
     /**
      * @return The size of the identified array
      */
-    public int length(final int identifier)
+    public int length(int identifier)
     {
         return sizes.get(identifier);
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         indexes.compress(method);
         sizes.compress(method);
@@ -174,7 +174,24 @@ public final class LongArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+        store = new LongArray(objectName() + ".bytes");
+        store.initialSize(initialSizeAsInt());
+        indexes = new IntArray(objectName() + ".indexes");
+        sizes = new IntArray(objectName() + ".sizes");
+
+        store.initialize();
+        indexes.initialize();
+        sizes.initialize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -196,29 +213,12 @@ public final class LongArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
         kryo.writeObject(output, indexes);
         kryo.writeObject(output, sizes);
         kryo.writeObject(output, store);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        store = new LongArray(objectName() + ".bytes");
-        store.initialSize(initialSizeAsInt());
-        indexes = new IntArray(objectName() + ".indexes");
-        sizes = new IntArray(objectName() + ".sizes");
-
-        store.initialize();
-        indexes.initialize();
-        sizes.initialize();
     }
 }

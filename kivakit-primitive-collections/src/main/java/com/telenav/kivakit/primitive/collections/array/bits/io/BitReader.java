@@ -55,7 +55,7 @@ public interface BitReader extends AutoCloseable
     /** Called to close the reader */
     void onClose();
 
-    default int read(final int bits)
+    default int read(int bits)
     {
         return (int) readLong(bits);
     }
@@ -69,12 +69,12 @@ public interface BitReader extends AutoCloseable
      * Reads the next bit and then reads a value with the given small bit count if the bit is true, otherwise reads the
      * given big bit count.
      */
-    int readFlexibleInt(final int smallBitCount, final int bigBitCount);
+    int readFlexibleInt(int smallBitCount, int bigBitCount);
 
     /**
      * @return A long value of the specified size in bits
      */
-    default long readLong(final int bits)
+    default long readLong(int bits)
     {
         var value = 0L;
         var mask = 1L << (bits - 1);
@@ -93,7 +93,7 @@ public interface BitReader extends AutoCloseable
         {
             length = (int) readLong(16);
         }
-        final var bytes = new byte[length];
+        var bytes = new byte[length];
         for (var i = 0; i < length; i++)
         {
             bytes[i] = (byte) readLong(8);

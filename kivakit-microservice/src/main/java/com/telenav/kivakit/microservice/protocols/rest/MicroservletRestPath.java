@@ -20,24 +20,24 @@ public class MicroservletRestPath implements RegistryTrait
 
     private final HttpMethod httpMethod;
 
-    public MicroservletRestPath(final FilePath path, final HttpMethod httpMethod)
+    public MicroservletRestPath(FilePath path, HttpMethod httpMethod)
     {
         this.path = path;
         this.httpMethod = httpMethod;
     }
 
-    public MicroservletRestPath(final String path, final HttpMethod httpMethod)
+    public MicroservletRestPath(String path, HttpMethod httpMethod)
     {
         this(FilePath.parseFilePath(path), httpMethod);
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof MicroservletRestPath)
         {
             var that = (MicroservletRestPath) object;
-            return this.key().equals(that.key());
+            return key().equals(that.key());
         }
         return false;
     }
@@ -77,7 +77,7 @@ public class MicroservletRestPath implements RegistryTrait
     {
         if (!path.startsWith("/"))
         {
-            final var version = require(Microservice.class).version();
+            var version = require(Microservice.class).version();
             var apiPath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
             return FilePath.parseFilePath(apiPath);
         }
@@ -87,7 +87,7 @@ public class MicroservletRestPath implements RegistryTrait
     @Override
     public String toString()
     {
-        return this.path.isEmpty() ? "" : resolvedPath().toString();
+        return path.isEmpty() ? "" : resolvedPath().toString();
     }
 
     public MicroservletRestPath withoutLast()

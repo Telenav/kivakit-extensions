@@ -60,7 +60,7 @@ public class HuffmanStringCodec implements StringCodec
     /**
      * @return A codec from the symbol frequencies in the given properties object
      */
-    public static HuffmanStringCodec from(final PropertyMap frequencies)
+    public static HuffmanStringCodec from(PropertyMap frequencies)
     {
         return from(Symbols.load(frequencies, new Converter(LOGGER)));
     }
@@ -70,7 +70,7 @@ public class HuffmanStringCodec implements StringCodec
      * @param bits The maximum number of bits allowed for a code
      * @return A codec for the symbols
      */
-    public static HuffmanStringCodec from(final Symbols<String> symbols, final Maximum bits)
+    public static HuffmanStringCodec from(Symbols<String> symbols, Maximum bits)
     {
         return new HuffmanStringCodec(symbols, bits);
     }
@@ -79,20 +79,20 @@ public class HuffmanStringCodec implements StringCodec
      * @param symbols A set of symbols and their frequencies
      * @return A codec for the symbols
      */
-    public static HuffmanStringCodec from(final Symbols<String> symbols)
+    public static HuffmanStringCodec from(Symbols<String> symbols)
     {
         return from(symbols, Maximum._16);
     }
 
     public static class Converter extends BaseStringConverter<String>
     {
-        public Converter(final Listener listener)
+        public Converter(Listener listener)
         {
             super(listener);
         }
 
         @Override
-        protected String onToValue(final String value)
+        protected String onToValue(String value)
         {
             return value;
         }
@@ -108,7 +108,7 @@ public class HuffmanStringCodec implements StringCodec
     {
     }
 
-    private HuffmanStringCodec(final Symbols<String> symbols, final Maximum bits)
+    private HuffmanStringCodec(Symbols<String> symbols, Maximum bits)
     {
         this.symbols = symbols;
         codec = HuffmanCodec.from(symbols, bits);
@@ -123,19 +123,19 @@ public class HuffmanStringCodec implements StringCodec
     }
 
     @Override
-    public boolean canEncode(final String value)
+    public boolean canEncode(String value)
     {
         return codec.canEncode(value);
     }
 
     @Override
-    public void decode(final ByteList input, final SymbolConsumer<String> consumer)
+    public void decode(ByteList input, SymbolConsumer<String> consumer)
     {
         codec.decode(input, consumer);
     }
 
     @Override
-    public ByteList encode(final ByteList output, final SymbolProducer<String> producer)
+    public ByteList encode(ByteList output, SymbolProducer<String> producer)
     {
         return codec.encode(output, producer);
     }

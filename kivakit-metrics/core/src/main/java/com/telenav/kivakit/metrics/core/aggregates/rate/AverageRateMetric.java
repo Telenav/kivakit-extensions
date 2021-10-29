@@ -11,25 +11,25 @@ public class AverageRateMetric extends AverageMetric<Rate>
     }
 
     @Override
-    public AverageRateMetric description(final String description)
+    public AverageRateMetric description(String description)
     {
         return (AverageRateMetric) super.description(description);
     }
 
     @Override
-    public AverageRateMetric name(final String name)
+    public AverageRateMetric name(String name)
     {
         return (AverageRateMetric) super.name(name);
     }
 
     @Override
-    public AverageRateMetric type(final MetricType type)
+    public AverageRateMetric type(MetricType type)
     {
         return (AverageRateMetric) super.type(type);
     }
 
     @Override
-    public AverageRateMetric unit(final String unit)
+    public AverageRateMetric unit(String unit)
     {
         return (AverageRateMetric) super.unit(unit);
     }

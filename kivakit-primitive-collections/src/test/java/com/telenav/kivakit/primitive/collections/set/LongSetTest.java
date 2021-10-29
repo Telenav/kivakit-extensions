@@ -55,7 +55,7 @@ public class LongSetTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedSet((a, values) ->
         {
-            final var b = set();
+            var b = set();
             addAll(b, values);
             ensureEqual(a, b);
             b.add(-1);
@@ -68,7 +68,7 @@ public class LongSetTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedSet((a, values) ->
         {
-            final var b = set();
+            var b = set();
             addAll(b, values);
             ensureEqual(a, b);
             b.compress(CompressibleCollection.Method.FREEZE);
@@ -76,7 +76,7 @@ public class LongSetTest extends PrimitiveCollectionsUnitTest
         });
         withPopulatedSet((a, values) ->
         {
-            final var b = set();
+            var b = set();
             addAll(b, values);
             addAll(b, values);
             ensureEqual(a, b);
@@ -91,8 +91,8 @@ public class LongSetTest extends PrimitiveCollectionsUnitTest
         withPopulatedSet((set, values) ->
                 values.forEach(value ->
                 {
-                    final var size = set.size();
-                    final var exists = set.contains(value);
+                    var size = set.size();
+                    var exists = set.contains(value);
                     set.remove(value);
                     ensure(!set.contains(value));
                     if (exists)
@@ -113,12 +113,12 @@ public class LongSetTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedSet((set, values) ->
         {
-            final var iterator = set.values();
+            var iterator = set.values();
             var count = 0;
-            final var valueSet = new HashSet<>(values);
+            var valueSet = new HashSet<>(values);
             while (iterator.hasNext())
             {
-                final var value = iterator.next();
+                var value = iterator.next();
                 ensure(valueSet.contains(value));
                 count++;
             }
@@ -126,22 +126,22 @@ public class LongSetTest extends PrimitiveCollectionsUnitTest
         });
     }
 
-    private void addAll(final LongSet set, final List<Long> values)
+    private void addAll(LongSet set, List<Long> values)
     {
         values.forEach(set::add);
     }
 
     private LongSet set()
     {
-        final var set = new LongSet("test");
+        var set = new LongSet("test");
         set.initialize();
         return set;
     }
 
-    private void withPopulatedSet(final MapTest test)
+    private void withPopulatedSet(MapTest test)
     {
-        final var set = set();
-        final var values = randomLongList(Repeats.NO_REPEATS);
+        var set = set();
+        var values = randomLongList(Repeats.NO_REPEATS);
         addAll(set, values);
         test.test(set, values);
     }

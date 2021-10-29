@@ -47,12 +47,12 @@ public final class BitArray extends PrimitiveArray implements Named
     /** The index where we started writing */
     private int offset;
 
-    public BitArray(final String objectName)
+    public BitArray(String objectName)
     {
         super(objectName);
     }
 
-    public BitArray(final String objectName, final ByteList bytes)
+    public BitArray(String objectName, ByteList bytes)
     {
         super(objectName);
         this.bytes = bytes;
@@ -62,9 +62,9 @@ public final class BitArray extends PrimitiveArray implements Named
     /**
      * @return The bit at the given index
      */
-    public boolean bit(final int index)
+    public boolean bit(int index)
     {
-        final var mask = 0x80 >>> (index % 8);
+        var mask = 0x80 >>> (index % 8);
         return (getByte(index / 8) & mask) != 0;
     }
 
@@ -84,7 +84,7 @@ public final class BitArray extends PrimitiveArray implements Named
 
     @Override
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         return unsupported();
     }
@@ -96,7 +96,7 @@ public final class BitArray extends PrimitiveArray implements Named
     }
 
     @Override
-    public Method onCompress(final Method method)
+    public Method onCompress(Method method)
     {
         return bytes.compress(method);
     }
@@ -106,7 +106,7 @@ public final class BitArray extends PrimitiveArray implements Named
     {
         if (bytes == null)
         {
-            final var bytes = new ByteArray(objectName() + ".bytes");
+            var bytes = new ByteArray(objectName() + ".bytes");
             bytes.initialSize(initialSize().dividedBy(8))
                     .maximumSize(maximumSize().dividedBy(8))
                     .hasNullByte(false);
@@ -126,10 +126,10 @@ public final class BitArray extends PrimitiveArray implements Named
     /**
      * Sets the bit at the given index
      */
-    public void set(final int index, final boolean value)
+    public void set(int index, boolean value)
     {
-        final var mask = 0x80 >>> (index % 8);
-        final var current = getByte(index / 8);
+        var mask = 0x80 >>> (index % 8);
+        var current = getByte(index / 8);
         setByte(index / 8, (byte) ((current & ~mask) | (value ? 1 : 0)));
         size(Math.max(size(), index + 1));
     }
@@ -153,7 +153,7 @@ public final class BitArray extends PrimitiveArray implements Named
      */
     public BitWriter writer()
     {
-        final var outer = this;
+        var outer = this;
         return new BaseBitWriter()
         {
             @Override
@@ -164,21 +164,21 @@ public final class BitArray extends PrimitiveArray implements Named
                     super.close();
                     size((int) super.cursor());
                 }
-                catch (final Exception ignored)
+                catch (Exception ignored)
                 {
                 }
                 outer.bytes.compress(Method.RESIZE);
             }
 
             @Override
-            protected void onFlush(final byte value)
+            protected void onFlush(byte value)
             {
                 // Store the byte, but don't advance the add cursor
                 outer.bytes.set(outer.bytes.cursor(), value);
             }
 
             @Override
-            protected void onWrite(final byte value)
+            protected void onWrite(byte value)
             {
                 outer.bytes.add(value);
                 size(size() + 8);
@@ -186,12 +186,12 @@ public final class BitArray extends PrimitiveArray implements Named
         };
     }
 
-    private byte getByte(final int index)
+    private byte getByte(int index)
     {
         return bytes.get(offset + index);
     }
 
-    private void setByte(final int index, final byte value)
+    private void setByte(int index, byte value)
     {
         bytes.set(offset + index, value);
     }

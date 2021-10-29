@@ -144,7 +144,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Result<Boolean> addOrUpdate(final Service service)
+    public @NotNull Result<Boolean> addOrUpdate(Service service)
     {
         // Update the service registration by simply re-registering it
         assert service.isBound();
@@ -188,7 +188,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      */
     @Override
     @NotNull
-    public Result<Set<Application.Identifier>> discoverApplications(final Scope scope)
+    public Result<Set<Application.Identifier>> discoverApplications(Scope scope)
     {
         return lock.read(() -> Result.succeeded(applicationToServices.keySet()));
     }
@@ -197,7 +197,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      * @return Any service running on the given port
      */
     @Override
-    public @NotNull Result<Service> discoverPortService(final Port port)
+    public @NotNull Result<Service> discoverPortService(Port port)
     {
         return lock.read(() -> Result.succeeded(portToService.get(port)));
     }
@@ -206,14 +206,14 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      * Any service of the given type registered by the given application
      */
     @Override
-    public @NotNull Result<Set<Service>> discoverServices(final Application.Identifier application,
-                                                          final ServiceType type)
+    public @NotNull Result<Set<Service>> discoverServices(Application.Identifier application,
+                                                          ServiceType type)
     {
         return lock.read(() ->
         {
             trace("Discovering $ services of $", type, application);
-            final var services = new HashSet<Service>();
-            for (final var service : discoverServices(application).get())
+            var services = new HashSet<Service>();
+            for (var service : discoverServices(application).get())
             {
                 if (service.type().equals(type))
                 {
@@ -229,7 +229,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      * All services of the given type that have been registered with this registry
      */
     @Override
-    public @NotNull Result<Set<Service>> discoverServices(final ServiceType type)
+    public @NotNull Result<Set<Service>> discoverServices(ServiceType type)
     {
         return lock.read(() -> result(serviceTypeToServices.getOrEmptySet(type)));
     }
@@ -238,7 +238,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
      * All services registered by the given application
      */
     @Override
-    public @NotNull Result<Set<Service>> discoverServices(final Application.Identifier application)
+    public @NotNull Result<Set<Service>> discoverServices(Application.Identifier application)
     {
         return lock.read(() ->
         {
@@ -256,7 +256,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
         return lock.read(() ->
         {
             trace("Discovering all services");
-            final var result = result(services());
+            var result = result(services());
             trace("Discovered services: $", result.get());
             return result;
         });
@@ -283,11 +283,11 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
             {
                 // Load any service registry object that was saved to the store,
                 trace("Loading service registry");
-                final var loaded = (BaseServiceRegistry) store.load(getClass());
+                var loaded = (BaseServiceRegistry) store.load(getClass());
                 if (loaded != null)
                 {
                     // renew leases for all the loaded services,
-                    for (final var service : services())
+                    for (var service : services())
                     {
                         addOrUpdate(service);
                     }
@@ -301,7 +301,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
                     trace("Unable to load registry");
                 }
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 warning(e, "Unable to load service registry");
             }
@@ -329,7 +329,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
                     {
                         // Go through each service
                         trace("Checking service expiration times");
-                        for (final var service : new HashSet<>(discoverServices().get()))
+                        for (var service : new HashSet<>(discoverServices().get()))
                         {
                             // and if it has not been renewed recently enough,
                             if (isExpired(service))
@@ -342,11 +342,11 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
 
                         // then go through reserved ports
                         trace("Looking for expired ports");
-                        for (final var port : new HashSet<>(reservedPortToExpirationTime.keySet()))
+                        for (var port : new HashSet<>(reservedPortToExpirationTime.keySet()))
                         {
                             // and if the port expired too long ago then the expired service is probably
                             // not ever coming back online to reclaim the port it registered
-                            final var expiredAt = reservedPortToExpirationTime.get(port);
+                            var expiredAt = reservedPortToExpirationTime.get(port);
                             if (expiredAt.elapsedSince().isGreaterThan(settings().portReservationExpirationTime()))
                             {
                                 // so we cancel the port reservation so the port can be re-used
@@ -360,20 +360,20 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
         return true;
     }
 
-    public BaseServiceRegistry updater(final ServiceRegistryUpdater updater)
+    public BaseServiceRegistry updater(ServiceRegistryUpdater updater)
     {
         this.updater = updater;
         return this;
     }
 
     @UmlExcludeMember
-    protected boolean isPortAvailable(final int portNumber)
+    protected boolean isPortAvailable(int portNumber)
     {
         return !registeredPorts.contains(portNumber) && reservedPortToExpirationTime.get(portNumber) == null;
     }
 
     @UmlExcludeMember
-    protected boolean isRegistered(final Service service)
+    protected boolean isRegistered(Service service)
     {
         return portToService.containsValue(service);
     }
@@ -384,7 +384,7 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
         return lock;
     }
 
-    private void copy(final BaseServiceRegistry that)
+    private void copy(BaseServiceRegistry that)
     {
         lock.write(() ->
         {
@@ -397,13 +397,13 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
         });
     }
 
-    private void expire(final Service service)
+    private void expire(Service service)
     {
         lock.write(() ->
         {
             // Remove the service from registry indexes,
             information("Removing service $", service);
-            final var port = service.port();
+            var port = service.port();
             portToService.remove(port);
             serviceTypeToServices.removeFromSet(service.type(), service);
             applicationToServices.removeFromSet(service.application(), service);
@@ -419,20 +419,20 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
         });
     }
 
-    private boolean isExpired(final Service service)
+    private boolean isExpired(Service service)
     {
         // NOTE: read/write lock is already held by caller
 
-        final var elapsed = renewedAt.getOrDefault(service, Time.now()).elapsedSince();
+        var elapsed = renewedAt.getOrDefault(service, Time.now()).elapsedSince();
         trace("Service $ was last renewed $ ago", service, elapsed);
         return elapsed.isGreaterThan(settings().serviceRegistrationExpirationTime());
     }
 
-    private Result<Set<Service>> result(final Collection<Service> set)
+    private Result<Set<Service>> result(Collection<Service> set)
     {
         if (set != null)
         {
-            final var bound = Set.copyOf(set)
+            var bound = Set.copyOf(set)
                     .stream()
                     .filter(Service::isBound)
                     .collect(Collectors.toSet());

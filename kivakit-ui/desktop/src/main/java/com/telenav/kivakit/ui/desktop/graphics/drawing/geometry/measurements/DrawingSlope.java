@@ -26,19 +26,19 @@ package com.telenav.kivakit.ui.desktop.graphics.drawing.geometry.measurements;
  */
 public class DrawingSlope
 {
-    public static DrawingSlope degrees(final double degrees)
+    public static DrawingSlope degrees(double degrees)
     {
         return new DrawingSlope(Math.toRadians(degrees));
     }
 
-    public static DrawingSlope radians(final double radians)
+    public static DrawingSlope radians(double radians)
     {
         return new DrawingSlope(radians);
     }
 
     private final double radians;
 
-    protected DrawingSlope(final double radians)
+    protected DrawingSlope(double radians)
     {
         this.radians = radians;
     }

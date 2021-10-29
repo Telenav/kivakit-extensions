@@ -16,14 +16,14 @@ public class DoubleMetric extends BaseMetric<Double>
         this.quantum = quantum;
     }
 
-    public DoubleMetric(final BaseMetric<Double> that)
+    public DoubleMetric(BaseMetric<Double> that)
     {
         super(that);
-        this.quantum = that.doubleQuantum();
+        quantum = that.doubleQuantum();
     }
 
     @Override
-    public DoubleMetric description(final String description)
+    public DoubleMetric description(String description)
     {
         return (DoubleMetric) super.description(description);
     }
@@ -41,7 +41,7 @@ public class DoubleMetric extends BaseMetric<Double>
     }
 
     @Override
-    public DoubleMetric name(final String name)
+    public DoubleMetric name(String name)
     {
         return (DoubleMetric) super.name(name);
     }
@@ -53,13 +53,13 @@ public class DoubleMetric extends BaseMetric<Double>
     }
 
     @Override
-    public DoubleMetric type(final MetricType type)
+    public DoubleMetric type(MetricType type)
     {
         return (DoubleMetric) super.type(type);
     }
 
     @Override
-    public DoubleMetric unit(final String unit)
+    public DoubleMetric unit(String unit)
     {
         return (DoubleMetric) super.unit(unit);
     }

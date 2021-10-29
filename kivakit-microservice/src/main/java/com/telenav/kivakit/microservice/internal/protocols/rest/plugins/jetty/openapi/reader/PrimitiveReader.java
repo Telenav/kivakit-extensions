@@ -11,9 +11,9 @@ public class PrimitiveReader
      * @param type The type of object
      * @return The schema for the object if it is primitive or null if it is not
      */
-    public Schema readPrimitive(final Type<?> type)
+    public Schema<?> readPrimitive(Type<?> type)
     {
-        final var schema = new Schema<>();
+        var schema = new Schema<>();
         if (type.is(String.class))
         {
             schema.type("string");

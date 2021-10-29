@@ -9,7 +9,7 @@ public class IntListAdapter implements IntList
     private int cursor;
 
     @Override
-    public boolean add(final int value)
+    public boolean add(int value)
     {
         return false;
     }
@@ -27,13 +27,13 @@ public class IntListAdapter implements IntList
     }
 
     @Override
-    public void cursor(final int position)
+    public void cursor(int position)
     {
-        this.cursor = position;
+        cursor = position;
     }
 
     @Override
-    public int get(final int index)
+    public int get(int index)
     {
         return 0;
     }
@@ -45,13 +45,13 @@ public class IntListAdapter implements IntList
     }
 
     @Override
-    public PrimitiveCollection hasNullInt(final boolean has)
+    public PrimitiveCollection hasNullInt(boolean has)
     {
         return null;
     }
 
     @Override
-    public boolean isNull(final int value)
+    public boolean isNull(int value)
     {
         return false;
     }
@@ -63,24 +63,24 @@ public class IntListAdapter implements IntList
     }
 
     @Override
-    public int safeGet(final int index)
+    public int safeGet(int index)
     {
         return 0;
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return 0;
     }
 
     @Override
-    public void set(final int index, final int value)
+    public void set(int index, int value)
     {
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
     }
 

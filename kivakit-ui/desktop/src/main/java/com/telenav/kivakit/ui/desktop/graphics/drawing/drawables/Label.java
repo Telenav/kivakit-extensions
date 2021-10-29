@@ -26,12 +26,12 @@ public class Label extends Box
         return label((Style) null);
     }
 
-    public static Label label(final Style style, final String text)
+    public static Label label(Style style, String text)
     {
         return new Label(style, text);
     }
 
-    public static Label label(final Style style)
+    public static Label label(Style style)
     {
         return new Label(style, null);
     }
@@ -40,13 +40,13 @@ public class Label extends Box
 
     private int margin = 10;
 
-    protected Label(final Style style, final String text)
+    protected Label(Style style, String text)
     {
         super(style);
         this.text = text;
     }
 
-    protected Label(final Label that)
+    protected Label(Label that)
     {
         super(that);
         text = that.text;
@@ -60,106 +60,106 @@ public class Label extends Box
     }
 
     @Override
-    public Shape draw(final DrawingSurface surface)
+    public Shape draw(DrawingSurface surface)
     {
-        final var size = surface
+        var size = surface
                 .textSize(style(), text)
                 .plus(margin * 2, margin * 2);
 
-        final var shape = super.draw(surface, size);
+        var shape = super.draw(surface, size);
 
         surface.drawText(style(), withLocation().plus(margin, margin), text);
         return shape;
     }
 
     @Override
-    public Label scaledBy(final double scaleFactor)
+    public Label scaledBy(double scaleFactor)
     {
         return unsupported();
     }
 
     @Override
-    public Label withColors(final Style style)
+    public Label withColors(Style style)
     {
         return (Label) super.withColors(style);
     }
 
     @Override
-    public Label withDrawColor(final Color color)
+    public Label withDrawColor(Color color)
     {
         return (Label) super.withDrawColor(color);
     }
 
     @Override
-    public Label withDrawStroke(final Stroke stroke)
+    public Label withDrawStroke(Stroke stroke)
     {
         return (Label) super.withDrawStroke(stroke);
     }
 
     @Override
-    public Label withDrawStrokeWidth(final DrawingWidth width)
+    public Label withDrawStrokeWidth(DrawingWidth width)
     {
         return (Label) super.withDrawStrokeWidth(width);
     }
 
     @Override
-    public Label withFillColor(final Color color)
+    public Label withFillColor(Color color)
     {
         return (Label) super.withFillColor(color);
     }
 
     @Override
-    public Label withFillStroke(final Stroke stroke)
+    public Label withFillStroke(Stroke stroke)
     {
         return (Label) super.withFillStroke(stroke);
     }
 
     @Override
-    public Label withFillStrokeWidth(final DrawingWidth width)
+    public Label withFillStrokeWidth(DrawingWidth width)
     {
         return (Label) super.withFillStrokeWidth(width);
     }
 
     @Override
-    public Label withLocation(final DrawingPoint at)
+    public Label withLocation(DrawingPoint at)
     {
         return (Label) super.withLocation(at);
     }
 
-    public Label withMargin(final int margin)
+    public Label withMargin(int margin)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.margin = margin;
         return copy;
     }
 
     @Override
-    public Label withRoundedCorners(final DrawingLength corner)
+    public Label withRoundedCorners(DrawingLength corner)
     {
         return (Label) super.withRoundedCorners(corner);
     }
 
     @Override
-    public Label withRoundedCorners(final DrawingWidth cornerWidth, final DrawingHeight cornerHeight)
+    public Label withRoundedCorners(DrawingWidth cornerWidth, DrawingHeight cornerHeight)
     {
         return (Label) super.withRoundedCorners(cornerWidth, cornerHeight);
     }
 
     @Override
-    public Label withStyle(final Style style)
+    public Label withStyle(Style style)
     {
         return (Label) super.withStyle(style);
     }
 
-    public Label withText(final String text)
+    public Label withText(String text)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.text = text;
         return copy;
     }
 
     @Override
-    public Label withTextColor(final Color color)
+    public Label withTextColor(Color color)
     {
         return (Label) super.withTextColor(color);
     }

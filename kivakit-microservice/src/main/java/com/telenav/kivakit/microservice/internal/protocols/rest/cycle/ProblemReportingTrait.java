@@ -6,18 +6,18 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cy
 
 public interface ProblemReportingTrait
 {
-    default Problem problem(int httpStatus, Throwable exception, final String text, final Object... arguments)
+    default Problem problem(int httpStatus, Throwable exception, String text, Object... arguments)
     {
         return response().problem(httpStatus, exception, text + ": " + exception.getMessage(), arguments);
     }
 
-    default Problem problem(int httpStatus, final String text, final Object... arguments)
+    default Problem problem(int httpStatus, String text, Object... arguments)
     {
         return response().problem(httpStatus, text, arguments);
     }
 
-    default Problem problem(int httpStatus, String code, Throwable exception, final String text,
-                            final Object... arguments)
+    default Problem problem(int httpStatus, String code, Throwable exception, String text,
+                            Object... arguments)
     {
         var problem = new Problem(exception, text + ": " + exception.getMessage(), arguments);
         problem.cause(exception);
@@ -27,7 +27,7 @@ public interface ProblemReportingTrait
         return problem;
     }
 
-    default Problem problem(int httpStatus, String code, final String text, final Object... arguments)
+    default Problem problem(int httpStatus, String code, String text, Object... arguments)
     {
         return problem(httpStatus, code, null, text, arguments);
     }
@@ -37,7 +37,7 @@ public interface ProblemReportingTrait
         return JettyMicroservletRequestCycle.cycle().response();
     }
 
-    default void status(final int status)
+    default void status(int status)
     {
         response().status(status);
     }

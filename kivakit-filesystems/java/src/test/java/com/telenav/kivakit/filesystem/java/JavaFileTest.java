@@ -30,12 +30,12 @@ public class JavaFileTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive(file("test-integration.txt", "output"));
-        final var path = Message.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
+        var path = Message.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
         ensureEqual(listenTo(File.parse(path)).reader().string(), "output");
     }
 
     @NotNull
-    private ZipArchive archive(final File file)
+    private ZipArchive archive(File file)
     {
         var zip = File.temporary(Extension.ZIP);
         var archive = ZipArchive.open(this, zip, ProgressReporter.NULL, ZipArchive.Mode.WRITE);

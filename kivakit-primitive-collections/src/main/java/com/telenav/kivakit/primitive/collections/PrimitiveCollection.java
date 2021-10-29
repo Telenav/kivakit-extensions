@@ -155,7 +155,7 @@ import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.F
  * @see Debug
  * @see Sized
  */
-@SuppressWarnings({ "UnusedReturnValue", "rawtypes" })
+@SuppressWarnings({ "UnusedReturnValue" })
 @UmlClassDiagram(diagram = DiagramPrimitiveCollection.class)
 public abstract class PrimitiveCollection implements NamedObject, Initializable, Sized, CompressibleCollection, KryoSerializable
 {
@@ -191,7 +191,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
             compressionRecords = compressionRecords.uniqued();
             Collections.sort(compressionRecords);
             var totalDelta = 0L;
-            for (final var trim : compressionRecords)
+            for (var trim : compressionRecords)
             {
                 totalDelta += Math.abs(trim.delta());
             }
@@ -204,7 +204,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     /**
      * @return The given size, increased (used only by collection implementations)
      */
-    public static int increasedCapacity(final int size)
+    public static int increasedCapacity(int size)
     {
         if (size < 128)
         {
@@ -246,7 +246,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
 
         final int after;
 
-        CompressionRecord(final Class<?> type, final String objectName, final int before, final int after)
+        CompressionRecord(Class<?> type, String objectName, int before, int after)
         {
             this.type = type;
             this.objectName = objectName;
@@ -255,7 +255,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         }
 
         @Override
-        public int compareTo(final PrimitiveCollection.CompressionRecord that)
+        public int compareTo(PrimitiveCollection.CompressionRecord that)
         {
             int result = Double.compare(percentage(), that.percentage());
             if (result == 0)
@@ -266,11 +266,11 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         }
 
         @Override
-        public boolean equals(final Object object)
+        public boolean equals(Object object)
         {
             if (object instanceof CompressionRecord)
             {
-                final CompressionRecord that = (CompressionRecord) object;
+                CompressionRecord that = (CompressionRecord) object;
                 return name().equals(that.name());
             }
             return false;
@@ -371,7 +371,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      *
      * @param objectName The name of this collection object
      */
-    protected PrimitiveCollection(final String objectName)
+    protected PrimitiveCollection(String objectName)
     {
         assert objectName != null;
 
@@ -435,7 +435,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      * {@inheritDoc}
      */
     @Override
-    public final Method compress(final Method method)
+    public final Method compress(Method method)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
 
@@ -443,11 +443,11 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         if (isInitialized() && !isCompressed())
         {
             // get the capacity in elements before compressing
-            final var before = capacity().asInt();
+            var before = capacity().asInt();
 
             // then compress the collection
-            final var start = Time.now();
-            final var big = before > 1_000_000;
+            var start = Time.now();
+            var big = before > 1_000_000;
             if (big)
             {
                 DEBUG.trace("Compressing $", objectName());
@@ -455,7 +455,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
 
             compressionMethod = onCompress(method);
 
-            final var elapsed = start.elapsedSince();
+            var elapsed = start.elapsedSince();
             if (big && elapsed.isGreaterThan(Duration.ONE_SECOND))
             {
                 DEBUG.trace("Compressed $ in $", objectName(), start.elapsedSince());
@@ -468,11 +468,11 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
             if (DEBUG.isDebugOn())
             {
                 // and the collection was at least 64K
-                final var after = capacity().asInt();
+                var after = capacity().asInt();
                 if (before > 65_536 && before != after)
                 {
                     // then add a compression record to be dumped out on exit
-                    final var record = new CompressionRecord(getClass(), objectName(), before, after);
+                    var record = new CompressionRecord(getClass(), objectName(), before, after);
                     compressionRecords.add(record);
 
                     // and write trace the record as well.
@@ -497,7 +497,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      * Copies the sizes and null values from the given collection
      */
     @MustBeInvokedByOverriders
-    public void copyConfiguration(final PrimitiveCollection that)
+    public void copyConfiguration(PrimitiveCollection that)
     {
         initialSize = that.initialSize;
         maximumSize = that.maximumSize;
@@ -508,7 +508,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         copyNullValues(that);
     }
 
-    public void copyNullValues(final PrimitiveCollection that)
+    public void copyNullValues(PrimitiveCollection that)
     {
         hasNullLong = that.hasNullLong;
         hasNullInt = that.hasNullInt;
@@ -532,7 +532,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return Count.count(size());
     }
 
-    public final PrimitiveCollection hasNullByte(final boolean value)
+    public final PrimitiveCollection hasNullByte(boolean value)
     {
         hasNullByte = value;
         return this;
@@ -543,7 +543,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return hasNullByte;
     }
 
-    public final PrimitiveCollection hasNullChar(final boolean value)
+    public final PrimitiveCollection hasNullChar(boolean value)
     {
         hasNullChar = value;
         return this;
@@ -554,7 +554,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return hasNullChar;
     }
 
-    public final PrimitiveCollection hasNullInt(final boolean value)
+    public final PrimitiveCollection hasNullInt(boolean value)
     {
         hasNullInt = value;
         return this;
@@ -565,7 +565,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return hasNullInt;
     }
 
-    public final PrimitiveCollection hasNullLong(final boolean value)
+    public final PrimitiveCollection hasNullLong(boolean value)
     {
         hasNullLong = value;
         return this;
@@ -576,7 +576,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return hasNullLong;
     }
 
-    public final PrimitiveCollection hasNullShort(final boolean value)
+    public final PrimitiveCollection hasNullShort(boolean value)
     {
         hasNullShort = value;
         return this;
@@ -602,13 +602,13 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return Estimate.estimate(initialChildSize);
     }
 
-    public PrimitiveCollection initialChildSize(final Count childSize)
+    public PrimitiveCollection initialChildSize(Count childSize)
     {
         initialChildSize(childSize.asInt());
         return this;
     }
 
-    public PrimitiveCollection initialChildSize(final int childSize)
+    public PrimitiveCollection initialChildSize(int childSize)
     {
         initialChildSize = childSize;
         return this;
@@ -624,13 +624,13 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return Estimate.estimate(initialSize);
     }
 
-    public final PrimitiveCollection initialSize(final Estimate initialSize)
+    public final PrimitiveCollection initialSize(Estimate initialSize)
     {
         initialSize(initialSize.asInt());
         return this;
     }
 
-    public final PrimitiveCollection initialSize(final int initialSize)
+    public final PrimitiveCollection initialSize(int initialSize)
     {
         this.initialSize = initialSize;
         return this;
@@ -669,7 +669,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     /**
      * @return True if the value is the "null" byte value
      */
-    public final boolean isNull(final byte value)
+    public final boolean isNull(byte value)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
         return hasNullByte && nullByte == value;
@@ -678,7 +678,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     /**
      * @return True if the value is the "null" integer value
      */
-    public final boolean isNull(final int value)
+    public final boolean isNull(int value)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
         return hasNullInt && nullInt == value;
@@ -687,7 +687,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     /**
      * @return True if the value is the "null" long value
      */
-    public final boolean isNull(final long value)
+    public final boolean isNull(long value)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
         return hasNullLong && nullLong == value;
@@ -696,7 +696,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     /**
      * @return True if the value is the "null" short value
      */
-    public final boolean isNull(final short value)
+    public final boolean isNull(short value)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
         return hasNullShort && nullShort == value;
@@ -705,7 +705,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     /**
      * @return True if the value is the "null" char value
      */
-    public final boolean isNull(final char value)
+    public final boolean isNull(char value)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
         return hasNullChar && nullChar == value;
@@ -716,13 +716,13 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return Maximum.maximum(maximumChildSize);
     }
 
-    public PrimitiveCollection maximumChildSize(final Maximum maximumChildSize)
+    public PrimitiveCollection maximumChildSize(Maximum maximumChildSize)
     {
         maximumChildSize(maximumChildSize.asInt());
         return this;
     }
 
-    public PrimitiveCollection maximumChildSize(final int maximumChildSize)
+    public PrimitiveCollection maximumChildSize(int maximumChildSize)
     {
         this.maximumChildSize = maximumChildSize;
         return this;
@@ -733,7 +733,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return maximumChildSize;
     }
 
-    public PrimitiveCollection maximumSize(final Maximum maximumSize)
+    public PrimitiveCollection maximumSize(Maximum maximumSize)
     {
         maximumSize(maximumSize.asInt());
         return this;
@@ -744,7 +744,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return Maximum.maximum(maximumSize);
     }
 
-    public PrimitiveCollection maximumSize(final int maximumSize)
+    public PrimitiveCollection maximumSize(int maximumSize)
     {
         this.maximumSize = maximumSize;
         return this;
@@ -760,7 +760,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return nullByte;
     }
 
-    public final PrimitiveCollection nullByte(final byte value)
+    public final PrimitiveCollection nullByte(byte value)
     {
         hasNullByte = true;
         nullByte = value;
@@ -772,7 +772,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return nullChar;
     }
 
-    public final PrimitiveCollection nullChar(final char value)
+    public final PrimitiveCollection nullChar(char value)
     {
         hasNullChar = true;
         nullChar = value;
@@ -789,7 +789,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return nullInt;
     }
 
-    public final PrimitiveCollection nullInt(final int value)
+    public final PrimitiveCollection nullInt(int value)
     {
         hasNullInt = true;
         nullInt = value;
@@ -801,7 +801,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return nullLong;
     }
 
-    public PrimitiveCollection nullLong(final long value)
+    public PrimitiveCollection nullLong(long value)
     {
         hasNullLong = true;
         nullLong = value;
@@ -813,7 +813,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return nullShort;
     }
 
-    public final PrimitiveCollection nullShort(final short value)
+    public final PrimitiveCollection nullShort(short value)
     {
         hasNullShort = true;
         nullShort = value;
@@ -827,7 +827,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     }
 
     @Override
-    public void objectName(final String objectName)
+    public void objectName(String objectName)
     {
         this.objectName = objectName;
     }
@@ -837,7 +837,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      */
     @Override
     @MustBeInvokedByOverriders
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         // NOTE: In the future, this version may be used.
         kryo.readObject(input, Version.class);
@@ -880,7 +880,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      */
     @Override
     @MustBeInvokedByOverriders
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         kryo.writeObject(output, KivaKit.get().projectVersion());
         kryo.writeObject(output, objectName);
@@ -906,20 +906,20 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         kryo.writeObject(output, nullByte);
     }
 
-    protected final <T> T allocated(final Object who, final String why, final T what, final int initialSize)
+    protected final <T> T allocated(Object who, String why, T what, int initialSize)
     {
         return allocated(who, why, what, initialSize, -1);
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected final <T> T allocated(final Object allocator, final String why, final T allocated,
-                                    final int initialSize, final int estimatedChildSize)
+    protected final <T> T allocated(Object allocator, String why, T allocated,
+                                    int initialSize, int estimatedChildSize)
     {
         // If we want to log allocations and the size of the objects is big enough,
         if (logAllocations() && initialSize >= logAllocationsMinimumSize())
         {
             // Get the name of who did the allocation
-            final String who;
+            String who;
             if (allocator instanceof String)
             {
                 who = allocator.toString();
@@ -940,12 +940,12 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
                 else
                 {
                     // Get the caller who is constructing this collection
-                    final var method = CallStack.callerOf(IMMEDIATE, SUBCLASS, PrimitiveCollection.class,
+                    var method = CallStack.callerOf(IMMEDIATE, SUBCLASS, PrimitiveCollection.class,
                             SUBCLASS, PrimitiveArray.class, PrimitiveSplitArray.class, PrimitiveArrayArray.class,
                             PrimitiveMap.class, PrimitiveSet.class, PrimitiveListStore.class, PackedStringStore.class);
                     if (method != null)
                     {
-                        final var caller = method.type();
+                        var caller = method.type();
                         who = caller.simpleName();
                     }
                     else
@@ -958,8 +958,8 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
             assert who != null;
 
             // Get the name of what was allocated
-            final String what;
-            final var type = allocated.getClass();
+            String what;
+            var type = allocated.getClass();
             if (type.isArray())
             {
                 what = type.getComponentType().getSimpleName();
@@ -989,14 +989,14 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
                 if (type.isArray())
                 {
                     // get the component type of the collection,
-                    final var componentType = type.getComponentType();
+                    var componentType = type.getComponentType();
 
                     // compute the size of this object from the estimated size (initial capacity)
                     // and the size of the primitive type in bytes,
-                    final var size = JavaVirtualMachine.local().sizeOfPrimitiveType(componentType).times(initialSize);
+                    var size = JavaVirtualMachine.local().sizeOfPrimitiveType(componentType).times(initialSize);
 
                     // add to the total
-                    final var total = totalAllocated.addAndGet(size.asBytes());
+                    var total = totalAllocated.addAndGet(size.asBytes());
                     totalAllocatedByAllocator.add(who, size);
 
                     // and then show what exactly was allocated
@@ -1041,7 +1041,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return allocated;
     }
 
-    protected final void clear(final byte[] values)
+    protected final void clear(byte[] values)
     {
         if (hasNullByte())
         {
@@ -1049,7 +1049,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         }
     }
 
-    protected final void clear(final int[] values)
+    protected final void clear(int[] values)
     {
         if (hasNullInt())
         {
@@ -1057,7 +1057,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         }
     }
 
-    protected final void clear(final char[] values)
+    protected final void clear(char[] values)
     {
         if (hasNullInt())
         {
@@ -1065,7 +1065,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         }
     }
 
-    protected final void clear(final long[] values)
+    protected final void clear(long[] values)
     {
         if (hasNullLong())
         {
@@ -1073,12 +1073,12 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         }
     }
 
-    protected final void clear(final Object[] values)
+    protected final void clear(Object[] values)
     {
         Arrays.fill(values, null);
     }
 
-    protected final void clear(final short[] values)
+    protected final void clear(short[] values)
     {
         if (hasNullShort())
         {
@@ -1086,7 +1086,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         }
     }
 
-    protected final void clear(final String[] values)
+    protected final void clear(String[] values)
     {
         Arrays.fill(values, null);
     }
@@ -1095,19 +1095,19 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      * Copies the contents of another collection into this collection
      */
     @MustBeInvokedByOverriders
-    protected final void copy(final PrimitiveCollection that)
+    protected final void copy(PrimitiveCollection that)
     {
         size = that.size;
     }
 
-    protected final void decreaseSize(final int count)
+    protected final void decreaseSize(int count)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
 
         size -= count;
     }
 
-    protected final boolean ensureHasRoomFor(final int increase)
+    protected final boolean ensureHasRoomFor(int increase)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
 
@@ -1121,7 +1121,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return true;
     }
 
-    protected final void ensureIndexInRange(final int index)
+    protected final void ensureIndexInRange(int index)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
 
@@ -1129,7 +1129,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         assert index < maximumSizeAsInt() : "Index " + index + " must be < " + maximumSizeAsInt();
     }
 
-    protected final int increaseSize(final int count)
+    protected final int increaseSize(int count)
     {
         assert initialized : "Collection " + objectName() + " not initialized";
 
@@ -1144,20 +1144,20 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return ++size;
     }
 
-    protected byte[] newByteArray(final Object who, final String why)
+    protected byte[] newByteArray(Object who, String why)
     {
         return newByteArray(who, why, initialSize());
     }
 
-    protected byte[] newByteArray(final Object who, final String why, final Count size)
+    protected byte[] newByteArray(Object who, String why, Count size)
     {
         return newByteArray(who, why, size.asInt());
     }
 
-    protected byte[] newByteArray(final Object who, final String why, final int size)
+    protected byte[] newByteArray(Object who, String why, int size)
     {
         tracePrimitiveAllocation(size);
-        final var values = new byte[size];
+        var values = new byte[size];
         if (nullByte() != 0)
         {
             clear(values);
@@ -1165,20 +1165,20 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return allocated(who, why, values, size);
     }
 
-    protected char[] newCharArray(final Object who, final String why)
+    protected char[] newCharArray(Object who, String why)
     {
         return newCharArray(who, why, initialSize());
     }
 
-    protected char[] newCharArray(final Object who, final String why, final Count size)
+    protected char[] newCharArray(Object who, String why, Count size)
     {
         return newCharArray(who, why, size.asInt());
     }
 
-    protected char[] newCharArray(final Object who, final String why, final int size)
+    protected char[] newCharArray(Object who, String why, int size)
     {
         tracePrimitiveAllocation(size);
-        final var values = new char[size];
+        var values = new char[size];
         if (nullChar() != 0)
         {
             clear(values);
@@ -1187,20 +1187,20 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected int[] newIntArray(final Object who, final String why)
+    protected int[] newIntArray(Object who, String why)
     {
         return newIntArray(who, why, initialSize());
     }
 
-    protected int[] newIntArray(final Object who, final String why, final Count size)
+    protected int[] newIntArray(Object who, String why, Count size)
     {
         return newIntArray(who, why, size.asInt());
     }
 
-    protected int[] newIntArray(final Object who, final String why, final int size)
+    protected int[] newIntArray(Object who, String why, int size)
     {
         tracePrimitiveAllocation(size);
-        final var values = new int[size];
+        var values = new int[size];
         if (nullInt() != 0)
         {
             clear(values);
@@ -1208,20 +1208,20 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return allocated(who, why, values, size);
     }
 
-    protected long[] newLongArray(final Object who, final String why)
+    protected long[] newLongArray(Object who, String why)
     {
         return newLongArray(who, why, initialSize());
     }
 
-    protected long[] newLongArray(final Object who, final String why, final Count size)
+    protected long[] newLongArray(Object who, String why, Count size)
     {
         return newLongArray(who, why, size.asInt());
     }
 
-    protected long[] newLongArray(final Object who, final String why, final int size)
+    protected long[] newLongArray(Object who, String why, int size)
     {
         tracePrimitiveAllocation(size);
-        final var values = new long[size];
+        var values = new long[size];
         if (nullLong() != 0)
         {
             clear(values);
@@ -1230,38 +1230,38 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected <T> T[] newObjectArray(final Object who, final String why)
+    protected <T> T[] newObjectArray(Object who, String why)
     {
         return newObjectArray(who, why, initialSize());
     }
 
-    protected <T> T[] newObjectArray(final Object who, final String why, final Count size)
+    protected <T> T[] newObjectArray(Object who, String why, Count size)
     {
         return newObjectArray(who, why, size.asInt());
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> T[] newObjectArray(final Object who, final String why, final int size)
+    protected <T> T[] newObjectArray(Object who, String why, int size)
     {
         tracePrimitiveAllocation(size);
         return allocated(who, why, (T[]) new Object[size], size);
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected short[] newShortArray(final Object who, final String why)
+    protected short[] newShortArray(Object who, String why)
     {
         return newShortArray(who, why, initialSize());
     }
 
-    protected short[] newShortArray(final Object who, final String why, final Count size)
+    protected short[] newShortArray(Object who, String why, Count size)
     {
         return newShortArray(who, why, size.asInt());
     }
 
-    protected short[] newShortArray(final Object who, final String why, final int size)
+    protected short[] newShortArray(Object who, String why, int size)
     {
         tracePrimitiveAllocation(size);
-        final var values = new short[size];
+        var values = new short[size];
         if (nullShort() != 0)
         {
             clear(values);
@@ -1270,17 +1270,17 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected String[] newStringArray(final Object who, final String why)
+    protected String[] newStringArray(Object who, String why)
     {
         return newStringArray(who, why, initialSize());
     }
 
-    protected String[] newStringArray(final Object who, final String why, final Count size)
+    protected String[] newStringArray(Object who, String why, Count size)
     {
         return newStringArray(who, why, size.asInt());
     }
 
-    protected String[] newStringArray(final Object who, final String why, final int size)
+    protected String[] newStringArray(Object who, String why, int size)
     {
         tracePrimitiveAllocation(size);
         return allocated(who, why, new String[size], size);
@@ -1290,32 +1290,32 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      * @param method The suggested compression method
      * @return The method that should be used
      */
-    protected Method onCompress(final Method method)
+    protected Method onCompress(Method method)
     {
         return Method.NONE;
     }
 
-    protected final void size(final int size)
+    protected final void size(int size)
     {
         this.size = size;
     }
 
-    protected String toString(final IndexedToString toStringer)
+    protected String toString(IndexedToString toStringer)
     {
         return toString(", ", 10, "\n", toStringer);
     }
 
-    protected String toString(final String separator, final int every, final String section,
-                              final IndexedToString toStringer)
+    protected String toString(String separator, int every, String section,
+                              IndexedToString toStringer)
     {
         return toString(separator, every, section, toStringer, TO_STRING_MAXIMUM_ELEMENTS);
     }
 
-    protected String toString(final String separator, final int every, final String section,
-                              final IndexedToString toStringer, final int maximumElements)
+    protected String toString(String separator, int every, String section,
+                              IndexedToString toStringer, int maximumElements)
     {
-        final var count = Math.min(size(), maximumElements);
-        final var builder = new StringBuilder();
+        var count = Math.min(size(), maximumElements);
+        var builder = new StringBuilder();
         for (var i = 0; i < count; i++)
         {
             if (i > 0)
@@ -1343,7 +1343,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     {
         if (logAllocations == null)
         {
-            final var property = System.getProperty("KIVAKIT_LOG_ALLOCATIONS");
+            var property = System.getProperty("KIVAKIT_LOG_ALLOCATIONS");
             if (property != null)
             {
                 logAllocations = Boolean.valueOf(property);
@@ -1363,7 +1363,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     {
         if (logAllocationsMinimumSize == 0)
         {
-            final var property = System.getProperty("KIVAKIT_LOG_ALLOCATIONS_MINIMUM_SIZE");
+            var property = System.getProperty("KIVAKIT_LOG_ALLOCATIONS_MINIMUM_SIZE");
             if (property != null)
             {
                 logAllocationsMinimumSize = Bytes.parse(property).asInt();
@@ -1376,7 +1376,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return logAllocationsMinimumSize;
     }
 
-    private void tracePrimitiveAllocation(final int size)
+    private void tracePrimitiveAllocation(int size)
     {
         if (DEBUG.isDebugOn())
         {

@@ -72,7 +72,7 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
      * @return A Huffman codec for the given symbol frequencies and escape symbol where no code is longer than the given
      * number of bits. Only symbols that have at least the given number of occurrences are included.
      */
-    public static <Symbol> HuffmanCodec<Symbol> from(final Symbols<Symbol> symbols, final Maximum bits)
+    public static <Symbol> HuffmanCodec<Symbol> from(Symbols<Symbol> symbols, Maximum bits)
     {
         return new HuffmanCodec<>(symbols, bits);
     }
@@ -100,7 +100,7 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
      * @param symbols A set of symbols to encode, including any escapes
      * @param bits The maximum number of bits desired in a code
      */
-    private HuffmanCodec(final Symbols<Symbol> symbols, final Maximum bits)
+    private HuffmanCodec(Symbols<Symbol> symbols, Maximum bits)
     {
         // To have a valid Huffman tree, there must be at least two symbols to encode because a Huffman tree with only
         // one symbol has no nodes and therefore no coding paths through the tree
@@ -114,16 +114,16 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
 
         // assign Huffman codes to symbols
         symbolToCode = tree.encode();
-        final var codedSymbols = tree.codedSymbols();
+        var codedSymbols = tree.codedSymbols();
 
         // make sure all symbols were coded
         ensure(codedSymbols.size() == symbolToCode.size(), "Only $ of $ symbols were coded:\n$",
                 symbolToCode.size(), symbols.size(), symbols);
 
         // create a map from symbol value to code
-        for (final var symbol : symbolToCode.keySet())
+        for (var symbol : symbolToCode.keySet())
         {
-            final var code = symbolToCode.get(symbol);
+            var code = symbolToCode.get(symbol);
             valueToCode.put(symbol.value(), code);
         }
 
@@ -134,18 +134,18 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
     /**
      * @return This codec's symbols as a property map
      */
-    public PropertyMap asProperties(final StringConverter<Symbol> converter)
+    public PropertyMap asProperties(StringConverter<Symbol> converter)
     {
         return symbols.asProperties(converter, value -> null);
     }
 
     @Override
-    public boolean canEncode(final Symbol symbol)
+    public boolean canEncode(Symbol symbol)
     {
         return code(symbol) != null;
     }
 
-    public Code code(final Symbol value)
+    public Code code(Symbol value)
     {
         return valueToCode.get(value);
     }
@@ -159,12 +159,12 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
      * {@inheritDoc}
      */
     @Override
-    public final void decode(final ByteList input, final SymbolConsumer<Symbol> consumer)
+    public final void decode(ByteList input, SymbolConsumer<Symbol> consumer)
     {
         fastDecoder.decode(input, consumer);
     }
 
-    public CodedSymbol<Symbol> decode(final BitReader reader)
+    public CodedSymbol<Symbol> decode(BitReader reader)
     {
         return tree.decode(reader);
     }
@@ -173,19 +173,19 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
      * {@inheritDoc}
      */
     @Override
-    public ByteList encode(final ByteList output, final SymbolProducer<Symbol> producer)
+    public ByteList encode(ByteList output, SymbolProducer<Symbol> producer)
     {
         // Create a bit writer that can write to the output byte list
-        final var bits = new BitArray("bits", output);
+        var bits = new BitArray("bits", output);
         bits.initialize();
-        final var writer = bits.writer();
+        var writer = bits.writer();
 
         // Loop through
         var ordinal = 0;
         while (true)
         {
             // getting the next symbol
-            final var symbol = producer.get(ordinal++);
+            var symbol = producer.get(ordinal++);
             if (symbol == null)
             {
                 // unless there is none
@@ -193,7 +193,7 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
             }
 
             // then get the Huffman code for the symbol
-            final var code = code(symbol);
+            var code = code(symbol);
             if (code != null)
             {
                 // and write it to the output
@@ -202,7 +202,7 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
             else
             {
                 // unless there is no code (but there is an escape symbol)
-                final var escape = escape();
+                var escape = escape();
                 if (escape != null)
                 {
                     // in which case we write out the escape symbol
@@ -229,14 +229,14 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
     @Override
     public String toString()
     {
-        final var lines = new StringList();
+        var lines = new StringList();
         lines.add("[HuffmanCodec size = " + size() + ", bits = " + bits() + "]:");
-        final var keys = new ArrayList<>(symbolToCode.keySet());
+        var keys = new ArrayList<>(symbolToCode.keySet());
         keys.sort(Comparator.comparingLong(CodedSymbol::frequency));
         var ordinal = 1;
-        for (final var key : keys)
+        for (var key : keys)
         {
-            final var value = key.value();
+            var value = key.value();
             var string = value.toString();
             if (string.length() == 1 && Character.isISOControl(string.charAt(0)))
             {
@@ -262,7 +262,7 @@ public class HuffmanCodec<Symbol> implements Codec<Symbol>
     private int bits()
     {
         var maximum = -1;
-        for (final var code : valueToCode.values())
+        for (var code : valueToCode.values())
         {
             maximum = Math.max(maximum, code.lengthInBits());
         }

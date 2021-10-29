@@ -54,7 +54,7 @@ public class DiscoverApplicationsResponse extends BaseResponse<Set<Application.I
         return applications;
     }
 
-    public DiscoverApplicationsResponse applications(final Set<Application.Identifier> applications)
+    public DiscoverApplicationsResponse applications(Set<Application.Identifier> applications)
     {
         this.applications = applications;
         return this;
@@ -67,7 +67,7 @@ public class DiscoverApplicationsResponse extends BaseResponse<Set<Application.I
     }
 
     @Override
-    protected void value(final Set<Application.Identifier> value)
+    protected void value(Set<Application.Identifier> value)
     {
         applications = value;
     }

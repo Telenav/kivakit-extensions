@@ -2,8 +2,11 @@ package com.telenav.kivakit.ui.desktop.layout;
 
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import java.awt.Component;
+import java.awt.Dimension;
 
 import static javax.swing.BoxLayout.X_AXIS;
 
@@ -18,12 +21,12 @@ public class HorizontalBoxLayout
 
     private final Spacing spacing;
 
-    public HorizontalBoxLayout(final JComponent parent, final Spacing spacing)
+    public HorizontalBoxLayout(JComponent parent, Spacing spacing)
     {
         this(parent, spacing, -1);
     }
 
-    public HorizontalBoxLayout(final JComponent parent, final Spacing spacing, final int height)
+    public HorizontalBoxLayout(JComponent parent, Spacing spacing, int height)
     {
         if (height >= 0)
         {
@@ -34,13 +37,13 @@ public class HorizontalBoxLayout
         parent.setLayout(new BoxLayout(parent, X_AXIS));
     }
 
-    public HorizontalBoxLayout add(final Component component)
+    public HorizontalBoxLayout add(Component component)
     {
         add(component, null);
         return this;
     }
 
-    public HorizontalBoxLayout add(final Component component, final Object constraints)
+    public HorizontalBoxLayout add(Component component, Object constraints)
     {
         if (spacing == Spacing.AUTOMATIC_SPACING && added++ > 0)
         {
@@ -57,19 +60,19 @@ public class HorizontalBoxLayout
         return this;
     }
 
-    public HorizontalBoxLayout addLeftAligned(final JComponent component)
+    public HorizontalBoxLayout addLeftAligned(JComponent component)
     {
         add(Alignment.left(component));
         return this;
     }
 
-    public HorizontalBoxLayout addStretched(final JComponent component)
+    public HorizontalBoxLayout addStretched(JComponent component)
     {
         add(Alignment.stretched(component));
         return this;
     }
 
-    public HorizontalBoxLayout addTopAligned(final JComponent component)
+    public HorizontalBoxLayout addTopAligned(JComponent component)
     {
         add(Alignment.top(component));
         return this;
@@ -87,7 +90,7 @@ public class HorizontalBoxLayout
         return this;
     }
 
-    public HorizontalBoxLayout space(final int width)
+    public HorizontalBoxLayout space(int width)
     {
         parent.add(Box.createRigidArea(new Dimension(width, 0)));
         return this;

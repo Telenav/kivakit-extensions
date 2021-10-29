@@ -54,27 +54,27 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 public class S3FileSystemService implements FileSystemService
 {
     @Override
-    public boolean accepts(final FilePath path)
+    public boolean accepts(FilePath path)
     {
         return S3FileSystemObject.accepts(path.toString());
     }
 
     @Override
-    public DiskService diskService(final FilePath path)
+    public DiskService diskService(FilePath path)
     {
         return unsupported();
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public S3File fileService(final FilePath path)
+    public S3File fileService(FilePath path)
     {
         return new S3File(path);
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public S3Folder folderService(final FilePath path)
+    public S3Folder folderService(FilePath path)
     {
         return new S3Folder(path);
     }

@@ -55,19 +55,19 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
     /** Map from key to values index */
     private LongToIntMap indexes;
 
-    public LongToLongFixedMultiMap(final String objectName)
+    public LongToLongFixedMultiMap(String objectName)
     {
         super(objectName);
     }
 
-    protected LongToLongFixedMultiMap()
+    private LongToLongFixedMultiMap()
     {
     }
 
     /**
      * @return True if this map contains the given key
      */
-    public boolean containsKey(final long key)
+    public boolean containsKey(long key)
     {
         return !indexes.isNull(indexes.get(key));
     }
@@ -75,18 +75,18 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
     /**
      * @return An long array for the given key
      */
-    public LongArray get(final long key)
+    public LongArray get(long key)
     {
-        final var index = indexes.get(key);
+        var index = indexes.get(key);
         if (!indexes.isNull(index))
         {
-            final var values = new LongArray("get");
+            var values = new LongArray("get");
             values.initialSize(initialChildSizeAsInt());
             values.initialize();
 
             for (var i = index; i < this.values.size(); i++)
             {
-                final var value = this.values.get(i);
+                var value = this.values.get(i);
                 if (value == TERMINATOR)
                 {
                     return values;
@@ -99,13 +99,13 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
     }
 
     @Override
-    public PrimitiveList getPrimitiveList(final long key)
+    public PrimitiveList getPrimitiveList(long key)
     {
         return get(key);
     }
 
     @Override
-    public boolean isScalarKeyNull(final long key)
+    public boolean isScalarKeyNull(long key)
     {
         return isNull(key);
     }
@@ -119,7 +119,7 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (method == CompressibleCollection.Method.RESIZE)
         {
@@ -134,9 +134,29 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        indexes = new LongToIntMap(objectName() + ".indexes");
+        indexes.initialSize(initialSize());
+        indexes.initialize();
+
+        values = new LongArray(objectName() + ".values");
+        indexes.initialSize(initialSize());
+        values.initialize();
+
+        // Add a value in the first index spot because index 0 is invalid
+        values.add(nullLong());
+    }
+
+    /**
      * Puts the given values under the given key
      */
-    public void putAll(final long key, final long[] values)
+    public void putAll(long key, long[] values)
     {
         // If we haven't already put a value for this key
         assert indexes != null;
@@ -146,7 +166,7 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
         if (ensureHasRoomFor(1))
         {
             // get the next index in the values array
-            final var index = this.values.size();
+            var index = this.values.size();
 
             // add a mapping from the key to the index
             indexes.put(key, index);
@@ -160,7 +180,7 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
     /**
      * Puts the given values under the given key
      */
-    public void putAll(final long key, final LongArray values)
+    public void putAll(long key, LongArray values)
     {
         // If we haven't already put a value for this key
         assert indexes != null;
@@ -170,7 +190,7 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
         if (ensureHasRoomFor(1))
         {
             // get the next index in the values array
-            final var index = this.values.size();
+            var index = this.values.size();
 
             // add a mapping from the key to the index
             indexes.put(key, index);
@@ -181,7 +201,7 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
         }
     }
 
-    public void putAll(final long key, final List<? extends Quantizable> values)
+    public void putAll(long key, List<? extends Quantizable> values)
     {
         // If we haven't already put a value for this key
         assert isNull(indexes.get((int) key));
@@ -190,7 +210,7 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
         if (ensureHasRoomFor(1))
         {
             // get the next index in the values array
-            final var index = this.values.size();
+            var index = this.values.size();
 
             // add a mapping from the key to the index
             indexes.put((int) key, index);
@@ -202,13 +222,13 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
     }
 
     @Override
-    public void putPrimitiveList(final long key, final PrimitiveList values)
+    public void putPrimitiveList(long key, PrimitiveList values)
     {
         putAll(key, (LongArray) values);
     }
 
     @Override
-    public void putPrimitiveList(final long key, final List<? extends Quantizable> values)
+    public void putPrimitiveList(long key, List<? extends Quantizable> values)
     {
         putAll(key, values);
     }
@@ -217,7 +237,7 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -249,31 +269,11 @@ public final class LongToLongFixedMultiMap extends PrimitiveMultiMap implements 
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
         kryo.writeObject(output, values);
         kryo.writeObject(output, indexes);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        indexes = new LongToIntMap(objectName() + ".indexes");
-        indexes.initialSize(initialSize());
-        indexes.initialize();
-
-        values = new LongArray(objectName() + ".values");
-        indexes.initialSize(initialSize());
-        values.initialize();
-
-        // Add a value in the first index spot because index 0 is invalid
-        values.add(nullLong());
     }
 }

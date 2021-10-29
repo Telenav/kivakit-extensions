@@ -51,7 +51,7 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     /**
      * @return A new coordinate system with the given name, but no origin or size
      */
-    public static DrawingCoordinateSystem drawingCoordinateSystem(final String name)
+    public static DrawingCoordinateSystem drawingCoordinateSystem(String name)
     {
         return new DrawingCoordinateSystem(name);
     }
@@ -65,12 +65,12 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     /** The name of this coordinate system */
     private String name;
 
-    protected DrawingCoordinateSystem(final String name)
+    protected DrawingCoordinateSystem(String name)
     {
         this.name = name;
     }
 
-    protected DrawingCoordinateSystem(final DrawingCoordinateSystem that)
+    protected DrawingCoordinateSystem(DrawingCoordinateSystem that)
     {
         name = that.name;
 
@@ -86,11 +86,11 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof DrawingCoordinateSystem)
         {
-            final DrawingCoordinateSystem that = (DrawingCoordinateSystem) object;
+            DrawingCoordinateSystem that = (DrawingCoordinateSystem) object;
             return x == that.x &&
                     y == that.y &&
                     dx == that.dx &&
@@ -99,7 +99,7 @@ public class DrawingCoordinateSystem implements CoordinateSystem
         return false;
     }
 
-    public void extent(final double dx, final double dy)
+    public void extent(double dx, double dy)
     {
         this.dx = dx;
         this.dy = dy;
@@ -142,7 +142,7 @@ public class DrawingCoordinateSystem implements CoordinateSystem
         return pixels(x, y);
     }
 
-    public DrawingCoordinateSystem origin(final double x, final double y)
+    public DrawingCoordinateSystem origin(double x, double y)
     {
         this.x = x;
         this.y = y;
@@ -150,11 +150,11 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     }
 
     @Override
-    public DrawingWidth toCoordinates(final Coordinated coordinated, final DrawingWidth width)
+    public DrawingWidth toCoordinates(Coordinated coordinated, DrawingWidth width)
     {
         ensureNotNull(coordinated);
 
-        final var that = coordinated.coordinates();
+        var that = coordinated.coordinates();
 
         // If we are already in the same coordinate system,
         if (equals(that))
@@ -168,10 +168,10 @@ public class DrawingCoordinateSystem implements CoordinateSystem
             if (isBounded() && that.isBounded())
             {
                 // normalize the width to the unit interval from 0 to 1 in this coordinate system,
-                final var dxUnit = width.units() / dx;
+                var dxUnit = width.units() / dx;
 
                 // then return the scaled width in the given coordinate system.
-                final var dx = dxUnit * that.width();
+                var dx = dxUnit * that.width();
 
                 return DrawingWidth.width(coordinated, dx);
             }
@@ -183,11 +183,11 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     }
 
     @Override
-    public DrawingHeight toCoordinates(final Coordinated coordinated, final DrawingHeight height)
+    public DrawingHeight toCoordinates(Coordinated coordinated, DrawingHeight height)
     {
         ensureNotNull(coordinated);
 
-        final var that = coordinated.coordinates();
+        var that = coordinated.coordinates();
 
         // If we are already in the same coordinate system,
         if (equals(that))
@@ -201,10 +201,10 @@ public class DrawingCoordinateSystem implements CoordinateSystem
             if (isBounded() && that.isBounded())
             {
                 // normalize the width to the unit interval from 0 to 1 in this coordinate system,
-                final var dyUnit = height.units() / dy;
+                var dyUnit = height.units() / dy;
 
                 // then return the scaled width in the given coordinate system.
-                final var dy = dyUnit * that.height();
+                var dy = dyUnit * that.height();
 
                 return DrawingHeight.height(coordinated, dy);
             }
@@ -216,11 +216,11 @@ public class DrawingCoordinateSystem implements CoordinateSystem
     }
 
     @Override
-    public DrawingPoint toCoordinates(final Coordinated coordinated, final DrawingPoint point)
+    public DrawingPoint toCoordinates(Coordinated coordinated, DrawingPoint point)
     {
         ensureNotNull(coordinated);
 
-        final var that = coordinated.coordinates();
+        var that = coordinated.coordinates();
 
         // If we are already in the same coordinate system,
         if (equals(that))
@@ -234,24 +234,24 @@ public class DrawingCoordinateSystem implements CoordinateSystem
             if (isBounded() && that.isBounded())
             {
                 // normalize the given coordinate to the unit interval from 0 to 1 in this coordinate system,
-                final var xUnit = (point.x() - x) / dx;
-                final var yUnit = (point.y() - y) / dy;
+                var xUnit = (point.x() - x) / dx;
+                var yUnit = (point.y() - y) / dy;
 
                 // then return the x, y coordinate in the given coordinate system scaled to the same relative position.
-                final var x = that.x() + xUnit * that.width();
-                final var y = that.y() + yUnit * that.height();
+                var x = that.x() + xUnit * that.width();
+                var y = that.y() + yUnit * that.height();
 
                 return point(x, y);
             }
             else
             {
                 // otherwise, get the offset of the given coordinate in this coordinate system,
-                final var dx = point.x() - x;
-                final var dy = point.y() - y;
+                var dx = point.x() - x;
+                var dy = point.y() - y;
 
                 // and return the origin of the target coordinate system plus the offset.
-                final var x = that.x() + dx;
-                final var y = that.y() + dy;
+                var x = that.x() + dx;
+                var y = that.y() + dy;
 
                 return point(x, y);
             }
@@ -275,24 +275,24 @@ public class DrawingCoordinateSystem implements CoordinateSystem
         return dx;
     }
 
-    public DrawingCoordinateSystem withExtent(final double dx, final double dy)
+    public DrawingCoordinateSystem withExtent(double dx, double dy)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.dx = dx;
         copy.dy = dy;
         return copy;
     }
 
-    public DrawingCoordinateSystem withName(final String name)
+    public DrawingCoordinateSystem withName(String name)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.name = name;
         return copy;
     }
 
-    public DrawingCoordinateSystem withOrigin(final double x, final double y)
+    public DrawingCoordinateSystem withOrigin(double x, double y)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.x = x;
         copy.y = y;
         return copy;

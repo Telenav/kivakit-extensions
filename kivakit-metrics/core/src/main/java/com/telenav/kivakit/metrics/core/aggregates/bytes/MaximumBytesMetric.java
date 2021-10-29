@@ -10,25 +10,25 @@ public class MaximumBytesMetric extends MaximumMetric<Bytes>
         super(Bytes::bytes);
     }
 
-    public MaximumBytesMetric description(final String description)
+    public MaximumBytesMetric description(String description)
     {
         return (MaximumBytesMetric) super.description(description);
     }
 
     @Override
-    public MaximumBytesMetric name(final String name)
+    public MaximumBytesMetric name(String name)
     {
         return (MaximumBytesMetric) super.name(name);
     }
 
     @Override
-    public MaximumBytesMetric type(final MetricType type)
+    public MaximumBytesMetric type(MetricType type)
     {
         return (MaximumBytesMetric) super.type(type);
     }
 
     @Override
-    public MaximumBytesMetric unit(final String unit)
+    public MaximumBytesMetric unit(String unit)
     {
         return (MaximumBytesMetric) super.unit(unit);
     }

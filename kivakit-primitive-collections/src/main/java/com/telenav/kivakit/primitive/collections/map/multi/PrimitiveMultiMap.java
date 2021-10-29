@@ -37,7 +37,7 @@ public abstract class PrimitiveMultiMap extends PrimitiveMap
         String toString(long key, PrimitiveIterator value);
     }
 
-    protected PrimitiveMultiMap(final String name)
+    protected PrimitiveMultiMap(String name)
     {
         super(name);
     }
@@ -47,7 +47,7 @@ public abstract class PrimitiveMultiMap extends PrimitiveMap
     }
 
     @Override
-    protected final void copyEntries(final PrimitiveMap that, final ProgressReporter reporter)
+    protected final void copyEntries(PrimitiveMap that, ProgressReporter reporter)
     {
         unsupported();
     }
@@ -58,18 +58,18 @@ public abstract class PrimitiveMultiMap extends PrimitiveMap
         return unsupported();
     }
 
-    protected String toString(final PrimitiveIterator keys, final Keyed<Long, PrimitiveIterator> values,
-                              final MultiMapToString toStringer)
+    protected String toString(PrimitiveIterator keys, Keyed<Long, PrimitiveIterator> values,
+                              MultiMapToString toStringer)
     {
         return Indent.by(4, toString(keys, values, ", ", 5, "\n", toStringer));
     }
 
-    protected String toString(final PrimitiveIterator keys, final Keyed<Long, PrimitiveIterator> values,
-                              final String separator, final int every, final String section,
-                              final MultiMapToString toStringer)
+    protected String toString(PrimitiveIterator keys, Keyed<Long, PrimitiveIterator> values,
+                              String separator, int every, String section,
+                              MultiMapToString toStringer)
     {
-        final var count = Math.min(size(), PrimitiveCollection.TO_STRING_MAXIMUM_ELEMENTS);
-        final var builder = new StringBuilder();
+        var count = Math.min(size(), PrimitiveCollection.TO_STRING_MAXIMUM_ELEMENTS);
+        var builder = new StringBuilder();
         if (keys != null && keys.hasNext() && values != null)
         {
             for (var i = 0; keys.hasNext() && i < count; i++)
@@ -85,8 +85,8 @@ public abstract class PrimitiveMultiMap extends PrimitiveMap
                         builder.append(separator);
                     }
                 }
-                final var key = keys.nextLong();
-                final var value = values.get(key);
+                var key = keys.nextLong();
+                var value = values.get(key);
                 builder.append(toStringer.toString(key, value));
             }
         }

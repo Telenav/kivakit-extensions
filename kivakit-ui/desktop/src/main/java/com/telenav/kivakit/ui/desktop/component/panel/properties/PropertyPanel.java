@@ -1,10 +1,11 @@
 package com.telenav.kivakit.ui.desktop.component.panel.properties;
 
-import com.telenav.kivakit.ui.desktop.component.layout.spacer.Spacer;
 import com.telenav.kivakit.ui.desktop.component.KivaKitPanel;
+import com.telenav.kivakit.ui.desktop.component.layout.spacer.Spacer;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import static java.awt.GridBagConstraints.NORTH;
 import static java.awt.GridBagConstraints.NORTHEAST;
@@ -30,9 +31,9 @@ public class PropertyPanel extends KivaKitPanel
         constraints.gridy = 0;
     }
 
-    public void property(final String label, final JComponent component)
+    public void property(String label, JComponent component)
     {
-        final var propertyName = newComponentLabel(label);
+        var propertyName = newComponentLabel(label);
 
         constraints.anchor = NORTHEAST;
         constraints.gridx = 0;
@@ -49,12 +50,12 @@ public class PropertyPanel extends KivaKitPanel
         constraints.gridy++;
     }
 
-    public void property(final String label, final String value)
+    public void property(String label, String value)
     {
         property(label, newComponentLabel(value));
     }
 
-    public void space(final int height)
+    public void space(int height)
     {
         constraints.anchor = NORTH;
         constraints.gridx = 0;

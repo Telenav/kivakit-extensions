@@ -34,7 +34,7 @@ public interface StringCodec extends Codec<String>
     /**
      * Trains this string codec on the given string
      */
-    default void train(final String string)
+    default void train(String string)
     {
         unsupported();
     }
@@ -42,9 +42,9 @@ public interface StringCodec extends Codec<String>
     /**
      * Trains this codec on the given sequence of strings
      */
-    default void train(final Iterable<String> strings)
+    default void train(Iterable<String> strings)
     {
-        for (final var string : strings)
+        for (var string : strings)
         {
             train(string);
         }

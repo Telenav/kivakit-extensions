@@ -11,25 +11,25 @@ public class MaximumDurationMetric extends MaximumMetric<Duration>
     }
 
     @Override
-    public MaximumDurationMetric description(final String description)
+    public MaximumDurationMetric description(String description)
     {
         return (MaximumDurationMetric) super.description(description);
     }
 
     @Override
-    public MaximumDurationMetric name(final String name)
+    public MaximumDurationMetric name(String name)
     {
         return (MaximumDurationMetric) super.name(name);
     }
 
     @Override
-    public MaximumDurationMetric type(final MetricType type)
+    public MaximumDurationMetric type(MetricType type)
     {
         return (MaximumDurationMetric) super.type(type);
     }
 
     @Override
-    public MaximumDurationMetric unit(final String unit)
+    public MaximumDurationMetric unit(String unit)
     {
         return (MaximumDurationMetric) super.unit(unit);
     }

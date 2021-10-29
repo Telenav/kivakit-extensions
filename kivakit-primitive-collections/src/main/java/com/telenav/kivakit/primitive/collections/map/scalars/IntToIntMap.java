@@ -22,7 +22,6 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
 import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.kernel.language.values.count.Count;
@@ -31,6 +30,7 @@ import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.primitive.collections.iteration.IntIterator;
 import com.telenav.kivakit.primitive.collections.map.PrimitiveMap;
 import com.telenav.kivakit.primitive.collections.map.PrimitiveScalarMap;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveMap;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -82,12 +82,12 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     /** The values */
     private int[] values;
 
-    public IntToIntMap(final String objectName)
+    public IntToIntMap(String objectName)
     {
         super(objectName);
     }
 
-    protected IntToIntMap()
+    private IntToIntMap()
     {
     }
 
@@ -110,7 +110,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     /**
      * @return True if this map contains the given key
      */
-    public boolean containsKey(final int key)
+    public boolean containsKey(int key)
     {
         return contains(keys, key);
     }
@@ -118,12 +118,12 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     /**
      * Calls the visitor with each key / value pair in the map
      */
-    public void entries(final EntryVisitor visitor)
+    public void entries(EntryVisitor visitor)
     {
-        final var indexes = nonEmptyIndexes(keys);
+        var indexes = nonEmptyIndexes(keys);
         while (indexes.hasNext())
         {
-            final var index = indexes.next();
+            var index = indexes.next();
             visitor.onEntry(keys[index], values[index]);
         }
     }
@@ -132,11 +132,11 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof IntToIntMap)
         {
-            final var that = (IntToIntMap) object;
+            var that = (IntToIntMap) object;
             if (this == that)
             {
                 return true;
@@ -145,11 +145,11 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
             {
                 return false;
             }
-            final var keys = keys();
+            var keys = keys();
             while (keys.hasNext())
             {
-                final var key = keys.next();
-                final var value = get(key);
+                var key = keys.next();
+                var value = get(key);
                 if (value != that.get(key))
                 {
                     return false;
@@ -164,11 +164,11 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * @return The value for the given key. The returned value should be checked with {@link #isNull(int)} to determine
      * if it represents null.
      */
-    public int get(final int key)
+    public int get(int key)
     {
         if (compressionMethod() == CompressibleCollection.Method.FREEZE)
         {
-            final var index = Arrays.binarySearch(keys, key);
+            var index = Arrays.binarySearch(keys, key);
             return index < 0 ? nullInt() : values[index];
         }
         else
@@ -178,7 +178,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     }
 
     @Override
-    public long getScalar(final long key)
+    public long getScalar(long key)
     {
         return get((int) key);
     }
@@ -195,7 +195,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     /**
      * Increments the value for the given key
      */
-    public void increment(final int key)
+    public void increment(int key)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
@@ -203,13 +203,13 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     }
 
     @Override
-    public boolean isScalarKeyNull(final long key)
+    public boolean isScalarKeyNull(long key)
     {
         return isNull((int) key);
     }
 
     @Override
-    public boolean isScalarValueNull(final long value)
+    public boolean isScalarValueNull(long value)
     {
         return isNull((int) value);
     }
@@ -227,7 +227,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * longer be modified.
      */
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (method == CompressibleCollection.Method.RESIZE)
         {
@@ -235,9 +235,9 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
         }
         else
         {
-            final var frozenKeys = newIntArray(this, "froze", size());
-            final var frozenValues = newIntArray(this, "froze", size());
-            final var keys = keys();
+            var frozenKeys = newIntArray(this, "froze", size());
+            var frozenValues = newIntArray(this, "froze", size());
+            var keys = keys();
             for (var i = 0; keys.hasNext(); i++)
             {
                 frozenKeys[i] = keys.next();
@@ -255,21 +255,33 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        keys = newIntArray(this, "allocated");
+        values = newIntArray(this, "allocated");
+    }
+
+    /**
      * Stores the given value under the given key. The value may not be null. To remove a value, call {@link
      * #remove(int)}.
      *
      * @return True if a new value was added, false if an existing value was overwritten
      */
-    public boolean put(final int key, final int value)
+    public boolean put(int key, int value)
     {
         assert !isEmpty(value);
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
-        final var keys = this.keys;
-        final var values = this.values;
+        var keys = this.keys;
+        var values = this.values;
 
         // Get the index to put at
-        final var index = index(keys, key);
+        var index = index(keys, key);
 
         // If the slot at the given index is empty
         if (isEmpty(keys[index]))
@@ -289,7 +301,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     }
 
     @Override
-    public void putScalar(final long key, final long value)
+    public void putScalar(long key, long value)
     {
         put((int) key, (int) value);
     }
@@ -298,7 +310,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         keys = kryo.readObject(input, int[].class);
@@ -310,12 +322,12 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      *
      * @return True if the key was removed, false if it was not found
      */
-    public boolean remove(final int key)
+    public boolean remove(int key)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
         // Get index of key
-        final var index = index(keys, key);
+        var index = index(keys, key);
 
         // If the key was found,
         if (!isEmpty(keys[index]))
@@ -351,7 +363,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -360,16 +372,16 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
     }
 
     @Override
-    protected void compare(final PrimitiveMap map)
+    protected void compare(PrimitiveMap map)
     {
-        final var that = (IntToIntMap) map;
+        var that = (IntToIntMap) map;
         if (size() != that.size())
         {
             LOGGER.warning("this.size $ != that.size $", size(), that.size());
         }
 
-        final int thisSize = compare(that);
-        final int thatSize = that.compare(this);
+        int thisSize = compare(that);
+        int thatSize = that.compare(this);
 
         if (thisSize != size())
         {
@@ -386,11 +398,11 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * {@inheritDoc}
      */
     @Override
-    protected void copy(final PrimitiveMap uncast)
+    protected void copy(PrimitiveMap uncast)
     {
         super.copy(uncast);
 
-        final var that = (IntToIntMap) uncast;
+        var that = (IntToIntMap) uncast;
         keys = that.keys;
         values = that.values;
     }
@@ -399,15 +411,15 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
      * {@inheritDoc}
      */
     @Override
-    protected void copyEntries(final PrimitiveMap uncast, final ProgressReporter reporter)
+    protected void copyEntries(PrimitiveMap uncast, ProgressReporter reporter)
     {
-        final var that = (IntToIntMap) uncast;
-        final var indexes = nonEmptyIndexes(that.keys);
+        var that = (IntToIntMap) uncast;
+        var indexes = nonEmptyIndexes(that.keys);
         while (indexes.hasNext())
         {
-            final var index = indexes.next();
-            final var key = that.keys[index];
-            final var value = that.values[index];
+            var index = indexes.next();
+            var key = that.keys[index];
+            var value = that.values[index];
             if (!isNull(key) && !isNull(value))
             {
                 put(key, value);
@@ -425,36 +437,24 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
         return new IntToIntMap(objectName());
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        keys = newIntArray(this, "allocated");
-        values = newIntArray(this, "allocated");
-    }
-
     @Override
     protected int slots()
     {
         return keys.length;
     }
 
-    private int compare(final IntToIntMap that)
+    private int compare(IntToIntMap that)
     {
         assert size() == manualSize();
         assert that.size() == that.manualSize();
 
-        final IntIterator keys = keys();
+        IntIterator keys = keys();
         int count = 0;
         while (keys.hasNext())
         {
-            final var key = keys.next();
-            final var thisValue = get(key);
-            final var thatValue = that.get(key);
+            var key = keys.next();
+            var thisValue = get(key);
+            var thatValue = that.get(key);
             if (isNull(thisValue))
             {
                 LOGGER.warning("missing value for key $", key);
@@ -474,7 +474,7 @@ public final class IntToIntMap extends PrimitiveMap implements PrimitiveScalarMa
 
     private int manualSize()
     {
-        final IntIterator keys = keys();
+        IntIterator keys = keys();
         int count = 0;
         while (keys.hasNext())
         {

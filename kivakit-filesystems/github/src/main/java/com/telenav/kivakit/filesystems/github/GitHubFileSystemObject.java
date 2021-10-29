@@ -61,7 +61,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
 
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
-    public static boolean accepts(final String path)
+    public static boolean accepts(String path)
     {
         return URL_PATTERN.matcher(path).matches();
     }
@@ -82,11 +82,11 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
 
     private GitHubTree tree;
 
-    GitHubFileSystemObject(final FilePath pathname)
+    GitHubFileSystemObject(FilePath pathname)
     {
         super(normalize(pathname));
 
-        final var matcher = URL_PATTERN.matcher(path().toString());
+        var matcher = URL_PATTERN.matcher(path().toString());
         if (matcher.matches())
         {
             scheme = matcher.group("scheme");
@@ -116,7 +116,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     }
 
     @Override
-    public void copyFrom(final Resource resource, final CopyMode mode, final ProgressReporter reporter)
+    public void copyFrom(Resource resource, CopyMode mode, ProgressReporter reporter)
     {
     }
 
@@ -127,18 +127,18 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     }
 
     @Override
-    public boolean equals(final Object o)
+    public boolean equals(Object o)
     {
         if (o instanceof GitHubFileSystemObject)
         {
             var that = (GitHubFileSystemObject) o;
             return Objects.equalPairs
                     (
-                            this.scheme, that.scheme,
-                            this.userName, that.userName,
-                            this.repositoryName, that.repositoryName,
-                            this.path, that.path,
-                            this.fileName, that.fileName
+                            scheme, that.scheme,
+                            userName, that.userName,
+                            repositoryName, that.repositoryName,
+                            path, that.path,
+                            fileName, that.fileName
                     );
         }
         return false;
@@ -191,7 +191,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     @Override
     public GitHubFolder parent()
     {
-        final var parent = path().parent();
+        var parent = path().parent();
         if (parent != null)
         {
             return new GitHubFolder(parent);
@@ -242,7 +242,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
         return tree;
     }
 
-    private static FilePath normalize(final FilePath path)
+    private static FilePath normalize(FilePath path)
     {
         return path;
     }

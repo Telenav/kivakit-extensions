@@ -73,7 +73,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
 {
     private static final Monitor temporaryFileCreationLock = new Monitor();
 
-    public static void main(final String[] arguments)
+    public static void main(String[] arguments)
     {
         new HdfsProxyServer().run(arguments);
     }
@@ -122,15 +122,15 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean deleteFile(final String pathAsString) throws RemoteException
+    public synchronized boolean deleteFile(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             return isFile(pathAsString) && fileSystem(path).delete(hdfsPath(path), false);
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to delete $", path);
         }
@@ -138,15 +138,15 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean deleteFolder(final String pathAsString) throws RemoteException
+    public synchronized boolean deleteFolder(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             return isFolder(pathAsString) && fileSystem(path).delete(hdfsPath(path), false);
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to delete $", path);
         }
@@ -154,15 +154,15 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean exists(final String pathAsString) throws RemoteException
+    public synchronized boolean exists(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             return fileSystem(path).exists(hdfsPath(path));
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to determine if $ exists", path);
         }
@@ -170,23 +170,23 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized List<String> files(final String pathAsString) throws RemoteException
+    public synchronized List<String> files(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
         return files(pathAsString, false);
     }
 
     @Override
-    public synchronized List<String> folders(final String pathAsString) throws RemoteException
+    public synchronized List<String> folders(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
-            final List<String> folders = new ArrayList<>();
-            final var hdfsPath = hdfsPath(path);
-            final var fileSystem = fileSystem(path);
-            for (final FileStatus status : fileSystem.listStatus(hdfsPath))
+            List<String> folders = new ArrayList<>();
+            var hdfsPath = hdfsPath(path);
+            var fileSystem = fileSystem(path);
+            for (FileStatus status : fileSystem.listStatus(hdfsPath))
             {
                 if (status.isDirectory())
                 {
@@ -195,7 +195,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
             }
             return folders;
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to list files in $", path);
             return null;
@@ -203,15 +203,15 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean isFile(final String pathAsString) throws RemoteException
+    public synchronized boolean isFile(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             return fileSystem(path).getFileStatus(hdfsPath(path)).isFile();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to determine if $ is a file", path);
         }
@@ -219,15 +219,15 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean isFolder(final String pathAsString) throws RemoteException
+    public synchronized boolean isFolder(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             return fileSystem(path).getFileStatus(normalizeFolderPath(hdfsPath(path))).isDirectory();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to determine if $ is a folder", path);
         }
@@ -235,16 +235,16 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean isWritable(final String pathAsString) throws RemoteException
+    public synchronized boolean isWritable(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             fileSystem(path).access(hdfsPath(path), FsAction.WRITE);
             return true;
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to determine if $ is writable", path);
         }
@@ -252,15 +252,15 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized long lastModified(final String pathAsString) throws RemoteException
+    public synchronized long lastModified(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             return fileSystem(path).getFileStatus(hdfsPath(path)).getModificationTime();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to determine last modification time of $", path);
         }
@@ -268,16 +268,16 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean lastModified(final String pathAsString, final long time) throws RemoteException
+    public synchronized boolean lastModified(String pathAsString, long time) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             fileSystem(path).setTimes(hdfsPath(path), time, -1L);
             return true;
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to set last modification time of $", path);
             return false;
@@ -285,19 +285,19 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized long length(final String pathAsString) throws RemoteException
+    public synchronized long length(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             if (isFile(pathAsString))
             {
-                final FileStatus status = fileSystem(path).getFileStatus(hdfsPath(path));
+                FileStatus status = fileSystem(path).getFileStatus(hdfsPath(path));
                 return status.getLen();
             }
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to determine length of $", path);
         }
@@ -305,16 +305,16 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean mkdirs(final String pathAsString) throws RemoteException
+    public synchronized boolean mkdirs(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
             return fileSystem(path).mkdirs(hdfsPath(path),
                     new FsPermission(FsAction.ALL, FsAction.ALL, FsAction.ALL, false));
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to create folders in $", path);
         }
@@ -322,25 +322,25 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized List<String> nestedFiles(final String pathAsString) throws RemoteException
+    public synchronized List<String> nestedFiles(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
         return files(pathAsString, true);
     }
 
     @Override
-    public synchronized long openForReading(final String pathAsString) throws RemoteException
+    public synchronized long openForReading(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
-            final InputStream in = fileSystem(path).open(hdfsPath(path));
-            final StreamHandle handle = StreamHandle.create();
+            InputStream in = fileSystem(path).open(hdfsPath(path));
+            StreamHandle handle = StreamHandle.create();
             hdfsIns.put(handle, new BufferedInputStream(in));
             return handle.identifier().asLong();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to open $ for reading", path);
             return -1;
@@ -348,18 +348,18 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized long openForWriting(final String pathAsString) throws RemoteException
+    public synchronized long openForWriting(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
-            final OutputStream out = fileSystem(path).create(hdfsPath(path));
-            final StreamHandle handle = StreamHandle.create();
+            OutputStream out = fileSystem(path).create(hdfsPath(path));
+            StreamHandle handle = StreamHandle.create();
             hdfsOuts.put(handle, new BufferedOutputStream(out));
             return handle.identifier().asLong();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to open $ for writing", path);
             return -1;
@@ -367,16 +367,16 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized boolean rename(final String fromAsString, final String toAsString) throws RemoteException
+    public synchronized boolean rename(String fromAsString, String toAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        final var from = FilePath.parseFilePath(fromAsString);
-        final var to = FilePath.parseFilePath(toAsString);
+        var from = FilePath.parseFilePath(fromAsString);
+        var to = FilePath.parseFilePath(toAsString);
         try
         {
             return fileSystem(from).rename(hdfsPath(from), hdfsPath(to));
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to rename $ to $", from, to);
             return false;
@@ -384,7 +384,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized String root(final String pathAsString) throws RemoteException
+    public synchronized String root(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
         return FilePath.parseFilePath(pathAsString).root().toString();
@@ -392,12 +392,12 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
 
     @Override
     @SuppressWarnings("EmptyTryBlock")
-    public synchronized String temporaryFile(final String pathAsString, final String baseName) throws RemoteException
+    public synchronized String temporaryFile(String pathAsString, String baseName) throws RemoteException
     {
         lastRequest = Time.now();
         synchronized (temporaryFileCreationLock)
         {
-            final var path = FilePath.parseFilePath(pathAsString);
+            var path = FilePath.parseFilePath(pathAsString);
             int sequenceNumber = 0;
             FilePath file;
             do
@@ -406,11 +406,11 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
                 sequenceNumber++;
             }
             while (exists(file.toString()));
-            try (final OutputStream ignored = fileSystem(path).create(hdfsPath(path)))
+            try (OutputStream ignored = fileSystem(path).create(hdfsPath(path)))
             {
                 // We don't need to do anything with the file except create it
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 throwRemoteException(e, "Unable to create temporary file in $ with base name $", path, baseName);
                 return null;
@@ -420,10 +420,10 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     @Override
-    public synchronized String temporaryFolder(final String pathAsString, final String baseName) throws RemoteException
+    public synchronized String temporaryFolder(String pathAsString, String baseName) throws RemoteException
     {
         lastRequest = Time.now();
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         synchronized (temporaryFileCreationLock)
         {
             int sequenceNumber = 0;
@@ -434,7 +434,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
                 sequenceNumber++;
             }
             while (exists(pathAsString));
-            final var temporaryPathAsString = folder.asStringPath().toString();
+            var temporaryPathAsString = folder.asStringPath().toString();
             mkdirs(temporaryPathAsString);
             return temporaryPathAsString;
         }
@@ -451,16 +451,16 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
                     .user(get(USERNAME)));
 
             announce("Exporting remote HdfsProxyServer object");
-            final var rmiObjectPort = get(RMI_OBJECT_PORT);
-            final com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy proxy = (com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy) UnicastRemoteObject.exportObject(this, rmiObjectPort);
+            var rmiObjectPort = get(RMI_OBJECT_PORT);
+            com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy proxy = (com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy) UnicastRemoteObject.exportObject(this, rmiObjectPort);
             narrate("Creating RMI registry on port $", com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy.RMI_REGISTRY_PORT);
-            final Registry registry = LocateRegistry.createRegistry(com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy.RMI_REGISTRY_PORT);
+            Registry registry = LocateRegistry.createRegistry(com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy.RMI_REGISTRY_PORT);
             narrate("Binding remote object to RMI registry on port $", rmiObjectPort);
             registry.bind(com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy.RMI_REGISTRY_NAME + "-" + rmiObjectPort, proxy);
             announce("HDFS proxy server is ready");
             listen();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             fail(e, "Unable to start proxy server");
         }
@@ -476,21 +476,21 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
                 USERNAME);
     }
 
-    private FileSystem fileSystem(final FilePath path)
+    private FileSystem fileSystem(FilePath path)
     {
         return HdfsFileSystem.of(path).fileSystem();
     }
 
-    private List<String> files(final String pathAsString, final boolean recursive) throws RemoteException
+    private List<String> files(String pathAsString, boolean recursive) throws RemoteException
     {
-        final var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(pathAsString);
         try
         {
-            final List<String> files = new ArrayList<>();
-            final RemoteIterator<LocatedFileStatus> iterator = fileSystem(path).listFiles(hdfsPath(path), recursive);
+            List<String> files = new ArrayList<>();
+            RemoteIterator<LocatedFileStatus> iterator = fileSystem(path).listFiles(hdfsPath(path), recursive);
             while (iterator.hasNext())
             {
-                final LocatedFileStatus status = iterator.next();
+                LocatedFileStatus status = iterator.next();
                 if (status.isFile())
                 {
                     files.add(status.getPath().toString());
@@ -498,35 +498,35 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
             }
             return files;
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             throwRemoteException(e, "Unable to list files in " + path);
             return null;
         }
     }
 
-    private void handleRequest(final Socket socket)
+    private void handleRequest(Socket socket)
     {
         KivaKitThread.run(this, "DataRequestHandler", () ->
         {
             try
             {
-                try (final DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                     final OutputStream out = new BufferedOutputStream(socket.getOutputStream()))
+                try (DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+                     OutputStream out = new BufferedOutputStream(socket.getOutputStream()))
                 {
-                    final char command = in.readChar();
-                    final long handle = in.readLong();
+                    char command = in.readChar();
+                    long handle = in.readLong();
                     switch (command)
                     {
                         case 'i':
-                            try (final InputStream hdfsIn = hdfsIns.get(StreamHandle.of(handle)))
+                            try (InputStream hdfsIn = hdfsIns.get(StreamHandle.of(handle)))
                             {
                                 IO.copy(hdfsIn, out);
                             }
                             break;
 
                         case 'o':
-                            try (final OutputStream hdfsOut = hdfsOuts.get(StreamHandle.of(handle)))
+                            try (OutputStream hdfsOut = hdfsOuts.get(StreamHandle.of(handle)))
                             {
                                 IO.copy(in, hdfsOut);
                             }
@@ -538,14 +538,14 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
                     }
                 }
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 problem(e, "Failure handling request");
             }
         });
     }
 
-    private Path hdfsPath(final FilePath path)
+    private Path hdfsPath(FilePath path)
     {
         return HdfsFileSystem.of(path).hdfsPath(path);
     }
@@ -553,32 +553,32 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     @SuppressWarnings("InfiniteLoopStatement")
     private void listen()
     {
-        try (final ServerSocket serverSocket = new ServerSocket(get(DATA_PORT)))
+        try (ServerSocket serverSocket = new ServerSocket(get(DATA_PORT)))
         {
             information("Waiting for requests");
             while (true)
             {
                 try
                 {
-                    final Socket socket = serverSocket.accept();
+                    Socket socket = serverSocket.accept();
                     if (socket != null)
                     {
                         handleRequest(socket);
                     }
                 }
-                catch (final Exception e)
+                catch (Exception e)
                 {
                     problem(e, "Failure handling request");
                 }
             }
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             problem(e, "Failure listening for connections");
         }
     }
 
-    private Path normalizeFolderPath(final Path path)
+    private Path normalizeFolderPath(Path path)
     {
         if (!path.toString().endsWith("/"))
         {
@@ -588,7 +588,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     private void throwRemoteException(
-            final Exception cause, final String message, final Object... arguments) throws RemoteException
+            Exception cause, String message, Object... arguments) throws RemoteException
     {
         problem(cause, message, arguments);
         throw new RemoteException(Message.format(message, arguments), cause);

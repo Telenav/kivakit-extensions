@@ -62,7 +62,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given height in the units of this coordinate system
      */
-    default DrawingHeight height(final double height)
+    default DrawingHeight height(double height)
     {
         return DrawingHeight.height(this, height);
     }
@@ -83,7 +83,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given distance in the units of this coordinate system
      */
-    default DrawingLength length(final double units)
+    default DrawingLength length(double units)
     {
         return DrawingLength.length(this, units);
     }
@@ -93,7 +93,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given Java 2D point as a {@link DrawingPoint}
      */
-    default DrawingPoint point(final Point2D point)
+    default DrawingPoint point(Point2D point)
     {
         return point(point.getX(), point.getY());
     }
@@ -101,7 +101,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given x, y location as a {@link DrawingPoint} in this {@link CoordinateSystem}
      */
-    default DrawingPoint point(final double x, final double y)
+    default DrawingPoint point(double x, double y)
     {
         return DrawingPoint.point(this, x, y);
     }
@@ -109,7 +109,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given x, y, width and height as a {@link DrawingRectangle} in this {@link CoordinateSystem}
      */
-    default DrawingRectangle rectangle(final double x, final double y, final double width, final double height)
+    default DrawingRectangle rectangle(double x, double y, double width, double height)
     {
         return DrawingRectangle.rectangle(this, x, y, width, height);
     }
@@ -117,7 +117,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given size in the units of this coordinate system
      */
-    default DrawingSize size(final double width, final double height)
+    default DrawingSize size(double width, double height)
     {
         return DrawingSize.size(this, width, height);
     }
@@ -125,7 +125,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given size in the units of this coordinate system
      */
-    default DrawingSize size(final DrawingWidth width, final DrawingHeight height)
+    default DrawingSize size(DrawingWidth width, DrawingHeight height)
     {
         return size(width.units(), height.units());
     }
@@ -133,7 +133,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given {@link DrawingLength} converted from this coordinate system to the given coordinate system
      */
-    default DrawingLength toCoordinates(final Coordinated that, final DrawingLength distance)
+    default DrawingLength toCoordinates(Coordinated that, DrawingLength distance)
     {
         return toCoordinates(that, distance.asWidth());
     }
@@ -141,12 +141,12 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given {@link DrawingHeight} converted from this coordinate system to the given coordinate system
      */
-    DrawingHeight toCoordinates(final Coordinated that, final DrawingHeight height);
+    DrawingHeight toCoordinates(Coordinated that, DrawingHeight height);
 
     /**
      * @return The given {@link DrawingSize} converted from this coordinate system to the given coordinate system
      */
-    default DrawingSize toCoordinates(final Coordinated that, final DrawingSize size)
+    default DrawingSize toCoordinates(Coordinated that, DrawingSize size)
     {
         return size(toCoordinates(that, size.width()), toCoordinates(that, size.height()));
     }
@@ -154,17 +154,17 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given {@link DrawingRectangle} converted from this coordinate system to the given coordinate system
      */
-    default DrawingRectangle toCoordinates(final Coordinated that, final DrawingRectangle rectangle)
+    default DrawingRectangle toCoordinates(Coordinated that, DrawingRectangle rectangle)
     {
-        final var a = toCoordinates(that, rectangle.topLeft());
-        final var b = toCoordinates(that, rectangle.bottomRight());
+        var a = toCoordinates(that, rectangle.topLeft());
+        var b = toCoordinates(that, rectangle.bottomRight());
         return DrawingRectangle.rectangle(a, b);
     }
 
     /**
      * @return The given {@link DrawingWidth} converted from this coordinate system to the given coordinate system
      */
-    DrawingWidth toCoordinates(Coordinated coordinated, final DrawingWidth width);
+    DrawingWidth toCoordinates(Coordinated coordinated, DrawingWidth width);
 
     /**
      * @return The given {@link DrawingPoint} from this coordinate system to the given coordinate system
@@ -179,7 +179,7 @@ public interface CoordinateSystem extends Named, Coordinated
     /**
      * @return The given width in the units of this coordinate system
      */
-    default DrawingWidth width(final double width)
+    default DrawingWidth width(double width)
     {
         return DrawingWidth.width(this, width);
     }

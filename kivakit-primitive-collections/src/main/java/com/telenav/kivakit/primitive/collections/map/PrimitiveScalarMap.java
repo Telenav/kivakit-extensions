@@ -53,7 +53,7 @@ public interface PrimitiveScalarMap
      */
     void putScalar(long key, long value);
 
-    default void putScalar(final long key, final Quantizable value)
+    default void putScalar(long key, Quantizable value)
     {
         putScalar(key, value.quantum());
     }

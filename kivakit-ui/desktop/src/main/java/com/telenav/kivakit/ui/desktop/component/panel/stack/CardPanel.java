@@ -1,7 +1,8 @@
 package com.telenav.kivakit.ui.desktop.component.panel.stack;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import java.awt.CardLayout;
 
 /**
  * @author jonathanl (shibo)
@@ -16,7 +17,7 @@ public class CardPanel extends JPanel
         setLayout(cardLayout);
     }
 
-    public void addCard(final JComponent card, final String name)
+    public void addCard(JComponent card, String name)
     {
         add(card);
         cardLayout.addLayoutComponent(card, name);
@@ -37,7 +38,7 @@ public class CardPanel extends JPanel
         cardLayout.next(this);
     }
 
-    public void show(final String name)
+    public void show(String name)
     {
         cardLayout.show(this, name);
     }

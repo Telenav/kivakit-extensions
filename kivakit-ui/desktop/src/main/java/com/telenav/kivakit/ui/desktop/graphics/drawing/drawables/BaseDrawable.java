@@ -52,19 +52,19 @@ public abstract class BaseDrawable implements Drawable
 
     private Shape shape;
 
-    public BaseDrawable(final Style style, final DrawingPoint at)
+    public BaseDrawable(Style style, DrawingPoint at)
     {
         this(style);
         this.at = at;
     }
 
-    protected BaseDrawable(final Style style)
+    protected BaseDrawable(Style style)
     {
         this.style = style;
     }
 
     @SuppressWarnings("ConstantConditions")
-    protected BaseDrawable(final BaseDrawable that)
+    protected BaseDrawable(BaseDrawable that)
     {
         ensure(that != null);
 
@@ -76,9 +76,9 @@ public abstract class BaseDrawable implements Drawable
     @Override
     public abstract BaseDrawable copy();
 
-    public BaseDrawable fattened(final Percent percent)
+    public BaseDrawable fattened(Percent percent)
     {
-        final var width = style.drawStroke().width();
+        var width = style.drawStroke().width();
         return withDrawStrokeWidth(width.scaledBy(percent));
     }
 
@@ -102,7 +102,7 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public BaseDrawable withColors(final Style style)
+    public BaseDrawable withColors(Style style)
     {
         return withFillColor(style.fillColor())
                 .withDrawColor(style.drawColor())
@@ -110,45 +110,45 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public BaseDrawable withDrawColor(final Color color)
+    public BaseDrawable withDrawColor(Color color)
     {
         return withStyle(style.withDrawColor(color));
     }
 
     @Override
-    public BaseDrawable withDrawStroke(final Stroke stroke)
+    public BaseDrawable withDrawStroke(Stroke stroke)
     {
         return withStyle(style.withDrawStroke(stroke));
     }
 
     @Override
-    public BaseDrawable withDrawStrokeWidth(final DrawingWidth width)
+    public BaseDrawable withDrawStrokeWidth(DrawingWidth width)
     {
         return withStyle(style.withDrawStroke(style.drawStroke().withWidth(width)));
     }
 
     @Override
-    public BaseDrawable withFillColor(final Color color)
+    public BaseDrawable withFillColor(Color color)
     {
         return withStyle(style.withFillColor(color));
     }
 
     @Override
-    public BaseDrawable withFillStroke(final Stroke stroke)
+    public BaseDrawable withFillStroke(Stroke stroke)
     {
         return withStyle(style.withFillStroke(stroke));
     }
 
     @Override
-    public BaseDrawable withFillStrokeWidth(final DrawingWidth width)
+    public BaseDrawable withFillStrokeWidth(DrawingWidth width)
     {
         return withStyle(style.withFillStroke(style.fillStroke().withWidth(width)));
     }
 
     @Override
-    public Drawable withLocation(final DrawingPoint at)
+    public Drawable withLocation(DrawingPoint at)
     {
-        final var copy = (BaseDrawable) copy();
+        var copy = (BaseDrawable) copy();
         copy.at = at;
         return copy;
     }
@@ -160,50 +160,50 @@ public abstract class BaseDrawable implements Drawable
     }
 
     @Override
-    public BaseDrawable withStyle(final Style style)
+    public BaseDrawable withStyle(Style style)
     {
-        final var copy = (BaseDrawable) copy();
+        var copy = (BaseDrawable) copy();
         copy.style = style;
         return copy;
     }
 
     @Override
-    public BaseDrawable withTextColor(final Color color)
+    public BaseDrawable withTextColor(Color color)
     {
         return withStyle(style.withTextColor(color));
     }
 
-    protected Box box(final DrawingSize size)
+    protected Box box(DrawingSize size)
     {
         return Box.box(style)
                 .withLocation(at)
                 .withSize(size);
     }
 
-    protected Dot dot(final DrawingLength radius)
+    protected Dot dot(DrawingLength radius)
     {
         return Dot.dot(style)
                 .withLocation(at)
                 .withRadius(radius);
     }
 
-    protected Label label(final String text)
+    protected Label label(String text)
     {
         return Label.label(style, text).withLocation(at);
     }
 
-    protected Line line(final DrawingPoint from, final DrawingPoint to)
+    protected Line line(DrawingPoint from, DrawingPoint to)
     {
         return Line.line(style, from, to);
     }
 
-    protected Shape shape(final Shape shape)
+    protected Shape shape(Shape shape)
     {
         this.shape = shape;
         return shape;
     }
 
-    protected Text text(final String text)
+    protected Text text(String text)
     {
         return Text.text(style, text).withLocation(at);
     }

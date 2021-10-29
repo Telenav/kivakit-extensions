@@ -33,13 +33,13 @@ public class OutputPanel extends KivaKitPanel
 
     private final JTextPane output;
 
-    public OutputPanel(final Type type)
+    public OutputPanel(Type type)
     {
         setMinimumSize(new Dimension(0, 200));
 
-        final var kit = new HTMLEditorKit();
+        var kit = new HTMLEditorKit();
 
-        final StyleSheet stylesheet = kit.getStyleSheet();
+        StyleSheet stylesheet = kit.getStyleSheet();
 
         if (type == Type.VARIABLE_WIDTH)
         {
@@ -54,9 +54,9 @@ public class OutputPanel extends KivaKitPanel
             stylesheet.addRule(".not-available { color: " + KivaKitColors.FOSSIL.asHexString() + ";       font-weight: 800; font-size: 10px; }");
         }
 
-        final var document = kit.createDefaultDocument();
+        var document = kit.createDefaultDocument();
 
-        final var theme = theme();
+        var theme = theme();
         output = (JTextPane) theme.applyTo(new JTextPane());
         theme.styleTextArea().applyToSelectionStyle(output);
         output.setEditorKit(kit);
@@ -75,12 +75,12 @@ public class OutputPanel extends KivaKitPanel
         add(scrollPane(), BorderLayout.CENTER);
     }
 
-    public void font(final Font font)
+    public void font(Font font)
     {
         output.setFont(font);
     }
 
-    public void html(final String html, final Object... arguments)
+    public void html(String html, Object... arguments)
     {
         SwingUtilities.invokeLater(() ->
         {
@@ -89,7 +89,7 @@ public class OutputPanel extends KivaKitPanel
         });
     }
 
-    public void text(final String text, final Object... arguments)
+    public void text(String text, Object... arguments)
     {
         html(StringTo.html(Message.format(text, arguments)));
     }

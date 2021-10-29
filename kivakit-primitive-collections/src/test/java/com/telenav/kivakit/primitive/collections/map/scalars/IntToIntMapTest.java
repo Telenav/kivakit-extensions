@@ -55,7 +55,7 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             ensureEqual(a, b);
             b.put(99, -1);
@@ -68,7 +68,7 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             ensureEqual(a, b);
             b.compress(CompressibleCollection.Method.FREEZE);
@@ -76,7 +76,7 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
         });
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             putAll(b, keys, values);
             ensureEqual(a, b);
@@ -100,11 +100,11 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((map, keys, values) ->
         {
-            final var iterator = map.keys();
+            var iterator = map.keys();
             int count = 0;
             while (iterator.hasNext())
             {
-                final var key = iterator.next();
+                var key = iterator.next();
                 assert map.containsKey(key);
                 count++;
             }
@@ -118,8 +118,8 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
         withPopulatedMap((map, keys, values) ->
                 keys.forEach(key ->
                 {
-                    final int size = map.size();
-                    final boolean exists = map.containsKey(key);
+                    int size = map.size();
+                    boolean exists = map.containsKey(key);
                     map.remove(key);
                     ensure(map.isEmpty(map.get(key)));
                     if (exists)
@@ -140,12 +140,12 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((map, keys, values) ->
         {
-            final var iterator = map.values();
+            var iterator = map.values();
             int count = 0;
-            final var valueSet = new HashSet<>(values);
+            var valueSet = new HashSet<>(values);
             while (iterator.hasNext())
             {
-                final var value = iterator.next();
+                var value = iterator.next();
                 ensure((valueSet.contains(value)));
                 count++;
             }
@@ -161,17 +161,17 @@ public class IntToIntMapTest extends PrimitiveCollectionsUnitTest
         return map;
     }
 
-    private void putAll(final IntToIntMap map, final List<Integer> keys, final List<Integer> values)
+    private void putAll(IntToIntMap map, List<Integer> keys, List<Integer> values)
     {
         resetIndex();
         keys.forEach(key -> map.put(key, values.get(nextIndex() % values.size())));
     }
 
-    private void withPopulatedMap(final MapTest test)
+    private void withPopulatedMap(MapTest test)
     {
-        final var map = map();
-        final var keys = randomIntList(Repeats.NO_REPEATS);
-        final var values = randomIntList(Repeats.ALLOW_REPEATS);
+        var map = map();
+        var keys = randomIntList(Repeats.NO_REPEATS);
+        var values = randomIntList(Repeats.ALLOW_REPEATS);
         putAll(map, keys, values);
         test.test(map, keys, values);
     }

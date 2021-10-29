@@ -51,7 +51,7 @@ public interface HashingStrategy
     /**
      * @return With the given capacity
      */
-    HashingStrategy withCapacity(final Estimate size);
+    HashingStrategy withCapacity(Estimate size);
 
     /**
      * @return With an acceptable increased capacity

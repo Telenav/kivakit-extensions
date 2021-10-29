@@ -34,16 +34,16 @@ import java.util.function.Consumer;
 @LexakaiJavadoc(complete = true)
 public class Components
 {
-    public static void update(final Component component,
-                              final Frequency frequency,
-                              final Consumer<AjaxRequestTarget> afterUpdate)
+    public static void update(Component component,
+                              Frequency frequency,
+                              Consumer<AjaxRequestTarget> afterUpdate)
     {
         component.setOutputMarkupId(true);
         component.setOutputMarkupPlaceholderTag(true);
         component.add(new AjaxSelfUpdatingTimerBehavior(frequency.cycleLength().asJavaDuration())
         {
             @Override
-            protected void onPostProcessTarget(final AjaxRequestTarget target)
+            protected void onPostProcessTarget(AjaxRequestTarget target)
             {
                 super.onPostProcessTarget(target);
                 afterUpdate.accept(target);

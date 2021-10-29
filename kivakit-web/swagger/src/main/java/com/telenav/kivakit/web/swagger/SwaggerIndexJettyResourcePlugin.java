@@ -45,10 +45,10 @@ public class SwaggerIndexJettyResourcePlugin extends BaseJettyResourcePlugin
     class IndexServlet extends HttpServlet
     {
         @Override
-        protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException
+        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
         {
             response.setContentType("text/html");
-            try (final var out = response.getWriter())
+            try (var out = response.getWriter())
             {
                 out.println(index());
             }
@@ -60,7 +60,7 @@ public class SwaggerIndexJettyResourcePlugin extends BaseJettyResourcePlugin
     /**
      * @param port The port where Swagger is running
      */
-    public SwaggerIndexJettyResourcePlugin(final int port)
+    public SwaggerIndexJettyResourcePlugin(int port)
     {
         super("[SwaggerIndexJettyResourcePlugin port = " + port + "]");
         this.port = port;

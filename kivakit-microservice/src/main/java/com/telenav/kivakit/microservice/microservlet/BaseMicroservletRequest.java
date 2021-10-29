@@ -21,9 +21,7 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
         MicroservletRequest,
         MicroservletRequestHandler
 {
-    private static AtomicReference<MicroservletRequestStatisticsAggregator> aggregator = new AtomicReference<>();
-
-    private String path;
+    private static final AtomicReference<MicroservletRequestStatisticsAggregator> aggregator = new AtomicReference<>();
 
     @Override
     public void onRequestStatistics(MicroservletRequestStatistics statistics)
@@ -33,13 +31,8 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
         aggregator.get().add(this, statistics);
     }
 
-    public void path(final String path)
-    {
-        this.path = path;
-    }
-
     @Override
-    public Validator validator(final ValidationType type)
+    public Validator validator(ValidationType type)
     {
         return Validator.NULL;
     }

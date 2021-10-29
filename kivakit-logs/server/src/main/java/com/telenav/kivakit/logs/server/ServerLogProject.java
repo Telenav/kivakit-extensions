@@ -1,8 +1,8 @@
 package com.telenav.kivakit.logs.server;
 
+import com.telenav.kivakit.kernel.KernelProject;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
-import com.telenav.kivakit.kernel.KernelProject;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.logs.server.project.LogsServerKryoTypes;
 import com.telenav.kivakit.network.core.NetworkProject;

@@ -27,14 +27,14 @@ public class ByteArrayArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test()
     {
-        final var store = new ByteArrayArray("test");
+        var store = new ByteArrayArray("test");
         store.initialize();
 
-        final var a = bytes(10, 20, 30, 40);
-        final var aIndex = store.add(a);
+        var a = bytes(10, 20, 30, 40);
+        var aIndex = store.add(a);
 
-        final var b = bytes(2, 3, 5, 7, 11);
-        final var bIndex = store.add(b);
+        var b = bytes(2, 3, 5, 7, 11);
+        var bIndex = store.add(b);
 
         ensureEqual(a, store.get(aIndex));
         ensureEqual(b, store.get(bIndex));
@@ -42,11 +42,11 @@ public class ByteArrayArrayTest extends PrimitiveCollectionsUnitTest
         ensureEqual(5, store.length(bIndex));
     }
 
-    private ByteArray bytes(final int... values)
+    private ByteArray bytes(int... values)
     {
-        final var array = new ByteArray("test");
+        var array = new ByteArray("test");
         array.initialize();
-        for (final int value : values)
+        for (int value : values)
         {
             array.add((byte) value);
         }

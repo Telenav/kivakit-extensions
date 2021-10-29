@@ -23,9 +23,9 @@ public class TitledPanel extends KivaKitPanel
         configureShadedPanel(this);
     }
 
-    public void content(final JComponent child)
+    public void content(JComponent child)
     {
-        final var title = newComponentLabel(this.title);
+        var title = newComponentLabel(this.title);
         title.setOpaque(true);
         theme().styleTitle().apply(title);
         if (icon != null)
@@ -33,7 +33,7 @@ public class TitledPanel extends KivaKitPanel
             title.setIcon(icon);
         }
 
-        final var header = newContainerPanel(new FlowLayout(FlowLayout.LEFT));
+        var header = newContainerPanel(new FlowLayout(FlowLayout.LEFT));
         header.add(title);
 
         Margins.of(10).apply(child);
@@ -44,12 +44,12 @@ public class TitledPanel extends KivaKitPanel
                 .addStretched(child);
     }
 
-    public void icon(final ImageIcon icon)
+    public void icon(ImageIcon icon)
     {
         this.icon = icon;
     }
 
-    public void title(final String title)
+    public void title(String title)
     {
         this.title = title;
     }

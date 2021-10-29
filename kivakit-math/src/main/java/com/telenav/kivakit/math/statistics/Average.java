@@ -40,7 +40,7 @@ public class Average implements Resettable
 
     private double minimum = Double.MAX_VALUE;
 
-    public void add(final Average that)
+    public void add(Average that)
     {
         minimum = Math.min(minimum, that.minimum);
         maximum = Math.max(maximum, that.maximum);
@@ -51,7 +51,7 @@ public class Average implements Resettable
     /**
      * Adds the given sample value to this average
      */
-    public void add(final double value)
+    public void add(double value)
     {
         if (value < minimum)
         {

@@ -31,7 +31,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 @LexakaiJavadoc(complete = true)
 public abstract class BaseJettyResourcePlugin extends BaseJettyRequestHandler
 {
-    public BaseJettyResourcePlugin(final String name)
+    public BaseJettyResourcePlugin(String name)
     {
         super(name);
     }

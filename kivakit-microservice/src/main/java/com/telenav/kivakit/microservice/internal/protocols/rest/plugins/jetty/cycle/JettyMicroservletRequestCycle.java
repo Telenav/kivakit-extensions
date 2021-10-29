@@ -49,7 +49,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
      * Attaches a request cycle to the current thread. This allows the cycle to be looked up anywhere in the code, as
      * some code does not have a request cycle parameter.
      */
-    public static void attach(final JettyMicroservletRequestCycle cycle)
+    public static void attach(JettyMicroservletRequestCycle cycle)
     {
         JettyMicroservletRequestCycle.cycle.set(cycle);
     }
@@ -92,9 +92,9 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
      * @param request The Java Servlet API HTTP request object
      * @param response The Java Servlet API HTTP response object
      */
-    public JettyMicroservletRequestCycle(final MicroserviceRestService application,
-                                         final HttpServletRequest request,
-                                         final HttpServletResponse response)
+    public JettyMicroservletRequestCycle(MicroserviceRestService application,
+                                         HttpServletRequest request,
+                                         HttpServletResponse response)
     {
         this.application = application;
         this.request = listenTo(new JettyMicroservletRequest(this, request));
@@ -115,7 +115,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
      *
      * @param servlet The servlet to attach
      */
-    public void attach(final Microservlet<?, ?> servlet)
+    public void attach(Microservlet<?, ?> servlet)
     {
         this.servlet = servlet;
     }

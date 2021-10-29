@@ -22,14 +22,14 @@ import static com.telenav.kivakit.logs.client.view.panels.table.TableModel.COLUM
 class TableCellRenderer extends DefaultTableCellRenderer
 {
     @Override
-    public Component getTableCellRendererComponent(final JTable table,
-                                                   final Object object,
-                                                   final boolean isSelected,
-                                                   final boolean hasFocus,
-                                                   final int row,
-                                                   final int column)
+    public Component getTableCellRendererComponent(JTable table,
+                                                   Object object,
+                                                   boolean isSelected,
+                                                   boolean hasFocus,
+                                                   int row,
+                                                   int column)
     {
-        final var renderer = super.getTableCellRendererComponent(table, object, isSelected, hasFocus, row, column);
+        var renderer = super.getTableCellRendererComponent(table, object, isSelected, hasFocus, row, column);
 
         if (isSelected)
         {
@@ -38,11 +38,11 @@ class TableCellRenderer extends DefaultTableCellRenderer
         else
         {
             Class<? extends Message> highlight = Information.class;
-            final var modelRow = table.convertRowIndexToModel(row);
+            var modelRow = table.convertRowIndexToModel(row);
             for (var at = 0; at < COLUMNS; at++)
             {
-                final var value = table.getModel().getValueAt(modelRow, at);
-                final String text = StringTo.string(value).trim();
+                var value = table.getModel().getValueAt(modelRow, at);
+                String text = StringTo.string(value).trim();
                 if (text.startsWith("!") || text.endsWith("!"))
                 {
                     highlight = Problem.class;

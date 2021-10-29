@@ -33,7 +33,7 @@ public abstract class PrimitiveSet extends PrimitiveMap
         String toString(long value);
     }
 
-    protected PrimitiveSet(final String objectName)
+    protected PrimitiveSet(String objectName)
     {
         super(objectName);
     }
@@ -42,26 +42,26 @@ public abstract class PrimitiveSet extends PrimitiveMap
     {
     }
 
-    public boolean add(final long next)
+    public boolean add(long next)
     {
         return false;
     }
 
-    public boolean contains(final long next)
+    public boolean contains(long next)
     {
         return false;
     }
 
-    protected String toString(final LongIterator values, final SetToString toStringer)
+    protected String toString(LongIterator values, SetToString toStringer)
     {
         return toString(values, ", ", 0, "", toStringer);
     }
 
-    protected String toString(final LongIterator values, final String separator, final int every, final String section,
-                              final SetToString toStringer)
+    protected String toString(LongIterator values, String separator, int every, String section,
+                              SetToString toStringer)
     {
-        final var count = Math.min(size(), TO_STRING_MAXIMUM_ELEMENTS);
-        final var builder = new StringBuilder();
+        var count = Math.min(size(), TO_STRING_MAXIMUM_ELEMENTS);
+        var builder = new StringBuilder();
         for (var i = 0; values.hasNext() && i < count; i++)
         {
             if (i > 0)
@@ -75,7 +75,7 @@ public abstract class PrimitiveSet extends PrimitiveMap
                     builder.append(separator);
                 }
             }
-            final var value = values.nextLong();
+            var value = values.nextLong();
             builder.append(toStringer.toString(value));
         }
         if (size() > TO_STRING_MAXIMUM_ELEMENTS)
@@ -86,9 +86,9 @@ public abstract class PrimitiveSet extends PrimitiveMap
         return Indent.by(4, builder.toString());
     }
 
-    protected String toString(final Object[] values)
+    protected String toString(Object[] values)
     {
-        final var list = new StringList();
+        var list = new StringList();
         var index = 0;
         for (; index < values.length; index++)
         {

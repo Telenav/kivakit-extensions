@@ -60,26 +60,26 @@ public class ServiceRegistryStore extends BaseComponent
      * #save(ServiceRegistry)}
      */
     @UmlRelation(label = "loads")
-    public synchronized ServiceRegistry load(final Class<? extends ServiceRegistry> type)
+    public synchronized ServiceRegistry load(Class<? extends ServiceRegistry> type)
     {
         // Get the serialization file for the service registry type (this allows us to run both
         // local and network registries on the same machine)
-        final var file = file(type);
+        var file = file(type);
         if (file.exists())
         {
             // and if the data is not too old
-            final var lastModified = file.lastModified();
-            final var expirationTime = settings().serviceRegistryStoreExpirationTime();
+            var lastModified = file.lastModified();
+            var expirationTime = settings().serviceRegistryStoreExpirationTime();
             if (lastModified.elapsedSince().isLessThan(expirationTime))
             {
                 // then open the file
                 trace("Loading service registry from $", file);
-                try (final var input = file.openForReading())
+                try (var input = file.openForReading())
                 {
                     // create a serialization object and read the serialized registry
-                    final var session = SerializationSession.threadLocal(this);
+                    var session = SerializationSession.threadLocal(this);
                     session.open(RESOURCE, settings().version(), input);
-                    final VersionedObject<ServiceRegistry> object = session.read();
+                    VersionedObject<ServiceRegistry> object = session.read();
 
                     // then unregister the loaded class with the Debug class so the debug flag
                     // is re-considered for the newly loaded instance
@@ -89,7 +89,7 @@ public class ServiceRegistryStore extends BaseComponent
                     trace("Loaded service registry");
                     return listenTo(object.get());
                 }
-                catch (final Exception e)
+                catch (Exception e)
                 {
                     // We are unable to load the service registry, so remove the file.
                     file.delete();
@@ -107,22 +107,22 @@ public class ServiceRegistryStore extends BaseComponent
     /**
      * Saves the given registry to a cache folder
      */
-    public synchronized void save(final ServiceRegistry registry)
+    public synchronized void save(ServiceRegistry registry)
     {
         if (Booleans.isTrue(JavaVirtualMachine.property("KIVAKIT_SAVE_REGISTRY", "true")))
         {
-            final var file = file(registry.getClass()).withExtension(Extension.TMP);
+            var file = file(registry.getClass()).withExtension(Extension.TMP);
             trace("Saving service registry to $", file.messageSource());
             if (file.delete())
             {
-                try (final var output = file.openForWriting())
+                try (var output = file.openForWriting())
                 {
-                    final var session = SerializationSession.threadLocal(this);
+                    var session = SerializationSession.threadLocal(this);
                     session.open(RESOURCE, settings().version(), output);
                     session.write(new VersionedObject<>(settings().version(), registry));
                     session.close();
                 }
-                catch (final Exception e)
+                catch (Exception e)
                 {
                     problem(e, "Unable to save service registry to $", file);
                 }
@@ -132,7 +132,7 @@ public class ServiceRegistryStore extends BaseComponent
         }
     }
 
-    private File file(final Class<? extends ServiceRegistry> type)
+    private File file(Class<? extends ServiceRegistry> type)
     {
         return Folder.kivakitCache()
                 .folder("service-registry")

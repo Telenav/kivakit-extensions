@@ -6,9 +6,9 @@ import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -44,7 +44,7 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
     }
 
     @Override
-    public void onMessage(final Message message)
+    public void onMessage(Message message)
     {
         errors.addIfNotNull(MicroservletError.of(message));
     }
@@ -60,7 +60,7 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
     }
 
     @Override
-    public Validator validator(final ValidationType type)
+    public Validator validator(ValidationType type)
     {
         return Validator.NULL;
     }

@@ -106,7 +106,7 @@ public class HdfsProxyClient extends BaseComponent
         if (proxy == null)
         {
             // but the proxy is already running
-            final var existing = lookup();
+            var existing = lookup();
             if (existing != null)
             {
                 // return it
@@ -132,25 +132,25 @@ public class HdfsProxyClient extends BaseComponent
     private void launchProxy()
     {
         // Find a free port for the child proxy server process to use
-        final var client = listenTo(new ServiceRegistryClient());
+        var client = listenTo(new ServiceRegistryClient());
 
-        final var settings = require(HdfsSettings.class);
+        var settings = require(HdfsSettings.class);
 
-        final var materialized = settings.configurationFolder()
+        var materialized = settings.configurationFolder()
                 .materializeTo(Folder.kivakitCache().folder("hdfs-filesystem/settings/" + settings.clusterName()));
 
-        final var metadata = new ServiceMetadata()
+        var metadata = new ServiceMetadata()
                 .version(HdfsProxy.VERSION)
                 .contactEmail(settings.contactEmail());
 
-        final var rmiObjectService = client.register
+        var rmiObjectService = client.register
                 (
                         Scope.localhost(),
                         new ServiceType("com-telenav-kivakit-hdfs-proxy-rmi"),
                         metadata.description("RMI remote object that provides a subset of the HDFS API to HdfsProxyClient")
                 );
 
-        final var dataService = client.register
+        var dataService = client.register
                 (
                         Scope.localhost(),
                         new ServiceType("com-telenav-kivakit-hdfs-proxy-data"),
@@ -164,10 +164,10 @@ public class HdfsProxyClient extends BaseComponent
 
             // download the jar (if need be) and launch it as a child process using the ports
             // allocated for the current application / process.
-            final var local = Folder.kivakitExtensionsHome()
+            var local = Folder.kivakitExtensionsHome()
                     .folder("kivakit-filesystems/hdfs-proxy/target")
                     .file("kivakit-hdfs-proxy-" + KivaKit.get().projectVersion() + ".jar");
-            final var process = listenTo(new JarLauncher())
+            var process = listenTo(new JarLauncher())
                     .addJarSource(local)
                     .addJarSource(settings.proxyJar())
                     .arguments(
@@ -190,11 +190,11 @@ public class HdfsProxyClient extends BaseComponent
     {
         try
         {
-            final var rmiObjectName = HdfsProxy.RMI_REGISTRY_NAME + "-" + rmiObjectPort().number();
-            final Registry registry = LocateRegistry.getRegistry("localhost", HdfsProxy.RMI_REGISTRY_PORT);
+            var rmiObjectName = HdfsProxy.RMI_REGISTRY_NAME + "-" + rmiObjectPort().number();
+            Registry registry = LocateRegistry.getRegistry("localhost", HdfsProxy.RMI_REGISTRY_PORT);
             return (HdfsProxy) registry.lookup(rmiObjectName);
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             if (isDebugOn())
             {
@@ -214,7 +214,7 @@ public class HdfsProxyClient extends BaseComponent
         while (true)
         {
             // or until the proxy is ready
-            final HdfsProxy proxy = lookup();
+            HdfsProxy proxy = lookup();
             if (proxy != null)
             {
                 trace("Found HDFS proxy");

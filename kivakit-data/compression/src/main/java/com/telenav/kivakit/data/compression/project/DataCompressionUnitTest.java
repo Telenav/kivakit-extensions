@@ -44,9 +44,9 @@ import java.util.List;
  */
 public class DataCompressionUnitTest extends KryoUnitTest
 {
-    protected ByteList encode(final Codec<String> codec, final List<String> values)
+    protected ByteList encode(Codec<String> codec, List<String> values)
     {
-        final var data = new ByteArray("data");
+        var data = new ByteArray("data");
         data.initialize();
         return codec.encode(data, SymbolProducer.fromList(values));
     }
@@ -67,30 +67,30 @@ public class DataCompressionUnitTest extends KryoUnitTest
         return new CoreKernelKryoTypes().mergedWith(new DataCompressionKryoTypes());
     }
 
-    protected PropertyMap properties(final String name)
+    protected PropertyMap properties(String name)
     {
         return PropertyMap.load(this, PackageResource.of(getClass(), name));
     }
 
     @NotNull
-    protected Symbols<Character> randomCharacterSymbols(final int minimum, final int maximum)
+    protected Symbols<Character> randomCharacterSymbols(int minimum, int maximum)
     {
-        final var frequencies = new CountMap<Character>();
+        var frequencies = new CountMap<Character>();
         loop(minimum, maximum, () -> frequencies.add(randomAsciiChar(), Count.count(randomInt(1, 10_000))));
         frequencies.add(HuffmanCharacterCodec.ESCAPE, Count._1024);
         frequencies.add(HuffmanCharacterCodec.END_OF_STRING, Count._1024);
         return new Symbols<>(frequencies, HuffmanCharacterCodec.ESCAPE, Minimum._1);
     }
 
-    protected Symbols<String> randomStringSymbols(final int minimum, final int maximum, final int minimumLength,
-                                                  final int maximumLength)
+    protected Symbols<String> randomStringSymbols(int minimum, int maximum, int minimumLength,
+                                                  int maximumLength)
     {
-        final var frequencies = new CountMap<String>();
+        var frequencies = new CountMap<String>();
         loop(minimum, maximum, () ->
         {
             while (true)
             {
-                final var value = randomAsciiString(minimumLength, maximumLength);
+                var value = randomAsciiString(minimumLength, maximumLength);
                 if (!frequencies.contains(value))
                 {
                     frequencies.add(value, Count.count(randomInt(1, 10_000)));
@@ -101,17 +101,17 @@ public class DataCompressionUnitTest extends KryoUnitTest
         return new Symbols<>(frequencies);
     }
 
-    protected void test(final Codec<String> codec, final List<String> symbols)
+    protected void test(Codec<String> codec, List<String> symbols)
     {
-        final var data = encode(codec, symbols);
+        var data = encode(codec, symbols);
         testDecode(codec, data, symbols);
     }
 
-    protected void testDecode(final Codec<String> codec, final ByteList data, final List<String> expected)
+    protected void testDecode(Codec<String> codec, ByteList data, List<String> expected)
     {
         data.reset();
-        final var count = new MutableCount();
-        final var indexValue = new MutableValue<Integer>();
+        var count = new MutableCount();
+        var indexValue = new MutableValue<Integer>();
         codec.decode(data, (index, next) ->
         {
             ensureEqual(index, (int) count.asLong());

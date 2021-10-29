@@ -74,7 +74,7 @@ public class EmailLog extends BaseTextLog
     private String subject;
 
     @Override
-    public void configure(final VariableMap<String> properties)
+    public void configure(VariableMap<String> properties)
     {
         super.configure(properties);
 
@@ -86,10 +86,10 @@ public class EmailLog extends BaseTextLog
         }
 
         // To email addresses
-        final var to = properties.get("to");
+        var to = properties.get("to");
         if (to != null)
         {
-            for (final var at : to.split(","))
+            for (var at : to.split(","))
             {
                 this.to.add(EmailAddress.parse(at));
             }
@@ -100,7 +100,7 @@ public class EmailLog extends BaseTextLog
         }
 
         // From email address
-        final var from = properties.get("from");
+        var from = properties.get("from");
         if (from != null)
         {
             this.from = EmailAddress.parse(from);
@@ -111,12 +111,12 @@ public class EmailLog extends BaseTextLog
         }
 
         // Sender
-        final var host = properties.get("host");
-        final var username = properties.get("username");
-        final var password = properties.get("password");
+        var host = properties.get("host");
+        var username = properties.get("username");
+        var password = properties.get("password");
         if (host != null && username != null && password != null)
         {
-            final var configuration = new SmtpEmailSender.Configuration();
+            var configuration = new SmtpEmailSender.Configuration();
             configuration.host(Host.parse(host));
             configuration.username(UserName.parse(username));
             configuration.password(PlainTextPassword.parse(password));
@@ -131,9 +131,9 @@ public class EmailLog extends BaseTextLog
     }
 
     @Override
-    protected void onLog(final LogEntry entry)
+    protected void onLog(LogEntry entry)
     {
-        final var email = new Email();
+        var email = new Email();
         email.to(to);
         email.from(from);
         email.body(new EmailBody(formatted(entry)));

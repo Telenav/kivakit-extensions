@@ -59,7 +59,7 @@ import static com.telenav.kivakit.service.registry.Scope.Type.NETWORK;
 @LexakaiJavadoc(complete = true)
 public class Scope implements Named, Comparable<Scope>
 {
-    public static Scope cluster(final ClusterIdentifier cluster)
+    public static Scope cluster(ClusterIdentifier cluster)
     {
         return new Scope(CLUSTER, cluster);
     }
@@ -72,7 +72,7 @@ public class Scope implements Named, Comparable<Scope>
         return new Scope(LOCALHOST, null);
     }
 
-    public static List<String> names(final Result<Set<Service>> result)
+    public static List<String> names(Result<Set<Service>> result)
     {
         return Collections.sorted(scopes(result)
                 .stream()
@@ -88,14 +88,14 @@ public class Scope implements Named, Comparable<Scope>
         return new Scope(NETWORK, null);
     }
 
-    public static Scope scope(final Scope.Type type)
+    public static Scope scope(Scope.Type type)
     {
         return new Scope(type, null);
     }
 
-    public static Set<Scope> scopes(final Result<Set<Service>> result)
+    public static Set<Scope> scopes(Result<Set<Service>> result)
     {
-        final var scopes = new HashSet<Scope>();
+        var scopes = new HashSet<Scope>();
         if (result.succeeded())
         {
             scopes.addAll(result.get()
@@ -144,7 +144,7 @@ public class Scope implements Named, Comparable<Scope>
     @UmlAggregation
     private ClusterIdentifier cluster;
 
-    protected Scope(final Type type, final ClusterIdentifier cluster)
+    protected Scope(Type type, ClusterIdentifier cluster)
     {
         ensure(type != CLUSTER || cluster != null);
 
@@ -163,17 +163,17 @@ public class Scope implements Named, Comparable<Scope>
     }
 
     @Override
-    public int compareTo(@NotNull final Scope that)
+    public int compareTo(@NotNull Scope that)
     {
         return name().compareTo(that.name());
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof Scope)
         {
-            final Scope that = (Scope) object;
+            Scope that = (Scope) object;
             return name().equals(that.name());
         }
         return false;

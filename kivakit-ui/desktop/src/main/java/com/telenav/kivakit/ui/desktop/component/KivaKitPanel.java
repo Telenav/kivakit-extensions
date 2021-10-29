@@ -39,82 +39,82 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         theme().applyToContainerPanel(this);
     }
 
-    public KivaKitPanel(final LayoutManager layout)
+    public KivaKitPanel(LayoutManager layout)
     {
         super(layout);
     }
 
-    public JButton configure(final JButton button)
+    public JButton configure(JButton button)
     {
         return theme().applyTo(button);
     }
 
-    public JTableHeader configure(final JTableHeader header)
+    public JTableHeader configure(JTableHeader header)
     {
         return theme().applyTo(header);
     }
 
-    public JLabel configure(final JLabel label)
+    public JLabel configure(JLabel label)
     {
         return theme().applyToComponentLabel(label);
     }
 
-    public <T> JList<T> configure(final JList<T> list)
+    public <T> JList<T> configure(JList<T> list)
     {
         return theme().applyTo(list);
     }
 
-    public JEditorPane configure(final JEditorPane editor)
+    public JEditorPane configure(JEditorPane editor)
     {
         return theme().applyTo(editor);
     }
 
-    public JTextField configure(final JTextField field)
+    public JTextField configure(JTextField field)
     {
         return theme().applyTo(field);
     }
 
-    public <T> JComboBox<T> configure(final JComboBox<T> dropdown)
+    public <T> JComboBox<T> configure(JComboBox<T> dropdown)
     {
         return theme().applyTo(dropdown);
     }
 
-    public <T> JComboBox<T> configure(final JComboBox<T> dropdown, final int preferredWidth)
+    public <T> JComboBox<T> configure(JComboBox<T> dropdown, int preferredWidth)
     {
         return theme().applyTo(dropdown, preferredWidth);
     }
 
-    public JTable configure(final JTable table)
+    public JTable configure(JTable table)
     {
         return theme().applyTo(table);
     }
 
-    public JCheckBox configure(final JCheckBox checkbox)
+    public JCheckBox configure(JCheckBox checkbox)
     {
         return theme().applyTo(checkbox);
     }
 
-    public JLabel configureComponentLabel(final JLabel label)
+    public JLabel configureComponentLabel(JLabel label)
     {
         return theme().applyToComponentLabel(label);
     }
 
-    public JPanel configureContainerPanel(final JPanel panel)
+    public JPanel configureContainerPanel(JPanel panel)
     {
         return theme().applyToContainerPanel(panel);
     }
 
-    public JTextField configureSearchField(final JTextField field)
+    public JTextField configureSearchField(JTextField field)
     {
         return theme().applyToSearchField(field);
     }
 
-    public KivaKitPanel configureShadedPanel(final KivaKitPanel panel)
+    public KivaKitPanel configureShadedPanel(KivaKitPanel panel)
     {
         return theme().applyToShadedPanel(panel);
     }
 
-    public KivaKitPanel configureShadedSubPanel(final KivaKitPanel panel)
+    public KivaKitPanel configureShadedSubPanel(KivaKitPanel panel)
     {
         return theme().applyToShadedSubPanel(panel);
     }
@@ -135,38 +135,38 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().margins();
     }
 
-    public KivaKitPanel margins(final int width)
+    public KivaKitPanel margins(int width)
     {
         Margins.of(width).apply(this);
         return this;
     }
 
-    public final JButton newButton(final String text, final Source<Boolean> enabled, final ActionListener listener)
+    public final JButton newButton(String text, Source<Boolean> enabled, ActionListener listener)
     {
         return theme().newButton(text, enabled, listener);
     }
 
-    public JButton newButton(final String text)
+    public JButton newButton(String text)
     {
         return theme().newButton(text);
     }
 
-    public JButton newButton(final String text, final ActionListener listener)
+    public JButton newButton(String text, ActionListener listener)
     {
         return theme().newButton(text, listener);
     }
 
-    public JLabel newCellRenderer(final String text, final boolean isSelected)
+    public JLabel newCellRenderer(String text, boolean isSelected)
     {
         return theme().newListCellRenderer(text, isSelected);
     }
 
-    public JCheckBox newCheckBox(final String text)
+    public JCheckBox newCheckBox(String text)
     {
         return theme().newCheckBox(text);
     }
 
-    public JLabel newComponentLabel(final String text)
+    public JLabel newComponentLabel(String text)
     {
         return theme().newComponentLabel(text);
     }
@@ -176,27 +176,27 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().newContainerPanel();
     }
 
-    public KivaKitPanel newContainerPanel(final LayoutManager layout)
+    public KivaKitPanel newContainerPanel(LayoutManager layout)
     {
         return theme().newContainerPanel(layout);
     }
 
-    public <T> JComboBox<T> newDropDown(final ComboBoxModel<T> model)
+    public <T> JComboBox<T> newDropDown(ComboBoxModel<T> model)
     {
         return theme().newDropDown(model);
     }
 
-    public <T> JComboBox<T> newDropDown(final T[] values, final Source<Boolean> enabled)
+    public <T> JComboBox<T> newDropDown(T[] values, Source<Boolean> enabled)
     {
         return theme().newDropDown(values, enabled);
     }
 
-    public <T> JComboBox<T> newDropDown(final ComboBoxModel<T> model, final Source<Boolean> enabled)
+    public <T> JComboBox<T> newDropDown(ComboBoxModel<T> model, Source<Boolean> enabled)
     {
         return theme().newDropDown(model, enabled);
     }
 
-    public <T> JComboBox<T> newDropDown(final T[] values)
+    public <T> JComboBox<T> newDropDown(T[] values)
     {
         return theme().newDropDown(values);
     }
@@ -206,22 +206,22 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().newHorizontalSeparator();
     }
 
-    public JLabel newInformationLabel(final String text)
+    public JLabel newInformationLabel(String text)
     {
         return theme().newInformationLabel(text);
     }
 
-    public JLabel newLabel(final String text)
+    public JLabel newLabel(String text)
     {
         return theme().newComponentLabel(text);
     }
 
-    public JLabel newListCellRenderer(final String text, final boolean isSelected)
+    public JLabel newListCellRenderer(String text, boolean isSelected)
     {
         return theme().newListCellRenderer(text, isSelected);
     }
 
-    public JLabel newNote(final String text)
+    public JLabel newNote(String text)
     {
         return theme().newNote(text);
     }
@@ -231,12 +231,12 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().newProgressBar();
     }
 
-    public JScrollPane newScrollPane(final JComponent child, final AdjustmentListener listener)
+    public JScrollPane newScrollPane(JComponent child, AdjustmentListener listener)
     {
         return theme().newScrollPane(child, listener);
     }
 
-    public JTextField newSearchField(final Source<Boolean> enabled)
+    public JTextField newSearchField(Source<Boolean> enabled)
     {
         return theme().newSearchField(enabled);
     }
@@ -256,7 +256,7 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().newShadedSubPanel();
     }
 
-    public JLabel newSmallFadedLabel(final String text)
+    public JLabel newSmallFadedLabel(String text)
     {
         return theme().newNote(text);
     }
@@ -266,12 +266,12 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().newTabbedPane();
     }
 
-    public JTextField newTextField(final int characters, final Source<Boolean> enabled)
+    public JTextField newTextField(int characters, Source<Boolean> enabled)
     {
         return theme().newTextField(characters, enabled);
     }
 
-    public JTextField newTextField(final Source<Boolean> enabled)
+    public JTextField newTextField(Source<Boolean> enabled)
     {
         return theme().newTextField(enabled);
     }
@@ -281,7 +281,7 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().newTextField();
     }
 
-    public JTextField newTextField(final int characters)
+    public JTextField newTextField(int characters)
     {
         return theme().newTextField(characters);
     }
@@ -291,12 +291,12 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return theme().newVerticalSeparator();
     }
 
-    public JSplitPane newVerticalSplitPane(final JPanel top, final JPanel bottom)
+    public JSplitPane newVerticalSplitPane(JPanel top, JPanel bottom)
     {
         return theme().newVerticalSplitPane(top, bottom);
     }
 
-    public void popupInformation(final JFrame frame, final String title, final String message)
+    public void popupInformation(JFrame frame, String title, String message)
     {
         theme().popupInformation(frame, title, message);
     }
@@ -316,9 +316,9 @@ public class KivaKitPanel extends JPanel implements RepeaterMixin
         return KivaKitTheme.get();
     }
 
-    protected Box verticalCenter(final JComponent component)
+    protected Box verticalCenter(JComponent component)
     {
-        final Box verticalBox = Box.createVerticalBox();
+        Box verticalBox = Box.createVerticalBox();
         verticalBox.add(Box.createVerticalGlue());
         verticalBox.add(component);
         return verticalBox;

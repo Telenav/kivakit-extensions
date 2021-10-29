@@ -46,8 +46,10 @@ public class ServiceRegistryGsonFactory extends GsonFactory
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
     @Override
-    protected void onAddSerializers(final GsonBuilder builder)
+    protected void onAddSerializers(GsonBuilder builder)
     {
+        super.onAddSerializers(builder);
+
         addSerializer(builder, Port.class, serializer(new Port.Converter(LOGGER)));
         addSerializer(builder, Application.Identifier.class, new ApplicationIdentifierGsonSerializer());
         addSerializer(builder, ServiceType.class, new ServiceTypeGsonSerializer());

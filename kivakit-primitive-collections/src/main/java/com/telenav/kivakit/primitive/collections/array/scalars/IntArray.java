@@ -67,35 +67,35 @@ public final class IntArray extends PrimitiveArray implements IntList
     {
         private final Separators separators;
 
-        public Converter(final Listener listener, final Separators separators)
+        public Converter(Listener listener, Separators separators)
         {
             super(listener);
             this.separators = separators;
         }
 
         @Override
-        protected IntArray onToValue(final String value)
+        protected String onToString(IntArray array)
         {
-            final var elements = StringList.split(value, separators.current());
-            final var array = new IntArray("converted");
-            array.initialize();
-            for (final var element : elements)
-            {
-                array.add(Integer.parseInt(element));
-            }
-            return array;
-        }
-
-        @Override
-        protected String onToString(final IntArray array)
-        {
-            final var strings = new StringList(Maximum.maximum(array.size()));
-            final var values = array.iterator();
+            var strings = new StringList(Maximum.maximum(array.size()));
+            var values = array.iterator();
             while (values.hasNext())
             {
                 strings.add(Integer.toString(values.next()));
             }
             return strings.join(separators.current());
+        }
+
+        @Override
+        protected IntArray onToValue(String value)
+        {
+            var elements = StringList.split(value, separators.current());
+            var array = new IntArray("converted");
+            array.initialize();
+            for (var element : elements)
+            {
+                array.add(Integer.parseInt(element));
+            }
+            return array;
         }
     }
 
@@ -114,19 +114,19 @@ public final class IntArray extends PrimitiveArray implements IntList
     /** True if this array is a read-only sub-array of some parent array */
     private boolean isSubArray;
 
-    public IntArray(final String objectName)
+    public IntArray(String objectName)
     {
         super(objectName);
     }
 
-    protected IntArray()
+    private IntArray()
     {
     }
 
     /**
      * Constructor for constructing read-only sub-arrays that share data with their parent.
      */
-    private IntArray(final String name, final int[] data, final int offset, final int size)
+    private IntArray(String name, int[] data, int offset, int size)
     {
         this(name);
 
@@ -141,7 +141,7 @@ public final class IntArray extends PrimitiveArray implements IntList
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final int value)
+    public boolean add(int value)
     {
         assert isWritable();
 
@@ -177,7 +177,7 @@ public final class IntArray extends PrimitiveArray implements IntList
      * Sets the element at the given index to the current null value
      */
     @Override
-    public void clear(final int index)
+    public void clear(int index)
     {
         set(index, nullInt());
     }
@@ -186,7 +186,7 @@ public final class IntArray extends PrimitiveArray implements IntList
      * Positions the add cursor
      */
     @Override
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
@@ -204,11 +204,11 @@ public final class IntArray extends PrimitiveArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof IntArray)
         {
-            final var that = (IntArray) object;
+            var that = (IntArray) object;
             if (size() == that.size())
             {
                 return iterator().identical(that.iterator());
@@ -221,7 +221,7 @@ public final class IntArray extends PrimitiveArray implements IntList
      * @return The value at the given logical index.
      */
     @Override
-    public int get(final int index)
+    public int get(int index)
     {
         assert index >= 0;
         assert index < size();
@@ -239,7 +239,7 @@ public final class IntArray extends PrimitiveArray implements IntList
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (size() < data.length)
         {
@@ -253,7 +253,17 @@ public final class IntArray extends PrimitiveArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+        data = newIntArray(this, "allocated");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -267,7 +277,7 @@ public final class IntArray extends PrimitiveArray implements IntList
      * @return The value at the given index or the null value if the index is out of bounds
      */
     @Override
-    public int safeGet(final int index)
+    public int safeGet(int index)
     {
         assert index >= 0;
         if (index < size())
@@ -278,7 +288,7 @@ public final class IntArray extends PrimitiveArray implements IntList
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
@@ -287,12 +297,12 @@ public final class IntArray extends PrimitiveArray implements IntList
      * Sets a value at the given index, possibly extending the array size.
      */
     @Override
-    public void set(final int index, final int value)
+    public void set(int index, int value)
     {
         assert isWritable();
 
-        final var newSize = index + 1;
-        final var size = size();
+        var newSize = index + 1;
+        var size = size();
 
         // If the given index is past the end of storage,
         if (newSize > data.length)
@@ -314,7 +324,7 @@ public final class IntArray extends PrimitiveArray implements IntList
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, (int) value);
     }
@@ -322,9 +332,9 @@ public final class IntArray extends PrimitiveArray implements IntList
     /**
      * @return A read-only sub-array which shares underlying data with this array.
      */
-    public IntArray subArray(final int index, final int size)
+    public IntArray subArray(int index, int size)
     {
-        final var array = new IntArray(objectName(), data, offset + index, size);
+        var array = new IntArray(objectName(), data, offset + index, size);
         array.initialSize(0);
         array.initialize();
         array.data = data;
@@ -345,7 +355,7 @@ public final class IntArray extends PrimitiveArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -355,16 +365,6 @@ public final class IntArray extends PrimitiveArray implements IntList
         kryo.writeObject(output, cursor);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        data = newIntArray(this, "allocated");
-    }
-
     /** Returns true if this is not a read-only sub-array */
     private boolean isWritable()
     {
@@ -372,13 +372,13 @@ public final class IntArray extends PrimitiveArray implements IntList
     }
 
     /** Resizes this dynamic array to the given size */
-    private void resize(final int size)
+    private void resize(int size)
     {
         // If we're writable and the size is increasing we can resize,
         if (isWritable())
         {
             // so create a new int[] of the right size,
-            final var data = newIntArray(this, "resized", size);
+            var data = newIntArray(this, "resized", size);
 
             // copy the data from this array to the new array,
             System.arraycopy(this.data, 0, data, 0, size());

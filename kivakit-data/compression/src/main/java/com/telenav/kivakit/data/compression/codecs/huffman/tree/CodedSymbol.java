@@ -45,7 +45,7 @@ public class CodedSymbol<Symbol>
      *
      * @param value The symbol value
      */
-    public CodedSymbol(final Symbol value)
+    public CodedSymbol(Symbol value)
     {
         this(value, Count._1);
     }
@@ -53,7 +53,7 @@ public class CodedSymbol<Symbol>
     /**
      * Constructs a symbol with the given value and frequency
      */
-    public CodedSymbol(final Symbol value, final Count frequency)
+    public CodedSymbol(Symbol value, Count frequency)
     {
         assert value != null;
         symbol = value;
@@ -70,18 +70,18 @@ public class CodedSymbol<Symbol>
         return code;
     }
 
-    public void code(final Code code)
+    public void code(Code code)
     {
         this.code = code;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof CodedSymbol)
         {
-            final var that = (CodedSymbol<Symbol>) object;
+            var that = (CodedSymbol<Symbol>) object;
             return symbol.equals(that.symbol);
         }
         return false;
@@ -98,7 +98,7 @@ public class CodedSymbol<Symbol>
         return symbol.hashCode();
     }
 
-    public void increaseFrequency(final long count)
+    public void increaseFrequency(long count)
     {
         frequency += count;
     }

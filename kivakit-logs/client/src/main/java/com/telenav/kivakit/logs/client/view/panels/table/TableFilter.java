@@ -37,15 +37,15 @@ class TableFilter extends RowFilter<Object, Object>
     private final String messageType;
 
     @SuppressWarnings("ConstantConditions")
-    TableFilter(String search, final String thread, final String context, final String messageType)
+    TableFilter(String search, String thread, String context, String messageType)
     {
         this.thread = thread;
         this.context = context;
         this.messageType = messageType;
         ensure(search != null);
 
-        final var quotedMatcher = Pattern.compile("\"(?<quoted>[^\"]+?)\"").matcher(search);
-        final var terms = new StringList(Maximum._100);
+        var quotedMatcher = Pattern.compile("\"(?<quoted>[^\"]+?)\"").matcher(search);
+        var terms = new StringList(Maximum._100);
         while (quotedMatcher.find())
         {
             terms.add(quotedMatcher.group("quoted"));
@@ -76,7 +76,7 @@ class TableFilter extends RowFilter<Object, Object>
                     negate.add(negated);
 
                     // Build matcher
-                    final var matcher = Pattern.compile(term
+                    var matcher = Pattern.compile(term
                                     .replaceAll("\\.", "\\\\.")
                                     .replaceAll("\\[", "\\\\[")
                                     .replaceAll("]", "\\\\]")
@@ -85,7 +85,7 @@ class TableFilter extends RowFilter<Object, Object>
                             .matcher("");
                     matchers.add(matcher);
                 }
-                catch (final PatternSyntaxException ignored)
+                catch (PatternSyntaxException ignored)
                 {
                 }
             }
@@ -93,7 +93,7 @@ class TableFilter extends RowFilter<Object, Object>
     }
 
     @Override
-    public boolean include(final Entry<?, ?> entry)
+    public boolean include(Entry<?, ?> entry)
     {
         if (strings.isEmpty() && matchers.isEmpty())
         {
@@ -112,9 +112,9 @@ class TableFilter extends RowFilter<Object, Object>
 
         if (!ALL_TYPES.equals(messageType))
         {
-            final var type = entry.getValue(MESSAGE_TYPE).toString();
+            var type = entry.getValue(MESSAGE_TYPE).toString();
             var include = false;
-            for (final var current : new String[] { "Problem", "Warning", "Glitch" })
+            for (var current : new String[] { "Problem", "Warning", "Glitch" })
             {
                 if (messageType.contains(current) && type.equals(current))
                 {
@@ -130,12 +130,12 @@ class TableFilter extends RowFilter<Object, Object>
 
         var found = false;
 
-        for (final var string : strings)
+        for (var string : strings)
         {
             found = false;
             for (var column = 0; column < COLUMNS; column++)
             {
-                final var value = entry.getValue(column).toString().toLowerCase();
+                var value = entry.getValue(column).toString().toLowerCase();
                 if (value.contains(string))
                 {
                     found = true;
@@ -149,7 +149,7 @@ class TableFilter extends RowFilter<Object, Object>
         }
 
         var index = 0;
-        for (final var matcher : matchers)
+        for (var matcher : matchers)
         {
             found = false;
             for (var column = 0; column < COLUMNS; column++)

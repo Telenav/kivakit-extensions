@@ -68,9 +68,9 @@ public class Connector extends BaseRepeater
     /** The port we are trying to connect to (only for user feedback) */
     private Port connectingTo;
 
-    public Connector(final Receiver receiver,
-                     final Consumer<State> stateListener,
-                     final Consumer<Connection> connectionListener)
+    public Connector(Receiver receiver,
+                     Consumer<State> stateListener,
+                     Consumer<Connection> connectionListener)
     {
         this.receiver = receiver;
         this.stateListener = stateListener;
@@ -82,7 +82,7 @@ public class Connector extends BaseRepeater
      *
      * @param port The port to connect to
      */
-    public void connect(final Port port)
+    public void connect(Port port)
     {
         // If the port's host is resolvable,
         if (port.host().isResolvable())
@@ -111,13 +111,13 @@ public class Connector extends BaseRepeater
         if (state.isNot(DISCONNECTED) && state.isNot(DISCONNECTING))
         {
             // then we are now disconnecting
-            final var was = state(DISCONNECTING);
+            var was = state(DISCONNECTING);
 
             // and there is a connector trying to connect,
             if (autoConnectThread != null)
             {
                 // wait until the thread is either connected or it has stopped trying to connect
-                final Predicate<State> exited = state -> state == CONNECTED || state == STOPPED_CONNECTING;
+                Predicate<State> exited = state -> state == CONNECTED || state == STOPPED_CONNECTING;
                 state.waitFor(exited, MAXIMUM_WAIT_TIME, autoConnectThread.interrupt());
             }
 
@@ -143,7 +143,7 @@ public class Connector extends BaseRepeater
     /**
      * Drops any existing connection and tries forever to establish a new connection to the given port
      */
-    private synchronized void autoConnect(final Port port)
+    private synchronized void autoConnect(Port port)
     {
         narrate("Attempting to connect to $...", port);
 
@@ -159,7 +159,7 @@ public class Connector extends BaseRepeater
             while (state.isNot(CONNECTED) && state.isNot(STOP_CONNECTING))
             {
                 // get a connection to the given port,
-                try (final InputStream input = retryUntilConnected(port))
+                try (InputStream input = retryUntilConnected(port))
                 {
                     // given the connection listener a new connection
                     connection = new Connection(port, input);
@@ -168,7 +168,7 @@ public class Connector extends BaseRepeater
                     // and we are connected
                     state(CONNECTED);
                 }
-                catch (final Exception e)
+                catch (Exception e)
                 {
                     problem(e, "Connection failed");
                 }
@@ -191,7 +191,7 @@ public class Connector extends BaseRepeater
      *
      * @return An input stream from the given port
      */
-    private InputStream retryUntilConnected(final Port port)
+    private InputStream retryUntilConnected(Port port)
     {
         while (state.is(CONNECTING))
         {
@@ -199,7 +199,7 @@ public class Connector extends BaseRepeater
             {
                 return port.open();
             }
-            catch (final Exception ignored)
+            catch (Exception ignored)
             {
             }
             CONNECTION_RETRY_INTERVAL.sleep();
@@ -207,9 +207,9 @@ public class Connector extends BaseRepeater
         return null;
     }
 
-    private State state(final State newState)
+    private State state(State newState)
     {
-        final var previous = state.at();
+        var previous = state.at();
         state.transitionTo(newState);
         switch (newState)
         {

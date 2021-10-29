@@ -54,7 +54,7 @@ public class HuffmanStringListCodec implements StringListCodec
      * @param stringCodec Codec that can encode entire strings at once
      * @param characterCodec Codec that can encode strings by character if the string codec cannot encode a string
      */
-    public HuffmanStringListCodec(final StringCodec stringCodec, final CharacterCodec characterCodec)
+    public HuffmanStringListCodec(StringCodec stringCodec, CharacterCodec characterCodec)
     {
         this.characterCodec = characterCodec;
         this.stringCodec = stringCodec;
@@ -68,7 +68,7 @@ public class HuffmanStringListCodec implements StringListCodec
      * {@inheritDoc}
      */
     @Override
-    public boolean canEncode(final String s)
+    public boolean canEncode(String s)
     {
         return true;
     }
@@ -77,19 +77,19 @@ public class HuffmanStringListCodec implements StringListCodec
      * {@inheritDoc}
      */
     @Override
-    public void decode(final ByteList input, final SymbolConsumer<String> consumer)
+    public void decode(ByteList input, SymbolConsumer<String> consumer)
     {
         // Get the length of the list
-        final int size = input.readFlexibleShort();
+        int size = input.readFlexibleShort();
         assert size > 0;
 
         // the read a map of which indexes are string-encoded and which are character-encoded
-        final var isStringEncoded = input.readBooleans(size);
+        var isStringEncoded = input.readBooleans(size);
         assert isStringEncoded.length == size;
-        final var stringEncoded = trueValues(isStringEncoded);
+        var stringEncoded = trueValues(isStringEncoded);
 
         // decode all the string-encoded symbols
-        final var at = new MutableIndex();
+        var at = new MutableIndex();
         if (stringEncoded > 0)
         {
             stringCodec.decode(input, (ordinal, value) ->
@@ -108,7 +108,7 @@ public class HuffmanStringListCodec implements StringListCodec
         }
 
         // and then the character-encoded symbols
-        final var characterEncoded = size - stringEncoded;
+        var characterEncoded = size - stringEncoded;
         if (characterEncoded > 0)
         {
             at.set(0);
@@ -132,22 +132,22 @@ public class HuffmanStringListCodec implements StringListCodec
      * {@inheritDoc}
      */
     @Override
-    public ByteList encode(final ByteList output, final SymbolProducer<String> producer)
+    public ByteList encode(ByteList output, SymbolProducer<String> producer)
     {
         // Get the number of symbols that will be produced
-        final var size = producer.size();
+        var size = producer.size();
 
         // and write it to the output (we only support 64K entry string lists)
         output.writeFlexibleShort((short) size);
 
         // then create a boolean map of which strings in the list will be string-encoded and which will be character-encoded
-        final var isStringEncoded = new boolean[size];
+        var isStringEncoded = new boolean[size];
 
         // by going through
         for (var index = 0; index < size; index++)
         {
             // each symbol in the inputs
-            final var symbol = producer.get(index);
+            var symbol = producer.get(index);
 
             // and storing whether it is string or character encoded
             isStringEncoded[index] = stringCodec.canEncode(symbol);
@@ -157,15 +157,15 @@ public class HuffmanStringListCodec implements StringListCodec
         output.writeBooleans(isStringEncoded);
 
         // then write out the string-encoded values
-        final var stringEncoded = trueValues(isStringEncoded);
+        var stringEncoded = trueValues(isStringEncoded);
         if (stringEncoded > 0)
         {
-            final var index = new MutableIndex();
+            var index = new MutableIndex();
             stringCodec.encode(output, ignored ->
             {
                 while (true)
                 {
-                    final var at = index.increment();
+                    var at = index.increment();
                     if (at < size)
                     {
                         if (isStringEncoded[at])
@@ -182,15 +182,15 @@ public class HuffmanStringListCodec implements StringListCodec
         }
 
         // and finally the character-encoded values
-        final var characterEncoded = size - stringEncoded;
+        var characterEncoded = size - stringEncoded;
         if (characterEncoded > 0)
         {
-            final var index = new MutableIndex();
+            var index = new MutableIndex();
             characterCodec.encode(output, ignored ->
             {
                 while (true)
                 {
-                    final var at = index.increment();
+                    var at = index.increment();
                     if (at < size)
                     {
                         if (!isStringEncoded[at])
@@ -215,10 +215,10 @@ public class HuffmanStringListCodec implements StringListCodec
         return "[HuffmanStringListCodec]\n" + stringCodec + "\n" + characterCodec + "\n";
     }
 
-    private int trueValues(final boolean[] values)
+    private int trueValues(boolean[] values)
     {
         var count = 0;
-        for (final var value : values)
+        for (var value : values)
         {
             if (value)
             {

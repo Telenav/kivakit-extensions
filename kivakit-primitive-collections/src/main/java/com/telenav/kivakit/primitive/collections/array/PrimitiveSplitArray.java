@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.primitive.collections.array;
 
-import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveSplitArray;
 import com.telenav.kivakit.primitive.collections.array.packed.SplitPackedArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.SplitByteArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.SplitCharArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.SplitIntArray;
 import com.telenav.kivakit.primitive.collections.array.scalars.SplitLongArray;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveSplitArray;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**
@@ -40,7 +40,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @UmlClassDiagram(diagram = DiagramPrimitiveSplitArray.class)
 public abstract class PrimitiveSplitArray extends PrimitiveArray
 {
-    protected PrimitiveSplitArray(final String name)
+    protected PrimitiveSplitArray(String name)
     {
         super(name);
     }

@@ -56,15 +56,15 @@ public interface ShortList extends ShortCollection, PrimitiveList
      * @param target The target to search for
      * @return The index of the given target. The return value will be &lt; 0 if the target was not found.
      */
-    default int binarySearch(final short target)
+    default int binarySearch(short target)
     {
         var low = 0;
         var high = size() - 1;
 
         while (low <= high)
         {
-            final var middle = (low + high) / 2;
-            final var value = get(middle);
+            var middle = (low + high) / 2;
+            var value = get(middle);
 
             if (value < target)
             {
@@ -85,7 +85,7 @@ public interface ShortList extends ShortCollection, PrimitiveList
     /**
      * Sets the value at the given index to the {@link #nullShort()} value
      */
-    default void clear(final int index)
+    default void clear(int index)
     {
         set(index, nullShort());
     }
@@ -107,13 +107,13 @@ public interface ShortList extends ShortCollection, PrimitiveList
      * {@inheritDoc}
      */
     @Override
-    default long getPrimitive(final int index)
+    default long getPrimitive(int index)
     {
         return get(index);
     }
 
     @Override
-    default boolean isPrimitiveNull(final long value)
+    default boolean isPrimitiveNull(long value)
     {
         return isNull((short) value);
     }

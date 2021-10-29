@@ -41,11 +41,11 @@ public class CharacterFrequencies
     /**
      * Adds all the characters in the given string to this symbol set
      */
-    public CharacterFrequencies add(final String string)
+    public CharacterFrequencies add(String string)
     {
         for (var i = 0; i < string.length(); i++)
         {
-            final var at = string.charAt(i);
+            var at = string.charAt(i);
             if (at < MAXIMUM_ASCII)
             {
                 frequencies.increment(at);
@@ -60,10 +60,10 @@ public class CharacterFrequencies
         return this;
     }
 
-    public Count escaped(final Maximum occurrences)
+    public Count escaped(Maximum occurrences)
     {
         var escaped = frequencies.count(HuffmanCharacterCodec.ESCAPE).asLong();
-        for (final Character character : frequencies().keySet())
+        for (Character character : frequencies().keySet())
         {
             if (frequencies.count(character).isLessThan(occurrences))
             {
@@ -81,7 +81,7 @@ public class CharacterFrequencies
     /**
      * @return The set of symbols appearing at least the given minimum number of times
      */
-    public Symbols<Character> symbols(final Minimum occurrences)
+    public Symbols<Character> symbols(Minimum occurrences)
     {
         return new Symbols<>(frequencies, HuffmanCharacterCodec.ESCAPE, occurrences);
     }

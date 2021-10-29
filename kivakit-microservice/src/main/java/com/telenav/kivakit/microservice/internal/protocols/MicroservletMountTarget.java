@@ -22,5 +22,5 @@ public interface MicroservletMountTarget
      * @param path The path
      * @param requestHandlerType The request handler type
      */
-    void mount(final String path, final Class<? extends MicroservletRequestHandler> requestHandlerType);
+    void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType);
 }

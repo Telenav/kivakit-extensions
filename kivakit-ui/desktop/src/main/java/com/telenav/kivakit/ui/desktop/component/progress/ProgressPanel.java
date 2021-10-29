@@ -9,8 +9,8 @@ import com.telenav.kivakit.ui.desktop.layout.HorizontalBoxLayout;
 import com.telenav.kivakit.ui.desktop.layout.Size;
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import java.awt.FlowLayout;
 
 import static com.telenav.kivakit.ui.desktop.layout.Spacing.MANUAL_SPACING;
 
@@ -25,18 +25,18 @@ public class ProgressPanel extends KivaKitPanel
         COMPLETED
     }
 
-    public ProgressPanel(final ProgressReporter reporter, final int width, final Callback<CompletionStatus> done)
+    public ProgressPanel(ProgressReporter reporter, int width, Callback<CompletionStatus> done)
     {
         // Get the KivaKit UI theme,
-        final var theme = KivaKitTheme.get();
+        var theme = KivaKitTheme.get();
 
         // create the progress bar,
-        final var progressBar = theme.newProgressBar();
+        var progressBar = theme.newProgressBar();
         Size.widthOf(width).preferred(progressBar);
         progressBar.setMaximum(100);
 
         // and the cancel button
-        final var cancel = theme.newButton("cancel", ignored -> done.callback(CompletionStatus.CANCELLED));
+        var cancel = theme.newButton("cancel", ignored -> done.callback(CompletionStatus.CANCELLED));
 
         // then add them to this panel
         setOpaque(false);
@@ -50,7 +50,7 @@ public class ProgressPanel extends KivaKitPanel
         // and update the progress bar as the reporter reports progress.
         reporter.listener(at ->
         {
-            final var percentComplete = (int) at.asZeroToOne();
+            var percentComplete = (int) at.asZeroToOne();
             progressBar.setValue(percentComplete);
             progressBar.setString(Message.format("$%", percentComplete));
             progressBar.setStringPainted(false);

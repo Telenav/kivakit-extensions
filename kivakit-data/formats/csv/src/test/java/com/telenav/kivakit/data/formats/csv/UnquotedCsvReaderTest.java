@@ -30,25 +30,25 @@ public class UnquotedCsvReaderTest extends UnitTest
     @Test
     public void test()
     {
-        final var year = CsvColumn.of("year", new IntegerConverter(this));
-        final var make = CsvColumn.of("make");
-        final var model = CsvColumn.of("model");
-        final var description = CsvColumn.of("description");
-        final var price = CsvColumn.of("price", new DoubleConverter(this));
-        final var schema = new CsvSchema(year, make, model, description, price);
+        var year = CsvColumn.of("year", new IntegerConverter(this));
+        var make = CsvColumn.of("make");
+        var model = CsvColumn.of("model");
+        var description = CsvColumn.of("description");
+        var price = CsvColumn.of("price", new DoubleConverter(this));
+        var schema = new CsvSchema(year, make, model, description, price);
 
-        final var resource = PackageResource.of(UnquotedCsvReaderTest.class, "SampleUnquotedCsv.csv");
-        try (final var reader = new UnquotedCsvReader(resource, schema, ';', ProgressReporter.NULL))
+        var resource = PackageResource.of(UnquotedCsvReaderTest.class, "SampleUnquotedCsv.csv");
+        try (var reader = new UnquotedCsvReader(resource, schema, ';', ProgressReporter.NULL))
         {
             reader.skipLines(1);
             ensure(reader.hasNext());
-            final var firstDataLine = reader.next();
+            var firstDataLine = reader.next();
             // simple test
             ensureEqual(firstDataLine.get(year), 1997);
             // comma-within-column test
             ensureEqual(firstDataLine.string(description), "\"ac, abs, moon\"");
             reader.next();
-            final var thirdLine = reader.next();
+            var thirdLine = reader.next();
             // quote-within-column test
             ensureEqual(thirdLine.string(model), "\"Venture \"\"Extended Edition, Very Large\"\"\"");
         }

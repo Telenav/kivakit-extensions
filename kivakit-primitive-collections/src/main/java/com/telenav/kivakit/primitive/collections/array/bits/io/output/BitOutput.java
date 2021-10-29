@@ -45,7 +45,7 @@ public class BitOutput extends BaseBitWriter
     /**
      * Construct from an output stream
      */
-    public BitOutput(final OutputStream out)
+    public BitOutput(OutputStream out)
     {
         this.out = out;
     }
@@ -60,7 +60,7 @@ public class BitOutput extends BaseBitWriter
     }
 
     @Override
-    protected void onFlush(final byte value)
+    protected void onFlush(byte value)
     {
         unsupported("Cannot flush bits on an output stream");
     }
@@ -69,13 +69,13 @@ public class BitOutput extends BaseBitWriter
      * Writes a byte to the output stream
      */
     @Override
-    protected void onWrite(final byte value)
+    protected void onWrite(byte value)
     {
         try
         {
             out.write(value);
         }
-        catch (final IOException e)
+        catch (IOException e)
         {
             throw new IllegalStateException("Unable to write " + value, e);
         }

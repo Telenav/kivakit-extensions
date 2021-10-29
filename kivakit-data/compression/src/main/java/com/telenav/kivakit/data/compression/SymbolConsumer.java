@@ -51,7 +51,7 @@ interface SymbolConsumer<Symbol>
      *
      * @param input The output to write the escaped symbol to
      */
-    default Directive onEscape(final ByteList input)
+    default Directive onEscape(ByteList input)
     {
         return Directive.CONTINUE;
     }

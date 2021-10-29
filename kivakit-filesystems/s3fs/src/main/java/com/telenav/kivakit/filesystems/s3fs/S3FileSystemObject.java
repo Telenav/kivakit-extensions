@@ -90,14 +90,14 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
             .then(Pattern.SLASH.optional())
             .then(keyGroup.optional());
 
-    public static boolean accepts(final String path)
+    public static boolean accepts(String path)
     {
         return schemePattern()
                 .then(Pattern.ANYTHING)
                 .matches(path);
     }
 
-    protected static ListObjectsRequest listRequest(final String bucketName, final String keyName)
+    protected static ListObjectsRequest listRequest(String bucketName, String keyName)
     {
         return ListObjectsRequest.builder()
                 .bucket(bucketName)
@@ -106,7 +106,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
                 .build();
     }
 
-    protected static FilePath path(final String scheme, final String bucketName, final String keyName)
+    protected static FilePath path(String scheme, String bucketName, String keyName)
     {
         return FilePath.parseFilePath(scheme + bucketName + "/" + keyName);
     }
@@ -132,30 +132,30 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     // The AWS region for this object
     private Region region;
 
-    S3FileSystemObject(final FilePath path, final boolean isFolder)
+    S3FileSystemObject(FilePath path, boolean isFolder)
     {
         super(normalize(path));
 
         this.isFolder = isFolder;
 
-        final var matcher = pattern.matcher(path().toString());
+        var matcher = pattern.matcher(path().toString());
         if (matcher.matches())
         {
-            final var regionName = regionGroup.get(matcher);
-            for (final var at : Region.regions())
+            var regionName = regionGroup.get(matcher);
+            for (var at : Region.regions())
             {
                 if (at.id().equals(regionName))
                 {
-                    this.region = at;
+                    region = at;
                 }
             }
             if ("default-region".equals(regionName))
             {
-                this.region = null;
+                region = null;
             }
             else
             {
-                ensureNotNull(this.region, "Region '$' is not recognized", regionName);
+                ensureNotNull(region, "Region '$' is not recognized", regionName);
             }
             scheme = schemeGroup.get(matcher);
             bucket = bucketGroup.get(matcher);
@@ -168,11 +168,11 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public void copyFrom(final Resource resource, final CopyMode mode, final ProgressReporter reporter)
+    public void copyFrom(Resource resource, CopyMode mode, ProgressReporter reporter)
     {
-        final var in = resource.openForReading();
+        var in = resource.openForReading();
 
-        final var request = PutObjectRequest.builder()
+        var request = PutObjectRequest.builder()
                 .bucket(bucket())
                 .key(key())
                 .build();
@@ -183,7 +183,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     @Override
     public boolean delete()
     {
-        final var request = DeleteObjectRequest.builder()
+        var request = DeleteObjectRequest.builder()
                 .bucket(bucket())
                 .key(key())
                 .build();
@@ -193,11 +193,11 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public boolean equals(final Object o)
+    public boolean equals(Object o)
     {
         if (o instanceof S3FileSystemObject)
         {
-            final var that = (S3FileSystemObject) o;
+            var that = (S3FileSystemObject) o;
             return inSameBucket(that) && withIdenticalKey(that);
         }
         return false;
@@ -244,7 +244,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     @Override
     public S3Folder parent()
     {
-        final var parent = path().parent();
+        var parent = path().parent();
         if (parent != null)
         {
             return new S3Folder(parent);
@@ -270,7 +270,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         return path().toString();
     }
 
-    private static FilePath normalize(final FilePath path)
+    private static FilePath normalize(FilePath path)
     {
         return path;
     }
@@ -291,7 +291,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         return bucket;
     }
 
-    boolean canRenameTo(final S3FileSystemObject to)
+    boolean canRenameTo(S3FileSystemObject to)
     {
         var canRename = true;
         if (to != null && to.exists())
@@ -316,10 +316,10 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     {
         if (client == null)
         {
-            if (this.region != null)
+            if (region != null)
             {
                 client = S3Client.builder()
-                        .region(this.region)
+                        .region(region)
                         .build();
             }
             else
@@ -330,9 +330,9 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         return client;
     }
 
-    void copyTo(final S3FileSystemObject that)
+    void copyTo(S3FileSystemObject that)
     {
-        final var request = CopyObjectRequest.builder()
+        var request = CopyObjectRequest.builder()
                 .sourceBucket(bucket())
                 .sourceKey(key())
                 .destinationBucket(that.bucket())
@@ -342,7 +342,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         client().copyObject(request);
     }
 
-    boolean inSameBucket(final S3FileSystemObject that)
+    boolean inSameBucket(S3FileSystemObject that)
     {
         return bucket().equals(that.bucket());
     }
@@ -361,12 +361,12 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     {
         if (metadata == null)
         {
-            final var request = GetObjectRequest.builder()
+            var request = GetObjectRequest.builder()
                     .bucket(bucket())
                     .key(key())
                     .build();
 
-            final var response = client()
+            var response = client()
                     .getObject(request)
                     .response();
 
@@ -377,7 +377,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     GetObjectResponse object()
     {
-        final var request = GetObjectRequest.builder().bucket(bucket()).key(key()).build();
+        var request = GetObjectRequest.builder().bucket(bucket()).key(key()).build();
         return client().getObject(request).response();
     }
 
@@ -386,7 +386,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         return scheme;
     }
 
-    boolean withIdenticalKey(final S3FileSystemObject that)
+    boolean withIdenticalKey(S3FileSystemObject that)
     {
         return key().equals(that.key());
     }

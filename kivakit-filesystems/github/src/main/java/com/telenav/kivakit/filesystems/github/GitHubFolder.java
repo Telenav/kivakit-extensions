@@ -43,12 +43,12 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @LexakaiJavadoc(complete = true)
 public class GitHubFolder extends GitHubFileSystemObject implements FolderService
 {
-    public GitHubFolder(final FilePath path)
+    public GitHubFolder(FilePath path)
     {
         super(path);
     }
 
-    public GitHubFolder(final String path)
+    public GitHubFolder(String path)
     {
         this(FilePath.parseFilePath(path));
     }
@@ -66,7 +66,7 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public GitHubFile file(final FileName fileName)
+    public GitHubFile file(FileName fileName)
     {
         return new GitHubFile(path().withChild(fileName.name()));
     }
@@ -83,13 +83,13 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public GitHubFolder folder(final FileName name)
+    public GitHubFolder folder(FileName name)
     {
         return new GitHubFolder(FilePath.parseFilePath(child(name).toString()));
     }
 
     @Override
-    public GitHubFolder folder(final Folder folder)
+    public GitHubFolder folder(Folder folder)
     {
         return new GitHubFolder(FilePath.parseFilePath(child(folder).toString()));
     }
@@ -124,7 +124,7 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public List<FileService> nestedFiles(final Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(Matcher<FilePath> matcher)
     {
         var files = new ArrayList<FileService>();
         for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FILE, true))
@@ -135,7 +135,7 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     }
 
     @Override
-    public List<FolderService> nestedFolders(final Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
     {
         var folders = new ArrayList<FolderService>();
         for (var entry : tree().entries(relativePath().asUnixString(), GitHubTree.EntryType.FOLDER, true))
@@ -157,12 +157,12 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
         return unsupported();
     }
 
-    private FilePath child(final FileName child)
+    private FilePath child(FileName child)
     {
         return path().withChild(child.name());
     }
 
-    private FilePath child(final Folder folder)
+    private FilePath child(Folder folder)
     {
         return path().withChild(folder.toString());
     }

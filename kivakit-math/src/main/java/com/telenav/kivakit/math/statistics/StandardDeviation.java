@@ -36,7 +36,7 @@ public class StandardDeviation extends Average
     }
 
     @Override
-    public void add(final double value)
+    public void add(double value)
     {
         super.add(value);
         values.add(value);
@@ -45,8 +45,8 @@ public class StandardDeviation extends Average
     public double standardDeviation()
     {
         var squareDifferencesSum = 0.0;
-        final var average = average();
-        for (final var value : values)
+        var average = average();
+        for (var value : values)
         {
             squareDifferencesSum += Math.pow(average - value, 2);
         }

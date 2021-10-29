@@ -43,23 +43,23 @@ public class S3FileSystemServiceTest
     {
         try
         {
-            final var folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/test");
+            var folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/test");
             folder.delete();
 
             folder.folder(FileName.parse("2nd")).mkdirs();
 
-            final var file2 = new S3File("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/s3-test.gz");
-            final var printWriter = file2.printWriter();
+            var file2 = new S3File("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/s3-test.gz");
+            var printWriter = file2.printWriter();
             printWriter.println("the 3rd test case for s3 outputstream");
             printWriter.close();
 
-            for (final String line : file2.reader().lines(ProgressReporter.NULL))
+            for (String line : file2.reader().lines(ProgressReporter.NULL))
             {
                 System.out.println(line);
                 break;
             }
         }
-        catch (final Exception ex)
+        catch (Exception ex)
         {
             ex.printStackTrace();
             System.out.println(ex.getMessage());

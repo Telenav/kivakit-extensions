@@ -1,11 +1,11 @@
 package com.telenav.kivakit.ui.desktop.component.health;
 
-import com.telenav.kivakit.ui.desktop.component.version.KivaKitBuild;
-import com.telenav.kivakit.ui.desktop.component.panel.stack.FlashCardPanel;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachineHealth;
+import com.telenav.kivakit.ui.desktop.component.panel.stack.FlashCardPanel;
+import com.telenav.kivakit.ui.desktop.component.version.KivaKitBuild;
 
-import java.awt.*;
+import java.awt.FlowLayout;
 
 /**
  * @author jonathanl (shibo)
@@ -25,7 +25,7 @@ public class HealthPanel extends FlashCardPanel
         add(new KivaKitBuild());
     }
 
-    public void update(final JavaVirtualMachineHealth health)
+    public void update(JavaVirtualMachineHealth health)
     {
         if (updates == 0)
         {

@@ -18,11 +18,12 @@
 
 package com.telenav.kivakit.primitive.collections.set;
 
-import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
 import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
+import com.telenav.kivakit.primitive.collections.project.PrimitiveCollectionsUnitTest;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
 
 public class SplitLongSetTest extends PrimitiveCollectionsUnitTest
 {
@@ -54,7 +55,7 @@ public class SplitLongSetTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedSet((a, values) ->
         {
-            final var b = set();
+            var b = set();
             addAll(b, values);
             ensureEqual(a, b);
             b.add(-1);
@@ -67,7 +68,7 @@ public class SplitLongSetTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedSet((a, values) ->
         {
-            final var b = set();
+            var b = set();
             addAll(b, values);
             ensureEqual(a, b);
             b.compress(CompressibleCollection.Method.FREEZE);
@@ -75,7 +76,7 @@ public class SplitLongSetTest extends PrimitiveCollectionsUnitTest
         });
         withPopulatedSet((a, values) ->
         {
-            final var b = set();
+            var b = set();
             addAll(b, values);
             addAll(b, values);
             ensureEqual(a, b);
@@ -90,8 +91,8 @@ public class SplitLongSetTest extends PrimitiveCollectionsUnitTest
         withPopulatedSet((set, values) ->
                 values.forEach(value ->
                 {
-                    final var size = set.size();
-                    final var exists = set.contains(value);
+                    var size = set.size();
+                    var exists = set.contains(value);
                     set.remove(value);
                     ensure(!set.contains(value));
                     if (exists)
@@ -112,12 +113,12 @@ public class SplitLongSetTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedSet((set, values) ->
         {
-            final var iterator = set.values();
+            var iterator = set.values();
             var count = 0;
-            final var valueSet = new HashSet<>(values);
+            var valueSet = new HashSet<>(values);
             while (iterator.hasNext())
             {
-                final var value = iterator.next();
+                var value = iterator.next();
                 ensure(valueSet.contains(value));
                 count++;
             }
@@ -125,22 +126,22 @@ public class SplitLongSetTest extends PrimitiveCollectionsUnitTest
         });
     }
 
-    private void addAll(final SplitLongSet set, final List<Long> values)
+    private void addAll(SplitLongSet set, List<Long> values)
     {
         values.forEach(set::add);
     }
 
     private SplitLongSet set()
     {
-        final var set = new SplitLongSet("test");
+        var set = new SplitLongSet("test");
         set.initialize();
         return set;
     }
 
-    private void withPopulatedSet(final MapTest test)
+    private void withPopulatedSet(MapTest test)
     {
-        final var set = set();
-        final var values = randomLongList(Repeats.NO_REPEATS);
+        var set = set();
+        var values = randomLongList(Repeats.NO_REPEATS);
         addAll(set, values);
         test.test(set, values);
     }

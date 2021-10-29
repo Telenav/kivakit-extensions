@@ -56,53 +56,53 @@ public class JerseyGsonSerializer<T> implements MessageBodyReader<T>, MessageBod
     {
     }
 
-    public JerseyGsonSerializer(final GsonFactory factory)
+    public JerseyGsonSerializer(GsonFactory factory)
     {
         gson = factory.newInstance();
     }
 
     @Override
-    public long getSize(final T object, final Class<?> type, final Type genericType,
-                        final Annotation[] annotations, final MediaType mediaType)
+    public long getSize(T object, Class<?> type, Type genericType,
+                        Annotation[] annotations, MediaType mediaType)
     {
         return -1;
     }
 
     @Override
-    public boolean isReadable(final Class<?> type, final Type genericType,
-                              final Annotation[] annotations, final MediaType mediaType)
+    public boolean isReadable(Class<?> type, Type genericType,
+                              Annotation[] annotations, MediaType mediaType)
     {
         return true;
     }
 
     @Override
-    public boolean isWriteable(final Class<?> type, final Type genericType,
-                               final Annotation[] annotations, final MediaType mediaType)
+    public boolean isWriteable(Class<?> type, Type genericType,
+                               Annotation[] annotations, MediaType mediaType)
     {
         return true;
     }
 
     @Override
-    public T readFrom(final Class<T> type, final Type genericType,
-                      final Annotation[] annotations, final MediaType mediaType,
-                      final MultivaluedMap<String, String> map, final InputStream in)
+    public T readFrom(Class<T> type, Type genericType,
+                      Annotation[] annotations, MediaType mediaType,
+                      MultivaluedMap<String, String> map, InputStream in)
             throws IOException, WebApplicationException
     {
-        try (final InputStreamReader reader = new InputStreamReader(in, StandardCharsets.UTF_8))
+        try (var reader = new InputStreamReader(in, StandardCharsets.UTF_8))
         {
             return gson.fromJson(reader, type);
         }
     }
 
     @Override
-    public void writeTo(final T object, final Class<?> type, final Type genericType,
-                        final Annotation[] annotations, final MediaType mediaType,
-                        final MultivaluedMap<String, Object> httpHeaders, final OutputStream out)
+    public void writeTo(T object, Class<?> type, Type genericType,
+                        Annotation[] annotations, MediaType mediaType,
+                        MultivaluedMap<String, Object> httpHeaders, OutputStream out)
             throws WebApplicationException
     {
-        try (final var writer = new PrintWriter(out))
+        try (var writer = new PrintWriter(out))
         {
-            final var json = gson.toJson(object);
+            var json = gson.toJson(object);
             writer.write(json);
             writer.flush();
         }

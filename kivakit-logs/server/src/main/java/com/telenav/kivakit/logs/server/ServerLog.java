@@ -48,7 +48,7 @@ import static com.telenav.kivakit.serialization.core.SerializationSession.Type.S
 
 public class ServerLog extends BaseTextLog
 {
-    public static ServiceType SERVER_LOG = new ServiceType("kivakit-server-log");
+    public static final ServiceType SERVER_LOG = new ServiceType("kivakit-server-log");
 
     private static final ConsoleLogger LOGGER = new ConsoleLogger();
 
@@ -73,7 +73,7 @@ public class ServerLog extends BaseTextLog
 
     private final Lazy<Session> session = Lazy.of(() ->
     {
-        final var application = Application.get();
+        var application = Application.get();
         if (application != null)
         {
             var session = new Session(application.name(), started, null);
@@ -89,12 +89,12 @@ public class ServerLog extends BaseTextLog
 
         ServerLogProject.get().initialize();
 
-        final var client = LOGGER.listenTo(new ServiceRegistryClient());
-        final var metadata = new ServiceMetadata()
+        var client = LOGGER.listenTo(new ServiceRegistryClient());
+        var metadata = new ServiceMetadata()
                 .kivakitVersion(KivaKit.get().kivakitVersion())
                 .description("KivaKit server log")
                 .version(KivaKit.get().projectVersion());
-        final var service = client.register(Scope.network(), SERVER_LOG, metadata);
+        var service = client.register(Scope.network(), SERVER_LOG, metadata);
         if (service.failed())
         {
             fail("Unable to register server log: $", service.get());
@@ -106,9 +106,11 @@ public class ServerLog extends BaseTextLog
     }
 
     @Override
-    public void configure(final VariableMap<String> properties)
+    public void configure(VariableMap<String> properties)
     {
-        final var maximum = properties.get("maximum-entries");
+        super.configure(properties);
+
+        var maximum = properties.get("maximum-entries");
         if (maximum != null)
         {
             maximumEntries = Maximum.parse(maximum);
@@ -116,7 +118,7 @@ public class ServerLog extends BaseTextLog
         listen(Progress.create(LOGGER, "bytes"));
     }
 
-    public ServerLog listen(final ProgressReporter reporter)
+    public ServerLog listen(ProgressReporter reporter)
     {
         LOGGER.listenTo(new ConnectionListener(port(), Maximum.maximum(8))).listen(socket -> handleRequest(socket, reporter));
         return this;
@@ -129,7 +131,7 @@ public class ServerLog extends BaseTextLog
     }
 
     @Override
-    public synchronized void onLog(final LogEntry newEntry)
+    public synchronized void onLog(LogEntry newEntry)
     {
         // While there are too many log entries
         while (entries.size() > maximumEntries.asInt())
@@ -140,7 +142,7 @@ public class ServerLog extends BaseTextLog
 
         // then add the new entry
         entries.add(newEntry);
-        final var store = SessionStore.get();
+        var store = SessionStore.get();
         store.addAll(session.get(), Collections.singletonList(newEntry));
 
         // and if there is a serializer to write to
@@ -149,7 +151,7 @@ public class ServerLog extends BaseTextLog
             if (serializer != null)
             {
                 // go through each entry to send
-                for (final var entry : entries)
+                for (var entry : entries)
                 {
                     try
                     {
@@ -160,7 +162,7 @@ public class ServerLog extends BaseTextLog
                         serializer.write(new VersionedObject<>(entry));
                         serializer.flush();
                     }
-                    catch (final Exception e)
+                    catch (Exception e)
                     {
                         LOGGER.warning(e, "Unable to send log entry $", entry);
                         closeConnection();
@@ -179,16 +181,16 @@ public class ServerLog extends BaseTextLog
         return port;
     }
 
-    public void synchronizeSessions(final SerializationSession serializationSession, final ProgressReporter reporter)
+    public void synchronizeSessions(SerializationSession serializationSession, ProgressReporter reporter)
     {
         // Send the sessions we have to the client
         serializationSession.write(new VersionedObject<>(SessionStore.get().sessions()));
 
         // then read back the sessions that the client wants sent
-        final VersionedObject<List<Session>> sessionsToSend = serializationSession.read();
+        VersionedObject<List<Session>> sessionsToSend = serializationSession.read();
 
         // then send each desired session back to the client
-        for (final var session : sessionsToSend.get())
+        for (var session : sessionsToSend.get())
         {
             serializationSession.write(new VersionedObject<>(SessionStore.get().read(session, reporter)));
         }
@@ -211,7 +213,7 @@ public class ServerLog extends BaseTextLog
      * @param reporter The reporter to call during connection and synchronization of a new session. This can take a
      * while because the client can download logs.
      */
-    private void handleRequest(final Socket socket, final ProgressReporter reporter)
+    private void handleRequest(Socket socket, ProgressReporter reporter)
     {
         // Close any existing connection,
         closeConnection();
@@ -228,13 +230,13 @@ public class ServerLog extends BaseTextLog
                 output = new ProgressiveOutput(output, reporter);
 
                 // get the set of sessions the log has stored,
-                final var store = SessionStore.get();
+                var store = SessionStore.get();
                 store.load();
 
                 synchronized (serializationLock)
                 {
                     // Create a serializer and start writing to the connection
-                    final var serializer = SerializationSession.threadLocal(LOGGER);
+                    var serializer = SerializationSession.threadLocal(LOGGER);
                     serializer.open(CLIENT, KivaKit.get().kivakitVersion(), input);
                     serializer.open(SERVER, KivaKit.get().kivakitVersion(), output);
 
@@ -269,7 +271,7 @@ public class ServerLog extends BaseTextLog
                                     serializer.write(new VersionedObject<>(new JavaVirtualMachineHealth()));
                                 }
                             }
-                            catch (final Exception e)
+                            catch (Exception e)
                             {
                                 break;
                             }
@@ -278,7 +280,7 @@ public class ServerLog extends BaseTextLog
                 }
             }
         }
-        catch (final IOException e)
+        catch (IOException e)
         {
             LOGGER.warning(e, "Socket connection failed");
         }

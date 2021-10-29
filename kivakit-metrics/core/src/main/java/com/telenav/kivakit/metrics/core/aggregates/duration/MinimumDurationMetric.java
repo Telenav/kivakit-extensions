@@ -11,25 +11,25 @@ public class MinimumDurationMetric extends MinimumMetric<Duration>
     }
 
     @Override
-    public MinimumDurationMetric description(final String description)
+    public MinimumDurationMetric description(String description)
     {
         return (MinimumDurationMetric) super.description(description);
     }
 
     @Override
-    public MinimumDurationMetric name(final String name)
+    public MinimumDurationMetric name(String name)
     {
         return (MinimumDurationMetric) super.name(name);
     }
 
     @Override
-    public MinimumDurationMetric type(final MetricType type)
+    public MinimumDurationMetric type(MetricType type)
     {
         return (MinimumDurationMetric) super.type(type);
     }
 
     @Override
-    public MinimumDurationMetric unit(final String unit)
+    public MinimumDurationMetric unit(String unit)
     {
         return (MinimumDurationMetric) super.unit(unit);
     }

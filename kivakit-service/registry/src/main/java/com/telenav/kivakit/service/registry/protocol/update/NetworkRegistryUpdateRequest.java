@@ -50,7 +50,7 @@ public class NetworkRegistryUpdateRequest extends BaseRequest
         return NETWORK_REGISTRY_UPDATE;
     }
 
-    public NetworkRegistryUpdateRequest service(final Service service)
+    public NetworkRegistryUpdateRequest service(Service service)
     {
         this.service = service;
         return this;

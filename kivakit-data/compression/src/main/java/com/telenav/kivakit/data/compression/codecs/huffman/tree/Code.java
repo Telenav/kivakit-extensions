@@ -38,7 +38,7 @@ public class Code
     /**
      * Constructs a code from a binary string
      */
-    public Code(final String bits)
+    public Code(String bits)
     {
         if (Strings.isEmpty(bits))
         {
@@ -72,7 +72,7 @@ public class Code
         return value;
     }
 
-    public void write(final BitWriter writer)
+    public void write(BitWriter writer)
     {
         writer.write(value, lengthInBits);
     }

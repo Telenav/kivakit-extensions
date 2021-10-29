@@ -46,12 +46,12 @@ public final class LongToObjectMap<T> extends PrimitiveMap
     /** The values */
     private T[] values;
 
-    public LongToObjectMap(final String objectName)
+    public LongToObjectMap(String objectName)
     {
         super(objectName);
     }
 
-    protected LongToObjectMap()
+    private LongToObjectMap()
     {
     }
 
@@ -74,14 +74,14 @@ public final class LongToObjectMap<T> extends PrimitiveMap
     /**
      * @return True if this map contains the given key
      */
-    public boolean containsKey(final long key)
+    public boolean containsKey(long key)
     {
         return contains(keys, key);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof LongToObjectMap)
         {
@@ -89,16 +89,16 @@ public final class LongToObjectMap<T> extends PrimitiveMap
             {
                 return true;
             }
-            final var that = (LongToObjectMap<T>) object;
+            var that = (LongToObjectMap<T>) object;
             if (size() != that.size())
             {
                 return false;
             }
-            final var keys = keys();
+            var keys = keys();
             while (keys.hasNext())
             {
-                final var key = keys.next();
-                final var value = get(key);
+                var key = keys.next();
+                var value = get(key);
                 if (value != that.get(key))
                 {
                     return false;
@@ -113,11 +113,11 @@ public final class LongToObjectMap<T> extends PrimitiveMap
      * @return The value for the given key. The returned value should be checked with {@link #isNull(long)} to determine
      * if it represents a null value.
      */
-    public T get(final long key)
+    public T get(long key)
     {
         if (compressionMethod() == CompressibleCollection.Method.FREEZE)
         {
-            final var index = Arrays.binarySearch(keys, key);
+            var index = Arrays.binarySearch(keys, key);
             return index < 0 ? null : values[index];
         }
         else
@@ -141,7 +141,7 @@ public final class LongToObjectMap<T> extends PrimitiveMap
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (method == CompressibleCollection.Method.RESIZE)
         {
@@ -149,9 +149,9 @@ public final class LongToObjectMap<T> extends PrimitiveMap
         }
         else
         {
-            final var frozenKeys = newLongArray(this, "froze", size());
-            final T[] frozenValues = newObjectArray(this, "froze", size());
-            final var keys = keys();
+            var frozenKeys = newLongArray(this, "froze", size());
+            T[] frozenValues = newObjectArray(this, "froze", size());
+            var keys = keys();
             for (var i = 0; keys.hasNext(); i++)
             {
                 frozenKeys[i] = keys.next();
@@ -167,19 +167,27 @@ public final class LongToObjectMap<T> extends PrimitiveMap
         return method;
     }
 
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+        keys = newLongArray(this, "allocated");
+        values = newObjectArray(this, "allocated");
+    }
+
     /**
      * Stores the given value under the given key
      *
      * @return True if a new value was added, false if an existing value was overwritten
      */
-    public boolean put(final long key, final T value)
+    public boolean put(long key, T value)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
         assert value != null;
 
         // Get the index to put at
-        final var index = index(keys, key);
+        var index = index(keys, key);
 
         // If the slot at the given index is empty
         if (isEmpty(keys[index]))
@@ -200,19 +208,19 @@ public final class LongToObjectMap<T> extends PrimitiveMap
 
     @SuppressWarnings("unchecked")
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         keys = kryo.readObject(input, long[].class);
         values = (T[]) kryo.readClassAndObject(input);
     }
 
-    public void remove(final long key)
+    public void remove(long key)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
         // Get index of key
-        final var index = index(keys, key);
+        var index = index(keys, key);
 
         // If the key was found,
         if (!isNull(keys[index]))
@@ -236,7 +244,7 @@ public final class LongToObjectMap<T> extends PrimitiveMap
     }
 
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
         kryo.writeObject(output, keys);
@@ -245,25 +253,25 @@ public final class LongToObjectMap<T> extends PrimitiveMap
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void copy(final PrimitiveMap uncast)
+    protected void copy(PrimitiveMap uncast)
     {
         super.copy(uncast);
-        final var that = (LongToObjectMap<T>) uncast;
+        var that = (LongToObjectMap<T>) uncast;
         keys = that.keys;
         values = that.values;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void copyEntries(final PrimitiveMap uncast, final ProgressReporter reporter)
+    protected void copyEntries(PrimitiveMap uncast, ProgressReporter reporter)
     {
-        final var that = (LongToObjectMap<T>) uncast;
-        final var indexes = nonEmptyIndexes(that.keys);
+        var that = (LongToObjectMap<T>) uncast;
+        var indexes = nonEmptyIndexes(that.keys);
         while (indexes.hasNext())
         {
-            final var index = indexes.next();
-            final var key = that.keys[index];
-            final var value = that.values[index];
+            var index = indexes.next();
+            var key = that.keys[index];
+            var value = that.values[index];
             if (!isNull(key) && value != null)
             {
                 put(key, value);
@@ -276,14 +284,6 @@ public final class LongToObjectMap<T> extends PrimitiveMap
     protected PrimitiveMap newMap()
     {
         return new LongToObjectMap<T>(objectName());
-    }
-
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        keys = newLongArray(this, "allocated");
-        values = newObjectArray(this, "allocated");
     }
 
     @Override

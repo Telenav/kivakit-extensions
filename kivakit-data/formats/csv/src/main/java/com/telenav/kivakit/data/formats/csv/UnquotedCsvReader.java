@@ -37,10 +37,10 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @UmlClassDiagram(diagram = DiagramCsv.class)
 public class UnquotedCsvReader extends CsvReader
 {
-    public UnquotedCsvReader(final Resource resource,
-                             final CsvSchema schema,
-                             final char delimiter,
-                             final ProgressReporter reporter)
+    public UnquotedCsvReader(Resource resource,
+                             CsvSchema schema,
+                             char delimiter,
+                             ProgressReporter reporter)
     {
         super(resource, schema, delimiter, reporter);
     }
@@ -54,9 +54,9 @@ public class UnquotedCsvReader extends CsvReader
      * @return A buffer populated with the column data or null if no more data exists.
      */
     @Override
-    protected String extractNextColumn(final LookAheadReader in)
+    protected String extractNextColumn(LookAheadReader in)
     {
-        final var buffer = new StringBuffer();
+        var buffer = new StringBuffer();
 
         // Handle leading white spaces.
         processLeadingSpaces(in, buffer);
@@ -66,7 +66,7 @@ public class UnquotedCsvReader extends CsvReader
         {
             readColumn(in, buffer);
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             problem(e, "Invalid CSV format");
             return null;
@@ -84,7 +84,7 @@ public class UnquotedCsvReader extends CsvReader
      * @param buffer The buffer to be populated with the contents of the input data.
      */
     @Override
-    protected void readColumn(final LookAheadReader in, final StringBuffer buffer)
+    protected void readColumn(LookAheadReader in, StringBuffer buffer)
     {
         while (in.hasNext() && !in.atEndOfLine())
         {

@@ -38,13 +38,13 @@ public class StringFrequencies
     /** The maximum number of strings to track */
     private final Maximum maximum;
 
-    public StringFrequencies(final Count initialSize, final Maximum maximum)
+    public StringFrequencies(Count initialSize, Maximum maximum)
     {
         frequencies = new CountMap<>(initialSize);
         this.maximum = maximum;
     }
 
-    private StringFrequencies(final CountMap<String> frequencies, final Maximum maximum)
+    private StringFrequencies(CountMap<String> frequencies, Maximum maximum)
     {
         this.frequencies = frequencies;
         this.maximum = maximum;
@@ -53,7 +53,7 @@ public class StringFrequencies
     /**
      * Adds all the characters in the given string to this symbol set
      */
-    public StringFrequencies add(final String string)
+    public StringFrequencies add(String string)
     {
         frequencies.increment(string);
 
@@ -61,7 +61,7 @@ public class StringFrequencies
         if (frequencies.size() > maximum.asInt())
         {
             // remove the bottom 25%
-            final var bottom = frequencies.bottom(maximum.times(0.25));
+            var bottom = frequencies.bottom(maximum.times(0.25));
             frequencies.removeAll(bottom);
         }
         return this;
@@ -83,12 +83,12 @@ public class StringFrequencies
     /**
      * @return The set of symbols appearing at least the given minimum number of times
      */
-    public Symbols<String> symbols(final Minimum occurrences)
+    public Symbols<String> symbols(Minimum occurrences)
     {
         return new Symbols<>(frequencies, occurrences);
     }
 
-    public StringFrequencies top(final Count count)
+    public StringFrequencies top(Count count)
     {
         return new StringFrequencies(frequencies.top(count), maximum);
     }

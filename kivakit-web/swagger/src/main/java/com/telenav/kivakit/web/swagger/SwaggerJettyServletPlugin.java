@@ -39,7 +39,7 @@ public class SwaggerJettyServletPlugin extends BaseJettyServletPlugin
 {
     private final Application application;
 
-    public SwaggerJettyServletPlugin(final Application application)
+    public SwaggerJettyServletPlugin(Application application)
     {
         super("[SwaggerJettyServletPlugin application = " + application.getClass().getSimpleName() + "]");
 
@@ -49,13 +49,13 @@ public class SwaggerJettyServletPlugin extends BaseJettyServletPlugin
     @Override
     public ServletHolder holder()
     {
-        final var configuration = new SwaggerConfiguration()
+        var configuration = new SwaggerConfiguration()
                 .prettyPrint(true)
                 .resourcePackages(Set.of(application.getClass().getPackageName()));
 
         try
         {
-            final OpenApiServlet servlet = new OpenApiServlet();
+            OpenApiServlet servlet = new OpenApiServlet();
 
             new JaxrsOpenApiContextBuilder<>()
                     .servletConfig(servlet)
@@ -65,7 +65,7 @@ public class SwaggerJettyServletPlugin extends BaseJettyServletPlugin
 
             return new ServletHolder(servlet);
         }
-        catch (final OpenApiConfigurationException e)
+        catch (OpenApiConfigurationException e)
         {
             throw new RuntimeException(e.getMessage(), e);
         }

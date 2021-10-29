@@ -39,7 +39,7 @@ public class JerseyJettyServletPlugin extends BaseJettyServletPlugin
     /**
      * @param application The REST application
      */
-    public JerseyJettyServletPlugin(final ResourceConfig application)
+    public JerseyJettyServletPlugin(ResourceConfig application)
     {
         super("[JerseyJettyServletPlugin application = " + application.getClass().getSimpleName() + "]");
 
@@ -50,14 +50,14 @@ public class JerseyJettyServletPlugin extends BaseJettyServletPlugin
     public ServletHolder holder()
     {
         // Get the fully qualified class name of the JAX-RS application,
-        final var name = application.getClass().getName();
+        var name = application.getClass().getName();
 
         // create a "ServletContainer" for the application (this object may look like it's part of
         // the Servlet API, but it would be better named "RestServlet"),
-        final var restServlet = new ServletContainer(application);
+        var restServlet = new ServletContainer(application);
 
         // create a Jetty-specific "ServletHolder" for the servlet
-        final var jersey = new ServletHolder(name, restServlet);
+        var jersey = new ServletHolder(name, restServlet);
 
         // and initialize it with the name of the JAX-RS application.
         jersey.setInitOrder(0);

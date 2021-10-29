@@ -10,25 +10,25 @@ public class AverageCountMetric extends AverageMetric<Count>
         super(Count::count);
     }
 
-    public AverageCountMetric description(final String description)
+    public AverageCountMetric description(String description)
     {
         return (AverageCountMetric) super.description(description);
     }
 
     @Override
-    public AverageCountMetric name(final String name)
+    public AverageCountMetric name(String name)
     {
         return (AverageCountMetric) super.name(name);
     }
 
     @Override
-    public AverageCountMetric type(final MetricType type)
+    public AverageCountMetric type(MetricType type)
     {
         return (AverageCountMetric) super.type(type);
     }
 
     @Override
-    public AverageCountMetric unit(final String unit)
+    public AverageCountMetric unit(String unit)
     {
         return (AverageCountMetric) super.unit(unit);
     }

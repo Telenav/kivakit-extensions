@@ -63,13 +63,12 @@ public final class JettyMicroserviceResponse extends BaseComponent
     /** Error messages that were reported to this response via {@link #problem(int, String, Object...)} */
     @Expose
     @JsonProperty
-    @SuppressWarnings("FieldCanBeLocal")
     @UmlAggregation
     @OpenApiIncludeMember(title = "Errors messages",
                           description = "A list of formatted error messages")
     private final MicroservletErrorResponse errors = new MicroservletErrorResponse();
 
-    public JettyMicroserviceResponse(final JettyMicroservletRequestCycle cycle, final HttpServletResponse httpResponse)
+    public JettyMicroserviceResponse(JettyMicroservletRequestCycle cycle, HttpServletResponse httpResponse)
     {
         this.cycle = cycle;
         this.httpResponse = httpResponse;
@@ -80,7 +79,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     }
 
     @Override
-    public void onMessage(final Message message)
+    public void onMessage(Message message)
     {
         if (status() == SC_OK && message.isWorseThanOrEqualTo(Problem.class))
         {
@@ -88,13 +87,13 @@ public final class JettyMicroserviceResponse extends BaseComponent
         }
     }
 
-    public Problem problem(int status, final String text, final Object... arguments)
+    public Problem problem(int status, String text, Object... arguments)
     {
         status(status);
         return super.problem(text, arguments);
     }
 
-    public Problem problem(int status, Throwable exception, final String text, final Object... arguments)
+    public Problem problem(int status, Throwable exception, String text, Object... arguments)
     {
         status(status);
         return super.problem(exception, text + ": " + exception.getMessage(), arguments);
@@ -105,7 +104,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
         return httpResponse.getStatus();
     }
 
-    public void status(final int status)
+    public void status(int status)
     {
         httpResponse.setStatus(status);
     }
@@ -135,7 +134,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
      *
      * @param response The response to write to the HTTP output stream
      */
-    public void writeObject(final MicroservletResponse response)
+    public void writeObject(MicroservletResponse response)
     {
         // Validate the response
         if (response != null)
@@ -156,10 +155,10 @@ public final class JettyMicroserviceResponse extends BaseComponent
         try
         {
             // then send the JSON to the servlet output stream.
-            this.httpResponse.setContentType("application/json");
-            this.httpResponse.getOutputStream().println(json);
+            httpResponse.setContentType("application/json");
+            httpResponse.getOutputStream().println(json);
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             problem(e, "Unable to write JSON response to servlet output stream");
         }

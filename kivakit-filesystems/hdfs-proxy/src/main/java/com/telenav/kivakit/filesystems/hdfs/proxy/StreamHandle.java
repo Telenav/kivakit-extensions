@@ -39,24 +39,24 @@ class StreamHandle
         return new StreamHandle(identifiers.newInstance());
     }
 
-    public static StreamHandle of(final long identifier)
+    public static StreamHandle of(long identifier)
     {
         return new StreamHandle(new Identifier(identifier));
     }
 
     private final Identifier identifier;
 
-    private StreamHandle(final Identifier identifier)
+    private StreamHandle(Identifier identifier)
     {
         this.identifier = identifier;
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof StreamHandle)
         {
-            final StreamHandle that = (StreamHandle) object;
+            StreamHandle that = (StreamHandle) object;
             return identifier.equals(that.identifier);
         }
         return false;

@@ -45,15 +45,15 @@ public interface IntList extends IntCollection, PrimitiveList
      * @param target The target to search for
      * @return The index of the given target. The return value will be &lt; 0 if the target was not found.
      */
-    default int binarySearch(final int target)
+    default int binarySearch(int target)
     {
         var low = 0;
         var high = size() - 1;
 
         while (low <= high)
         {
-            final var middle = (low + high) / 2;
-            final var value = get(middle);
+            var middle = (low + high) / 2;
+            var value = get(middle);
 
             if (value < target)
             {
@@ -74,7 +74,7 @@ public interface IntList extends IntCollection, PrimitiveList
     /**
      * Sets the value at the given index to the {@link #nullInt()} value
      */
-    default void clear(final int index)
+    default void clear(int index)
     {
         set(index, nullInt());
     }
@@ -106,13 +106,13 @@ public interface IntList extends IntCollection, PrimitiveList
      * {@inheritDoc}
      */
     @Override
-    default long getPrimitive(final int index)
+    default long getPrimitive(int index)
     {
         return get(index);
     }
 
     @Override
-    default boolean isPrimitiveNull(final long value)
+    default boolean isPrimitiveNull(long value)
     {
         return isNull((int) value);
     }
@@ -168,7 +168,7 @@ public interface IntList extends IntCollection, PrimitiveList
     /**
      * Writes the given value at the current cursor location and moves the cursor forward by one
      */
-    default void write(final int value)
+    default void write(int value)
     {
         set(cursor(), value);
     }

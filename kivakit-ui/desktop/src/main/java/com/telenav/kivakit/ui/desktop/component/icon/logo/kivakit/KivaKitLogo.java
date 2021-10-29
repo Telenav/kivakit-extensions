@@ -1,6 +1,7 @@
 package com.telenav.kivakit.ui.desktop.component.icon.logo.kivakit;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * @author jonathanl (shibo)
@@ -14,7 +15,7 @@ public class KivaKitLogo extends JLabel
 
         private final String filename;
 
-        Size(final String filename)
+        Size(String filename)
         {
             this.filename = filename;
         }
@@ -25,7 +26,7 @@ public class KivaKitLogo extends JLabel
         }
     }
 
-    public KivaKitLogo(final Size type)
+    public KivaKitLogo(Size type)
     {
         setIcon(new ImageIcon(getClass().getResource(type.filename())));
     }

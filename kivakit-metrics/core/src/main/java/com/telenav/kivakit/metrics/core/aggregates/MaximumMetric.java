@@ -5,7 +5,7 @@ import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
 
 public class MaximumMetric<T extends Quantizable> extends AggregateQuantumMetric<T>
 {
-    public MaximumMetric(final MapFactory<Double, T> factory)
+    public MaximumMetric(MapFactory<Double, T> factory)
     {
         super(factory);
     }

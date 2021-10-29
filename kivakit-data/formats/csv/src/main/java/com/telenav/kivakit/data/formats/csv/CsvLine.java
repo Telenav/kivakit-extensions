@@ -79,7 +79,7 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     /**
      * Construct with a given schema and delimiter
      */
-    public CsvLine(final CsvSchema schema, final char delimiter)
+    public CsvLine(CsvSchema schema, char delimiter)
     {
         super(Maximum._10_000);
 
@@ -90,27 +90,27 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     /**
      * @return The value of the given column
      */
-    public <T> T get(final CsvColumn<T> column)
+    public <T> T get(CsvColumn<T> column)
     {
-        final var text = string(column);
+        var text = string(column);
         return text == null ? null : column.asType(text);
     }
 
     /**
      * @return The value of the given column
      */
-    public <T> T get(final CsvColumn<T> column, final StringConverter<T> converter)
+    public <T> T get(CsvColumn<T> column, StringConverter<T> converter)
     {
-        final var text = string(column);
+        var text = string(column);
         return text == null ? null : column.asType(text, converter);
     }
 
     /**
      * @return The value of the given column
      */
-    public <T> ObjectList<T> get(final CsvColumn<T> column, final BaseListConverter<T> converter)
+    public <T> ObjectList<T> get(CsvColumn<T> column, BaseListConverter<T> converter)
     {
-        final var text = string(column);
+        var text = string(column);
         return text == null ? null : column.asType(text, converter);
     }
 
@@ -129,14 +129,14 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
      * are retrieved with {@link PropertyValueSource#valueFor(Property)} (see below) and set on the new object by
      * reflection. The result is an object corresponding to this line.
      */
-    public <T> T populatedObject(final Class<T> type)
+    public <T> T populatedObject(Class<T> type)
     {
         try
         {
             return new ObjectPopulator(this, new CsvPropertyFilter(schema()), this)
                     .populate(Type.forClass(type).newInstance());
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             problem(e, "Unable to create or populate ${debug}", type);
             return null;
@@ -154,7 +154,7 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     /**
      * Sets the given column to the given value
      */
-    public <T> void set(final CsvColumn<T> column, final T value)
+    public <T> void set(CsvColumn<T> column, T value)
     {
         set(column, column.asString(value));
     }
@@ -162,11 +162,11 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     /**
      * Sets the given column to the given value
      */
-    public void set(final CsvColumn<?> column, final String value)
+    public void set(CsvColumn<?> column, String value)
     {
         if (column != null)
         {
-            final var index = column.index();
+            var index = column.index();
             while (index >= size())
             {
                 add("");
@@ -178,9 +178,9 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     /**
      * @return The unconverted string value for the given column
      */
-    public String string(final CsvColumn<?> column)
+    public String string(CsvColumn<?> column)
     {
-        final var index = column.index();
+        var index = column.index();
         return index >= size() ? null : get(column.index());
     }
 
@@ -212,9 +212,9 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
      * to get the value of the given property using the property name to find the {@link CsvColumn}.
      */
     @Override
-    public Object valueFor(final Property property)
+    public Object valueFor(Property property)
     {
-        final var column = schema().columnForName(property.name());
+        var column = schema().columnForName(property.name());
         if (column != null)
         {
             return get(column);
@@ -239,7 +239,7 @@ public class CsvLine extends StringList implements PropertyValueSource, Repeater
     /**
      * Used by CSV reader to set the line number for this line
      */
-    void lineNumber(final int lineNumber)
+    void lineNumber(int lineNumber)
     {
         this.lineNumber = lineNumber;
     }

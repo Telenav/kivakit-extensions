@@ -100,7 +100,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * <pre>
  * public class MyMicroservice extends Microservice
  * {
- *     public static void main(final String[] arguments)
+ *     public static void main( String[] arguments)
  *     {
  *         new MyMicroservice().run(arguments);
  *     }
@@ -169,7 +169,7 @@ public abstract class Microservice extends Application implements Startable, Sto
     /**
      * Initializes this microservice and any project(s) it depends on
      */
-    public Microservice(final Project... project)
+    public Microservice(Project... project)
     {
         super(project);
     }
@@ -281,7 +281,7 @@ public abstract class Microservice extends Application implements Startable, Sto
             server = listenTo(new JettyServer().port(settings().port()));
 
             // If there's an Apache Wicket web application,
-            final var webApplication = webApplication();
+            var webApplication = webApplication();
             if (webApplication != null)
             {
                 // mount them on the server.
@@ -289,7 +289,7 @@ public abstract class Microservice extends Application implements Startable, Sto
             }
 
             // If there are static resources,
-            final var staticAssets = staticAssetsFolder();
+            var staticAssets = staticAssetsFolder();
             if (staticAssets != null)
             {
                 // mount them on the server.
@@ -297,12 +297,12 @@ public abstract class Microservice extends Application implements Startable, Sto
             }
 
             // If there is a microservlet REST application,
-            final var restService = restService();
+            var restService = restService();
             if (restService != null)
             {
                 // and there are static OpenAPI assets,
                 listenTo(restService);
-                final var openApiAssets = openApiAssetsFolder();
+                var openApiAssets = openApiAssetsFolder();
                 if (openApiAssets != null)
                 {
                     // mount them on the server.
@@ -352,7 +352,7 @@ public abstract class Microservice extends Application implements Startable, Sto
     }
 
     @Override
-    public void stop(final Duration wait)
+    public void stop(Duration wait)
     {
         server.stop(wait);
         grpcService().stop();

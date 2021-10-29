@@ -10,25 +10,25 @@ public class MaximumCountMetric extends MaximumMetric<Count>
         super(Count::count);
     }
 
-    public MaximumCountMetric description(final String description)
+    public MaximumCountMetric description(String description)
     {
         return (MaximumCountMetric) super.description(description);
     }
 
     @Override
-    public MaximumCountMetric name(final String name)
+    public MaximumCountMetric name(String name)
     {
         return (MaximumCountMetric) super.name(name);
     }
 
     @Override
-    public MaximumCountMetric type(final MetricType type)
+    public MaximumCountMetric type(MetricType type)
     {
         return (MaximumCountMetric) super.type(type);
     }
 
     @Override
-    public MaximumCountMetric unit(final String unit)
+    public MaximumCountMetric unit(String unit)
     {
         return (MaximumCountMetric) super.unit(unit);
     }

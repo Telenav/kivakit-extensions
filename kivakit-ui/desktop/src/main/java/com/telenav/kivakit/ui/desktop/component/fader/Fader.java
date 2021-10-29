@@ -22,7 +22,7 @@ public class Fader extends JLabel
      * @param alphaStep Amount of alpha change at each step
      * @param every Time between alpha changes
      */
-    public Fader(final Color color, final int initialAlpha, final int alphaStep, final Duration every)
+    public Fader(Color color, int initialAlpha, int alphaStep, Duration every)
     {
         this.color = color;
         this.every = every;

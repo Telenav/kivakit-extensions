@@ -16,7 +16,7 @@ public class KivaKitVersion extends JLabel
         this(KivaKit.get().projectVersion());
     }
 
-    public KivaKitVersion(final Version version)
+    public KivaKitVersion(Version version)
     {
         super("KivaKit " + version);
 

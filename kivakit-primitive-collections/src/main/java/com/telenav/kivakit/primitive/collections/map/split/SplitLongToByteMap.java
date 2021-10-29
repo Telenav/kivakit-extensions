@@ -64,12 +64,12 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
 
     private int size;
 
-    public SplitLongToByteMap(final String objectName)
+    public SplitLongToByteMap(String objectName)
     {
         super(objectName);
     }
 
-    protected SplitLongToByteMap()
+    private SplitLongToByteMap()
     {
     }
 
@@ -77,7 +77,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     public Count capacity()
     {
         var capacity = 0;
-        for (final var child : children)
+        for (var child : children)
         {
             if (child != null)
             {
@@ -97,18 +97,18 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     /**
      * @return True if this map contains the given key
      */
-    public boolean containsKey(final long key)
+    public boolean containsKey(long key)
     {
-        final var child = child(key, false);
+        var child = child(key, false);
         return child != null && child.containsKey(key);
     }
 
     /**
      * Calls the visitor with each key / value pair in the map
      */
-    public void entries(final LongToByteMap.EntryVisitor visitor)
+    public void entries(LongToByteMap.EntryVisitor visitor)
     {
-        for (final var child : children)
+        for (var child : children)
         {
             if (child != null)
             {
@@ -121,20 +121,20 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof SplitLongToByteMap)
         {
-            final var that = (SplitLongToByteMap) object;
+            var that = (SplitLongToByteMap) object;
             if (size() != that.size())
             {
                 return false;
             }
-            final var keys = keys();
+            var keys = keys();
             while (keys.hasNext())
             {
-                final var key = keys.next();
-                final var value = get(key);
+                var key = keys.next();
+                var value = get(key);
                 if (value != that.get(key))
                 {
                     return false;
@@ -148,14 +148,14 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     /**
      * @return The value for the given key
      */
-    public byte get(final long key)
+    public byte get(long key)
     {
-        final var child = child(key, false);
+        var child = child(key, false);
         return child == null ? nullByte() : child.get(key);
     }
 
     @Override
-    public long getScalar(final long key)
+    public long getScalar(long key)
     {
         return get(key);
     }
@@ -170,13 +170,13 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     }
 
     @Override
-    public boolean isScalarKeyNull(final long key)
+    public boolean isScalarKeyNull(long key)
     {
         return isNull(key);
     }
 
     @Override
-    public boolean isScalarValueNull(final long value)
+    public boolean isScalarValueNull(long value)
     {
         return isNull((byte) value);
     }
@@ -186,7 +186,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
      */
     public LongIterator keys()
     {
-        final var outer = this;
+        var outer = this;
         return new LongIterator()
         {
             private int childIndex;
@@ -203,7 +203,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
                 keys = null;
                 while (keys == null && childIndex < outer.children.length)
                 {
-                    final var next = outer.children[childIndex++];
+                    var next = outer.children[childIndex++];
                     if (next != null && !next.isEmpty())
                     {
                         keys = next.keys();
@@ -222,9 +222,9 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
-        for (final var child : children)
+        for (var child : children)
         {
             if (child != null)
             {
@@ -235,9 +235,19 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+        children = new LongToByteMap[initialChildCountAsInt()];
+    }
+
+    /**
      * Stores the given value under the given key
      */
-    public void put(final long key, final byte value)
+    public void put(long key, byte value)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
@@ -248,7 +258,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     }
 
     @Override
-    public void putScalar(final long key, final long value)
+    public void putScalar(long key, long value)
     {
         put(key, (byte) value);
     }
@@ -257,7 +267,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
      * @see KryoSerializable
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -270,10 +280,10 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
      *
      * @return True if the key was removed, false if it was not found
      */
-    public boolean remove(final long key)
+    public boolean remove(long key)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
-        final var child = child(key, false);
+        var child = child(key, false);
         if (child != null)
         {
             if (child.remove(key))
@@ -309,7 +319,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
      */
     public ByteIterator values()
     {
-        final var outer = this;
+        var outer = this;
         return new ByteIterator()
         {
             private int childIndex;
@@ -326,7 +336,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
                 values = null;
                 while (values == null && childIndex < outer.children.length)
                 {
-                    final var next = outer.children[childIndex++];
+                    var next = outer.children[childIndex++];
                     if (next != null && !next.isEmpty())
                     {
                         values = next.values();
@@ -348,7 +358,7 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
      * @see KryoSerializable
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -357,22 +367,12 @@ public final class SplitLongToByteMap extends SplitPrimitiveMap implements Primi
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        children = new LongToByteMap[initialChildCountAsInt()];
-    }
-
-    /**
      * @return Gets the child map for the given key. If there is no map, one is created if create is true.
      */
-    private LongToByteMap child(final long key, final boolean create)
+    private LongToByteMap child(long key, boolean create)
     {
         // Get the child index from the key
-        final var childIndex = hash(key) % children.length;
+        var childIndex = hash(key) % children.length;
 
         // and if the child index is null and we should create a new child,
         var child = children[childIndex];

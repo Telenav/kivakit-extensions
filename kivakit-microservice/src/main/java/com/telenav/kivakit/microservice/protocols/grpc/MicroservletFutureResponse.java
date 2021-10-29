@@ -23,6 +23,7 @@ public class MicroservletFutureResponse<T extends MicroservletResponse>
         this.responseType = responseType;
     }
 
+    @SuppressWarnings("unchecked")
     public T get()
     {
         try

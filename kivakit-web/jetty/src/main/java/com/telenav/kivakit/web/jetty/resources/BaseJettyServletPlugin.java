@@ -31,7 +31,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 @LexakaiJavadoc(complete = true)
 public abstract class BaseJettyServletPlugin extends BaseJettyRequestHandler implements ComponentMixin
 {
-    public BaseJettyServletPlugin(final String name)
+    public BaseJettyServletPlugin(String name)
     {
         super(name);
     }

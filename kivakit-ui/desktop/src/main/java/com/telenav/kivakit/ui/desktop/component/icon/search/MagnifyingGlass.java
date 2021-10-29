@@ -2,7 +2,9 @@ package com.telenav.kivakit.ui.desktop.component.icon.search;
 
 import com.telenav.kivakit.ui.desktop.theme.KivaKitTheme;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  * @author jonathanl (shibo)

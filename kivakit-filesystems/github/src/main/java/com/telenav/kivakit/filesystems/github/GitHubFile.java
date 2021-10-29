@@ -40,18 +40,18 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @LexakaiJavadoc(complete = true)
 public class GitHubFile extends GitHubFileSystemObject implements FileService
 {
-    public GitHubFile(final FilePath path)
+    public GitHubFile(FilePath path)
     {
         super(path);
     }
 
-    public GitHubFile(final String path)
+    public GitHubFile(String path)
     {
         super(FilePath.parseFilePath(path));
     }
 
     @Override
-    public boolean chmod(final PosixFilePermission... permissions)
+    public boolean chmod(PosixFilePermission... permissions)
     {
         return unsupported();
     }
@@ -94,13 +94,13 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
         return unsupported();
     }
 
-    public boolean renameTo(final GitHubFile that)
+    public boolean renameTo(GitHubFile that)
     {
         return unsupported();
     }
 
     @Override
-    public boolean renameTo(final FileService that)
+    public boolean renameTo(FileService that)
     {
         return unsupported();
     }

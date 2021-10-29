@@ -31,9 +31,9 @@ public class StandardDeviationTest extends UnitTest
     @Test
     public void testStandardDeviation()
     {
-        final var stddev = new StandardDeviation();
-        final var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-        for (final double value : values)
+        var stddev = new StandardDeviation();
+        var values = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        for (double value : values)
         {
             stddev.add(value);
         }

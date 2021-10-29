@@ -212,11 +212,11 @@ public class ServiceRegistryClient extends BaseComponent
      * @return All applications that have registered a service within the given scope
      */
     public @NotNull
-    Result<Set<Application.Identifier>> discoverApplications(final Scope scope)
+    Result<Set<Application.Identifier>> discoverApplications(Scope scope)
     {
         trace("Requesting $ applications from remote registry", scope);
-        final var request = new DiscoverApplicationsRequest().scope(scope);
-        final var result = request(scope, request, DiscoverApplicationsResponse.class).asResult();
+        var request = new DiscoverApplicationsRequest().scope(scope);
+        var result = request(scope, request, DiscoverApplicationsResponse.class).asResult();
         trace("Received from registry: $", result);
         return result;
     }
@@ -226,11 +226,11 @@ public class ServiceRegistryClient extends BaseComponent
      * single service is returned since only one service can be running on a specific port on a specific host.
      */
     public @NotNull
-    Result<Service> discoverPortService(final Port port)
+    Result<Service> discoverPortService(Port port)
     {
         trace("Looking up service on port $ with remote registry", port);
-        final var request = new DiscoverPortServiceRequest().port(port);
-        final var service = request(port.host().isLocal()
+        var request = new DiscoverPortServiceRequest().port(port);
+        var service = request(port.host().isLocal()
                 ? Scope.localhost()
                 : Scope.network(), request, DiscoverPortServiceResponse.class).asResult();
         trace("Service on port $: ", port, service);
@@ -241,15 +241,15 @@ public class ServiceRegistryClient extends BaseComponent
      * @return All services registered by the given application within the given scope
      */
     public @NotNull
-    Result<Set<Service>> discoverServices(final Scope scope, final Application.Identifier application)
+    Result<Set<Service>> discoverServices(Scope scope, Application.Identifier application)
     {
         trace("Discovering $ services of $", scope, application);
-        final var request = new DiscoverServicesRequest()
+        var request = new DiscoverServicesRequest()
                 .scope(scope)
                 .type(APPLICATION_SERVICES)
                 .application(application);
 
-        final var result = request(scope, request, DiscoverServicesResponse.class).asResult();
+        var result = request(scope, request, DiscoverServicesResponse.class).asResult();
         trace("Discovered services: $", result);
         return result;
     }
@@ -258,14 +258,14 @@ public class ServiceRegistryClient extends BaseComponent
      * @return All services registered with this registry within the given scope
      */
     public @NotNull
-    Result<Set<Service>> discoverServices(final Scope scope)
+    Result<Set<Service>> discoverServices(Scope scope)
     {
         trace("Discovering all $ services", scope);
-        final var request = new DiscoverServicesRequest()
+        var request = new DiscoverServicesRequest()
                 .scope(scope)
                 .type(ALL_SERVICES);
 
-        final var result = request(scope, request, DiscoverServicesResponse.class).asResult();
+        var result = request(scope, request, DiscoverServicesResponse.class).asResult();
         trace("Discovered services: $", result);
         return result;
     }
@@ -275,15 +275,15 @@ public class ServiceRegistryClient extends BaseComponent
      */
     public @NotNull
     Result<Set<Service>> discoverServices(
-            final Scope scope, final Application.Identifier application, final ServiceType type)
+            Scope scope, Application.Identifier application, ServiceType type)
     {
         trace("Discovering $ $ services of $ in remote registry", scope, type, application);
-        final var request = new DiscoverServicesRequest()
+        var request = new DiscoverServicesRequest()
                 .scope(scope)
                 .application(application)
                 .serviceType(type);
 
-        final var result = request(scope, request, DiscoverServicesResponse.class).asResult();
+        var result = request(scope, request, DiscoverServicesResponse.class).asResult();
         trace("Discovered services: $", result);
         return result;
     }
@@ -292,15 +292,15 @@ public class ServiceRegistryClient extends BaseComponent
      * @return All services of the given type that have been registered within the given scope
      */
     public @NotNull
-    Result<Set<Service>> discoverServices(final Scope scope, final ServiceType type)
+    Result<Set<Service>> discoverServices(Scope scope, ServiceType type)
     {
         trace("Discovering $ $ services in remote registry", scope, type);
-        final var request = new DiscoverServicesRequest()
+        var request = new DiscoverServicesRequest()
                 .scope(scope)
                 .type(SERVICES_OF_TYPE)
                 .serviceType(type);
 
-        final var result = request(scope, request, DiscoverServicesResponse.class).asResult();
+        var result = request(scope, request, DiscoverServicesResponse.class).asResult();
         trace("Discovered services: $", result);
         return result;
     }
@@ -315,16 +315,16 @@ public class ServiceRegistryClient extends BaseComponent
      * @return The registered service, bound to a port
      */
     public @NotNull
-    Result<Service> register(final Service service)
+    Result<Service> register(Service service)
     {
         // Register the service
         trace("Registering with local registry: $", service);
         service.health(JavaVirtualMachine.local().health());
-        final var request = new RegisterServiceRequest(service);
-        final var result = request(Scope.localhost(), request, RegisterServiceResponse.class).asResult();
+        var request = new RegisterServiceRequest(service);
+        var result = request(Scope.localhost(), request, RegisterServiceResponse.class).asResult();
         if (result.succeeded())
         {
-            final var registered = result.get();
+            var registered = result.get();
             if (registered != null)
             {
                 // then update the registration (renewing the lease) regularly in the background.
@@ -334,13 +334,13 @@ public class ServiceRegistryClient extends BaseComponent
                     {
                         settings().serviceLeaseRenewalFrequency().cycleLength().sleep();
                         trace("Renewing lease on registered service: $", registered);
-                        final var health = JavaVirtualMachine.local().health();
+                        var health = JavaVirtualMachine.local().health();
                         if (health != null)
                         {
                             registered.health(health.update());
                         }
-                        final var renewal = new RenewServiceRequest(registered);
-                        final var renewed = request(Scope.localhost(), renewal, RenewServiceResponse.class).asResult();
+                        var renewal = new RenewServiceRequest(registered);
+                        var renewed = request(Scope.localhost(), renewal, RenewServiceResponse.class).asResult();
                         trace("Remote registry renewed service: $", renewed);
                     }
                 });
@@ -370,24 +370,24 @@ public class ServiceRegistryClient extends BaseComponent
      */
     public Result<Service> register
     (
-            final Scope scope,
-            final ServiceType serviceType,
-            final ServiceMetadata metadata
+            Scope scope,
+            ServiceType serviceType,
+            ServiceMetadata metadata
     )
     {
         // Get the current kivakit application, if any
-        final var application = Application.get();
+        var application = Application.get();
 
         // and this process' id
-        final var pid = OperatingSystem.get().processIdentifier();
+        var pid = OperatingSystem.get().processIdentifier();
 
         // then compose an identifier for the service application
-        final var applicationIdentifier = application == null
+        var applicationIdentifier = application == null
                 ? new Application.Identifier("Unknown (pid " + OperatingSystem.get().processIdentifier() + ")")
                 : application.identifier();
 
         // and a name to use in the description
-        final var name = application == null ? "unknown process with pid " + pid : application.name();
+        var name = application == null ? "unknown process with pid " + pid : application.name();
 
         // and finally, add to the metadata
         if (metadata.description() == null)
@@ -418,7 +418,7 @@ public class ServiceRegistryClient extends BaseComponent
      * @return True if the service was added
      */
     @NotNull
-    public Result<Boolean> sendNetworkRegistryUpdate(final Service service)
+    public Result<Boolean> sendNetworkRegistryUpdate(Service service)
     {
         // The client is used by the local service registry to update the network service registry.
         // This method should not be called by any end-users.
@@ -427,8 +427,8 @@ public class ServiceRegistryClient extends BaseComponent
             if (service.isBound())
             {
                 trace("Updating network service registry for: $", service);
-                final var request = new NetworkRegistryUpdateRequest().service(service);
-                final var result = request(Scope.network(), request, NetworkRegistryUpdateResponse.class).asResult();
+                var request = new NetworkRegistryUpdateRequest().service(service);
+                var result = request(Scope.network(), request, NetworkRegistryUpdateResponse.class).asResult();
                 trace("Updated network service registry: $", result);
                 return result;
             }
@@ -438,7 +438,7 @@ public class ServiceRegistryClient extends BaseComponent
                 return Result.succeeded(false);
             }
         }
-        catch (final Exception | AssertionError e)
+        catch (Exception | AssertionError e)
         {
             return Result.succeeded(false).problem("Unable to update service $ int network registry: $", service.descriptor(), e.getMessage());
         }
@@ -461,15 +461,15 @@ public class ServiceRegistryClient extends BaseComponent
         if (!connected)
         {
             // get the local port and if it is available, the registry is not running,
-            final var port = settings().local();
+            var port = settings().local();
             if (port.isAvailable())
             {
                 // so launch the service from remote storage
                 trace("Connecting client to $", port);
-                final var local = Folder.kivakitExtensionsHome()
+                var local = Folder.kivakitExtensionsHome()
                         .folder("kivakit-service/server/target")
                         .file("kivakit-service-server-" + KivaKit.get().kivakitVersion() + ".jar");
-                final var jar = settings.serverJar();
+                var jar = settings.serverJar();
                 trace("Launching $", jar);
                 listenTo(new JarLauncher())
                         .processType(DETACHED)
@@ -499,7 +499,7 @@ public class ServiceRegistryClient extends BaseComponent
      * Connects to the appropriate server for the given request scope, sends a request object and returns the response.
      */
     private <T, Response extends BaseResponse<T>> Response request(
-            final Scope scope, final BaseRequest request, final Class<Response> responseType)
+            Scope scope, BaseRequest request, Class<Response> responseType)
     {
         // If we're searching locally,
         if (scope.isLocal())
@@ -509,18 +509,18 @@ public class ServiceRegistryClient extends BaseComponent
         }
 
         // then create a new Jersey client,
-        final var timeout = settings.accessTimeout();
-        final Client client = JerseyClientBuilder.newBuilder()
+        var timeout = settings.accessTimeout();
+        Client client = JerseyClientBuilder.newBuilder()
                 .connectTimeout((long) timeout.asSeconds(), TimeUnit.SECONDS)
                 .build();
 
         // turn the request into JSON,
-        final var requestJson = gson().toJson(request);
+        var requestJson = gson().toJson(request);
         trace("Sending JSON ${class} to $/$:\n$", request.getClass(), settings().restApiPath(),
                 request.path(), requestJson);
 
         // get the appropriate server to contact based on the scope,
-        final Port server;
+        Port server;
         switch (scope.type())
         {
             case LOCALHOST:
@@ -542,26 +542,26 @@ public class ServiceRegistryClient extends BaseComponent
             // compose and post a request to the server,
             try
             {
-                final var entity = Entity.entity(requestJson, "application/json");
-                final var path = server
+                var entity = Entity.entity(requestJson, "application/json");
+                var path = server
                         .path(settings().restApiPath())
                         .withChild(request.path());
                 trace("Posting $ to $", request.getClass().getSimpleName(), path);
-                final var jaxResponse = client
+                var jaxResponse = client
                         .target(path.toString())
                         .request("application/json")
                         .post(entity, javax.ws.rs.core.Response.class);
 
                 // read the JSON response,
-                final var responseJson = jaxResponse.readEntity(String.class);
+                var responseJson = jaxResponse.readEntity(String.class);
 
                 // and convert the response to an object.
-                final var response = gson().fromJson(responseJson, responseType);
+                var response = gson().fromJson(responseJson, responseType);
                 trace("Received JSON ${class}:\n$", response.getClass(), responseJson);
 
                 return response;
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 if (e instanceof ProcessingException && e.getCause() instanceof ConnectException)
                 {
@@ -575,7 +575,7 @@ public class ServiceRegistryClient extends BaseComponent
         }
 
         // If the host is not resolvable or an exception occurred, so fail
-        final var response = (Response) Type.forClass(responseType).newInstance();
+        var response = (Response) Type.forClass(responseType).newInstance();
         response.problem("Unable to connect to $", server);
         problem("Could not resolve ${lower} registry on host $", scope, server.host().name());
         return response;
@@ -586,4 +586,3 @@ public class ServiceRegistryClient extends BaseComponent
         return require(ServiceRegistrySettings.class);
     }
 }
-

@@ -52,25 +52,25 @@ public class Receiver extends BaseRepeater implements Stoppable
      * creates a new session for the application and passes it to the new session listener. Then reads log entries until
      * the connector signals that it is disconnecting.
      */
-    public void receive(final Connection connection,
-                        final Consumer<Session> newSessionListener,
-                        final Consumer<VersionedObject<?>> objectListener)
+    public void receive(Connection connection,
+                        Consumer<Session> newSessionListener,
+                        Consumer<VersionedObject<?>> objectListener)
     {
         // Create a serializer and read the framework version from the server
-        final var serializationSession = SerializationSession.threadLocal(this);
-        final var version = serializationSession.open(CLIENT, KivaKit.get().kivakitVersion(), connection.input());
+        var serializationSession = SerializationSession.threadLocal(this);
+        var version = serializationSession.open(CLIENT, KivaKit.get().kivakitVersion(), connection.input());
 
         // and if we are compatible with it,
         if (version.isOlderThanOrEqualTo(KivaKit.get().kivakitVersion()))
         {
-            final var port = connection.port();
+            var port = connection.port();
             narrate("Handshaking with $", port);
 
             // read the server's application name,
-            final var application = serializationSession.read().get().toString();
+            var application = serializationSession.read().get().toString();
 
             // create a new session for the application and give it to the listener
-            final var session = new Session(application, Time.now(), null);
+            var session = new Session(application, Time.now(), null);
             newSessionListener.accept(session);
 
             // then loop until we are told to stop,
@@ -82,14 +82,14 @@ public class Receiver extends BaseRepeater implements Stoppable
                 try
                 {
                     // reading the next entry,
-                    final var versionedObject = serializationSession.read();
+                    var versionedObject = serializationSession.read();
                     if (versionedObject != null)
                     {
                         // and giving it to the object listener
                         objectListener.accept(versionedObject);
                     }
                 }
-                catch (final Exception e)
+                catch (Exception e)
                 {
                     // until something goes wrong.
                     warning(e, "Connection broken");
@@ -107,7 +107,7 @@ public class Receiver extends BaseRepeater implements Stoppable
     }
 
     @Override
-    public void stop(final Duration wait)
+    public void stop(Duration wait)
     {
         if (state == RUNNING)
         {
@@ -117,14 +117,14 @@ public class Receiver extends BaseRepeater implements Stoppable
     }
 
     @SuppressWarnings("unchecked")
-    public void synchronizeSessions(final SerializationSession serializationSession)
+    public void synchronizeSessions(SerializationSession serializationSession)
     {
         // Read the sessions that the server has,
-        final Set<Session> serverSessions = (Set<Session>) serializationSession.read().get();
+        Set<Session> serverSessions = (Set<Session>) serializationSession.read().get();
 
         // determine which sessions the server has that we still need to download,
-        final var desiredSessions = new ArrayList<Session>();
-        for (final var session : serverSessions)
+        var desiredSessions = new ArrayList<Session>();
+        for (var session : serverSessions)
         {
             if (!SessionStore.get().has(session))
             {
@@ -136,9 +136,9 @@ public class Receiver extends BaseRepeater implements Stoppable
         serializationSession.write(new VersionedObject<>(desiredSessions));
 
         // then add each session to the cache
-        for (final var session : desiredSessions)
+        for (var session : desiredSessions)
         {
-            final VersionedObject<byte[]> bytes = serializationSession.read();
+            VersionedObject<byte[]> bytes = serializationSession.read();
             SessionStore.get().add(session, bytes.get(), ProgressReporter.NULL);
         }
     }

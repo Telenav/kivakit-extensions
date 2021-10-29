@@ -26,7 +26,7 @@ public class Box extends BaseDrawable
         return box((Style) null);
     }
 
-    public static Box box(final Style style)
+    public static Box box(Style style)
     {
         return new Box(style);
     }
@@ -37,7 +37,7 @@ public class Box extends BaseDrawable
 
     private DrawingHeight cornerHeight;
 
-    protected Box(final Box that)
+    protected Box(Box that)
     {
         super(that);
         size = that.size;
@@ -45,7 +45,7 @@ public class Box extends BaseDrawable
         cornerHeight = that.cornerHeight;
     }
 
-    protected Box(final Style style)
+    protected Box(Style style)
     {
         super(style);
     }
@@ -57,15 +57,15 @@ public class Box extends BaseDrawable
     }
 
     @Override
-    public Shape draw(final DrawingSurface surface)
+    public Shape draw(DrawingSurface surface)
     {
         return draw(surface, size());
     }
 
     @Override
-    public Drawable scaledBy(final double scaleFactor)
+    public Drawable scaledBy(double scaleFactor)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.size = size.scaledBy(scaleFactor);
         return copy;
     }
@@ -75,92 +75,92 @@ public class Box extends BaseDrawable
         return size;
     }
 
-    public Box withArea(final DrawingRectangle rectangle)
+    public Box withArea(DrawingRectangle rectangle)
     {
         return withSize(rectangle.size()).withLocation(rectangle.at());
     }
 
     @Override
-    public Box withColors(final Style style)
+    public Box withColors(Style style)
     {
         return (Box) super.withColors(style);
     }
 
     @Override
-    public Box withDrawColor(final Color color)
+    public Box withDrawColor(Color color)
     {
         return (Box) super.withDrawColor(color);
     }
 
     @Override
-    public Box withDrawStroke(final Stroke stroke)
+    public Box withDrawStroke(Stroke stroke)
     {
         return (Box) super.withDrawStroke(stroke);
     }
 
     @Override
-    public Box withDrawStrokeWidth(final DrawingWidth width)
+    public Box withDrawStrokeWidth(DrawingWidth width)
     {
         return (Box) super.withDrawStrokeWidth(width);
     }
 
     @Override
-    public Box withFillColor(final Color color)
+    public Box withFillColor(Color color)
     {
         return (Box) super.withFillColor(color);
     }
 
     @Override
-    public Box withFillStroke(final Stroke stroke)
+    public Box withFillStroke(Stroke stroke)
     {
         return (Box) super.withFillStroke(stroke);
     }
 
     @Override
-    public Box withFillStrokeWidth(final DrawingWidth width)
+    public Box withFillStrokeWidth(DrawingWidth width)
     {
         return (Box) super.withFillStrokeWidth(width);
     }
 
     @Override
-    public Box withLocation(final DrawingPoint at)
+    public Box withLocation(DrawingPoint at)
     {
         return (Box) super.withLocation(at);
     }
 
-    public Box withRoundedCorners(final DrawingLength corner)
+    public Box withRoundedCorners(DrawingLength corner)
     {
         return withRoundedCorners(corner.asWidth(), corner.asHeight());
     }
 
-    public Box withRoundedCorners(final DrawingWidth cornerWidth, final DrawingHeight cornerHeight)
+    public Box withRoundedCorners(DrawingWidth cornerWidth, DrawingHeight cornerHeight)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.cornerWidth = cornerWidth;
         copy.cornerHeight = cornerHeight;
         return copy;
     }
 
-    public Box withSize(final DrawingSize size)
+    public Box withSize(DrawingSize size)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.size = size;
         return copy;
     }
 
     @Override
-    public Box withStyle(final Style style)
+    public Box withStyle(Style style)
     {
         return (Box) super.withStyle(style);
     }
 
     @Override
-    public Box withTextColor(final Color color)
+    public Box withTextColor(Color color)
     {
         return (Box) super.withTextColor(color);
     }
 
-    protected Shape draw(final DrawingSurface surface, final DrawingSize size)
+    protected Shape draw(DrawingSurface surface, DrawingSize size)
     {
         if (cornerWidth != null && cornerHeight != null)
         {

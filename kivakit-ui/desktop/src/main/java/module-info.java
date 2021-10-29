@@ -3,7 +3,7 @@ open module kivakit.ui.desktop
     // KivaKit
     requires kivakit.resource;
     requires kivakit.test;
-    
+
     // Java
     requires transitive java.desktop;
 

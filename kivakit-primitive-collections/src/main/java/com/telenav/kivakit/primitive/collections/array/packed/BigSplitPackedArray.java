@@ -46,7 +46,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
 
     private long size;
 
-    public BigSplitPackedArray(final String objectName)
+    public BigSplitPackedArray(String objectName)
     {
         super(objectName);
     }
@@ -58,7 +58,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
     }
 
     @Override
-    public BigSplitPackedArray bits(final BitCount bits, final PackedPrimitiveArray.OverflowHandling overflow)
+    public BigSplitPackedArray bits(BitCount bits, PackedPrimitiveArray.OverflowHandling overflow)
     {
         this.bits = bits;
         this.overflow = overflow;
@@ -66,16 +66,16 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
     }
 
     @Override
-    public void copyConfiguration(final PrimitiveCollection that)
+    public void copyConfiguration(PrimitiveCollection that)
     {
         super.copyConfiguration(that);
 
         bits = ((PackedArray) that).bits();
     }
 
-    public Boolean getBoolean(final long index)
+    public Boolean getBoolean(long index)
     {
-        final var value = getLong(index);
+        var value = getLong(index);
         if (value != null)
         {
             return value != 0;
@@ -83,20 +83,20 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
         return null;
     }
 
-    public Count getCount(final long index)
+    public Count getCount(long index)
     {
-        final var count = getInteger(index);
+        var count = getInteger(index);
         return count == null ? null : Count.count(count);
     }
 
-    public int getInt(final long index)
+    public int getInt(long index)
     {
         return getLong(index).intValue();
     }
 
-    public Integer getInteger(final long index)
+    public Integer getInteger(long index)
     {
-        final var value = getLong(index);
+        var value = getLong(index);
         if (value != null)
         {
             return value.intValue();
@@ -104,7 +104,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
         return null;
     }
 
-    public Long getLong(final long index)
+    public Long getLong(long index)
     {
         // If our index is negative,
         if (index < 0)
@@ -128,7 +128,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
 
     public LongIterator indexesOfNonNullValues()
     {
-        final var outer = this;
+        var outer = this;
         return new LongIterator()
         {
             private int whichArray;
@@ -151,7 +151,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
                         // find any next one
                         while (whichArray < outer.size())
                         {
-                            final var array = outer.arrays.get(whichArray++);
+                            var array = outer.arrays.get(whichArray++);
                             if (array != null)
                             {
                                 this.array = array;
@@ -167,7 +167,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
                         // look through the array
                         while (index < array.size())
                         {
-                            final Long value = array.safeGet(index++);
+                            Long value = array.safeGet(index++);
                             if (value != null)
                             {
                                 next = ((long) (whichArray - 1) * outer.initialChildSizeAsInt()) + (index - 1);
@@ -198,9 +198,9 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
-        for (final var array : arrays)
+        for (var array : arrays)
         {
             array.compress(method);
         }
@@ -224,14 +224,14 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
      * @return The value at the given index or null if the index is out of bounds or the value at the given index is the
      * null value
      */
-    public boolean safeGetBoolean(final long index)
+    public boolean safeGetBoolean(long index)
     {
         return safeGetLong(index) != 0;
     }
 
-    public Count safeGetCount(final long index)
+    public Count safeGetCount(long index)
     {
-        final var count = safeGetInt(index);
+        var count = safeGetInt(index);
         return count == -1 ? null : Count.count(count);
     }
 
@@ -239,7 +239,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
      * @return The value at the given index or null if the index is out of bounds or the value at the given index is the
      * null value
      */
-    public int safeGetInt(final long index)
+    public int safeGetInt(long index)
     {
         return (int) safeGetLong(index);
     }
@@ -248,7 +248,7 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
      * @return The value at the given index or null if the index is out of bounds or the value at the given index is the
      * null value
      */
-    public long safeGetLong(final long index)
+    public long safeGetLong(long index)
     {
         if (index < 0 || index >= longSize())
         {
@@ -257,27 +257,27 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
         return array(index).safeGet((int) (index % initialChildSizeAsInt()));
     }
 
-    public void setBoolean(final long index, final Boolean value)
+    public void setBoolean(long index, Boolean value)
     {
         setLong(index, value == null ? null : (value ? 1L : 0L));
     }
 
-    public void setCount(final long index, final Count count)
+    public void setCount(long index, Count count)
     {
         setInteger(index, count == null ? null : count.asInt());
     }
 
-    public void setInt(final long index, final int value)
+    public void setInt(long index, int value)
     {
         setLong(index, (long) value);
     }
 
-    public void setInteger(final long index, final Integer value)
+    public void setInteger(long index, Integer value)
     {
         setLong(index, value == null ? null : (long) value);
     }
 
-    public void setLong(final long index, final Long value)
+    public void setLong(long index, Long value)
     {
         // If our index is negative,
         if (index < 0)
@@ -302,9 +302,9 @@ public class BigSplitPackedArray extends PrimitiveSplitArray implements PackedPr
                 toString(index -> Long.toString(getLong(index)));
     }
 
-    private PackedArray array(final long index)
+    private PackedArray array(long index)
     {
-        final var arrayIndex = (int) (index / initialChildSizeAsInt());
+        var arrayIndex = (int) (index / initialChildSizeAsInt());
         var array = arrays.get(arrayIndex);
         if (array == null)
         {

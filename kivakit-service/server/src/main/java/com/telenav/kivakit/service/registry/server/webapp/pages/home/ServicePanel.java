@@ -44,18 +44,18 @@ public class ServicePanel extends Panel
 {
     private final IModel<Service> model;
 
-    public ServicePanel(final String id, final WebMarkupContainer container, final IModel<Service> model)
+    public ServicePanel(String id, WebMarkupContainer container, IModel<Service> model)
     {
         super(id);
         this.model = model;
 
-        final var service = service();
-        final var metadata = service.metadata();
+        var service = service();
+        var metadata = service.metadata();
 
-        final var application = new Label("application", service::application);
-        final var type = new Label("type", service::type);
+        var application = new Label("application", service::application);
+        var type = new Label("type", service::type);
 
-        final var header = new WebMarkupContainer("header");
+        var header = new WebMarkupContainer("header");
         header.add(new Image("status-light", () -> new PackageResourceReference(getClass(), service.isStale()
                 ? "icons/red-light-24.png"
                 : "icons/green-light-24.png")));
@@ -63,7 +63,7 @@ public class ServicePanel extends Panel
         header.add(type);
         add(header);
 
-        final var health = service.health();
+        var health = service.health();
 
         add(new Label("scope", () -> service.scope().name()));
         add(new Label("host", () -> service.port().host().toString()));
@@ -86,7 +86,7 @@ public class ServicePanel extends Panel
         add(new Label("glitches", () -> health.count("Glitch")));
         add(new Label("threads", () -> health.threadSnapshot().snapshot().size()));
 
-        final var states = new CountMap<Thread.State>();
+        var states = new CountMap<Thread.State>();
         health.threadSnapshot().snapshot().forEach(thread -> states.increment(thread.state()));
         add(new Label("threads-running", () -> states.count(RUNNABLE)));
         add(new Label("threads-waiting", () -> states.count(BLOCKED)

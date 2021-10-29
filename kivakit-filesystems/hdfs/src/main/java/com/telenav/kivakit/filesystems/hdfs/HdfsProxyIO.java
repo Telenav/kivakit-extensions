@@ -47,21 +47,21 @@ public class HdfsProxyIO
     /**
      * @return The input stream to read from for the given handle
      */
-    public static InputStream in(final long handle)
+    public static InputStream in(long handle)
     {
         try
         {
             // We can ignore this resource leak warning because when the caller closes the input
             // stream, it will close this underlying socket
             @SuppressWarnings(
-                    "resource") final Socket socket = new Socket("localhost", HdfsProxyClient.get().dataPort().number());
-            final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                    "resource") Socket socket = new Socket("localhost", HdfsProxyClient.get().dataPort().number());
+            DataOutputStream out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             out.writeChar('i');
             out.writeLong(handle);
             out.flush();
             return socket.getInputStream();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
             return null;
@@ -71,21 +71,21 @@ public class HdfsProxyIO
     /**
      * @return The output stream to write to for the given handle
      */
-    public static OutputStream out(final long handle)
+    public static OutputStream out(long handle)
     {
         try
         {
             // We can ignore this resource leak warning because when the caller closes the input
             // stream, it will close this underlying socket
             @SuppressWarnings(
-                    "resource") final Socket socket = new Socket("localhost", HdfsProxyClient.get().dataPort().number());
-            final DataOutputStream out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                    "resource") Socket socket = new Socket("localhost", HdfsProxyClient.get().dataPort().number());
+            DataOutputStream out = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
             out.writeChar('o');
             out.writeLong(handle);
             out.flush();
             return socket.getOutputStream();
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
             return null;

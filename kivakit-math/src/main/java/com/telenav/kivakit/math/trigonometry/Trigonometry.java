@@ -40,7 +40,7 @@ public class Trigonometry
         }
     }
 
-    public static double arcTangent(final double value)
+    public static double arcTangent(double value)
     {
         if (value < 0.0)
         {
@@ -56,7 +56,7 @@ public class Trigonometry
         }
     }
 
-    public static double arcTangent2(final double y, final double x)
+    public static double arcTangent2(double y, double x)
     {
         if (x > 0)
         {

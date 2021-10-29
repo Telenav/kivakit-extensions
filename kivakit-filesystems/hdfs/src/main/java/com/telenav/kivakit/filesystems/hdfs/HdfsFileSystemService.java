@@ -55,7 +55,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 public class HdfsFileSystemService implements FileSystemService
 {
     @Override
-    public boolean accepts(final FilePath path)
+    public boolean accepts(FilePath path)
     {
         assert path != null;
         return path.startsWith("hdfs:");
@@ -63,21 +63,21 @@ public class HdfsFileSystemService implements FileSystemService
 
     @Override
     @UmlRelation(label = "not supported")
-    public DiskService diskService(final FilePath path)
+    public DiskService diskService(FilePath path)
     {
         return unsupported();
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public HdfsFile fileService(final FilePath path)
+    public HdfsFile fileService(FilePath path)
     {
         return new HdfsFile(path);
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public HdfsFolder folderService(final FilePath path)
+    public HdfsFolder folderService(FilePath path)
     {
         return new HdfsFolder(path);
     }

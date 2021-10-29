@@ -31,7 +31,7 @@ public class FixedSizeBitArray
 {
     private long[] words;
 
-    public FixedSizeBitArray(final int bits)
+    public FixedSizeBitArray(int bits)
     {
         words = new long[((bits - 1) / 64) + 1];
     }
@@ -40,22 +40,22 @@ public class FixedSizeBitArray
     {
     }
 
-    public void clear(final int bitIndex)
+    public void clear(int bitIndex)
     {
         words[bitIndex / 64] &= ~(1L << (bitIndex % 64));
     }
 
-    public boolean get(final int bitIndex)
+    public boolean get(int bitIndex)
     {
         return (words[bitIndex / 64] & (1L << (bitIndex % 64))) != 0;
     }
 
-    public void set(final int bitIndex)
+    public void set(int bitIndex)
     {
         words[bitIndex / 64] |= (1L << (bitIndex % 64));
     }
 
-    public void set(final int bitIndex, final boolean value)
+    public void set(int bitIndex, boolean value)
     {
         if (value)
         {

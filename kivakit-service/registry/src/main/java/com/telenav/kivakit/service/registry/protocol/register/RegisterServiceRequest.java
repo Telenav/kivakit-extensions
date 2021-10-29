@@ -44,7 +44,7 @@ public class RegisterServiceRequest extends BaseRequest
     @OpenApiIncludeMember(description = "The service that should be registered and allocated a port")
     private Service service;
 
-    public RegisterServiceRequest(final Service service)
+    public RegisterServiceRequest(Service service)
     {
         this.service = service;
     }

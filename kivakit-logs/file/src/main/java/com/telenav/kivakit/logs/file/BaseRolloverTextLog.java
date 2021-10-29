@@ -92,28 +92,28 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
             out().flush();
             out().close();
         }
-        catch (final Exception ignored)
+        catch (Exception ignored)
         {
         }
     }
 
     @Override
-    public void flush(final Duration maximumWaitTime)
+    public void flush(Duration maximumWaitTime)
     {
         super.flush(maximumWaitTime);
         out.flush();
     }
 
-    public void maximumLogSize(final Bytes maximumSize)
+    public void maximumLogSize(Bytes maximumSize)
     {
         maximumLogSize = maximumSize;
     }
 
     @Override
-    public final synchronized void onLog(final LogEntry entry)
+    public final synchronized void onLog(LogEntry entry)
     {
-        final var timeToRollOver = Time.now().isAfter(rolloverAt);
-        final var sizeToRollOver = outputSize != null && outputSize.sizeInBytes().isGreaterThan(maximumLogSize);
+        var timeToRollOver = Time.now().isAfter(rolloverAt);
+        var sizeToRollOver = outputSize != null && outputSize.sizeInBytes().isGreaterThan(maximumLogSize);
         if (timeToRollOver || sizeToRollOver)
         {
             try
@@ -139,7 +139,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         out().flush();
     }
 
-    public void rollover(final Rollover rollover)
+    public void rollover(Rollover rollover)
     {
         this.rollover = rollover;
     }

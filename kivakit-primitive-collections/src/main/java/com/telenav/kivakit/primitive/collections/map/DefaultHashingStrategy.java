@@ -35,12 +35,12 @@ public final class DefaultHashingStrategy implements HashingStrategy
         return Percent.of(70);
     }
 
-    public static DefaultHashingStrategy of(final Estimate capacity)
+    public static DefaultHashingStrategy of(Estimate capacity)
     {
         return of(capacity, defaultMaximumOccupancy());
     }
 
-    public static DefaultHashingStrategy of(final Estimate capacity, final Percent maximumOccupancy)
+    public static DefaultHashingStrategy of(Estimate capacity, Percent maximumOccupancy)
     {
         return new DefaultHashingStrategy(capacity, maximumOccupancy);
     }
@@ -54,11 +54,11 @@ public final class DefaultHashingStrategy implements HashingStrategy
     /** The maximum occupancy, used internally when increasing capacity */
     private Percent maximumOccupancy;
 
-    protected DefaultHashingStrategy()
+    private DefaultHashingStrategy()
     {
     }
 
-    private DefaultHashingStrategy(final Estimate capacity, final Percent maximumOccupancy)
+    private DefaultHashingStrategy(Estimate capacity, Percent maximumOccupancy)
     {
         this.maximumOccupancy = maximumOccupancy;
         recommendedSize = capacity.nextPrime();
@@ -90,7 +90,7 @@ public final class DefaultHashingStrategy implements HashingStrategy
     }
 
     @Override
-    public HashingStrategy withCapacity(final Estimate capacity)
+    public HashingStrategy withCapacity(Estimate capacity)
     {
         return new DefaultHashingStrategy(capacity, maximumOccupancy);
     }

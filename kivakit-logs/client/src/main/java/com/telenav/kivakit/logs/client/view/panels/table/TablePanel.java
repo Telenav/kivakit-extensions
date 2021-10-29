@@ -60,7 +60,7 @@ public class TablePanel extends KivaKitPanel
 
     private JScrollPane scrollPane;
 
-    public TablePanel(final ClientLogPanel parent)
+    public TablePanel(ClientLogPanel parent)
     {
         assert parent != null;
         this.parent = parent;
@@ -81,7 +81,7 @@ public class TablePanel extends KivaKitPanel
         addListeners();
 
         // and create an event coalescer that adds to the session no more frequently than every 100ms.
-        final var frequency = Frequency.every(Duration.milliseconds(100));
+        var frequency = Frequency.every(Duration.milliseconds(100));
         addCoalescer = new EventCoalescer(frequency, () ->
                 SwingUtilities.invokeLater(() ->
                 {
@@ -93,7 +93,7 @@ public class TablePanel extends KivaKitPanel
                 }));
     }
 
-    public void add(final LogEntry entry)
+    public void add(LogEntry entry)
     {
         synchronized (toAdd)
         {
@@ -103,7 +103,7 @@ public class TablePanel extends KivaKitPanel
         addCoalescer.startTimer();
     }
 
-    public void addAll(final List<LogEntry> entries)
+    public void addAll(List<LogEntry> entries)
     {
         model.addRows(entries);
     }
@@ -121,9 +121,9 @@ public class TablePanel extends KivaKitPanel
         lastSelectedIndex = -1;
     }
 
-    public void filter(final String searchText, final String thread, final String context, final String messageType)
+    public void filter(String searchText, String thread, String context, String messageType)
     {
-        final var sorter = new TableRowSorter<javax.swing.table.TableModel>(model);
+        var sorter = new TableRowSorter<javax.swing.table.TableModel>(model);
         sorter.setRowFilter(new TableFilter(searchText, thread, context, messageType));
         table().setRowSorter(sorter);
     }
@@ -135,8 +135,8 @@ public class TablePanel extends KivaKitPanel
 
     public void scroll()
     {
-        final var scrollbar = scrollPane.getVerticalScrollBar();
-        final var maximum = scrollbar.getMaximum() - scrollbar.getVisibleAmount();
+        var scrollbar = scrollPane.getVerticalScrollBar();
+        var maximum = scrollbar.getMaximum() - scrollbar.getVisibleAmount();
         scrolledToBottom = scrollbar.getValue() >= maximum - 2;
         model.fireTableDataChanged();
         parent.tablePanel().reselect();
@@ -149,19 +149,19 @@ public class TablePanel extends KivaKitPanel
 
     private void addListeners()
     {
-        final var consolePanel = parent.consolePanel();
+        var consolePanel = parent.consolePanel();
         table().getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         table().getSelectionModel().addListSelectionListener((event) ->
         {
-            final var from = table().getSelectionModel().getMinSelectionIndex();
-            final var to = table().getSelectionModel().getMaxSelectionIndex();
+            var from = table().getSelectionModel().getMinSelectionIndex();
+            var to = table().getSelectionModel().getMaxSelectionIndex();
             if (from >= 0 && to >= 0 && !(from == firstSelectedIndex && to == lastSelectedIndex))
             {
                 if (from == to)
                 {
-                    final var modelIndex = table().convertRowIndexToModel(from);
-                    final var row = model.row(modelIndex);
-                    final var lines = new StringList();
+                    var modelIndex = table().convertRowIndexToModel(from);
+                    var row = model.row(modelIndex);
+                    var lines = new StringList();
                     final int align = 11;
 
                     lines.add(Align.right("#: ", align, ' ') + row.sequenceNumber());
@@ -173,7 +173,7 @@ public class TablePanel extends KivaKitPanel
                     lines.add(Align.right("type: ", align, ' ') + row.messageType());
                     lines.add(Align.right("severity: ", align, ' ') + row.severity().toString().toUpperCase());
 
-                    final var stackTrace = row.stackTrace();
+                    var stackTrace = row.stackTrace();
                     final int fontSize = 14;
                     consolePanel.text(
                             "<html><font style='font-size: " + fontSize + "'>"
@@ -184,13 +184,13 @@ public class TablePanel extends KivaKitPanel
                 }
                 else
                 {
-                    final var lines = new StringList();
+                    var lines = new StringList();
                     for (var rowIndex = from; rowIndex <= to; rowIndex++)
                     {
-                        final var modelIndex = table().convertRowIndexToModel(rowIndex);
-                        final var row = model.row(modelIndex);
+                        var modelIndex = table().convertRowIndexToModel(rowIndex);
+                        var row = model.row(modelIndex);
                         lines.add(row.format(DEFAULT, WITHOUT_EXCEPTION));
-                        final var stackTrace = row.stackTrace();
+                        var stackTrace = row.stackTrace();
                         if (stackTrace != null)
                         {
                             lines.add(stackTrace.toString());
@@ -214,7 +214,7 @@ public class TablePanel extends KivaKitPanel
             {
                 table().setRowSelectionInterval(firstSelectedIndex, lastSelectedIndex);
             }
-            catch (final Exception ignored)
+            catch (Exception ignored)
             {
             }
         }
@@ -233,7 +233,7 @@ public class TablePanel extends KivaKitPanel
             table.addComponentListener(new ComponentAdapter()
             {
                 @Override
-                public void componentResized(final ComponentEvent e)
+                public void componentResized(ComponentEvent e)
                 {
                     if (scrolledToBottom)
                     {
@@ -258,13 +258,13 @@ public class TablePanel extends KivaKitPanel
     {
         scrollPane = new JScrollPane(table(), VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBackground(KivaKitTheme.get().styleTable().fillColor().asAwtColor());
-        final var scrollbar = scrollPane.getVerticalScrollBar();
+        var scrollbar = scrollPane.getVerticalScrollBar();
         scrollbar.setPreferredSize(new Dimension(15, scrollbar.getWidth()));
         scrollbar.addAdjustmentListener(event -> reselect());
         return scrollPane;
     }
 
-    private void width(final TableColumn column, final int width)
+    private void width(TableColumn column, int width)
     {
         column.setMaxWidth((int) (width * 1.5));
         column.setPreferredWidth(width);

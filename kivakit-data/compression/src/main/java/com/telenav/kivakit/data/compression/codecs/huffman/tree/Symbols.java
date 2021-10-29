@@ -25,6 +25,7 @@ import com.telenav.kivakit.kernel.language.collections.map.count.CountMap;
 import com.telenav.kivakit.kernel.language.values.count.Count;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.kernel.language.values.count.Minimum;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.WritableResource;
@@ -48,8 +49,9 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * <p>
  * Once a set of symbols has been constructed, it can be converted to a {@link PropertyMap} object with {@link
  * #asProperties(StringConverter, Function)}  and saved to a file with {@link PropertyMap#save(WritableResource)}. The
- * properties can later be loaded with {@link PropertyMap#load(Resource)} and passed to {@link #load(PropertyMap,
- * Object, StringConverter)} along with the escape symbol and a converter that can convert property keys into symbols.
+ * properties can later be loaded with {@link PropertyMap#load(Listener, Resource)} and passed to {@link
+ * #load(PropertyMap, Object, StringConverter)} along with the escape symbol and a converter that can convert property
+ * keys into symbols.
  * <p>
  * PropertyMap files for creating tag codecs can easily be constructed by running the <i>CodecGeneratorApplication</i>
  * application which will sample the tags in a PBF file and write them to a set of properties files:
@@ -81,7 +83,7 @@ public class Symbols<Symbol>
      * @param converter A converter that converts key values in the properties object into symbols
      * @return A set of symbols
      */
-    public static <Symbol> Symbols<Symbol> load(final PropertyMap properties, final StringConverter<Symbol> converter)
+    public static <Symbol> Symbols<Symbol> load(PropertyMap properties, StringConverter<Symbol> converter)
     {
         return load(properties, null, converter);
     }
@@ -94,15 +96,15 @@ public class Symbols<Symbol>
      * @param converter A converter that converts key values in the properties object into symbols
      * @return A set of symbols
      */
-    public static <Symbol> Symbols<Symbol> load(final PropertyMap properties, final Symbol escape,
-                                                final StringConverter<Symbol> converter)
+    public static <Symbol> Symbols<Symbol> load(PropertyMap properties, Symbol escape,
+                                                StringConverter<Symbol> converter)
     {
-        final var counts = new CountMap<Symbol>();
-        for (final var key : properties.keySet())
+        var counts = new CountMap<Symbol>();
+        for (var key : properties.keySet())
         {
             ensure(!key.contains("="));
-            final var symbol = converter.convert(key);
-            final var count = properties.asCount(key);
+            var symbol = converter.convert(key);
+            var count = properties.asCount(key);
             counts.add(symbol, count);
         }
         return new Symbols<>(counts, escape, Minimum._0);
@@ -117,7 +119,7 @@ public class Symbols<Symbol>
     /**
      * @param frequencies A frequency map containing the number of times each symbol appears
      */
-    public Symbols(final CountMap<Symbol> frequencies)
+    public Symbols(CountMap<Symbol> frequencies)
     {
         this(frequencies, null, Minimum._0);
     }
@@ -126,7 +128,7 @@ public class Symbols<Symbol>
      * @param frequencies A frequency map containing the number of times each symbol appears
      * @param occurrences The minimum number of times that a symbol must appear to be assigned a Huffman code
      */
-    public Symbols(final CountMap<Symbol> frequencies, final Minimum occurrences)
+    public Symbols(CountMap<Symbol> frequencies, Minimum occurrences)
     {
         this(frequencies, null, occurrences);
     }
@@ -136,21 +138,21 @@ public class Symbols<Symbol>
      * @param escape The symbol used to escape symbols that are not assigned a Huffman code
      * @param occurrences The minimum number of times that a symbol must appear to be assigned a Huffman code
      */
-    public Symbols(final CountMap<Symbol> frequencies, final Symbol escape, final Minimum occurrences)
+    public Symbols(CountMap<Symbol> frequencies, Symbol escape, Minimum occurrences)
     {
         ensure(frequencies != null);
         ensure(frequencies.size() > 0);
         ensure(occurrences.isGreaterThanOrEqualTo(Count._0));
 
         // Go through the given symbols
-        for (final var symbol : frequencies.keySet())
+        for (var symbol : frequencies.keySet())
         {
             // and if the symbol frequency is greater than the minimum number of occurrences,
-            final var count = frequencies.count(symbol);
+            var count = frequencies.count(symbol);
             if (count.isGreaterThanOrEqualTo(occurrences))
             {
                 // add it to the symbol set
-                final var encodedSymbol = new CodedSymbol<>(symbol, count);
+                var encodedSymbol = new CodedSymbol<>(symbol, count);
                 encoded.add(encodedSymbol);
 
                 // and if the symbol is the escape symbol,
@@ -171,15 +173,15 @@ public class Symbols<Symbol>
      * @param converter A converter to convert symbols into strings to be used as keys in the properties object
      * @return This set of symbols as property map where the keys are symbols and values are frequencies
      */
-    public PropertyMap asProperties(final StringConverter<Symbol> converter, final Function<Symbol, String> commenter)
+    public PropertyMap asProperties(StringConverter<Symbol> converter, Function<Symbol, String> commenter)
     {
-        final var properties = PropertyMap.create();
-        for (final var symbol : sortedByFrequency())
+        var properties = PropertyMap.create();
+        for (var symbol : sortedByFrequency())
         {
-            final var key = converter.unconvert(symbol.value());
-            final var value = Count.count(symbol.frequency()).toCommaSeparatedString();
+            var key = converter.unconvert(symbol.value());
+            var value = Count.count(symbol.frequency()).toCommaSeparatedString();
             ensure(!key.contains("="));
-            final var comment = commenter.apply(symbol.value());
+            var comment = commenter.apply(symbol.value());
             if (comment != null)
             {
                 properties.comment(key, comment);
@@ -218,8 +220,8 @@ public class Symbols<Symbol>
      */
     public ObjectList<Symbol> symbols()
     {
-        final var list = new ObjectList<Symbol>();
-        for (final var symbol : encoded)
+        var list = new ObjectList<Symbol>();
+        for (var symbol : encoded)
         {
             list.add(symbol.value());
         }
@@ -240,21 +242,21 @@ public class Symbols<Symbol>
      * A brute-force algorithm for building a Huffman coding tree where no code exceeds the given maximum bit length.
      * Simply builds a tree, checks its height and if it's too tall, removes the least frequent symbol and tries again.
      */
-    public Tree<Symbol> tree(final Maximum bits)
+    public Tree<Symbol> tree(Maximum bits)
     {
         ensure(!encoded.isEmpty());
 
         // Make a copy of our symbols
-        final var symbols = copy(this);
+        var symbols = copy(this);
 
         // and get a list of them sorted by frequency
-        final var sortedByFrequency = sortedByFrequency();
+        var sortedByFrequency = sortedByFrequency();
 
         // then loop
         while (true)
         {
             // and build a Huffman tree from the symbols
-            final var tree = Tree.tree(symbols);
+            var tree = Tree.tree(symbols);
 
             // check the height of the tree,
             assert tree != null;
@@ -265,7 +267,7 @@ public class Symbols<Symbol>
             }
 
             // otherwise, remove the least frequent symbol (but not the escape symbol)
-            final var leastFrequent = removeLeastFrequent(sortedByFrequency);
+            var leastFrequent = removeLeastFrequent(sortedByFrequency);
             symbols.encoded.remove(leastFrequent);
 
             // and increase the frequency of any escape symbol by this amount since the symbol will have to
@@ -280,9 +282,9 @@ public class Symbols<Symbol>
     /**
      * @return A copy of the given symbols
      */
-    private Symbols<Symbol> copy(final Symbols<Symbol> that)
+    private Symbols<Symbol> copy(Symbols<Symbol> that)
     {
-        final var copy = new Symbols<Symbol>();
+        var copy = new Symbols<Symbol>();
         copy.escape = that.escape;
         copy.encoded = new HashSet<>(that.encoded);
         return copy;
@@ -291,7 +293,7 @@ public class Symbols<Symbol>
     /**
      * @return The least frequently occurring symbol removed from the given queue, but never the escape symbol
      */
-    private CodedSymbol<Symbol> removeLeastFrequent(final PriorityQueue<CodedSymbol<Symbol>> queue)
+    private CodedSymbol<Symbol> removeLeastFrequent(PriorityQueue<CodedSymbol<Symbol>> queue)
     {
         // Remove the least frequent symbol
         var leastFrequent = queue.remove();
@@ -311,7 +313,7 @@ public class Symbols<Symbol>
 
     private PriorityQueue<CodedSymbol<Symbol>> sortedByFrequency()
     {
-        final var queue = new PriorityQueue<CodedSymbol<Symbol>>(Comparator.comparingLong(CodedSymbol::frequency));
+        var queue = new PriorityQueue<CodedSymbol<Symbol>>(Comparator.comparingLong(CodedSymbol::frequency));
         queue.addAll(encoded);
         return queue;
     }

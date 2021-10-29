@@ -8,7 +8,7 @@ public class AssetsJettyResourcePlugin extends BaseJettyResourcePlugin
 {
     private final ResourceFolder folder;
 
-    public AssetsJettyResourcePlugin(final ResourceFolder folder)
+    public AssetsJettyResourcePlugin(ResourceFolder folder)
     {
         super("[AssetsJettyResourcePlugin path = " + folder.toString() + "]");
         this.folder = folder;
@@ -17,12 +17,12 @@ public class AssetsJettyResourcePlugin extends BaseJettyResourcePlugin
     @Override
     public ServletHolder holder()
     {
-        final var defaultServlet = new DefaultServlet();
+        var defaultServlet = new DefaultServlet();
 
-        final var holder = new ServletHolder(defaultServlet);
+        var holder = new ServletHolder(defaultServlet);
 
         holder.setName("jetty-assets:" + folder.identifier());
-        final var base = folder.uri();
+        var base = folder.uri();
         if (base != null)
         {
             holder.setInitParameter("resourceBase", base.toString());

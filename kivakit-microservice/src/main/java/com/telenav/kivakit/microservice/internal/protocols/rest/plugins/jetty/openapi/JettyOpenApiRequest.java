@@ -35,7 +35,6 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
             MicroserviceGsonFactorySource,
             MicroserviceGsonObjectSource
     {
-        @SuppressWarnings("FieldCanBeLocal")
         @Expose
         private final OpenAPI api;
 

@@ -4,7 +4,7 @@ import com.telenav.kivakit.kernel.language.reflection.Type;
 
 public class ReferenceResolver
 {
-    public String reference(final Type<?> typeParameter)
+    public String reference(Type<?> typeParameter)
     {
         if (typeParameter.isPrimitive() || typeParameter.is(String.class))
         {
@@ -13,7 +13,7 @@ public class ReferenceResolver
         return reference(typeParameter.type().getSimpleName());
     }
 
-    public String reference(final String typeName)
+    public String reference(String typeName)
     {
         return "#/components/schemas/" + typeName;
     }

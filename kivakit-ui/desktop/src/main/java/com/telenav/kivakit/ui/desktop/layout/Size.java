@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.layout;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 
 /**
  * @author jonathanl (shibo)
@@ -9,7 +9,7 @@ public class Size
 {
     private static final int INVALID = Integer.MIN_VALUE;
 
-    public static Size heightOf(final int height)
+    public static Size heightOf(int height)
     {
         return new Size(INVALID, height);
     }
@@ -24,12 +24,12 @@ public class Size
         return widthOf(Integer.MAX_VALUE);
     }
 
-    public static Size of(final int size)
+    public static Size of(int size)
     {
         return new Size(size, size);
     }
 
-    public static Size widthOf(final int width)
+    public static Size widthOf(int width)
     {
         return new Size(width, INVALID);
     }
@@ -38,13 +38,13 @@ public class Size
 
     private final int height;
 
-    protected Size(final int width, final int height)
+    protected Size(int width, int height)
     {
         this.width = width;
         this.height = height;
     }
 
-    public Size maximum(final JComponent component)
+    public Size maximum(JComponent component)
     {
         if (width != INVALID)
         {
@@ -57,7 +57,7 @@ public class Size
         return this;
     }
 
-    public Size minimum(final JComponent component)
+    public Size minimum(JComponent component)
     {
         if (width != INVALID)
         {
@@ -70,7 +70,7 @@ public class Size
         return this;
     }
 
-    public Size preferred(final JComponent component)
+    public Size preferred(JComponent component)
     {
         if (width != INVALID)
         {
@@ -83,49 +83,49 @@ public class Size
         return this;
     }
 
-    private Size maximumHeight(final JComponent component)
+    private Size maximumHeight(JComponent component)
     {
-        final var maximumSize = component.getMaximumSize();
+        var maximumSize = component.getMaximumSize();
         maximumSize.height = height;
         component.setMaximumSize(maximumSize);
         return this;
     }
 
-    private Size maximumWidth(final JComponent component)
+    private Size maximumWidth(JComponent component)
     {
-        final var maximumSize = component.getMaximumSize();
+        var maximumSize = component.getMaximumSize();
         maximumSize.width = width;
         component.setMaximumSize(maximumSize);
         return this;
     }
 
-    private Size minimumHeight(final JComponent component)
+    private Size minimumHeight(JComponent component)
     {
-        final var minimumSize = component.getMinimumSize();
+        var minimumSize = component.getMinimumSize();
         minimumSize.height = height;
         component.setMinimumSize(minimumSize);
         return this;
     }
 
-    private Size minimumWidth(final JComponent component)
+    private Size minimumWidth(JComponent component)
     {
-        final var minimumSize = component.getMinimumSize();
+        var minimumSize = component.getMinimumSize();
         minimumSize.width = width;
         component.setMinimumSize(minimumSize);
         return this;
     }
 
-    private Size preferredHeight(final JComponent component)
+    private Size preferredHeight(JComponent component)
     {
-        final var preferredSize = component.getPreferredSize();
+        var preferredSize = component.getPreferredSize();
         preferredSize.height = height;
         component.setPreferredSize(preferredSize);
         return this;
     }
 
-    private Size preferredWidth(final JComponent component)
+    private Size preferredWidth(JComponent component)
     {
-        final var preferredSize = component.getPreferredSize();
+        var preferredSize = component.getPreferredSize();
         preferredSize.width = width;
         component.setPreferredSize(preferredSize);
         return this;

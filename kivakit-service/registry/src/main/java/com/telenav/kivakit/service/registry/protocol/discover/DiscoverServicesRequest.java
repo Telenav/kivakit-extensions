@@ -82,7 +82,7 @@ public class DiscoverServicesRequest extends BaseRequest
     @OpenApiIncludeMember(description = "The application to search, if the search type is APPLICATION_SERVICES")
     private Application.Identifier application;
 
-    public DiscoverServicesRequest application(final Application.Identifier application)
+    public DiscoverServicesRequest application(Application.Identifier application)
     {
         this.application = application;
         return this;
@@ -105,13 +105,13 @@ public class DiscoverServicesRequest extends BaseRequest
         return scope;
     }
 
-    public DiscoverServicesRequest scope(final Scope scope)
+    public DiscoverServicesRequest scope(Scope scope)
     {
         this.scope = scope;
         return this;
     }
 
-    public DiscoverServicesRequest serviceType(final ServiceType serviceType)
+    public DiscoverServicesRequest serviceType(ServiceType serviceType)
     {
         this.serviceType = serviceType;
         return this;
@@ -135,7 +135,7 @@ public class DiscoverServicesRequest extends BaseRequest
         return type;
     }
 
-    public DiscoverServicesRequest type(final SearchType type)
+    public DiscoverServicesRequest type(SearchType type)
     {
         this.type = type;
         return this;

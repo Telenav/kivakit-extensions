@@ -36,14 +36,14 @@ import org.eclipse.jetty.servlet.FilterHolder;
 @LexakaiJavadoc(complete = true)
 class JettyWicketFilterHolder extends FilterHolder
 {
-    public JettyWicketFilterHolder(final Class<? extends WebApplication> applicationClass)
+    public JettyWicketFilterHolder(Class<? extends WebApplication> applicationClass)
     {
         setFilter(new WicketFilter());
         setInitParameter(ContextParamWebApplicationFactory.APP_CLASS_PARAM, applicationClass.getName());
         setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");
     }
 
-    public JettyWicketFilterHolder(final WebApplication application)
+    public JettyWicketFilterHolder(WebApplication application)
     {
         setFilter(new WicketFilter(application));
         setInitParameter(WicketFilter.FILTER_MAPPING_PARAM, "/*");

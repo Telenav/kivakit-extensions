@@ -69,9 +69,9 @@ public interface CharCollection extends CharIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default boolean addAll(final char[] that)
+    default boolean addAll(char[] that)
     {
-        for (final var value : that)
+        for (var value : that)
         {
             if (!add(value))
             {
@@ -84,9 +84,9 @@ public interface CharCollection extends CharIterable, Sized, NamedObject
     /**
      * Adds the given quantizable values
      */
-    default void addAll(final List<? extends Quantizable> values)
+    default void addAll(List<? extends Quantizable> values)
     {
-        for (final Quantizable value : values)
+        for (Quantizable value : values)
         {
             add((char) value.quantum());
         }
@@ -95,9 +95,9 @@ public interface CharCollection extends CharIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default boolean addAll(final CharCollection that)
+    default boolean addAll(CharCollection that)
     {
-        final var iterator = that.iterator();
+        var iterator = that.iterator();
         while (iterator.hasNext())
         {
             if (!add(iterator.next()))
@@ -120,7 +120,7 @@ public interface CharCollection extends CharIterable, Sized, NamedObject
      * @return True if this collection contains the given value. Some collections may choose not to implement this
      * method if the search is too inefficient.
      */
-    default boolean contains(final char value)
+    default boolean contains(char value)
     {
         return unsupported();
     }
@@ -128,9 +128,9 @@ public interface CharCollection extends CharIterable, Sized, NamedObject
     /**
      * @return True if this collection contains all the values in the given collection
      */
-    default boolean containsAll(final CharCollection that)
+    default boolean containsAll(CharCollection that)
     {
-        final var values = that.iterator();
+        var values = that.iterator();
         while (values.hasNext())
         {
             if (!contains(values.next()))
@@ -166,7 +166,7 @@ public interface CharCollection extends CharIterable, Sized, NamedObject
      *
      * @return True if the value was removed
      */
-    default boolean remove(final char value)
+    default boolean remove(char value)
     {
         return unsupported();
     }

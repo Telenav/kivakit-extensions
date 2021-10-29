@@ -10,25 +10,25 @@ public class AverageDurationMetric extends AverageMetric<Duration>
         super(Duration::seconds);
     }
 
-    public AverageDurationMetric description(final String description)
+    public AverageDurationMetric description(String description)
     {
         return (AverageDurationMetric) super.description(description);
     }
 
     @Override
-    public AverageDurationMetric name(final String name)
+    public AverageDurationMetric name(String name)
     {
         return (AverageDurationMetric) super.name(name);
     }
 
     @Override
-    public AverageDurationMetric type(final MetricType type)
+    public AverageDurationMetric type(MetricType type)
     {
         return (AverageDurationMetric) super.type(type);
     }
 
     @Override
-    public AverageDurationMetric unit(final String unit)
+    public AverageDurationMetric unit(String unit)
     {
         return (AverageDurationMetric) super.unit(unit);
     }

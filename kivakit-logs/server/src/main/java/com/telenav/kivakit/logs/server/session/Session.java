@@ -20,7 +20,7 @@ public class Session implements Comparable<Session>
 
     private Bytes size;
 
-    public Session(final String name, final Time started, final Bytes size)
+    public Session(String name, Time started, Bytes size)
     {
         this.name = name;
         this.started = started;
@@ -31,13 +31,13 @@ public class Session implements Comparable<Session>
     {
     }
 
-    public void addAll(final List<LogEntry> entries)
+    public void addAll(List<LogEntry> entries)
     {
         SessionStore.get().addAll(this, entries);
     }
 
     @Override
-    public int compareTo(@NotNull final Session that)
+    public int compareTo(@NotNull Session that)
     {
         return started.compareTo(that.started);
     }
@@ -48,11 +48,11 @@ public class Session implements Comparable<Session>
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof Session)
         {
-            final Session that = (Session) object;
+            Session that = (Session) object;
             return name.equals(that.name) && started.equals(that.started);
         }
         return false;
@@ -74,7 +74,7 @@ public class Session implements Comparable<Session>
         return name;
     }
 
-    public Session session(final FileName name)
+    public Session session(FileName name)
     {
         return null;
     }

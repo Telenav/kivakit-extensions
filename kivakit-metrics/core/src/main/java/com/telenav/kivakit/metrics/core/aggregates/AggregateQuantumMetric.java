@@ -94,13 +94,13 @@ public abstract class AggregateQuantumMetric<T extends Quantizable> extends Base
     }
 
     @Override
-    public boolean add(final T metric)
+    public boolean add(T metric)
     {
-        final double quantum = metric.doubleQuantum();
+        double quantum = metric.doubleQuantum();
 
         total += quantum;
-        maximum = Math.max(this.maximum, quantum);
-        minimum = Math.min(this.minimum, quantum);
+        maximum = Math.max(maximum, quantum);
+        minimum = Math.min(minimum, quantum);
         count++;
 
         return true;
@@ -124,13 +124,13 @@ public abstract class AggregateQuantumMetric<T extends Quantizable> extends Base
         return (long) compute();
     }
 
-    public boolean subtract(final T metric)
+    public boolean subtract(T metric)
     {
-        final double quantum = metric.doubleQuantum();
+        double quantum = metric.doubleQuantum();
 
         total -= quantum;
-        maximum = Math.max(this.maximum, quantum);
-        minimum = Math.min(this.minimum, quantum);
+        maximum = Math.max(maximum, quantum);
+        minimum = Math.min(minimum, quantum);
         count++;
 
         return true;

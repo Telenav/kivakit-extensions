@@ -31,10 +31,10 @@ public abstract class BaseMetric<T> implements Metric<T>
 
     public BaseMetric(BaseMetric<T> that)
     {
-        this.name = that.name;
-        this.description = that.description;
-        this.type = that.type;
-        this.unit = that.unit;
+        name = that.name;
+        description = that.description;
+        type = that.type;
+        unit = that.unit;
     }
 
     @Override
@@ -55,7 +55,7 @@ public abstract class BaseMetric<T> implements Metric<T>
         return this;
     }
 
-    public BaseMetric<T> name(final String name)
+    public BaseMetric<T> name(String name)
     {
         this.name = name;
         return this;
@@ -84,7 +84,7 @@ public abstract class BaseMetric<T> implements Metric<T>
         return unit;
     }
 
-    public BaseMetric<T> unit(final String unit)
+    public BaseMetric<T> unit(String unit)
     {
         this.unit = unit;
         return this;

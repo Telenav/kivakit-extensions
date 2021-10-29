@@ -69,51 +69,51 @@ public class Color
 
     public static final Color YELLOW = of(java.awt.Color.YELLOW);
 
-    public static Color of(final java.awt.Color that)
+    public static Color of(java.awt.Color that)
     {
         return rgba(that.getRed(), that.getGreen(), that.getBlue(), that.getAlpha());
     }
 
-    public static Color rgb(final int rgb)
+    public static Color rgb(int rgb)
     {
         return of(new java.awt.Color(rgb));
     }
 
-    public static Color rgb(final int red, final int green, final int blue)
+    public static Color rgb(int red, int green, int blue)
     {
         return new Color(red, green, blue, 255);
     }
 
-    public static Color rgba(final int red, final int green, final int blue, final int alpha)
+    public static Color rgba(int red, int green, int blue, int alpha)
     {
         return new Color(red, green, blue, alpha);
     }
 
     public static class ColorConverter extends BaseStringConverter<Color>
     {
-        public ColorConverter(final Listener listener)
+        public ColorConverter(Listener listener)
         {
             super(listener);
         }
 
         @Override
-        protected Color onToValue(final String value)
+        protected String onToString(Color value)
         {
-            if (value.length() == 8)
-            {
-                final var alpha = Integer.parseInt(value.substring(0, 2), 16);
-                final var red = Integer.parseInt(value.substring(2, 4), 16);
-                final var green = Integer.parseInt(value.substring(4, 6), 16);
-                final var blue = Integer.parseInt(value.substring(6, 8), 16);
-                return rgba(red, green, blue, alpha);
-            }
-            return null;
+            return Align.right(Integer.toHexString(value.rgba()), 8, '0');
         }
 
         @Override
-        protected String onToString(final Color value)
+        protected Color onToValue(String value)
         {
-            return Align.right(Integer.toHexString(value.rgba()), 8, '0');
+            if (value.length() == 8)
+            {
+                var alpha = Integer.parseInt(value.substring(0, 2), 16);
+                var red = Integer.parseInt(value.substring(2, 4), 16);
+                var green = Integer.parseInt(value.substring(4, 6), 16);
+                var blue = Integer.parseInt(value.substring(6, 8), 16);
+                return rgba(red, green, blue, alpha);
+            }
+            return null;
         }
     }
 
@@ -125,7 +125,7 @@ public class Color
 
     private int alpha;
 
-    private Color(final int red, final int green, final int blue, final int alpha)
+    private Color(int red, int green, int blue, int alpha)
     {
         this.red = red;
         this.green = green;
@@ -133,7 +133,7 @@ public class Color
         this.alpha = alpha;
     }
 
-    private Color(final Color that)
+    private Color(Color that)
     {
         red = that.red();
         green = that.green();
@@ -146,65 +146,65 @@ public class Color
         return alpha;
     }
 
-    public <T extends Component> T applyAsBackground(final T component)
+    public <T extends Component> T applyAsBackground(T component)
     {
         component.setBackground(asAwtColor());
         return component;
     }
 
-    public void applyAsDrawColor(final Graphics graphics)
+    public void applyAsDrawColor(Graphics graphics)
     {
         graphics.setColor(asAwtColor());
     }
 
-    public void applyAsFillColor(final Graphics2D graphics)
+    public void applyAsFillColor(Graphics2D graphics)
     {
         graphics.setPaint(asAwtColor());
     }
 
-    public <T extends Component> T applyAsForeground(final T component)
+    public <T extends Component> T applyAsForeground(T component)
     {
         component.setForeground(asAwtColor());
         return component;
     }
 
-    public <T extends JTextComponent> T applyAsSelectionBackground(final T component)
+    public <T extends JTextComponent> T applyAsSelectionBackground(T component)
     {
         component.setSelectionColor(asAwtColor());
         return component;
     }
 
-    public <T extends JList<?>> T applyAsSelectionBackground(final T component)
+    public <T extends JList<?>> T applyAsSelectionBackground(T component)
     {
         component.setSelectionBackground(asAwtColor());
         return component;
     }
 
-    public <T extends JTable> T applyAsSelectionBackground(final T component)
+    public <T extends JTable> T applyAsSelectionBackground(T component)
     {
         component.setSelectionBackground(asAwtColor());
         return component;
     }
 
-    public <T extends JTable> T applyAsSelectionForeground(final T component)
+    public <T extends JTable> T applyAsSelectionForeground(T component)
     {
         component.setSelectionForeground(asAwtColor());
         return component;
     }
 
-    public <T extends JTextComponent> T applyAsSelectionForeground(final T component)
+    public <T extends JTextComponent> T applyAsSelectionForeground(T component)
     {
         component.setSelectedTextColor(asAwtColor());
         return component;
     }
 
-    public <T extends JList<?>> T applyAsSelectionForeground(final T component)
+    public <T extends JList<?>> T applyAsSelectionForeground(T component)
     {
         component.setSelectionForeground(asAwtColor());
         return component;
     }
 
-    public void applyAsTextColor(final Graphics graphics)
+    public void applyAsTextColor(Graphics graphics)
     {
         graphics.setColor(asAwtColor());
     }
@@ -239,10 +239,10 @@ public class Color
         return brighter(Percent.of(15));
     }
 
-    public Color brighter(final Percent percent)
+    public Color brighter(Percent percent)
     {
-        final var copy = new Color(this);
-        final var scaleFactor = 1.0 + percent.asZeroToOne();
+        var copy = new Color(this);
+        var scaleFactor = 1.0 + percent.asZeroToOne();
         copy.red = Math.min((int) (red() * scaleFactor), 255);
         copy.green = Math.min((int) (green() * scaleFactor), 255);
         copy.blue = Math.min((int) (blue() * scaleFactor), 255);
@@ -254,10 +254,10 @@ public class Color
         return darker(Percent.of(15));
     }
 
-    public Color darker(final Percent percent)
+    public Color darker(Percent percent)
     {
-        final var copy = new Color(this);
-        final var scaleFactor = 1.0 - percent.asZeroToOne();
+        var copy = new Color(this);
+        var scaleFactor = 1.0 - percent.asZeroToOne();
         copy.red = Math.max((int) (red() * scaleFactor), 0);
         copy.green = Math.max((int) (green() * scaleFactor), 0);
         copy.blue = Math.max((int) (blue() * scaleFactor), 0);
@@ -265,11 +265,11 @@ public class Color
     }
 
     @Override
-    public boolean equals(final Object that)
+    public boolean equals(Object that)
     {
         if (that instanceof Color)
         {
-            final Color color = (Color) that;
+            Color color = (Color) that;
             return red == color.red
                     && green == color.green
                     && blue == color.blue
@@ -325,9 +325,9 @@ public class Color
         return withAlpha(0);
     }
 
-    public Color withAlpha(final int alpha)
+    public Color withAlpha(int alpha)
     {
-        final var copy = new Color(this);
+        var copy = new Color(this);
         copy.alpha = alpha;
         return copy;
     }

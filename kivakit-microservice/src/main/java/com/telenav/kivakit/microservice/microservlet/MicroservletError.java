@@ -20,7 +20,7 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeTyp
         description = "An error description, including a hierarchical error code, an error type and a message")
 public class MicroservletError
 {
-    public static MicroservletError of(final Message message)
+    public static MicroservletError of(Message message)
     {
         // If we get a status message like a Warning or Problem,
         if (message instanceof OperationStatusMessage && message.isWorseThanOrEqualTo(Warning.class))
@@ -55,7 +55,7 @@ public class MicroservletError
                           example = "This is a description of the problem that occurred")
     private final String message;
 
-    protected MicroservletError(final String code, final String type, final String message)
+    protected MicroservletError(String code, String type, String message)
     {
         this.code = code;
         this.type = type;

@@ -55,12 +55,12 @@ public final class ByteArrayArray extends PrimitiveArrayArray
 
     private ByteArray store;
 
-    public ByteArrayArray(final String objectName)
+    public ByteArrayArray(String objectName)
     {
         super(objectName);
     }
 
-    protected ByteArrayArray()
+    private ByteArrayArray()
     {
     }
 
@@ -71,7 +71,7 @@ public final class ByteArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final ByteIterable values)
+    public int add(ByteIterable values)
     {
         return add(values.iterator());
     }
@@ -83,11 +83,11 @@ public final class ByteArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final byte[] values)
+    public int add(byte[] values)
     {
         assert ensureHasRoomFor(1);
 
-        final var index = store.size();
+        var index = store.size();
         indexes.add(index);
         sizes.add(values.length);
         store.addAll(values);
@@ -102,11 +102,11 @@ public final class ByteArrayArray extends PrimitiveArrayArray
      * @param values The values to add
      * @return An identifier for the values that were added
      */
-    public int add(final ByteIterator values)
+    public int add(ByteIterator values)
     {
         assert ensureHasRoomFor(1);
 
-        final var index = store.size();
+        var index = store.size();
         indexes.add(index);
 
         // Add all the values to the store
@@ -125,11 +125,11 @@ public final class ByteArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof ByteArrayArray)
         {
-            final var that = (ByteArrayArray) object;
+            var that = (ByteArrayArray) object;
             return Objects.equalPairs(indexes, that.indexes, sizes, that.sizes, store, that.store);
         }
         return false;
@@ -138,7 +138,7 @@ public final class ByteArrayArray extends PrimitiveArrayArray
     /**
      * @return The byte array for the given identifier
      */
-    public ByteArray get(final int identifier)
+    public ByteArray get(int identifier)
     {
         return store.sublist(indexes.get(identifier), sizes.get(identifier));
     }
@@ -155,13 +155,13 @@ public final class ByteArrayArray extends PrimitiveArrayArray
     /**
      * @return The size of the identified array
      */
-    public int length(final int identifier)
+    public int length(int identifier)
     {
         return sizes.get(identifier);
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         indexes.compress(method);
         sizes.compress(method);
@@ -174,7 +174,26 @@ public final class ByteArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        store = new ByteArray(objectName() + ".bytes");
+        store.initialSize(initialSizeAsInt() * initialChildSizeAsInt());
+        store.initialize();
+
+        indexes = new IntArray(objectName() + ".indexes");
+        indexes.initialize();
+
+        sizes = new IntArray(objectName() + ".sizes");
+        sizes.initialize();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -196,31 +215,12 @@ public final class ByteArrayArray extends PrimitiveArrayArray
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
         kryo.writeObject(output, indexes);
         kryo.writeObject(output, sizes);
         kryo.writeObject(output, store);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        store = new ByteArray(objectName() + ".bytes");
-        store.initialSize(initialSizeAsInt() * initialChildSizeAsInt());
-        store.initialize();
-
-        indexes = new IntArray(objectName() + ".indexes");
-        indexes.initialize();
-
-        sizes = new IntArray(objectName() + ".sizes");
-        sizes.initialize();
     }
 }

@@ -44,7 +44,7 @@ public class PackedStringStore extends PrimitiveCollection
 
     private SplitIntArray indexes;
 
-    public PackedStringStore(final String objectName)
+    public PackedStringStore(String objectName)
     {
         super(objectName);
     }
@@ -59,9 +59,9 @@ public class PackedStringStore extends PrimitiveCollection
         return strings.capacity().plus(indexes.capacity());
     }
 
-    public String get(final int index)
+    public String get(int index)
     {
-        final var list = indexes.safeGet(index);
+        var list = indexes.safeGet(index);
         if (!indexes.isNull(list))
         {
             return strings.safeGet(list);
@@ -70,7 +70,7 @@ public class PackedStringStore extends PrimitiveCollection
     }
 
     @Override
-    public Method onCompress(final Method method)
+    public Method onCompress(Method method)
     {
         strings.compress(method);
         indexes.compress(method);
@@ -78,7 +78,18 @@ public class PackedStringStore extends PrimitiveCollection
     }
 
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+        indexes = new SplitIntArray(objectName() + ".indexes");
+        indexes.initialize();
+
+        strings = new PackedStringArray(objectName() + ".strings");
+        strings.initialize();
+    }
+
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -86,7 +97,7 @@ public class PackedStringStore extends PrimitiveCollection
         indexes = kryo.readObject(input, SplitIntArray.class);
     }
 
-    public void set(final int index, final String value)
+    public void set(int index, String value)
     {
         assert index > 0;
         if (value != null)
@@ -100,22 +111,11 @@ public class PackedStringStore extends PrimitiveCollection
     }
 
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
         kryo.writeObject(output, strings);
         kryo.writeObject(output, indexes);
-    }
-
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        indexes = new SplitIntArray(objectName() + ".indexes");
-        indexes.initialize();
-
-        strings = new PackedStringArray(objectName() + ".strings");
-        strings.initialize();
     }
 }

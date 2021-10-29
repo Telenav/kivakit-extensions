@@ -81,7 +81,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     /**
      * @param restApplication The REST application that is using this filter
      */
-    public JettyMicroservletFilter(final MicroserviceRestService restApplication)
+    public JettyMicroservletFilter(MicroserviceRestService restApplication)
     {
         this.restApplication = restApplication;
 
@@ -102,17 +102,17 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
      */
     @Override
     @UmlRelation(label = "creates", referent = JettyMicroservletRequestCycle.class)
-    public void doFilter(final ServletRequest servletRequest,
-                         final ServletResponse servletResponse,
-                         final FilterChain filterChain)
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse,
+                         FilterChain filterChain)
     {
         // Cast request and response to HTTP subclasses,
-        final var httpRequest = (HttpServletRequest) servletRequest;
-        final var httpResponse = (HttpServletResponse) servletResponse;
-        final var method = HttpMethod.valueOf(httpRequest.getMethod());
+        var httpRequest = (HttpServletRequest) servletRequest;
+        var httpResponse = (HttpServletResponse) servletResponse;
+        var method = HttpMethod.valueOf(httpRequest.getMethod());
 
         // create microservlet request cycle,
-        final var cycle = listenTo(new JettyMicroservletRequestCycle(restApplication, httpRequest, httpResponse));
+        var cycle = listenTo(new JettyMicroservletRequestCycle(restApplication, httpRequest, httpResponse));
 
         // attach it to the current thread,
         JettyMicroservletRequestCycle.attach(cycle);
@@ -120,19 +120,19 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         try
         {
             // resolve the microservlet at the requested path,
-            final var resolved = resolve(new MicroservletRestPath(cycle.request().path(), method));
+            var resolved = resolve(new MicroservletRestPath(cycle.request().path(), method));
             if (resolved != null)
             {
                 try
                 {
                     // record the start time,
-                    final var start = Time.now();
-                    final var startCpuTime = PreciseDuration.cpuTime();
+                    var start = Time.now();
+                    var startCpuTime = PreciseDuration.cpuTime();
 
                     // handle the request,
                     handleRequest(method, cycle, resolved);
                 }
-                catch (final Exception e)
+                catch (Exception e)
                 {
                     problem(e, "REST $ method to $ failed", method.name(), resolved.microservlet.name());
                 }
@@ -144,7 +144,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                     // If there is no microservlet, pass the request down the filter chain.
                     filterChain.doFilter(servletRequest, servletResponse);
                 }
-                catch (final Exception e)
+                catch (Exception e)
                 {
                     problem(e, "Exception thrown by filter chain");
                 }
@@ -157,7 +157,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     }
 
     @Override
-    public void init(final FilterConfig filterConfig)
+    public void init(FilterConfig filterConfig)
     {
     }
 
@@ -165,7 +165,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
      * @param path The request path
      * @return Any microservice at the given path with the given request method, or null if none exists
      */
-    public Microservlet<?, ?> microservlet(final MicroservletRestPath path)
+    public Microservlet<?, ?> microservlet(MicroservletRestPath path)
     {
         return pathToMicroservlet.get(path);
     }
@@ -173,7 +173,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    public final void mount(final MicroservletRestPath path, final Microservlet<?, ?> microservlet)
+    public final void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
     {
         var microservice = restApplication().microservice();
         var existing = pathToMicroservlet.get(path);
@@ -187,7 +187,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     }
 
     @Override
-    public void objectName(final String objectName)
+    public void objectName(String objectName)
     {
         this.objectName = objectName;
     }
@@ -221,9 +221,9 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
      * @param cycle The request cycle
      * @param resolved The microservlet to call
      */
-    private void handleRequest(final HttpMethod method,
-                               final JettyMicroservletRequestCycle cycle,
-                               final ResolvedMicroservlet resolved)
+    private void handleRequest(HttpMethod method,
+                               JettyMicroservletRequestCycle cycle,
+                               ResolvedMicroservlet resolved)
     {
         var statistics = new MicroservletRequestStatistics();
         statistics.start();
@@ -233,10 +233,10 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         {
 
             // Get the response object, microservlet, path and parameters,
-            final var response = cycle.response();
-            final var microservlet = resolved.microservlet;
-            final var requestType = microservlet.requestType();
-            final var parameters = cycle.request().parameters(resolved.parameters.path());
+            var response = cycle.response();
+            var microservlet = resolved.microservlet;
+            var requestType = microservlet.requestType();
+            var parameters = cycle.request().parameters(resolved.parameters.path());
 
             // and if the request method is
             switch (method)
@@ -244,7 +244,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 case POST:
                 {
                     // then convert the posted JSON to an object of the request type,
-                    final MicroservletRequest request;
+                    MicroservletRequest request;
                     if (!parameters.isEmpty())
                     {
                         // converting any parameters to a JSON request object,
@@ -275,7 +275,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                 case DELETE:
                 {
                     // then turn parameters into a JSON object and then treat that like it was POSTed.
-                    final var request = cycle.gson().fromJson(parameters.asJson(), requestType);
+                    var request = cycle.gson().fromJson(parameters.asJson(), requestType);
 
                     // Respond with the object returned from onGet.
                     if (request != null)
@@ -316,7 +316,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         int removed = 0;
         for (var at = path; at.isNonEmpty(); at = at.withoutLast(), removed++)
         {
-            final var microservlet = microservlet(at);
+            var microservlet = microservlet(at);
             if (microservlet != null)
             {
                 var resolved = new ResolvedMicroservlet();

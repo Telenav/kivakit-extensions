@@ -85,7 +85,7 @@ public abstract class BaseBitWriter implements BitWriter
      * Write the given bits
      */
     @Override
-    public final void write(final long value, final int bits)
+    public final void write(long value, int bits)
     {
         if (bits <= Long.SIZE)
         {
@@ -96,7 +96,7 @@ public abstract class BaseBitWriter implements BitWriter
             for (var i = 0; i < bits; i++)
             {
                 // get the next bit,
-                final var bit = (value & mask) != 0;
+                var bit = (value & mask) != 0;
 
                 // and if writing it out causes a byte to be written out
                 if (writeBit(bit))
@@ -119,8 +119,8 @@ public abstract class BaseBitWriter implements BitWriter
                         mask >>>= 8;
 
                         // compute byte mask and use it to extract the byte value
-                        final var byteMask = 0xff << remaining;
-                        final int byteValue = (byte) ((value & byteMask) >>> remaining);
+                        var byteMask = 0xff << remaining;
+                        int byteValue = (byte) ((value & byteMask) >>> remaining);
 
                         // and write the byte.
                         onWrite((byte) byteValue);
@@ -150,7 +150,7 @@ public abstract class BaseBitWriter implements BitWriter
      * @return True if a byte value was written
      */
     @Override
-    public boolean writeBit(final boolean bit)
+    public boolean writeBit(boolean bit)
     {
         // Ensure that we haven't been closed
         assert mask != 0 : "Writer has been closed";
@@ -182,7 +182,7 @@ public abstract class BaseBitWriter implements BitWriter
     /**
      * Flushes unwritten byte
      */
-    protected abstract void onFlush(final byte value);
+    protected abstract void onFlush(byte value);
 
     /**
      * Writes the given byte value

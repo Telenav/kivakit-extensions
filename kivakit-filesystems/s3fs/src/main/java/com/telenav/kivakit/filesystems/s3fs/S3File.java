@@ -44,18 +44,18 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @LexakaiJavadoc(complete = true)
 public class S3File extends S3FileSystemObject implements FileService
 {
-    public S3File(final FilePath path)
+    public S3File(FilePath path)
     {
         super(path, false);
     }
 
-    public S3File(final String path)
+    public S3File(String path)
     {
         super(FilePath.parseFilePath(path), false);
     }
 
     @Override
-    public boolean chmod(final PosixFilePermission... permissions)
+    public boolean chmod(PosixFilePermission... permissions)
     {
         return unsupported();
     }
@@ -81,7 +81,7 @@ public class S3File extends S3FileSystemObject implements FileService
     @Override
     public InputStream onOpenForReading()
     {
-        final var request = GetObjectRequest.builder()
+        var request = GetObjectRequest.builder()
                 .bucket(bucket())
                 .key(key())
                 .build();
@@ -95,7 +95,7 @@ public class S3File extends S3FileSystemObject implements FileService
         return new S3Output(this);
     }
 
-    public boolean renameTo(final S3File that)
+    public boolean renameTo(S3File that)
     {
         if (canRenameTo(that))
         {
@@ -107,7 +107,7 @@ public class S3File extends S3FileSystemObject implements FileService
     }
 
     @Override
-    public boolean renameTo(final FileService that)
+    public boolean renameTo(FileService that)
     {
         if (isOnSameFileSystem(that))
         {
@@ -122,13 +122,13 @@ public class S3File extends S3FileSystemObject implements FileService
         return length();
     }
 
-    public void write(final String line)
+    public void write(String line)
     {
         if (exists())
         {
             delete();
         }
-        final var printWriter = printWriter();
+        var printWriter = printWriter();
         printWriter.println(line);
         printWriter.close();
     }

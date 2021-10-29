@@ -131,7 +131,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     /**
      * @param microservice The microservice that is creating this REST application
      */
-    public MicroserviceRestService(final Microservice microservice)
+    public MicroserviceRestService(Microservice microservice)
     {
         this.microservice = microservice;
         microservice.listenTo(this);
@@ -185,7 +185,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param microservlet The microservlet to mount
      */
     @UmlRelation(label = "mounts", referent = Microservlet.class)
-    public void mount(MicroservletRestPath path, final Microservlet<?, ?> microservlet)
+    public void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
     {
         // If we're in onInitialize(),
         if (mountAllowed)
@@ -201,7 +201,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mount(final String path, HttpMethod method, final Class<Request> requestType, Version version)
+    void mount(String path, HttpMethod method, Class<Request> requestType, Version version)
     {
         var absolutePath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
         mount(absolutePath, method, requestType);
@@ -218,17 +218,17 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param requestType The type of the request
      */
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mount(final String path, HttpMethod method, final Class<Request> requestType)
+    void mount(String path, HttpMethod method, Class<Request> requestType)
     {
         // If we're in onInitialize(),
         if (mountAllowed)
         {
             // create a request object, so we can get the response type and HTTP method,
-            final var request = listenTo(Type.forClass(requestType).newInstance());
+            var request = listenTo(Type.forClass(requestType).newInstance());
             if (request != null)
             {
                 // then mount an anonymous microservlet on the given path,
-                final var responseType = (Class<Response>) request.responseType();
+                var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
                 var restPath = new MicroservletRestPath(path, method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
@@ -242,7 +242,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
 
                     @Override
                     @SuppressWarnings("unchecked")
-                    public Response onRequest(final Request request)
+                    public Response onRequest(Request request)
                     {
                         return (Response) request.request(path);
                     }
@@ -267,7 +267,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * Mounts all paths that have been mounted on this REST service on the given mount target.
      */
     @SuppressWarnings("ClassEscapesDefinedScope")
-    public void mountAll(final MicroservletMountTarget target)
+    public void mountAll(MicroservletMountTarget target)
     {
         for (var path : pathToRequest.keySet())
         {
@@ -287,14 +287,14 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     /**
      * Called for every request to this rest service after producing a response
      */
-    public void onRequested(final MicroservletRequest request, HttpMethod method)
+    public void onRequested(MicroservletRequest request, HttpMethod method)
     {
     }
 
     /**
      * Called for every request to this rest service, before activity begins on producing a response
      */
-    public void onRequesting(final MicroservletRequest request, HttpMethod method)
+    public void onRequesting(MicroservletRequest request, HttpMethod method)
     {
     }
 
@@ -305,7 +305,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     public Info openApiInfo()
     {
         // Get the microservice metadata,
-        final var metadata = require(Microservice.class).metadata();
+        var metadata = require(Microservice.class).metadata();
 
         // and add it to the OpenAPI object.
         return new Info()

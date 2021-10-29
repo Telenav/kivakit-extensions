@@ -15,7 +15,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 public abstract class BaseMicroservletResponse extends BaseComponent implements MicroservletResponse
 {
     @Override
-    public Validator validator(final ValidationType type)
+    public Validator validator(ValidationType type)
     {
         return Validator.NULL;
     }

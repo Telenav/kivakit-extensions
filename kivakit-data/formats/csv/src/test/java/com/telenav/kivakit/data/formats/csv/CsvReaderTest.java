@@ -30,21 +30,21 @@ public class CsvReaderTest extends UnitTest
     @Test
     public void test()
     {
-        final var year = CsvColumn.of("year", new IntegerConverter(this));
-        final var make = CsvColumn.of("make");
-        final var model = CsvColumn.of("model");
-        final var description = CsvColumn.of("description");
-        final var price = CsvColumn.of("price", new DoubleConverter(this));
-        final var schema = new CsvSchema(year, make, model, description, price);
+        var year = CsvColumn.of("year", new IntegerConverter(this));
+        var make = CsvColumn.of("make");
+        var model = CsvColumn.of("model");
+        var description = CsvColumn.of("description");
+        var price = CsvColumn.of("price", new DoubleConverter(this));
+        var schema = new CsvSchema(year, make, model, description, price);
 
-        final var resource = PackageResource.of(CsvReaderTest.class, "SampleCsv.csv");
-        try (final var myReader = new CsvReader(resource, schema, ',', ProgressReporter.NULL))
+        var resource = PackageResource.of(CsvReaderTest.class, "SampleCsv.csv");
+        try (var myReader = new CsvReader(resource, schema, ',', ProgressReporter.NULL))
         {
             myReader.skipLines(1);
             ensure(myReader.hasNext());
 
             // 1st line
-            final var firstDataLine = myReader.next();
+            var firstDataLine = myReader.next();
             ensureEqual(firstDataLine.get(year), 1997);
             ensureEqual(firstDataLine.string(description), "ac, abs, moon");
             ensureEqual(firstDataLine.get(price), 3000.0);
@@ -53,19 +53,19 @@ public class CsvReaderTest extends UnitTest
             myReader.next();
 
             // 3rd line
-            final var thirdLine = myReader.next();
+            var thirdLine = myReader.next();
             ensureEqual(thirdLine.string(model), "Venture \"Extended Edition, Very Large\"");
 
             // 4th line
-            final var fourthLine = myReader.next();
+            var fourthLine = myReader.next();
             ensure(fourthLine.string(description).indexOf('\n') >= 0);
 
             // 5th line
-            final var fifthLine = myReader.next();
+            var fifthLine = myReader.next();
             ensureEqual(fifthLine.string(model), "\"Venture Extended Edition, Very Large\"");
 
             // 6th line
-            final var sixthLine = myReader.next();
+            var sixthLine = myReader.next();
             ensureEqual(sixthLine.string(model), "\"K\" Ct");
         }
     }

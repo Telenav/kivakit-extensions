@@ -37,20 +37,20 @@ import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.For
 @LexakaiJavadoc(complete = true)
 public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackPanel implements ComponentMixin
 {
-    public FeedbackPanel(final String id)
+    public FeedbackPanel(String id)
     {
         super(id);
     }
 
     @Override
-    public void onTransmitting(final Transmittable message)
+    public void onTransmitting(Transmittable message)
     {
         if (message instanceof Problem)
         {
             var problem = (Problem) message;
             error(problem.formatted(WITHOUT_EXCEPTION));
         }
-        
+
         if (message instanceof Warning)
         {
             var problem = (Warning) message;
@@ -59,7 +59,7 @@ public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackP
     }
 
     @Override
-    public void renderHead(final IHeaderResponse response)
+    public void renderHead(IHeaderResponse response)
     {
         response.render(CssHeaderItem.forReference(KivaKitTheme.kivakitColors()));
         response.render(CssHeaderItem.forReference(KivaKitTheme.kivakitTheme()));

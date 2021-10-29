@@ -73,12 +73,12 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     /** The index at which adding takes place */
     private int cursor;
 
-    public SplitPackedArray(final String objectName)
+    public SplitPackedArray(String objectName)
     {
         super(objectName);
     }
 
-    protected SplitPackedArray()
+    private SplitPackedArray()
     {
     }
 
@@ -86,7 +86,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final long value)
+    public boolean add(long value)
     {
         assert ensureHasRoomFor(1);
         set(cursor++, value);
@@ -95,7 +95,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
 
     @Override
     @SuppressWarnings("ConstantConditions")
-    public SplitPackedArray bits(final BitCount bits, final PackedPrimitiveArray.OverflowHandling overflow)
+    public SplitPackedArray bits(BitCount bits, PackedPrimitiveArray.OverflowHandling overflow)
     {
         ensure(bits != null);
         ensure(!bits.isZero());
@@ -115,7 +115,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     public Count capacity()
     {
         var capacity = 0;
-        for (final var child : children)
+        for (var child : children)
         {
             if (child != null)
             {
@@ -133,15 +133,15 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     }
 
     @Override
-    public void copyConfiguration(final PrimitiveCollection primitiveCollection)
+    public void copyConfiguration(PrimitiveCollection primitiveCollection)
     {
         super.copyConfiguration(primitiveCollection);
 
-        final var that = (PackedArray) primitiveCollection;
+        var that = (PackedArray) primitiveCollection;
         bits(that.bits(), that.overflow());
     }
 
-    public void copyTo(final SplitPackedArray that)
+    public void copyTo(SplitPackedArray that)
     {
         for (var index = 0; index < size(); index++)
         {
@@ -156,34 +156,34 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     }
 
     @Override
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof SplitPackedArray)
         {
-            final var that = (SplitPackedArray) object;
+            var that = (SplitPackedArray) object;
             return Objects.equalPairs(children, that.children, bits, that.bits);
         }
         return false;
     }
 
     @Override
-    public long get(final int index)
+    public long get(int index)
     {
         assert index >= 0 : "Index " + index + " must be >= 0";
         assert index < size() : "Index " + index + " must be < " + size();
 
         // Get the value from the array for the given index. Note that we have to safe get from the
         // sub-arrays here because they might not be fully populated
-        final var childIndex = index / childSize;
+        var childIndex = index / childSize;
         if (childIndex < children.length)
         {
-            final var child = children[childIndex];
+            var child = children[childIndex];
             if (child != null)
             {
                 return child.safeGet(index % childSize);
@@ -192,24 +192,24 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
         return childArray(childIndex).safeGet(index % childSize);
     }
 
-    public boolean getBoolean(final int index)
+    public boolean getBoolean(int index)
     {
-        final var value = safeGet(index);
+        var value = safeGet(index);
         return value != 0;
     }
 
-    public Count getCount(final int index)
+    public Count getCount(int index)
     {
-        final var count = get(index);
+        var count = get(index);
         return isNull(count) ? null : Count.count(count);
     }
 
-    public long getSigned(final int index)
+    public long getSigned(int index)
     {
-        final var childIndex = index / childSize;
+        var childIndex = index / childSize;
         if (childIndex < children.length)
         {
-            final var child = children[childIndex];
+            var child = children[childIndex];
             if (child != null)
             {
                 return child.getSigned(index % childSize);
@@ -224,7 +224,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
         return Hash.many(Arrays.hashCode(children), bits);
     }
 
-    public void initializeElements(final boolean initializeElements)
+    public void initializeElements(boolean initializeElements)
     {
         this.initializeElements = initializeElements;
     }
@@ -251,7 +251,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     }
 
     @Override
-    public SplitPackedArray nullLong(final long nullLong)
+    public SplitPackedArray nullLong(long nullLong)
     {
         if (hasNullLong())
         {
@@ -263,9 +263,9 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
-        for (final var array : children)
+        for (var array : children)
         {
             if (array != null)
             {
@@ -276,13 +276,21 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     }
 
     @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+        childSize = initialChildSizeAsInt();
+        children = new PackedArray[initialChildCountAsInt()];
+    }
+
+    @Override
     public PackedPrimitiveArray.OverflowHandling overflow()
     {
         return overflow;
     }
 
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         childSize = initialChildSizeAsInt();
@@ -296,12 +304,12 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
      * null value
      */
     @Override
-    public long safeGet(final int index)
+    public long safeGet(int index)
     {
-        final var childIndex = index / childSize;
+        var childIndex = index / childSize;
         if (childIndex < children.length)
         {
-            final var child = children[childIndex];
+            var child = children[childIndex];
             if (child != null)
             {
                 return child.safeGet(index % childSize);
@@ -314,36 +322,36 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
      * @return The value at the given index or null if the index is out of bounds or the value at the given index is the
      * null value
      */
-    public boolean safeGetBoolean(final int index)
+    public boolean safeGetBoolean(int index)
     {
-        final var value = safeGet(index);
+        var value = safeGet(index);
         return value != 0;
     }
 
-    public Count safeGetCount(final int index)
+    public Count safeGetCount(int index)
     {
-        final var count = safeGetInt(index);
+        var count = safeGetInt(index);
         return isNull(count) || count < 0 ? null : Count.count(count);
     }
 
-    public int safeGetInt(final int index)
+    public int safeGetInt(int index)
     {
         return (int) safeGet(index);
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
 
     @Override
-    public void set(final int index, final long value)
+    public void set(int index, long value)
     {
         assert index >= 0 : "Index " + index + " must be >= 0";
 
         // Set the value in the array for the given index
-        final int childIndex = index / childSize;
+        int childIndex = index / childSize;
         childArray(childIndex).set(index % childSize, value);
 
         // Initialize elements and increase the size if we've written past the end
@@ -364,23 +372,23 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
                 + " bit array at index " + index;
     }
 
-    public void setBoolean(final int index, final boolean value)
+    public void setBoolean(int index, boolean value)
     {
         set(index, value ? 1L : 0L);
     }
 
-    public void setCount(final int index, final Count count)
+    public void setCount(int index, Count count)
     {
         set(index, count == null ? nullInt() : count.get());
     }
 
-    public void setInt(final int index, final int value)
+    public void setInt(int index, int value)
     {
         set(index, value);
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, value);
     }
@@ -393,7 +401,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
     }
 
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
         kryo.writeObject(output, children);
@@ -401,15 +409,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
         kryo.writeObject(output, initializeElements);
     }
 
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        childSize = initialChildSizeAsInt();
-        children = new PackedArray[initialChildCountAsInt()];
-    }
-
-    private PackedArray childArray(final int childIndex)
+    private PackedArray childArray(int childIndex)
     {
         if (childIndex >= children.length)
         {
@@ -429,7 +429,7 @@ public final class SplitPackedArray extends PrimitiveSplitArray implements LongL
         return array;
     }
 
-    private boolean isValueStoredAtIndex(final int index, final long value)
+    private boolean isValueStoredAtIndex(int index, long value)
     {
         if (value < 0)
         {

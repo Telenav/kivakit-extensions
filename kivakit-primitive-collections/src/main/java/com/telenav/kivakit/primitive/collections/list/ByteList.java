@@ -45,7 +45,7 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
      */
     default byte[] asArray()
     {
-        final var array = new byte[size()];
+        var array = new byte[size()];
         for (var index = 0; index < size(); index++)
         {
             array[index] = get(index);
@@ -59,15 +59,15 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
      * @param target The target to search for
      * @return The index of the given target. The return value will be &lt; 0 if the target was not found.
      */
-    default int binarySearch(final byte target)
+    default int binarySearch(byte target)
     {
         var low = 0;
         var high = size() - 1;
 
         while (low <= high)
         {
-            final var middle = (low + high) / 2;
-            final var value = get(middle);
+            var middle = (low + high) / 2;
+            var value = get(middle);
 
             if (value < target)
             {
@@ -88,7 +88,7 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
     /**
      * Sets the value at the given index to the {@link #nullByte()} value
      */
-    default void clear(final int index)
+    default void clear(int index)
     {
         set(index, nullByte());
     }
@@ -120,7 +120,7 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
      * {@inheritDoc}
      */
     @Override
-    default long getPrimitive(final int index)
+    default long getPrimitive(int index)
     {
         return get(index);
     }
@@ -134,7 +134,7 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
     }
 
     @Override
-    default boolean isPrimitiveNull(final long value)
+    default boolean isPrimitiveNull(long value)
     {
         return isNull((byte) value);
     }
@@ -187,9 +187,9 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
         return next();
     }
 
-    default boolean[] readBooleans(final int size)
+    default boolean[] readBooleans(int size)
     {
-        final var values = new boolean[size];
+        var values = new boolean[size];
         var mask = 0;
         var value = 0;
         for (var i = 0; i < size; i++)
@@ -213,13 +213,13 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
      */
     default char readFlexibleChar()
     {
-        final var value = (char) readUnsigned();
+        var value = (char) readUnsigned();
         if (value < 255)
         {
             return value;
         }
-        final var high = readUnsigned();
-        final var low = readUnsigned();
+        var high = readUnsigned();
+        var low = readUnsigned();
         return (char) (high << 8 | low);
     }
 
@@ -228,13 +228,13 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
      */
     default short readFlexibleShort()
     {
-        final var value = (short) readUnsigned();
+        var value = (short) readUnsigned();
         if (value < 255)
         {
             return value;
         }
-        final var high = readUnsigned();
-        final var low = readUnsigned();
+        var high = readUnsigned();
+        var low = readUnsigned();
         return (short) (high << 8 | low);
     }
 
@@ -276,21 +276,21 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
     /**
      * @return A sub-section of this byte list
      */
-    ByteList sublist(final int offset, final int size);
+    ByteList sublist(int offset, int size);
 
     /**
      * Writes the given value at the current cursor location and moves the cursor forward by one
      */
-    default void write(final byte value)
+    default void write(byte value)
     {
         set(cursor(), value);
     }
 
-    default void writeBooleans(final boolean[] values)
+    default void writeBooleans(boolean[] values)
     {
         var current = 0;
         var mask = 0x80;
-        for (final var value : values)
+        for (var value : values)
         {
             if (mask == 0)
             {
@@ -318,7 +318,7 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
      * equal to 255). Useful when the vast majority of values will be small but there might occasionally be a value
      * larger than one byte.
      */
-    default void writeFlexibleChar(final char value)
+    default void writeFlexibleChar(char value)
     {
         if (value < 255)
         {
@@ -327,8 +327,8 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
         else
         {
             write((byte) 255);
-            final var high = value >>> 8;
-            final var low = value & 0xff;
+            var high = value >>> 8;
+            var low = value & 0xff;
             write((byte) high);
             write((byte) low);
         }
@@ -339,7 +339,7 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
      * equal to 255). Useful when the vast majority of values will be small but there might occasionally be a value
      * larger than one byte.
      */
-    default void writeFlexibleShort(final short value)
+    default void writeFlexibleShort(short value)
     {
         if (value < 255)
         {
@@ -348,14 +348,14 @@ public interface ByteList extends ByteCollection, PrimitiveList, CompressibleCol
         else
         {
             write((byte) 255);
-            final var high = value >>> 8;
-            final var low = value & 0xff;
+            var high = value >>> 8;
+            var low = value & 0xff;
             write((byte) high);
             write((byte) low);
         }
     }
 
-    default void writeInt(final int value)
+    default void writeInt(int value)
     {
         write((byte) ((value >>> 24) & 0xff));
         write((byte) ((value >>> 16) & 0xff));

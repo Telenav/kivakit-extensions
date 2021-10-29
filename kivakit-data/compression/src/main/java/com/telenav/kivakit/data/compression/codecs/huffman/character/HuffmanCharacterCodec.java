@@ -70,7 +70,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
     /**
      * @return A codec from the symbol frequencies in the given properties object
      */
-    public static HuffmanCharacterCodec from(final PropertyMap frequencies, final Character escape)
+    public static HuffmanCharacterCodec from(PropertyMap frequencies, Character escape)
     {
         return from(Symbols.load(frequencies, escape, new Converter(LOGGER)));
     }
@@ -80,7 +80,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
      * @param bits The maximum number of bits allowed for a code
      * @return A codec for the symbols
      */
-    public static HuffmanCharacterCodec from(final Symbols<Character> symbols, final Maximum bits)
+    public static HuffmanCharacterCodec from(Symbols<Character> symbols, Maximum bits)
     {
         return new HuffmanCharacterCodec(symbols, bits);
     }
@@ -89,28 +89,28 @@ public class HuffmanCharacterCodec implements CharacterCodec
      * @param symbols A set of symbols and their frequencies
      * @return A codec for the symbols
      */
-    public static HuffmanCharacterCodec from(final Symbols<Character> symbols)
+    public static HuffmanCharacterCodec from(Symbols<Character> symbols)
     {
         return from(symbols, Maximum._16);
     }
 
     public static class Converter extends BaseStringConverter<Character>
     {
-        public Converter(final Listener listener)
+        public Converter(Listener listener)
         {
             super(listener);
         }
 
         @Override
-        protected Character onToValue(final String value)
+        protected String onToString(Character character)
         {
-            return (char) Longs.parseHex(value);
+            return "0x" + Ints.toHex(character, 2);
         }
 
         @Override
-        protected String onToString(final Character character)
+        protected Character onToValue(String value)
         {
-            return "0x" + Ints.toHex(character, 2);
+            return (char) Longs.parseHex(value);
         }
     }
 
@@ -124,7 +124,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
     {
     }
 
-    private HuffmanCharacterCodec(final Symbols<Character> symbols, final Maximum bits)
+    private HuffmanCharacterCodec(Symbols<Character> symbols, Maximum bits)
     {
         this.symbols = symbols;
         codec = HuffmanCodec.from(symbols, bits);
@@ -150,7 +150,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
     }
 
     @Override
-    public boolean canEncode(final String value)
+    public boolean canEncode(String value)
     {
         // We can encode any string because we can always escape a character it if it doesn't have a code
         return true;
@@ -161,18 +161,18 @@ public class HuffmanCharacterCodec implements CharacterCodec
      * the consumer returns {@link SymbolConsumer.Directive#STOP}
      */
     @Override
-    public void decode(final ByteList input, final SymbolConsumer<String> consumer)
+    public void decode(ByteList input, SymbolConsumer<String> consumer)
     {
-        final var count = new MutableCount();
-        final var builder = new StringBuilder();
+        var count = new MutableCount();
+        var builder = new StringBuilder();
         codec.decode(input, new SymbolConsumer<>()
         {
             @Override
-            public Directive next(final int ordinal, final Character character)
+            public Directive next(int ordinal, Character character)
             {
                 if (character == END_OF_STRING)
                 {
-                    final var value = builder.toString();
+                    var value = builder.toString();
                     builder.setLength(0);
                     return consumer.next((int) count.increment(), value);
                 }
@@ -182,7 +182,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
             }
 
             @Override
-            public Directive onEscape(final ByteList input)
+            public Directive onEscape(ByteList input)
             {
                 builder.append(input.readFlexibleChar());
                 return CONTINUE;
@@ -194,7 +194,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
      * Encodes the given string value into the output
      */
     @Override
-    public ByteList encode(final ByteList output, final SymbolProducer<String> producer)
+    public ByteList encode(ByteList output, SymbolProducer<String> producer)
     {
         return codec.encode(output, new SymbolProducer<>()
         {
@@ -208,7 +208,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
             int at;
 
             @Override
-            public Character get(final int ignored)
+            public Character get(int ignored)
             {
                 // If we're done processing the current value,
                 if (at == -1)
@@ -244,7 +244,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
             }
 
             @Override
-            public void onEscape(final ByteList output, final Character character)
+            public void onEscape(ByteList output, Character character)
             {
                 output.writeFlexibleChar(character);
             }

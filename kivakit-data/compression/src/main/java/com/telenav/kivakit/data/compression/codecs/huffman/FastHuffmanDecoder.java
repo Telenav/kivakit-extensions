@@ -80,13 +80,13 @@ public final class FastHuffmanDecoder<Symbol>
             {
             }
 
-            private Entry(final Table<Symbol> table)
+            private Entry(Table<Symbol> table)
             {
                 this.table = table;
             }
 
             @Override
-            public String asString(final StringFormat format)
+            public String asString(StringFormat format)
             {
                 return Message.format("[Entry next = '$', values = $]", next.prefix,
                         new StringList(values).join(", "));
@@ -102,9 +102,9 @@ public final class FastHuffmanDecoder<Symbol>
              * Decodes values from the input byte and adds them to this entry's list. This may lead to the creation of
              * further tables when the input doesn't fit evenly.
              */
-            void decode(final BitArray data)
+            void decode(BitArray data)
             {
-                final var reader = data.reader();
+                var reader = data.reader();
 
                 // then loop
                 CodedSymbol<Symbol> symbol;
@@ -125,7 +125,7 @@ public final class FastHuffmanDecoder<Symbol>
                 while (symbol != null);
 
                 // determine how many bits are left (either the rest of the byte or the rest of the input)
-                final var bitsLeft = data.size() - position;
+                var bitsLeft = data.size() - position;
 
                 // read those bits
                 var remainder = 0;
@@ -152,7 +152,7 @@ public final class FastHuffmanDecoder<Symbol>
         /** Prefix for this table */
         private String prefix;
 
-        Table(final FastHuffmanDecoder<Symbol> decoder, final String prefix)
+        Table(FastHuffmanDecoder<Symbol> decoder, String prefix)
         {
             this.decoder = decoder;
             this.prefix = prefix;
@@ -165,12 +165,12 @@ public final class FastHuffmanDecoder<Symbol>
         }
 
         @Override
-        public String asString(final StringFormat format)
+        public String asString(StringFormat format)
         {
-            final var entries = new StringList();
+            var entries = new StringList();
             for (var index = 0; index < byteToEntry.length; index++)
             {
-                final var entry = byteToEntry[index];
+                var entry = byteToEntry[index];
                 entries.append(StringTo.binary(index, 8) + " = " + entry.asString());
             }
             return Message.format("[Table prefix = '$']\n    ", prefix) + entries.join("\n    ");
@@ -186,7 +186,7 @@ public final class FastHuffmanDecoder<Symbol>
          * @param prefix The prefix value
          * @param bits The number of bits for the prefix value
          */
-        void compute(final int prefix, final int bits)
+        void compute(int prefix, int bits)
         {
             DEBUG.trace("Computing table for prefix '$'", this.prefix);
 
@@ -194,14 +194,14 @@ public final class FastHuffmanDecoder<Symbol>
             for (var index = 0; index < 256; index++)
             {
                 // create a new entry
-                final var entry = new Entry<>(this);
+                var entry = new Entry<>(this);
 
                 // and a bit array to decode from
-                final var data = new BitArray("bits");
+                var data = new BitArray("bits");
                 data.initialize();
 
                 // then write the prefix and the index into the bit array
-                final var writer = data.writer();
+                var writer = data.writer();
                 writer.write(prefix, bits);
                 writer.write(index, 8);
                 writer.close();
@@ -217,10 +217,10 @@ public final class FastHuffmanDecoder<Symbol>
         /**
          * @return The table for the given prefix
          */
-        Table<Symbol> prefixToTable(final int prefix, final int bits)
+        Table<Symbol> prefixToTable(int prefix, int bits)
         {
             // If we don't have a table for the prefix already,
-            final var key = StringTo.binary(prefix, bits);
+            var key = StringTo.binary(prefix, bits);
             var table = decoder.prefixToTable.get(key);
             if (table == null)
             {
@@ -248,7 +248,7 @@ public final class FastHuffmanDecoder<Symbol>
     /**
      * Creates a table-driven decoder for the given codec
      */
-    public FastHuffmanDecoder(final HuffmanCodec<Symbol> codec)
+    public FastHuffmanDecoder(HuffmanCodec<Symbol> codec)
     {
         // Save the codec and its escape symbol,
         this.codec = codec;
@@ -264,14 +264,14 @@ public final class FastHuffmanDecoder<Symbol>
         if (DEBUG.isDebugOn())
         {
             DEBUG.trace("Codec:\n" + codec);
-            for (final var table : prefixToTable.values())
+            for (var table : prefixToTable.values())
             {
                 DEBUG.trace(table.asString());
             }
         }
     }
 
-    protected FastHuffmanDecoder()
+    private FastHuffmanDecoder()
     {
     }
 
@@ -280,7 +280,7 @@ public final class FastHuffmanDecoder<Symbol>
      * Directive#STOP}
      */
     @SuppressWarnings("ForLoopReplaceableByForEach")
-    public void decode(final ByteList input, final SymbolConsumer<Symbol> consumer)
+    public void decode(ByteList input, SymbolConsumer<Symbol> consumer)
     {
         // Start at the root table
         var table = root;
@@ -290,16 +290,16 @@ public final class FastHuffmanDecoder<Symbol>
         while (input.hasNext())
         {
             // and get the table entry for the next byte,
-            final var next = input.next() & 0xff;
-            final var entry = table.byteToEntry[next];
+            var next = input.next() & 0xff;
+            var entry = table.byteToEntry[next];
 
             // then for each symbol value in the entry,
-            final var values = entry.values;
-            final var size = values.size();
+            var values = entry.values;
+            var size = values.size();
             for (var i = 0; i < size; i++)
             {
                 // if the symbol is escape,
-                final var symbol = values.get(i);
+                var symbol = values.get(i);
                 if (symbol.equals(escape))
                 {
                     // then let the consumer handle reading the escaped symbol from the input

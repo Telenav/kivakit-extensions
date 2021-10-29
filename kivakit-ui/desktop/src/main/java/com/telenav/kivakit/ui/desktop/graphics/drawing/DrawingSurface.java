@@ -20,15 +20,15 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  */
 public interface DrawingSurface extends CoordinateSystem
 {
-    default Shape drawBox(final Style style, final DrawingRectangle area)
+    default Shape drawBox(Style style, DrawingRectangle area)
     {
         return drawBox(style, area.at(), area.size());
     }
 
-    default Shape drawBox(final Style style,
-                          final DrawingPoint at,
-                          final DrawingWidth width,
-                          final DrawingHeight height)
+    default Shape drawBox(Style style,
+                          DrawingPoint at,
+                          DrawingWidth width,
+                          DrawingHeight height)
     {
         ensure(at.inSameCoordinateSystem(width));
         ensure(at.inSameCoordinateSystem(height));
@@ -54,7 +54,7 @@ public interface DrawingSurface extends CoordinateSystem
     /**
      * Draws the given image at the given point on this drawing surface
      */
-    default Shape drawImage(final DrawingPoint at, final Image image)
+    default Shape drawImage(DrawingPoint at, Image image)
     {
         return drawImage(at, image, null);
     }
@@ -93,10 +93,10 @@ public interface DrawingSurface extends CoordinateSystem
     /**
      * @return The shape of the given text drawn im the given style at the given location
      */
-    Shape textShape(final Style style, final DrawingPoint at, final String text);
+    Shape textShape(Style style, DrawingPoint at, String text);
 
     /**
      * @return The size of the given text in the given style when rendered on this surface
      */
-    DrawingSize textSize(final Style style, final String text);
+    DrawingSize textSize(Style style, String text);
 }

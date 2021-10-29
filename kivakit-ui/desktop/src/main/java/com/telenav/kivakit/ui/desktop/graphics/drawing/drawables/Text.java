@@ -24,25 +24,25 @@ public class Text extends BaseDrawable
         return text((Style) null);
     }
 
-    public static Text text(final Style style)
+    public static Text text(Style style)
     {
         return new Text(style, null);
     }
 
-    public static Text text(final Style style, final String text)
+    public static Text text(Style style, String text)
     {
         return new Text(style, text);
     }
 
     private String text;
 
-    protected Text(final Style style, final String text)
+    protected Text(Style style, String text)
     {
         super(style);
         this.text = text;
     }
 
-    protected Text(final Text that)
+    protected Text(Text that)
     {
         super(that);
 
@@ -56,81 +56,81 @@ public class Text extends BaseDrawable
     }
 
     @Override
-    public Shape draw(final DrawingSurface surface)
+    public Shape draw(DrawingSurface surface)
     {
         surface.drawText(style(), withLocation(), text);
         return null;
     }
 
     @Override
-    public Text scaledBy(final double scaleFactor)
+    public Text scaledBy(double scaleFactor)
     {
         return unsupported();
     }
 
     @Override
-    public Text withColors(final Style style)
+    public Text withColors(Style style)
     {
         return (Text) super.withColors(style);
     }
 
     @Override
-    public Text withDrawColor(final Color color)
+    public Text withDrawColor(Color color)
     {
         return (Text) super.withDrawColor(color);
     }
 
     @Override
-    public Text withDrawStroke(final Stroke stroke)
+    public Text withDrawStroke(Stroke stroke)
     {
         return (Text) super.withDrawStroke(stroke);
     }
 
     @Override
-    public Text withDrawStrokeWidth(final DrawingWidth width)
+    public Text withDrawStrokeWidth(DrawingWidth width)
     {
         return (Text) super.withDrawStrokeWidth(width);
     }
 
     @Override
-    public Text withFillColor(final Color color)
+    public Text withFillColor(Color color)
     {
         return (Text) super.withFillColor(color);
     }
 
     @Override
-    public Text withFillStroke(final Stroke stroke)
+    public Text withFillStroke(Stroke stroke)
     {
         return (Text) super.withFillStroke(stroke);
     }
 
     @Override
-    public Text withFillStrokeWidth(final DrawingWidth width)
+    public Text withFillStrokeWidth(DrawingWidth width)
     {
         return (Text) super.withFillStrokeWidth(width);
     }
 
     @Override
-    public Text withLocation(final DrawingPoint at)
+    public Text withLocation(DrawingPoint at)
     {
         return (Text) super.withLocation(at);
     }
 
     @Override
-    public Text withStyle(final Style style)
+    public Text withStyle(Style style)
     {
         return (Text) super.withStyle(style);
     }
 
-    public Text withText(final String text)
+    public Text withText(String text)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.text = text;
         return copy;
     }
 
     @Override
-    public Text withTextColor(final Color color)
+    public Text withTextColor(Color color)
     {
         return (Text) super.withTextColor(color);
     }

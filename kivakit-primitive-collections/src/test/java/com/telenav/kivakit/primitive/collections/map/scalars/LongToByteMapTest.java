@@ -55,7 +55,7 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             ensureEqual(a, b);
             b.put(99, (byte) -1);
@@ -68,7 +68,7 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             ensureEqual(a, b);
             b.compress(CompressibleCollection.Method.FREEZE);
@@ -76,7 +76,7 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
         });
         withPopulatedMap((a, keys, values) ->
         {
-            final var b = map();
+            var b = map();
             putAll(b, keys, values);
             putAll(b, keys, values);
             ensureEqual(a, b);
@@ -99,18 +99,18 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
     public void testKeys()
     {
         {
-            final var map = map();
+            var map = map();
             ensureEqual(0, map.size());
             ensureFalse(map.keys().hasNext());
         }
         {
             withPopulatedMap((map, keys, values) ->
             {
-                final var iterator = map.keys();
+                var iterator = map.keys();
                 int count = 0;
                 while (iterator.hasNext())
                 {
-                    final var key = iterator.next();
+                    var key = iterator.next();
                     ensure((map.containsKey(key)));
                     count++;
                 }
@@ -125,8 +125,8 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
         withPopulatedMap((map, keys, values) ->
                 keys.forEach(key ->
                 {
-                    final int size = map.size();
-                    final boolean exists = map.containsKey(key);
+                    int size = map.size();
+                    boolean exists = map.containsKey(key);
                     map.remove(key);
                     ensure(map.isEmpty(map.get(key)));
                     if (exists)
@@ -147,12 +147,12 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
     {
         withPopulatedMap((map, keys, values) ->
         {
-            final var iterator = map.values();
+            var iterator = map.values();
             int count = 0;
-            final var valueSet = new HashSet<>(values);
+            var valueSet = new HashSet<>(values);
             while (iterator.hasNext())
             {
-                final var value = iterator.next();
+                var value = iterator.next();
                 ensure((valueSet.contains(value)));
                 count++;
             }
@@ -169,17 +169,17 @@ public class LongToByteMapTest extends PrimitiveCollectionsUnitTest
         return map;
     }
 
-    private void putAll(final LongToByteMap map, final List<Long> keys, final List<Byte> values)
+    private void putAll(LongToByteMap map, List<Long> keys, List<Byte> values)
     {
         resetIndex();
         keys.forEach(key -> map.put(key, values.get(nextIndex() % values.size())));
     }
 
-    private void withPopulatedMap(final MapTest test)
+    private void withPopulatedMap(MapTest test)
     {
-        final var map = map();
-        final var keys = randomLongList(Repeats.NO_REPEATS);
-        final var values = randomByteList(Repeats.ALLOW_REPEATS);
+        var map = map();
+        var keys = randomLongList(Repeats.NO_REPEATS);
+        var values = randomByteList(Repeats.ALLOW_REPEATS);
         putAll(map, keys, values);
         test.test(map, keys, values);
     }

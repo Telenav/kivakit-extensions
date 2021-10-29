@@ -59,12 +59,12 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
 
     private int childSize;
 
-    public SplitIntArray(final String objectName)
+    public SplitIntArray(String objectName)
     {
         super(objectName);
     }
 
-    protected SplitIntArray()
+    private SplitIntArray()
     {
     }
 
@@ -72,7 +72,7 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final int value)
+    public boolean add(int value)
     {
         assert ensureHasRoomFor(1);
         set(cursor++, value);
@@ -83,7 +83,7 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
     public Count capacity()
     {
         var capacity = 0;
-        for (final var child : children)
+        for (var child : children)
         {
             if (child != null)
             {
@@ -100,7 +100,7 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
     }
 
     @Override
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
@@ -109,11 +109,11 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof SplitIntArray)
         {
-            final var that = (SplitIntArray) object;
+            var that = (SplitIntArray) object;
             return size() == that.size() && iterator().identical(that.iterator());
         }
         return false;
@@ -123,12 +123,12 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    public int get(final int index)
+    public int get(int index)
     {
-        final var childIndex = index / childSize;
+        var childIndex = index / childSize;
         if (childIndex < children.length)
         {
-            final var child = children[childIndex];
+            var child = children[childIndex];
             if (child != null)
             {
                 return child.get(index % childSize);
@@ -147,10 +147,10 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         // Go through our children,
-        for (final var child : children)
+        for (var child : children)
         {
             // and if the child is not null (this is a sparse array)
             if (child != null)
@@ -163,11 +163,19 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
         return CompressibleCollection.Method.RESIZE;
     }
 
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+        childSize = initialChildSizeAsInt();
+        children = new IntArray[initialChildCountAsInt()];
+    }
+
     /**
      * @see KryoSerializable
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         children = kryo.readObject(input, IntArray[].class);
@@ -178,12 +186,12 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    public int safeGet(final int index)
+    public int safeGet(int index)
     {
-        final var childIndex = index / childSize;
+        var childIndex = index / childSize;
         if (childIndex < children.length)
         {
-            final var child = children[childIndex];
+            var child = children[childIndex];
             if (child != null)
             {
                 return child.safeGet(index % childSize);
@@ -193,7 +201,7 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
@@ -202,14 +210,14 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
      * {@inheritDoc}
      */
     @Override
-    public void set(final int index, final int value)
+    public void set(int index, int value)
     {
         // Set the value into the array for the index
-        final int childIndex = index / childSize;
+        int childIndex = index / childSize;
         childArray(childIndex).set(index % childSize, value);
 
         // then increase the size if we wrote past the end.
-        final var size = index + 1;
+        var size = index + 1;
         if (size > size())
         {
             size(size);
@@ -217,7 +225,7 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, (int) value);
     }
@@ -233,24 +241,16 @@ public final class SplitIntArray extends PrimitiveSplitArray implements IntList
      * @see KryoSerializable
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
         kryo.writeObject(output, children);
     }
 
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        childSize = initialChildSizeAsInt();
-        children = new IntArray[initialChildCountAsInt()];
-    }
-
     /**
      * @return The child array for the given index
      */
-    private IntArray childArray(final int childIndex)
+    private IntArray childArray(int childIndex)
     {
         // If the child index is beyond the length of the children array,
         if (childIndex >= children.length)

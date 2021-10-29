@@ -43,7 +43,7 @@ public class Line extends BaseDrawable
         return line(null, null, null);
     }
 
-    public static Line line(final Style style, final DrawingPoint from, final DrawingPoint to)
+    public static Line line(Style style, DrawingPoint from, DrawingPoint to)
     {
         return new Line(style, from, to.minus(from).asSize());
     }
@@ -54,13 +54,13 @@ public class Line extends BaseDrawable
 
     private DrawingSize offset;
 
-    protected Line(final Style style, final DrawingPoint from, final DrawingSize offset)
+    protected Line(Style style, DrawingPoint from, DrawingSize offset)
     {
         super(style, from);
         this.offset = offset;
     }
 
-    protected Line(final Line that)
+    protected Line(Line that)
     {
         super(that);
         offset = that.offset;
@@ -75,9 +75,9 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Shape draw(final DrawingSurface surface)
+    public Shape draw(DrawingSurface surface)
     {
-        final var shape = new Area();
+        var shape = new Area();
 
         shape.add(new Area(shape(surface.drawLine(style(), from(), to()))));
         shape.add(new Area(fromArrowHead.withLocation(from()).draw(surface)));
@@ -97,18 +97,18 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line scaledBy(final double scaleFactor)
+    public Line scaledBy(double scaleFactor)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.offset = offset.scaledBy(scaleFactor);
         return copy;
     }
 
     public DrawingSlope slope()
     {
-        final var point = to().minus(from());
-        final var opposite = point.y();
-        final var adjacent = point.x();
+        var point = to().minus(from());
+        var opposite = point.y();
+        var adjacent = point.x();
         return DrawingSlope.radians(Math.atan(opposite / adjacent));
     }
 
@@ -118,92 +118,92 @@ public class Line extends BaseDrawable
     }
 
     @Override
-    public Line withColors(final Style style)
+    public Line withColors(Style style)
     {
         return (Line) super.withColors(style);
     }
 
     @Override
-    public Line withDrawColor(final Color color)
+    public Line withDrawColor(Color color)
     {
         return (Line) super.withDrawColor(color);
     }
 
     @Override
-    public Line withDrawStroke(final Stroke stroke)
+    public Line withDrawStroke(Stroke stroke)
     {
         return (Line) super.withDrawStroke(stroke);
     }
 
     @Override
-    public Line withDrawStrokeWidth(final DrawingWidth width)
+    public Line withDrawStrokeWidth(DrawingWidth width)
     {
         return (Line) super.withDrawStrokeWidth(width);
     }
 
     @Override
-    public Line withFillColor(final Color color)
+    public Line withFillColor(Color color)
     {
         return (Line) super.withFillColor(color);
     }
 
     @Override
-    public Line withFillStroke(final Stroke stroke)
+    public Line withFillStroke(Stroke stroke)
     {
         return (Line) super.withFillStroke(stroke);
     }
 
     @Override
-    public Line withFillStrokeWidth(final DrawingWidth width)
+    public Line withFillStrokeWidth(DrawingWidth width)
     {
         return (Line) super.withFillStrokeWidth(width);
     }
 
-    public Line withFrom(final DrawingPoint from)
+    public Line withFrom(DrawingPoint from)
     {
         return withLocation(from);
     }
 
-    public Line withFromArrowHead(final Drawable arrowHead)
+    public Line withFromArrowHead(Drawable arrowHead)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.fromArrowHead = arrowHead;
         return copy;
     }
 
     @Override
-    public Line withLocation(final DrawingPoint at)
+    public Line withLocation(DrawingPoint at)
     {
         return (Line) super.withLocation(at);
     }
 
-    public Line withOffset(final DrawingSize offset)
+    public Line withOffset(DrawingSize offset)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.offset = offset;
         return copy;
     }
 
     @Override
-    public Line withStyle(final Style style)
+    public Line withStyle(Style style)
     {
         return (Line) super.withStyle(style);
     }
 
     @Override
-    public Line withTextColor(final Color color)
+    public Line withTextColor(Color color)
     {
         return (Line) super.withTextColor(color);
     }
 
-    public Line withTo(final DrawingPoint to)
+    public Line withTo(DrawingPoint to)
     {
         return withOffset(to.minus(withLocation()).asSize());
     }
 
-    public Line withToArrowHead(final Drawable arrowHead)
+    public Line withToArrowHead(Drawable arrowHead)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.toArrowHead = arrowHead;
         return copy;
     }

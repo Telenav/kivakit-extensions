@@ -56,7 +56,7 @@ public class DiscoverApplicationsRequest extends BaseRequest
         return scope;
     }
 
-    public DiscoverApplicationsRequest scope(final Scope scope)
+    public DiscoverApplicationsRequest scope(Scope scope)
     {
         this.scope = scope;
         return this;

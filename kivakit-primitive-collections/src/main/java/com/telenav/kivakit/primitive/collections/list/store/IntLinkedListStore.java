@@ -59,7 +59,7 @@ public class IntLinkedListStore extends PrimitiveListStore
     /** The next available spot to add to in the arrays */
     private int addAt = 1;
 
-    public IntLinkedListStore(final String objectName)
+    public IntLinkedListStore(String objectName)
     {
         super(objectName);
     }
@@ -73,10 +73,10 @@ public class IntLinkedListStore extends PrimitiveListStore
      * <p>
      * To start a new list, pass IntLinkedListStore.NEW_LIST as the list identifier.
      */
-    public int add(final int list, final int value)
+    public int add(int list, int value)
     {
         // Get a new list index,
-        final var newList = addAt++;
+        var newList = addAt++;
 
         // store the value at that index,
         values.set(newList, value);
@@ -91,7 +91,7 @@ public class IntLinkedListStore extends PrimitiveListStore
     /**
      * Adds each of the given values to the identified list
      */
-    public int addAll(int list, final IntArray values)
+    public int addAll(int list, IntArray values)
     {
         for (var index = 0; index < values.size(); index++)
         {
@@ -103,9 +103,9 @@ public class IntLinkedListStore extends PrimitiveListStore
     /**
      * Adds each of the given values to the identified list
      */
-    public int addAll(int list, final int[] values)
+    public int addAll(int list, int[] values)
     {
-        for (final var value : values)
+        for (var value : values)
         {
             list = add(list, value);
         }
@@ -115,9 +115,9 @@ public class IntLinkedListStore extends PrimitiveListStore
     /**
      * Adds the quantum of each value to the identified list
      */
-    public int addAll(int list, final List<? extends Quantizable> values)
+    public int addAll(int list, List<? extends Quantizable> values)
     {
-        for (final var value : values)
+        for (var value : values)
         {
             list = add(list, (int) value.quantum());
         }
@@ -133,9 +133,9 @@ public class IntLinkedListStore extends PrimitiveListStore
     /**
      * @return An iterator over the values in the identifier list
      */
-    public IntIterator list(final int list)
+    public IntIterator list(int list)
     {
-        final var outer = this;
+        var outer = this;
         return new IntIterator()
         {
             private int index = list;
@@ -149,7 +149,7 @@ public class IntLinkedListStore extends PrimitiveListStore
             @Override
             public int next()
             {
-                final var value = outer.values.get(index);
+                var value = outer.values.get(index);
                 index = outer.next.get(index);
                 return value;
             }
@@ -157,7 +157,7 @@ public class IntLinkedListStore extends PrimitiveListStore
     }
 
     @Override
-    public Method onCompress(final Method method)
+    public Method onCompress(Method method)
     {
         values.compress(method);
         next.compress(method);
@@ -165,8 +165,26 @@ public class IntLinkedListStore extends PrimitiveListStore
         return Method.RESIZE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        values = new IntArray(objectName() + ".values");
+        values.initialSize(initialSize());
+        values.initialize();
+
+        next = new IntArray(objectName() + ".next");
+        next.initialSize(initialSize());
+        next.nullInt(END_OF_LIST);
+        next.initialize();
+    }
+
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
         values = kryo.readObject(input, IntArray.class);
@@ -176,13 +194,13 @@ public class IntLinkedListStore extends PrimitiveListStore
     /**
      * Removes the given value from the identified list
      */
-    public int remove(final int list, final int value)
+    public int remove(int list, int value)
     {
         var at = list;
         var previous = NEW_LIST;
         while (!next.isNull(at))
         {
-            final var next = this.next.get(at);
+            var next = this.next.get(at);
             if (values.get(at) == value)
             {
                 if (at == list)
@@ -202,28 +220,10 @@ public class IntLinkedListStore extends PrimitiveListStore
     }
 
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
         kryo.writeObject(output, values);
         kryo.writeObject(output, next);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        values = new IntArray(objectName() + ".values");
-        values.initialSize(initialSize());
-        values.initialize();
-
-        next = new IntArray(objectName() + ".next");
-        next.initialSize(initialSize());
-        next.nullInt(END_OF_LIST);
-        next.initialize();
     }
 }

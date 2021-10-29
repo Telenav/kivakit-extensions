@@ -51,7 +51,7 @@ public class SearchPanel extends KivaKitPanel
 
     private final ClientLogPanel parent;
 
-    public SearchPanel(final ClientLogPanel parent)
+    public SearchPanel(ClientLogPanel parent)
     {
         this.parent = parent;
 
@@ -76,12 +76,12 @@ public class SearchPanel extends KivaKitPanel
         contexts.clear();
     }
 
-    public synchronized void updateSearchDropDowns(final List<LogEntry> entries)
+    public synchronized void updateSearchDropDowns(List<LogEntry> entries)
     {
         var newContexts = false;
         var newThreadNames = false;
 
-        for (final var entry : entries)
+        for (var entry : entries)
         {
             newContexts = contexts.add(entry.context().typeName()) || newContexts;
             newThreadNames = threadNames.add(entry.threadName()) || newThreadNames;
@@ -145,10 +145,10 @@ public class SearchPanel extends KivaKitPanel
 
     private void search()
     {
-        final var searchText = searchField.getText();
-        final var thread = threadDropDown.getSelectedItem();
-        final var context = contextDropDown.getSelectedItem();
-        final var messageType = messageTypeDropDown.getSelectedItem();
+        var searchText = searchField.getText();
+        var thread = threadDropDown.getSelectedItem();
+        var context = contextDropDown.getSelectedItem();
+        var messageType = messageTypeDropDown.getSelectedItem();
         if (thread != null && context != null && messageType != null)
         {
             parent.tablePanel().filter(searchText, thread.toString(), context.toString(), messageType.toString());
@@ -159,7 +159,7 @@ public class SearchPanel extends KivaKitPanel
     {
         if (searchField == null)
         {
-            final var coalescer = new EventCoalescer(Frequency.every(Duration.milliseconds(150)),
+            var coalescer = new EventCoalescer(Frequency.every(Duration.milliseconds(150)),
                     () -> SwingUtilities.invokeLater(this::search));
 
             searchField = KivaKitTheme.get().newTextField();
@@ -168,19 +168,19 @@ public class SearchPanel extends KivaKitPanel
             searchField.getDocument().addDocumentListener(new DocumentListener()
             {
                 @Override
-                public void changedUpdate(final DocumentEvent e)
+                public void changedUpdate(DocumentEvent e)
                 {
                     coalescer.startTimer();
                 }
 
                 @Override
-                public void insertUpdate(final DocumentEvent e)
+                public void insertUpdate(DocumentEvent e)
                 {
                     coalescer.startTimer();
                 }
 
                 @Override
-                public void removeUpdate(final DocumentEvent e)
+                public void removeUpdate(DocumentEvent e)
                 {
                     coalescer.startTimer();
                 }
@@ -209,13 +209,13 @@ public class SearchPanel extends KivaKitPanel
 
     private void updateContextDropDown()
     {
-        final var sorted = new ArrayList<>(contexts);
+        var sorted = new ArrayList<>(contexts);
         Collections.sort(sorted);
-        final var dropdown = contextDropDown();
-        final var selected = dropdown.getSelectedItem();
+        var dropdown = contextDropDown();
+        var selected = dropdown.getSelectedItem();
         dropdown.removeAllItems();
         dropdown.addItem(ALL_CONTEXTS);
-        for (final var name : sorted)
+        for (var name : sorted)
         {
             dropdown.addItem(name);
         }
@@ -229,13 +229,13 @@ public class SearchPanel extends KivaKitPanel
 
     private void updateThreadsDropDown()
     {
-        final var sorted = new ArrayList<>(threadNames);
+        var sorted = new ArrayList<>(threadNames);
         Collections.sort(sorted);
-        final var dropdown = threadDropDown();
-        final var selected = dropdown.getSelectedItem();
+        var dropdown = threadDropDown();
+        var selected = dropdown.getSelectedItem();
         dropdown.removeAllItems();
         dropdown.addItem(ALL_THREADS);
-        for (final var name : sorted)
+        for (var name : sorted)
         {
             dropdown.addItem(name);
         }

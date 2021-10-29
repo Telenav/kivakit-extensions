@@ -83,15 +83,15 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
     /**
      * Constructs a reader for the given input stream and CSV schema
      */
-    public CsvReader(final Resource resource,
-                     final CsvSchema schema,
-                     final char delimiter,
-                     final ProgressReporter reporter)
+    public CsvReader(Resource resource,
+                     CsvSchema schema,
+                     char delimiter,
+                     ProgressReporter reporter)
     {
         this.reporter = reporter;
         this.schema = schema;
         this.delimiter = delimiter;
-        final var reader = resource.reader(reporter).textReader();
+        var reader = resource.reader(reporter).textReader();
         if (reader == null)
         {
             throw new IllegalArgumentException("Unable to read: " + resource);
@@ -111,7 +111,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
     /**
      * Sets the CSV delimiter (it's "," by default)
      */
-    public void delimiter(final char delimiter)
+    public void delimiter(char delimiter)
     {
         this.delimiter = delimiter;
     }
@@ -129,7 +129,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
         return () -> CsvReader.this;
     }
 
-    public void quote(final char quote)
+    public void quote(char quote)
     {
         this.quote = quote;
     }
@@ -146,7 +146,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
      * Skips the given number of lines
      */
     @SuppressWarnings("UnusedReturnValue")
-    public CsvReader skipLines(final int numberOfLinesToSkip)
+    public CsvReader skipLines(int numberOfLinesToSkip)
     {
         for (var i = 0; i < numberOfLinesToSkip; i++)
         {
@@ -162,9 +162,9 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
      * @param in The input stream to read data from pointing to the start of the CSV column.
      * @return A buffer populated with the column data or null if no more data exists.
      */
-    protected String extractNextColumn(final LookAheadReader in)
+    protected String extractNextColumn(LookAheadReader in)
     {
-        final var buffer = new StringBuffer();
+        var buffer = new StringBuffer();
 
         // Handle leading white spaces.
         processLeadingSpaces(in, buffer);
@@ -181,7 +181,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
                 readColumn(in, buffer);
             }
         }
-        catch (final Exception e)
+        catch (Exception e)
         {
             problem(e, "Invalid CSV format");
             return null;
@@ -198,9 +198,9 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
     {
         if (in.hasNext())
         {
-            final var line = new CsvLine(schema, delimiter);
+            var line = new CsvLine(schema, delimiter);
             line.addListener(this);
-            final var lineNumber = in.lineNumber();
+            var lineNumber = in.lineNumber();
             line.lineNumber(lineNumber);
             if (lineNumber == 0)
             {
@@ -254,7 +254,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
      * @param in The input stream to read from pointing to the start of the spaces.
      * @param buffer The buffer to be populated with the spaces.
      */
-    protected void processLeadingSpaces(final LookAheadReader in, final StringBuffer buffer)
+    protected void processLeadingSpaces(LookAheadReader in, StringBuffer buffer)
     {
         while (in.hasNext() && in.current() == ' ')
         {
@@ -270,7 +270,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
      * @param in The input stream to read from pointing to the start of the column.
      * @param buffer The buffer to be populated with the contents of the input data.
      */
-    protected void readColumn(final LookAheadReader in, final StringBuffer buffer)
+    protected void readColumn(LookAheadReader in, StringBuffer buffer)
     {
         while (in.hasNext() && !in.atEndOfLine())
         {
@@ -299,7 +299,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
      * @param in The input stream to read from pointing to the starting quote.
      * @param buffer The buffer to be populated with the contents of the input data.
      */
-    protected void readQuotedColumn(final LookAheadReader in, final StringBuffer buffer)
+    protected void readQuotedColumn(LookAheadReader in, StringBuffer buffer)
     {
         boolean inQuotes;
 
@@ -381,7 +381,7 @@ public class CsvReader extends BaseIterator<CsvLine> implements RepeaterMixin, C
      *
      * @param in The input stream to be advanced.
      */
-    protected void skipLine(final LookAheadReader in)
+    protected void skipLine(LookAheadReader in)
     {
         while (in.hasNext())
         {

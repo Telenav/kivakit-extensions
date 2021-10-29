@@ -13,7 +13,7 @@ public class Connection
 
     private final InputStream input;
 
-    public Connection(final Port port, final InputStream input)
+    public Connection(Port port, InputStream input)
     {
         this.port = port;
         this.input = input;

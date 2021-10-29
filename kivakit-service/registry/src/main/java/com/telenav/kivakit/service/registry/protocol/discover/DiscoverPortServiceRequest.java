@@ -53,7 +53,7 @@ public class DiscoverPortServiceRequest extends BaseRequest
         return DISCOVER_PORT_SERVICE;
     }
 
-    public DiscoverPortServiceRequest port(final Port port)
+    public DiscoverPortServiceRequest port(Port port)
     {
         this.port = port;
         return this;

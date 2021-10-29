@@ -37,7 +37,7 @@ import com.telenav.lexakai.annotations.visibility.UmlExcludeSuperTypes;
 @LexakaiJavadoc(complete = true)
 public class ServiceType extends StringIdentifier
 {
-    public ServiceType(final String identifier)
+    public ServiceType(String identifier)
     {
         super(identifier);
     }

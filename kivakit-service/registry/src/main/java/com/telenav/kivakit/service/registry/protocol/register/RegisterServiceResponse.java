@@ -54,7 +54,7 @@ public class RegisterServiceResponse extends BaseResponse<Service>
         return service;
     }
 
-    public RegisterServiceResponse service(final Service service)
+    public RegisterServiceResponse service(Service service)
     {
         this.service = service;
         return this;
@@ -67,7 +67,7 @@ public class RegisterServiceResponse extends BaseResponse<Service>
     }
 
     @Override
-    protected void value(final Service value)
+    protected void value(Service value)
     {
         service = value;
     }

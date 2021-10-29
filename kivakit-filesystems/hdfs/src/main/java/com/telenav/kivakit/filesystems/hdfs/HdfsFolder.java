@@ -70,13 +70,13 @@ public class HdfsFolder implements FolderService
     @UmlAggregation
     private HdfsProxy proxy;
 
-    public HdfsFolder(final FilePath path)
+    public HdfsFolder(FilePath path)
     {
         this.path = path;
     }
 
     @Override
-    public boolean chmod(final PosixFilePermission... permissions)
+    public boolean chmod(PosixFilePermission... permissions)
     {
         return unsupported();
     }
@@ -84,11 +84,11 @@ public class HdfsFolder implements FolderService
     @Override
     public FolderService clear()
     {
-        for (final var folder : folders())
+        for (var folder : folders())
         {
             folder.clear();
         }
-        for (final var file : files())
+        for (var file : files())
         {
             file.delete();
         }
@@ -115,7 +115,7 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public HdfsFile file(final FileName name)
+    public HdfsFile file(FileName name)
     {
         return new HdfsFile(path.file(name));
     }
@@ -127,19 +127,19 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public List<FileService> files(final Matcher<FilePath> matcher)
+    public List<FileService> files(Matcher<FilePath> matcher)
     {
         return retry(() -> matching(proxy().files(pathAsString()), matcher)).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public HdfsFolder folder(final FileName name)
+    public HdfsFolder folder(FileName name)
     {
         return new HdfsFolder(path().file(name));
     }
 
     @Override
-    public HdfsFolder folder(final Folder folder)
+    public HdfsFolder folder(Folder folder)
     {
         return new HdfsFolder(path().withChild(folder.path()));
     }
@@ -151,14 +151,14 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public List<FolderService> folders(final Matcher<FilePath> matcher)
+    public List<FolderService> folders(Matcher<FilePath> matcher)
     {
         return retry(() ->
         {
-            final var files = new ArrayList<FolderService>();
-            for (final var pathAsString : proxy().folders(pathAsString()))
+            var files = new ArrayList<FolderService>();
+            for (var pathAsString : proxy().folders(pathAsString()))
             {
-                final var path = FilePath.parseFilePath(pathAsString);
+                var path = FilePath.parseFilePath(pathAsString);
                 if (matcher.matches(path))
                 {
                     files.add(new HdfsFolder(path));
@@ -172,13 +172,13 @@ public class HdfsFolder implements FolderService
     @Override
     public boolean isEmpty()
     {
-        final Iterable<FolderService> folders = folders();
+        Iterable<FolderService> folders = folders();
         if (folders != null && folders.iterator().hasNext())
         {
             return false;
         }
 
-        final Iterable<FileService> files = files();
+        Iterable<FileService> files = files();
         return files == null || !files.iterator().hasNext();
     }
 
@@ -232,13 +232,13 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public List<FileService> nestedFiles(final Matcher<FilePath> matcher)
+    public List<FileService> nestedFiles(Matcher<FilePath> matcher)
     {
         return retry(() -> matching(proxy().nestedFiles(pathAsString()), matcher)).orDefault(new ArrayList<>(), "Unable to locate files in $", this);
     }
 
     @Override
-    public List<FolderService> nestedFolders(final Matcher<FilePath> matcher)
+    public List<FolderService> nestedFolders(Matcher<FilePath> matcher)
     {
         return unsupported();
     }
@@ -246,7 +246,7 @@ public class HdfsFolder implements FolderService
     @Override
     public HdfsFolder parent()
     {
-        final var parent = path().parent();
+        var parent = path().parent();
         if (parent != null)
         {
             return new HdfsFolder(parent);
@@ -261,7 +261,7 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public boolean renameTo(final FolderService that)
+    public boolean renameTo(FolderService that)
     {
         if (isOnSameFileSystem(that))
         {
@@ -271,7 +271,7 @@ public class HdfsFolder implements FolderService
         return false;
     }
 
-    public boolean renameTo(final HdfsFolder to)
+    public boolean renameTo(HdfsFolder to)
     {
         return retry(() -> proxy().rename(pathAsString(), to.path().toString()))
                 .orDefault(false, "Unable to rename $ to $", this, to);
@@ -291,7 +291,7 @@ public class HdfsFolder implements FolderService
 
     @SuppressWarnings("EmptyTryBlock")
     @Override
-    public FileService temporaryFile(final FileName baseName)
+    public FileService temporaryFile(FileName baseName)
     {
         synchronized (temporaryLock)
         {
@@ -305,12 +305,12 @@ public class HdfsFolder implements FolderService
             }
             while (new HdfsFile(file).exists());
 
-            final var hdfsFile = new HdfsFile(file);
-            try (final var ignored = hdfsFile.openForWriting())
+            var hdfsFile = new HdfsFile(file);
+            try (var ignored = hdfsFile.openForWriting())
             {
                 // File has been created
             }
-            catch (final Exception e)
+            catch (Exception e)
             {
                 LOGGER.warning("Unable to create file $", hdfsFile);
                 return null;
@@ -320,7 +320,7 @@ public class HdfsFolder implements FolderService
     }
 
     @Override
-    public FolderService temporaryFolder(final FileName baseName)
+    public FolderService temporaryFolder(FileName baseName)
     {
         synchronized (temporaryLock)
         {
@@ -333,7 +333,7 @@ public class HdfsFolder implements FolderService
             }
             while (new HdfsFile(folder).exists());
 
-            final var hdfsFolder = new HdfsFolder(folder);
+            var hdfsFolder = new HdfsFolder(folder);
             hdfsFolder.mkdirs();
             return hdfsFolder;
         }
@@ -345,12 +345,12 @@ public class HdfsFolder implements FolderService
         return path().toString();
     }
 
-    private List<FileService> matching(final List<String> paths, final Matcher<FilePath> matcher)
+    private List<FileService> matching(List<String> paths, Matcher<FilePath> matcher)
     {
-        final var files = new ArrayList<FileService>();
-        for (final var pathAsString : paths)
+        var files = new ArrayList<FileService>();
+        for (var pathAsString : paths)
         {
-            final var path = FilePath.parseFilePath(pathAsString);
+            var path = FilePath.parseFilePath(pathAsString);
             if (matcher.matches(path))
             {
                 files.add(new HdfsFile(path));
@@ -373,7 +373,7 @@ public class HdfsFolder implements FolderService
         return proxy;
     }
 
-    private <T> Unchecked<T> retry(final Unchecked<T> code)
+    private <T> Unchecked<T> retry(Unchecked<T> code)
     {
         return Retry.retry(code, 16, Duration.seconds(15), () -> proxy = null);
     }

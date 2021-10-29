@@ -27,23 +27,23 @@ public class IntArrayArrayTest extends PrimitiveCollectionsUnitTest
     @Test
     public void test()
     {
-        final var store = new IntArrayArray("test");
+        var store = new IntArrayArray("test");
         store.initialize();
-        final var a = ints(10, 20, 30, 40);
-        final var aIndex = store.add(a);
-        final var b = ints(2, 3, 5, 7, 11);
-        final var bIndex = store.add(b);
+        var a = ints(10, 20, 30, 40);
+        var aIndex = store.add(a);
+        var b = ints(2, 3, 5, 7, 11);
+        var bIndex = store.add(b);
         ensureEqual(a, store.get(aIndex));
         ensureEqual(b, store.get(bIndex));
         ensureEqual(4, store.length(aIndex));
         ensureEqual(5, store.length(bIndex));
     }
 
-    private IntArray ints(final int... values)
+    private IntArray ints(int... values)
     {
-        final var array = new IntArray("test");
+        var array = new IntArray("test");
         array.initialize();
-        for (final int value : values)
+        for (int value : values)
         {
             array.add(value);
         }

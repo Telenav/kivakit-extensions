@@ -33,10 +33,10 @@ public class Java2dShapes
     /**
      * @return The given non-null shapes combined into a compound {@link Area} shape
      */
-    public static Area combine(final Shape... shapes)
+    public static Area combine(Shape... shapes)
     {
-        final var area = new Area();
-        for (final var shape : shapes)
+        var area = new Area();
+        for (var shape : shapes)
         {
             if (shape != null)
             {
@@ -49,10 +49,10 @@ public class Java2dShapes
     /**
      * @return The given non-null shapes combined into a compound {@link Area} shape
      */
-    public static Area combine(final Collection<Shape> shapes)
+    public static Area combine(Collection<Shape> shapes)
     {
-        final var area = new Area();
-        for (final var shape : shapes)
+        var area = new Area();
+        for (var shape : shapes)
         {
             if (shape != null)
             {

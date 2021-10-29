@@ -53,7 +53,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public Validator validator(final ValidationType type)
+        public Validator validator(ValidationType type)
         {
             return new BaseValidator()
             {
@@ -117,7 +117,7 @@ public class MicroservletTest extends UnitTest
         @Expose
         int b;
 
-        public TestPostRequest(final int a, final int b)
+        public TestPostRequest(int a, int b)
         {
             this.a = a;
             this.b = b;
@@ -149,7 +149,7 @@ public class MicroservletTest extends UnitTest
         {
         }
 
-        public TestResponse(final int result)
+        public TestResponse(int result)
         {
             this.result = result;
         }
@@ -157,7 +157,7 @@ public class MicroservletTest extends UnitTest
 
     public static class TestRestService extends MicroserviceRestService
     {
-        public TestRestService(final Microservice microservice)
+        public TestRestService(Microservice microservice)
         {
             super(microservice);
         }
@@ -182,7 +182,7 @@ public class MicroservletTest extends UnitTest
     {
         Registry.of(this).register(new MicroserviceSettings().port(8086).grpcPort(8087));
 
-        final var microservice = listenTo(new TestMicroservice());
+        var microservice = listenTo(new TestMicroservice());
 
         KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087" }));
         microservice.waitForReady();

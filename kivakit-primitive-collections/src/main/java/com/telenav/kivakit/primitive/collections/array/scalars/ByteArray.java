@@ -61,7 +61,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
     /** True if this array is a read-only sub-array of some parent array */
     private boolean isSubArray;
 
-    public ByteArray(final String objectName)
+    public ByteArray(String objectName)
     {
         super(objectName);
     }
@@ -74,7 +74,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final byte value)
+    public boolean add(byte value)
     {
         assert isWritable();
 
@@ -91,7 +91,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      *
      * @return True if the value was added
      */
-    public boolean add(final long value)
+    public boolean add(long value)
     {
         assert isWritable();
 
@@ -131,7 +131,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * Sets the element at the given index to the current null value
      */
     @Override
-    public void clear(final int index)
+    public void clear(int index)
     {
         set(index, nullByte());
         cursor(index + 1);
@@ -141,7 +141,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * Positions the cursor
      */
     @Override
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
@@ -159,11 +159,11 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof ByteArray)
         {
-            final var that = (ByteArray) object;
+            var that = (ByteArray) object;
             if (size() == that.size())
             {
                 return iterator().identical(that.iterator());
@@ -176,7 +176,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * @return The value at the given logical index.
      */
     @Override
-    public byte get(final int index)
+    public byte get(int index)
     {
         assert index >= 0;
         assert index < size();
@@ -187,7 +187,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
     /**
      * @return The value at the given index as an unsigned value
      */
-    public int getUnsigned(final int index)
+    public int getUnsigned(int index)
     {
         return get(index) & 0xff;
     }
@@ -208,7 +208,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
     }
 
     @Override
-    public Method onCompress(final Method method)
+    public Method onCompress(Method method)
     {
         if (size() < data.length)
         {
@@ -231,7 +231,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -244,7 +244,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * @return The value at the given index or the null value if the index is out of bounds
      */
     @Override
-    public byte safeGet(final int index)
+    public byte safeGet(int index)
     {
         assert index >= 0;
         if (index < size())
@@ -255,7 +255,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
@@ -264,12 +264,12 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * Sets a value at the given index, possibly extending the array size.
      */
     @Override
-    public void set(final int index, final byte value)
+    public void set(int index, byte value)
     {
         assert isWritable();
 
-        final var newSize = index + 1;
-        final var size = size();
+        var newSize = index + 1;
+        var size = size();
 
         // If the given index is past the end of storage,
         if (newSize > data.length)
@@ -291,7 +291,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, (byte) value);
     }
@@ -300,10 +300,10 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * @return A read-only sub-array which shares underlying data with this array.
      */
     @Override
-    public ByteArray sublist(final int offset, final int size)
+    public ByteArray sublist(int offset, int size)
     {
-        final var outer = this;
-        final var array = new ByteArray(objectName() + "[" + offset + " - " + (offset + size - 1) + "]")
+        var outer = this;
+        var array = new ByteArray(objectName() + "[" + offset + " - " + (offset + size - 1) + "]")
         {
             @Override
             public byte[] asArray()
@@ -313,7 +313,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
             }
 
             @Override
-            public byte get(final int index)
+            public byte get(int index)
             {
                 return outer.get(offset + index);
             }
@@ -324,13 +324,13 @@ public class ByteArray extends PrimitiveArray implements ByteList
             }
 
             @Override
-            public byte safeGet(final int index)
+            public byte safeGet(int index)
             {
                 return outer.safeGet(offset + index);
             }
 
             @Override
-            public void set(final int index, final byte value)
+            public void set(int index, byte value)
             {
                 outer.set(offset + index, value);
             }
@@ -366,7 +366,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -382,7 +382,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
     }
 
     /** Resizes this dynamic array's capacity to the given size */
-    private void resize(final int size)
+    private void resize(int size)
     {
         assert size >= size();
 
@@ -390,7 +390,7 @@ public class ByteArray extends PrimitiveArray implements ByteList
         if (isWritable())
         {
             // so create a new byte[] of the right size,
-            final var data = newByteArray(this, "resized", size);
+            var data = newByteArray(this, "resized", size);
 
             // copy the data from this array to the new array,
             System.arraycopy(this.data, 0, data, 0, size());

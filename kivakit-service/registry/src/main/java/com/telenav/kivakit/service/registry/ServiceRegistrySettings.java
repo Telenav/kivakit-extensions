@@ -102,7 +102,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter(IntegerConverter.class)
-    public ServiceRegistrySettings localServiceRegistryPort(final int localServiceRegistryPort)
+    public ServiceRegistrySettings localServiceRegistryPort(int localServiceRegistryPort)
     {
         this.localServiceRegistryPort = localServiceRegistryPort;
         return this;
@@ -121,7 +121,7 @@ public class ServiceRegistrySettings
      */
     public Port network()
     {
-        final var port = JavaVirtualMachine.property
+        var port = JavaVirtualMachine.property
                 (
                         "KIVAKIT_NETWORK_SERVICE_REGISTRY_PORT",
                         "kivakit-network-service-registry.mypna.com:23575"
@@ -142,7 +142,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter(Port.Converter.class)
-    public ServiceRegistrySettings networkServiceRegistryPort(final Port networkServiceRegistryPort)
+    public ServiceRegistrySettings networkServiceRegistryPort(Port networkServiceRegistryPort)
     {
         this.networkServiceRegistryPort = networkServiceRegistryPort;
         return this;
@@ -155,7 +155,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter(Duration.Converter.class)
-    public ServiceRegistrySettings portReservationExpirationTime(final Duration portReservationExpirationTime)
+    public ServiceRegistrySettings portReservationExpirationTime(Duration portReservationExpirationTime)
     {
         this.portReservationExpirationTime = portReservationExpirationTime;
         return this;
@@ -168,7 +168,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter
-    public ServiceRegistrySettings restApiPath(final String restApiPath)
+    public ServiceRegistrySettings restApiPath(String restApiPath)
     {
         this.restApiPath = restApiPath;
         return this;
@@ -181,7 +181,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter(Frequency.Converter.class)
-    public ServiceRegistrySettings serviceLeaseRenewalFrequency(final Frequency serviceRenewalFrequency)
+    public ServiceRegistrySettings serviceLeaseRenewalFrequency(Frequency serviceRenewalFrequency)
     {
         serviceLeaseRenewalFrequency = serviceRenewalFrequency;
         return this;
@@ -194,7 +194,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter(Duration.Converter.class)
-    public ServiceRegistrySettings serviceRegistrationExpirationTime(final Duration registrationExpirationTime)
+    public ServiceRegistrySettings serviceRegistrationExpirationTime(Duration registrationExpirationTime)
     {
         serviceRegistrationExpirationTime = registrationExpirationTime;
         return this;
@@ -207,7 +207,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter(Duration.Converter.class)
-    public ServiceRegistrySettings serviceRegistryStoreExpirationTime(final Duration serviceRegistryStoreExpirationTime)
+    public ServiceRegistrySettings serviceRegistryStoreExpirationTime(Duration serviceRegistryStoreExpirationTime)
     {
         this.serviceRegistryStoreExpirationTime = serviceRegistryStoreExpirationTime;
         return this;
@@ -226,7 +226,7 @@ public class ServiceRegistrySettings
     }
 
     @KivaKitPropertyConverter(VersionConverter.class)
-    public void version(final Version version)
+    public void version(Version version)
     {
         this.version = version;
     }
@@ -234,7 +234,7 @@ public class ServiceRegistrySettings
     /**
      * <b>Not public API</b>
      */
-    Port port(final Host host)
+    Port port(Host host)
     {
         return host.http(localServiceRegistryPort());
     }

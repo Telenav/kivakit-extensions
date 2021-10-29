@@ -18,13 +18,14 @@
 
 package com.telenav.kivakit.ui.desktop.component.dialog.message;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JOptionPane;
+import java.awt.Component;
+import java.awt.GraphicsEnvironment;
 
 public class MessageBox
 {
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
-    public MessageBox(final Component parent, final String text)
+    public MessageBox(Component parent, String text)
     {
         if (GraphicsEnvironment.isHeadless())
         {
@@ -36,7 +37,7 @@ public class MessageBox
         }
     }
 
-    public MessageBox(final String text)
+    public MessageBox(String text)
     {
         this(null, text);
     }

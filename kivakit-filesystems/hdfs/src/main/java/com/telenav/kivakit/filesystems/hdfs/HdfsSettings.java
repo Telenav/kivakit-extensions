@@ -28,7 +28,8 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.visibility.UmlNotPublicApi;
 
 /**
- * Settings that must be provided by the user of {@link HdfsFileSystemService} via {@link Settings#register(Object)}.
+ * Settings that must be provided by the user of {@link HdfsFileSystemService} via {@link
+ * Settings#registerSettings(Object)}.
  *
  * <p><b>Settings</b></p>
  *
@@ -66,35 +67,35 @@ public class HdfsSettings
     }
 
     @KivaKitPropertyConverter
-    public HdfsSettings clusterName(final String clusterName)
+    public HdfsSettings clusterName(String clusterName)
     {
         this.clusterName = clusterName;
         return this;
     }
 
     @KivaKitPropertyConverter(ResourceFolder.Converter.class)
-    public HdfsSettings configurationFolder(final ResourceFolder configuration)
+    public HdfsSettings configurationFolder(ResourceFolder configuration)
     {
         configurationFolder = configuration;
         return this;
     }
 
     @KivaKitPropertyConverter(EmailAddress.Converter.class)
-    public HdfsSettings contactEmail(final EmailAddress contactEmail)
+    public HdfsSettings contactEmail(EmailAddress contactEmail)
     {
         this.contactEmail = contactEmail;
         return this;
     }
 
     @KivaKitPropertyConverter(Resource.Converter.class)
-    public HdfsSettings proxyJar(final Resource proxyJar)
+    public HdfsSettings proxyJar(Resource proxyJar)
     {
         this.proxyJar = proxyJar;
         return this;
     }
 
     @KivaKitPropertyConverter
-    public HdfsSettings username(final String username)
+    public HdfsSettings username(String username)
     {
         this.username = username;
         return this;

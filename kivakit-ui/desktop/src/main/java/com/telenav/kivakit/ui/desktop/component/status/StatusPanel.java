@@ -39,9 +39,9 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
 
     private final HealthPanel healthPanel = new HealthPanel();
 
-    public StatusPanel(final Display type)
+    public StatusPanel(Display type)
     {
-        final var logo = new KivaKitLogo(_32x32);
+        var logo = new KivaKitLogo(_32x32);
         Margins.of(5).apply(logo);
 
         theme().applyToContainerPanel(this);
@@ -69,9 +69,9 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
     }
 
     @Override
-    public void onMessage(final Message message)
+    public void onMessage(Message message)
     {
-        final var style = theme().styleMessage(message.getClass());
+        var style = theme().styleMessage(message.getClass());
         if (message instanceof Problem)
         {
             status(Duration.MAXIMUM, style, message.description());
@@ -86,31 +86,31 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
         }
     }
 
-    public void status(final Style color, final String message, final Object... arguments)
+    public void status(Style color, String message, Object... arguments)
     {
         status(Duration.seconds(15), color, message, arguments);
     }
 
-    public void status(final Duration stayFor, final Style color, final String message, final Object... arguments)
+    public void status(Duration stayFor, Style color, String message, Object... arguments)
     {
         trace(message, arguments);
-        final var formatted = Message.format(message, arguments);
+        var formatted = Message.format(message, arguments);
         if (!status.getText().equals(formatted))
         {
             color.apply(status);
             status.setText(formatted);
-            final var timer = new Timer();
+            var timer = new Timer();
             linger(stayFor, formatted, timer);
         }
     }
 
     @Override
-    public void status(final Duration stayFor, final String message, final Object... arguments)
+    public void status(Duration stayFor, String message, Object... arguments)
     {
         status(stayFor, theme().styleMessage(Information.class), message, arguments);
     }
 
-    public void update(final JavaVirtualMachineHealth health)
+    public void update(JavaVirtualMachineHealth health)
     {
         healthPanel.update(health);
     }
@@ -120,7 +120,7 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
         return KivaKitTheme.get();
     }
 
-    private void linger(final Duration stayFor, final String formatted, final Timer timer)
+    private void linger(Duration stayFor, String formatted, Timer timer)
     {
         if (stayFor != null && !stayFor.equals(Duration.MAXIMUM))
         {

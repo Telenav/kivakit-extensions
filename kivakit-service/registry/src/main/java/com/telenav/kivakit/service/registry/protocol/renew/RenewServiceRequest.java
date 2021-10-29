@@ -44,7 +44,7 @@ public class RenewServiceRequest extends BaseRequest
     @OpenApiIncludeMember(description = "The service to renew")
     private Service service;
 
-    public RenewServiceRequest(final Service service)
+    public RenewServiceRequest(Service service)
     {
         this.service = service;
     }

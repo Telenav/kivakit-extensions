@@ -11,7 +11,7 @@ import static com.telenav.kivakit.ui.desktop.layout.Spacing.MANUAL_SPACING;
  */
 public class ToolPanel extends KivaKitPanel
 {
-    public ToolPanel(final ClientLogPanel parent)
+    public ToolPanel(ClientLogPanel parent)
     {
         setOpaque(false);
 

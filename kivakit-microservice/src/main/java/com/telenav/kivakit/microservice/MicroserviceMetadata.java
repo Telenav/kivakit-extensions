@@ -17,7 +17,7 @@ public class MicroserviceMetadata
     {
     }
 
-    protected MicroserviceMetadata(final MicroserviceMetadata that)
+    protected MicroserviceMetadata(MicroserviceMetadata that)
     {
         name = that.name;
         description = that.description;
@@ -39,23 +39,23 @@ public class MicroserviceMetadata
         return version;
     }
 
-    public MicroserviceMetadata withDescription(final String description)
+    public MicroserviceMetadata withDescription(String description)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.description = description;
         return copy;
     }
 
-    public MicroserviceMetadata withName(final String name)
+    public MicroserviceMetadata withName(String name)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.name = name;
         return copy;
     }
 
-    public MicroserviceMetadata withVersion(final Version version)
+    public MicroserviceMetadata withVersion(Version version)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.version = version;
         return copy;
     }

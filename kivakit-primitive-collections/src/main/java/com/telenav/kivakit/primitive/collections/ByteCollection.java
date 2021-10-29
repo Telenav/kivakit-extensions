@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.primitive.collections;
 
-import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.interfaces.naming.NamedObject;
 import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
 import com.telenav.kivakit.kernel.interfaces.numeric.Sized;
 import com.telenav.kivakit.primitive.collections.iteration.ByteIterable;
 import com.telenav.kivakit.primitive.collections.iteration.ByteIterator;
+import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveCollection;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.List;
@@ -69,9 +69,9 @@ public interface ByteCollection extends ByteIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default boolean addAll(final byte[] that)
+    default boolean addAll(byte[] that)
     {
-        for (final var value : that)
+        for (var value : that)
         {
             if (!add(value))
             {
@@ -84,9 +84,9 @@ public interface ByteCollection extends ByteIterable, Sized, NamedObject
     /**
      * Adds the given quantizable values
      */
-    default void addAll(final List<? extends Quantizable> values)
+    default void addAll(List<? extends Quantizable> values)
     {
-        for (final Quantizable value : values)
+        for (Quantizable value : values)
         {
             add((byte) value.quantum());
         }
@@ -95,9 +95,9 @@ public interface ByteCollection extends ByteIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default boolean addAll(final ByteIterable that)
+    default boolean addAll(ByteIterable that)
     {
-        final var iterator = that.iterator();
+        var iterator = that.iterator();
         while (iterator.hasNext())
         {
             if (!add(iterator.next()))
@@ -120,7 +120,7 @@ public interface ByteCollection extends ByteIterable, Sized, NamedObject
      * @return True if this collection contains the given value. Some collections may choose not to implement this
      * method if the search is too inefficient.
      */
-    default boolean contains(final byte value)
+    default boolean contains(byte value)
     {
         return unsupported();
     }
@@ -128,9 +128,9 @@ public interface ByteCollection extends ByteIterable, Sized, NamedObject
     /**
      * @return True if this collection contains all the values in the given collection
      */
-    default boolean containsAll(final ByteCollection that)
+    default boolean containsAll(ByteCollection that)
     {
-        final var values = that.iterator();
+        var values = that.iterator();
         while (values.hasNext())
         {
             if (!contains(values.next()))
@@ -166,7 +166,7 @@ public interface ByteCollection extends ByteIterable, Sized, NamedObject
      *
      * @return True if the value was removed
      */
-    default boolean remove(final byte value)
+    default boolean remove(byte value)
     {
         return unsupported();
     }

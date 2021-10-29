@@ -36,13 +36,13 @@ public class ServiceTypeGsonSerializer extends PrimitiveGsonSerializer<ServiceTy
     }
 
     @Override
-    protected ServiceType toObject(final String identifier)
+    protected ServiceType toObject(String identifier)
     {
         return new ServiceType(identifier);
     }
 
     @Override
-    protected String toPrimitive(final ServiceType type)
+    protected String toPrimitive(ServiceType type)
     {
         return type.identifier();
     }

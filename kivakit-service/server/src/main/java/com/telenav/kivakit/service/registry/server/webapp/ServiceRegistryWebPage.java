@@ -39,15 +39,15 @@ public class ServiceRegistryWebPage extends WebPage
 {
     public ServiceRegistryWebPage()
     {
-        final var network = ServiceRegistryServer.get().isNetwork();
-        final var title = network ? "Network Service Registry" : "Service Registry";
+        var network = ServiceRegistryServer.get().isNetwork();
+        var title = network ? "Network Service Registry" : "Service Registry";
         add(new Label("page-title", "KivaKit " + title));
         add(new HeaderPanel("header", ServiceRegistryServer.get().version(), title));
         add(new WebMarkupContainer("menu"));
     }
 
     @Override
-    public void renderHead(final IHeaderResponse response)
+    public void renderHead(IHeaderResponse response)
     {
         response.render(CssHeaderItem.forReference(KivaKitTheme.kivakitColors()));
         response.render(CssHeaderItem.forReference(KivaKitTheme.kivakitTheme()));

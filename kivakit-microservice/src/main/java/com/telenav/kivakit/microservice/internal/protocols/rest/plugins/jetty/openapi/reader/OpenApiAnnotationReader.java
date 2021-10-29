@@ -15,14 +15,14 @@ import java.util.function.Function;
 public class OpenApiAnnotationReader extends BaseComponent
 {
     public <T extends Annotation> String readAnnotationValue(
-            final Class<? extends MicroservletRequest> requestType,
-            final String method,
-            final Class<T> annotationClass,
-            final Function<T, String> function)
+            Class<? extends MicroservletRequest> requestType,
+            String method,
+            Class<T> annotationClass,
+            Function<T, String> function)
     {
         try
         {
-            final var annotation = requestType
+            var annotation = requestType
                     .getMethod(method)
                     .getAnnotation(annotationClass);
 
@@ -36,7 +36,7 @@ public class OpenApiAnnotationReader extends BaseComponent
             }
             return null;
         }
-        catch (final NoSuchMethodException e)
+        catch (NoSuchMethodException e)
         {
             problem(e, "No $() method in $", method, requestType);
             return null;

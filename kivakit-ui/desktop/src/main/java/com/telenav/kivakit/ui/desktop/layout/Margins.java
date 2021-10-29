@@ -1,6 +1,7 @@
 package com.telenav.kivakit.ui.desktop.layout;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 
@@ -9,37 +10,37 @@ import javax.swing.border.CompoundBorder;
  */
 public class Margins
 {
-    public static Margins bottomOf(final int size)
+    public static Margins bottomOf(int size)
     {
         return new Margins(size, 0, 0, 0);
     }
 
-    public static Margins leftAndRightOf(final int size)
+    public static Margins leftAndRightOf(int size)
     {
         return new Margins(0, size, 0, size);
     }
 
-    public static Margins leftOf(final int size)
+    public static Margins leftOf(int size)
     {
         return new Margins(0, size, 0, 0);
     }
 
-    public static Margins of(final int size)
+    public static Margins of(int size)
     {
         return new Margins(size, size, size, size);
     }
 
-    public static Margins rightOf(final int size)
+    public static Margins rightOf(int size)
     {
         return new Margins(0, 0, 0, size);
     }
 
-    public static Margins topAndBottomOf(final int size)
+    public static Margins topAndBottomOf(int size)
     {
         return new Margins(size, 0, size, 0);
     }
 
-    public static Margins topOf(final int size)
+    public static Margins topOf(int size)
     {
         return new Margins(0, 0, size, 0);
     }
@@ -52,7 +53,7 @@ public class Margins
 
     private int right;
 
-    private Margins(final int bottom, final int left, final int top, final int right)
+    private Margins(int bottom, int left, int top, int right)
     {
         this.bottom = bottom;
         this.left = left;
@@ -60,7 +61,7 @@ public class Margins
         this.right = right;
     }
 
-    public Margins apply(final JComponent component)
+    public Margins apply(JComponent component)
     {
         component.setBorder(border());
         return this;
@@ -71,47 +72,47 @@ public class Margins
         return BorderFactory.createEmptyBorder(top, left, bottom, right);
     }
 
-    public Margins bottom(final int bottom)
+    public Margins bottom(int bottom)
     {
         this.bottom = bottom;
         return this;
     }
 
-    public Border inside(final Border outside)
+    public Border inside(Border outside)
     {
         return new CompoundBorder(outside, border());
     }
 
-    public Margins insideExisting(final JComponent component)
+    public Margins insideExisting(JComponent component)
     {
         component.setBorder(inside(component.getBorder()));
         return this;
     }
 
-    public Margins left(final int left)
+    public Margins left(int left)
     {
         this.left = left;
         return this;
     }
 
-    public Border outside(final Border inside)
+    public Border outside(Border inside)
     {
         return new CompoundBorder(border(), inside);
     }
 
-    public Margins outsideExisting(final JComponent component)
+    public Margins outsideExisting(JComponent component)
     {
         component.setBorder(outside(component.getBorder()));
         return this;
     }
 
-    public Margins right(final int right)
+    public Margins right(int right)
     {
         this.right = right;
         return this;
     }
 
-    public Margins size(final int size)
+    public Margins size(int size)
     {
         bottom = size;
         left = size;
@@ -120,7 +121,7 @@ public class Margins
         return this;
     }
 
-    public Margins top(final int top)
+    public Margins top(int top)
     {
         this.top = top;
         return this;

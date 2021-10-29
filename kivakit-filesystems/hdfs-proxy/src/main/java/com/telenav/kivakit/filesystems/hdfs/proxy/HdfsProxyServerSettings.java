@@ -51,7 +51,7 @@ public class HdfsProxyServerSettings
     }
 
     @KivaKitPropertyConverter(ResourceFolder.Converter.class)
-    public HdfsProxyServerSettings configurationFolder(final ResourceFolder configuration)
+    public HdfsProxyServerSettings configurationFolder(ResourceFolder configuration)
     {
         configurationFolder = configuration;
         return this;
@@ -63,7 +63,7 @@ public class HdfsProxyServerSettings
     }
 
     @KivaKitPropertyConverter(UserGroupInformationConverter.class)
-    public HdfsProxyServerSettings user(final UserGroupInformation user)
+    public HdfsProxyServerSettings user(UserGroupInformation user)
     {
         this.user = user;
         return this;

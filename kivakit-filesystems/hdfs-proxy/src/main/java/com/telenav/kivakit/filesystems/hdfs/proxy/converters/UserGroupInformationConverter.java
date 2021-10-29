@@ -31,13 +31,13 @@ import org.apache.hadoop.security.UserGroupInformation;
 @LexakaiJavadoc(complete = true)
 public class UserGroupInformationConverter extends BaseStringConverter<UserGroupInformation>
 {
-    public UserGroupInformationConverter(final Listener listener)
+    public UserGroupInformationConverter(Listener listener)
     {
         super(listener);
     }
 
     @Override
-    protected UserGroupInformation onToValue(final String value)
+    protected UserGroupInformation onToValue(String value)
     {
         return UserGroupInformation.createRemoteUser(value);
     }

@@ -45,7 +45,7 @@ public interface PrimitiveScalarMultiMap
     /**
      * @return A list of primitives for the given key, or null if there is none
      */
-    default PrimitiveList getSignedPrimitiveList(final long key)
+    default PrimitiveList getSignedPrimitiveList(long key)
     {
         return getPrimitiveList(key);
     }

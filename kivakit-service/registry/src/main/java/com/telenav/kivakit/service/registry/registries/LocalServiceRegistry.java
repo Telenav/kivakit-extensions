@@ -44,7 +44,7 @@ public class LocalServiceRegistry extends BaseServiceRegistry
     /** The first port to allocate at, normally near the start of the ephemeral range */
     private int firstPort;
 
-    public LocalServiceRegistry(final int firstPort)
+    public LocalServiceRegistry(int firstPort)
     {
         this.firstPort = firstPort;
     }
@@ -57,7 +57,7 @@ public class LocalServiceRegistry extends BaseServiceRegistry
      * {@inheritDoc}
      */
     @Override
-    public @NotNull Result<Service> register(final Service service)
+    public @NotNull Result<Service> register(Service service)
     {
         return lock().write(() ->
         {
@@ -98,7 +98,7 @@ public class LocalServiceRegistry extends BaseServiceRegistry
     }
 
     @Override
-    public @NotNull Result<Service> renew(final Service service)
+    public @NotNull Result<Service> renew(Service service)
     {
         return lock().write(() ->
         {
@@ -131,7 +131,7 @@ public class LocalServiceRegistry extends BaseServiceRegistry
                 // would be to carefully select a range of ephemeral port numbers that no other application
                 // on the host will try to use.
 
-                final var port = Host.local().port(portNumber);
+                var port = Host.local().port(portNumber);
                 if (port.isAvailable())
                 {
                     return port;

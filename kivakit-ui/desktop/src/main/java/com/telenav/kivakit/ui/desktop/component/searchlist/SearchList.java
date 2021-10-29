@@ -36,14 +36,14 @@ public class SearchList<T> extends KivaKitPanel
 
     private final StringConverter<T> converter;
 
-    public SearchList(final StringConverter<T> converter)
+    public SearchList(StringConverter<T> converter)
     {
         this.converter = converter;
 
         list = configure(new JList<>());
         list.setModel(new DefaultListModel<>());
 
-        final var scroll = new JScrollPane(list, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
+        var scroll = new JScrollPane(list, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setPreferredSize(new Dimension(1000, 1000));
         scroll.setMinimumSize(new Dimension(150, 150));
 
@@ -55,25 +55,25 @@ public class SearchList<T> extends KivaKitPanel
         searchField.getDocument().addDocumentListener(new DocumentListener()
         {
             @Override
-            public void changedUpdate(final DocumentEvent e)
+            public void changedUpdate(DocumentEvent e)
             {
                 filter();
             }
 
             @Override
-            public void insertUpdate(final DocumentEvent e)
+            public void insertUpdate(DocumentEvent e)
             {
                 filter();
             }
 
             @Override
-            public void removeUpdate(final DocumentEvent e)
+            public void removeUpdate(DocumentEvent e)
             {
                 filter();
             }
         });
 
-        final var searchTools = new HorizontalBox(Spacing.MANUAL_SPACING, 24)
+        var searchTools = new HorizontalBox(Spacing.MANUAL_SPACING, 24)
                 .add(new MagnifyingGlass())
                 .add(searchField);
 
@@ -82,11 +82,11 @@ public class SearchList<T> extends KivaKitPanel
                 .add(scroll);
     }
 
-    public void addSelectionListener(final Callback<T> selectionListener)
+    public void addSelectionListener(Callback<T> selectionListener)
     {
         list.addListSelectionListener((event) ->
         {
-            final var selected = list.getSelectedValue();
+            var selected = list.getSelectedValue();
             if (selected != null)
             {
                 selectionListener.callback(selected);
@@ -94,16 +94,16 @@ public class SearchList<T> extends KivaKitPanel
         });
     }
 
-    public void elements(final List<T> elements)
+    public void elements(List<T> elements)
     {
         this.elements = elements;
 
-        final var model = (DefaultListModel<T>) list.getModel();
+        var model = (DefaultListModel<T>) list.getModel();
         model.removeAllElements();
         model.addAll(elements);
     }
 
-    public void select(final T value)
+    public void select(T value)
     {
         list.setSelectedValue(value, true);
     }
@@ -114,7 +114,7 @@ public class SearchList<T> extends KivaKitPanel
     }
 
     @Override
-    public void setEnabled(final boolean enabled)
+    public void setEnabled(boolean enabled)
     {
         list.setEnabled(enabled);
         searchField.setEnabled(enabled);
@@ -122,18 +122,18 @@ public class SearchList<T> extends KivaKitPanel
 
     private void filter()
     {
-        final var model = (DefaultListModel<T>) list.getModel();
+        var model = (DefaultListModel<T>) list.getModel();
         if (model != null && elements != null)
         {
             model.removeAllElements();
-            final String filter = searchField.getText();
+            String filter = searchField.getText();
             if (Strings.isEmpty(filter))
             {
                 model.addAll(elements);
             }
             else
             {
-                final var match = filter.toLowerCase();
+                var match = filter.toLowerCase();
 
                 model.addAll(elements.stream()
                         .filter(item -> converter.unconvert(item).toLowerCase().startsWith(match))
@@ -142,7 +142,7 @@ public class SearchList<T> extends KivaKitPanel
                 model.addAll(elements.stream()
                         .filter(item ->
                         {
-                            final var string = converter.unconvert(item).toLowerCase();
+                            var string = converter.unconvert(item).toLowerCase();
                             return string.contains(match) && !string.startsWith(filter);
                         })
                         .collect(Collectors.toList()));

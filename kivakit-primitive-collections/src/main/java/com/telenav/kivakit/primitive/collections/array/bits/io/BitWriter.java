@@ -72,7 +72,7 @@ public interface BitWriter extends AutoCloseable
     /** For subclass to handle closing the output */
     void onClose();
 
-    default void write(final long value, final int bits)
+    default void write(long value, int bits)
     {
         var mask = 1L << (bits - 1);
         for (var i = 0; i < bits; i++)
@@ -87,7 +87,7 @@ public interface BitWriter extends AutoCloseable
      */
     boolean writeBit(boolean bit);
 
-    default void writeByte(final byte value)
+    default void writeByte(byte value)
     {
         write(value, 8);
     }
@@ -95,10 +95,10 @@ public interface BitWriter extends AutoCloseable
     /**
      * Writes the given value using the small bit count if it will fit, otherwise the big bit count
      */
-    default void writeFlexibleInt(final int smallBitCount, final int bigBitCount, final int value)
+    default void writeFlexibleInt(int smallBitCount, int bigBitCount, int value)
     {
         assert smallBitCount < bigBitCount;
-        final var isSmall = value < (1 << smallBitCount);
+        var isSmall = value < (1 << smallBitCount);
         writeBit(isSmall);
         if (isSmall)
         {
@@ -110,15 +110,15 @@ public interface BitWriter extends AutoCloseable
         }
     }
 
-    default void writeInt(final int value)
+    default void writeInt(int value)
     {
         write(value, 32);
     }
 
-    default void writeString(final String value)
+    default void writeString(String value)
     {
-        final var bytes = value.getBytes(StandardCharsets.UTF_8);
-        final var length = Math.min(MAXIMUM_LENGTH, bytes.length);
+        var bytes = value.getBytes(StandardCharsets.UTF_8);
+        var length = Math.min(MAXIMUM_LENGTH, bytes.length);
         if (length < EXTENDED_LENGTH)
         {
             write(length, 8);

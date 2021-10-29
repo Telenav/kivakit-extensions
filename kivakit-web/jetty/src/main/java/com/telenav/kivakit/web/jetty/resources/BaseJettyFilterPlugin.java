@@ -32,7 +32,7 @@ import java.util.EnumSet;
  */
 public abstract class BaseJettyFilterPlugin extends BaseJettyRequestHandler
 {
-    public BaseJettyFilterPlugin(final String name)
+    public BaseJettyFilterPlugin(String name)
     {
         super(name);
     }

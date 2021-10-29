@@ -127,7 +127,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     {
     }
 
-    public Service application(final Application.Identifier application)
+    public Service application(Application.Identifier application)
     {
         this.application = application;
         return this;
@@ -140,7 +140,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     }
 
     @Override
-    public String asString(final StringFormat format)
+    public String asString(StringFormat format)
     {
         switch (format.identifier())
         {
@@ -153,7 +153,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     }
 
     @Override
-    public int compareTo(@NotNull final Service that)
+    public int compareTo(@NotNull Service that)
     {
         return Long.compare(port.number(), that.port.number());
     }
@@ -164,11 +164,11 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     }
 
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof Service)
         {
-            final Service that = (Service) object;
+            Service that = (Service) object;
             return application.equals(that.application) && type.equals(that.type) && port.equals(that.port());
         }
         return false;
@@ -186,7 +186,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
         return health;
     }
 
-    public Service health(final JavaVirtualMachineHealth health)
+    public Service health(JavaVirtualMachineHealth health)
     {
         this.health = health;
         return this;
@@ -194,8 +194,8 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
 
     public String hostAndApplication()
     {
-        final var host = port().host();
-        final var hostName = host.isLocal()
+        var host = port().host();
+        var hostName = host.isLocal()
                 ? ""
                 : host.name() + ":";
 
@@ -214,7 +214,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
         return !isUnbound();
     }
 
-    public boolean isSame(final Service that)
+    public boolean isSame(Service that)
     {
         return application.equals(that.application) && type.equals(that.type);
     }
@@ -244,13 +244,13 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
         return metadata;
     }
 
-    public Service metadata(final ServiceMetadata metadata)
+    public Service metadata(ServiceMetadata metadata)
     {
         this.metadata = metadata;
         return this;
     }
 
-    public Service port(final Port port)
+    public Service port(Port port)
     {
         this.port = port;
         return this;
@@ -265,7 +265,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
         return port;
     }
 
-    public Service renewedAt(final Time renewedAt)
+    public Service renewedAt(Time renewedAt)
     {
         this.renewedAt = renewedAt.asMilliseconds();
         return this;
@@ -282,7 +282,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
         return scope;
     }
 
-    public Service scope(final Scope scope)
+    public Service scope(Scope scope)
     {
         this.scope = scope;
         return this;
@@ -294,7 +294,7 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
         return new ObjectFormatter(this).toString(SINGLE_LINE);
     }
 
-    public Service type(final ServiceType type)
+    public Service type(ServiceType type)
     {
         this.type = type;
         return this;

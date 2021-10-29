@@ -73,7 +73,7 @@ public class GitHubTree extends BaseComponent
             if (entryType(entry) == type)
             {
                 //  get the entry path
-                final String entryPath = entry.getPath();
+                String entryPath = entry.getPath();
 
                 // and if it starts with the given path,
                 if (entryPath.startsWith(path))
@@ -120,7 +120,7 @@ public class GitHubTree extends BaseComponent
         }
     }
 
-    private EntryType entryType(final GHTreeEntry entry)
+    private EntryType entryType(GHTreeEntry entry)
     {
         switch (entry.getType())
         {

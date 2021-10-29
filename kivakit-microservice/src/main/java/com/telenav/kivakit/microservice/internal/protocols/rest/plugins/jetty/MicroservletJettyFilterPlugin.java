@@ -70,7 +70,7 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
     /**
      * @param application The REST application
      */
-    public MicroservletJettyFilterPlugin(final MicroserviceRestService application)
+    public MicroservletJettyFilterPlugin(MicroserviceRestService application)
     {
         super(application.getClass().getSimpleName());
 
@@ -98,8 +98,8 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
     /**
      * Forwards requests to mount microservlets to the filter holder
      */
-    public void mount(final MicroservletRestPath path,
-                      final Microservlet<?, ?> microservlet)
+    public void mount(MicroservletRestPath path,
+                      Microservlet<?, ?> microservlet)
     {
         filterHolder.mount(path, microservlet);
     }

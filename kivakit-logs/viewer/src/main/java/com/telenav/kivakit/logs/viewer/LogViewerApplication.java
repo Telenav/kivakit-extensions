@@ -39,7 +39,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.maximumSwitchParser;
  */
 public class LogViewerApplication extends Application
 {
-    public static void main(final String[] arguments)
+    public static void main(String[] arguments)
     {
         new LogViewerApplication().run(arguments);
     }
@@ -59,14 +59,14 @@ public class LogViewerApplication extends Application
     @Override
     protected void onRun()
     {
-        final var icon = ImageResource.of(getClass(), "kivakit-128.png").image();
+        var icon = ImageResource.of(getClass(), "kivakit-128.png").image();
         Taskbar.getTaskbar().setIconImage(icon);
 
-        final var configuration = PropertyMap.create();
+        var configuration = PropertyMap.create();
         configuration.put("maximum-entries", get(MAXIMUM_ENTRIES).toString());
 
         // Create and show client log
-        final var log = new ClientLog();
+        var log = new ClientLog();
         log.configure(configuration);
         log.show("KivaKit - Log Viewer", icon);
     }

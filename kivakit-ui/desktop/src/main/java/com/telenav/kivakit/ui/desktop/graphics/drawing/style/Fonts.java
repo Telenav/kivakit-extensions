@@ -39,9 +39,9 @@ import static java.awt.font.TextAttribute.WEIGHT_LIGHT;
  */
 public class Fonts
 {
-    public static Font component(final int size)
+    public static Font component(int size)
     {
-        final Map<TextAttribute, Object> attributes = new HashMap<>();
+        Map<TextAttribute, Object> attributes = new HashMap<>();
 
         attributes.put(FAMILY, "Open Sans,Avenir,Nunito,Arial,Helvetica,SansSerif");
         attributes.put(WEIGHT, WEIGHT_LIGHT);
@@ -50,10 +50,10 @@ public class Fonts
         return Font.getFont(attributes);
     }
 
-    public static Font fixedWidth(final int style, final int size)
+    public static Font fixedWidth(int style, int size)
     {
-        final var fonts = Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
-        for (final var at : new String[]
+        var fonts = Arrays.asList(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
+        for (var at : new String[]
                 {
                         "Monaco",
                         "Consolas",

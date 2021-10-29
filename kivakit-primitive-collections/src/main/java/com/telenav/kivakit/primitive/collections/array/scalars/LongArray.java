@@ -66,35 +66,35 @@ public final class LongArray extends PrimitiveArray implements LongList
     {
         private final Separators separators;
 
-        public Converter(final Listener listener, final Separators separators)
+        public Converter(Listener listener, Separators separators)
         {
             super(listener);
             this.separators = separators;
         }
 
         @Override
-        protected LongArray onToValue(final String value)
+        protected String onToString(LongArray array)
         {
-            final var elements = StringList.split(value, separators.current());
-            final var array = new LongArray("converted");
-            array.initialize();
-            for (final var element : elements)
-            {
-                array.add(Long.parseLong(element));
-            }
-            return array;
-        }
-
-        @Override
-        protected String onToString(final LongArray array)
-        {
-            final var strings = new StringList(Maximum.maximum(array.size()));
-            final var values = array.iterator();
+            var strings = new StringList(Maximum.maximum(array.size()));
+            var values = array.iterator();
             while (values.hasNext())
             {
                 strings.add(Long.toString(values.next()));
             }
             return strings.join(separators.current());
+        }
+
+        @Override
+        protected LongArray onToValue(String value)
+        {
+            var elements = StringList.split(value, separators.current());
+            var array = new LongArray("converted");
+            array.initialize();
+            for (var element : elements)
+            {
+                array.add(Long.parseLong(element));
+            }
+            return array;
         }
     }
 
@@ -113,19 +113,19 @@ public final class LongArray extends PrimitiveArray implements LongList
     /** True if this array is a read-only sub-array of some parent array */
     private boolean isSubArray;
 
-    public LongArray(final String objectName)
+    public LongArray(String objectName)
     {
         super(objectName);
     }
 
-    protected LongArray()
+    private LongArray()
     {
     }
 
     /**
      * Constructor for constructing read-only sub-arrays that share data with their parent.
      */
-    private LongArray(final String name, final long[] data, final int offset, final int size)
+    private LongArray(String name, long[] data, int offset, int size)
     {
         this(name);
 
@@ -140,7 +140,7 @@ public final class LongArray extends PrimitiveArray implements LongList
      * Adds a value, advancing the add cursor
      */
     @Override
-    public boolean add(final long value)
+    public boolean add(long value)
     {
         assert isWritable();
 
@@ -176,7 +176,7 @@ public final class LongArray extends PrimitiveArray implements LongList
      * Sets the element at the given index to the current null value
      */
     @Override
-    public void clear(final int index)
+    public void clear(int index)
     {
         set(index, nullLong());
     }
@@ -185,7 +185,7 @@ public final class LongArray extends PrimitiveArray implements LongList
      * Positions the add cursor
      */
     @Override
-    public void cursor(final int cursor)
+    public void cursor(int cursor)
     {
         this.cursor = cursor;
     }
@@ -203,11 +203,11 @@ public final class LongArray extends PrimitiveArray implements LongList
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof LongArray)
         {
-            final var that = (LongArray) object;
+            var that = (LongArray) object;
             if (size() == that.size())
             {
                 return iterator().identical(that.iterator());
@@ -220,7 +220,7 @@ public final class LongArray extends PrimitiveArray implements LongList
      * @return The value at the given logical index.
      */
     @Override
-    public long get(final int index)
+    public long get(int index)
     {
         assert index >= 0;
         assert index < size();
@@ -238,7 +238,7 @@ public final class LongArray extends PrimitiveArray implements LongList
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (size() < data.length)
         {
@@ -252,7 +252,17 @@ public final class LongArray extends PrimitiveArray implements LongList
      * {@inheritDoc}
      */
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void onInitialize()
+    {
+        super.onInitialize();
+        data = newLongArray(this, "allocated");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -266,7 +276,7 @@ public final class LongArray extends PrimitiveArray implements LongList
      * @return The value at the given index or the null value if the index is out of bounds
      */
     @Override
-    public long safeGet(final int index)
+    public long safeGet(int index)
     {
         if (index >= 0 && index < size())
         {
@@ -276,7 +286,7 @@ public final class LongArray extends PrimitiveArray implements LongList
     }
 
     @Override
-    public long safeGetPrimitive(final int index)
+    public long safeGetPrimitive(int index)
     {
         return safeGet(index);
     }
@@ -285,12 +295,12 @@ public final class LongArray extends PrimitiveArray implements LongList
      * Sets a value at the given index, possibly extending the array size.
      */
     @Override
-    public void set(final int index, final long value)
+    public void set(int index, long value)
     {
         assert isWritable();
 
-        final var newSize = index + 1;
-        final var size = size();
+        var newSize = index + 1;
+        var size = size();
 
         // If the given index is past the end of storage,
         if (newSize > data.length)
@@ -314,7 +324,7 @@ public final class LongArray extends PrimitiveArray implements LongList
     /**
      * Merges the given value into the value at the given index using a mask and then the bitwise "or" operator.
      */
-    public void setBits(final int index, final long mask, final long value)
+    public void setBits(int index, long mask, long value)
     {
         assert isWritable();
 
@@ -333,7 +343,7 @@ public final class LongArray extends PrimitiveArray implements LongList
     }
 
     @Override
-    public void setPrimitive(final int index, final long value)
+    public void setPrimitive(int index, long value)
     {
         set(index, value);
     }
@@ -341,9 +351,9 @@ public final class LongArray extends PrimitiveArray implements LongList
     /**
      * @return A read-only sub-array which shares underlying data with this array.
      */
-    public LongArray subArray(final int index, final int size)
+    public LongArray subArray(int index, int size)
     {
-        final var array = new LongArray(objectName(), data, offset + index, size);
+        var array = new LongArray(objectName(), data, offset + index, size);
         array.initialSize(0);
         array.initialize();
         array.data = data;
@@ -364,7 +374,7 @@ public final class LongArray extends PrimitiveArray implements LongList
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -374,16 +384,6 @@ public final class LongArray extends PrimitiveArray implements LongList
         kryo.writeObject(output, cursor);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-        data = newLongArray(this, "allocated");
-    }
-
     /** Returns true if this is not a read-only sub-array */
     private boolean isWritable()
     {
@@ -391,7 +391,7 @@ public final class LongArray extends PrimitiveArray implements LongList
     }
 
     /** Resizes this dynamic array to the given size */
-    private void resize(final int size)
+    private void resize(int size)
     {
         assert size >= size();
 
@@ -399,7 +399,7 @@ public final class LongArray extends PrimitiveArray implements LongList
         if (isWritable())
         {
             // so create a new long[] of the right size,
-            final var data = newLongArray(this, "resized", size);
+            var data = newLongArray(this, "resized", size);
 
             // copy the data from this array to the new array,
             System.arraycopy(this.data, 0, data, 0, size());

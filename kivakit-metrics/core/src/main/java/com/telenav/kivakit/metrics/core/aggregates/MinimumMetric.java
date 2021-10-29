@@ -5,7 +5,7 @@ import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
 
 public class MinimumMetric<T extends Quantizable> extends AggregateQuantumMetric<T>
 {
-    public MinimumMetric(final MapFactory<Double, T> factory)
+    public MinimumMetric(MapFactory<Double, T> factory)
     {
         super(factory);
     }

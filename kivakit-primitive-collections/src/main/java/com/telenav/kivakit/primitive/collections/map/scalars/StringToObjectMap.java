@@ -69,12 +69,12 @@ public final class StringToObjectMap<T> extends PrimitiveMap
     /** The values */
     private T[] values;
 
-    public StringToObjectMap(final String objectName)
+    public StringToObjectMap(String objectName)
     {
         super(objectName);
     }
 
-    protected StringToObjectMap()
+    private StringToObjectMap()
     {
     }
 
@@ -100,7 +100,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
     /**
      * @return True if this map contains the given key
      */
-    public boolean containsKey(final String key)
+    public boolean containsKey(String key)
     {
         if (compressionMethod() == CompressibleCollection.Method.FREEZE)
         {
@@ -117,7 +117,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      */
     @SuppressWarnings("unchecked")
     @Override
-    public boolean equals(final Object object)
+    public boolean equals(Object object)
     {
         if (object instanceof StringToObjectMap)
         {
@@ -125,16 +125,16 @@ public final class StringToObjectMap<T> extends PrimitiveMap
             {
                 return true;
             }
-            final var that = (StringToObjectMap<T>) object;
+            var that = (StringToObjectMap<T>) object;
             if (size() != that.size())
             {
                 return false;
             }
-            final var keys = keys();
+            var keys = keys();
             while (keys.hasNext())
             {
-                final var key = keys.next();
-                final var value = get(key);
+                var key = keys.next();
+                var value = get(key);
                 if (!Objects.equal(value, that.get(key)))
                 {
                     return false;
@@ -149,11 +149,11 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      * @return The value for the given key. The returned value should be checked with {@link #isNull(int)} to determine
      * if it represents a null value.
      */
-    public T get(final String key)
+    public T get(String key)
     {
         if (compressionMethod() == CompressibleCollection.Method.FREEZE)
         {
-            final var index = Arrays.binarySearch(keys, key);
+            var index = Arrays.binarySearch(keys, key);
             return index < 0 ? null : values[index];
         }
         else
@@ -193,7 +193,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
     }
 
     @Override
-    public CompressibleCollection.Method onCompress(final CompressibleCollection.Method method)
+    public CompressibleCollection.Method onCompress(CompressibleCollection.Method method)
     {
         if (method == CompressibleCollection.Method.RESIZE)
         {
@@ -201,9 +201,9 @@ public final class StringToObjectMap<T> extends PrimitiveMap
         }
         else
         {
-            final var frozenKeys = newStringArray(this, "froze", size());
-            final T[] frozenValues = newObjectArray(this, "froze", size());
-            final var keys = keys();
+            var frozenKeys = newStringArray(this, "froze", size());
+            T[] frozenValues = newObjectArray(this, "froze", size());
+            var keys = keys();
             for (var i = 0; keys.hasNext(); i++)
             {
                 frozenKeys[i] = keys.next();
@@ -220,9 +220,21 @@ public final class StringToObjectMap<T> extends PrimitiveMap
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onInitialize()
+    {
+        super.onInitialize();
+
+        keys = newStringArray(this, "allocated");
+        values = newObjectArray(this, "allocated");
+    }
+
+    /**
      * Stores the given value under the given key
      */
-    public void put(final String key, final T value)
+    public void put(String key, T value)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
@@ -232,7 +244,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
         }
 
         // Get the index to put at
-        final var index = index(keys, key);
+        var index = index(keys, key);
 
         // If the slot at the given index is empty
         if (isEmpty(keys[index]))
@@ -254,7 +266,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void read(final Kryo kryo, final Input input)
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -267,12 +279,12 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      *
      * @return True if the key was remove, false if it could not be found
      */
-    public boolean remove(final String key)
+    public boolean remove(String key)
     {
         assert compressionMethod() != CompressibleCollection.Method.FREEZE;
 
         // Get index of key
-        final var index = index(keys, key);
+        var index = index(keys, key);
 
         // If the key was found,
         if (!isEmpty(keys[index]))
@@ -320,7 +332,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      * {@inheritDoc}
      */
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -333,10 +345,10 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected void copy(final PrimitiveMap uncast)
+    protected void copy(PrimitiveMap uncast)
     {
         super.copy(uncast);
-        final var that = (StringToObjectMap<T>) uncast;
+        var that = (StringToObjectMap<T>) uncast;
         keys = that.keys;
         values = that.values;
     }
@@ -346,15 +358,15 @@ public final class StringToObjectMap<T> extends PrimitiveMap
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected void copyEntries(final PrimitiveMap uncast, final ProgressReporter reporter)
+    protected void copyEntries(PrimitiveMap uncast, ProgressReporter reporter)
     {
-        final var that = (StringToObjectMap<T>) uncast;
-        final var indexes = nonEmptyIndexes(that.keys);
+        var that = (StringToObjectMap<T>) uncast;
+        var indexes = nonEmptyIndexes(that.keys);
         while (indexes.hasNext())
         {
-            final var index = indexes.next();
-            final var key = that.keys[index];
-            final var value = that.values[index];
+            var index = indexes.next();
+            var key = that.keys[index];
+            var value = that.values[index];
             if (key != null && value != null)
             {
                 put(key, value);
@@ -370,18 +382,6 @@ public final class StringToObjectMap<T> extends PrimitiveMap
     protected PrimitiveMap newMap()
     {
         return new StringToObjectMap<T>(objectName());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void onInitialize()
-    {
-        super.onInitialize();
-
-        keys = newStringArray(this, "allocated");
-        values = newObjectArray(this, "allocated");
     }
 
     /**
@@ -415,7 +415,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
             {
                 if (nextIndex != nullIndex())
                 {
-                    final var result = nextIndex;
+                    var result = nextIndex;
                     nextIndex = findNext();
                     return result;
                 }
@@ -426,7 +426,7 @@ public final class StringToObjectMap<T> extends PrimitiveMap
             {
                 while (index < keys.length)
                 {
-                    final var key = keys[index++];
+                    var key = keys[index++];
                     if (!isEmpty(key))
                     {
                         return index - 1;

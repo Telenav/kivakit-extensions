@@ -11,25 +11,25 @@ public class TotalCountMetric extends TotalMetric<Count>
     }
 
     @Override
-    public TotalCountMetric description(final String description)
+    public TotalCountMetric description(String description)
     {
         return (TotalCountMetric) super.description(description);
     }
 
     @Override
-    public TotalCountMetric name(final String name)
+    public TotalCountMetric name(String name)
     {
         return (TotalCountMetric) super.name(name);
     }
 
     @Override
-    public TotalCountMetric type(final MetricType type)
+    public TotalCountMetric type(MetricType type)
     {
         return (TotalCountMetric) super.type(type);
     }
 
     @Override
-    public TotalCountMetric unit(final String unit)
+    public TotalCountMetric unit(String unit)
     {
         return (TotalCountMetric) super.unit(unit);
     }

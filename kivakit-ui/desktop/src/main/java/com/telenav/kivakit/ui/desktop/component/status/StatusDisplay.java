@@ -11,7 +11,7 @@ public interface StatusDisplay
 {
     void status(Duration displayTime, String message, Object... arguments);
 
-    default void status(final String message, final Object... arguments)
+    default void status(String message, Object... arguments)
     {
         status(Duration.seconds(5), message, arguments);
     }

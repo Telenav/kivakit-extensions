@@ -124,7 +124,7 @@ public class HuffmanStringListCodecTest extends DataCompressionUnitTest
     }
 
     @Override
-    protected void test(final Codec<String> codec, final List<String> symbols)
+    protected void test( Codec<String> codec, final List<String> symbols)
     {
         final var data = encode(codec, symbols);
         final var decoded = new ArrayList<>();

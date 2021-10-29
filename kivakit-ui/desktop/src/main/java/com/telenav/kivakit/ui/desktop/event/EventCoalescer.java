@@ -26,7 +26,7 @@ public class EventCoalescer
 {
     private Timer timer;
 
-    public EventCoalescer(final Frequency frequency, final Runnable callback)
+    public EventCoalescer(Frequency frequency, Runnable callback)
     {
         timer = new Timer((int) frequency.cycleLength().asMilliseconds(), event ->
         {

@@ -125,14 +125,12 @@ public class ServiceRegistryRestResource extends BaseRestResource
             @Parameter(name = "request",
                        description = "The scope within which to locate applications",
                        required = true,
-                       schema = @Schema(implementation = DiscoverApplicationsRequest.class))
-
-            final DiscoverApplicationsRequest request
+                       schema = @Schema(implementation = DiscoverApplicationsRequest.class)) DiscoverApplicationsRequest request
     )
     {
         narrate("Received discover applications request: $", request);
-        final var scope = request.scope();
-        final var response = new DiscoverApplicationsResponse();
+        var scope = request.scope();
+        var response = new DiscoverApplicationsResponse();
         response.result(registry.discoverApplications(scope));
         narrate("Returning discover applications response: $", response);
         return response;
@@ -171,13 +169,11 @@ public class ServiceRegistryRestResource extends BaseRestResource
             @Parameter(name = "request",
                        description = "The specific host and port to examine",
                        required = true,
-                       schema = @Schema(implementation = DiscoverPortServiceRequest.class))
-
-            final DiscoverPortServiceRequest request
+                       schema = @Schema(implementation = DiscoverPortServiceRequest.class)) DiscoverPortServiceRequest request
     )
     {
         narrate("Received discover port service request $:", request);
-        final var response = new DiscoverPortServiceResponse();
+        var response = new DiscoverPortServiceResponse();
         response.result(registry.discoverPortService(request.port()));
         narrate("Returning discover port service response $:", response);
         return response;
@@ -214,13 +210,11 @@ public class ServiceRegistryRestResource extends BaseRestResource
             @Parameter(name = "request",
                        description = "The criteria for services to locate",
                        required = true,
-                       schema = @Schema(implementation = DiscoverServicesRequest.class))
-
-            final DiscoverServicesRequest request
+                       schema = @Schema(implementation = DiscoverServicesRequest.class)) DiscoverServicesRequest request
     )
     {
         narrate("Received discover services request: $", request);
-        final var response = new DiscoverServicesResponse();
+        var response = new DiscoverServicesResponse();
         switch (request.type())
         {
             case ALL_SERVICES:
@@ -263,11 +257,11 @@ public class ServiceRegistryRestResource extends BaseRestResource
                     description = "Updates the network registry with changes from a local registry",
                     hidden = true
             )
-    public NetworkRegistryUpdateResponse onNetworkRegistryUpdate(final NetworkRegistryUpdateRequest request)
+    public NetworkRegistryUpdateResponse onNetworkRegistryUpdate(NetworkRegistryUpdateRequest request)
     {
         narrate("Received network registry update: $", request);
-        final var service = request.service();
-        final boolean succeeded;
+        var service = request.service();
+        boolean succeeded;
         if (service.isBound())
         {
             succeeded = registry.addOrUpdate(service).succeeded();
@@ -278,7 +272,7 @@ public class ServiceRegistryRestResource extends BaseRestResource
             succeeded = false;
         }
 
-        final var response = new NetworkRegistryUpdateResponse();
+        var response = new NetworkRegistryUpdateResponse();
         response.result(Result.succeeded(succeeded));
         narrate("Returning network registry response: $", response);
         return response;
@@ -317,14 +311,12 @@ public class ServiceRegistryRestResource extends BaseRestResource
             @Parameter(name = "request",
                        description = "The service to register",
                        required = true,
-                       schema = @Schema(implementation = RegisterServiceRequest.class))
-
-            final RegisterServiceRequest request
+                       schema = @Schema(implementation = RegisterServiceRequest.class)) RegisterServiceRequest request
     )
     {
         narrate("Received register service request: $", request);
-        final var service = registry.register(request.service());
-        final var response = new RegisterServiceResponse();
+        var service = registry.register(request.service());
+        var response = new RegisterServiceResponse();
         response.result(service);
         narrate("Returning register service response: $", response);
         return response;
@@ -353,11 +345,11 @@ public class ServiceRegistryRestResource extends BaseRestResource
                     description = "Renews the service's registry entry and port lease",
                     hidden = true
             )
-    public RenewServiceResponse onRenewService(final RenewServiceRequest request)
+    public RenewServiceResponse onRenewService(RenewServiceRequest request)
     {
         narrate("Received renew service request: $", request);
-        final var service = registry.renew(request.service());
-        final var response = new RenewServiceResponse();
+        var service = registry.renew(request.service());
+        var response = new RenewServiceResponse();
         response.result(service);
         narrate("Returning renew service response: $", response);
         return response;
@@ -380,7 +372,7 @@ public class ServiceRegistryRestResource extends BaseRestResource
             )
     public Response onVersion()
     {
-        final String output = "KivaKit Service Registry "
+        String output = "KivaKit Service Registry "
                 + Settings.of(this).requireSettings(ServiceRegistrySettings.class).version()
                 + "\n"
                 + "KivaKit "

@@ -8,7 +8,7 @@ open module kivakit.filesystems.s3fs
     // KivaKit
     requires kivakit.configuration;
     requires kivakit.test;
-    
+
     // S3
     requires software.amazon.awssdk.services.s3;
     requires software.amazon.awssdk.core;

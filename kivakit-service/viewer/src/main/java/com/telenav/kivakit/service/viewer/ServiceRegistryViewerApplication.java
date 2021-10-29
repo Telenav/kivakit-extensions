@@ -45,7 +45,7 @@ import static com.telenav.kivakit.service.registry.Scope.Type.scopeTypeSwitchPar
 @SuppressWarnings("UseOfSystemOutOrSystemErr")
 public class ServiceRegistryViewerApplication extends Application
 {
-    public static void main(final String[] arguments)
+    public static void main(String[] arguments)
     {
         new ServiceRegistryViewerApplication().run(arguments);
     }
@@ -65,34 +65,34 @@ public class ServiceRegistryViewerApplication extends Application
         showCommandLine();
 
         // Connect to service registry server
-        final var client = listenTo(new ServiceRegistryClient());
+        var client = listenTo(new ServiceRegistryClient());
 
         // register a server log
         if (DEBUG.isDebugOn())
         {
-            final var metadata = new ServiceMetadata()
+            var metadata = new ServiceMetadata()
                     .description("Server log for " + identifier())
                     .kivakitVersion(KivaKit.get().kivakitVersion())
                     .version(KivaKit.get().projectVersion());
-            final var serverLog = client.register(Scope.localhost(), new ServiceType("kivakit-server-log"), metadata);
+            var serverLog = client.register(Scope.localhost(), new ServiceType("kivakit-server-log"), metadata);
             System.out.println("Registered service " + serverLog);
         }
 
         // and show available services
-        final var services = client.discoverServices(Scope.scope(get(SCOPE_TYPE)));
+        var services = client.discoverServices(Scope.scope(get(SCOPE_TYPE)));
         if (services.failed())
         {
             Message.println("\nUnable to find services: $\n", services.why().formatted(WITH_EXCEPTION));
         }
         else
         {
-            final var lines = new StringList();
+            var lines = new StringList();
             final var format = "%-24s %-8s %-32s %-48s %s";
             lines.add("");
             lines.add(String.format(format, "renewed", "port", "service", "application", "description"));
             lines.add(AsciiArt.line(200));
-            final var sorted = ObjectList.objectList(services.get()).sorted();
-            for (final var service : sorted)
+            var sorted = ObjectList.objectList(services.get()).sorted();
+            for (var service : sorted)
             {
                 lines.add(String.format(format, service.renewedAt().elapsedSince() + " ago", service.port().number(), service.type(), service.application(), service.metadata().description()));
             }

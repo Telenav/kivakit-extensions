@@ -45,15 +45,15 @@ public interface LongList extends LongCollection, PrimitiveList
      * @param target The target to search for
      * @return The index of the given target. The return value will be &lt; 0 if the target was not found.
      */
-    default int binarySearch(final long target)
+    default int binarySearch(long target)
     {
         var low = 0;
         var high = size() - 1;
 
         while (low <= high)
         {
-            final var middle = (low + high) / 2;
-            final var value = get(middle);
+            var middle = (low + high) / 2;
+            var value = get(middle);
 
             if (value < target)
             {
@@ -74,7 +74,7 @@ public interface LongList extends LongCollection, PrimitiveList
     /**
      * Sets the value at the given index to the {@link #nullLong()} value
      */
-    default void clear(final int index)
+    default void clear(int index)
     {
         set(index, nullLong());
     }
@@ -106,13 +106,13 @@ public interface LongList extends LongCollection, PrimitiveList
      * {@inheritDoc}
      */
     @Override
-    default long getPrimitive(final int index)
+    default long getPrimitive(int index)
     {
         return get(index);
     }
 
     @Override
-    default boolean isPrimitiveNull(final long value)
+    default boolean isPrimitiveNull(long value)
     {
         return isNull(value);
     }

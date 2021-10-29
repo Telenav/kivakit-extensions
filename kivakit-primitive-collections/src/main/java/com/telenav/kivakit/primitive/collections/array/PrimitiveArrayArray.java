@@ -35,7 +35,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 @UmlClassDiagram(diagram = DiagramPrimitiveArrayArray.class)
 public abstract class PrimitiveArrayArray extends PrimitiveArray
 {
-    protected PrimitiveArrayArray(final String name)
+    protected PrimitiveArrayArray(String name)
     {
         super(name);
     }

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.models.media.Schema;
 
 public class AnnotationReader
 {
-    public void copyToSchema(final Member member, final Schema schema)
+    public void copyToSchema(Member member, Schema<?> schema)
     {
         var annotation = member.annotation(OpenApiIncludeMember.class);
         if (annotation != null)

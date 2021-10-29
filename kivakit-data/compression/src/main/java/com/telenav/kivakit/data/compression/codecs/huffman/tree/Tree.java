@@ -41,11 +41,11 @@ public abstract class Tree<Symbol> implements Comparable<Tree<Symbol>>
     /**
      * @return The Huffman tree for the given set of encoded symbols
      */
-    public static <Symbol> Tree<Symbol> tree(final Symbols<Symbol> symbols)
+    public static <Symbol> Tree<Symbol> tree(Symbols<Symbol> symbols)
     {
         // Add a forest of leaves to a priority queue
-        final var queue = new PriorityQueue<Tree<Symbol>>();
-        for (final var symbol : symbols.encoded())
+        var queue = new PriorityQueue<Tree<Symbol>>();
+        for (var symbol : symbols.encoded())
         {
             if (symbol.frequency() > 0)
             {
@@ -56,8 +56,8 @@ public abstract class Tree<Symbol> implements Comparable<Tree<Symbol>>
         // then build from the bottom to the top until we've got just one tree.
         while (queue.size() > 1)
         {
-            final var a = queue.poll();
-            final var b = queue.poll();
+            var a = queue.poll();
+            var b = queue.poll();
 
             assert a != null;
             assert b != null;
@@ -74,7 +74,7 @@ public abstract class Tree<Symbol> implements Comparable<Tree<Symbol>>
     /**
      * @param frequency The frequency of this sub-tree
      */
-    Tree(final long frequency)
+    Tree(long frequency)
     {
         this.frequency = frequency;
     }
@@ -88,13 +88,13 @@ public abstract class Tree<Symbol> implements Comparable<Tree<Symbol>>
      */
     public Set<CodedSymbol<Symbol>> codedSymbols()
     {
-        final var symbols = new HashSet<CodedSymbol<Symbol>>();
+        var symbols = new HashSet<CodedSymbol<Symbol>>();
         codedSymbols(this, symbols);
         return symbols;
     }
 
     @Override
-    public int compareTo(final Tree<Symbol> that)
+    public int compareTo(Tree<Symbol> that)
     {
         return Long.compare(frequency, that.frequency);
     }
@@ -102,7 +102,7 @@ public abstract class Tree<Symbol> implements Comparable<Tree<Symbol>>
     /**
      * @return A symbol decoded from the given input using this Huffman tree
      */
-    public abstract CodedSymbol<Symbol> decode(final BitReader bits);
+    public abstract CodedSymbol<Symbol> decode(BitReader bits);
 
     /**
      * Walks the tree, assigning Huffman codes to symbols based on the path through the tree
@@ -111,11 +111,11 @@ public abstract class Tree<Symbol> implements Comparable<Tree<Symbol>>
      */
     public Map<CodedSymbol<Symbol>, Code> encode()
     {
-        final var codes = new HashMap<CodedSymbol<Symbol>, Code>();
+        var codes = new HashMap<CodedSymbol<Symbol>, Code>();
         codes(codes, this, "");
-        for (final var symbol : codes.keySet())
+        for (var symbol : codes.keySet())
         {
-            final var code = codes.get(symbol);
+            var code = codes.get(symbol);
             ensure(code != null, "Symbol '$' does not have a code", symbol);
             symbol.code(code);
         }
@@ -132,41 +132,41 @@ public abstract class Tree<Symbol> implements Comparable<Tree<Symbol>>
         return height(this);
     }
 
-    private void codedSymbols(final Tree<Symbol> tree, final Set<CodedSymbol<Symbol>> symbols)
+    private void codedSymbols(Tree<Symbol> tree, Set<CodedSymbol<Symbol>> symbols)
     {
         if (tree instanceof Leaf)
         {
-            final var leaf = (Leaf<Symbol>) tree;
+            var leaf = (Leaf<Symbol>) tree;
             symbols.add(leaf.symbol());
         }
         if (tree instanceof Node)
         {
-            final var node = (Node<Symbol>) tree;
+            var node = (Node<Symbol>) tree;
             codedSymbols(node.left, symbols);
             codedSymbols(node.right, symbols);
         }
     }
 
-    private void codes(final Map<CodedSymbol<Symbol>, Code> codes, final Tree<Symbol> tree, final String prefix)
+    private void codes(Map<CodedSymbol<Symbol>, Code> codes, Tree<Symbol> tree, String prefix)
     {
         if (tree instanceof Leaf)
         {
-            final var leaf = (Leaf<Symbol>) tree;
+            var leaf = (Leaf<Symbol>) tree;
             codes.put(leaf.symbol(), new Code(prefix));
         }
         else if (tree instanceof Node)
         {
-            final var node = (Node<Symbol>) tree;
+            var node = (Node<Symbol>) tree;
             codes(codes, node.left, prefix + "0");
             codes(codes, node.right, prefix + "1");
         }
     }
 
-    private int height(final Tree<Symbol> tree)
+    private int height(Tree<Symbol> tree)
     {
         if (tree instanceof Node)
         {
-            final var node = (Node<Symbol>) tree;
+            var node = (Node<Symbol>) tree;
             return 1 + Math.max(height(node.left), height(node.right));
         }
         return 0;

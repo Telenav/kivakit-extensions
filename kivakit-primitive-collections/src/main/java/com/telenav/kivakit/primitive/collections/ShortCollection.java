@@ -69,9 +69,9 @@ public interface ShortCollection extends ShortIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default void addAll(final short[] that)
+    default void addAll(short[] that)
     {
-        for (final var value : that)
+        for (var value : that)
         {
             add(value);
         }
@@ -80,9 +80,9 @@ public interface ShortCollection extends ShortIterable, Sized, NamedObject
     /**
      * Adds the given quantizable values
      */
-    default void addAll(final List<? extends Quantizable> values)
+    default void addAll(List<? extends Quantizable> values)
     {
-        for (final Quantizable value : values)
+        for (Quantizable value : values)
         {
             add((short) value.quantum());
         }
@@ -91,9 +91,9 @@ public interface ShortCollection extends ShortIterable, Sized, NamedObject
     /**
      * Adds all values in the given array
      */
-    default boolean addAll(final ShortCollection that)
+    default boolean addAll(ShortCollection that)
     {
-        final var iterator = that.iterator();
+        var iterator = that.iterator();
         while (iterator.hasNext())
         {
             if (!add(iterator.next()))
@@ -116,7 +116,7 @@ public interface ShortCollection extends ShortIterable, Sized, NamedObject
      * @return True if this collection contains the given value. Some collections may choose not to implement this
      * method if the search is too inefficient.
      */
-    default boolean contains(final short value)
+    default boolean contains(short value)
     {
         return unsupported();
     }
@@ -124,9 +124,9 @@ public interface ShortCollection extends ShortIterable, Sized, NamedObject
     /**
      * @return True if this collection contains all the values in the given collection
      */
-    default boolean containsAll(final ShortCollection that)
+    default boolean containsAll(ShortCollection that)
     {
-        final var values = that.iterator();
+        var values = that.iterator();
         while (values.hasNext())
         {
             if (!contains(values.next()))
@@ -162,7 +162,7 @@ public interface ShortCollection extends ShortIterable, Sized, NamedObject
      *
      * @return True if the value was removed
      */
-    default boolean remove(final short value)
+    default boolean remove(short value)
     {
         return unsupported();
     }

@@ -14,7 +14,7 @@ import java.util.Collection;
 public class OpenApiTypeFilter implements Filter<Type<?>>
 {
     @Override
-    public boolean accepts(final Type<?> type)
+    public boolean accepts(Type<?> type)
     {
         return type.isPrimitive()
                 || type.is(String.class)

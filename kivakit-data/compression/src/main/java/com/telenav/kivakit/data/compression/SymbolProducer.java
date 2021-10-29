@@ -32,12 +32,12 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
  */
 public interface SymbolProducer<Symbol>
 {
-    static <Symbol> SymbolProducer<Symbol> fromList(final List<Symbol> symbols)
+    static <Symbol> SymbolProducer<Symbol> fromList(List<Symbol> symbols)
     {
         return new SymbolProducer<>()
         {
             @Override
-            public Symbol get(final int ordinal)
+            public Symbol get(int ordinal)
             {
                 return ordinal < size() ? symbols.get(ordinal) : null;
             }
@@ -50,7 +50,7 @@ public interface SymbolProducer<Symbol>
         };
     }
 
-    static <Symbol> SymbolProducer<Symbol> singleton(final Symbol symbol)
+    static <Symbol> SymbolProducer<Symbol> singleton(Symbol symbol)
     {
         return fromList(Collections.singletonList(symbol));
     }
@@ -69,7 +69,7 @@ public interface SymbolProducer<Symbol>
      * @param output The output to write the escaped symbol to
      * @param symbol The symbol to write
      */
-    default void onEscape(final ByteList output, final Symbol symbol)
+    default void onEscape(ByteList output, Symbol symbol)
     {
         unsupported();
     }

@@ -1,6 +1,6 @@
 package com.telenav.kivakit.ui.desktop.layout;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 
 /**
  * @author jonathanl (shibo)
@@ -9,20 +9,20 @@ public class VerticalBox extends JComponent
 {
     private final VerticalBoxLayout layout;
 
-    public VerticalBox(final int width)
+    public VerticalBox(int width)
     {
         layout = new VerticalBoxLayout(this);
         setOpaque(false);
         Size.widthOf(width).maximum(this);
     }
 
-    public VerticalBox add(final JComponent component)
+    public VerticalBox add(JComponent component)
     {
         layout.add(component);
         return this;
     }
 
-    public VerticalBox space(final int height)
+    public VerticalBox space(int height)
     {
         layout.space(height);
         return this;

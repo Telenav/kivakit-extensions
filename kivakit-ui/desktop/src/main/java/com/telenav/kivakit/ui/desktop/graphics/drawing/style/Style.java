@@ -87,7 +87,7 @@ public class Style
     {
     }
 
-    private Style(final Style that)
+    private Style(Style that)
     {
         fillColor = that.fillColor;
         drawColor = that.drawColor;
@@ -97,7 +97,7 @@ public class Style
         textFont = that.textFont;
     }
 
-    public Style apply(final Component component)
+    public Style apply(Component component)
     {
         applyColors(component);
         applyText(component);
@@ -105,7 +105,7 @@ public class Style
         return this;
     }
 
-    public Style applyColors(final Component component)
+    public Style applyColors(Component component)
     {
         fillColor.applyAsBackground(component);
         drawColor.applyAsForeground(component);
@@ -113,7 +113,7 @@ public class Style
         return this;
     }
 
-    public Style applyText(final Component component)
+    public Style applyText(Component component)
     {
         assert textColor != null;
         assert textFont != null;
@@ -124,19 +124,19 @@ public class Style
         return this;
     }
 
-    public Style applyTextColor(final Component component)
+    public Style applyTextColor(Component component)
     {
         textColor.applyAsForeground(component);
         return this;
     }
 
-    public Style applyTextFont(final Component component)
+    public Style applyTextFont(Component component)
     {
         component.setFont(textFont);
         return this;
     }
 
-    public Style applyToSelectionStyle(final JTextComponent component)
+    public Style applyToSelectionStyle(JTextComponent component)
     {
         fillColor.applyAsSelectionBackground(component);
         drawColor.applyAsSelectionForeground(component);
@@ -144,7 +144,7 @@ public class Style
         return this;
     }
 
-    public Style applyToSelectionStyle(final JList<?> component)
+    public Style applyToSelectionStyle(JList<?> component)
     {
         fillColor.applyAsSelectionBackground(component);
         drawColor.applyAsSelectionForeground(component);
@@ -152,7 +152,7 @@ public class Style
         return this;
     }
 
-    public Style applyToSelectionStyle(final JTable component)
+    public Style applyToSelectionStyle(JTable component)
     {
         fillColor.applyAsSelectionBackground(component);
         drawColor.applyAsSelectionForeground(component);
@@ -165,7 +165,7 @@ public class Style
         return darkened(Percent.of(10));
     }
 
-    public Style darkened(final Percent percent)
+    public Style darkened(Percent percent)
     {
         return withFillColor(fillColor.darker(percent))
                 .withDrawColor(drawColor.darker(percent))
@@ -201,13 +201,13 @@ public class Style
         return lightened(Percent.of(10));
     }
 
-    public Style lightened(final Percent percent)
+    public Style lightened(Percent percent)
     {
         return withFillColor(fillColor.brighter(percent))
                 .withDrawColor(drawColor.brighter(percent));
     }
 
-    public Shape shape(final Shape shape)
+    public Shape shape(Shape shape)
     {
         return Java2dShapes.combine(
                 fillStroke().stroked(shape),
@@ -242,54 +242,54 @@ public class Style
         return copy().withFillColor(fillColor().transparent());
     }
 
-    public Style withAlpha(final int alpha)
+    public Style withAlpha(int alpha)
     {
         return copy().withFillColor(fillColor().withAlpha(alpha));
     }
 
-    public Style withDrawColor(final Color color)
+    public Style withDrawColor(Color color)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.drawColor = color;
         return copy;
     }
 
-    public Style withDrawStroke(final Stroke stroke)
+    public Style withDrawStroke(Stroke stroke)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.drawStroke = stroke;
         return copy;
     }
 
-    public Style withFillColor(final Color fill)
+    public Style withFillColor(Color fill)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.fillColor = fill;
         return copy;
     }
 
-    public Style withFillStroke(final Stroke stroke)
+    public Style withFillStroke(Stroke stroke)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.fillStroke = stroke;
         return copy;
     }
 
-    public Style withTextColor(final Color text)
+    public Style withTextColor(Color text)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.textColor = text;
         return copy;
     }
 
-    public Style withTextFont(final Font font)
+    public Style withTextFont(Font font)
     {
-        final var copy = copy();
+        var copy = copy();
         copy.textFont = font;
         return copy;
     }
 
-    public Style withTextFontSize(final int size)
+    public Style withTextFontSize(int size)
     {
         return withTextFont(new Font(textFont.getFontName(), textFont.getStyle(), size));
     }

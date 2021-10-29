@@ -42,9 +42,9 @@ public class ClientLog extends BaseLog
     }
 
     @Override
-    public void configure(final VariableMap<String> properties)
+    public void configure(VariableMap<String> properties)
     {
-        final var maximum = properties.get("maximum-entries");
+        var maximum = properties.get("maximum-entries");
         if (maximum != null)
         {
             maximumEntries = Maximum.parse(maximum);
@@ -68,7 +68,7 @@ public class ClientLog extends BaseLog
     }
 
     @Override
-    public synchronized void onLog(final LogEntry entry)
+    public synchronized void onLog(LogEntry entry)
     {
         if (frame != null)
         {
@@ -76,7 +76,7 @@ public class ClientLog extends BaseLog
         }
     }
 
-    public void show(final String title, final Image icon)
+    public void show(String title, Image icon)
     {
         SwingUtilities.invokeLater(() -> frame = new ClientLogFrame(this, maximumEntries, title, icon, EXIT_ON_CLOSE));
     }

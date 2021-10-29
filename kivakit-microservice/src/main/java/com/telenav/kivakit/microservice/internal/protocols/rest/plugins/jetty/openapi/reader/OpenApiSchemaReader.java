@@ -58,7 +58,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
     /**
      * Adds the given model to this reader. Models found by {@link OpenApiPathReader} are added via this method.
      */
-    public OpenApiSchemaReader addModelToRead(final Type<?> model)
+    public OpenApiSchemaReader addModelToRead(Type<?> model)
     {
         ensureFalse(model.is(Class.class));
         modelsToRead.add(ensureNotNull(model));
@@ -84,10 +84,10 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      * @param type The model type
      * @return The OpenApi {@link Schema} or null if the type is ignored
      */
-    public Schema<?> readSchema(final Type<?> type)
+    public Schema<?> readSchema(Type<?> type)
     {
         // If we haven't already resolved the schema,
-        final String name = type.type().getSimpleName();
+        String name = type.type().getSimpleName();
         var resolved = resolvedSchemas.get(name);
         if (resolved == null)
         {
@@ -125,7 +125,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
                 .$ref(new ReferenceResolver().reference(Type.forClass(MicroservletErrorResponse.class)));
     }
 
-    private boolean isArrayType(final Member member)
+    private boolean isArrayType(Member member)
     {
         return member.type().isDescendantOf(Collection.class) || member.type().isArray();
     }
@@ -135,19 +135,19 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      * @param typeParameter The name of the member's type parameter (if any)
      * @return An object {@link Schema} if the given type is an array, null otherwise
      */
-    private Schema readArray(final Member member, Type<?> typeParameter)
+    private Schema readArray(Member member, Type<?> typeParameter)
     {
         ensureNotNull(member);
 
         Schema elementTypeSchema = null;
-        final Type<?> type = member.type();
+        Type<?> type = member.type();
         if (type.is(Array.class))
         {
             elementTypeSchema = readSchema(type.arrayElementType());
         }
         if (type.isDescendantOf(Collection.class))
         {
-            final Schema<?> typeParameterSchema = readSchema(typeParameter);
+            Schema<?> typeParameterSchema = readSchema(typeParameter);
             if (typeParameterSchema != null)
             {
                 elementTypeSchema = new SchemaCopier().copy(typeParameterSchema);
@@ -160,7 +160,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
 
         if (elementTypeSchema != null)
         {
-            final var schema = new ArraySchema();
+            var schema = new ArraySchema();
             schema.type("array");
             new AnnotationReader().copyToSchema(member, schema);
             return schema.items(new Schema()
@@ -175,7 +175,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
      * @param type The type to read from
      * @return The object {@link Schema}.
      */
-    private Schema<?> readObject(final Type<?> type)
+    private Schema<?> readObject(Type<?> type)
     {
         var primitiveSchema = new PrimitiveReader().readPrimitive(type);
         if (primitiveSchema != null)
@@ -183,10 +183,10 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             return primitiveSchema;
         }
 
-        final var annotation = type.annotation(OpenApiIncludeType.class);
+        var annotation = type.annotation(OpenApiIncludeType.class);
         if (annotation != null)
         {
-            final var schema = new Schema<>();
+            var schema = new Schema<>();
 
             // Add object attributes,
             schema.type("object");
@@ -204,18 +204,18 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
             }
 
             // For each property
-            final var properties = new HashMap<String, Schema>();
-            final var required = new ArrayList<String>();
-            for (final var property : type.properties(new OpenApiPropertyFilter(type)))
+            var properties = new HashMap<String, Schema>();
+            var required = new ArrayList<String>();
+            for (var property : type.properties(new OpenApiPropertyFilter(type)))
             {
                 // get the member,
                 var member = property.member();
-                final var includeAnnotation = member.annotation(OpenApiIncludeMember.class);
+                var includeAnnotation = member.annotation(OpenApiIncludeMember.class);
 
                 // and if it's a collection or array,
                 if (isArrayType(member))
                 {
-                    final var superTypeInclude = type.annotation(OpenApiIncludeMemberFromSuperType.class);
+                    var superTypeInclude = type.annotation(OpenApiIncludeMemberFromSuperType.class);
                     if (superTypeInclude != null && superTypeInclude.genericType() != null)
                     {
                         properties.put(property.name(), readArray(member, Type.forClass(superTypeInclude.genericType())));
@@ -223,7 +223,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
                     else
                     {
                         // get the generic type parameter,
-                        final var parameters = member.genericTypeParameters();
+                        var parameters = member.genericTypeParameters();
                         if (parameters.size() == 1)
                         {
                             // and add the member as an array of the type parameter type.

@@ -78,7 +78,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /** The current hashingStrategy of this map */
     private HashingStrategy hashingStrategy;
 
-    protected PrimitiveMap(final String name)
+    protected PrimitiveMap(String name)
     {
         super(name);
     }
@@ -96,7 +96,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return True if this set contains the given value
      */
-    public final boolean contains(final int[] values, final int value)
+    public final boolean contains(int[] values, int value)
     {
         if (compressionMethod() == Method.FREEZE)
         {
@@ -111,7 +111,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return True if this set contains the given value
      */
-    public final boolean contains(final long[] values, final long value)
+    public final boolean contains(long[] values, long value)
     {
         if (compressionMethod() == Method.FREEZE)
         {
@@ -126,7 +126,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return True if this set contains the given value
      */
-    public final <T> boolean contains(final T[] values, final T value)
+    public final <T> boolean contains(T[] values, T value)
     {
         if (compressionMethod() == Method.FREEZE)
         {
@@ -138,34 +138,34 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         }
     }
 
-    public boolean isEmpty(final int key)
+    public boolean isEmpty(int key)
     {
         return isNull(key) || isTombstone(key);
     }
 
-    public boolean isEmpty(final byte key)
+    public boolean isEmpty(byte key)
     {
         return isNull(key) || isTombstone(key);
     }
 
-    public boolean isEmpty(final long key)
+    public boolean isEmpty(long key)
     {
         return isNull(key) || isTombstone(key);
     }
 
-    public boolean isEmpty(final String key)
+    public boolean isEmpty(String key)
     {
         return key == null || isTombstone(key);
     }
 
     @Override
-    public Method onCompress(final Method method)
+    public Method onCompress(Method method)
     {
         if (method == Method.RESIZE)
         {
             // We temporarily use a maximum occupancy of 100% during rehashing  to ensure that
             // adding elements during the rehash for trimming a collection does not cause another resize.
-            final var maximumOccupancy = hashingStrategy().maximumOccupancy();
+            var maximumOccupancy = hashingStrategy().maximumOccupancy();
             rehash(DefaultHashingStrategy.of(count().asEstimate(), Percent._100));
             hashingStrategy(DefaultHashingStrategy.of(count().asEstimate(), maximumOccupancy));
             return Method.RESIZE;
@@ -175,7 +175,18 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     }
 
     @Override
-    public void read(final Kryo kryo, final Input input)
+    @MustBeInvokedByOverriders
+    public void onInitialize()
+    {
+        hashingStrategy = DefaultHashingStrategy.of(initialSize());
+        initialSize(hashingStrategy.recommendedSize());
+        rehashThreshold = hashingStrategy.rehashThreshold().asInt();
+
+        super.onInitialize();
+    }
+
+    @Override
+    public void read(Kryo kryo, Input input)
     {
         super.read(kryo, input);
 
@@ -184,7 +195,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     }
 
     @Override
-    public void write(final Kryo kryo, final Output output)
+    public void write(Kryo kryo, Output output)
     {
         super.write(kryo, output);
 
@@ -192,11 +203,11 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         kryo.writeObject(output, hashingStrategy);
     }
 
-    protected void compare(final PrimitiveMap that)
+    protected void compare(PrimitiveMap that)
     {
     }
 
-    protected void copy(final PrimitiveMap that)
+    protected void copy(PrimitiveMap that)
     {
         super.copy(that);
 
@@ -206,23 +217,23 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         initialSize(hashingStrategy.recommendedSize());
     }
 
-    protected abstract void copyEntries(final PrimitiveMap that, final ProgressReporter reporter);
+    protected abstract void copyEntries(PrimitiveMap that, ProgressReporter reporter);
 
     /**
      * @return Hash of value
      */
-    protected final int hash(final int value)
+    protected final int hash(int value)
     {
-        final var hash = Hash.SEED * value;
+        var hash = Hash.SEED * value;
         return hash < 0 ? -hash : hash;
     }
 
     /**
      * @return Hash of key
      */
-    protected final int hash(final long value)
+    protected final int hash(long value)
     {
-        final var hash = (int) ((value ^ (value >>> 32)) * Hash.KNUTH_SEED);
+        var hash = (int) ((value ^ (value >>> 32)) * Hash.KNUTH_SEED);
         return hash < 0 ? -hash : hash;
     }
 
@@ -231,7 +242,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         return hashingStrategy;
     }
 
-    protected PrimitiveMap hashingStrategy(final HashingStrategy hashingStrategy)
+    protected PrimitiveMap hashingStrategy(HashingStrategy hashingStrategy)
     {
         this.hashingStrategy = hashingStrategy;
         rehashThreshold = hashingStrategy.rehashThreshold().asInt();
@@ -244,7 +255,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     protected void increaseSize()
     {
         // Increase the size
-        final int size = incrementSize();
+        int size = incrementSize();
 
         // If we're out of room,
         if (size > rehashThreshold)
@@ -254,7 +265,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         }
     }
 
-    protected final int index(final int index)
+    protected final int index(int index)
     {
         return Math.abs(index % slots());
     }
@@ -262,16 +273,16 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return The index of the given value, resolved with linear probing
      */
-    protected int index(final int[] values, final int value)
+    protected int index(int[] values, int value)
     {
         // Linear probe resolution is quite efficient due to chip caching
-        final var index = index(hash(value));
+        var index = index(hash(value));
         var tombstoneIndex = -1;
         for (var offset = 0; offset < values.length; offset++)
         {
             // If we find the value we're looking for,
-            final var at = index(index + offset);
-            final var current = values[at];
+            var at = index(index + offset);
+            var current = values[at];
             if (current == value)
             {
                 // return the index we're at
@@ -297,7 +308,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         return illegalState("Internal error (index = $, size = $). Check the null value being used to initialize keys and values.", index, size());
     }
 
-    protected final long index(final long hash)
+    protected final long index(long hash)
     {
         return Math.abs(hash % slots());
     }
@@ -305,17 +316,17 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return The index of the given value, resolved with linear probing
      */
-    protected int index(final long[] values, final long value)
+    protected int index(long[] values, long value)
     {
         // Linear probe resolution is quite efficient due to chip caching
-        final var index = index(hash(value));
+        var index = index(hash(value));
         var tombstoneIndex = -1;
-        final boolean isNull = isNull(value);
+        boolean isNull = isNull(value);
         for (var offset = 0; offset < values.length; offset++)
         {
             // If we find the value we're looking for,
-            final var at = index(index + offset);
-            final var current = values[at];
+            var at = index(index + offset);
+            var current = values[at];
             if (current == value)
             {
                 // return the index we're at
@@ -344,16 +355,16 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return The index of the given value, resolved with linear probing
      */
-    protected int index(final Object[] values, final Object value)
+    protected int index(Object[] values, Object value)
     {
         // Linear probe resolution is quite efficient due to chip caching
-        final var index = index(value.hashCode());
+        var index = index(value.hashCode());
         var tombstoneIndex = -1;
         for (var offset = 0; offset < values.length; offset++)
         {
             // If we find the value we're looking for,
-            final var at = index(index + offset);
-            final var current = values[at];
+            var at = index(index + offset);
+            var current = values[at];
             if (current == value)
             {
                 // return the index we're at
@@ -380,17 +391,17 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         return -1;
     }
 
-    protected final boolean isTombstone(final int key)
+    protected final boolean isTombstone(int key)
     {
         return key == TOMBSTONE_INT;
     }
 
-    protected final boolean isTombstone(final long key)
+    protected final boolean isTombstone(long key)
     {
         return key == TOMBSTONE_LONG;
     }
 
-    protected final boolean isTombstone(final Object key)
+    protected final boolean isTombstone(Object key)
     {
         return key == TOMBSTONE_STRING;
     }
@@ -400,7 +411,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return The indexes with values
      */
-    protected IntIterator nonEmptyIndexes(final byte[] values)
+    protected IntIterator nonEmptyIndexes(byte[] values)
     {
         return new IntIterator()
         {
@@ -419,7 +430,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             {
                 if (nextIndex != nullIndex())
                 {
-                    final var result = nextIndex;
+                    var result = nextIndex;
                     nextIndex = findNext();
                     return result;
                 }
@@ -430,7 +441,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             {
                 while (index < values.length)
                 {
-                    final int value = values[index++];
+                    int value = values[index++];
                     if (!isEmpty((byte) value))
                     {
                         return index - 1;
@@ -444,7 +455,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return The indexes with values
      */
-    protected IntIterator nonEmptyIndexes(final int[] values)
+    protected IntIterator nonEmptyIndexes(int[] values)
     {
         return new IntIterator()
         {
@@ -463,7 +474,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             {
                 if (nextIndex != nullIndex())
                 {
-                    final var result = nextIndex;
+                    var result = nextIndex;
                     nextIndex = findNext();
                     return result;
                 }
@@ -474,7 +485,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             {
                 while (index < values.length)
                 {
-                    final var value = values[index++];
+                    var value = values[index++];
                     if (!isEmpty(value))
                     {
                         return index - 1;
@@ -488,7 +499,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return The indexes with values
      */
-    protected IntIterator nonEmptyIndexes(final long[] values)
+    protected IntIterator nonEmptyIndexes(long[] values)
     {
         return new IntIterator()
         {
@@ -507,7 +518,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             {
                 if (nextIndex != nullIndex())
                 {
-                    final var result = nextIndex;
+                    var result = nextIndex;
                     nextIndex = findNext();
                     return result;
                 }
@@ -520,7 +531,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
                 {
                     while (index < values.length)
                     {
-                        final var value = values[index++];
+                        var value = values[index++];
                         if (!isEmpty(value))
                         {
                             return index - 1;
@@ -535,7 +546,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
     /**
      * @return The indexes with values
      */
-    protected <T> IntIterator nonEmptyIndexes(final T[] values)
+    protected <T> IntIterator nonEmptyIndexes(T[] values)
     {
         return new IntIterator()
         {
@@ -554,7 +565,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             {
                 if (nextIndex != -1)
                 {
-                    final var result = nextIndex;
+                    var result = nextIndex;
                     nextIndex = findNext();
                     return result;
                 }
@@ -565,7 +576,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             {
                 while (index < values.length)
                 {
-                    final var value = values[index++];
+                    var value = values[index++];
                     if (value != null)
                     {
                         return index - 1;
@@ -576,7 +587,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         };
     }
 
-    protected ByteIterator nonEmptyValues(final byte[] values)
+    protected ByteIterator nonEmptyValues(byte[] values)
     {
         return new ByteIterator()
         {
@@ -591,13 +602,13 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             @Override
             public byte next()
             {
-                final var next = indexes.next();
+                var next = indexes.next();
                 return values[next];
             }
         };
     }
 
-    protected IntIterator nonEmptyValues(final int[] values)
+    protected IntIterator nonEmptyValues(int[] values)
     {
         return new IntIterator()
         {
@@ -617,7 +628,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         };
     }
 
-    protected LongIterator nonEmptyValues(final long[] values)
+    protected LongIterator nonEmptyValues(long[] values)
     {
         return new LongIterator()
         {
@@ -632,13 +643,13 @@ public abstract class PrimitiveMap extends PrimitiveCollection
             @Override
             public long next()
             {
-                final var next = indexes.next();
+                var next = indexes.next();
                 return values[next];
             }
         };
     }
 
-    protected <T> Iterator<T> nonEmptyValues(final T[] values)
+    protected <T> Iterator<T> nonEmptyValues(T[] values)
     {
         return new Iterator<>()
         {
@@ -658,33 +669,22 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         };
     }
 
-    @Override
-    @MustBeInvokedByOverriders
-    public void onInitialize()
-    {
-        hashingStrategy = DefaultHashingStrategy.of(initialSize());
-        initialSize(hashingStrategy.recommendedSize());
-        rehashThreshold = hashingStrategy.rehashThreshold().asInt();
-
-        super.onInitialize();
-    }
-
     protected int slots()
     {
         return unsupported();
     }
 
-    protected String toString(final PrimitiveIterator keys, final PrimitiveIterator values,
-                              final MapToString toStringer)
+    protected String toString(PrimitiveIterator keys, PrimitiveIterator values,
+                              MapToString toStringer)
     {
         return Indent.by(4, toString(keys, values, ", ", 5, "\n", toStringer));
     }
 
-    protected String toString(final PrimitiveIterator keys, final PrimitiveIterator values, final String separator,
-                              final int every, final String section, final MapToString toStringer)
+    protected String toString(PrimitiveIterator keys, PrimitiveIterator values, String separator,
+                              int every, String section, MapToString toStringer)
     {
-        final var count = Math.min(size(), TO_STRING_MAXIMUM_ELEMENTS);
-        final var builder = new StringBuilder();
+        var count = Math.min(size(), TO_STRING_MAXIMUM_ELEMENTS);
+        var builder = new StringBuilder();
         if (keys != null && keys.hasNext() && values != null && values.hasNext())
         {
             for (var i = 0; keys.hasNext() && i < count; i++)
@@ -700,8 +700,8 @@ public abstract class PrimitiveMap extends PrimitiveCollection
                         builder.append(separator);
                     }
                 }
-                final var key = keys.nextLong();
-                final var value = values.nextLong();
+                var key = keys.nextLong();
+                var value = values.nextLong();
                 builder.append(toStringer.toString(key, value));
             }
         }
@@ -718,10 +718,10 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         return builder.toString();
     }
 
-    private void rehash(final HashingStrategy hasher)
+    private void rehash(HashingStrategy hasher)
     {
         // Create a new map and assign a hashing strategy with increased capacity,
-        final var copy = newMap();
+        var copy = newMap();
         copy.hashingStrategy(hasher);
 
         // but the map cannot be initialized because we need to set the right null values and initialize it ourselves
@@ -732,7 +732,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
 
         // then copy the entries from this object into the copy
         copy.initialize();
-        final var progress = size() > 10_000_000 ? Progress.create(LOGGER, "entries") : Progress.NULL;
+        var progress = size() > 10_000_000 ? Progress.create(LOGGER, "entries") : Progress.NULL;
         progress.steps(count().asMaximum());
         progress.start("Rehashing " + objectName());
         copy.copyEntries(this, progress);

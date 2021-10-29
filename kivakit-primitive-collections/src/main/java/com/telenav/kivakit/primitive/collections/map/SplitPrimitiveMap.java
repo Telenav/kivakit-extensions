@@ -27,7 +27,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @UmlClassDiagram(diagram = DiagramPrimitiveMap.class)
 public abstract class SplitPrimitiveMap extends PrimitiveMap
 {
-    protected SplitPrimitiveMap(final String name)
+    protected SplitPrimitiveMap(String name)
     {
         super(name);
     }
@@ -37,7 +37,7 @@ public abstract class SplitPrimitiveMap extends PrimitiveMap
     }
 
     @Override
-    protected final void copyEntries(final PrimitiveMap that, final ProgressReporter reporter)
+    protected final void copyEntries(PrimitiveMap that, ProgressReporter reporter)
     {
         unsupported();
     }
@@ -48,4 +48,3 @@ public abstract class SplitPrimitiveMap extends PrimitiveMap
         return unsupported();
     }
 }
-

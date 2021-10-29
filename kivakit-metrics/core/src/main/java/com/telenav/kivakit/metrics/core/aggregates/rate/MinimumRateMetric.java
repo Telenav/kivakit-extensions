@@ -11,25 +11,25 @@ public class MinimumRateMetric extends MinimumMetric<Rate>
     }
 
     @Override
-    public MinimumRateMetric description(final String description)
+    public MinimumRateMetric description(String description)
     {
         return (MinimumRateMetric) super.description(description);
     }
 
     @Override
-    public MinimumRateMetric name(final String name)
+    public MinimumRateMetric name(String name)
     {
         return (MinimumRateMetric) super.name(name);
     }
 
     @Override
-    public MinimumRateMetric type(final MetricType type)
+    public MinimumRateMetric type(MetricType type)
     {
         return (MinimumRateMetric) super.type(type);
     }
 
     @Override
-    public MinimumRateMetric unit(final String unit)
+    public MinimumRateMetric unit(String unit)
     {
         return (MinimumRateMetric) super.unit(unit);
     }

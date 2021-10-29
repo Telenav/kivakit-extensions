@@ -48,7 +48,7 @@ public class ServiceRegistryClientSettings
     private Resourceful serverJar;
 
     @KivaKitPropertyConverter(Duration.Converter.class)
-    public ServiceRegistryClientSettings accessTimeout(final Duration timeout)
+    public ServiceRegistryClientSettings accessTimeout(Duration timeout)
     {
         accessTimeout = timeout;
         return this;
@@ -61,7 +61,7 @@ public class ServiceRegistryClientSettings
     }
 
     @KivaKitPropertyConverter(HttpNetworkLocation.Converter.class)
-    public ServiceRegistryClientSettings serverJar(final Resourceful location)
+    public ServiceRegistryClientSettings serverJar(Resourceful location)
     {
         serverJar = location;
         return this;
