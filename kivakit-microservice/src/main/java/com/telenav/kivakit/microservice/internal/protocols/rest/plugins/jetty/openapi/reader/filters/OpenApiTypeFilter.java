@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader.filters;
 
 import com.telenav.kivakit.kernel.interfaces.comparison.Filter;
+import com.telenav.kivakit.kernel.language.patterns.character.Character;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 
@@ -17,6 +18,13 @@ public class OpenApiTypeFilter implements Filter<Type<?>>
     public boolean accepts(Type<?> type)
     {
         return type.isPrimitive()
+                || type.is(Double.class)
+                || type.is(Float.class)
+                || type.is(Long.class)
+                || type.is(Integer.class)
+                || type.is(Short.class)
+                || type.is(Character.class)
+                || type.is(Byte.class)
                 || type.is(String.class)
                 || type.isEnum()
                 || type.hasAnnotation(OpenApiIncludeType.class)
