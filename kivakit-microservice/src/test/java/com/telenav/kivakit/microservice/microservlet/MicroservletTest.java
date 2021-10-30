@@ -7,6 +7,7 @@ import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
@@ -93,7 +94,7 @@ public class MicroservletTest extends UnitTest
             return new MicroserviceMetadata()
                     .withName("Test")
                     .withDescription("This is a test REST application")
-                    .withVersion(Version.parse("0.9"));
+                    .withVersion(Version.parse(Listener.none(), "0.9"));
         }
 
         @Override

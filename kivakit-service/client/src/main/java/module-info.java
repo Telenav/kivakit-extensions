@@ -11,6 +11,7 @@ open module kivakit.service.client
     requires com.fasterxml.jackson.core;
     requires java.ws.rs;
     requires jakarta.activation;
+    requires gson;
 
     // Module exports
     exports com.telenav.kivakit.service.registry.client;

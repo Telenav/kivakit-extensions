@@ -22,6 +22,7 @@ import com.telenav.kivakit.filesystems.hdfs.proxy.spi.project.lexakai.diagrams.D
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -45,7 +46,7 @@ public interface HdfsProxy extends Remote
     /** The RMI registry port being used */
     int RMI_REGISTRY_PORT = 1099;
 
-    Version VERSION = Version.parse("0.9");
+    Version VERSION = Version.parse(Listener.none(), "0.9");
 
     Logger LOGGER = LoggerFactory.newLogger();
 
