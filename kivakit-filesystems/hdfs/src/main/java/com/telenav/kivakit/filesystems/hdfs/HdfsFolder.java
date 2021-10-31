@@ -158,7 +158,7 @@ public class HdfsFolder implements FolderService
             var files = new ArrayList<FolderService>();
             for (var pathAsString : proxy().folders(pathAsString()))
             {
-                var path = FilePath.parseFilePath(pathAsString);
+                var path = FilePath.parseFilePath(this, pathAsString);
                 if (matcher.matches(path))
                 {
                     files.add(new HdfsFolder(path));
@@ -350,7 +350,7 @@ public class HdfsFolder implements FolderService
         var files = new ArrayList<FileService>();
         for (var pathAsString : paths)
         {
-            var path = FilePath.parseFilePath(pathAsString);
+            var path = FilePath.parseFilePath(this, pathAsString);
             if (matcher.matches(path))
             {
                 files.add(new HdfsFile(path));

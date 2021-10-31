@@ -76,13 +76,13 @@ public class ServiceRegistryServer extends Server
     }
 
     private final SwitchParser<Scope.Type> SCOPE = SwitchParser
-            .enumSwitchParser("scope", "The scope of operation for this server", Scope.Type.class)
+            .enumSwitchParser(this, "scope", "The scope of operation for this server", Scope.Type.class)
             .defaultValue(Scope.localhost().type())
             .optional()
             .build();
 
     private final SwitchParser<Integer> PORT = SwitchParser
-            .integerSwitchParser("first-port", "The first port in the range of ports to be allocated")
+            .integerSwitchParser(this, "first-port", "The first port in the range of ports to be allocated")
             .defaultValue(50_000)
             .optional()
             .build();
@@ -158,6 +158,6 @@ public class ServiceRegistryServer extends Server
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.of(PORT, SCOPE);
+        return ObjectSet.objectSet(PORT, SCOPE);
     }
 }

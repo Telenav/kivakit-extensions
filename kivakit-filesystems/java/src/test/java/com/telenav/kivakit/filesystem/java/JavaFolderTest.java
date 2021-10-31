@@ -32,7 +32,7 @@ public class JavaFolderTest extends UnitTest
     {
         var archive = archive();
         var path = Message.format("jar:file:$/$", archive, "child");
-        var folder = new JavaFolder(FilePath.parseFilePath(path));
+        var folder = new JavaFolder(FilePath.parseFilePath(this, path));
 
         ensure(folder.isFolder());
         ensureFalse(folder.isEmpty());
@@ -50,7 +50,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(Message.format("java:jar:file:$", archive)));
+        var folder = listenTo(Folder.parse(this, Message.format("java:jar:file:$", archive)));
         ensureEqual(folder.files().size(), 1);
         ensureEqual(folder.folders().size(), 1);
         var files = new HashSet<>();
@@ -62,7 +62,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegrationChild()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(Message.format("java:jar:file:$/child", archive)));
+        var folder = listenTo(Folder.parse(this, Message.format("java:jar:file:$/child", archive)));
         ensureEqual(folder.files().size(), 2);
         var files = new HashSet<>();
         files.add(folder.files().get(0).fileName().name());

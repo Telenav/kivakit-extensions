@@ -29,8 +29,8 @@ public class HttpNetworkLocationTest extends WebUnitTest
     public void testReadString()
     {
         var port = 8910;
-        startWebServer(port, FilePath.parseFilePath("/"));
-        HttpNetworkLocation location = new HttpNetworkLocation(Host.loopback().http(port).path("README.md"));
+        startWebServer(port, FilePath.parseFilePath(this, "/"));
+        HttpNetworkLocation location = new HttpNetworkLocation(Host.loopback().http(port).path(this, "README.md"));
         String text = location.content();
         ensure(!text.isBlank());
     }

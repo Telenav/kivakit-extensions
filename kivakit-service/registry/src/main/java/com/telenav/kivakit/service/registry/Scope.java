@@ -24,6 +24,7 @@ import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.language.collections.Collections;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
@@ -123,10 +124,10 @@ public class Scope implements Named, Comparable<Scope>
         /** Services anywhere on the network */
         NETWORK;
 
-        public static SwitchParser.Builder<Type> scopeTypeSwitchParser()
+        public static SwitchParser.Builder<Type> scopeTypeSwitchParser(Listener listener)
         {
             return SwitchParser
-                    .enumSwitchParser("scope", "The scope to search", Type.class)
+                    .enumSwitchParser(listener, "scope", "The scope to search", Type.class)
                     .optional()
                     .defaultValue(LOCALHOST);
         }

@@ -23,6 +23,7 @@ import com.telenav.kivakit.kernel.language.threading.latches.CompletionLatch;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.logs.BaseLog;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.logs.server.ServerLogProject;
 
 import javax.swing.SwingUtilities;
@@ -58,7 +59,7 @@ public class ClientLog extends BaseLog
         var maximum = properties.get("maximum-entries");
         if (maximum != null)
         {
-            maximumEntries = Maximum.parse(maximum);
+            maximumEntries = Maximum.parseMaximum(Listener.console(), maximum);
         }
     }
 

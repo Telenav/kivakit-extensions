@@ -151,7 +151,7 @@ class HdfsFileSystem extends BaseComponent
         {
             try
             {
-                var instance = InstanceIdentifier.of(root.first());
+                var instance = InstanceIdentifier.instanceIdentifier(root.first());
                 var settings = require(HdfsProxyServerSettings.class, instance);
                 fileSystem = settings.user().doAs((PrivilegedExceptionAction<FileSystem>) () ->
                 {
@@ -186,7 +186,7 @@ class HdfsFileSystem extends BaseComponent
         if (property != null)
         {
             // see if the folder exists or can be created
-            var folder = Folder.parse(property);
+            var folder = Folder.parse(this, property);
             if (folder != null)
             {
                 folder.mkdirs();

@@ -37,6 +37,7 @@ import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.loggers.ConsoleLogger;
 import com.telenav.kivakit.kernel.logging.logs.text.BaseTextLog;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.logs.server.session.Session;
 import com.telenav.kivakit.logs.server.session.SessionStore;
 import com.telenav.kivakit.network.socket.server.ConnectionListener;
@@ -124,7 +125,7 @@ public class ServerLog extends BaseTextLog
         var maximum = properties.get("maximum-entries");
         if (maximum != null)
         {
-            maximumEntries = Maximum.parse(maximum);
+            maximumEntries = Maximum.parseMaximum(Listener.console(), maximum);
         }
         listen(Progress.create(LOGGER, "bytes"));
     }

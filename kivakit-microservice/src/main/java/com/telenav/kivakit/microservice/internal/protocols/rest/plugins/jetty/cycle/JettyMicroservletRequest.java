@@ -114,7 +114,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
 
                     // then add any query parameters to the map.
                     var uri = URI.create(httpRequest.getRequestURI());
-                    properties.addAll(QueryParameters.parse(uri.getQuery()).asMap());
+                    properties.addAll(QueryParameters.parse(this, uri.getQuery()).asMap());
                 }
             }
             catch (Exception e)
@@ -139,7 +139,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
         ensure(uri.startsWith(contextPath));
 
         // then return the URI without the context path
-        return FilePath.parseFilePath(uri.substring(contextPath.length()));
+        return FilePath.parseFilePath(this, uri.substring(contextPath.length()));
     }
 
     /**

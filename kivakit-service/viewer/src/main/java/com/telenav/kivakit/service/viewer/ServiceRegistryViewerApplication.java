@@ -50,7 +50,7 @@ public class ServiceRegistryViewerApplication extends Application
         new ServiceRegistryViewerApplication().run(arguments);
     }
 
-    private final SwitchParser<Type> SCOPE_TYPE = scopeTypeSwitchParser().build();
+    private final SwitchParser<Type> SCOPE_TYPE = scopeTypeSwitchParser(this).build();
 
     private final Debug DEBUG = new Debug(this);
 
@@ -105,6 +105,6 @@ public class ServiceRegistryViewerApplication extends Application
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.of(SCOPE_TYPE);
+        return ObjectSet.objectSet(SCOPE_TYPE);
     }
 }

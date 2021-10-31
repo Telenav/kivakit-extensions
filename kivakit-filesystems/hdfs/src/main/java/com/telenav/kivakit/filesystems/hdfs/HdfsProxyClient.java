@@ -97,7 +97,7 @@ public class HdfsProxyClient extends BaseComponent
 
     public Folder logFolder()
     {
-        return Folder.kivakitTemporary().folder(FileName.parse("hdfs-proxy-log")).mkdirs();
+        return Folder.kivakitTemporary().folder(FileName.parse(this, "hdfs-proxy-log")).mkdirs();
     }
 
     public HdfsProxy proxy()

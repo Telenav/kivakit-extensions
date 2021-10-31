@@ -58,17 +58,17 @@ public class HuffmanStringListCodecTest extends DataCompressionUnitTest
         //    input: [ohkh, m, ohkh, m, gxafxac, ohkh, gxafxac, m, m, gxafxac, ohkh, m, gxafxac, gxafxac, gxafxac, ohkh, m, m, m]
 
         var stringSymbols = new Symbols<>(new CountMap<String>()
-                .add("m", Objects.requireNonNull(Count.parse("8,524")))
-                .add("gxafxac", Objects.requireNonNull(Count.parse("9,202"))));
+                .add("m", Objects.requireNonNull(Count.parseCount(this, "8,524")))
+                .add("gxafxac", Objects.requireNonNull(Count.parseCount(this, "9,202"))));
 
         var string = HuffmanStringCodec.from(stringSymbols, Maximum._8);
 
         var characterSymbols = new Symbols<>(new CountMap<Character>()
-                .add('m', Objects.requireNonNull(Count.parse("10,826")))
-                .add('d', Objects.requireNonNull(Count.parse("8,154")))
-                .add('j', Objects.requireNonNull(Count.parse("8,098")))
-                .add('e', Objects.requireNonNull(Count.parse("6,379")))
-                .add('x', Objects.requireNonNull(Count.parse("5,566")))
+                .add('m', Objects.requireNonNull(Count.parseCount(this, "10,826")))
+                .add('d', Objects.requireNonNull(Count.parseCount(this, "8,154")))
+                .add('j', Objects.requireNonNull(Count.parseCount(this, "8,098")))
+                .add('e', Objects.requireNonNull(Count.parseCount(this, "6,379")))
+                .add('x', Objects.requireNonNull(Count.parseCount(this, "5,566")))
                 .add(HuffmanCharacterCodec.ESCAPE, Count._1024)
                 .add(HuffmanCharacterCodec.END_OF_STRING, Count._1024), HuffmanCharacterCodec.ESCAPE, Minimum._1);
 

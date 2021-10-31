@@ -46,9 +46,9 @@ public interface HdfsProxy extends Remote
     /** The RMI registry port being used */
     int RMI_REGISTRY_PORT = 1099;
 
-    Version VERSION = Version.parse(Listener.none(), "0.9");
-
     Logger LOGGER = LoggerFactory.newLogger();
+
+    Version VERSION = Version.parse(LOGGER, "0.9");
 
     boolean deleteFile(String path) throws RemoteException;
 

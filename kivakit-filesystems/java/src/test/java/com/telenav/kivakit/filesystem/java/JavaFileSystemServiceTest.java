@@ -10,6 +10,6 @@ public class JavaFileSystemServiceTest extends UnitTest
     public void test()
     {
         var filesystem = new JavaFileSystemService();
-        ensure(filesystem.accepts(FilePath.parseFilePath("java:jar:file:/whatever/whenever.zip/monkey.txt")));
+        ensure(filesystem.accepts(FilePath.parseFilePath(this, "java:jar:file:/whatever/whenever.zip/monkey.txt")));
     }
 }

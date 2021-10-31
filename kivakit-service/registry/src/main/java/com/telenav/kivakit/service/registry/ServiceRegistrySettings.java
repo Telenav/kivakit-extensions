@@ -27,6 +27,7 @@ import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Frequency;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -129,7 +130,7 @@ public class ServiceRegistrySettings
 
         if (port != null)
         {
-            return Port.parse(port);
+            return Port.parse(Listener.console(), port);
         }
 
         return networkServiceRegistryPort();

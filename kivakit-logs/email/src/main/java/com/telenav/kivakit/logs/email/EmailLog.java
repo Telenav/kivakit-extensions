@@ -24,6 +24,7 @@ import com.telenav.kivakit.kernel.logging.Log;
 import com.telenav.kivakit.kernel.logging.LogEntry;
 import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.kernel.logging.logs.text.BaseTextLog;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.logs.email.project.lexakai.diagrams.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.network.core.Host;
@@ -91,7 +92,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parse(at));
+                this.to.add(EmailAddress.parse(Listener.console(), at));
             }
         }
         else
@@ -103,7 +104,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parse(from);
+            this.from = EmailAddress.parse(Listener.console(), from);
         }
         else
         {
@@ -117,9 +118,9 @@ public class EmailLog extends BaseTextLog
         if (host != null && username != null && password != null)
         {
             var configuration = new SmtpEmailSender.Configuration();
-            configuration.host(Host.parse(host));
-            configuration.username(UserName.parse(username));
-            configuration.password(PlainTextPassword.parse(password));
+            configuration.host(Host.parse(Listener.console(), host));
+            configuration.username(UserName.parse(Listener.console(), username));
+            configuration.password(PlainTextPassword.parse(Listener.console(), password));
             sender = new SmtpEmailSender(configuration);
         }
     }

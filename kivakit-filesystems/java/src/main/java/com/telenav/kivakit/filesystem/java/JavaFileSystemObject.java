@@ -178,7 +178,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     @Override
     public FilePath path()
     {
-        return FilePath.parseFilePath(super.path().toString());
+        return FilePath.parseFilePath(this, super.path().toString());
     }
 
     @Override

@@ -74,7 +74,7 @@ public class SwaggerIndexJettyResourcePlugin extends BaseJettyResourcePlugin
 
     String index()
     {
-        return PackageResource.of(SwaggerIndexJettyResourcePlugin.class, "assets/index.html")
+        return PackageResource.packageResource(this, SwaggerIndexJettyResourcePlugin.class, "assets/index.html")
                 .reader()
                 .string()
                 .replaceAll("PORT", Integer.toString(port));

@@ -21,6 +21,7 @@ package com.telenav.kivakit.filesystems.s3fs;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.resource.path.FileName;
+import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.test.annotations.SlowTests;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ import org.junit.experimental.categories.Category;
 import static org.junit.Assume.assumeTrue;
 
 @Category({ SlowTests.class })
-public class S3FileSystemServiceTest
+public class S3FileSystemServiceTest extends UnitTest
 {
     @Before
     public void beforeMethod()
@@ -46,7 +47,7 @@ public class S3FileSystemServiceTest
             var folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/test");
             folder.delete();
 
-            folder.folder(FileName.parse("2nd")).mkdirs();
+            folder.folder(FileName.parse(this, "2nd")).mkdirs();
 
             var file2 = new S3File("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/s3-test.gz");
             var printWriter = file2.printWriter();

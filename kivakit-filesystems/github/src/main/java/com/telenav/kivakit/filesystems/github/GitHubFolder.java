@@ -24,6 +24,7 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -50,7 +51,7 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
 
     public GitHubFolder(String path)
     {
-        this(FilePath.parseFilePath(path));
+        this(FilePath.parseFilePath(Listener.console(), path));
     }
 
     @Override
@@ -85,13 +86,13 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
     @Override
     public GitHubFolder folder(FileName name)
     {
-        return new GitHubFolder(FilePath.parseFilePath(child(name).toString()));
+        return new GitHubFolder(FilePath.parseFilePath(this, child(name).toString()));
     }
 
     @Override
     public GitHubFolder folder(Folder folder)
     {
-        return new GitHubFolder(FilePath.parseFilePath(child(folder).toString()));
+        return new GitHubFolder(FilePath.parseFilePath(this, child(folder).toString()));
     }
 
     @Override

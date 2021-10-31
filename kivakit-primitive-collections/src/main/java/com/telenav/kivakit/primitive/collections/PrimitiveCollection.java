@@ -1366,7 +1366,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
             var property = System.getProperty("KIVAKIT_LOG_ALLOCATIONS_MINIMUM_SIZE");
             if (property != null)
             {
-                logAllocationsMinimumSize = Bytes.parse(property).asInt();
+                logAllocationsMinimumSize = Bytes.parse(LOGGER, property).asInt();
             }
             else
             {

@@ -52,6 +52,6 @@ public class ServiceRegistryProject extends Project
     @Override
     public ObjectSet<Project> dependencies()
     {
-        return ObjectSet.of(CollectionsProject.get());
+        return ObjectSet.objectSet(CollectionsProject.get());
     }
 }

@@ -59,7 +59,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
 
     // In the S3 world, there no folder physically, so we created a metadata file to
     // represents its existence
-    private static final FileName METADATA = FileName.parse(".metadata");
+    private final FileName METADATA = FileName.parse(this, ".metadata");
 
     public S3Folder(FilePath path)
     {
@@ -68,7 +68,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
 
     public S3Folder(String path)
     {
-        this(FilePath.parseFilePath(path));
+        this(FilePath.parseFilePath(LOGGER, path));
     }
 
     @Override
@@ -107,7 +107,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     {
         if (!isEmpty())
         {
-            LOGGER.warning("Can't delete a non-empty folder of " + this);
+            warning("Can't delete a non-empty folder of " + this);
             return false;
         }
 
@@ -155,7 +155,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         List<FileService> files = new ArrayList<>();
         for (var object : response.contents())
         {
-            var path = S3FileSystemObject.path(scheme(), bucket(), object.key());
+            var path = S3FileSystemObject.path(this, scheme(), bucket(), object.key());
             files.add(new S3File(path));
         }
         return files;
@@ -178,13 +178,13 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public S3Folder folder(FileName name)
     {
-        return new S3Folder(FilePath.parseFilePath(child(name).toString()));
+        return new S3Folder(FilePath.parseFilePath(this, child(name).toString()));
     }
 
     @Override
     public S3Folder folder(Folder folder)
     {
-        return new S3Folder(FilePath.parseFilePath(child(folder).toString()));
+        return new S3Folder(FilePath.parseFilePath(this, child(folder).toString()));
     }
 
     @Override
@@ -196,7 +196,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         List<FolderService> folders = new ArrayList<>();
         for (var bucket : response.buckets())
         {
-            var path = S3FileSystemObject.path(scheme(), bucket.name(), "");
+            var path = S3FileSystemObject.path(this, scheme(), bucket.name(), "");
             folders.add(new S3Folder(path));
         }
         return folders;
@@ -314,7 +314,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public S3Folder root()
     {
-        var path = path(scheme(), bucket(), "");
+        var path = path(this, scheme(), bucket(), "");
         return new S3Folder(path);
     }
 

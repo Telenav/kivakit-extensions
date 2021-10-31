@@ -37,7 +37,7 @@ public class CsvReaderTest extends UnitTest
         var price = CsvColumn.of("price", new DoubleConverter(this));
         var schema = new CsvSchema(year, make, model, description, price);
 
-        var resource = PackageResource.of(CsvReaderTest.class, "SampleCsv.csv");
+        var resource = PackageResource.packageResource(this, CsvReaderTest.class, "SampleCsv.csv");
         try (var myReader = new CsvReader(resource, schema, ',', ProgressReporter.NULL))
         {
             myReader.skipLines(1);

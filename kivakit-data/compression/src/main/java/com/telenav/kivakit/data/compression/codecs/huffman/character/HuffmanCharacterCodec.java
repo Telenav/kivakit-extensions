@@ -110,7 +110,7 @@ public class HuffmanCharacterCodec implements CharacterCodec
         @Override
         protected Character onToValue(String value)
         {
-            return (char) Longs.parseHex(value);
+            return (char) Longs.parseHex(this, value);
         }
     }
 

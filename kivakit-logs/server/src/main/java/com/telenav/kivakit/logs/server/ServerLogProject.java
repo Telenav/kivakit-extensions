@@ -34,6 +34,6 @@ public class ServerLogProject extends Project
     @Override
     public ObjectSet<Project> dependencies()
     {
-        return ObjectSet.of(KernelProject.get(), ResourceProject.get(), NetworkProject.get());
+        return ObjectSet.objectSet(KernelProject.get(), ResourceProject.get(), NetworkProject.get());
     }
 }

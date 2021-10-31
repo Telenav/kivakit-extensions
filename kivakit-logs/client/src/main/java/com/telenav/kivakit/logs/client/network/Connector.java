@@ -197,7 +197,7 @@ public class Connector extends BaseRepeater
         {
             try
             {
-                return port.open();
+                return port.open(this);
             }
             catch (Exception ignored)
             {

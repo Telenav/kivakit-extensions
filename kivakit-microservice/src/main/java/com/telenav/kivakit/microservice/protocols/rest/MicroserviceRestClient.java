@@ -158,7 +158,7 @@ public class MicroserviceRestClient extends BaseComponent
             path = Message.format("/api/$.$/$", version.major(), version.minor(), path);
         }
 
-        return new NetworkLocation(port.path(path));
+        return new NetworkLocation(port.path(this, path));
     }
 
     private <T> T readResponse(BaseHttpResource resource, Class<T> type)

@@ -79,7 +79,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     }
 
     private final SwitchParser<Folder> CONFIGURATION_FOLDER = Folder
-            .folderSwitchParser("configuration-folder", "Folder containing HDFS configuration files")
+            .folderSwitchParser(this, "configuration-folder", "Folder containing HDFS configuration files")
             .required()
             .build();
 
@@ -92,12 +92,12 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
             .build();
 
     private final SwitchParser<Integer> DATA_PORT = SwitchParser
-            .integerSwitchParser("data-port", "The port to use when responding to data requests")
+            .integerSwitchParser(this, "data-port", "The port to use when responding to data requests")
             .required()
             .build();
 
     private final SwitchParser<Integer> RMI_OBJECT_PORT = SwitchParser
-            .integerSwitchParser("rmi-object-port", "The port to use when registering the remote proxy object")
+            .integerSwitchParser(this, "rmi-object-port", "The port to use when registering the remote proxy object")
             .required()
             .build();
 
@@ -125,7 +125,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean deleteFile(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             return isFile(pathAsString) && fileSystem(path).delete(hdfsPath(path), false);
@@ -141,7 +141,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean deleteFolder(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             return isFolder(pathAsString) && fileSystem(path).delete(hdfsPath(path), false);
@@ -157,7 +157,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean exists(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             return fileSystem(path).exists(hdfsPath(path));
@@ -180,7 +180,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized List<String> folders(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             List<String> folders = new ArrayList<>();
@@ -206,7 +206,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean isFile(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             return fileSystem(path).getFileStatus(hdfsPath(path)).isFile();
@@ -222,7 +222,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean isFolder(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             return fileSystem(path).getFileStatus(normalizeFolderPath(hdfsPath(path))).isDirectory();
@@ -238,7 +238,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean isWritable(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             fileSystem(path).access(hdfsPath(path), FsAction.WRITE);
@@ -255,7 +255,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized long lastModified(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             return fileSystem(path).getFileStatus(hdfsPath(path)).getModificationTime();
@@ -271,7 +271,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean lastModified(String pathAsString, long time) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             fileSystem(path).setTimes(hdfsPath(path), time, -1L);
@@ -288,7 +288,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized long length(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             if (isFile(pathAsString))
@@ -308,7 +308,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean mkdirs(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             return fileSystem(path).mkdirs(hdfsPath(path),
@@ -332,7 +332,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized long openForReading(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             InputStream in = fileSystem(path).open(hdfsPath(path));
@@ -351,7 +351,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized long openForWriting(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             OutputStream out = fileSystem(path).create(hdfsPath(path));
@@ -370,8 +370,8 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized boolean rename(String fromAsString, String toAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        var from = FilePath.parseFilePath(fromAsString);
-        var to = FilePath.parseFilePath(toAsString);
+        var from = FilePath.parseFilePath(this, fromAsString);
+        var to = FilePath.parseFilePath(this, toAsString);
         try
         {
             return fileSystem(from).rename(hdfsPath(from), hdfsPath(to));
@@ -387,7 +387,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized String root(String pathAsString) throws RemoteException
     {
         lastRequest = Time.now();
-        return FilePath.parseFilePath(pathAsString).root().toString();
+        return FilePath.parseFilePath(this, pathAsString).root().toString();
     }
 
     @Override
@@ -397,12 +397,12 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
         lastRequest = Time.now();
         synchronized (temporaryFileCreationLock)
         {
-            var path = FilePath.parseFilePath(pathAsString);
+            var path = FilePath.parseFilePath(this, pathAsString);
             int sequenceNumber = 0;
             FilePath file;
             do
             {
-                file = path.file(FileName.parse(baseName).withSuffix("-" + sequenceNumber + ".tmp"));
+                file = path.file(FileName.parse(this, baseName).withSuffix("-" + sequenceNumber + ".tmp"));
                 sequenceNumber++;
             }
             while (exists(file.toString()));
@@ -423,14 +423,14 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     public synchronized String temporaryFolder(String pathAsString, String baseName) throws RemoteException
     {
         lastRequest = Time.now();
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         synchronized (temporaryFileCreationLock)
         {
             int sequenceNumber = 0;
             FilePath folder;
             do
             {
-                folder = path.withChild(FileName.parse(baseName).withSuffix("-" + sequenceNumber + ".tmp").name());
+                folder = path.withChild(FileName.parse(this, baseName).withSuffix("-" + sequenceNumber + ".tmp").name());
                 sequenceNumber++;
             }
             while (exists(pathAsString));
@@ -469,7 +469,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.of(
+        return ObjectSet.objectSet(
                 DATA_PORT,
                 RMI_OBJECT_PORT,
                 CONFIGURATION_FOLDER,
@@ -483,7 +483,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
 
     private List<String> files(String pathAsString, boolean recursive) throws RemoteException
     {
-        var path = FilePath.parseFilePath(pathAsString);
+        var path = FilePath.parseFilePath(this, pathAsString);
         try
         {
             List<String> files = new ArrayList<>();

@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.web.jetty;
 
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.interfaces.naming.Named;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
@@ -33,7 +34,7 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
  * @see BaseJettyServletPlugin
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseJettyRequestHandler implements Named
+public abstract class BaseJettyRequestHandler extends BaseComponent implements Named
 {
     private String path;
 

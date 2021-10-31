@@ -50,10 +50,10 @@ public class HdfsFileSystemTest extends UnitTest
         var kivakitVersion = KivaKit.get().kivakitVersion();
         var settings = new HdfsSettings()
                 .clusterName("cluster1ns")
-                .configurationFolder(Package.of(getClass(), "settings/cluster1ns"))
-                .contactEmail(EmailAddress.parse("jonathanl@telenav.com"))
+                .configurationFolder(Package.packageFrom(this, getClass(), "settings/cluster1ns"))
+                .contactEmail(EmailAddress.parse(this, "jonathanl@telenav.com"))
                 .username("automation")
-                .proxyJar(new HttpNetworkLocation(NetworkPath.parseNetworkPath(
+                .proxyJar(new HttpNetworkLocation(NetworkPath.parseNetworkPath(this,
                         "https://www.kivakit.org/" + kivakitVersion + "/applications/kivakit-hdfs-proxy-" + kivakitVersion + ".jar")).get());
         Settings.of(this).registerSettings(settings);
     }
@@ -63,7 +63,7 @@ public class HdfsFileSystemTest extends UnitTest
     {
         if (TEST_OSMTEAM_CLUSTER)
         {
-            var folder = Folder.parse(osmteamZambia().toString());
+            var folder = Folder.parse(this, osmteamZambia().toString());
             assert folder != null;
             ensure(folder.exists());
             ensure(!folder.isEmpty());
@@ -133,12 +133,12 @@ public class HdfsFileSystemTest extends UnitTest
 
     private Folder navteamHdfs()
     {
-        return Folder.parse("hdfs://navhacluster");
+        return Folder.parse(this, "hdfs://navhacluster");
     }
 
     private Folder osmteamHdfs()
     {
-        return Folder.parse("hdfs://cluster1ns");
+        return Folder.parse(this, "hdfs://cluster1ns");
     }
 
     private Folder osmteamZambia()
