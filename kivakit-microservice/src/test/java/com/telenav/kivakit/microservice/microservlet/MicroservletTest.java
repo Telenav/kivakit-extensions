@@ -93,7 +93,7 @@ public class MicroservletTest extends UnitTest
             return new MicroserviceMetadata()
                     .withName("Test")
                     .withDescription("This is a test REST application")
-                    .withVersion(Version.parse("0.9"));
+                    .withVersion(Version.parse(this, "0.9"));
         }
 
         @Override

@@ -202,7 +202,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     @Override
     public FilePath path()
     {
-        return FilePath.parseFilePath(super.path().toString());
+        return FilePath.parseFilePath(this, super.path().toString());
     }
 
     /**
@@ -210,7 +210,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
      */
     public FilePath relativePath()
     {
-        return FilePath.parseFilePath(path);
+        return FilePath.parseFilePath(this, path);
     }
 
     @Override

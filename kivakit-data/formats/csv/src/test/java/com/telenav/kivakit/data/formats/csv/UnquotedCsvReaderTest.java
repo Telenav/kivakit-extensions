@@ -37,7 +37,7 @@ public class UnquotedCsvReaderTest extends UnitTest
         var price = CsvColumn.of("price", new DoubleConverter(this));
         var schema = new CsvSchema(year, make, model, description, price);
 
-        var resource = PackageResource.of(UnquotedCsvReaderTest.class, "SampleUnquotedCsv.csv");
+        var resource = PackageResource.packageResource(this, UnquotedCsvReaderTest.class, "SampleUnquotedCsv.csv");
         try (var reader = new UnquotedCsvReader(resource, schema, ';', ProgressReporter.NULL))
         {
             reader.skipLines(1);

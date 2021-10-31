@@ -67,7 +67,7 @@ public class FileLog extends BaseRolloverTextLog
         {
             try
             {
-                file = File.parse(path);
+                file = File.parse(Listener.console(), path);
 
                 var rollover = properties.get("rollover");
                 if (rollover != null)
@@ -106,7 +106,7 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        var newFile = File.parse(file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
+        var newFile = File.parse(Listener.console(), file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
         var console = Console.get();
         console.printLine("Creating new FileLog output file: " + newFile);

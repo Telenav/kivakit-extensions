@@ -544,7 +544,7 @@ public class ServiceRegistryClient extends BaseComponent
             {
                 var entity = Entity.entity(requestJson, "application/json");
                 var path = server
-                        .path(settings().restApiPath())
+                        .path(this, settings().restApiPath())
                         .withChild(request.path());
                 trace("Posting $ to $", request.getClass().getSimpleName(), path);
                 var jaxResponse = client

@@ -22,6 +22,7 @@ import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams.DiagramS3;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -51,7 +52,7 @@ public class S3File extends S3FileSystemObject implements FileService
 
     public S3File(String path)
     {
-        super(FilePath.parseFilePath(path), false);
+        super(FilePath.parseFilePath(Listener.console(), path), false);
     }
 
     @Override

@@ -141,7 +141,7 @@ public abstract class Microservice extends Application implements Startable, Sto
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> PORT =
-            integerSwitchParser("port", "The port to use")
+            integerSwitchParser(this, "port", "The port to use")
                     .optional()
                     .build();
 
@@ -150,7 +150,7 @@ public abstract class Microservice extends Application implements Startable, Sto
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> GRPC_PORT =
-            integerSwitchParser("grpc-port", "The port to use")
+            integerSwitchParser(this, "grpc-port", "The port to use")
                     .optional()
                     .build();
 
@@ -400,7 +400,7 @@ public abstract class Microservice extends Application implements Startable, Sto
      */
     protected ResourceFolder openApiAssetsFolder()
     {
-        return Package.of(restService().getClass(), "assets");
+        return Package.packageFrom(this, restService().getClass(), "assets");
     }
 
     /**
@@ -409,7 +409,7 @@ public abstract class Microservice extends Application implements Startable, Sto
      */
     protected ResourceFolder staticAssetsFolder()
     {
-        return Package.of(getClass(), "assets");
+        return Package.packageFrom(this, getClass(), "assets");
     }
 
     /**
@@ -430,6 +430,6 @@ public abstract class Microservice extends Application implements Startable, Sto
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.of(PORT, GRPC_PORT);
+        return ObjectSet.objectSet(PORT, GRPC_PORT);
     }
 }

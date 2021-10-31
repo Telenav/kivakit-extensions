@@ -33,8 +33,8 @@ public class GitHubFileSystemTest extends UnitTest
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
         var files = folder.files();
         ensure(!files.isEmpty());
-        ensure(files.contains(folder.file(FileName.parse("README.md"))));
-        ensure(files.contains(folder.file(FileName.parse("pom.xml"))));
+        ensure(files.contains(folder.file(FileName.parse(this, "README.md"))));
+        ensure(files.contains(folder.file(FileName.parse(this, "pom.xml"))));
     }
 
     @Test
@@ -43,9 +43,9 @@ public class GitHubFileSystemTest extends UnitTest
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
         var files = folder.nestedFiles(new All<>());
         ensure(!files.isEmpty());
-        ensure(files.contains(folder.file(FileName.parse("README.md"))));
-        ensure(files.contains(folder.file(FileName.parse("pom.xml"))));
-        ensure(files.contains(folder.folder(FileName.parse("setup")).file(FileName.parse("setup.sh"))));
+        ensure(files.contains(folder.file(FileName.parse(this, "README.md"))));
+        ensure(files.contains(folder.file(FileName.parse(this, "pom.xml"))));
+        ensure(files.contains(folder.folder(FileName.parse(this, "setup")).file(FileName.parse(this, "setup.sh"))));
     }
 
     @Test
@@ -54,9 +54,9 @@ public class GitHubFileSystemTest extends UnitTest
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
         var folders = folder.nestedFolders(new All<>());
         ensure(!folders.isEmpty());
-        ensure(folders.contains(folder.folder(FileName.parse("documentation"))));
-        ensure(folders.contains(folder.folder(FileName.parse("legal"))));
-        ensure(folders.contains(folder.folder(FileName.parse("src")).folder(FileName.parse("main"))));
+        ensure(folders.contains(folder.folder(FileName.parse(this, "documentation"))));
+        ensure(folders.contains(folder.folder(FileName.parse(this, "legal"))));
+        ensure(folders.contains(folder.folder(FileName.parse(this, "src")).folder(FileName.parse(this, "main"))));
     }
 
     @Test

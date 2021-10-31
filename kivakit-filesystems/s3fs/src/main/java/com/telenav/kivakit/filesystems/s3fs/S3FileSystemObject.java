@@ -106,9 +106,9 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
                 .build();
     }
 
-    protected static FilePath path(String scheme, String bucketName, String keyName)
+    protected static FilePath path(Listener listener, String scheme, String bucketName, String keyName)
     {
-        return FilePath.parseFilePath(scheme + bucketName + "/" + keyName);
+        return FilePath.parseFilePath(listener, scheme + bucketName + "/" + keyName);
     }
 
     // The scheme of path, such as "s3://"
@@ -255,13 +255,13 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     @Override
     public FilePath path()
     {
-        return FilePath.parseFilePath(super.path().toString());
+        return FilePath.parseFilePath(this, super.path().toString());
     }
 
     @Override
     public FolderService root()
     {
-        return new S3Folder(path(scheme(), bucket(), ""));
+        return new S3Folder(path(this, scheme(), bucket(), ""));
     }
 
     @Override

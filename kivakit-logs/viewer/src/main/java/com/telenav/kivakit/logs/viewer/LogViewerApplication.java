@@ -45,7 +45,7 @@ public class LogViewerApplication extends Application
     }
 
     private final SwitchParser<Maximum> MAXIMUM_ENTRIES =
-            maximumSwitchParser("maximum-entries", "The maximum number of entries to keep at a time")
+            maximumSwitchParser(this, "maximum-entries", "The maximum number of entries to keep at a time")
                     .optional()
                     .defaultValue(Maximum.maximum(20_000))
                     .build();
@@ -59,7 +59,7 @@ public class LogViewerApplication extends Application
     @Override
     protected void onRun()
     {
-        var icon = ImageResource.of(getClass(), "kivakit-128.png").image();
+        var icon = ImageResource.of(this, getClass(), "kivakit-128.png").image();
         Taskbar.getTaskbar().setIconImage(icon);
 
         var configuration = PropertyMap.create();
@@ -74,6 +74,6 @@ public class LogViewerApplication extends Application
     @Override
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.of(MAXIMUM_ENTRIES, QUIET);
+        return ObjectSet.objectSet(MAXIMUM_ENTRIES, QUIET);
     }
 }

@@ -230,7 +230,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                 // then mount an anonymous microservlet on the given path,
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                var restPath = new MicroservletRestPath(path, method);
+                var restPath = MicroservletRestPath.parse(this, path, method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override

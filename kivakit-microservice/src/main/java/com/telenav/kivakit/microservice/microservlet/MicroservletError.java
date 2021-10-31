@@ -67,7 +67,7 @@ public class MicroservletError
      */
     public void send(Listener listener)
     {
-        var type = Message.forName(this.type).getClass();
+        var type = Message.parseMessageName(Listener.console(), this.type).getClass();
         var message = OperationMessage.newInstance(Listener.console(), type, this.message, new Object[] {});
         if (message instanceof OperationMessage)
         {

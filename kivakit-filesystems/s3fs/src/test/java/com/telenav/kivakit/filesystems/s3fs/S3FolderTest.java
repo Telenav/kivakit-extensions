@@ -50,8 +50,8 @@ public class S3FolderTest extends UnitTest
     @Test
     public void testClear()
     {
-        final FolderService folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
-        var child = folder.folder(FileName.parse("child"));
+        FolderService folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
+        var child = folder.folder(FileName.parse(this, "child"));
         child.mkdirs();
         ensure(child.exists());
         ensureFalse(folder.isEmpty());
@@ -63,7 +63,7 @@ public class S3FolderTest extends UnitTest
     @Test
     public void testDelete()
     {
-        final FolderService folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
+        FolderService folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
         folder.mkdirs();
         ensure(folder.exists());
         folder.clear();
@@ -74,10 +74,10 @@ public class S3FolderTest extends UnitTest
     @Test
     public void testRename()
     {
-        var folder = Folder.parse("s3://default-region/kivakit/test-data/old-" + FileName.dateTime());
+        var folder = Folder.parse(this, "s3://default-region/kivakit/test-data/old-" + FileName.dateTime());
         assert folder != null;
         folder.mkdirs();
-        var file = folder.file(FileName.parse("tmp.txt"));
+        var file = folder.file(FileName.parse(this, "tmp.txt"));
         var printWriter = file.printWriter();
         printWriter.println("for test");
         printWriter.close();

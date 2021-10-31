@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.web.swagger;
 
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -32,6 +33,6 @@ public class SwaggerAssetsJettyResourcePlugin extends AssetsJettyResourcePlugin
 {
     public SwaggerAssetsJettyResourcePlugin()
     {
-        super(Package.of(SwaggerAssetsJettyResourcePlugin.class, "assets"));
+        super(Package.packageFrom(Listener.console(), SwaggerAssetsJettyResourcePlugin.class, "assets"));
     }
 }

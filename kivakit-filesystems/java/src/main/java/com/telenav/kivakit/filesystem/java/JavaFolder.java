@@ -167,6 +167,6 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @NotNull
     private FileName fileName(Path at)
     {
-        return FileName.parse(at.getFileName().toString());
+        return FileName.parse(this, at.getFileName().toString());
     }
 }

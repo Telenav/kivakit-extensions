@@ -22,6 +22,7 @@ import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.Folder.Type;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
+import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
@@ -104,6 +105,6 @@ public class S3Output extends OutputStream
         // Flatten path being cached into a long filename by turning all file
         // system meta characters into underscores.
         // For example, "a/b/c.txt" becomes "a_b_c.txt"
-        return File.parse(cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
+        return File.parse(Listener.console(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
     }
 }

@@ -19,7 +19,7 @@ public class JavaFileTest extends UnitTest
     {
         var archive = archive(file("test-integration.txt", "output"));
         var path = Message.format("jar:file:$/$", archive, "test-integration.txt");
-        var file = new JavaFile(FilePath.parseFilePath(path));
+        var file = new JavaFile(FilePath.parseFilePath(this, path));
 
         ensure(file.exists());
         ensure(file.sizeInBytes().isGreaterThan(Bytes._0));
@@ -31,7 +31,7 @@ public class JavaFileTest extends UnitTest
     {
         var archive = archive(file("test-integration.txt", "output"));
         var path = Message.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
-        ensureEqual(listenTo(File.parse(path)).reader().string(), "output");
+        ensureEqual(listenTo(File.parse(this, path)).reader().string(), "output");
     }
 
     @NotNull
