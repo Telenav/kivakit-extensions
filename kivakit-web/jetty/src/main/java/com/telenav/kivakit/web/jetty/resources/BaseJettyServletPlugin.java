@@ -18,7 +18,6 @@
 
 package com.telenav.kivakit.web.jetty.resources;
 
-import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -29,7 +28,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseJettyServletPlugin extends BaseJettyRequestHandler implements ComponentMixin
+public abstract class BaseJettyServletPlugin extends BaseJettyRequestHandler
 {
     public BaseJettyServletPlugin(String name)
     {

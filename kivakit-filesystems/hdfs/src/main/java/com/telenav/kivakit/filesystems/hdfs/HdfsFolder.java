@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.filesystems.hdfs;
 
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
@@ -59,7 +60,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupport
 @UmlNotPublicApi
 @UmlRelation(label = "gets proxy from", referent = HdfsProxyClient.class)
 @LexakaiJavadoc(complete = true)
-public class HdfsFolder implements FolderService
+public class HdfsFolder extends BaseComponent implements FolderService
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
