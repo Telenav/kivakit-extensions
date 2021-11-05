@@ -40,13 +40,14 @@ classes.
 [**kivakit-filesystems-hdfs**](hdfs/README.md)  
 [**kivakit-filesystems-hdfs-proxy**](hdfs-proxy/README.md)  
 [**kivakit-filesystems-hdfs-proxy-spi**](hdfs-proxy-spi/README.md)  
+[**kivakit-filesystems-java**](java/README.md)  
 [**kivakit-filesystems-s3fs**](s3fs/README.md)  
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
-&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-github**](github/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-hdfs**](hdfs/README.md)  
@@ -54,6 +55,8 @@ classes.
  &nbsp; &nbsp; [**kivakit-filesystems-hdfs-proxy**](hdfs-proxy/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-hdfs-proxy-spi**](hdfs-proxy-spi/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-filesystems-java**](java/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-s3fs**](s3fs/README.md)
 

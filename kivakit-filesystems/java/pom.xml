@@ -12,11 +12,11 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-filesystems</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>kivakit-filesystem-java</artifactId>
+    <artifactId>kivakit-filesystems-java</artifactId>
     <packaging>jar</packaging>
     <name>KivaKit Extensions - Filesystems - Java Filesystem</name>
 
