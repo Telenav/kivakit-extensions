@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
@@ -9,6 +10,8 @@ import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
+import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
+import com.telenav.kivakit.microservice.internal.protocols.grpc.runtimeproto.Generators;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -143,6 +146,33 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (server != null)
         {
             server.shutdownNow();
+        }
+    }
+
+    /**
+     * Saves the given type into the given folder as a .proto file
+     */
+    private void writeProtoFile(Folder folder, Class<?> type)
+    {
+        var schema = require(MicroservletGrpcSchemas.class).schemaFor(type);
+        var file = folder.mkdirs().file("$.proto", schema.messageName());
+        information("Exporting $", file);
+        var proto = Generators.newProtoGenerator(schema);
+        file.writer().save(proto.generate());
+    }
+
+    /**
+     * Write the .proto definitions for all microservlets that have been registered to the output folder
+     */
+    public void writeProtoFilesTo(Folder folder)
+    {
+        for (var requestType : responder.requestTypes())
+        {
+            writeProtoFile(folder.folder("request").mkdirs(), requestType);
+            for (var responseType : responder.responseTypes())
+            {
+                writeProtoFile(folder.folder("response").mkdirs(), responseType);
+            }
         }
     }
 }

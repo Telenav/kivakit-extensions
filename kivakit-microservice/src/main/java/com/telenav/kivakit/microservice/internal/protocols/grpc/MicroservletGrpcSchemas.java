@@ -5,25 +5,21 @@ import com.dyuproject.protostuff.ProtobufIOUtil;
 import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import com.google.protobuf.ByteString;
+import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.messaging.Listener;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@SuppressWarnings("unchecked") public class MicroservletGrpcSchemas
+@SuppressWarnings("unchecked") public class MicroservletGrpcSchemas extends BaseComponent
 {
-    /** Cache of request schemas */
-    private static final Map<Class<?>, Schema<?>> requestTypeToSchema = new ConcurrentHashMap<>();
+    /** Cache of schemas */
+    private static final Map<Class<?>, Schema<?>> typeToSchema = new ConcurrentHashMap<>();
 
-    /** Cache of response schemas */
-    private static final Map<Class<?>, Schema<?>> responseTypeToSchema = new ConcurrentHashMap<>();
-
-    public static MicroservletGrpcSchemas get()
+    public MicroservletGrpcSchemas(Listener listener)
     {
-        return new MicroservletGrpcSchemas();
-    }
-
-    protected MicroservletGrpcSchemas()
-    {
+        addListener(listener);
+        register(this);
     }
 
     /**
@@ -31,15 +27,24 @@ import java.util.concurrent.ConcurrentHashMap;
      */
     public Object deserialize(Class<?> type, ByteString bytes)
     {
-        var schema = requestTypeToSchema.get(type);
-        if (schema == null)
-        {
-            schema = RuntimeSchema.getSchema(type);
-            requestTypeToSchema.put(type, schema);
-        }
+        Schema<?> schema = schemaFor(type);
         var request = schema.newMessage();
         ProtobufIOUtil.mergeFrom(bytes.toByteArray(), request, (Schema<Object>) schema);
         return request;
+    }
+
+    /**
+     * @return The Protostuff {@link Schema} for the given type
+     */
+    public Schema<?> schemaFor(Class<?> type)
+    {
+        var schema = typeToSchema.get(type);
+        if (schema == null)
+        {
+            schema = RuntimeSchema.getSchema(type);
+            typeToSchema.put(type, schema);
+        }
+        return schema;
     }
 
     /**
@@ -47,12 +52,6 @@ import java.util.concurrent.ConcurrentHashMap;
      */
     public ByteString serialize(Class<?> type, Object object)
     {
-        var schema = responseTypeToSchema.get(type);
-        if (schema == null)
-        {
-            schema = RuntimeSchema.getSchema((Class<Object>) type);
-            responseTypeToSchema.put(type, schema);
-        }
-        return ByteString.copyFrom(ProtobufIOUtil.toByteArray(object, (Schema<Object>) schema, LinkedBuffer.allocate(4096)));
+        return ByteString.copyFrom(ProtobufIOUtil.toByteArray(object, (Schema<Object>) schemaFor(type), LinkedBuffer.allocate(4096)));
     }
 }

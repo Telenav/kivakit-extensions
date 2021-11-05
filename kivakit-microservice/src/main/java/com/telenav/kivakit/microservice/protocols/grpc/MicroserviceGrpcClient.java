@@ -25,9 +25,6 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqu
     /** Grpc server port to talk to */
     private final Port port;
 
-    /** The protostuff dynamic schemas for doing GRPC */
-    private final MicroservletGrpcSchemas schemas = MicroservletGrpcSchemas.get();
-
     // Create a GRPC channel,
     private final ManagedChannel channel;
 
@@ -64,7 +61,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqu
         ensureEqual(responseType, request.responseType());
 
         // serialize the request object to protobuf,
-        var object = schemas.serialize(request.getClass(), request);
+        var object = schemas().serialize(request.getClass(), request);
 
         // pack the path and the request object into an (internal) request protobuf object,
         var protobufRequest = MicroservletGrpcRequestProtobuf.newBuilder()
@@ -76,7 +73,12 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqu
         var stub = MicroservletResponderGrpc.newBlockingStub(channel);
         var response = stub.respond(protobufRequest);
 
-        return (T) schemas.deserialize(request.responseType(), response.getObject());
+        return (T) schemas().deserialize(request.responseType(), response.getObject());
+    }
+
+    private MicroservletGrpcSchemas schemas()
+    {
+        return require(MicroservletGrpcSchemas.class);
     }
 
     /**
@@ -100,7 +102,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqu
                 .build();
 
         // serialize the request object to protobuf,
-        var object = schemas.serialize(request.getClass(), request);
+        var object = schemas().serialize(request.getClass(), request);
 
         // pack the path and the request object into an (internal) request protobuf object,
         var protobufRequest = MicroservletGrpcRequestProtobuf.newBuilder()
@@ -110,7 +112,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqu
 
         // get a stub for the channel and use it to get a response,
         var stub = MicroservletResponderGrpc.newFutureStub(channel);
-        return new MicroservletFutureResponse<>(stub, protobufRequest, responseType);
+        return listenTo(new MicroservletFutureResponse<>(stub, protobufRequest, responseType));
     }
 
     public void stop()

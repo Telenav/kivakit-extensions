@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
+import com.dyuproject.protostuff.Tag;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
@@ -35,6 +36,7 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
             MicroserviceGsonFactorySource,
             MicroserviceGsonObjectSource
     {
+        @Tag(1)
         @Expose
         private final OpenAPI api;
 
@@ -55,6 +57,10 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
             return api;
         }
     }
+
+    @Tag(1)
+    @Expose
+    private String ignored = "IGNORED";
 
     /**
      * @return Responds to a GET request with the OpenAPI definition for the {@link MicroserviceRestService}.

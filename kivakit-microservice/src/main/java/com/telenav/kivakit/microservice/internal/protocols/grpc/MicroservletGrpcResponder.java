@@ -1,6 +1,8 @@
 package com.telenav.kivakit.microservice.internal.protocols.grpc;
 
 import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
+import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcResponseProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
@@ -9,7 +11,9 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
 import io.grpc.stub.StreamObserver;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
@@ -31,6 +35,11 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
     {
     }
 
+    public Set<Class<?>> requestTypes()
+    {
+        return new HashSet<>(pathToRequestType.values());
+    }
+
     public void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType)
     {
         pathToRequestType.put(ensureNotNull(path), requestHandlerType);
@@ -49,7 +58,7 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
             var requestType = ensureNotNull(pathToRequestType.get(path));
 
             // the protobuf serialized byte array,
-            var schemas = new MicroservletGrpcSchemas();
+            var schemas = require(MicroservletGrpcSchemas.class);
             var request = (MicroservletRequest) schemas.deserialize(requestType, requestProtobuf.getObject());
 
             // Next call the user's code and get a response, capturing any errors.
@@ -70,5 +79,16 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
         {
             problem(e, "Unable to respond to request");
         }
+    }
+
+    public ObjectList<Class<?>> responseTypes()
+    {
+        var types = new ObjectList<Class<?>>();
+        for (var requestType : requestTypes())
+        {
+            var request = (MicroservletRequest) Type.forClass(requestType).newInstance();
+            types.add(request.responseType());
+        }
+        return types;
     }
 }

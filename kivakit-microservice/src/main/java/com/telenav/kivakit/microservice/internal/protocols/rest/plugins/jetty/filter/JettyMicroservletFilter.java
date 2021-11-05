@@ -2,6 +2,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.time.PreciseDuration;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
@@ -204,6 +205,14 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     public Set<MicroservletRestPath> paths()
     {
         return pathToMicroservlet.keySet();
+    }
+
+    /**
+     * @return The list of all microservlets installed on this filter
+     */
+    public ObjectList<Microservlet<?, ?>> microservlets()
+    {
+        return ObjectList.objectList(pathToMicroservlet.values());
     }
 
     /**

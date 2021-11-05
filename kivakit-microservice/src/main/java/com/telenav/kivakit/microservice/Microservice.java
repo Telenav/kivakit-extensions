@@ -4,6 +4,7 @@ import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.configuration.settings.deployment.Deployment;
+import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
@@ -11,6 +12,7 @@ import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
+import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
@@ -154,6 +156,14 @@ public abstract class Microservice extends Application implements Startable, Sto
                     .optional()
                     .build();
 
+    /**
+     * Command line switch to output .proto files to the given folder
+     */
+    private final SwitchParser<Folder> PROTO_EXPORT_FOLDER =
+            Folder.folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
+                    .optional()
+                    .build();
+
     /** True if this microservice is running */
     private boolean running;
 
@@ -223,6 +233,7 @@ public abstract class Microservice extends Application implements Startable, Sto
      */
     public void onInitialize()
     {
+
     }
 
     /**
@@ -327,6 +338,12 @@ public abstract class Microservice extends Application implements Startable, Sto
                 listenTo(grpcService);
                 grpcService.initialize();
 
+                // write out any .proto files,
+                if (has(PROTO_EXPORT_FOLDER))
+                {
+                    grpcService.writeProtoFilesTo(get(PROTO_EXPORT_FOLDER));
+                }
+
                 // and start it up.
                 grpcService.start();
             }
@@ -386,6 +403,9 @@ public abstract class Microservice extends Application implements Startable, Sto
         // Initialize this microservice,
         onInitialize();
 
+        // register objects,
+        register(new MicroservletGrpcSchemas(this));
+
         // then start it running,
         start();
 
@@ -430,6 +450,6 @@ public abstract class Microservice extends Application implements Startable, Sto
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.objectSet(PORT, GRPC_PORT);
+        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER);
     }
 }
