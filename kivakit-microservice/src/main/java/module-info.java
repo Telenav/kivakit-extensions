@@ -2,15 +2,23 @@ open module kivakit.microservice
 {
     // KivaKit
     requires transitive kivakit.application;
-    requires transitive kivakit.web.wicket;
     requires transitive kivakit.web.swagger;
+    requires transitive kivakit.web.wicket;
+    requires transitive kivakit.math;
+
     requires kivakit.protostuff.merged;
     requires kivakit.grpc.merged;
-    requires transitive kivakit.math;
     requires kivakit.test;
+
+    requires org.junit.platform.commons;
+    requires org.junit.platform.engine;
+    requires org.junit.jupiter;
+    requires org.junit.jupiter.api;
+    requires org.junit.jupiter.engine;
 
     // Java
     requires java.annotation;
+    requires javax.servlet.api;
 
     // Utilities
     requires com.google.common;
@@ -25,9 +33,6 @@ open module kivakit.microservice
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
     requires com.google.protobuf;
-
-    // Wicket
-    requires wicket.core;
 
     // Jetty
     requires org.eclipse.jetty.servlet;

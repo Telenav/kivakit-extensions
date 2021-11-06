@@ -30,6 +30,7 @@ This project contains support for processing common data formats.
 
 [**kivakit-data-formats-csv**](csv/README.md)  
 [**kivakit-data-formats-library**](library/README.md)  
+[**kivakit-data-formats-xml**](xml/README.md)  
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -38,7 +39,9 @@ This project contains support for processing common data formats.
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-data-formats-csv**](csv/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-library**](library/README.md)
+ &nbsp; &nbsp; [**kivakit-data-formats-library**](library/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-formats-xml**](xml/README.md)
 
 [//]: # (start-user-text)
 

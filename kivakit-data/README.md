@@ -40,7 +40,9 @@ This project contains projects for compressing data and processing data in commo
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-data-formats-csv**](formats/csv/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-library**](formats/library/README.md)
+ &nbsp; &nbsp; [**kivakit-data-formats-library**](formats/library/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-data-formats-xml**](formats/xml/README.md)
 
 [//]: # (start-user-text)
 
