@@ -106,7 +106,6 @@ Javadoc coverage for this project is 46.6%.
 
 The following significant classes are undocumented:  
 
-- Borders  
 - Box  
 - Color  
 - Components  

@@ -7,13 +7,12 @@
 
 <project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web</artifactId>
         <version>1.1.2-SNAPSHOT</version>
     </parent>
-
-    <name>KivaKit Extensions - Web - Jetty</name>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-web-jetty</artifactId>
@@ -31,6 +30,10 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-network-http</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-test</artifactId>
+        </dependency>
 
         <!-- Jetty -->
 
@@ -45,6 +48,10 @@
         <dependency>
             <groupId>jakarta.activation</groupId>
             <artifactId>jakarta.activation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
     </dependencies>
