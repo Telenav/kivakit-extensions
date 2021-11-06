@@ -4,9 +4,13 @@ open module kivakit.web.wicket
     requires transitive kivakit.web.jetty;
 
     // Wicket
-    requires transitive wicket.core;
-    requires transitive wicket.util;
-    requires transitive wicket.request;
+    requires transitive org.apache.wicket.core;
+    requires transitive org.apache.wicket.util;
+    requires transitive org.apache.wicket.request;
+
+    requires transitive org.junit.jupiter;
+    requires transitive org.junit.jupiter.engine;
+    requires transitive org.junit.platform.commons;
 
     // Jetty
     requires org.eclipse.jetty.servlet;

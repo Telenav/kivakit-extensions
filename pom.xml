@@ -22,7 +22,6 @@
 
     <!-- Project -->
 
-    <name>KivaKit Extensions</name>
     <description>A collection of modules that extend KivaKit</description>
     <url>https://www.kivakit.org</url>
     <inceptionYear>2011</inceptionYear>

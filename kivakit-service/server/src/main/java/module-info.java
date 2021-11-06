@@ -12,10 +12,8 @@ open module kivakit.service.server
     requires java.prefs;
 
     // Wicket
-    requires wicket.extensions;
     requires wicket.jquery.ui;
     requires wicket.jquery.ui.core;
-    requires wicket.util;
 
     // Serialization
     requires org.danekja.jdk.serializable.functional;
