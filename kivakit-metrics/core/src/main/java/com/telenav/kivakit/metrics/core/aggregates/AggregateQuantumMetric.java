@@ -61,7 +61,7 @@ import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
  * </p>
  *
  * <pre>
- * public class AverageCountMetric extends AverageMetric<Count>
+ * public class AverageCountMetric extends AverageMetric&lt;Count&gt;
  * {
  *     public AverageCountMetric()
  *     {
