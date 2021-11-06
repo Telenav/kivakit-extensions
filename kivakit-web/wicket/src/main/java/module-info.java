@@ -11,9 +11,11 @@ open module kivakit.web.wicket
     requires transitive org.junit.jupiter;
     requires transitive org.junit.jupiter.engine;
     requires transitive org.junit.platform.commons;
+    requires transitive org.apiguardian.api;
 
     // Jetty
     requires org.eclipse.jetty.servlet;
+    requires javax.servlet.api;
 
     // Module exports
     exports com.telenav.kivakit.web.wicket.behaviors.status;

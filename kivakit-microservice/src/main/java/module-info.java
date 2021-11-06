@@ -18,6 +18,7 @@ open module kivakit.microservice
 
     // Java
     requires java.annotation;
+    requires javax.servlet.api;
 
     // Utilities
     requires com.google.common;

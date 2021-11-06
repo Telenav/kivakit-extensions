@@ -65,14 +65,6 @@
             <version>${wicket.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.googlecode.wicket-jquery-ui</groupId>
-            <artifactId>wicket-jquery-ui</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.wicket-jquery-ui</groupId>
-            <artifactId>wicket-jquery-ui-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.danekja</groupId>
             <artifactId>jdk-serializable-functional</artifactId>
             <version>1.9.0</version>
