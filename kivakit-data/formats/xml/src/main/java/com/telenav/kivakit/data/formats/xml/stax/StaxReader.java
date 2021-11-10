@@ -40,7 +40,7 @@ public class StaxReader extends BaseComponent implements Closeable
         try
         {
             var in = ensureNotNull(resource.openForReading(), "Could not open for reading: $", resource);
-            return new StaxReader(factory.createXMLEventReader(in), in);
+            return new StaxReader(resource, factory.createXMLEventReader(in), in);
         }
         catch (XMLStreamException e)
         {
@@ -81,6 +81,9 @@ public class StaxReader extends BaseComponent implements Closeable
     /** The STAX event reader */
     private final XMLEventReader reader;
 
+    /** The resource that this reader is reading from */
+    private Resource resource;
+
     /** The input stream to auto-close at the end of reading */
     private final InputStream in;
 
@@ -97,8 +100,9 @@ public class StaxReader extends BaseComponent implements Closeable
      * @param reader The Java STAX event reader
      * @param in The input stream that the reader is processing
      */
-    protected StaxReader(final XMLEventReader reader, final InputStream in)
+    protected StaxReader(Resource resource, XMLEventReader reader, InputStream in)
     {
+        this.resource = resource;
         this.reader = reader;
         this.in = in;
     }
@@ -152,7 +156,7 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public XMLEvent findNext(StaxPath path)
     {
-        return next(ignored -> this.path.isInside(path) ? FOUND : NOT_FOUND);
+        return nextMatching(ignored -> this.path.isUnder(path) ? FOUND : NOT_FOUND);
     }
 
     /**
@@ -163,29 +167,70 @@ public class StaxReader extends BaseComponent implements Closeable
         return !atEnd() && reader.hasNext();
     }
 
+    /**
+     * @return True if this reader is at, but not under, the given path
+     */
+    public boolean isAt(StaxPath path)
+    {
+        return this.path.isAt(path);
+    }
+
+    /**
+     * @return True if this reader is at a characters element
+     */
     public boolean isAtCharacters()
     {
         return at().isCharacters();
     }
 
+    /**
+     * @return True if this reader is at a close tag
+     */
     public boolean isAtCloseTag()
     {
         return at().isEndElement();
     }
 
+    /**
+     * @return True if this reader is at an open/close tag like &lt;tag/&gt;
+     */
+    public boolean isAtOpenCloseTag()
+    {
+        return at != null && at().isStartElement() && at().isEndElement();
+    }
+
+    /**
+     * @return True if this reader is at an open tag with the given name
+     */
     public boolean isAtOpenTag(String tagName)
     {
         return isAtOpenTag() && at().asStartElement().getName().getLocalPart().equals(tagName);
     }
 
+    /**
+     * @return True if this reader is at an open tag
+     */
     public boolean isAtOpenTag()
     {
-        return at != null && at().isStartElement();
+        return at != null && at().isStartElement() && !at().isEndElement();
     }
 
-    public boolean isInside(final StaxPath path)
+    /**
+     * @return True if this reader is at, or under, the given path
+     */
+    public boolean isAtOrUnder(StaxPath path)
     {
-        return this.path.isInside(path);
+        return isAt(path) || isUnder(path);
+    }
+
+    /**
+     * @return True if the this path is hierarchically "under" the given path. For example, if this path is a/b/c and
+     * the given path is /a/b, this method would return true. However, if this path was a/b/c, and the given path was
+     * /a/b/c or /a/b/c/d, it would return false.
+     */
+    public boolean isUnder(StaxPath path)
+    {
+        return this.path.isUnder(path);
     }
 
     /**
@@ -219,11 +264,61 @@ public class StaxReader extends BaseComponent implements Closeable
     }
 
     /**
+     * @param path The path to stay at or under (inside)
+     * @param matcher The matcher to call
+     * @return The next matching element inside the given path, or null if the element couldn't be found before leaving
+     * the scope represented by the given path. If the element isn't found, the element returned by {@link #at()} will
+     * be the one after the close tag where matching had to stop.
+     */
+    public XMLEvent nextAtOrUnder(StaxPath path, Matcher matcher)
+    {
+        return nextMatching(event ->
+        {
+            // If we aren't under the given path anymore,
+            if (!isAtOrUnder(path))
+            {
+                // then advance to the next element,
+                next();
+
+                // and stop.
+                return Match.STOP;
+            }
+
+            // Otherwise, delegate to the given matcher
+            return matcher.matcher(at);
+        });
+    }
+
+    /**
+     * @return The next attribute, or an exception is thrown
+     */
+    public Attribute nextAttribute()
+    {
+        return (Attribute) nextMatching((BooleanMatcher) XMLEvent::isAttribute);
+    }
+
+    /**
+     * @return The next characters block, or an exception is thrown
+     */
+    public Characters nextCharacters()
+    {
+        return (Characters) nextMatching((BooleanMatcher) XMLEvent::isCharacters);
+    }
+
+    /**
+     * @return The next close tag, or an exception is thrown
+     */
+    public EndElement nextCloseTag()
+    {
+        return (EndElement) nextMatching((BooleanMatcher) XMLEvent::isEndElement);
+    }
+
+    /**
      * @param matcher The matcher
      * @return The next XMLEvent matching the matcher or null if the matcher asked to stop. A failure occurs (throwing
      * an exception) if a match cannot be found before the end of the XML stream.
      */
-    public XMLEvent next(Matcher matcher)
+    public XMLEvent nextMatching(Matcher matcher)
     {
         for (; hasNext(); next())
         {
@@ -245,56 +340,11 @@ public class StaxReader extends BaseComponent implements Closeable
     }
 
     /**
-     * @return The next attribute, or an exception is thrown
-     */
-    public Attribute nextAttribute()
-    {
-        return (Attribute) next((BooleanMatcher) XMLEvent::isAttribute);
-    }
-
-    /**
-     * @return The next characters block, or an exception is thrown
-     */
-    public Characters nextCharacters()
-    {
-        return (Characters) next((BooleanMatcher) XMLEvent::isCharacters);
-    }
-
-    /**
-     * @return The next close tag, or an exception is thrown
-     */
-    public EndElement nextCloseTag()
-    {
-        return (EndElement) next((BooleanMatcher) XMLEvent::isEndElement);
-    }
-
-    /**
-     * @param path The path to stay at or under (inside)
-     * @param matcher The matcher to call
-     * @return The next matching element inside the given path, or null if the element couldn't be found before leaving
-     * the scope represented by the given path. If the element isn't found, the element returned by {@link #at()} will
-     * be the one after the close tag where matching had to stop.
-     */
-    public XMLEvent nextInside(StaxPath path, Matcher matcher)
-    {
-        return next(event ->
-        {
-            if (!this.path.isInside(path))
-            {
-                next();
-                return Match.STOP;
-            }
-
-            return matcher.matcher(at);
-        });
-    }
-
-    /**
      * @return The next open tag, or an exception is thrown
      */
     public StartElement nextOpenTag()
     {
-        return (StartElement) next((BooleanMatcher) XMLEvent::isStartElement);
+        return (StartElement) nextMatching((BooleanMatcher) XMLEvent::isStartElement);
     }
 
     /**
@@ -303,5 +353,11 @@ public class StaxReader extends BaseComponent implements Closeable
     public StaxPath path()
     {
         return path;
+    }
+
+    @Override
+    public String toString()
+    {
+        return resource.path() + ":" + path + " => " + at;
     }
 }

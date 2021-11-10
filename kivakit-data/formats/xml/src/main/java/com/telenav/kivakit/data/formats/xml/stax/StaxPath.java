@@ -21,13 +21,21 @@ public class StaxPath extends StringPath
     }
 
     /**
-     * @return True if the this path is inside the given path. For example, if the current path is a/b/c and the given
-     * path is a/b/c or /a/b/c/d, this method would return true. However, if the current path was a/b, and the given
+     * @return True if this path is the given path, but not a path under the given path
+     */
+    public boolean isAt(StaxPath path)
+    {
+        return equals(path);
+    }
+
+    /**
+     * @return True if the this path is hierarchically "under" the given path. For example, if this path is a/b/c and
+     * the given path is a/b/c or /a/b, this method would return true. However, if this path was a/b/c, and the given
      * path was /a/b/c/d, it would return false.
      */
-    public boolean isInside(StaxPath path)
+    public boolean isUnder(StaxPath path)
     {
-        return startsWith(path);
+        return !isAt(path) && startsWith(path);
     }
 
     @Override
@@ -37,13 +45,13 @@ public class StaxPath extends StringPath
     }
 
     @Override
-    public StaxPath withChild(final String element)
+    public StaxPath withChild(String element)
     {
         return (StaxPath) super.withChild(element);
     }
 
     @Override
-    protected Path<String> onCopy(final String root, final List<String> elements)
+    protected Path<String> onCopy(String root, List<String> elements)
     {
         var path = new StaxPath();
         path.elements().addAll(elements);
