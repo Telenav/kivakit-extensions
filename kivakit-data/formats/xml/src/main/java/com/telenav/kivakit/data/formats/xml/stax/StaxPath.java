@@ -1,7 +1,6 @@
 package com.telenav.kivakit.data.formats.xml.stax;
 
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.paths.Path;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 
 import java.util.List;
@@ -21,6 +20,15 @@ public class StaxPath extends StringPath
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StaxPath copy()
+    {
+        return (StaxPath) super.copy();
+    }
+
+    /**
      * @return True if this path is the given path, but not a path under the given path
      */
     public boolean isAt(StaxPath path)
@@ -33,7 +41,7 @@ public class StaxPath extends StringPath
      * the given path is a/b/c or /a/b, this method would return true. However, if this path was a/b/c, and the given
      * path was /a/b/c/d, it would return false.
      */
-    public boolean isUnder(StaxPath path)
+    public boolean isInside(StaxPath path)
     {
         return !isAt(path) && startsWith(path);
     }
@@ -51,7 +59,7 @@ public class StaxPath extends StringPath
     }
 
     @Override
-    protected Path<String> onCopy(String root, List<String> elements)
+    protected StaxPath onCopy(String root, List<String> elements)
     {
         var path = new StaxPath();
         path.elements().addAll(elements);

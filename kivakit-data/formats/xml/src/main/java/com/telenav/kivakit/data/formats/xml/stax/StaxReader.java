@@ -82,7 +82,7 @@ public class StaxReader extends BaseComponent implements Closeable
     private final XMLEventReader reader;
 
     /** The resource that this reader is reading from */
-    private Resource resource;
+    private final Resource resource;
 
     /** The input stream to auto-close at the end of reading */
     private final InputStream in;
@@ -156,7 +156,7 @@ public class StaxReader extends BaseComponent implements Closeable
      */
     public XMLEvent findNext(StaxPath path)
     {
-        return nextMatching(ignored -> this.path.isUnder(path) ? FOUND : NOT_FOUND);
+        return nextMatching(ignored -> this.path.isInside(path) ? FOUND : NOT_FOUND);
     }
 
     /**
@@ -218,9 +218,9 @@ public class StaxReader extends BaseComponent implements Closeable
     /**
      * @return True if this reader is at, or under, the given path
      */
-    public boolean isAtOrUnder(StaxPath path)
+    public boolean isAtOrInside(StaxPath path)
     {
-        return isAt(path) || isUnder(path);
+        return isAt(path) || isInside(path);
     }
 
     /**
@@ -228,9 +228,17 @@ public class StaxReader extends BaseComponent implements Closeable
      * the given path is /a/b, this method would return true. However, if this path was a/b/c, and the given path was
      * /a/b/c or /a/b/c/d, it would return false.
      */
-    public boolean isUnder(StaxPath path)
+    public boolean isInside(StaxPath path)
     {
-        return this.path.isUnder(path);
+        return this.path.isInside(path);
+    }
+
+    /**
+     * @return True if this reader is at, or under, the given path
+     */
+    public boolean isOutside(StaxPath path)
+    {
+        return !isAtOrInside(path);
     }
 
     /**
@@ -270,12 +278,12 @@ public class StaxReader extends BaseComponent implements Closeable
      * the scope represented by the given path. If the element isn't found, the element returned by {@link #at()} will
      * be the one after the close tag where matching had to stop.
      */
-    public XMLEvent nextAtOrUnder(StaxPath path, Matcher matcher)
+    public XMLEvent nextAtOrInside(StaxPath path, Matcher matcher)
     {
         return nextMatching(event ->
         {
             // If we aren't under the given path anymore,
-            if (!isAtOrUnder(path))
+            if (!isAtOrInside(path))
             {
                 // then advance to the next element,
                 next();
@@ -348,11 +356,11 @@ public class StaxReader extends BaseComponent implements Closeable
     }
 
     /**
-     * @return The current XML path
+     * @return A copy of the current XML path
      */
     public StaxPath path()
     {
-        return path;
+        return path.copy();
     }
 
     @Override
