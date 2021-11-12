@@ -47,6 +47,12 @@ public class StaxPath extends StringPath
     }
 
     @Override
+    public StaxPath parent()
+    {
+        return (StaxPath) super.parent();
+    }
+
+    @Override
     public String separator()
     {
         return "/";
