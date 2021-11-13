@@ -64,7 +64,7 @@ Javadoc coverage for this project is 67.0%.
 | Class | Documentation Sections |
 |---|---|
 | [*StaxPath*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxPath.html) |  |  
-| [*StaxReader*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.html) | Using a {@link StaxReader} |  
+| [*StaxReader*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.html) | Using a StaxReader |  
 | | Stream Positioning |  
 | | Reader State |  
 | | Moving Through the Stream |  

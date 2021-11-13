@@ -28,7 +28,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
  * stream, including elements relative to XML {@link StaxPath}s.
  * </p>
  *
- * <p><b>Using a {@link StaxReader}</b></p>
+ * <p><b>Using a StaxReader</b></p>
  *
  * <p>
  * A STAX reader can be created with the {@link #open(Resource)} method. The method will either successfully return a
