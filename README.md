@@ -55,7 +55,7 @@ This project contains modules that extend KivaKit.
  &nbsp; &nbsp; [**kivakit-data-formats-csv**](kivakit-data/formats/csv/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-data-formats-library**](kivakit-data/formats/library/README.md)  
-&nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
+&nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-data-formats-xml**](kivakit-data/formats/xml/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-github**](kivakit-filesystems/github/README.md)  

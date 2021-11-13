@@ -54,9 +54,9 @@ None
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 57.5%.  
+Javadoc coverage for this project is 67.0%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
 
 
 
@@ -64,7 +64,11 @@ Javadoc coverage for this project is 57.5%.
 | Class | Documentation Sections |
 |---|---|
 | [*StaxPath*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxPath.html) |  |  
-| [*StaxReader*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.html) |  |  
+| [*StaxReader*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.html) | Using a {@link StaxReader} |  
+| | Stream Positioning |  
+| | Reader State |  
+| | Moving Through the Stream |  
+| | StaxPath Positioning Operations |  
 | [*StaxReader.BooleanMatcher*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.BooleanMatcher.html) |  |  
 | [*StaxReader.Match*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.Match.html) |  |  
 | [*StaxReader.Matcher*](https://www.kivakit.org/1.1.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.Matcher.html) |  |  
