@@ -5,8 +5,35 @@ import com.telenav.kivakit.kernel.language.paths.StringPath;
 
 import java.util.List;
 
+/**
+ * <p>
+ * An element path in an XML stream.
+ * </p>
+ *
+ * <p>
+ * A {@link StaxPath} gives the sequence of elements that must be encountered to get from the root element of the XML
+ * document to a position in the document's element stream. For example, when streaming the following XML document, if
+ * the current element is the one indicated by the arrow, the path is a/b:
+ * </p>
+ *
+ * <pre>
+ * &lt;a&gt;
+ *     &lt;b&gt;   &lt;--- {@link StaxPath} is a/b
+ *         &lt;c&gt;
+ *         &lt;/c&gt;
+ *     &lt;/b&gt;
+ * &lt;a&gt;
+ * </pre>
+ *
+ * @author jonathanl (shibo)
+ * @see StaxReader
+ */
 public class StaxPath extends StringPath
 {
+    /**
+     * @param path A slash-separated XML path
+     * @return A STAX path for the given string
+     */
     public static StaxPath parseXmlPath(String path)
     {
         var stax = new StaxPath();
@@ -46,18 +73,27 @@ public class StaxPath extends StringPath
         return !isAt(path) && startsWith(path);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaxPath parent()
     {
         return (StaxPath) super.parent();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String separator()
     {
         return "/";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaxPath withChild(String element)
     {
