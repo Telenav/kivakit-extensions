@@ -44,13 +44,13 @@ public class WebUnitTest extends UnitTest
     @SuppressWarnings("SameParameterValue")
     protected void startWebServer(int portNumber, FilePath war)
     {
-        HttpConfiguration http = new HttpConfiguration();
-        Server server = new Server();
-        ServerConnector connector = new ServerConnector(server, new HttpConnectionFactory(http));
+        var http = new HttpConfiguration();
+        var server = new Server();
+        var connector = new ServerConnector(server, new HttpConnectionFactory(http));
         connector.setPort(portNumber);
         server.addConnector(connector);
 
-        WebAppContext webapp = new WebAppContext();
+        var webapp = new WebAppContext();
         webapp.setContextPath("/");
         webapp.setWar(war.asString());
         server.setHandler(webapp);
