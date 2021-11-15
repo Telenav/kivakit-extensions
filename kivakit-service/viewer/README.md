@@ -20,14 +20,14 @@ This module allows users to view service information.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.1.2/lexakai/kivakit-extensions/kivakit-service/viewer/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.1.3-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/viewer/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-service-viewer</artifactId>
-        <version>1.1.2</version>
+        <version>1.1.3-SNAPSHOT</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -48,7 +48,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.service.viewer*](https://www.kivakit.org/1.1.2/lexakai/kivakit-extensions/kivakit-service/viewer/documentation/diagrams/com.telenav.kivakit.service.viewer.svg)
+[*com.telenav.kivakit.service.viewer*](https://www.kivakit.org/1.1.3-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/viewer/documentation/diagrams/com.telenav.kivakit.service.viewer.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -65,7 +65,7 @@ The following significant classes are undocumented:
 
 | Class | Documentation Sections |
 |---|---|
-| [*ServiceRegistryViewerApplication*](https://www.kivakit.org/1.1.2/javadoc/kivakit-extensions/kivakit.service.viewer/com/telenav/kivakit/service/viewer/ServiceRegistryViewerApplication.html) |  |  
+| [*ServiceRegistryViewerApplication*](https://www.kivakit.org/1.1.3-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.viewer/com/telenav/kivakit/service/viewer/ServiceRegistryViewerApplication.html) |  |  
 
 [//]: # (start-user-text)
 
