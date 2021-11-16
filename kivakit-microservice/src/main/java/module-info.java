@@ -2,6 +2,7 @@ open module kivakit.microservice
 {
     // KivaKit
     requires transitive kivakit.application;
+    requires transitive kivakit.settings.stores.zookeeper;
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.web.wicket;
     requires transitive kivakit.math;

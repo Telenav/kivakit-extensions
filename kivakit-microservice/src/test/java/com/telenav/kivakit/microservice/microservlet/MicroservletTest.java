@@ -7,7 +7,6 @@ import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
@@ -86,7 +85,7 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestMicroservice extends Microservice
+    public static class TestMicroservice extends Microservice<String>
     {
         @Override
         public MicroserviceMetadata metadata()
@@ -107,6 +106,12 @@ public class MicroservletTest extends UnitTest
         public MicroserviceRestService onNewRestService()
         {
             return new TestRestService(this);
+        }
+
+        @Override
+        protected String onInitializeClusterMember()
+        {
+            return "dummy-value";
         }
     }
 
@@ -158,7 +163,7 @@ public class MicroservletTest extends UnitTest
 
     public static class TestRestService extends MicroserviceRestService
     {
-        public TestRestService(Microservice microservice)
+        public TestRestService(Microservice<?> microservice)
         {
             super(microservice);
         }

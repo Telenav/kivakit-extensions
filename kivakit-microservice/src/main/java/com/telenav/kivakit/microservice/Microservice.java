@@ -3,6 +3,7 @@ package com.telenav.kivakit.microservice;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
+import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.Deployment;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
@@ -18,6 +19,7 @@ import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroser
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
+import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.web.jetty.JettyServer;
@@ -136,7 +138,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class Microservice extends Application implements Startable, Stoppable
+public abstract class Microservice<ClusterMember> extends Application implements Startable, Stoppable
 {
     /**
      * Command line switch for what port to run any REST service on. This will override any value from {@link
@@ -176,12 +178,22 @@ public abstract class Microservice extends Application implements Startable, Sto
 
     private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
 
+    private MicroserviceCluster<ClusterMember> cluster;
+
     /**
      * Initializes this microservice and any project(s) it depends on
      */
     public Microservice(Project... project)
     {
         super(project);
+    }
+
+    /**
+     * The cluster where this microservice is running
+     */
+    public MicroserviceCluster<ClusterMember> cluster()
+    {
+        return cluster;
     }
 
     /**
@@ -386,6 +398,23 @@ public abstract class Microservice extends Application implements Startable, Sto
         return webApplication.get();
     }
 
+    /**
+     * @return The ClusterMember object for this microservice. The ClusterMember object holds information about cluster
+     * members. When a member joins the cluster, the {@link #onJoin(Object)} method is called with the ClusterMember
+     * object for the member. When a member leaves the cluster, the {@link #onLeave(Object)} is called with the same
+     * object.
+     */
+    protected abstract ClusterMember onInitializeClusterMember();
+
+    protected void onJoin(ClusterMember instance)
+    {
+
+    }
+
+    protected void onLeave(ClusterMember instance)
+    {
+    }
+
     protected void onMountJettyPlugins(JettyServer server)
     {
     }
@@ -398,9 +427,32 @@ public abstract class Microservice extends Application implements Startable, Sto
      * </p>
      */
     @Override
+    @SuppressWarnings("unchecked")
     protected final void onRun()
     {
-        // Initialize this microservice,
+        // Get the ClusterMember object for this microservice's cluster,
+        var member = onInitializeClusterMember();
+
+        // register it in zookeeper,
+        cluster = new MicroserviceCluster<>((Class<ClusterMember>) member.getClass())
+        {
+            @Override
+            protected void onJoin(ClusterMember instance)
+            {
+                Microservice.this.onJoin(instance);
+            }
+
+            @Override
+            protected void onLeave(ClusterMember instance)
+            {
+                Microservice.this.onLeave(instance);
+            }
+        };
+
+        // and join the cluster.
+        cluster.join(member, InstanceIdentifier.instanceIdentifier(Host.local().name()));
+
+        // Next, initialize this microservice,
         onInitialize();
 
         // register objects,
