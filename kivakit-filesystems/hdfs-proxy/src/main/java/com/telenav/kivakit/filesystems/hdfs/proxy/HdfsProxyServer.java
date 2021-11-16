@@ -446,7 +446,7 @@ public class HdfsProxyServer extends Server implements com.telenav.kivakit.files
         try
         {
             // Register proxy server settings
-            registerSettings(new HdfsProxyServerSettings()
+            registerSettingsObject(new HdfsProxyServerSettings()
                     .configurationFolder(get(CONFIGURATION_FOLDER))
                     .user(get(USERNAME)));
 

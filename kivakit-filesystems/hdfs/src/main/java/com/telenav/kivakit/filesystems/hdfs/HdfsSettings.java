@@ -29,7 +29,7 @@ import com.telenav.lexakai.annotations.visibility.UmlNotPublicApi;
 
 /**
  * Settings that must be provided by the user of {@link HdfsFileSystemService} via {@link
- * Settings#registerSettings(Object)}.
+ * Settings#registerSettingsObject(Object)}.
  *
  * <p><b>Settings</b></p>
  *
