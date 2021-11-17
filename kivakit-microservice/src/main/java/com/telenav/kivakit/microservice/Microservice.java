@@ -14,6 +14,7 @@ import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -32,6 +33,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
+import java.util.Set;
 
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 
@@ -182,6 +184,14 @@ public abstract class Microservice extends Application implements Startable, Sto
     public Microservice(Project... project)
     {
         super(project);
+    }
+
+    /**
+     * @return The microservlet requests that are enabled to be called from AWS lambda
+     */
+    public Set<MicroservletRequest> allowedLambdaRequests()
+    {
+        return Set.of();
     }
 
     /**
