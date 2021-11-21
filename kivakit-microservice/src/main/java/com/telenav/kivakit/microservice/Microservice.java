@@ -450,7 +450,7 @@ public abstract class Microservice<ClusterMember> extends Application implements
         };
 
         // and join the cluster.
-        cluster.join(member, InstanceIdentifier.instanceIdentifier(Host.local().name()));
+        cluster.join(member, InstanceIdentifier.of(Host.local().name()));
 
         // Next, initialize this microservice,
         onInitialize();

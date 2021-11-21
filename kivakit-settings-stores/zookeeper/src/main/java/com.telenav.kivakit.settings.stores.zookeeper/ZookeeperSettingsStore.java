@@ -51,7 +51,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Compone
         private Duration timeout;
 
         /** Any connected zookeeper */
-        private ZooKeeper zookeeper;
+        private transient ZooKeeper zookeeper;
 
         /**
          * @return The connected Zookeeper instance for these settings
@@ -107,7 +107,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Compone
                     {
                         case NodeDeleted:
                         {
-                            var object = lookup(type, InstanceIdentifier.instanceIdentifier(instance));
+                            var object = lookup(type, InstanceIdentifier.of(instance));
                             if (object != null)
                             {
                                 onSettingsRemoved(object);
@@ -127,7 +127,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Compone
                             var object = onDeserialize(data, type);
                             if (object != null)
                             {
-                                add(new SettingsObject(type, InstanceIdentifier.instanceIdentifier(instance), object));
+                                add(new SettingsObject(object, type, InstanceIdentifier.of(instance)));
                             }
                             else
                             {
@@ -178,7 +178,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Compone
                     var object = onDeserialize(data, type);
                     if (object != null)
                     {
-                        settings.add(new SettingsObject(type, InstanceIdentifier.instanceIdentifier(instance), object));
+                        settings.add(new SettingsObject(object, type, InstanceIdentifier.of(instance)));
                     }
                 }
             }

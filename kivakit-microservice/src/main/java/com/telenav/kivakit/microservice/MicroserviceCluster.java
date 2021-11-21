@@ -51,7 +51,7 @@ public class MicroserviceCluster<Member>
 
     public void join(Member member, InstanceIdentifier instance)
     {
-        store.add(new SettingsObject(memberType, instance, member));
+        store.add(new SettingsObject(member, memberType, instance));
     }
 
     @SuppressWarnings("unchecked")
