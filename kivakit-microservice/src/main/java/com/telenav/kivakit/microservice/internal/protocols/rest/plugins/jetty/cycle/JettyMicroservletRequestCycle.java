@@ -2,12 +2,12 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.serialization.json.FunctionalGsonFactory;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
@@ -84,9 +84,6 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     @UmlAggregation
     private final JettyMicroserviceResponse response;
 
-    /** A Gson instance provided by the {@link MicroserviceRestService}'s factory */
-    private final Lazy<Gson> gson = Lazy.of(() -> application().gsonFactory().newInstance());
-
     /**
      * @param application The REST application that owns this request cycle
      * @param request The Java Servlet API HTTP request object
@@ -125,7 +122,13 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
      */
     public Gson gson()
     {
-        return gson.get();
+        var factory = (FunctionalGsonFactory) application().gsonFactory();
+
+        return factory
+                .withPrettyPrinting(request()
+                        .parameters()
+                        .asBoolean("pretty"))
+                .gson();
     }
 
     /**

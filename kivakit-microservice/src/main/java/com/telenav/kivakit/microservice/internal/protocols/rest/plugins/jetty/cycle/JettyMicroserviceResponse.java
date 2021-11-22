@@ -12,10 +12,10 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactorySource;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
@@ -167,8 +167,8 @@ public final class JettyMicroserviceResponse extends BaseComponent
     /**
      * @param response The response object to be serialized
      * @return The object serialized into JSON format, using the application {@link GsonFactory}. This behavior can be
-     * overridden by implement {@link MicroserviceGsonFactorySource} to provide a custom {@link GsonFactory} for a given
-     * response object.
+     * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
+     * object.
      */
     private String toJson(Object response)
     {
@@ -183,10 +183,10 @@ public final class JettyMicroserviceResponse extends BaseComponent
         }
 
         // If the response object has a custom GsonFactory,
-        if (response instanceof MicroserviceGsonFactorySource)
+        if (response instanceof GsonFactorySource)
         {
             // use that to convert the response to JSON,
-            return ((MicroserviceGsonFactorySource) response).gson().toJson(objectToSerialize);
+            return listenTo(((GsonFactorySource) response).gsonFactory()).gson().toJson(objectToSerialize);
         }
         else
         {

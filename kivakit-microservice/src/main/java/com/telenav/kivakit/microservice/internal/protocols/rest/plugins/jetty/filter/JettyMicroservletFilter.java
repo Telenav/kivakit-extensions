@@ -252,17 +252,17 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
             {
                 case POST:
                 {
-                    // then convert the posted JSON to an object of the request type,
+                    // and there is a request body,
                     MicroservletRequest request;
-                    if (!parameters.isEmpty())
+                    if (cycle.request().hasBody())
                     {
-                        // converting any parameters to a JSON request object,
-                        request = cycle.gson().fromJson(parameters.asJson(), requestType);
+                        // then convert the JSON in the body to a request object,
+                        request = cycle.request().readObject(requestType);
                     }
                     else
                     {
-                        // or if there are no parameters, converting the posted entity.
-                        request = cycle.request().readObject(requestType);
+                        // otherwise convert any parameters to a JSON request object,
+                        request = cycle.gson().fromJson(parameters.asJson(), requestType);
                     }
 
                     // Then, we respond with the object returned from onPost().

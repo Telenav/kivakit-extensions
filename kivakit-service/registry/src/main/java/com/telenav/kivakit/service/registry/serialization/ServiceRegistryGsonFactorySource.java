@@ -18,13 +18,12 @@
 
 package com.telenav.kivakit.service.registry.serialization;
 
-import com.google.gson.GsonBuilder;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.logging.Logger;
-import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.network.core.Port;
+import com.telenav.kivakit.serialization.json.BaseGsonFactorySource;
+import com.telenav.kivakit.serialization.json.FunctionalGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
 import com.telenav.kivakit.serialization.json.serializers.TimeInMillisecondsGsonSerializer;
@@ -41,19 +40,16 @@ import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.For
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class ServiceRegistryGsonFactory extends GsonFactory
+public class ServiceRegistryGsonFactorySource extends BaseGsonFactorySource
 {
-    private static final Logger LOGGER = LoggerFactory.newLogger();
-
     @Override
-    protected void onAddSerializers(GsonBuilder builder)
+    public GsonFactory gsonFactory()
     {
-        super.onAddSerializers(builder);
-
-        addSerializer(builder, Port.class, serializer(new Port.Converter(LOGGER)));
-        addSerializer(builder, Application.Identifier.class, new ApplicationIdentifierGsonSerializer());
-        addSerializer(builder, ServiceType.class, new ServiceTypeGsonSerializer());
-        addSerializer(builder, Problem.class, new ProblemGsonSerializer(WITH_EXCEPTION));
-        addSerializer(builder, Time.class, new TimeInMillisecondsGsonSerializer());
+        return new FunctionalGsonFactory(this)
+                .withSerialization(Port.class, serializer(new Port.Converter(this)))
+                .withSerialization(Application.Identifier.class, new ApplicationIdentifierGsonSerializer())
+                .withSerialization(ServiceType.class, new ServiceTypeGsonSerializer())
+                .withSerialization(Problem.class, new ProblemGsonSerializer(WITH_EXCEPTION))
+                .withSerialization(Time.class, new TimeInMillisecondsGsonSerializer());
     }
 }

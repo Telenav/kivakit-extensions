@@ -58,7 +58,7 @@ public class JerseyGsonSerializer<T> implements MessageBodyReader<T>, MessageBod
 
     public JerseyGsonSerializer(GsonFactory factory)
     {
-        gson = factory.newInstance();
+        gson = factory.gson();
     }
 
     @Override
