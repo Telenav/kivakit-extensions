@@ -69,7 +69,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                     {
                         if (event.getState() == SyncConnected)
                         {
-                            latch.isReady();
+                            latch.ready();
                         }
                     });
                 }
@@ -79,6 +79,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                 }
 
                 latch.await();
+                information("Connected");
             }
             return zookeeper;
         }
