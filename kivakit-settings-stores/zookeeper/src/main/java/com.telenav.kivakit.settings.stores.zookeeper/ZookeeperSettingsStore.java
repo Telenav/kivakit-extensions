@@ -2,9 +2,9 @@ package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.lookup.Registry;
+import com.telenav.kivakit.configuration.lookup.RegistryTrait;
 import com.telenav.kivakit.configuration.settings.BaseSettingsStore;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
 import com.telenav.kivakit.configuration.settings.SettingsStore;
@@ -40,7 +40,7 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  *
  * @author jonathanl (shibo)
  */
-public class ZookeeperSettingsStore extends BaseSettingsStore implements ComponentMixin, Watcher
+public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, Watcher
 {
     public static class Settings extends BaseComponent
     {
@@ -64,6 +64,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Compone
 
                 try
                 {
+                    information("Connecting to zookeeper on $", port);
                     zookeeper = new ZooKeeper(port.toString(), (int) timeout.asMilliseconds(), event ->
                     {
                         if (event.getState() == SyncConnected)
@@ -241,6 +242,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Compone
 
     private ZooKeeper zookeeper()
     {
-        return require(Settings.class).zookeeper();
+        return listenTo(require(Settings.class)).zookeeper();
     }
 }

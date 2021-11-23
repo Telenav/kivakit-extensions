@@ -1,6 +1,8 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.component.ComponentMixin;
+import com.telenav.kivakit.configuration.settings.stores.resource.PackageSettingsStore;
+import com.telenav.kivakit.kernel.language.paths.PackagePath;
 import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
 
@@ -10,7 +12,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     {
         int x;
 
-        public Settings(final int x)
+        public Settings(int x)
         {
             this.x = x;
         }
@@ -20,10 +22,10 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     public void test()
     {
         // Register zookeeper settings,
-        register(new ZookeeperSettingsStore.Settings());
+        registerSettingsIn(PackageSettingsStore.of(this, PackagePath.packagePath(getClass())));
 
         // create store,
-        var store = register(new ZookeeperSettingsStore());
+        var store = listenTo(register(new ZookeeperSettingsStore()));
 
         // save settings to store
         saveSettingsTo(store, new Settings(7));
