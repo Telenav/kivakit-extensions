@@ -8,13 +8,13 @@ import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.BaseHttpResource;
 import com.telenav.kivakit.network.http.HttpGetResource;
 import com.telenav.kivakit.network.http.HttpPostResource;
+import com.telenav.kivakit.serialization.json.GsonFactory;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.jetbrains.annotations.NotNull;
@@ -41,14 +41,14 @@ public class MicroserviceRestClient extends BaseComponent
     private final Version version;
 
     /** {@link Gson} factory for reading and writing JSON object */
-    private final MicroserviceGsonFactory gsonFactory;
+    private final GsonFactory gsonFactory;
 
     /**
      * @param gsonFactory A factory that creates {@link Gson} objects to use when reading and writing JSON objects
      * @param port The (host and) port of the remote REST service to communicate with
      * @param version The version of the remote REST service
      */
-    public MicroserviceRestClient(MicroserviceGsonFactory gsonFactory, Port port, Version version)
+    public MicroserviceRestClient(GsonFactory gsonFactory, Port port, Version version)
     {
         this.gsonFactory = gsonFactory;
         this.port = port;
@@ -101,7 +101,7 @@ public class MicroserviceRestClient extends BaseComponent
             {
                 try
                 {
-                    var entity = new StringEntity(request == null ? "{}" : gsonFactory.newInstance().toJson(request));
+                    var entity = new StringEntity(request == null ? "{}" : gsonFactory.gson().toJson(request));
                     entity.setContentType("application/json");
                     post.setEntity(entity);
                     post.setHeader("Accept", "application/json");
@@ -168,7 +168,7 @@ public class MicroserviceRestClient extends BaseComponent
             String json = resource.reader().string();
             if (!Strings.isEmpty(json))
             {
-                return gsonFactory.newInstance().fromJson(json, type);
+                return gsonFactory.gson().fromJson(json, type);
             }
             else
             {

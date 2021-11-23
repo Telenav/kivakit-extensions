@@ -14,8 +14,9 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.serialization.json.FunctionalGsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.test.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -169,9 +170,9 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        public MicroserviceGsonFactory gsonFactory()
+        public GsonFactory gsonFactory()
         {
-            return new MicroserviceGsonFactory();
+            return new FunctionalGsonFactory(this);
         }
 
         @Override

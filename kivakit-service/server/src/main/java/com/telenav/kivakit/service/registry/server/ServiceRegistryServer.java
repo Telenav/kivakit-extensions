@@ -141,7 +141,7 @@ public class ServiceRegistryServer extends Server
                 : settings.localServiceRegistryPort();
 
         // create the Jersey REST application,
-        var application = new ServiceRegistryRestApplication();
+        var application = listenTo(new ServiceRegistryRestApplication());
 
         // and start up Jetty with Swagger, Jersey and Wicket.
         listenTo(new JettyServer())
