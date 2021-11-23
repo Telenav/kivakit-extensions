@@ -8,6 +8,7 @@ import com.telenav.kivakit.configuration.lookup.RegistryTrait;
 import com.telenav.kivakit.configuration.settings.BaseSettingsStore;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
 import com.telenav.kivakit.configuration.settings.SettingsStore;
+import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
@@ -17,6 +18,7 @@ import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.serialization.json.GsonFactory;
+import org.apache.zookeeper.KeeperException.NodeExistsException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
@@ -24,13 +26,12 @@ import org.apache.zookeeper.ZooKeeper;
 import java.util.Set;
 
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.ADD;
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.CLEAR;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.REMOVE;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.SAVE;
+import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.UNLOAD;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
-import static org.apache.zookeeper.Watcher.Event.EventType.NodeCreated;
 import static org.apache.zookeeper.Watcher.Event.KeeperState.SyncConnected;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
@@ -52,6 +53,11 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
         /** Any connected zookeeper */
         private transient ZooKeeper zookeeper;
+
+        public Port port()
+        {
+            return port;
+        }
 
         /**
          * @return The connected Zookeeper instance for these settings
@@ -88,7 +94,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     @Override
     public Set<AccessMode> accessModes()
     {
-        return Set.of(ADD, REMOVE, CLEAR, LOAD, SAVE);
+        return Set.of(ADD, REMOVE, UNLOAD, LOAD, SAVE);
     }
 
     @Override
@@ -112,7 +118,8 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                             var object = lookup(type, InstanceIdentifier.of(instance));
                             if (object != null)
                             {
-                                onSettingsRemoved(object);
+                                var settingsObject = new SettingsObject(object, type, InstanceIdentifier.of(instance));
+                                onSettingsRemoved(StringPath.stringPath(event.getPath()), settingsObject);
                                 Registry.of(this).unregister(object);
                             }
                             else
@@ -127,18 +134,17 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                         {
                             var data = zookeeper().getData(event.getPath(), null, null);
                             var object = onDeserialize(data, type);
+                            var settingsObject = new SettingsObject(object, type, InstanceIdentifier.of(instance));
                             if (object != null)
                             {
-                                add(new SettingsObject(object, type, InstanceIdentifier.of(instance)));
+                                add(settingsObject);
                             }
                             else
                             {
                                 warning("Unable to update: $ ($)", typeName, instance);
                             }
-                            if (event.getType() == NodeCreated)
-                            {
-                                onSettingsAdded(object);
-                            }
+
+                            onSettingsUpdated(StringPath.stringPath(event.getPath()), settingsObject);
                         }
                         break;
                     }
@@ -154,7 +160,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     @SuppressWarnings("unchecked")
     protected <T> T onDeserialize(byte[] data, Class<?> type)
     {
-        var gson = require(GsonFactory.class).get();
+        var gson = require(GsonFactory.class).gson();
         var json = new String(data, UTF_8);
         return (T) gson.fromJson(json, type);
     }
@@ -194,7 +200,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     @Override
-    protected boolean onSave(SettingsObject object)
+    protected boolean onRemove(SettingsObject object)
     {
         var zookeeper = zookeeper();
         var identifier = object.identifier();
@@ -205,7 +211,8 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
         try
         {
-            zookeeper.create(path.join(), onSerialize(object), OPEN_ACL_UNSAFE, PERSISTENT);
+            zookeeper.delete(path.join(), -1);
+            onSettingsRemoved(path, object);
             return true;
         }
         catch (Exception e)
@@ -215,19 +222,45 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
     }
 
+    @Override
+    protected boolean onSave(SettingsObject settings)
+    {
+        var zookeeper = zookeeper();
+        var identifier = settings.identifier();
+
+        var path = applicationPath()
+                .withChild(identifier.type().getName())
+                .withChild(identifier.instance().identifier());
+
+        try
+        {
+            mkdirs(path);
+            var data = onSerialize(settings.object());
+            zookeeper.setData(path.join(), data, -1);
+            onSettingsUpdated(path, settings);
+            return true;
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to save object: $", settings);
+            return false;
+        }
+    }
+
     protected byte[] onSerialize(Object object)
     {
-        var gson = require(GsonFactory.class).get();
+        var gson = require(GsonFactory.class).gson();
         var json = gson.toJson(object);
         return json.getBytes(UTF_8);
     }
 
-    protected void onSettingsAdded(Object member)
+    protected void onSettingsRemoved(StringPath path, SettingsObject settings)
     {
     }
 
-    protected void onSettingsRemoved(Object member)
+    protected void onSettingsUpdated(StringPath path, SettingsObject settings)
     {
+
     }
 
     private StringPath applicationPath()
@@ -236,9 +269,33 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
         return StringPath.stringPath(
                 "kivakit",
-                JavaVirtualMachine.property("user.name"),
+                String.valueOf(KivaKit.get().kivakitVersion()),
                 application.name(),
-                application.version().toString());
+                application.version().toString(),
+                JavaVirtualMachine.property("user.name")).withRoot("/");
+    }
+
+    private void mkdirs(StringPath path)
+    {
+        // Create the parent node first,
+        var parent = path.parent();
+        if (parent != null && !parent.isRoot())
+        {
+            mkdirs(parent);
+        }
+
+        try
+        {
+            // then create the node at the given path.
+            zookeeper().create(path.join(), new byte[0], OPEN_ACL_UNSAFE, PERSISTENT);
+        }
+        catch (NodeExistsException ignored)
+        {
+        }
+        catch (Exception e)
+        {
+            problem("Could not create $", path);
+        }
     }
 
     private ZooKeeper zookeeper()

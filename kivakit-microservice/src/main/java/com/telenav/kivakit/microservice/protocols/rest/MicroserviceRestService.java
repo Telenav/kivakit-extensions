@@ -42,7 +42,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
-import com.telenav.kivakit.serialization.json.FunctionalGsonFactory;
+import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -148,7 +148,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     @UmlRelation(label = "creates")
     public GsonFactory gsonFactory()
     {
-        return new FunctionalGsonFactory(this)
+        return new DefaultGsonFactory(this)
                 .withSerializer(Problem.class, new ProblemGsonSerializer(WITHOUT_EXCEPTION))
                 .withDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
                 .withHtmlEscaping(false)

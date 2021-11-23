@@ -2,6 +2,8 @@ package com.telenav.kivakit.microservice;
 
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
+import com.telenav.kivakit.kernel.language.paths.StringPath;
+import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 
 import java.util.HashSet;
@@ -25,21 +27,23 @@ public class MicroserviceCluster<Member>
     {
         @Override
         @SuppressWarnings("unchecked")
-        protected void onSettingsAdded(Object member)
+        protected void onSettingsRemoved(StringPath path, SettingsObject settings)
         {
+            var member = settings.object();
             if (isMemberObject(member))
             {
-                onJoin((Member) member);
+                onLeave((Member) member);
             }
         }
 
         @Override
         @SuppressWarnings("unchecked")
-        protected void onSettingsRemoved(Object member)
+        protected void onSettingsUpdated(StringPath path, SettingsObject settings)
         {
+            var member = settings.object();
             if (isMemberObject(member))
             {
-                onLeave((Member) member);
+                onJoin((Member) member);
             }
         }
     };
@@ -49,8 +53,9 @@ public class MicroserviceCluster<Member>
         this.memberType = memberType;
     }
 
-    public void join(Member member, InstanceIdentifier instance)
+    public void join(Member member)
     {
+        var instance = InstanceIdentifier.of(Host.local().name());
         store.add(new SettingsObject(member, memberType, instance));
     }
 

@@ -1,16 +1,34 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
+import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
+import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.configuration.settings.stores.resource.PackageSettingsStore;
 import com.telenav.kivakit.kernel.language.paths.PackagePath;
+import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.test.UnitTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default
+ */
+@Ignore
 public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMixin
 {
     public static class Settings
     {
+        @Tag(1)
+        @Expose
+        @KivaKitIncludeProperty
         int x;
+
+        public Settings()
+        {
+        }
 
         public Settings(int x)
         {
@@ -24,16 +42,37 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         // Register zookeeper settings,
         registerSettingsIn(PackageSettingsStore.of(this, PackagePath.packagePath(getClass())));
 
-        // create store,
+        // create zookeeper settings store,
         var store = listenTo(register(new ZookeeperSettingsStore()));
 
-        // save settings to store
+        // register a dummy application is needed because settings are saved under application name and version,
+        register(new Application()
+        {
+            @Override
+            public String name()
+            {
+                return ZookeeperSettingsStoreTest.class.getSimpleName();
+            }
+
+            @Override
+            protected void onRun()
+            {
+            }
+        });
+
+        // register a Gson factory,
+        register(new DefaultGsonFactory(this)
+                .withPrettyPrinting(true)
+                .withVersion(Version.parse(this, "1.0"))
+                .withRequireExposeAnnotation(false));
+
+        // save settings to store,
         saveSettingsTo(store, new Settings(7));
 
-        // clear settings,
-        clearSettings();
+        // clear in-memory settings index,
+        store.unload();
 
-        // then reload them,
+        // then reload them from zookeeper,
         registerSettingsIn(store);
 
         // and check the result.

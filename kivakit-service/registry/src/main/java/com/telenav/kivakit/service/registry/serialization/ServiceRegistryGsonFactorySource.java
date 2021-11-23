@@ -23,7 +23,7 @@ import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.serialization.json.BaseGsonFactorySource;
-import com.telenav.kivakit.serialization.json.FunctionalGsonFactory;
+import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
 import com.telenav.kivakit.serialization.json.serializers.TimeInMillisecondsGsonSerializer;
@@ -45,7 +45,7 @@ public class ServiceRegistryGsonFactorySource extends BaseGsonFactorySource
     @Override
     public GsonFactory gsonFactory()
     {
-        return new FunctionalGsonFactory(this)
+        return new DefaultGsonFactory(this)
                 .withSerialization(Port.class, serializer(new Port.Converter(this)))
                 .withSerialization(Application.Identifier.class, new ApplicationIdentifierGsonSerializer())
                 .withSerialization(ServiceType.class, new ServiceTypeGsonSerializer())

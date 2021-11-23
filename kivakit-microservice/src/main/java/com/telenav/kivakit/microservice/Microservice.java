@@ -3,7 +3,6 @@ package com.telenav.kivakit.microservice;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
-import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.Deployment;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
@@ -19,7 +18,6 @@ import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroser
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
-import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.web.jetty.JettyServer;
@@ -450,7 +448,7 @@ public abstract class Microservice<ClusterMember> extends Application implements
         };
 
         // and join the cluster.
-        cluster.join(member, InstanceIdentifier.of(Host.local().name()));
+        cluster.join(member);
 
         // Next, initialize this microservice,
         onInitialize();

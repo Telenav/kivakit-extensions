@@ -21,7 +21,7 @@ import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
-import com.telenav.kivakit.serialization.json.FunctionalGsonFactory;
+import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -60,7 +60,7 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
         @Override
         public GsonFactory gsonFactory()
         {
-            var factory = (FunctionalGsonFactory) JettyMicroservletRequestCycle.cycle()
+            var factory = (DefaultGsonFactory) JettyMicroservletRequestCycle.cycle()
                     .application()
                     .gsonFactory();
 
