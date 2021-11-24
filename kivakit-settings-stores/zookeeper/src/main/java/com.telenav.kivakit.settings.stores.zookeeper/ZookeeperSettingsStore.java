@@ -1,7 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.lookup.Registry;
 import com.telenav.kivakit.configuration.lookup.RegistryTrait;
@@ -32,6 +31,7 @@ import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMod
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.SAVE;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.UNLOAD;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
 import static org.apache.zookeeper.Watcher.Event.KeeperState.SyncConnected;
@@ -45,10 +45,10 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  */
 public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, Watcher
 {
-    public static class Settings extends BaseComponent
+    public static class Settings
     {
         @KivaKitPropertyConverter(Port.Converter.class)
-        private Port port;
+        private String ports;
 
         @KivaKitPropertyConverter(Duration.Converter.class)
         private Duration timeout;
@@ -59,9 +59,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         /** Any connected zookeeper */
         private transient ZooKeeper zookeeper;
 
-        public Port port()
+        public String ports()
         {
-            return port;
+            return ports;
         }
 
         /**
@@ -75,8 +75,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
                 try
                 {
-                    information("Connecting to zookeeper on $", port);
-                    zookeeper = new ZooKeeper(port.toString(), (int) timeout.asMilliseconds(), event ->
+                    zookeeper = new ZooKeeper(ports, (int) timeout.asMilliseconds(), event ->
                     {
                         if (event.getState() == SyncConnected)
                         {
@@ -86,12 +85,12 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                 }
                 catch (Exception e)
                 {
-                    problem(e, "Unable to connect to zookeeper at $", port);
+                    fail(e, "Unable to connect to zookeeper with connection path: $", ports);
                 }
 
                 latch.await();
-                information("Connected");
             }
+
             return zookeeper;
         }
     }
@@ -177,7 +176,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     @Override
     protected boolean onDelete(SettingsObject object)
     {
-        var zookeeper = zookeeper();
         var identifier = object.identifier();
 
         var path = applicationPath()
@@ -186,7 +184,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
         try
         {
-            zookeeper.delete(path.join(), -1);
+            zookeeper().delete(path.join(), -1);
             onSettingsRemoved(path, object);
             return true;
         }
@@ -208,20 +206,18 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     @Override
     protected Set<SettingsObject> onLoad()
     {
-        var zookeeper = zookeeper();
-
         try
         {
             var settings = new ObjectSet<SettingsObject>();
 
             // Go through the stored types,
-            for (var typeName : zookeeper.getChildren(applicationPath().join(), null))
+            for (var typeName : zookeeper().getChildren(applicationPath().join(), null))
             {
                 var type = Classes.forName(typeName);
                 var typePath = applicationPath().withChild(typeName);
-                for (var instance : zookeeper.getChildren(typePath.join(), null))
+                for (var instance : zookeeper().getChildren(typePath.join(), null))
                 {
-                    var data = zookeeper.getData(typePath.withChild(instance).join(), this, null);
+                    var data = zookeeper().getData(typePath.withChild(instance).join(), this, null);
 
                     var object = onDeserialize(data, type);
                     if (object != null)
@@ -242,18 +238,17 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     @Override
     protected boolean onSave(SettingsObject settings)
     {
-        var zookeeper = zookeeper();
         var identifier = settings.identifier();
 
-        var path = applicationPath()
+        var path = StringPath.stringPath(applicationPath()
                 .withChild(identifier.type().getName())
-                .withChild(identifier.instance().identifier());
+                .withChild(identifier.instance().identifier()).join("::"));
 
         try
         {
             mkdirs(path);
             var data = onSerialize(settings.object());
-            zookeeper.setData(path.join(), data, -1);
+            zookeeper().setData(path.join(), data, -1);
             onSettingsUpdated(path, settings);
             return true;
         }
@@ -292,6 +287,22 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                 JavaVirtualMachine.property("user.name")).withRoot("/");
     }
 
+    private void create(StringPath path)
+    {
+        try
+        {
+            // then create the node at the given path.
+            zookeeper().create(path.join(), new byte[0], OPEN_ACL_UNSAFE, createMode());
+        }
+        catch (NodeExistsException ignored)
+        {
+        }
+        catch (Exception e)
+        {
+            problem(e, "Could not create $", path);
+        }
+    }
+
     private CreateMode createMode()
     {
         if (createMode == null)
@@ -305,23 +316,12 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     {
         // Create the parent node first,
         var parent = path.parent();
-        if (parent != null && !parent.isRoot())
+        if (parent != null && (!parent.isEmpty() && !parent.isRoot()))
         {
             mkdirs(parent);
         }
 
-        try
-        {
-            // then create the node at the given path.
-            zookeeper().create(path.join(), new byte[0], OPEN_ACL_UNSAFE, createMode());
-        }
-        catch (NodeExistsException ignored)
-        {
-        }
-        catch (Exception e)
-        {
-            problem("Could not create $", path);
-        }
+        create(path);
     }
 
     private Settings settings()
@@ -331,6 +331,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
     private ZooKeeper zookeeper()
     {
-        return listenTo(settings()).zookeeper();
+        return settings().zookeeper();
     }
 }

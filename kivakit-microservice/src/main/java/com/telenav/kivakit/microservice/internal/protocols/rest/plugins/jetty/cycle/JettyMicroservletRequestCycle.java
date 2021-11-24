@@ -7,7 +7,6 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
@@ -122,12 +121,11 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
      */
     public Gson gson()
     {
-        var factory = (DefaultGsonFactory) application().gsonFactory();
+        var pretty = request().parameters().asBoolean("pretty");
 
-        return factory
-                .withPrettyPrinting(request()
-                        .parameters()
-                        .asBoolean("pretty"))
+        return application()
+                .gsonFactory()
+                .withPrettyPrinting(pretty)
                 .gson();
     }
 

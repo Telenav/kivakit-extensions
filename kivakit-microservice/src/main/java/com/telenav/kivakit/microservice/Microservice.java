@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice;
 
+import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
@@ -20,6 +21,9 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
+import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactorySource;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
 import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
@@ -136,7 +140,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class Microservice<Member> extends Application implements Startable, Stoppable
+public abstract class Microservice<Member> extends Application implements GsonFactorySource, Startable, Stoppable
 {
     /**
      * Command line switch for what port to run any REST service on. This will override any value from {@link
@@ -209,6 +213,15 @@ public abstract class Microservice<Member> extends Application implements Starta
     }
 
     /**
+     * @return The {@link Gson} factory for this microservice
+     */
+    @Override
+    public GsonFactory gsonFactory()
+    {
+        return new DefaultGsonFactory(this);
+    }
+
+    /**
      * This method implements the {@link Startable#isRunning()} method. It returns true if the service is running and
      * false otherwise. The {@link #start()} method should not be called, as this microservice will start running
      * automatically when the {@link Application#run(String[])} method is called from the Java <i>main(String[])</i>
@@ -243,7 +256,6 @@ public abstract class Microservice<Member> extends Application implements Starta
      */
     public void onInitialize()
     {
-
     }
 
     /**
@@ -432,7 +444,7 @@ public abstract class Microservice<Member> extends Application implements Starta
 
         // register it in zookeeper,
         var outer = this;
-        cluster = new MicroserviceCluster<>()
+        cluster = listenTo(new MicroserviceCluster<>()
         {
             @Override
             protected void onJoin(MicroserviceClusterMember<Member> member)
@@ -445,7 +457,7 @@ public abstract class Microservice<Member> extends Application implements Starta
             {
                 outer.onLeave(instance);
             }
-        };
+        });
 
         // and join the cluster.
         cluster.join(member);
@@ -461,6 +473,13 @@ public abstract class Microservice<Member> extends Application implements Starta
 
         // and let clients know we're ready.
         ready();
+    }
+
+    @Override
+    @MustBeInvokedByOverriders
+    protected void onRunning()
+    {
+        register(gsonFactory());
     }
 
     /**

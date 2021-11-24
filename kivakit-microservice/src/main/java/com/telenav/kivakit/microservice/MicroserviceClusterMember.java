@@ -1,5 +1,8 @@
 package com.telenav.kivakit.microservice;
 
+import com.telenav.kivakit.kernel.language.objects.Hash;
+import com.telenav.kivakit.kernel.language.primitives.Ints;
+import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
 import com.telenav.kivakit.network.core.Host;
 
 /**
@@ -14,6 +17,9 @@ public class MicroserviceClusterMember<Data>
 
     /** User-defined data */
     private Data data;
+
+    /** Process number */
+    private int processNumber = OperatingSystem.get().processIdentifier();
 
     public MicroserviceClusterMember(Host host, Data data)
     {
@@ -32,7 +38,7 @@ public class MicroserviceClusterMember<Data>
         if (object instanceof MicroserviceClusterMember)
         {
             MicroserviceClusterMember<?> that = (MicroserviceClusterMember<?>) object;
-            return host.equals(that.host);
+            return host.equals(that.host) && processNumber == that.processNumber;
         }
         return false;
     }
@@ -40,11 +46,17 @@ public class MicroserviceClusterMember<Data>
     @Override
     public int hashCode()
     {
-        return host.hashCode();
+        return Hash.many(host, processNumber);
     }
 
     public Host host()
     {
         return host;
+    }
+
+    @Override
+    public String toString()
+    {
+        return host.dnsName() + ":" + Ints.toHex(processNumber);
     }
 }

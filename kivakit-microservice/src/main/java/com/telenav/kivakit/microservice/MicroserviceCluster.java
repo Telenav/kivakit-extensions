@@ -1,7 +1,9 @@
 package com.telenav.kivakit.microservice;
 
+import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
+import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
@@ -37,10 +39,23 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL;
  * @param <Member> The type of member information to store for each cluster member
  * @author jonathanl (shibo)
  */
-public class MicroserviceCluster<Member>
+public class MicroserviceCluster<Member> extends BaseComponent
 {
     /** Store for cluster Member objects in Zookeeper */
-    private final ZookeeperSettingsStore store = store();
+    private Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL)
+    {
+        @Override
+        protected void onSettingsRemoved(StringPath path, SettingsObject settings)
+        {
+            onLeave(settings.object());
+        }
+
+        @Override
+        protected void onSettingsUpdated(StringPath path, SettingsObject settings)
+        {
+            onJoin(settings.object());
+        }
+    }));
 
     /**
      * Joins this cluster with the given member data
@@ -67,7 +82,7 @@ public class MicroserviceCluster<Member>
     {
         var members = new HashSet<MicroserviceClusterMember<Member>>();
 
-        for (var at : store().indexed())
+        for (var at : store().indexedSettingsObjects())
         {
             members.add(at.object());
         }
@@ -103,19 +118,6 @@ public class MicroserviceCluster<Member>
 
     private ZookeeperSettingsStore store()
     {
-        return new ZookeeperSettingsStore(EPHEMERAL)
-        {
-            @Override
-            protected void onSettingsRemoved(StringPath path, SettingsObject settings)
-            {
-                onLeave(settings.object());
-            }
-
-            @Override
-            protected void onSettingsUpdated(StringPath path, SettingsObject settings)
-            {
-                onJoin(settings.object());
-            }
-        };
+        return store.get();
     }
 }
