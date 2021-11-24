@@ -18,6 +18,8 @@ import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
+import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException.NodeExistsException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -25,9 +27,9 @@ import org.apache.zookeeper.ZooKeeper;
 
 import java.util.Set;
 
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.ADD;
+import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.DELETE;
+import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.INDEX;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.LOAD;
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.REMOVE;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.SAVE;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.UNLOAD;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -50,6 +52,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
         @KivaKitPropertyConverter(Duration.Converter.class)
         private Duration timeout;
+
+        @KivaKitPropertyConverter(CreateModeConverter.class)
+        private CreateMode createMode = PERSISTENT;
 
         /** Any connected zookeeper */
         private transient ZooKeeper zookeeper;
@@ -91,10 +96,22 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
     }
 
+    /** Settings for this store */
+    private CreateMode createMode;
+
+    public ZookeeperSettingsStore(CreateMode createMode)
+    {
+        this.createMode = createMode;
+    }
+
+    public ZookeeperSettingsStore()
+    {
+    }
+
     @Override
     public Set<AccessMode> accessModes()
     {
-        return Set.of(ADD, REMOVE, UNLOAD, LOAD, SAVE);
+        return Set.of(INDEX, DELETE, UNLOAD, LOAD, SAVE);
     }
 
     @Override
@@ -137,7 +154,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                             var settingsObject = new SettingsObject(object, type, InstanceIdentifier.of(instance));
                             if (object != null)
                             {
-                                add(settingsObject);
+                                index(settingsObject);
                             }
                             else
                             {
@@ -154,6 +171,29 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                     problem("Unable to process WatchedEvent: $", event);
                 }
             }
+        }
+    }
+
+    @Override
+    protected boolean onDelete(SettingsObject object)
+    {
+        var zookeeper = zookeeper();
+        var identifier = object.identifier();
+
+        var path = applicationPath()
+                .withChild(identifier.type().getName())
+                .withChild(identifier.instance().identifier());
+
+        try
+        {
+            zookeeper.delete(path.join(), -1);
+            onSettingsRemoved(path, object);
+            return true;
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to save object: $", object);
+            return false;
         }
     }
 
@@ -196,29 +236,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         catch (Exception e)
         {
             throw problem(e, "Unable to load settings from: $", applicationPath()).asException();
-        }
-    }
-
-    @Override
-    protected boolean onRemove(SettingsObject object)
-    {
-        var zookeeper = zookeeper();
-        var identifier = object.identifier();
-
-        var path = applicationPath()
-                .withChild(identifier.type().getName())
-                .withChild(identifier.instance().identifier());
-
-        try
-        {
-            zookeeper.delete(path.join(), -1);
-            onSettingsRemoved(path, object);
-            return true;
-        }
-        catch (Exception e)
-        {
-            problem(e, "Unable to save object: $", object);
-            return false;
         }
     }
 
@@ -275,6 +292,15 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                 JavaVirtualMachine.property("user.name")).withRoot("/");
     }
 
+    private CreateMode createMode()
+    {
+        if (createMode == null)
+        {
+            createMode = settings().createMode;
+        }
+        return createMode;
+    }
+
     private void mkdirs(StringPath path)
     {
         // Create the parent node first,
@@ -287,7 +313,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         try
         {
             // then create the node at the given path.
-            zookeeper().create(path.join(), new byte[0], OPEN_ACL_UNSAFE, PERSISTENT);
+            zookeeper().create(path.join(), new byte[0], OPEN_ACL_UNSAFE, createMode());
         }
         catch (NodeExistsException ignored)
         {
@@ -298,8 +324,13 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
     }
 
+    private Settings settings()
+    {
+        return require(Settings.class);
+    }
+
     private ZooKeeper zookeeper()
     {
-        return listenTo(require(Settings.class)).zookeeper();
+        return listenTo(settings()).zookeeper();
     }
 }

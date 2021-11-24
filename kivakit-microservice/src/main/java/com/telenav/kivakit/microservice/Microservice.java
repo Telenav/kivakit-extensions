@@ -136,7 +136,7 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class Microservice<ClusterMember> extends Application implements Startable, Stoppable
+public abstract class Microservice<Member> extends Application implements Startable, Stoppable
 {
     /**
      * Command line switch for what port to run any REST service on. This will override any value from {@link
@@ -176,7 +176,7 @@ public abstract class Microservice<ClusterMember> extends Application implements
 
     private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
 
-    private MicroserviceCluster<ClusterMember> cluster;
+    private MicroserviceCluster<Member> cluster;
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -189,7 +189,7 @@ public abstract class Microservice<ClusterMember> extends Application implements
     /**
      * The cluster where this microservice is running
      */
-    public MicroserviceCluster<ClusterMember> cluster()
+    public MicroserviceCluster<Member> cluster()
     {
         return cluster;
     }
@@ -398,18 +398,18 @@ public abstract class Microservice<ClusterMember> extends Application implements
 
     /**
      * @return The ClusterMember object for this microservice. The ClusterMember object holds information about cluster
-     * members. When a member joins the cluster, the {@link #onJoin(Object)} method is called with the ClusterMember
-     * object for the member. When a member leaves the cluster, the {@link #onLeave(Object)} is called with the same
-     * object.
+     * members. When a member joins the cluster, the {@link #onJoin(MicroserviceClusterMember)} method is called with
+     * the ClusterMember object for the member. When a member leaves the cluster, the {@link
+     * #onLeave(MicroserviceClusterMember)} is called with the same object.
      */
-    protected abstract ClusterMember onInitializeClusterMember();
+    protected abstract Member onCreateMember();
 
-    protected void onJoin(ClusterMember instance)
+    protected void onJoin(MicroserviceClusterMember<Member> member)
     {
 
     }
 
-    protected void onLeave(ClusterMember instance)
+    protected void onLeave(MicroserviceClusterMember<Member> member)
     {
     }
 
@@ -425,25 +425,25 @@ public abstract class Microservice<ClusterMember> extends Application implements
      * </p>
      */
     @Override
-    @SuppressWarnings("unchecked")
     protected final void onRun()
     {
-        // Get the ClusterMember object for this microservice's cluster,
-        var member = onInitializeClusterMember();
+        // Get the Member object for this microservice's cluster,
+        var member = onCreateMember();
 
         // register it in zookeeper,
-        cluster = new MicroserviceCluster<>((Class<ClusterMember>) member.getClass())
+        var outer = this;
+        cluster = new MicroserviceCluster<>()
         {
             @Override
-            protected void onJoin(ClusterMember instance)
+            protected void onJoin(MicroserviceClusterMember<Member> member)
             {
-                Microservice.this.onJoin(instance);
+                outer.onJoin(member);
             }
 
             @Override
-            protected void onLeave(ClusterMember instance)
+            protected void onLeave(MicroserviceClusterMember<Member> instance)
             {
-                Microservice.this.onLeave(instance);
+                outer.onLeave(instance);
             }
         };
 

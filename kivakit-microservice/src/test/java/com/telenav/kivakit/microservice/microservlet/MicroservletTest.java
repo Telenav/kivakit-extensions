@@ -110,7 +110,7 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        protected String onInitializeClusterMember()
+        protected String onCreateMember()
         {
             return "dummy-value";
         }
