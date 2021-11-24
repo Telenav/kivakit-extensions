@@ -10,21 +10,12 @@ import com.telenav.kivakit.configuration.settings.SettingsStore;
 import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
-import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
-import com.telenav.kivakit.kernel.language.threading.latches.InitializationLatch;
-import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
-import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.serialization.json.GsonFactory;
-import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
 import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException.NodeExistsException;
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooKeeper;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
-import java.util.Arrays;
 import java.util.Set;
 
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.DELETE;
@@ -34,77 +25,74 @@ import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMod
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.UNLOAD;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.zookeeper.CreateMode.PERSISTENT;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
  * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects, and to update settings when the
  * Zookeeper store is changed.
  *
+ * <p><b>Creating</b></p>
+ *
+ * <p>
+ * A {@link ZookeeperSettingsStore} can be constructed with or without a {@link CreateMode}. The connection to Zookeeper
+ * is maintained by a {@link ZookeeperConnection} that is configured with {@link ZookeeperConnection.Settings}. When
+ * using the kivakit <i>-deployment</i> switch, the ZookeeperConnection.properties file should look like this:
+ * <pre>
+ * class             = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
+ *
+ * ports             = 127.0.0.1:2181,127.0.0.1:2182
+ * timeout           = 60s
+ * defaultCreateMode = PERSISTENT</pre>
+ * </p>
+ *
+ * <p><b>Loading Settings</b></p>
+ *
+ * <p>
+ * Once the {@link ZookeeperConnection.Settings} object is registered in the global lookup, a settings store can be
+ * registered like this:
+ * <pre>
+ * registerSettingsIn(listenTo(new ZookeeperSettingsStore()));</pre>
+ *
+ * <p><b>Reacting to Changes</b></p>
+ *
+ * <p>
+ * Because KivaKit's {@link Registry} methods pull objects from the registry, it is generally not necessary to respond
+ * to Zookeeper data changes. When a node in Zookeeper that is storing a settings object changes, this settings store
+ * will be updated with the new object. The next time the object is looked up, the new version will be retrieved
+ * automatically.
+ * </p>
+ *
+ * <p>
+ * If this isn't sufficient, these methods can be overridden:
+ * </p>
+ * <ul>
+ *     <li>{@link #onSettingsUpdated(StringPath, SettingsObject)} - Called when a settings object is created or updated in Zookeeper</li>
+ *     <li>{@link #onSettingsDeleted(StringPath, SettingsObject)} - Called when a settings object is deleted in Zookeeper</li>
+ * </ul>
+ *
+ * </p>
+ *
  * @author jonathanl (shibo)
  */
-public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, Watcher
+public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, ZookeeperChangeListener
 {
     private static final String SEPARATOR = "--";
 
-    public static class Settings
-    {
-        @KivaKitPropertyConverter(Port.Converter.class)
-        private String ports;
-
-        @KivaKitPropertyConverter(Duration.Converter.class)
-        private Duration timeout;
-
-        @KivaKitPropertyConverter(CreateModeConverter.class)
-        private CreateMode createMode = PERSISTENT;
-
-        /** Any connected zookeeper */
-        private transient ZooKeeper zookeeper;
-
-        /** Latch that holds back callers until Zookeeper is ready */
-        private InitializationLatch ready = new InitializationLatch();
-
-        public String ports()
-        {
-            return ports;
-        }
-
-        /**
-         * @return The connected Zookeeper instance for these settings
-         */
-        public ZooKeeper zookeeper(Watcher watcher)
-        {
-            while (zookeeper == null)
-            {
-                try
-                {
-                    zookeeper = new ZooKeeper(ports, (int) timeout.asMilliseconds(), event -> ready.ready());
-                    ready.await();
-                    zookeeper.register(watcher);
-                    break;
-                }
-                catch (Exception e)
-                {
-                    fail(e, "Unable to connect to zookeeper with connection path: $", ports);
-                }
-
-                Duration.seconds(5).sleep();
-            }
-
-            return zookeeper;
-        }
-    }
-
-    /** Settings for this store */
+    /** Create mode for settings in this store */
     private CreateMode createMode;
+
+    /** Connection to Zookeeper */
+    private ZookeeperConnection connection = new ZookeeperConnection();
 
     public ZookeeperSettingsStore(CreateMode createMode)
     {
         this.createMode = createMode;
+        connection.addChangeListener(this);
     }
 
     public ZookeeperSettingsStore()
     {
+        connection.addChangeListener(this);
     }
 
     @Override
@@ -114,81 +102,89 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     @Override
-    public void process(WatchedEvent event)
+    public void onNodeCreated(final StringPath path)
     {
-        var path = StringPath.stringPath(event.getPath());
-        if (path.size() > 2)
+        onNodeDataChanged(path);
+    }
+
+    @Override
+    public void onNodeDataChanged(final StringPath path)
+    {
+        // Get the settings object type and instance referred to by the given path
+        var type = settingsType(path);
+        var instance = instance(path);
+
+        try
         {
-            var typeName = path.get(path.size() - 2);
-            var instance = path.last();
-            var type = Classes.forName(typeName);
-            if (type != null)
+            // read and serialize the altered settings object,
+            var data = connection.read(path);
+            if (data != null)
             {
-
-                try
+                var object = onDeserialize(data, type);
+                if (object != null)
                 {
-                    switch (event.getType())
+                    // then index the object,
+                    var settings = new SettingsObject(object, type, instance);
+                    index(settings);
+
+                    // propagate the change,
+                    var update = propagateChangesTo();
+                    if (update != null)
                     {
-                        case NodeDeleted:
-                        {
-                            var object = lookup(type, InstanceIdentifier.of(instance));
-                            if (object != null)
-                            {
-                                var settingsObject = new SettingsObject(object, type, InstanceIdentifier.of(instance));
-                                onSettingsRemoved(StringPath.stringPath(event.getPath()), settingsObject);
-                                Registry.of(this).unregister(object);
-                            }
-                            else
-                            {
-                                warning("No object registered for: $:$", typeName, instance);
-                            }
-                        }
-                        break;
-
-                        case NodeCreated:
-                        case NodeDataChanged:
-                        {
-                            var data = zookeeper().getData(event.getPath(), null, null);
-                            var object = onDeserialize(data, type);
-                            var settingsObject = new SettingsObject(object, type, InstanceIdentifier.of(instance));
-                            if (object != null)
-                            {
-                                index(settingsObject);
-                            }
-                            else
-                            {
-                                warning("Unable to update: $ ($)", typeName, instance);
-                            }
-
-                            onSettingsUpdated(StringPath.stringPath(event.getPath()), settingsObject);
-                        }
-                        break;
+                        update.index(settings);
                     }
+
+                    // and tell the subclass we updated.
+                    onSettingsUpdated(path, settings);
                 }
-                catch (Exception e)
+                else
                 {
-                    problem("Unable to process WatchedEvent: $", event);
+                    warning("Could not deserialize: $", new String(data));
                 }
             }
+        }
+        catch (Exception e)
+        {
+            problem(e, "Could not update: $", path);
         }
     }
 
     @Override
-    protected boolean onDelete(SettingsObject object)
+    public void onNodeDeleted(final StringPath path)
     {
-        var path = path(object);
+        // Get the settings object type and instance referred to by the given path
+        var type = settingsType(path);
+        var instance = instance(path);
 
-        try
+        // If we can find the object,
+        var object = lookup(type, instance);
+        if (object != null)
         {
-            zookeeper().delete(path.join(), -1);
-            onSettingsRemoved(path, object);
-            return true;
+            // unindex it in the local store,
+            var settings = new SettingsObject(object, type, instance);
+            unindex(settings);
+
+            // propagate the change,
+            var update = propagateChangesTo();
+            if (update != null)
+            {
+                update.unindex(settings);
+            }
+
+            // and notify the subclass of the deletion.
+            onSettingsDeleted(path, settings);
         }
-        catch (Exception e)
+        else
         {
-            problem(e, "Unable to save object: $", object);
-            return false;
+            warning("No object registered for: $:$", type, instance);
         }
+    }
+
+    @Override
+    @MustBeInvokedByOverriders
+    protected boolean onDelete(SettingsObject settings)
+    {
+        return connection.delete(path(settings));
     }
 
     @SuppressWarnings("unchecked")
@@ -199,44 +195,30 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         return (T) gson.fromJson(json, type);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected Set<SettingsObject> onLoad()
     {
-        try
-        {
-            var settings = new ObjectSet<SettingsObject>();
+        var settings = new ObjectSet<SettingsObject>();
 
-            // Go through the stored types,
-            for (var pathString : zookeeper().getChildren("/", null))
+        // Go through the child paths of the root node,
+        for (var child : connection.children(StringPath.stringPath("/")).prefixedWith("/"))
+        {
+            // and if the path is for this settings store,
+            if (child.startsWith(storePath().join(SEPARATOR)))
             {
-                pathString = "/" + pathString;
-                if (pathString.startsWith(settingsPath().join(SEPARATOR)))
-                {
-                    var path = StringPath.stringPath(Arrays.asList(pathString.split(SEPARATOR)));
-                    var typeName = path.get(path.size() - 2);
-                    var type = Classes.forName(typeName);
-                    var typePath = settingsPath().withChild(pathString);
-                    for (var instance : zookeeper().getChildren(typePath.join(), null))
-                    {
-                        var data = zookeeper().getData(typePath.withChild(instance).join(), this, null);
-
-                        var object = onDeserialize(data, type);
-                        if (object != null)
-                        {
-                            settings.add(new SettingsObject(object, type, InstanceIdentifier.of(instance)));
-                        }
-                    }
-                }
+                onNodeDataChanged(StringPath.stringPath(child));
             }
+        }
 
-            return settings;
-        }
-        catch (Exception e)
-        {
-            throw problem(e, "Unable to load settings from: $", settingsPath()).asException();
-        }
+        return settings;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected boolean onSave(SettingsObject settings)
     {
@@ -244,11 +226,14 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
         try
         {
+            // Create the node if necessary,
             create(path);
 
+            // serialize the object,
             var data = onSerialize(settings.object());
-            zookeeper().setData(path.join(), data, -1);
-            onSettingsUpdated(path, settings);
+
+            // and write the serialized data to Zookeeper.
+            connection.write(path, data);
             return true;
         }
         catch (Exception e)
@@ -258,6 +243,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected byte[] onSerialize(Object object)
     {
         var gson = require(GsonFactory.class).gson();
@@ -265,7 +253,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         return json.getBytes(UTF_8);
     }
 
-    protected void onSettingsRemoved(StringPath path, SettingsObject settings)
+    protected void onSettingsDeleted(StringPath path, SettingsObject settings)
     {
     }
 
@@ -273,41 +261,23 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     {
     }
 
-    private void create(StringPath path)
+    private boolean create(StringPath path)
     {
-        try
-        {
-            // then create the node at the given path.
-            zookeeper().create(path.join(), new byte[0], OPEN_ACL_UNSAFE, createMode());
-        }
-        catch (NodeExistsException ignored)
-        {
-        }
-        catch (Exception e)
-        {
-            problem(e, "Could not create $", path);
-        }
+        return connection.create(path, OPEN_ACL_UNSAFE, createMode());
     }
 
     private CreateMode createMode()
     {
         if (createMode == null)
         {
-            createMode = settings().createMode;
+            createMode = connection.defaultCreateMode();
         }
         return createMode;
     }
 
-    private void mkdirs(StringPath path)
+    private InstanceIdentifier instance(StringPath path)
     {
-        // Create the parent node first,
-        var parent = path.parent();
-        if (parent != null && (!parent.isEmpty() && !parent.isRoot()))
-        {
-            mkdirs(parent);
-        }
-
-        create(path);
+        return InstanceIdentifier.of(path.last());
     }
 
     /**
@@ -315,7 +285,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      *
      * <ol>
      *     <li>EPHEMERAL|PERSISTENT</li>
-     *     <li>kivakit</li>
+     *     <li>`kivakit</li>
      *     <li>kivakit-version</li>
      *     <li>user-name</li>
      *     <li>application-name</li>
@@ -332,45 +302,54 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     {
         var application = require(Application.class);
 
-        return settingsPath()
+        return storePath()
                 .withChild(object.identifier().type().getName())
                 .withChild(object.identifier().instance().identifier())
                 .withRoot("/")
                 .withSeparator(SEPARATOR);
     }
 
-    private Settings settings()
+    /**
+     * @return The settings type for the given node path
+     */
+    private Class<?> settingsType(StringPath path)
     {
-        return require(Settings.class);
+        if (path.size() >= 2)
+        {
+            var typeName = path.get(path.size() - 2);
+            var type = Classes.forName(typeName);
+            if (type != null)
+            {
+                return type;
+            }
+        }
+        return fail("Cannot get type from path: $", path);
     }
 
     /**
-     * @return The path to settings in this Zookeeper store for settings:
+     * @return The path to the settings for this store in Zookeeper:
      *
      * <ol>
-     *     <li>EPHEMERAL|PERSISTENT</li>
      *     <li>kivakit</li>
      *     <li>kivakit-version</li>
      *     <li>user-name</li>
      *     <li>application-name</li>
      *     <li>application-version</li>
      * </ol>
+     * <p>
+     * For example:
+     * <pre>
+     * /kivakit/1.1.3/jonathan/demo/1.0</pre>
      */
-    private StringPath settingsPath()
+    private StringPath storePath()
     {
         var application = require(Application.class);
 
         return StringPath.stringPath(
-                createMode.name(),
                 "kivakit",
                 String.valueOf(KivaKit.get().kivakitVersion()),
                 JavaVirtualMachine.property("user.name"),
                 application.name(),
                 application.version().toString());
-    }
-
-    private ZooKeeper zookeeper()
-    {
-        return settings().zookeeper(this);
     }
 }

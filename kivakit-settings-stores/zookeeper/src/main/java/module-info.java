@@ -6,6 +6,7 @@ open module kivakit.settings.stores.zookeeper
 
     // Zookeeper
     requires transitive zookeeper;
+    requires transitive zookeeper.jute;
     requires kivakit.network.core;
     requires kivakit.component;
     requires kivakit.application;

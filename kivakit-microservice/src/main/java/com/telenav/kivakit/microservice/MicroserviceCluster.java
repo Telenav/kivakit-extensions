@@ -45,7 +45,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     private Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL)
     {
         @Override
-        protected void onSettingsRemoved(StringPath path, SettingsObject settings)
+        protected void onSettingsDeleted(StringPath path, SettingsObject settings)
         {
             onLeave(settings.object());
         }
@@ -89,7 +89,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
         var members = new IdentitySet<MicroserviceClusterMember<Member>>();
 
-        for (var at : store().indexedSettingsObjects())
+        for (var at : store().indexed())
         {
             members.add(at.object());
         }
