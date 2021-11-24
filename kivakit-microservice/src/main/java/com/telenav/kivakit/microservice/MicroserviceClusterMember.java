@@ -19,7 +19,7 @@ public class MicroserviceClusterMember<Data>
     private Data data;
 
     /** Process number */
-    private int processNumber = OperatingSystem.get().processIdentifier();
+    private int processIdentifier = OperatingSystem.get().processIdentifier();
 
     public MicroserviceClusterMember(Host host, Data data)
     {
@@ -38,7 +38,7 @@ public class MicroserviceClusterMember<Data>
         if (object instanceof MicroserviceClusterMember)
         {
             MicroserviceClusterMember<?> that = (MicroserviceClusterMember<?>) object;
-            return host.equals(that.host) && processNumber == that.processNumber;
+            return host.equals(that.host) && processIdentifier == that.processIdentifier;
         }
         return false;
     }
@@ -46,7 +46,7 @@ public class MicroserviceClusterMember<Data>
     @Override
     public int hashCode()
     {
-        return Hash.many(host, processNumber);
+        return Hash.many(host, processIdentifier);
     }
 
     public Host host()
@@ -54,9 +54,14 @@ public class MicroserviceClusterMember<Data>
         return host;
     }
 
+    public int processIdentifier()
+    {
+        return processIdentifier;
+    }
+
     @Override
     public String toString()
     {
-        return host.dnsName() + ":" + Ints.toHex(processNumber);
+        return host.dnsName() + ":" + Ints.toHex(processIdentifier());
     }
 }

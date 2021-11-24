@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice;
 
+import com.telenav.kivakit.collections.set.IdentitySet;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
@@ -9,7 +10,6 @@ import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static org.apache.zookeeper.CreateMode.EPHEMERAL;
@@ -64,6 +64,13 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public void join(Member member)
     {
+        // Call onJoin() for each member that's already in the cluster we joined,
+        for (var at : members())
+        {
+            onJoin(at);
+        }
+
+        // then add ourselves as a member.
         store().save(settings(member, instanceIdentifier()));
     }
 
@@ -80,7 +87,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public Set<MicroserviceClusterMember<Member>> members()
     {
-        var members = new HashSet<MicroserviceClusterMember<Member>>();
+        var members = new IdentitySet<MicroserviceClusterMember<Member>>();
 
         for (var at : store().indexedSettingsObjects())
         {
@@ -107,7 +114,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     @NotNull
     private InstanceIdentifier instanceIdentifier()
     {
-        return InstanceIdentifier.of("cluster-member-" + Host.local().name());
+        return InstanceIdentifier.of(Host.local().dnsName());
     }
 
     @NotNull

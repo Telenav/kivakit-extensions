@@ -24,6 +24,7 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.DELETE;
@@ -34,7 +35,6 @@ import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMod
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
-import static org.apache.zookeeper.Watcher.Event.KeeperState.SyncConnected;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
@@ -45,6 +45,8 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  */
 public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, Watcher
 {
+    private static final String SEPARATOR = "--";
+
     public static class Settings
     {
         @KivaKitPropertyConverter(Port.Converter.class)
@@ -59,6 +61,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         /** Any connected zookeeper */
         private transient ZooKeeper zookeeper;
 
+        /** Latch that holds back callers until Zookeeper is ready */
+        private InitializationLatch ready = new InitializationLatch();
+
         public String ports()
         {
             return ports;
@@ -67,28 +72,23 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         /**
          * @return The connected Zookeeper instance for these settings
          */
-        public ZooKeeper zookeeper()
+        public ZooKeeper zookeeper(Watcher watcher)
         {
             while (zookeeper == null)
             {
-                var latch = new InitializationLatch();
-
                 try
                 {
-                    zookeeper = new ZooKeeper(ports, (int) timeout.asMilliseconds(), event ->
-                    {
-                        if (event.getState() == SyncConnected)
-                        {
-                            latch.ready();
-                        }
-                    });
+                    zookeeper = new ZooKeeper(ports, (int) timeout.asMilliseconds(), event -> ready.ready());
+                    ready.await();
+                    zookeeper.register(watcher);
+                    break;
                 }
                 catch (Exception e)
                 {
                     fail(e, "Unable to connect to zookeeper with connection path: $", ports);
                 }
 
-                latch.await();
+                Duration.seconds(5).sleep();
             }
 
             return zookeeper;
@@ -176,11 +176,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     @Override
     protected boolean onDelete(SettingsObject object)
     {
-        var identifier = object.identifier();
-
-        var path = applicationPath()
-                .withChild(identifier.type().getName())
-                .withChild(identifier.instance().identifier());
+        var path = path(object);
 
         try
         {
@@ -211,18 +207,24 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
             var settings = new ObjectSet<SettingsObject>();
 
             // Go through the stored types,
-            for (var typeName : zookeeper().getChildren(applicationPath().join(), null))
+            for (var pathString : zookeeper().getChildren("/", null))
             {
-                var type = Classes.forName(typeName);
-                var typePath = applicationPath().withChild(typeName);
-                for (var instance : zookeeper().getChildren(typePath.join(), null))
+                pathString = "/" + pathString;
+                if (pathString.startsWith(settingsPath().join(SEPARATOR)))
                 {
-                    var data = zookeeper().getData(typePath.withChild(instance).join(), this, null);
-
-                    var object = onDeserialize(data, type);
-                    if (object != null)
+                    var path = StringPath.stringPath(Arrays.asList(pathString.split(SEPARATOR)));
+                    var typeName = path.get(path.size() - 2);
+                    var type = Classes.forName(typeName);
+                    var typePath = settingsPath().withChild(pathString);
+                    for (var instance : zookeeper().getChildren(typePath.join(), null))
                     {
-                        settings.add(new SettingsObject(object, type, InstanceIdentifier.of(instance)));
+                        var data = zookeeper().getData(typePath.withChild(instance).join(), this, null);
+
+                        var object = onDeserialize(data, type);
+                        if (object != null)
+                        {
+                            settings.add(new SettingsObject(object, type, InstanceIdentifier.of(instance)));
+                        }
                     }
                 }
             }
@@ -231,22 +233,19 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
         catch (Exception e)
         {
-            throw problem(e, "Unable to load settings from: $", applicationPath()).asException();
+            throw problem(e, "Unable to load settings from: $", settingsPath()).asException();
         }
     }
 
     @Override
     protected boolean onSave(SettingsObject settings)
     {
-        var identifier = settings.identifier();
-
-        var path = StringPath.stringPath(applicationPath()
-                .withChild(identifier.type().getName())
-                .withChild(identifier.instance().identifier()).join("::"));
+        var path = path(settings);
 
         try
         {
-            mkdirs(path);
+            create(path);
+
             var data = onSerialize(settings.object());
             zookeeper().setData(path.join(), data, -1);
             onSettingsUpdated(path, settings);
@@ -272,19 +271,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
     protected void onSettingsUpdated(StringPath path, SettingsObject settings)
     {
-
-    }
-
-    private StringPath applicationPath()
-    {
-        var application = require(Application.class);
-
-        return StringPath.stringPath(
-                "kivakit",
-                String.valueOf(KivaKit.get().kivakitVersion()),
-                application.name(),
-                application.version().toString(),
-                JavaVirtualMachine.property("user.name")).withRoot("/");
     }
 
     private void create(StringPath path)
@@ -324,13 +310,67 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         create(path);
     }
 
+    /**
+     * Composes the Zookeeper path to the given settings object:
+     *
+     * <ol>
+     *     <li>EPHEMERAL|PERSISTENT</li>
+     *     <li>kivakit</li>
+     *     <li>kivakit-version</li>
+     *     <li>user-name</li>
+     *     <li>application-name</li>
+     *     <li>application-version</li>
+     *     <li>type-name</li>
+     *     <li>instance-identifier</li>
+     * </ol>
+     * <pre>
+     * /[EPHEMERAL|PERSISTENT]/kivakit/[kivakit-version]/[user-name]/[application-name]/[application-version]/[type-name]/[instance-identifier]</pre>
+     *
+     * @return A path to the given settings object
+     */
+    private StringPath path(SettingsObject object)
+    {
+        var application = require(Application.class);
+
+        return settingsPath()
+                .withChild(object.identifier().type().getName())
+                .withChild(object.identifier().instance().identifier())
+                .withRoot("/")
+                .withSeparator(SEPARATOR);
+    }
+
     private Settings settings()
     {
         return require(Settings.class);
     }
 
+    /**
+     * @return The path to settings in this Zookeeper store for settings:
+     *
+     * <ol>
+     *     <li>EPHEMERAL|PERSISTENT</li>
+     *     <li>kivakit</li>
+     *     <li>kivakit-version</li>
+     *     <li>user-name</li>
+     *     <li>application-name</li>
+     *     <li>application-version</li>
+     * </ol>
+     */
+    private StringPath settingsPath()
+    {
+        var application = require(Application.class);
+
+        return StringPath.stringPath(
+                createMode.name(),
+                "kivakit",
+                String.valueOf(KivaKit.get().kivakitVersion()),
+                JavaVirtualMachine.property("user.name"),
+                application.name(),
+                application.version().toString());
+    }
+
     private ZooKeeper zookeeper()
     {
-        return settings().zookeeper();
+        return settings().zookeeper(this);
     }
 }
