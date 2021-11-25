@@ -240,7 +240,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /**
      * Dispatches Zookeeper events to {@link ZookeeperChangeListener}
      */
-    protected void onEvent(final WatchedEvent event)
+    protected void onEvent(WatchedEvent event)
     {
         if (listener != null)
         {

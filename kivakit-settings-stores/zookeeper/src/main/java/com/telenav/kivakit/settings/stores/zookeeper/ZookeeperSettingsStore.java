@@ -28,28 +28,36 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
- * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects, and to update settings when the
- * Zookeeper store is changed.
+ * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects so they can be easily accessed
+ * in a clustered environment.
  *
  * <p><b>Creating</b></p>
  *
  * <p>
- * A {@link ZookeeperSettingsStore} can be constructed with or without a {@link CreateMode}. The connection to Zookeeper
- * is maintained by a {@link ZookeeperConnection} that is configured with {@link ZookeeperConnection.Settings}. When
- * using the kivakit <i>-deployment</i> switch, the ZookeeperConnection.properties file should look like this:
+ * A {@link ZookeeperSettingsStore} can be constructed with or without an explicit {@link CreateMode}. The connection to
+ * Zookeeper is maintained by a {@link ZookeeperConnection} that is configured with {@link
+ * ZookeeperConnection.Settings}. When using the kivakit <i>-deployment</i> switch, the
+ * <i>ZookeeperConnection.properties</i> file in the <i>deployments</i> package next to your application should look
+ * like this:
+ * </p>
+ *
  * <pre>
  * class             = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
  *
  * ports             = 127.0.0.1:2181,127.0.0.1:2182
  * timeout           = 60s
  * defaultCreateMode = PERSISTENT</pre>
+ *
+ * <p>
+ * The comma-separated list of ports (host and port number) is used by the Zookeeper client when connecting to the
+ * cluster.
  * </p>
  *
  * <p><b>Loading Settings</b></p>
  *
  * <p>
- * Once the {@link ZookeeperConnection.Settings} object is registered in the global lookup, a settings store can be
- * registered like this:
+ * Once a {@link ZookeeperConnection.Settings} object is registered, a {@link ZookeeperSettingsStore} can be loaded and
+ * its contents registered with the global settings registry with:
  * <pre>
  * registerSettingsIn(listenTo(new ZookeeperSettingsStore()));</pre>
  *
@@ -58,16 +66,16 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * <p>
  * Because KivaKit's {@link Registry} methods pull objects from the registry, it is generally not necessary to respond
  * to Zookeeper data changes. When a node in Zookeeper that is storing a settings object changes, this settings store
- * will be updated with the new object. The next time the object is looked up, the new version will be retrieved
- * automatically.
+ * will be updated with the new object and changes will be propagated to the global settings registry. The next time the
+ * settings object is looked up, the new version will be retrieved.
  * </p>
  *
  * <p>
- * If this isn't sufficient, these methods can be overridden:
+ * In less common cases, these methods can be overridden:
  * </p>
  * <ul>
- *     <li>{@link #onSettingsUpdated(StringPath, SettingsObject)} - Called when a settings object is created or updated in Zookeeper</li>
- *     <li>{@link #onSettingsDeleted(StringPath, SettingsObject)} - Called when a settings object is deleted in Zookeeper</li>
+ *     <li>{@link #onSettingsUpdated(StringPath, SettingsObject)} - Called when a settings object is created or updated</li>
+ *     <li>{@link #onSettingsDeleted(StringPath, SettingsObject)} - Called when a settings object is deleted</li>
  * </ul>
  *
  * </p>
@@ -76,7 +84,17 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  */
 public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, ZookeeperChangeListener
 {
-    private static final String SEPARATOR = "--";
+    /**
+     * Path separator used when storing nodes in Zookeeper.
+     *
+     * <p><b>NOTE</b></p>
+     * <p>
+     * This is a workaround for a Zookeeper limitation, namely that {@link CreateMode#EPHEMERAL} nodes cannot have
+     * paths. Since we want to store data for all create modes, it is necessary to flatten hierarchical paths into a
+     * single node name in the root: the path <i>/a/b/c</i> becomes <i>/a::b::c</i>
+     * </p>
+     */
+    private static final String SEPARATOR = "::";
 
     /** Create mode for settings in this store */
     private CreateMode createMode;
@@ -84,31 +102,49 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     /** Connection to Zookeeper */
     private ZookeeperConnection connection = new ZookeeperConnection();
 
+    /**
+     * Creates a settings store with the given explicit {@link CreateMode}. This overrides any setting in {@link
+     * ZookeeperConnection.Settings}.
+     *
+     * @param createMode The explicit create mode to use for nodes in this store
+     */
     public ZookeeperSettingsStore(CreateMode createMode)
     {
         this.createMode = createMode;
         connection.addChangeListener(this);
     }
 
+    /**
+     * Creates a settings store that uses the default {@link CreateMode} from {@link ZookeeperConnection.Settings}
+     */
     public ZookeeperSettingsStore()
     {
         connection.addChangeListener(this);
     }
 
+    /**
+     * This settings store supports all access modes
+     */
     @Override
     public Set<AccessMode> accessModes()
     {
         return Set.of(INDEX, DELETE, UNLOAD, LOAD, SAVE);
     }
 
+    /**
+     * <p>
+     * Called when a node is created or its data changes.
+     * <ol>
+     *     <li>Retrieves the settings object at the given path</li>
+     *     <li>Indexes the object</li>
+     *     <li>Propagates changes to any dependent registry</li>
+     *     <li>Calls {@link #onSettingsUpdated(StringPath, SettingsObject)}</li>
+     * </ol>
+     *
+     * @param path The path to the node that changed
+     */
     @Override
-    public void onNodeCreated(final StringPath path)
-    {
-        onNodeDataChanged(path);
-    }
-
-    @Override
-    public void onNodeDataChanged(final StringPath path)
+    public void onNodeDataChanged(StringPath path)
     {
         // Get the settings object type and instance referred to by the given path
         var type = settingsType(path);
@@ -149,8 +185,11 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void onNodeDeleted(final StringPath path)
+    public void onNodeDeleted(StringPath path)
     {
         // Get the settings object type and instance referred to by the given path
         var type = settingsType(path);
@@ -180,6 +219,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @MustBeInvokedByOverriders
     protected boolean onDelete(SettingsObject settings)
@@ -187,6 +229,13 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         return connection.delete(path(settings));
     }
 
+    /**
+     * Deserializes the given data into an instance of the given type. By default uses the registered {@link
+     * GsonFactory} to deserialize the data from JSON format.
+     *
+     * @param data The data to deserialize
+     * @param type The type of object to deserialize
+     */
     @SuppressWarnings("unchecked")
     protected <T> T onDeserialize(byte[] data, Class<?> type)
     {
@@ -244,7 +293,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     /**
-     * {@inheritDoc}
+     * Serializes the given object. By default, uses the registered{@link GsonFactory} to serialize to JSON format.
      */
     protected byte[] onSerialize(Object object)
     {
@@ -253,19 +302,38 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         return json.getBytes(UTF_8);
     }
 
+    /**
+     * Called when settings are deleted from Zookeeper
+     *
+     * @param path The path to the settings object in Zookeeper
+     * @param settings The settings object
+     */
     protected void onSettingsDeleted(StringPath path, SettingsObject settings)
     {
     }
 
+    /**
+     * Called when settings objects are updated in Zookeeper
+     *
+     * @param path The path to the settings object in Zookeeper
+     * @param settings The settings object
+     */
     protected void onSettingsUpdated(StringPath path, SettingsObject settings)
     {
     }
 
+    /**
+     * @return True if the given Zookeeper path was created
+     */
     private boolean create(StringPath path)
     {
         return connection.create(path, OPEN_ACL_UNSAFE, createMode());
     }
 
+    /**
+     * @return The create mode for paths in this store
+     * @see CreateMode
+     */
     private CreateMode createMode()
     {
         if (createMode == null)
@@ -275,6 +343,10 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         return createMode;
     }
 
+    /**
+     * @return The {@link InstanceIdentifier} from the last element of the given node path
+     * @see #path(SettingsObject)
+     */
     private InstanceIdentifier instance(StringPath path)
     {
         return InstanceIdentifier.of(path.last());
@@ -284,19 +356,18 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      * Composes the Zookeeper path to the given settings object:
      *
      * <ol>
-     *     <li>EPHEMERAL|PERSISTENT</li>
-     *     <li>`kivakit</li>
-     *     <li>kivakit-version</li>
-     *     <li>user-name</li>
-     *     <li>application-name</li>
-     *     <li>application-version</li>
+     *     <li>store-path</li>
      *     <li>type-name</li>
      *     <li>instance-identifier</li>
      * </ol>
-     * <pre>
-     * /[EPHEMERAL|PERSISTENT]/kivakit/[kivakit-version]/[user-name]/[application-name]/[application-version]/[type-name]/[instance-identifier]</pre>
+     *
+     * <p>
+     * For example:
+     * <pre>/PERSISTENT/kivakit/1.0.3/jonathanl/demo/1.0/demo.Demo/SINGLETON</pre>
+     * </p>
      *
      * @return A path to the given settings object
+     * @see #storePath()
      */
     private StringPath path(SettingsObject object)
     {
@@ -327,25 +398,32 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     /**
-     * @return The path to the settings for this store in Zookeeper:
+     * Returns the path to the settings objects in this settings store in Zookeeper. The path is formed from these
+     * elements:
      *
      * <ol>
+     *     <li>create-mode</li>
      *     <li>kivakit</li>
      *     <li>kivakit-version</li>
      *     <li>user-name</li>
      *     <li>application-name</li>
      *     <li>application-version</li>
      * </ol>
+     *
      * <p>
      * For example:
-     * <pre>
-     * /kivakit/1.1.3/jonathan/demo/1.0</pre>
+     * </p>
+     *
+     * <pre>/PERSISTENT/kivakit/1.0.3/jonathan/demo/1.0</pre>
+     *
+     * @return The path to the settings for this store in Zookeeper
      */
     private StringPath storePath()
     {
         var application = require(Application.class);
 
         return StringPath.stringPath(
+                createMode().name(),
                 "kivakit",
                 String.valueOf(KivaKit.get().kivakitVersion()),
                 JavaVirtualMachine.property("user.name"),
