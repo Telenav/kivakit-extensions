@@ -76,20 +76,20 @@
             </exclusions>
         </dependency>
 
-        <!-- These merged JAR files are built by the kivakit-protostuff-merged project -->
+        <!-- These merged JAR files are built by the kivakit-merged-protostuff project -->
 
         <!-- Protostuff -->
 
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-protostuff-merged</artifactId>
+            <artifactId>kivakit-merged-protostuff</artifactId>
         </dependency>
 
         <!-- GRPC -->
 
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-grpc-merged</artifactId>
+            <artifactId>kivakit-merged-grpc</artifactId>
         </dependency>
 
     </dependencies>

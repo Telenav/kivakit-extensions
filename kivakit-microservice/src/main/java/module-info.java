@@ -7,8 +7,8 @@ open module kivakit.microservice
     requires transitive kivakit.web.wicket;
     requires transitive kivakit.math;
 
-    requires kivakit.protostuff.merged;
-    requires kivakit.grpc.merged;
+    requires kivakit.merged.protostuff;
+    requires kivakit.merged.grpc;
     requires kivakit.test;
 
     requires org.junit.platform.commons;
