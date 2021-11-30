@@ -45,13 +45,13 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-test</artifactId>
         </dependency>
-
-        <!-- Apache Zookeeper -->
-
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-merged-zookeeper</artifactId>
         </dependency>
+
+        <!-- Netty for Apache Zookeeper -->
+
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>

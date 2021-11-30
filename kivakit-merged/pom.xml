@@ -22,10 +22,10 @@
 
     <modules>
 
-        <module>kivakit-merged-grpc</module>
-        <module>kivakit-merged-prometheus</module>
-        <module>kivakit-merged-protostuff</module>
-        <module>kivakit-merged-zookeeper</module>
+        <module>grpc</module>
+        <module>prometheus</module>
+        <module>protostuff</module>
+        <module>zookeeper</module>
 
     </modules>
 
