@@ -224,6 +224,14 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         {
             return false;
         }
+
+        for (var file : files())
+        {
+            if (!file.fileName().equals(METADATA))
+            {
+                return false;
+            }
+        }
         return true;
     }
 
