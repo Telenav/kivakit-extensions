@@ -46,7 +46,10 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
@@ -81,6 +84,9 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     private static final Group<String> schemeGroup = schemePattern().group(Listener.none());
 
+    // S3 client
+    protected static final Map<String, S3Client> clientForRegion = new ConcurrentHashMap<>();
+
     // s3://${region}/${bucket}/${key}
     private static final Pattern pattern = schemeGroup
             .then(Pattern.constant("://"))
@@ -106,9 +112,44 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
                 .build();
     }
 
-    protected static FilePath path(Listener listener, String scheme, String bucketName, String keyName)
+    protected static FilePath path(Listener listener, String scheme, Region region, String bucketName, String keyName)
     {
-        return FilePath.parseFilePath(listener, scheme + bucketName + "/" + keyName);
+        return FilePath.parseFilePath(listener, scheme + "://" + (region != null ? region.id() : "default-region") + "/" + bucketName + "/" + keyName);
+    }
+
+    protected static S3Client clientFor(Region region)
+    {
+        return clientForRegion.computeIfAbsent(region.id(), key -> buildClient(region));
+    }
+
+    private static S3Client buildClient(Region region)
+    {
+        var builder = S3Client.builder().region(region);
+
+        var endpoint = endpoint();
+        if (endpoint != null)
+        {
+            builder.endpointOverride(endpoint);
+        }
+        return builder.build();
+    }
+
+    private static URI endpoint()
+    {
+        URI endpointURI = null;
+        var endpoint = System.getProperty("aws-endpoint");
+        if (endpoint != null)
+        {
+            try
+            {
+                endpointURI = URI.create(endpoint);
+            }
+            catch (Exception ex)
+            {
+                LOGGER.problem(ex, "failed to create aws endpoint URI: $", endpoint);
+            }
+        }
+        return endpointURI;
     }
 
     // The scheme of path, such as "s3://"
@@ -122,9 +163,6 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     // Meta data attached to the object
     private Map<String, String> metadata;
-
-    // S3 client
-    private S3Client client;
 
     // True if it's a folder
     private final boolean isFolder;
@@ -146,16 +184,16 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
             {
                 if (at.id().equals(regionName))
                 {
-                    region = at;
+                    this.region = at;
                 }
             }
             if ("default-region".equals(regionName))
             {
-                region = null;
+                this.region = null;
             }
             else
             {
-                ensureNotNull(region, "Region '$' is not recognized", regionName);
+                ensureNotNull(this.region, "Region '$' is not recognized", regionName);
             }
             scheme = schemeGroup.get(matcher);
             bucket = bucketGroup.get(matcher);
@@ -261,7 +299,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     @Override
     public FolderService root()
     {
-        return new S3Folder(path(this, scheme(), bucket(), ""));
+        return new S3Folder(path(this, scheme(), region(), bucket(), ""));
     }
 
     @Override
@@ -314,20 +352,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     S3Client client()
     {
-        if (client == null)
-        {
-            if (region != null)
-            {
-                client = S3Client.builder()
-                        .region(region)
-                        .build();
-            }
-            else
-            {
-                client = S3Client.builder().build();
-            }
-        }
-        return client;
+        return clientFor(this.region);
     }
 
     void copyTo(S3FileSystemObject that)
@@ -354,23 +379,19 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
     Bytes length()
     {
-        return Bytes.bytes(object().contentLength());
+        var object = object();
+        return Bytes.bytes(object != null ? object.contentLength() : 0);
     }
 
     Map<String, String> metadata()
     {
         if (metadata == null)
         {
-            var request = GetObjectRequest.builder()
-                    .bucket(bucket())
-                    .key(key())
-                    .build();
-
-            var response = client()
-                    .getObject(request)
-                    .response();
-
-            metadata = response.metadata();
+            var object = object();
+            if (object != null)
+            {
+                metadata = object.metadata();
+            }
         }
         return metadata;
     }
@@ -378,7 +399,22 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     GetObjectResponse object()
     {
         var request = GetObjectRequest.builder().bucket(bucket()).key(key()).build();
-        return client().getObject(request).response();
+
+        GetObjectResponse response = null;
+        try (var inputStream = client().getObject(request))
+        {
+            response = inputStream.response();
+        }
+        catch (Exception ex)
+        {
+        }
+
+        return response;
+    }
+
+    Region region()
+    {
+        return region;
     }
 
     String scheme()

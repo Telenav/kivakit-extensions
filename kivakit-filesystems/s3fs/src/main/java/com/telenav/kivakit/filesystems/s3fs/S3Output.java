@@ -60,7 +60,7 @@ public class S3Output extends OutputStream
     {
         this.object = object;
         cacheFile = cacheFile(object.path());
-        outputStream = cacheFile.openForWriting();
+        outputStream = cacheFile.onOpenForWriting();
     }
 
     /** Close this stream and release the lease */

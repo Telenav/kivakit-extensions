@@ -33,7 +33,7 @@ import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import software.amazon.awssdk.services.s3.model.ListBucketsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public boolean exists()
     {
-        return super.exists() || metadataFile().exists() || !isEmpty();
+        return true;
     }
 
     @Override
@@ -146,17 +146,21 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public List<FileService> files()
     {
-        var request = ListObjectsRequest.builder()
+        var request = ListObjectsV2Request.builder()
                 .bucket(bucket())
+                .prefix(key())
                 .build();
 
-        var response = client().listObjects(request);
+        var response = client().listObjectsV2Paginator(request);
 
         List<FileService> files = new ArrayList<>();
-        for (var object : response.contents())
+        for (var page : response)
         {
-            var path = S3FileSystemObject.path(this, scheme(), bucket(), object.key());
-            files.add(new S3File(path));
+            page.contents().forEach(object ->
+            {
+                var path = S3FileSystemObject.path(this, scheme(), region(), bucket(), object.key());
+                files.add(new S3File(path));
+            });
         }
         return files;
     }
@@ -196,7 +200,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         List<FolderService> folders = new ArrayList<>();
         for (var bucket : response.buckets())
         {
-            var path = S3FileSystemObject.path(this, scheme(), bucket.name(), "");
+            var path = S3FileSystemObject.path(this, scheme(), region(), bucket.name(), "");
             folders.add(new S3Folder(path));
         }
         return folders;
@@ -216,16 +220,9 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     public boolean isEmpty()
     {
         Iterable<FolderService> folders = folders();
-        if (folders != null && folders().iterator().hasNext())
+        if (folders != null && folders.iterator().hasNext())
         {
             return false;
-        }
-        for (var file : files())
-        {
-            if (!file.fileName().equals(METADATA))
-            {
-                return false;
-            }
         }
         return true;
     }
@@ -245,12 +242,6 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public S3Folder mkdirs()
     {
-        var folder = this;
-        while (folder != null && !folder.equals(root()))
-        {
-            mkdir(folder);
-            folder = folder.parent();
-        }
         return this;
     }
 
@@ -314,7 +305,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     @Override
     public S3Folder root()
     {
-        var path = path(this, scheme(), bucket(), "");
+        var path = path(this, scheme(), region(), bucket(), "");
         return new S3Folder(path);
     }
 
@@ -381,13 +372,6 @@ public class S3Folder extends S3FileSystemObject implements FolderService
 
     private void mkdir(S3Folder folder)
     {
-        var file = folder.file(METADATA);
-        if (!file.exists())
-        {
-            // Create a place holder for every folder to make sure it's a folder
-            // conceptually
-            file.write(Time.now().toString());
-        }
     }
 
     private List<FileService> nestedFiles(FolderService folder, List<FileService> files)
