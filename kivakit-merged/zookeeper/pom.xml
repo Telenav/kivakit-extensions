@@ -40,7 +40,6 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
@@ -52,7 +51,6 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>compile</scope>
         </dependency>
 
     </dependencies>
