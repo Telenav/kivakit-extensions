@@ -21,6 +21,30 @@ import java.util.List;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
 
+/**
+ * Maintains a connection to zookeeper and performs operations using that connection
+ *
+ * <p><b>Reading and Writing</b></p>
+ *
+ * <ul>
+ *     <li>{@link #create(StringPath, List, CreateMode)} - Creates a node at the given path</li>
+ *     <li>{@link #delete(StringPath)} - Deletes the node at the given path</li>
+ *     <li>{@link #read(StringPath)} - Reads the data from the node at the given path</li>
+ *     <li>{@link #write(StringPath, byte[])} - Writes the given data to the node at the given path</li>
+ *     <li>{@link #children(StringPath)} - Returns the paths of all children of the node at the given path</li>
+ * </ul>
+ *
+ * <p><b>Watching for Changes</b></p>
+ *
+ * <ul>
+ *     <li>{@link #addChangeListener(ZookeeperChangeListener)} - Adds a listener to call when nodes are created, deleted and changed</li>
+ * </ul>
+ *
+ * @author jonathanl (shibo)
+ * @see CreateMode
+ * @see ACL
+ * @see ZookeeperChangeListener
+ */
 public class ZookeeperConnection extends BaseComponent implements Watcher
 {
     /** State of this settings store */
@@ -32,21 +56,21 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * Settings for the store
+     * Settings for this Zookeeper connection
      */
     public static class Settings
     {
         /** Comma separated ports to use when connecting to Zookeeper */
         @KivaKitPropertyConverter(Port.Converter.class)
-        private String ports;
+        String ports;
 
         /** THe maximum timeout when connecting to Zookeeper */
         @KivaKitPropertyConverter(Duration.Converter.class)
-        private Duration timeout;
+        Duration timeout;
 
         /** The CreateMode for data in Zookeeper */
         @KivaKitPropertyConverter(CreateModeConverter.class)
-        private CreateMode defaultCreateMode = PERSISTENT;
+        CreateMode defaultCreateMode = PERSISTENT;
     }
 
     /** Any connected zookeeper instance */
@@ -146,16 +170,6 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             problem(e, "Could not delete: $", path);
             return false;
         }
-    }
-
-    /**
-     * Called when disconnected from Zookeeper
-     */
-    public void disconnected()
-    {
-        IO.close(zookeeper);
-        zookeeper = null;
-        state.transitionTo(State.DISCONNECTED);
     }
 
     /**
@@ -266,9 +280,19 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /**
      * Called when the connection becomes connected
      */
-    private State connected()
+    private void connected()
     {
-        return state.transitionTo(State.CONNECTED);
+        state.transitionTo(State.CONNECTED);
+    }
+
+    /**
+     * Called when disconnected from Zookeeper
+     */
+    private void disconnected()
+    {
+        IO.close(zookeeper);
+        zookeeper = null;
+        state.transitionTo(State.DISCONNECTED);
     }
 
     private Settings settings()

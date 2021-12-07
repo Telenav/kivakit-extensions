@@ -17,7 +17,6 @@
     </parent>
 
     <artifactId>kivakit-merged-protostuff</artifactId>
-    <version>1.1.3-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -65,7 +64,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>kivakit-merged-protostuff-${project.version}</finalName>
+                            <finalName>kivakit-merged-protostuff-${kivakit.version}</finalName>
                             <minimizeJar>false</minimizeJar>
                             <artifactSet>
                                 <includes>
@@ -82,11 +81,11 @@
                             <relocations>
                                 <relocation>
                                   <pattern>io.netty</pattern>
-                                  <shadedPattern>kivakit.merged.grpc.io.netty</shadedPattern>
+                                  <shadedPattern>kivakit.merged.protostuff.io.netty</shadedPattern>
                                 </relocation>
                                 <relocation>
                                   <pattern>io.netty</pattern>
-                                  <shadedPattern>kivakit.merged.grpc.io.netty</shadedPattern>
+                                  <shadedPattern>kivakit.merged.protostuff.io.netty</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

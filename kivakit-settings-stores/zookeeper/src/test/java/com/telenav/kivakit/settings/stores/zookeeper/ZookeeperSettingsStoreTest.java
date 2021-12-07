@@ -16,7 +16,7 @@ import org.junit.Test;
 /**
  * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default
  */
-@Ignore
+//@Ignore
 public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMixin
 {
     public static class Settings
@@ -40,12 +40,12 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     public void test()
     {
         // Register zookeeper settings,
-        registerSettingsIn(PackageSettingsStore.of(this, PackagePath.packagePath(getClass())));
+        registerSettingsIn(PackageSettingsStore.of(this, packagePath()));
 
         // create zookeeper settings store,
         var store = listenTo(register(new ZookeeperSettingsStore()));
 
-        // register a dummy application is needed because settings are saved under application name and version,
+        // register a dummy application because settings are saved under application name and version,
         register(new Application()
         {
             @Override
@@ -66,7 +66,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
                 .withVersion(Version.parse(this, "1.0"))
                 .withRequireExposeAnnotation(false));
 
-        // save settings to store,
+        // save settings to store with x = 7,
         saveSettingsTo(store, new Settings(7));
 
         // clear in-memory settings index,
