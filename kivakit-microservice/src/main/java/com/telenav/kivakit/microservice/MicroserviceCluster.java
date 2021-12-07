@@ -6,6 +6,8 @@ import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
+import com.telenav.kivakit.kernel.language.primitives.Ints;
+import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +25,8 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL;
  * <p><b>Starting Up</b></p>
  *
  * <p>
- * To join this cluster, call {@link #join(Object)}, passing in the user-defined data you wish to associate with your
- * {@link MicroserviceClusterMember}. A member should call this method to join the cluster in {@link
+ * To join this cluster, call {@link #join(MicroserviceClusterMember)}, passing in the user-defined data you wish to
+ * associate with your {@link MicroserviceClusterMember}. A member should call this method to join the cluster in {@link
  * Microservice#onRun()}. The {@link #members()} method yields the members of this cluster.
  * </p>
  *
@@ -41,19 +43,23 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL;
  */
 public class MicroserviceCluster<Member> extends BaseComponent
 {
-    /** Store for cluster Member objects in Zookeeper */
-    private Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL)
+    /** Store for ephemeral cluster Member objects in Zookeeper */
+    private final Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL)
     {
         @Override
         protected void onSettingsDeleted(StringPath path, SettingsObject settings)
         {
-            onLeave(settings.object());
+            var member = member(path, settings);
+            announce("Leaving cluster: $", member);
+            onLeave(member);
         }
 
         @Override
         protected void onSettingsUpdated(StringPath path, SettingsObject settings)
         {
-            onJoin(settings.object());
+            var member = member(path, settings);
+            announce("Joining cluster: $", member);
+            onJoin(member);
         }
     }));
 
@@ -62,16 +68,19 @@ public class MicroserviceCluster<Member> extends BaseComponent
      *
      * @param member The member data for this cluster member
      */
-    public void join(Member member)
+    public void join(MicroserviceClusterMember<Member> member)
     {
         // Call onJoin() for each member that's already in the cluster we joined,
         for (var at : members())
         {
-            onJoin(at);
+            if (!at.equals(member))
+            {
+                onJoin(at);
+            }
         }
 
         // then add ourselves as a member.
-        store().save(settings(member, instanceIdentifier()));
+        store().save(memberSettings(member, instanceIdentifier()));
     }
 
     /**
@@ -79,7 +88,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public void leave()
     {
-        store().delete(settings(null, instanceIdentifier()));
+        store().delete(memberSettings(new MicroserviceClusterMember<>(null), instanceIdentifier()));
     }
 
     /**
@@ -91,7 +100,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
 
         for (var at : store().indexed())
         {
-            members.add(at.object());
+            members.add(new MicroserviceClusterMember<>(at.object()));
         }
 
         return members;
@@ -114,13 +123,25 @@ public class MicroserviceCluster<Member> extends BaseComponent
     @NotNull
     private InstanceIdentifier instanceIdentifier()
     {
-        return InstanceIdentifier.of(Host.local().dnsName());
+        return InstanceIdentifier.of(Host.local().dnsName() + "#" + OperatingSystem.get().processIdentifier());
     }
 
     @NotNull
-    private SettingsObject settings(Member member, InstanceIdentifier instance)
+    private MicroserviceClusterMember<Member> member(final StringPath path,
+                                                     final SettingsObject settings)
     {
-        return new SettingsObject(new MicroserviceClusterMember<>(Host.local(), member), instance);
+        var parts = path.last().split("#");
+
+        return new MicroserviceClusterMember<>(
+                Host.parse(this, parts[0]),
+                Ints.parse(this, parts[1]),
+                settings.object());
+    }
+
+    @NotNull
+    private SettingsObject memberSettings(MicroserviceClusterMember<Member> member, InstanceIdentifier instance)
+    {
+        return new SettingsObject(member.data(), instance);
     }
 
     private ZookeeperSettingsStore store()

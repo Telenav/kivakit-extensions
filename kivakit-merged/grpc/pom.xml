@@ -97,10 +97,6 @@
 			<version>${grpc.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>io.netty</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>com.google.guava</groupId>
                     <artifactId>guava</artifactId>
                 </exclusion>
@@ -153,6 +149,13 @@
                                 <relocation>
                                   <pattern>io.perfmark</pattern>
                                   <shadedPattern>kivakit.merged.grpc.io.perfmark</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                  <pattern>io.netty</pattern>
+                                  <shadedPattern>kivakit.merged.grpc.io.netty</shadedPattern>
+                                    <excludes>
+                                        <exclude>io.netty.util.internal.Hidden$NettyBlockHoundIntegration</exclude>
+                                    </excludes>
                                 </relocation>
                             </relocations>
                         </configuration>

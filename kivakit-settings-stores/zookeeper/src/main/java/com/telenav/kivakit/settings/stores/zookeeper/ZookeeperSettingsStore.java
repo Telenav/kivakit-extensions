@@ -8,6 +8,7 @@ import com.telenav.kivakit.configuration.settings.BaseSettingsStore;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
 import com.telenav.kivakit.configuration.settings.SettingsStore;
 import com.telenav.kivakit.kernel.KivaKit;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.kernel.language.types.Classes;
@@ -15,7 +16,9 @@ import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import org.apache.zookeeper.CreateMode;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.DELETE;
@@ -23,6 +26,7 @@ import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMod
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.SAVE;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.UNLOAD;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
@@ -31,35 +35,28 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects so they can be easily accessed
  * in a clustered environment.
  *
- * <p><b>Creating</b></p>
+ * <p><b>Creating a Settings Store</b></p>
  *
  * <p>
- * A {@link ZookeeperSettingsStore} can be constructed with or without an explicit {@link CreateMode}. The connection to
- * Zookeeper is maintained by a {@link ZookeeperConnection} that is configured with {@link
- * ZookeeperConnection.Settings}. When using the kivakit <i>-deployment</i> switch, the
+ * A {@link ZookeeperSettingsStore} can be constructed with or without an explicit {@link CreateMode}. If no create mode
+ * is specified for the store, {@link ZookeeperConnection#defaultCreateMode()} will be used. The connection to Zookeeper
+ * is maintained by a {@link ZookeeperConnection} that is configured with {@link ZookeeperConnection.Settings}. When
+ * using the kivakit <i>-deployment</i> switch, the
  * <i>ZookeeperConnection.properties</i> file in the <i>deployments</i> package next to your application should look
  * like this:
  * </p>
  *
  * <pre>
- * class             = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
+ * class               = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
  *
- * ports             = 127.0.0.1:2181,127.0.0.1:2182
- * timeout           = 60s
- * defaultCreateMode = PERSISTENT</pre>
+ * ports               = 127.0.0.1:2181,127.0.0.1:2182
+ * timeout             = 60s
+ * default-create-mode = PERSISTENT</pre>
  *
  * <p>
  * The comma-separated list of ports (host and port number) is used by the Zookeeper client when connecting to the
  * cluster.
  * </p>
- *
- * <p><b>Loading Settings</b></p>
- *
- * <p>
- * Once a {@link ZookeeperConnection.Settings} object is registered, a {@link ZookeeperSettingsStore} can be loaded and
- * its contents registered with the global settings registry with:
- * <pre>
- * registerSettingsIn(listenTo(new ZookeeperSettingsStore()));</pre>
  *
  * <p><b>Reacting to Changes</b></p>
  *
@@ -81,26 +78,30 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * </p>
  *
  * @author jonathanl (shibo)
+ * @see ZookeeperConnection
+ * @see SettingsObject
+ * @see InstanceIdentifier
+ * @see StringPath
  */
 public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, ZookeeperChangeListener
 {
     /**
-     * Path separator used when storing nodes in Zookeeper.
+     * Path separator used when storing ephemeral nodes in Zookeeper.
      *
      * <p><b>NOTE</b></p>
      * <p>
      * This is a workaround for a Zookeeper limitation, namely that {@link CreateMode#EPHEMERAL} nodes cannot have
-     * paths. Since we want to store data for all create modes, it is necessary to flatten hierarchical paths into a
-     * single node name in the root: the path <i>/a/b/c</i> becomes <i>/a::b::c</i>
+     * paths. So, it is necessary to flatten ephemeral paths into a single node name in the root: the path <i>/a/b/c</i>
+     * becomes <i>/a::b::c</i>
      * </p>
      */
-    private static final String SEPARATOR = "::";
+    private static final String EPHEMERAL_NODE_SEPARATOR = "::";
 
     /** Create mode for settings in this store */
     private CreateMode createMode;
 
     /** Connection to Zookeeper */
-    private ZookeeperConnection connection = new ZookeeperConnection();
+    private final ZookeeperConnection connection = new ZookeeperConnection();
 
     /**
      * Creates a settings store with the given explicit {@link CreateMode}. This overrides any setting in {@link
@@ -134,62 +135,20 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     /**
      * <p>
      * Called when a node is created or its data changes.
-     * <ol>
-     *     <li>Retrieves the settings object at the given path</li>
-     *     <li>Indexes the object</li>
-     *     <li>Propagates changes to any dependent registry</li>
-     *     <li>Calls {@link #onSettingsUpdated(StringPath, SettingsObject)}</li>
-     * </ol>
      *
      * @param path The path to the node that changed
      */
     @Override
-    public void onNodeDataChanged(StringPath path)
+    public final void onNodeDataChanged(StringPath path)
     {
-        // Get the settings object type and instance referred to by the given path
-        var type = settingsType(path);
-        var instance = instance(path);
-
-        try
-        {
-            // read and serialize the altered settings object,
-            var data = connection.read(path);
-            if (data != null)
-            {
-                var object = onDeserialize(data, type);
-                if (object != null)
-                {
-                    // then index the object,
-                    var settings = new SettingsObject(object, type, instance);
-                    index(settings);
-
-                    // propagate the change,
-                    var update = propagateChangesTo();
-                    if (update != null)
-                    {
-                        update.index(settings);
-                    }
-
-                    // and tell the subclass we updated.
-                    onSettingsUpdated(path, settings);
-                }
-                else
-                {
-                    warning("Could not deserialize: $", new String(data));
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            problem(e, "Could not update: $", path);
-        }
+        readSettings(path);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void onNodeDeleted(StringPath path)
+    public final void onNodeDeleted(StringPath path)
     {
         // Get the settings object type and instance referred to by the given path
         var type = settingsType(path);
@@ -199,7 +158,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         var object = lookup(type, instance);
         if (object != null)
         {
-            // unindex it in the local store,
+            // un-index it in the local store,
             var settings = new SettingsObject(object, type, instance);
             unindex(settings);
 
@@ -211,7 +170,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
             }
 
             // and notify the subclass of the deletion.
-            onSettingsDeleted(path, settings);
+            onSettingsDeleted(unflatten(path), settings);
         }
         else
         {
@@ -252,14 +211,24 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     {
         var settings = new ObjectSet<SettingsObject>();
 
-        // Go through the child paths of the root node,
-        for (var child : connection.children(StringPath.stringPath("/")).prefixedWith("/"))
+        if (isEphemeral())
         {
-            // and if the path is for this settings store,
-            if (child.startsWith(storePath().join(SEPARATOR)))
+            // Go through the child paths of the root node,
+            var storePrefix = flatten(storePath()).join();
+            for (var child : connection.children(root()))
             {
-                onNodeDataChanged(StringPath.stringPath(child));
+                // and if the child has data for this settings store,
+                if (child.startsWith(storePrefix))
+                {
+                    // then read and add the settings
+                    var path = StringPath.stringPath(child).withRoot("/");
+                    settings.addIfNotNull(readSettings(path));
+                }
             }
+        }
+        else
+        {
+            settings.addAll(loadRecursively(StringPath.stringPath("PERSISTENT")));
         }
 
         return settings;
@@ -283,6 +252,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
             // and write the serialized data to Zookeeper.
             connection.write(path, data);
+            connection.watch(path);
             return true;
         }
         catch (Exception e)
@@ -323,11 +293,24 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     /**
+     * @return The given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
+     * node path /a::b::c becomes the hierarchical node path /a/b/c.
+     */
+    @NotNull
+    protected StringPath unflatten(final StringPath path)
+    {
+        ensure(path.size() == 1);
+        return StringPath.stringPath(StringPath.stringPath(StringList.split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath());
+    }
+
+    /**
      * @return True if the given Zookeeper path was created
      */
     private boolean create(StringPath path)
     {
-        return connection.create(path, OPEN_ACL_UNSAFE, createMode());
+        var created = connection.create(path, OPEN_ACL_UNSAFE, createMode());
+        connection.watch(path);
+        return created;
     }
 
     /**
@@ -344,12 +327,78 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     /**
+     * @return The given path flattened using the separator for ephemeral nodes. For example, the hierarchical node path
+     * /a/b/c becomes the flattened node path /a::b::c.
+     */
+    @NotNull
+    private StringPath flatten(final StringPath path)
+    {
+        return StringPath.stringPath(path.join(EPHEMERAL_NODE_SEPARATOR));
+    }
+
+    /**
      * @return The {@link InstanceIdentifier} from the last element of the given node path
      * @see #path(SettingsObject)
      */
     private InstanceIdentifier instance(StringPath path)
     {
         return InstanceIdentifier.of(path.last());
+    }
+
+    /**
+     * @return True if this is an ephemeral settings store
+     */
+    private boolean isEphemeral()
+    {
+        return createMode() == CreateMode.EPHEMERAL;
+    }
+
+    /**
+     * Recursively load all child nodes of the given path
+     *
+     * @param path The path to load
+     * @return The set of settings objects under the given path
+     */
+    private ObjectSet<SettingsObject> loadRecursively(final StringPath path)
+    {
+        var settings = new ObjectSet<SettingsObject>();
+
+        // Add the data at this path
+        if (!path.isEmpty())
+        {
+            settings.addIfNotNull(readSettings(path));
+            connection.watch(path);
+        }
+
+        // Go through each child node of the given path
+        for (var child : connection.children(path).prefixedWith("/"))
+        {
+            // and add the settings of that child
+            var childPath = path.withChild(child);
+            settings.addAll(loadRecursively(childPath));
+            connection.watch(childPath);
+        }
+
+        return settings;
+    }
+
+    /**
+     * @return The given path flattened or not based on whether or not this is an ephemeral store
+     */
+    private StringPath maybeFlatten(StringPath path)
+    {
+        // If the path is ephemeral,
+        if (isEphemeral())
+        {
+            // we must flatten the path by joining it with a separator because Zookeeper doesn't
+            // support children on ephemeral nodes.
+            return flatten(path);
+        }
+        else
+        {
+            // otherwise, we use the full path
+            return path;
+        }
     }
 
     /**
@@ -362,22 +411,86 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      * </ol>
      *
      * <p>
+     * Paths to ephemeral nodes will be flattened to a single node in the root.
      * For example:
-     * <pre>/PERSISTENT/kivakit/1.0.3/jonathanl/demo/1.0/demo.Demo/SINGLETON</pre>
      * </p>
+     *
+     * <pre>/PERSISTENT/kivakit/1.0.3/jonathanl/demo/1.0/demo.Demo/SINGLETON</pre>
+     * <pre>/EPHEMERAL/kivakit::1.0.3::jonathanl::demo::1.0::demo.Demo::SINGLETON</pre>
      *
      * @return A path to the given settings object
      * @see #storePath()
      */
     private StringPath path(SettingsObject object)
     {
-        var application = require(Application.class);
-
-        return storePath()
+        return maybeFlatten(storePath()
                 .withChild(object.identifier().type().getName())
                 .withChild(object.identifier().instance().identifier())
-                .withRoot("/")
-                .withSeparator(SEPARATOR);
+                .withRoot("/"));
+    }
+
+    /**
+     * <ol>
+     *     <li>Reads the settings object at the given path from Zookeeper</li>
+     *     <li>Indexes the object</li>
+     *     <li>Propagates changes to any dependent registry</li>
+     *     <li>Calls {@link #onSettingsUpdated(StringPath, SettingsObject)}</li>
+     *     <li>Adds a watcher for the given path</li>
+     * </ol>
+     *
+     * @return The settings object at the given path
+     */
+    private SettingsObject readSettings(final StringPath path)
+    {
+        // Get the settings object type and instance referred to by the given path
+        var type = settingsType(path);
+        var instance = instance(path);
+
+        try
+        {
+            // read and serialize the altered settings object,
+            var data = connection.read(path);
+            if (data != null)
+            {
+                var object = onDeserialize(data, type);
+                if (object != null)
+                {
+                    // then index the object,
+                    var settings = new SettingsObject(object, type, instance);
+                    index(settings);
+
+                    // propagate the change,
+                    var update = propagateChangesTo();
+                    if (update != null)
+                    {
+                        update.index(settings);
+                    }
+
+                    // and tell the subclass we updated.
+                    onSettingsUpdated(unflatten(path), settings);
+                    connection.watch(path);
+                    return settings;
+                }
+                else
+                {
+                    warning("Could not deserialize: $", new String(data));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            problem(e, "Could not update: $", path);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return The root path
+     */
+    private StringPath root()
+    {
+        return StringPath.stringPath(List.of()).withRoot("/");
     }
 
     /**
@@ -385,6 +498,11 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      */
     private Class<?> settingsType(StringPath path)
     {
+        if (isEphemeral())
+        {
+            path = unflatten(path);
+        }
+
         if (path.size() >= 2)
         {
             var typeName = path.get(path.size() - 2);
@@ -394,6 +512,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                 return type;
             }
         }
+
         return fail("Cannot get type from path: $", path);
     }
 
@@ -402,12 +521,12 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      * elements:
      *
      * <ol>
-     *     <li>create-mode</li>
+     *     <li>[create-mode]</li>
      *     <li>kivakit</li>
-     *     <li>kivakit-version</li>
-     *     <li>user-name</li>
-     *     <li>application-name</li>
-     *     <li>application-version</li>
+     *     <li>[kivakit-version]</li>
+     *     <li>[user-name]</li>
+     *     <li>[application-name]</li>
+     *     <li>[application-version]</li>
      * </ol>
      *
      * <p>

@@ -18,6 +18,7 @@ import org.apache.zookeeper.data.ACL;
 
 import java.util.List;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNull;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
 
@@ -87,6 +88,8 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      */
     public void addChangeListener(ZookeeperChangeListener listener)
     {
+        ensureNull(this.listener, "Cannot add more than one listener");
+
         this.listener = listener;
     }
 
@@ -100,7 +103,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         try
         {
             // Go through child paths of the given path,
-            for (var at : zookeeper().getChildren(path.join(), null))
+            for (var at : zookeeper().getChildren(path.join(), this))
             {
                 // and if the path is for this settings store,
                 children.append(at);
@@ -127,6 +130,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         {
             // create the parent first,
             create(parent, acl, mode);
+            watch(parent, this);
         }
 
         try
@@ -134,11 +138,13 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             // then create the node at the given path.
             if (zookeeper().create(path.join(), new byte[0], acl, mode) != null)
             {
+                watch(path);
                 return true;
             }
         }
         catch (NodeExistsException ignored)
         {
+            watch(path);
             return true;
         }
         catch (Exception e)
@@ -201,12 +207,47 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         try
         {
             // read and serialize the altered settings object,
-            return zookeeper().getData(path.join(), null, null);
+            return zookeeper().getData(path.join(), this, null);
         }
         catch (Exception e)
         {
             problem(e, "Could not get data for: $", path);
             return null;
+        }
+    }
+
+    /**
+     * Watches the given path for changes, which are given to the {@link ZookeeperChangeListener} added with {@link
+     * #addChangeListener(ZookeeperChangeListener)}.
+     */
+    public void watch(StringPath path)
+    {
+        watch(path, this);
+    }
+
+    /**
+     * Adds a {@link Watcher} for the node at the given path
+     *
+     * @param path The node path
+     * @param watcher The watcher to call when the node changes
+     */
+    public void watch(StringPath path, Watcher watcher)
+    {
+        try
+        {
+            var stat = zookeeper().exists(path.join(), watcher);
+            if (stat != null)
+            {
+                zookeeper().getData(path.join(), watcher, stat);
+            }
+            else
+            {
+                problem("Could not add watcher for non-existent path: $", path);
+            }
+        }
+        catch (Exception e)
+        {
+            problem(e, "Could not add watcher for: $", path);
         }
     }
 
@@ -274,6 +315,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
                     listener.onNodeDataChanged(path);
                     break;
             }
+
+            // The watcher is removed when this method is called, so add the watcher back
+            watch(path, this);
         }
     }
 

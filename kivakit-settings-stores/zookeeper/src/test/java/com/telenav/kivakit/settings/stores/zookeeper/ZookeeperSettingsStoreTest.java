@@ -5,13 +5,13 @@ import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.configuration.settings.stores.resource.PackageSettingsStore;
-import com.telenav.kivakit.kernel.language.paths.PackagePath;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.test.UnitTest;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.apache.zookeeper.CreateMode.PERSISTENT;
 
 /**
  * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default
@@ -43,7 +43,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         registerSettingsIn(PackageSettingsStore.of(this, packagePath()));
 
         // create zookeeper settings store,
-        var store = listenTo(register(new ZookeeperSettingsStore()));
+        var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT)));
 
         // register a dummy application because settings are saved under application name and version,
         register(new Application()

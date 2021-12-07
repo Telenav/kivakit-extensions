@@ -414,11 +414,10 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * the ClusterMember object for the member. When a member leaves the cluster, the {@link
      * #onLeave(MicroserviceClusterMember)} is called with the same object.
      */
-    protected abstract Member onCreateMember();
+    protected abstract MicroserviceClusterMember<Member> onCreateMember();
 
     protected void onJoin(MicroserviceClusterMember<Member> member)
     {
-
     }
 
     protected void onLeave(MicroserviceClusterMember<Member> member)

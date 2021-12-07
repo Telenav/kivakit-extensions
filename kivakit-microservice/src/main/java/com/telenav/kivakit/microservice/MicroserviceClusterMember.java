@@ -1,7 +1,6 @@
 package com.telenav.kivakit.microservice;
 
 import com.telenav.kivakit.kernel.language.objects.Hash;
-import com.telenav.kivakit.kernel.language.primitives.Ints;
 import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
 import com.telenav.kivakit.network.core.Host;
 
@@ -12,19 +11,28 @@ import com.telenav.kivakit.network.core.Host;
  */
 public class MicroserviceClusterMember<Data>
 {
+    /** This cluster member */
+    private static final MicroserviceClusterMember<Object> THIS_CLUSTER_MEMBER = new MicroserviceClusterMember<>(null);
+
     /** The host that the cluster member is running on */
-    private Host host;
+    private final Host host;
 
     /** User-defined data */
-    private Data data;
+    private final Data data;
 
     /** Process number */
-    private int processIdentifier = OperatingSystem.get().processIdentifier();
+    private final int processIdentifier;
 
-    public MicroserviceClusterMember(Host host, Data data)
+    public MicroserviceClusterMember(Host host, int processIdentifier, Data data)
     {
+        this.processIdentifier = processIdentifier;
         this.host = host;
         this.data = data;
+    }
+
+    public MicroserviceClusterMember(Data data)
+    {
+        this(Host.local(), OperatingSystem.get().processIdentifier(), data);
     }
 
     public Data data()
@@ -38,7 +46,7 @@ public class MicroserviceClusterMember<Data>
         if (object instanceof MicroserviceClusterMember)
         {
             MicroserviceClusterMember<?> that = (MicroserviceClusterMember<?>) object;
-            return host.equals(that.host) && processIdentifier == that.processIdentifier;
+            return host.dnsName().equals(that.host.dnsName()) && processIdentifier == that.processIdentifier;
         }
         return false;
     }
@@ -62,6 +70,6 @@ public class MicroserviceClusterMember<Data>
     @Override
     public String toString()
     {
-        return host.dnsName() + ":" + Ints.toHex(processIdentifier());
+        return host.dnsName() + "#" + processIdentifier() + (equals(THIS_CLUSTER_MEMBER) ? " [this]" : "");
     }
 }

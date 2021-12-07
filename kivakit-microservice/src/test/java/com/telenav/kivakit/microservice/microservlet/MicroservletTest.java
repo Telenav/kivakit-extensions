@@ -8,6 +8,7 @@ import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
+import com.telenav.kivakit.microservice.MicroserviceClusterMember;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
@@ -110,9 +111,9 @@ public class MicroservletTest extends UnitTest
         }
 
         @Override
-        protected String onCreateMember()
+        protected MicroserviceClusterMember<String> onCreateMember()
         {
-            return "dummy-value";
+            return new MicroserviceClusterMember<>("dummy-value");
         }
     }
 
