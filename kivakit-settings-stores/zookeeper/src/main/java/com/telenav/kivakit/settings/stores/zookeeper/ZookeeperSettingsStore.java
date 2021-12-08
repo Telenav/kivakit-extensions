@@ -26,8 +26,6 @@ import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMod
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.SAVE;
 import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.UNLOAD;
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
@@ -228,7 +226,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         }
         else
         {
-            settings.addAll(loadRecursively(StringPath.stringPath("PERSISTENT")));
+            settings.addAll(loadRecursively(StringPath.stringPath("PERSISTENT").withRoot("/")));
         }
 
         return settings;
@@ -299,8 +297,11 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     @NotNull
     protected StringPath unflatten(final StringPath path)
     {
-        ensure(path.size() == 1);
-        return StringPath.stringPath(StringPath.stringPath(StringList.split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath());
+        if (path.size() == 1)
+        {
+            return StringPath.stringPath(StringPath.stringPath(StringList.split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath());
+        }
+        return path;
     }
 
     /**
@@ -364,14 +365,14 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         var settings = new ObjectSet<SettingsObject>();
 
         // Add the data at this path
-        if (!path.isEmpty())
+        if (path.size() > 1)
         {
             settings.addIfNotNull(readSettings(path));
             connection.watch(path);
         }
 
         // Go through each child node of the given path
-        for (var child : connection.children(path).prefixedWith("/"))
+        for (var child : connection.children(path))
         {
             // and add the settings of that child
             var childPath = path.withChild(child);
@@ -444,42 +445,45 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     {
         // Get the settings object type and instance referred to by the given path
         var type = settingsType(path);
-        var instance = instance(path);
-
-        try
+        if (type != null)
         {
-            // read and serialize the altered settings object,
-            var data = connection.read(path);
-            if (data != null)
+            var instance = instance(path);
+
+            try
             {
-                var object = onDeserialize(data, type);
-                if (object != null)
+                // read and serialize the altered settings object,
+                var data = connection.read(path);
+                if (data != null)
                 {
-                    // then index the object,
-                    var settings = new SettingsObject(object, type, instance);
-                    index(settings);
-
-                    // propagate the change,
-                    var update = propagateChangesTo();
-                    if (update != null)
+                    var object = onDeserialize(data, type);
+                    if (object != null)
                     {
-                        update.index(settings);
-                    }
+                        // then index the object,
+                        var settings = new SettingsObject(object, type, instance);
+                        index(settings);
 
-                    // and tell the subclass we updated.
-                    onSettingsUpdated(unflatten(path), settings);
-                    connection.watch(path);
-                    return settings;
-                }
-                else
-                {
-                    warning("Could not deserialize: $", new String(data));
+                        // propagate the change,
+                        var update = propagateChangesTo();
+                        if (update != null)
+                        {
+                            update.index(settings);
+                        }
+
+                        // and tell the subclass we updated.
+                        onSettingsUpdated(unflatten(path), settings);
+                        connection.watch(path);
+                        return settings;
+                    }
+                    else
+                    {
+                        warning("Could not deserialize: $", new String(data));
+                    }
                 }
             }
-        }
-        catch (Exception e)
-        {
-            problem(e, "Could not update: $", path);
+            catch (Exception e)
+            {
+                problem(e, "Could not update: $", path);
+            }
         }
 
         return null;
@@ -513,7 +517,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
             }
         }
 
-        return fail("Cannot get type from path: $", path);
+        return null;
     }
 
     /**

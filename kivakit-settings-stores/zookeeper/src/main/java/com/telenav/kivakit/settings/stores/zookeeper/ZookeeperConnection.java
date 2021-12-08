@@ -111,7 +111,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         }
         catch (Exception e)
         {
-            problem("Unable to get children of: $", path);
+            problem(e, "Unable to get children of: $", path);
         }
 
         return children;

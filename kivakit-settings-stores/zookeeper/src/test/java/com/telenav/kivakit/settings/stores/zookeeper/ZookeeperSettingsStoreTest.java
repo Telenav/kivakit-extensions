@@ -9,6 +9,7 @@ import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludePro
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.test.UnitTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
@@ -16,7 +17,7 @@ import static org.apache.zookeeper.CreateMode.PERSISTENT;
 /**
  * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default
  */
-//@Ignore
+@Ignore
 public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMixin
 {
     public static class Settings
