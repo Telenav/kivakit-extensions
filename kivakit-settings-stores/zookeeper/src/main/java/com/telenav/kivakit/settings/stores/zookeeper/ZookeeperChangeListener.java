@@ -10,6 +10,15 @@ import com.telenav.kivakit.kernel.language.paths.StringPath;
 public interface ZookeeperChangeListener
 {
     /**
+     * Called when the children of a Zookeeper node have changed
+     *
+     * @param path The path to the node
+     */
+    default void onNodeChildrenChanged(StringPath path)
+    {
+    }
+
+    /**
      * Called when a Zookeeper node is created
      *
      * @param path The path to the node

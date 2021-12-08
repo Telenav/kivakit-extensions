@@ -5,8 +5,10 @@ import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
+import com.telenav.kivakit.kernel.language.strings.Strip;
 import com.telenav.kivakit.kernel.language.threading.conditions.StateMachine;
 import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
 import org.apache.zookeeper.CreateMode;
@@ -15,8 +17,11 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.ACL;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNull;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
@@ -51,7 +56,6 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /** State of this settings store */
     private enum State
     {
-        CONNECTING,
         CONNECTED,
         DISCONNECTED
     }
@@ -61,15 +65,15 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      */
     public static class Settings
     {
-        /** Comma separated ports to use when connecting to Zookeeper */
+        /** Comma separated list of ports to use when connecting to Zookeeper */
         @KivaKitPropertyConverter(Port.Converter.class)
         String ports;
 
-        /** THe maximum timeout when connecting to Zookeeper */
+        /** The maximum timeout when connecting to Zookeeper */
         @KivaKitPropertyConverter(Duration.Converter.class)
         Duration timeout;
 
-        /** The CreateMode for data in Zookeeper */
+        /** The default kind of data accessed by this Zookeeper connection (ephemeral or persistent) */
         @KivaKitPropertyConverter(CreateModeConverter.class)
         CreateMode defaultCreateMode = PERSISTENT;
     }
@@ -77,11 +81,14 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /** Any connected zookeeper instance */
     private transient ZooKeeper zookeeper;
 
-    /** Latch that holds back callers until Zookeeper is ready */
-    private final StateMachine<State> state = new StateMachine<>(State.CONNECTING);
+    /** Connection state */
+    private final StateMachine<State> state = new StateMachine<>(State.DISCONNECTED);
 
     /** Listener to call as Zookeeper reports changes */
     private ZookeeperChangeListener listener;
+
+    /** Active watchers */
+    private final Map<StringPath, Watcher> watchers = new HashMap<>();
 
     /**
      * Sets the change listener to call as the store changes
@@ -94,7 +101,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * @return The child nodes of the given node path
+     * @return The names of the child nodes of the node at the given path
      */
     public StringList children(StringPath path)
     {
@@ -114,11 +121,13 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             problem(e, "Unable to get children of: $", path);
         }
 
+        trace("Found $ children: $", children.count(), path);
+
         return children;
     }
 
     /**
-     * Creates the given node path using the given {@link ACL}s and {@link CreateMode}
+     * Recursively creates the given node path using the given {@link ACL}s and {@link CreateMode}
      *
      * @return True if the node path was created
      */
@@ -130,7 +139,6 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         {
             // create the parent first,
             create(parent, acl, mode);
-            watch(parent, this);
         }
 
         try
@@ -138,13 +146,13 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             // then create the node at the given path.
             if (zookeeper().create(path.join(), new byte[0], acl, mode) != null)
             {
-                watch(path);
+                trace("Created: $", path);
                 return true;
             }
         }
         catch (NodeExistsException ignored)
         {
-            watch(path);
+            trace("Node already exists: $", path);
             return true;
         }
         catch (Exception e)
@@ -156,6 +164,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         return false;
     }
 
+    /**
+     * @return The default create mode for this connection
+     */
     public CreateMode defaultCreateMode()
     {
         return settings().defaultCreateMode;
@@ -169,6 +180,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         try
         {
             zookeeper().delete(path.join(), -1);
+            trace("Deleted: $", path);
             return true;
         }
         catch (Exception e)
@@ -179,24 +191,82 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * Handle Zookeeper events. If the event is SyncConnected or Disconnected, the state of the connection is updated,
-     * otherwise {@link #onEvent(WatchedEvent)} is called to dispatch the event to any {@link ZookeeperChangeListener}.
+     * @return True if the given node path exists
+     */
+    public boolean exists(StringPath path)
+    {
+        try
+        {
+            var exists = zookeeper().exists(path.join(), watchers.get(path)) != null;
+            trace((exists ? "Exists: " : "Does not exist: ") + path);
+            return exists;
+        }
+        catch (Exception e)
+        {
+            problem(e, "Could not determine existence: $", path);
+            return false;
+        }
+    }
+
+    /**
+     * Handle Zookeeper events. If the event is of type None and the state is SyncConnected or Disconnected, the state
+     * of the connection is updated, otherwise the appropriate method of {@link ZookeeperChangeListener} is called.
      */
     @Override
     public void process(WatchedEvent event)
     {
-        switch (event.getState())
+        trace("Received event: $", event);
+
+        switch (event.getType())
         {
-            case SyncConnected:
-                connected();
-                return;
+            case NodeCreated:
+                if (listener != null)
+                {
+                    var path = path(event);
+                    listener.onNodeCreated(path);
+                    rewatch(path);
+                }
+                break;
 
-            case Disconnected:
-                disconnected();
-                return;
+            case NodeDeleted:
+                if (listener != null)
+                {
+                    var path = path(event);
+                    listener.onNodeDeleted(path);
+                    rewatch(path);
+                }
+                break;
+
+            case NodeDataChanged:
+                if (listener != null)
+                {
+                    var path = path(event);
+                    listener.onNodeDataChanged(path);
+                    rewatch(path);
+                }
+                break;
+
+            case NodeChildrenChanged:
+                if (listener != null)
+                {
+                    var path = path(event);
+                    listener.onNodeChildrenChanged(path);
+                    rewatch(path);
+                }
+                break;
+
+            case None:
+                switch (event.getState())
+                {
+                    case SyncConnected:
+                        connected();
+                        break;
+
+                    case Disconnected:
+                        disconnected();
+                        break;
+                }
         }
-
-        onEvent(event);
     }
 
     /**
@@ -207,7 +277,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         try
         {
             // read and serialize the altered settings object,
-            return zookeeper().getData(path.join(), this, null);
+            var data = zookeeper().getData(path.join(), watchers.get(path), null);
+            trace("Read $: $", Bytes.bytes(data.length), path);
+            return data;
         }
         catch (Exception e)
         {
@@ -217,38 +289,31 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * Watches the given path for changes, which are given to the {@link ZookeeperChangeListener} added with {@link
-     * #addChangeListener(ZookeeperChangeListener)}.
+     * Watches the given path for changes, which will be given to the {@link ZookeeperChangeListener} added with {@link
+     * #addChangeListener(ZookeeperChangeListener)}. If the connection is dropped, the watch will be automatically
+     * re-established when the connection is established again.
      */
     public void watch(StringPath path)
     {
-        watch(path, this);
+        try
+        {
+            if (exists(path))
+            {
+                zookeeper().getData(path.join(), this, null);
+                watchers.put(path, this);
+            }
+        }
+        catch (Exception ignored)
+        {
+        }
     }
 
     /**
-     * Adds a {@link Watcher} for the node at the given path
-     *
-     * @param path The node path
-     * @param watcher The watcher to call when the node changes
+     * @return The active watchers for this connection
      */
-    public void watch(StringPath path, Watcher watcher)
+    public Map<StringPath, Watcher> watchers()
     {
-        try
-        {
-            var stat = zookeeper().exists(path.join(), watcher);
-            if (stat != null)
-            {
-                zookeeper().getData(path.join(), watcher, stat);
-            }
-            else
-            {
-                problem("Could not add watcher for non-existent path: $", path);
-            }
-        }
-        catch (Exception e)
-        {
-            problem(e, "Could not add watcher for: $", path);
-        }
+        return watchers;
     }
 
     /**
@@ -258,8 +323,12 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     {
         try
         {
-            // read and serialize the altered settings object,
-            return zookeeper().setData(path.join(), data, -1) != null;
+            var success = zookeeper().setData(path.join(), data, -1) != null;
+            if (success)
+            {
+                trace("Wrote $: $", Bytes.bytes(data.length), path);
+            }
+            return success;
         }
         catch (Exception e)
         {
@@ -269,7 +338,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * @return The connected Zookeeper instance for these settings
+     * @return The Zookeeper instance for this connection
      */
     public ZooKeeper zookeeper()
     {
@@ -293,40 +362,21 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * Dispatches Zookeeper events to {@link ZookeeperChangeListener}
-     */
-    protected void onEvent(WatchedEvent event)
-    {
-        if (listener != null)
-        {
-            var path = StringPath.stringPath(event.getPath()).withRoot("/");
-
-            switch (event.getType())
-            {
-                case NodeCreated:
-                    listener.onNodeCreated(path);
-                    break;
-
-                case NodeDeleted:
-                    listener.onNodeDeleted(path);
-                    break;
-
-                case NodeDataChanged:
-                    listener.onNodeDataChanged(path);
-                    break;
-            }
-
-            // The watcher is removed when this method is called, so add the watcher back
-            watch(path, this);
-        }
-    }
-
-    /**
      * Called when the connection becomes connected
      */
     private void connected()
     {
-        state.transitionTo(State.CONNECTED);
+        if (state.transition(State.DISCONNECTED, State.CONNECTED))
+        {
+            trace("Connected");
+
+            // If we are reconnecting after a connection failure, go through each watched path,
+            for (var path : watchers.keySet())
+            {
+                // and add it back
+                rewatch(path);
+            }
+        }
     }
 
     /**
@@ -334,11 +384,39 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      */
     private void disconnected()
     {
-        IO.close(zookeeper);
-        zookeeper = null;
-        state.transitionTo(State.DISCONNECTED);
+        if (state.transition(State.CONNECTED, State.DISCONNECTED))
+        {
+            IO.close(zookeeper);
+            zookeeper = null;
+            trace("Disconnected");
+        }
     }
 
+    /**
+     * @return A StringPath for the given event path
+     */
+    @Nullable
+    private StringPath path(final WatchedEvent event)
+    {
+        return StringPath.stringPath(Strip.leading(event.getPath(), "/")).withRoot("/");
+    }
+
+    /**
+     * Re-establishes any watch for the given path
+     */
+    private void rewatch(StringPath path)
+    {
+        // If there is a watcher of this path,
+        if (watchers.containsKey(path))
+        {
+            // add it back
+            watch(path);
+        }
+    }
+
+    /**
+     * @return The settings for this connection
+     */
     private Settings settings()
     {
         return require(Settings.class);

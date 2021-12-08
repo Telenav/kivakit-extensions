@@ -99,7 +99,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     private CreateMode createMode;
 
     /** Connection to Zookeeper */
-    private final ZookeeperConnection connection = new ZookeeperConnection();
+    private final ZookeeperConnection connection = listenTo(new ZookeeperConnection());
 
     /**
      * Creates a settings store with the given explicit {@link CreateMode}. This overrides any setting in {@link
@@ -131,6 +131,17 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     /**
+     * Reload the settings store if children changed
+     *
+     * @param path The path to the node
+     */
+    @Override
+    public void onNodeChildrenChanged(final StringPath path)
+    {
+        load();
+    }
+
+    /**
      * <p>
      * Called when a node is created or its data changes.
      *
@@ -140,6 +151,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     public final void onNodeDataChanged(StringPath path)
     {
         readSettings(path);
+        trace("Settings changed: $", path);
     }
 
     /**
@@ -169,6 +181,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
             // and notify the subclass of the deletion.
             onSettingsDeleted(unflatten(path), settings);
+            trace("Settings deleted: $", path);
         }
         else
         {
@@ -218,16 +231,24 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                 // and if the child has data for this settings store,
                 if (child.startsWith(storePrefix))
                 {
-                    // then read and add the settings
+                    // then read and add the settings,
                     var path = StringPath.stringPath(child).withRoot("/");
                     settings.addIfNotNull(readSettings(path));
+
+                    // and watch the path for changes
+                    connection.watch(path);
                 }
             }
+
+            // Watch the root node for changes
+            connection.watch(root());
         }
         else
         {
             settings.addAll(loadRecursively(StringPath.stringPath("PERSISTENT").withRoot("/")));
         }
+
+        showWatchers();
 
         return settings;
     }
@@ -242,15 +263,14 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
         try
         {
-            // Create the node if necessary,
-            create(path);
-
-            // serialize the object,
+            // Serialize the object,
             var data = onSerialize(settings.object());
 
-            // and write the serialized data to Zookeeper.
-            connection.write(path, data);
+            // and write the serialized data to Zookeeper, triggering an update notification.
+            connection.create(path, OPEN_ACL_UNSAFE, createMode());
             connection.watch(path);
+            connection.write(path, data);
+
             return true;
         }
         catch (Exception e)
@@ -302,16 +322,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
             return StringPath.stringPath(StringPath.stringPath(StringList.split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath());
         }
         return path;
-    }
-
-    /**
-     * @return True if the given Zookeeper path was created
-     */
-    private boolean create(StringPath path)
-    {
-        var created = connection.create(path, OPEN_ACL_UNSAFE, createMode());
-        connection.watch(path);
-        return created;
     }
 
     /**
@@ -368,17 +378,17 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         if (path.size() > 1)
         {
             settings.addIfNotNull(readSettings(path));
-            connection.watch(path);
         }
 
         // Go through each child node of the given path
         for (var child : connection.children(path))
         {
             // and add the settings of that child
-            var childPath = path.withChild(child);
-            settings.addAll(loadRecursively(childPath));
-            connection.watch(childPath);
+            settings.addAll(loadRecursively(path.withChild(child)));
         }
+
+        // Watch this path for changes
+        connection.watch(path);
 
         return settings;
     }
@@ -471,7 +481,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
                         // and tell the subclass we updated.
                         onSettingsUpdated(unflatten(path), settings);
-                        connection.watch(path);
                         return settings;
                     }
                     else
@@ -510,14 +519,24 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
         if (path.size() >= 2)
         {
             var typeName = path.get(path.size() - 2);
-            var type = Classes.forName(typeName);
-            if (type != null)
-            {
-                return type;
-            }
+            return Classes.forName(typeName);
         }
 
         return null;
+    }
+
+    /**
+     * Shows the watchers for this zookeeper settings store
+     */
+    private void showWatchers()
+    {
+        var list = new StringList();
+        for (var at : connection.watchers().keySet())
+        {
+            list.add(unflatten(at).asContraction(100));
+        }
+
+        information(list.titledBox("Watches"));
     }
 
     /**
