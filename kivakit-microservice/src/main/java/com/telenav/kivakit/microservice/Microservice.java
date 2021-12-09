@@ -127,8 +127,23 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     {
  *         return new MyWebApplication(this);
  *     }
- * }
- * </pre>
+ * }</pre>
+ *
+ * <p><b>Cluster Membership</b></p>
+ *
+ * <p>
+ * When a microservice starts up, it automatically joins a cluster of similar microservices. The {@link MicroserviceCluster}
+ * retrieved with the {@link #cluster()} method models the cluster and is organized through Apache Zookeeper. When members
+ * join and leave the cluster the {@link #onJoin(MicroserviceClusterMember)} and {@link #onLeave(MicroserviceClusterMember)}
+ * methods will be called. The set of members of the cluster can be retrieved with {@link MicroserviceCluster#members()}.
+ * </p>
+ *
+ * <p><b>Cluster Elections</b></p>
+ *
+ * <p>
+ * Any time a member joins or leaves, an election is held by the {@link MicroserviceCluster}. If
+ * this microservice is the elected leader of the cluster, the {@link #isLeader()} method will return true.
+ * </p>
  *
  * @author jonathanl (shibo)
  * @see Deployment
@@ -138,6 +153,8 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see MicroserviceSettings
  * @see MicroserviceRestService
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
+ * @see MicroserviceCluster
+ * @see MicroserviceClusterMember
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice<Member> extends Application implements GsonFactorySource, Startable, Stoppable

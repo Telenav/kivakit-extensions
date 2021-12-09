@@ -6,26 +6,43 @@ import com.telenav.kivakit.network.core.Host;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Represents a member of a {@link MicroserviceCluster} with associated user data
+ * Represents a member of a {@link MicroserviceCluster} with associated user data.
  *
+ * <p><b>Properties</b></p>
+ *
+ * <ul>
+ *     <li>{@link #host()} - The host where this member is running</li>
+ *     <li>{@link #processIdentifier()} - The process on the {@link #host()} where this member is running</li>
+ *     <li>{@link #data()} - The user data for this member</li>
+ *     <li>{@link #isThis()} - True if this member object is the one running in this process (on this host)</li>
+ * </ul>
+ *
+ * <p><b>Leader Elections</b></p>
+ *
+ * <p>
+ * When the {@link MicroserviceCluster} for this member loses a member or is joined by a new member, an election takes
+ * place to select a "leader". If this member is elected, {@link #elect(boolean)} will be called with <i>true</i>,
+ * and the {@link #isLeader()} method will return true. See {@link MicroserviceCluster} for details on elections.
+ * </p>
+ *
+ * @param <Data> The type of user data for this member
  * @author jonathanl (shibo)
+ * @see Host
+ * @see MicroserviceCluster
  */
 public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceClusterMember<Data>>
 {
-    /** This cluster member */
-    private static final MicroserviceClusterMember<Object> THIS_CLUSTER_MEMBER = new MicroserviceClusterMember<>(null);
-
     /** User-defined data */
     private final Data data;
 
     /** The host that the cluster member is running on */
     private final Host host;
 
-    /** Process number */
-    private final int processIdentifier;
-
     /** True if this member is the cluster leader */
     private boolean isLeader;
+
+    /** Process number */
+    private final int processIdentifier;
 
     /** The sequence number of this member, designating the order in which it joined the cluster */
     private final int sequenceNumber;
@@ -52,11 +69,19 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
         return identifier().compareTo(that.identifier());
     }
 
+    /**
+     * @return The user data associated with this cluster member
+     */
     public Data data()
     {
         return data;
     }
 
+    /**
+     * Chooses this member as the cluster leader if elected is true
+     *
+     * @param elected True to elect this member, false otherwise
+     */
     public void elect(final boolean elected)
     {
         this.isLeader = elected;
@@ -67,8 +92,9 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     {
         if (object instanceof MicroserviceClusterMember)
         {
-            MicroserviceClusterMember<?> that = (MicroserviceClusterMember<?>) object;
-            return host.dnsName().equals(that.host.dnsName()) && processIdentifier == that.processIdentifier;
+            var that = (MicroserviceClusterMember<?>) object;
+            return host.dnsName().equals(that.host.dnsName())
+                    && processIdentifier == that.processIdentifier;
         }
         return false;
     }
@@ -85,6 +111,12 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     public Host host()
     {
         return host;
+    }
+
+    @NotNull
+    public String identifier()
+    {
+        return host.dnsName() + "#" + processIdentifier();
     }
 
     /**
@@ -115,12 +147,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     @Override
     public String toString()
     {
-        return identifier() + (equals(THIS_CLUSTER_MEMBER) ? " [this]" : "");
-    }
-
-    @NotNull
-    private String identifier()
-    {
-        return host.dnsName() + "#" + processIdentifier() + "#" + sequenceNumber;
+        var thisMember = new MicroserviceClusterMember<>(null);
+        return identifier() + "#" + sequenceNumber + (equals(thisMember) ? " [this]" : "");
     }
 }

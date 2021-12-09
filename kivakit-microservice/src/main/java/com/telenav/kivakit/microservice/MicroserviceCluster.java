@@ -19,7 +19,8 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 /**
  * <p>
  * Manages members of a cluster by storing {@link MicroserviceClusterMember} objects with associated user data in an
- * ephemeral Apache Zookeeper store. As members join and leave the cluster, the subclass is notified.
+ * ephemeral, sequential Apache Zookeeper store. As members join and leave the cluster, the subclass is notified and
+ * leader elections take place.
  * </p>
  *
  * <p><b>Starting Up</b></p>
@@ -27,19 +28,33 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
  * <p>
  * To join this cluster, call {@link #join(MicroserviceClusterMember)}, passing in the user-defined data you wish to
  * associate with your {@link MicroserviceClusterMember}. A member should call this method to join the cluster in {@link
- * Microservice#onRun()}. The {@link #members()} method yields the members of this cluster.
+ * Microservice#onRun()}.
  * </p>
  *
  * <p><b>As Members Join and Leave</b></p>
  *
  * <p>
- * When member objects are added to Zookeeper, a new member is joining the cluster and {@link
+ * When member objects are added to Zookeeper, this indicates that a new member is joining the cluster, and {@link
  * #onJoin(MicroserviceClusterMember)} will be called. When member objects are removed from Zookeeper, a member is
- * leaving the cluster and {@link #onLeave(MicroserviceClusterMember)} will be called.
+ * leaving the cluster and {@link #onLeave(MicroserviceClusterMember)} will be called. The {@link #members()} method
+ * yields the members of this cluster.
  * </p>
+ *
+ * <p><b>Leader Elections</b></p>
+ *
+ * <p>
+ * At any given time, this cluster has an elected leader. The leader is determined by the sort order of {@link
+ * MicroserviceClusterMember}s according to the {@link Comparable} interface implementation. The comparison is
+ * implemented by comparing the identifiers returned by {@link MicroserviceClusterMember#identifier()}. Each identifier
+ * is composed of the DNS name of the member and the process identifier of the member (multiple members can run on a
+ * single host). For example:
+ * </p>
+ *
+ * <pre>Jonathans-iMac.local#83874</pre>
  *
  * @param <Member> The type of member information to store for each cluster member
  * @author jonathanl (shibo)
+ * @see MicroserviceClusterMember
  */
 public class MicroserviceCluster<Member> extends BaseComponent
 {
@@ -87,13 +102,11 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public void join(MicroserviceClusterMember<Member> member)
     {
-        // Call onJoin() for each member that's already in the cluster we joined,
+        // For each member that's already in the cluster,
         for (var at : members())
         {
-            if (!at.equals(member))
-            {
-                onJoin(at);
-            }
+            // notify the subclass that the member has joined,
+            onJoin(at);
         }
 
         // then add ourselves as a member.
@@ -196,6 +209,4 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
         return store.get();
     }
-
-
 }
