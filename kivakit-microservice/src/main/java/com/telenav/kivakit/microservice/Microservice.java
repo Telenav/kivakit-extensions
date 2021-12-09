@@ -143,20 +143,20 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 public abstract class Microservice<Member> extends Application implements GsonFactorySource, Startable, Stoppable
 {
     /**
-     * Command line switch for what port to run any REST service on. This will override any value from {@link
-     * MicroserviceSettings} that is loaded from a {@link Deployment}.
-     */
-    private final SwitchParser<Integer> PORT =
-            integerSwitchParser(this, "port", "The port to use")
-                    .optional()
-                    .build();
-
-    /**
      * Command line switch for what port to run any GRPC service on. This will override any value from {@link
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> GRPC_PORT =
             integerSwitchParser(this, "grpc-port", "The port to use")
+                    .optional()
+                    .build();
+
+    /**
+     * Command line switch for what port to run any REST service on. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     */
+    private final SwitchParser<Integer> PORT =
+            integerSwitchParser(this, "port", "The port to use")
                     .optional()
                     .build();
 
@@ -168,19 +168,19 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                     .optional()
                     .build();
 
+    private MicroserviceCluster<Member> cluster;
+
+    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
+
+    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
+
     /** True if this microservice is running */
     private boolean running;
 
     /** Jetty web server */
     private JettyServer server;
 
-    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
-
     private final Lazy<WebApplication> webApplication = Lazy.of(this::onCreateWebApplication);
-
-    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
-
-    private MicroserviceCluster<Member> cluster;
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -219,6 +219,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     public GsonFactory gsonFactory()
     {
         return new DefaultGsonFactory(this);
+    }
+
+    /**
+     * @return True if this microservice is the leader of the cluster
+     */
+    public boolean isLeader()
+    {
+        return cluster.thisMember().isLeader();
     }
 
     /**

@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNull;
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
 
 /**
@@ -110,7 +109,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         try
         {
             // Go through child paths of the given path,
-            for (var at : zookeeper().getChildren(path.join(), this))
+            for (var at : zookeeper().getChildren(path.join(), true))
             {
                 // and if the path is for this settings store,
                 children.append(at);
@@ -129,9 +128,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /**
      * Recursively creates the given node path using the given {@link ACL}s and {@link CreateMode}
      *
-     * @return True if the node path was created
+     * @return The path that was created, or null if no path could be created
      */
-    public boolean create(StringPath path, List<ACL> acl, CreateMode mode)
+    public StringPath create(StringPath path, List<ACL> acl, CreateMode mode)
     {
         // If there is a parent node,
         var parent = path.parent();
@@ -144,16 +143,17 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         try
         {
             // then create the node at the given path.
-            if (zookeeper().create(path.join(), new byte[0], acl, mode) != null)
+            var newPath = zookeeper().create(path.join(), new byte[0], acl, mode);
+            if (newPath != null)
             {
-                trace("Created: $", path);
-                return true;
+                trace("Created: $", newPath);
+                return StringPath.parseStringPath(this, newPath, "/", "/");
             }
         }
         catch (NodeExistsException ignored)
         {
             trace("Node already exists: $", path);
-            return true;
+            return path;
         }
         catch (Exception e)
         {
@@ -161,7 +161,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         }
 
         problem("Could not create $", path);
-        return false;
+        return null;
     }
 
     /**
@@ -197,8 +197,8 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     {
         try
         {
-            var exists = zookeeper().exists(path.join(), watchers.get(path)) != null;
-            trace((exists ? "Exists: " : "Does not exist: ") + path);
+            var exists = zookeeper().exists(path.join(), true) != null;
+            trace((exists ? "Node exists: " : "Node does not exist: ") + path);
             return exists;
         }
         catch (Exception e)
@@ -223,8 +223,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
                 if (listener != null)
                 {
                     var path = path(event);
+                    trace("Node created: $", path);
                     listener.onNodeCreated(path);
-                    rewatch(path);
+                    watch(path);
                 }
                 break;
 
@@ -232,8 +233,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
                 if (listener != null)
                 {
                     var path = path(event);
+                    trace("Node deleted: $", path);
                     listener.onNodeDeleted(path);
-                    rewatch(path);
+                    watch(path);
                 }
                 break;
 
@@ -241,8 +243,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
                 if (listener != null)
                 {
                     var path = path(event);
+                    trace("Node data changed: $", path);
                     listener.onNodeDataChanged(path);
-                    rewatch(path);
+                    watch(path);
                 }
                 break;
 
@@ -250,8 +253,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
                 if (listener != null)
                 {
                     var path = path(event);
+                    trace("Node children changed: $", path);
                     listener.onNodeChildrenChanged(path);
-                    rewatch(path);
+                    watch(path);
                 }
                 break;
 
@@ -277,8 +281,8 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         try
         {
             // read and serialize the altered settings object,
-            var data = zookeeper().getData(path.join(), watchers.get(path), null);
-            trace("Read $: $", Bytes.bytes(data.length), path);
+            var data = zookeeper().getData(path.join(), true, null);
+            trace("Read $: $", Bytes.bytes(data), path);
             return data;
         }
         catch (Exception e)
@@ -297,11 +301,8 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     {
         try
         {
-            if (exists(path))
-            {
-                zookeeper().getData(path.join(), this, null);
-                watchers.put(path, this);
-            }
+            zookeeper().getData(path.join(), true, null);
+            watchers.put(path, this);
         }
         catch (Exception ignored)
         {
@@ -326,13 +327,13 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             var success = zookeeper().setData(path.join(), data, -1) != null;
             if (success)
             {
-                trace("Wrote $: $", Bytes.bytes(data.length), path);
+                trace("Wrote $: $", Bytes.bytes(data), path);
             }
             return success;
         }
         catch (Exception e)
         {
-            problem(e, "Could not get data for: $", path);
+            problem(e, "Could not write $ to: $", Bytes.bytes(data), path);
             return false;
         }
     }
@@ -348,14 +349,13 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             {
                 zookeeper = new ZooKeeper(settings().ports, (int) settings().timeout.asMilliseconds(), this);
                 state.waitFor(State.CONNECTED);
-                break;
+                return zookeeper;
             }
             catch (Exception e)
             {
-                fail(e, "Unable to connect to zookeeper: $", settings().ports);
+                warning(e, "Unable to connect to zookeeper: $", settings().ports);
+                Duration.seconds(5).sleep();
             }
-
-            Duration.seconds(5).sleep();
         }
 
         return zookeeper;
@@ -374,7 +374,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             for (var path : watchers.keySet())
             {
                 // and add it back
-                rewatch(path);
+                watch(path);
             }
         }
     }
@@ -399,19 +399,6 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     private StringPath path(final WatchedEvent event)
     {
         return StringPath.stringPath(Strip.leading(event.getPath(), "/")).withRoot("/");
-    }
-
-    /**
-     * Re-establishes any watch for the given path
-     */
-    private void rewatch(StringPath path)
-    {
-        // If there is a watcher of this path,
-        if (watchers.containsKey(path))
-        {
-            // add it back
-            watch(path);
-        }
     }
 
     /**

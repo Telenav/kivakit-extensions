@@ -4,17 +4,17 @@ import com.telenav.kivakit.collections.set.IdentitySet;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.kernel.language.primitives.Ints;
+import com.telenav.kivakit.kernel.language.threading.status.ReentrancyTracker;
 import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
-
-import static org.apache.zookeeper.CreateMode.EPHEMERAL;
+import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
  * <p>
@@ -43,8 +43,11 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL;
  */
 public class MicroserviceCluster<Member> extends BaseComponent
 {
+    /** Tracks reentrancy to the onSettingsUpdated method to ensure that it is not called recursively */
+    private final ReentrancyTracker reentrancy = new ReentrancyTracker();
+
     /** Store for ephemeral cluster Member objects in Zookeeper */
-    private final Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL)
+    private final Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL)
     {
         @Override
         protected void onSettingsDeleted(StringPath path, SettingsObject settings)
@@ -52,14 +55,28 @@ public class MicroserviceCluster<Member> extends BaseComponent
             var member = member(path, settings);
             announce("Leaving cluster: $", member);
             onLeave(member);
+            unindex(settings);
+            electLeader();
         }
 
         @Override
         protected void onSettingsUpdated(StringPath path, SettingsObject settings)
         {
-            var member = member(path, settings);
-            announce("Joining cluster: $", member);
-            onJoin(member);
+            try
+            {
+                if (!reentrancy.enter())
+                {
+                    var member = member(path, settings);
+                    index(settings);
+                    announce("Joining cluster: $", member);
+                    onJoin(member);
+                    electLeader();
+                }
+            }
+            finally
+            {
+                reentrancy.exit();
+            }
         }
     }));
 
@@ -80,7 +97,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
         }
 
         // then add ourselves as a member.
-        store().save(memberSettings(member, instanceIdentifier()));
+        store().save(new SettingsObject(member.data(), instanceIdentifier()));
     }
 
     /**
@@ -88,13 +105,13 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public void leave()
     {
-        store().delete(memberSettings(new MicroserviceClusterMember<>(null), instanceIdentifier()));
+        store().delete(new SettingsObject(new MicroserviceClusterMember<Member>(null).data(), instanceIdentifier()));
     }
 
     /**
-     * @return The members of this cluster
+     * @return The members of this cluster at the time this method is called
      */
-    public Set<MicroserviceClusterMember<Member>> members()
+    public ObjectList<MicroserviceClusterMember<Member>> members()
     {
         var members = new IdentitySet<MicroserviceClusterMember<Member>>();
 
@@ -103,7 +120,23 @@ public class MicroserviceCluster<Member> extends BaseComponent
             members.add(new MicroserviceClusterMember<>(at.object()));
         }
 
-        return members;
+        return ObjectList.objectList(members);
+    }
+
+    /**
+     * @return The member for this process and host
+     */
+    public MicroserviceClusterMember<Member> thisMember()
+    {
+        for (var member : members())
+        {
+            if (member.isThis())
+            {
+                return member;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -120,10 +153,30 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
     }
 
+    /**
+     * Choose which member is the leader and set isElected accordingly
+     */
+    private void electLeader()
+    {
+        var members = members().sorted();
+        var first = members.first();
+
+        var elected = true;
+        for (var member : members)
+        {
+            member.elect(elected);
+            if (elected)
+            {
+                announce("Elected as leader: $", first);
+            }
+            elected = false;
+        }
+    }
+
     @NotNull
     private InstanceIdentifier instanceIdentifier()
     {
-        return InstanceIdentifier.of(Host.local().dnsName() + "#" + OperatingSystem.get().processIdentifier());
+        return InstanceIdentifier.of(Host.local().dnsName() + "#" + OperatingSystem.get().processIdentifier() + "#");
     }
 
     @NotNull
@@ -135,17 +188,14 @@ public class MicroserviceCluster<Member> extends BaseComponent
         return new MicroserviceClusterMember<>(
                 Host.parse(this, parts[0]),
                 Ints.parse(this, parts[1]),
+                Ints.parse(this, parts[2]),
                 settings.object());
-    }
-
-    @NotNull
-    private SettingsObject memberSettings(MicroserviceClusterMember<Member> member, InstanceIdentifier instance)
-    {
-        return new SettingsObject(member.data(), instance);
     }
 
     private ZookeeperSettingsStore store()
     {
         return store.get();
     }
+
+
 }

@@ -139,6 +139,16 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     public void onNodeChildrenChanged(final StringPath path)
     {
         load();
+
+        connection.watch(root());
+    }
+
+    @Override
+    public void onNodeCreated(final StringPath path)
+    {
+        load();
+
+        connection.watch(root());
     }
 
     /**
@@ -151,6 +161,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     public final void onNodeDataChanged(StringPath path)
     {
         readSettings(path);
+
+        connection.watch(root());
+
         trace("Settings changed: $", path);
     }
 
@@ -239,14 +252,13 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                     connection.watch(path);
                 }
             }
-
-            // Watch the root node for changes
-            connection.watch(root());
         }
         else
         {
             settings.addAll(loadRecursively(StringPath.stringPath("PERSISTENT").withRoot("/")));
         }
+
+        connection.watch(root());
 
         showWatchers();
 
@@ -267,9 +279,11 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
             var data = onSerialize(settings.object());
 
             // and write the serialized data to Zookeeper, triggering an update notification.
-            connection.create(path, OPEN_ACL_UNSAFE, createMode());
-            connection.watch(path);
-            connection.write(path, data);
+            var created = connection.create(path, OPEN_ACL_UNSAFE, createMode());
+
+            connection.watch(created);
+            connection.write(created, data);
+            connection.watch(created);
 
             return true;
         }
@@ -361,7 +375,8 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      */
     private boolean isEphemeral()
     {
-        return createMode() == CreateMode.EPHEMERAL;
+        return createMode() == CreateMode.EPHEMERAL
+                || createMode() == CreateMode.EPHEMERAL_SEQUENTIAL;
     }
 
     /**
@@ -481,6 +496,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
 
                         // and tell the subclass we updated.
                         onSettingsUpdated(unflatten(path), settings);
+                        connection.watch(path);
                         return settings;
                     }
                     else
@@ -530,13 +546,16 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      */
     private void showWatchers()
     {
-        var list = new StringList();
-        for (var at : connection.watchers().keySet())
+        if (isDebugOn())
         {
-            list.add(unflatten(at).asContraction(100));
-        }
+            var list = new StringList();
+            for (var at : connection.watchers().keySet())
+            {
+                list.add(unflatten(at).asContraction(100));
+            }
 
-        information(list.titledBox("Watches"));
+            trace(list.titledBox("Watches"));
+        }
     }
 
     /**
