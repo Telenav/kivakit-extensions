@@ -60,6 +60,15 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
+     * Functional interface to {@link ZookeeperChangeListener} methods
+     */
+    @FunctionalInterface
+    interface ListenerMethod
+    {
+        void on(StringPath path);
+    }
+
+    /**
      * Settings for this Zookeeper connection
      */
     public static class Settings
@@ -72,22 +81,22 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         @KivaKitPropertyConverter(Duration.Converter.class)
         Duration timeout;
 
-        /** The default kind of data accessed by this Zookeeper connection (ephemeral or persistent) */
+        /** The default kind of data accessed by this Zookeeper connection (see {@link CreateMode}) */
         @KivaKitPropertyConverter(CreateModeConverter.class)
-        CreateMode defaultCreateMode = PERSISTENT;
+        CreateMode createMode = PERSISTENT;
     }
-
-    /** Any connected zookeeper instance */
-    private transient ZooKeeper zookeeper;
-
-    /** Connection state */
-    private final StateMachine<State> state = new StateMachine<>(State.DISCONNECTED);
 
     /** Listener to call as Zookeeper reports changes */
     private ZookeeperChangeListener listener;
 
+    /** Connection state */
+    private final StateMachine<State> state = new StateMachine<>(State.DISCONNECTED);
+
     /** Active watchers */
     private final Map<StringPath, Watcher> watchers = new HashMap<>();
+
+    /** Any connected zookeeper instance */
+    private transient ZooKeeper zookeeper;
 
     /**
      * Sets the change listener to call as the store changes
@@ -169,7 +178,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      */
     public CreateMode defaultCreateMode()
     {
-        return settings().defaultCreateMode;
+        return settings().createMode;
     }
 
     /**
@@ -209,8 +218,12 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
+     * <b>Zookeeper API</b>
+     *
+     * <p>
      * Handle Zookeeper events. If the event is of type None and the state is SyncConnected or Disconnected, the state
      * of the connection is updated, otherwise the appropriate method of {@link ZookeeperChangeListener} is called.
+     * </p>
      */
     @Override
     public void process(WatchedEvent event)
@@ -220,43 +233,19 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         switch (event.getType())
         {
             case NodeCreated:
-                if (listener != null)
-                {
-                    var path = path(event);
-                    trace("Node created: $", path);
-                    listener.onNodeCreated(path);
-                    watch(path);
-                }
+                invokeListenerMethod(event, listener::onNodeCreated);
                 break;
 
             case NodeDeleted:
-                if (listener != null)
-                {
-                    var path = path(event);
-                    trace("Node deleted: $", path);
-                    listener.onNodeDeleted(path);
-                    watch(path);
-                }
+                invokeListenerMethod(event, listener::onNodeDeleted);
                 break;
 
             case NodeDataChanged:
-                if (listener != null)
-                {
-                    var path = path(event);
-                    trace("Node data changed: $", path);
-                    listener.onNodeDataChanged(path);
-                    watch(path);
-                }
+                invokeListenerMethod(event, listener::onNodeDataChanged);
                 break;
 
             case NodeChildrenChanged:
-                if (listener != null)
-                {
-                    var path = path(event);
-                    trace("Node children changed: $", path);
-                    listener.onNodeChildrenChanged(path);
-                    watch(path);
-                }
+                invokeListenerMethod(event, listener::onNodeChildrenChanged);
                 break;
 
             case None:
@@ -389,6 +378,17 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
             IO.close(zookeeper);
             zookeeper = null;
             trace("Disconnected");
+        }
+    }
+
+    private void invokeListenerMethod(WatchedEvent event, ListenerMethod method)
+    {
+        if (method != null)
+        {
+            var path = path(event);
+            trace("on$($)", event.getType().name(), path);
+            listener.onNodeCreated(path);
+            watch(path);
         }
     }
 

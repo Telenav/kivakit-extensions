@@ -3,7 +3,6 @@ package com.telenav.kivakit.settings.stores.zookeeper;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.lookup.Registry;
-import com.telenav.kivakit.configuration.lookup.RegistryTrait;
 import com.telenav.kivakit.configuration.settings.BaseSettingsStore;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
 import com.telenav.kivakit.configuration.settings.SettingsStore;
@@ -33,28 +32,69 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects so they can be easily accessed
  * in a clustered environment.
  *
- * <p><b>Creating a Settings Store</b></p>
+ * <p><b>Creating a Zookeeper Settings Store</b></p>
  *
  * <p>
- * A {@link ZookeeperSettingsStore} can be constructed with or without an explicit {@link CreateMode}. If no create mode
- * is specified for the store, {@link ZookeeperConnection#defaultCreateMode()} will be used. The connection to Zookeeper
- * is maintained by a {@link ZookeeperConnection} that is configured with {@link ZookeeperConnection.Settings}. When
- * using the kivakit <i>-deployment</i> switch, the
- * <i>ZookeeperConnection.properties</i> file in the <i>deployments</i> package next to your application should look
- * like this:
+ * A {@link ZookeeperSettingsStore} can be constructed with or without an explicit Zookeeper {@link CreateMode}. The
+ * connection to Zookeeper is maintained by a {@link ZookeeperConnection} that is configured with {@link
+ * ZookeeperConnection.Settings}. If no explicit create mode is specified for the store, the default create mode
+ * specified by {@link ZookeeperConnection.Settings} will be used.
+ * </p>
+ *
+ * <p><b>Configuration</b></p>
+ *
+ * When using the kivakit <i>-deployment</i> switch, the <i>ZookeeperConnection.properties</i> file in the
+ * <i>deployments</i> package next to your application should look similar to this (but will vary depending
+ * on your Zookeeper installation):
  * </p>
  *
  * <pre>
- * class               = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
+ * class   = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
  *
- * ports               = 127.0.0.1:2181,127.0.0.1:2182
- * timeout             = 60s
- * default-create-mode = PERSISTENT</pre>
+ * ports   = 127.0.0.1:2181,127.0.0.1:2182
+ * timeout = 60s
+ * create-mode = PERSISTENT</pre>
  *
  * <p>
  * The comma-separated list of ports (host and port number) is used by the Zookeeper client when connecting to the
  * cluster.
  * </p>
+ *
+ * <p><b>Loading Settings</b></p>
+ *
+ * <p>
+ * ZookeeperSettingsStore extends {@link BaseSettingsStore}, which implements {@link SettingsStore}. So, it can be used
+ * in the same way as other KivaKit settings stores. The settings for an application can be loaded from the Zookeeper
+ * settings store with this line of code:
+ * </p>
+ *
+ * <pre>    registerSettingsIn(listenTo(new ZookeeperSettingsStore()));</pre>
+ *
+ * <p><b>Initializing Settings</b></p>
+ *
+ * <p>
+ * If the desired settings are not available when the {@link ZookeeperSettingsStore} has been loaded, it may be
+ * necessary to save some initial settings (it is also possible to store the JSON in Zookeeper directly). Settings can
+ * be saved to {@link ZookeeperSettingsStore} using the {@link ZookeeperSettingsStore#save(SettingsObject)} method.
+ * The code to load-or-initialize settings looks like:
+ * </p>
+ *
+ * <pre>
+ * // Create the Zookeeper settings store,
+ * var store = listenTo(register(new ZookeeperSettingsStore()));
+ *
+ * // load settings from the store,
+ * registerSettingsIn(store);
+ *
+ * // and if our required settings class is absent,
+ * if (!hasSettings(MySettings.class))
+ * {
+ *     // save a default object to Zookeeper,
+ *     store.save(new MySettings());
+ *
+ *     // and re-load the store.
+ *     registerSettingsIn(store);
+ * }</pre>
  *
  * <p><b>Reacting to Changes</b></p>
  *
@@ -80,8 +120,10 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see SettingsObject
  * @see InstanceIdentifier
  * @see StringPath
+ * @see BaseSettingsStore
+ * @see SettingsStore
  */
-public class ZookeeperSettingsStore extends BaseSettingsStore implements RegistryTrait, ZookeeperChangeListener
+public class ZookeeperSettingsStore extends BaseSettingsStore implements ZookeeperChangeListener
 {
     /**
      * Path separator used when storing ephemeral nodes in Zookeeper.
@@ -95,11 +137,11 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      */
     private static final String EPHEMERAL_NODE_SEPARATOR = "::";
 
-    /** Create mode for settings in this store */
-    private CreateMode createMode;
-
     /** Connection to Zookeeper */
     private final ZookeeperConnection connection = listenTo(new ZookeeperConnection());
+
+    /** Create mode for settings in this store */
+    private CreateMode createMode;
 
     /**
      * Creates a settings store with the given explicit {@link CreateMode}. This overrides any setting in {@link
@@ -136,7 +178,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
      * @param path The path to the node
      */
     @Override
-    public void onNodeChildrenChanged(final StringPath path)
+    public final void onNodeChildrenChanged(final StringPath path)
     {
         load();
 
@@ -144,7 +186,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     @Override
-    public void onNodeCreated(final StringPath path)
+    public final void onNodeCreated(final StringPath path)
     {
         load();
 
@@ -315,7 +357,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
     }
 
     /**
-     * Called when settings objects are updated in Zookeeper
+     * Called when settings objects are initially loaded or updated
      *
      * @param path The path to the settings object in Zookeeper
      * @param settings The settings object
@@ -504,11 +546,19 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Registr
                         warning("Could not deserialize: $", new String(data));
                     }
                 }
+                else
+                {
+                    warning("No data read from: $", path);
+                }
             }
             catch (Exception e)
             {
                 problem(e, "Could not update: $", path);
             }
+        }
+        else
+        {
+            warning("Could not parse class from: $", path);
         }
 
         return null;

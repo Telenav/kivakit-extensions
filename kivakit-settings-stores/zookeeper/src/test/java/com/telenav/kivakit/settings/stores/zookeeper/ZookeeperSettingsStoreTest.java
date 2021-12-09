@@ -41,7 +41,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     public void test()
     {
         // Register zookeeper settings,
-        registerSettingsIn(PackageSettingsStore.of(this, packagePath()));
+        registerSettingsIn(listenTo(PackageSettingsStore.of(this, packagePath())));
 
         // create zookeeper settings store,
         var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT)));
