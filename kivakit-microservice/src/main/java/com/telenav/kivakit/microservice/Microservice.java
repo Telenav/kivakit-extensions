@@ -41,6 +41,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 import java.util.Set;
 
+import static com.telenav.kivakit.commandline.SwitchParser.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
@@ -179,6 +180,15 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      */
     private final SwitchParser<Integer> PORT =
             integerSwitchParser(this, "port", "The port to use")
+                    .optional()
+                    .build();
+
+    /**
+     * Command line switch to run this microservice as a blocking server. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     */
+    private final SwitchParser<Boolean> SERVER =
+            booleanSwitchParser(this, "server", "True to run this microservice as a server")
                     .optional()
                     .build();
 
@@ -348,6 +358,10 @@ public abstract class Microservice<Member> extends Application implements GsonFa
             if (has(GRPC_PORT))
             {
                 settings().grpcPort(get(GRPC_PORT));
+            }
+            if (has(SERVER))
+            {
+                settings().server(get(SERVER));
             }
 
             // create the Jetty server.
@@ -581,6 +595,6 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER);
+        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER);
     }
 }
