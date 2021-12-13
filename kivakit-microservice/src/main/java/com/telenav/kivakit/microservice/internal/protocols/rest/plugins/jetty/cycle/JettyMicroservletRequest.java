@@ -143,6 +143,14 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
     }
 
     /**
+     * @return True if this request has a body that can be read with {@link #readObject(Class)}
+     */
+    public boolean hasBody()
+    {
+        return httpRequest.getContentLength() != 0;
+    }
+
+    /**
      * Retrieves an object from the JSON in the servlet request input stream.
      *
      * @param <T> The object type

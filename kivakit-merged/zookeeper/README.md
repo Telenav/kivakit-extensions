@@ -1,10 +1,9 @@
 [//]: # (start-user-text)
 
 
-
 [//]: # (end-user-text)
 
-# kivakit-protostuff-merged &nbsp;&nbsp; <img src="https://www.kivakit.org/images/bits-32.png" srcset="https://www.kivakit.org/images/bits-32-2x.png 2x"/>
+# kivakit-merged-protostuff &nbsp;&nbsp; <img src="https://www.kivakit.org/images/bits-32.png" srcset="https://www.kivakit.org/images/bits-32-2x.png 2x"/>
 
 This module contains merged classes from Protostuff that resolve split packages to allow use in modular Java
 
@@ -13,21 +12,15 @@ This module contains merged classes from Protostuff that resolve split packages 
 [//]: # (start-user-text)
 
 
-
 [//]: # (end-user-text)
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
-
-
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
-
-
 [//]: # (start-user-text)
-
 
 
 [//]: # (end-user-text)

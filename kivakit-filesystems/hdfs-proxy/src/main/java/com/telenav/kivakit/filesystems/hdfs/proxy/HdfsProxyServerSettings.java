@@ -31,7 +31,7 @@ import org.apache.hadoop.security.UserGroupInformation;
  * <p>
  * This class holds settings that are used by {@link HdfsFileSystem} to establish a connection to HDFS. The {@link
  * HdfsProxyServer} application uses command line switches to populate this object and register it with {@link
- * Settings#registerSettings(Object)}. The {@link HdfsFileSystem} class then looks up the settings with {@link
+ * Settings#registerSettingsObject(Object)}. The {@link HdfsFileSystem} class then looks up the settings with {@link
  * Settings#requireSettings(Class)}.
  *
  * @author jonathanl (shibo)

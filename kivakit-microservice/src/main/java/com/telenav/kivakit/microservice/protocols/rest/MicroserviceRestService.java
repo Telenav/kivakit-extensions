@@ -28,6 +28,7 @@ import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
@@ -41,7 +42,8 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -55,6 +57,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.GET;
 
 /**
@@ -104,7 +107,6 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * </ol>
  *
  * @author jonathanl (shibo)
- * @see MicroserviceGsonFactory
  * @see MicroservletRequest
  */
 @SuppressWarnings({ "RedundantSuppression", "unused", "unchecked" })
@@ -120,7 +122,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
 
     /** The microservice that owns this REST application */
     @UmlAggregation
-    private final Microservice microservice;
+    private final Microservice<?> microservice;
 
     /** True while the constructor is running */
     private boolean mountAllowed = false;
@@ -131,7 +133,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     /**
      * @param microservice The microservice that is creating this REST application
      */
-    public MicroserviceRestService(Microservice microservice)
+    public MicroserviceRestService(Microservice<?> microservice)
     {
         this.microservice = microservice;
         microservice.listenTo(this);
@@ -143,9 +145,13 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @return Factory that can create a {@link Gson} instance for serializing JSON object
      */
     @UmlRelation(label = "creates")
-    public MicroserviceGsonFactory gsonFactory()
+    public GsonFactory gsonFactory()
     {
-        return new MicroserviceGsonFactory();
+        return microservice.gsonFactory()
+                .withSerializer(Problem.class, new ProblemGsonSerializer(WITHOUT_EXCEPTION))
+                .withDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
+                .withHtmlEscaping(false)
+                .withPrettyPrinting(true);
     }
 
     /**
@@ -171,7 +177,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     /**
      * @return The microservice to which this rest application belongs
      */
-    public Microservice microservice()
+    public Microservice<?> microservice()
     {
         return microservice;
     }

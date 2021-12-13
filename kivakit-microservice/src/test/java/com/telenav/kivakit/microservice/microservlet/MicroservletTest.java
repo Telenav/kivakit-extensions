@@ -7,16 +7,17 @@ import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
+import com.telenav.kivakit.microservice.MicroserviceClusterMember;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonFactory;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.test.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -86,7 +87,7 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestMicroservice extends Microservice
+    public static class TestMicroservice extends Microservice<String>
     {
         @Override
         public MicroserviceMetadata metadata()
@@ -107,6 +108,12 @@ public class MicroservletTest extends UnitTest
         public MicroserviceRestService onNewRestService()
         {
             return new TestRestService(this);
+        }
+
+        @Override
+        protected MicroserviceClusterMember<String> onCreateMember()
+        {
+            return new MicroserviceClusterMember<>("dummy-value");
         }
     }
 
@@ -158,15 +165,15 @@ public class MicroservletTest extends UnitTest
 
     public static class TestRestService extends MicroserviceRestService
     {
-        public TestRestService(Microservice microservice)
+        public TestRestService(Microservice<?> microservice)
         {
             super(microservice);
         }
 
         @Override
-        public MicroserviceGsonFactory gsonFactory()
+        public GsonFactory gsonFactory()
         {
-            return new MicroserviceGsonFactory();
+            return new DefaultGsonFactory(this);
         }
 
         @Override

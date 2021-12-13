@@ -33,7 +33,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
      * {@inheritDoc}
      */
     @Override
-    public void report(Metric<?> metric)
+    public synchronized void report(Metric<?> metric)
     {
         var collector = collectors.get(metric.name());
 

@@ -2,7 +2,6 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
@@ -84,9 +83,6 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     @UmlAggregation
     private final JettyMicroserviceResponse response;
 
-    /** A Gson instance provided by the {@link MicroserviceRestService}'s factory */
-    private final Lazy<Gson> gson = Lazy.of(() -> application().gsonFactory().newInstance());
-
     /**
      * @param application The REST application that owns this request cycle
      * @param request The Java Servlet API HTTP request object
@@ -125,7 +121,12 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
      */
     public Gson gson()
     {
-        return gson.get();
+        var pretty = request().parameters().asBoolean("pretty");
+
+        return application()
+                .gsonFactory()
+                .withPrettyPrinting(pretty)
+                .gson();
     }
 
     /**
@@ -139,6 +140,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     /**
      * @return The response
      */
+    @Override
     public JettyMicroserviceResponse response()
     {
         return response;

@@ -151,7 +151,7 @@ class HdfsFileSystem extends BaseComponent
         {
             try
             {
-                var instance = InstanceIdentifier.instanceIdentifier(root.first());
+                var instance = InstanceIdentifier.of(root.first());
                 var settings = require(HdfsProxyServerSettings.class, instance);
                 fileSystem = settings.user().doAs((PrivilegedExceptionAction<FileSystem>) () ->
                 {

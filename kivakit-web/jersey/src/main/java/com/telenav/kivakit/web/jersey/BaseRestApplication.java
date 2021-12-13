@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.web.jersey;
 
+import com.telenav.kivakit.kernel.messaging.repeaters.RepeaterMixin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -27,6 +28,6 @@ import org.glassfish.jersey.server.ResourceConfig;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseRestApplication extends ResourceConfig
+public abstract class BaseRestApplication extends ResourceConfig implements RepeaterMixin
 {
 }

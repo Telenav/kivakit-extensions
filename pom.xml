@@ -92,6 +92,7 @@
 
     <modules>
 
+        <module>kivakit-settings-stores</module>
         <module>kivakit-primitive-collections</module>
         <module>kivakit-math</module>
         <module>kivakit-ui</module>

@@ -56,7 +56,7 @@ import com.telenav.kivakit.service.registry.protocol.update.NetworkRegistryUpdat
 import com.telenav.kivakit.service.registry.protocol.update.NetworkRegistryUpdateResponse;
 import com.telenav.kivakit.service.registry.registries.LocalServiceRegistry;
 import com.telenav.kivakit.service.registry.registries.NetworkServiceRegistry;
-import com.telenav.kivakit.service.registry.serialization.ServiceRegistryGsonFactory;
+import com.telenav.kivakit.service.registry.serialization.ServiceRegistryGsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import org.glassfish.jersey.client.JerseyClientBuilder;
@@ -492,7 +492,7 @@ public class ServiceRegistryClient extends BaseComponent
 
     private Gson gson()
     {
-        return new ServiceRegistryGsonFactory().newInstance();
+        return listenTo(new ServiceRegistryGsonFactorySource()).gsonFactory().gson();
     }
 
     /**

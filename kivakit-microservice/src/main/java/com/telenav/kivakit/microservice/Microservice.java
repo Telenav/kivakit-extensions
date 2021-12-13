@@ -1,9 +1,10 @@
 package com.telenav.kivakit.microservice;
 
+import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
-import com.telenav.kivakit.configuration.settings.deployment.Deployment;
+import com.telenav.kivakit.configuration.settings.Deployment;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
@@ -20,6 +21,9 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
+import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.serialization.json.GsonFactorySource;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
 import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
@@ -123,8 +127,23 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  *     {
  *         return new MyWebApplication(this);
  *     }
- * }
- * </pre>
+ * }</pre>
+ *
+ * <p><b>Cluster Membership</b></p>
+ *
+ * <p>
+ * When a microservice starts up, it automatically joins a cluster of similar microservices. The {@link MicroserviceCluster}
+ * retrieved with the {@link #cluster()} method models the cluster and is organized through Apache Zookeeper. When members
+ * join and leave the cluster the {@link #onJoin(MicroserviceClusterMember)} and {@link #onLeave(MicroserviceClusterMember)}
+ * methods will be called. The set of members of the cluster can be retrieved with {@link MicroserviceCluster#members()}.
+ * </p>
+ *
+ * <p><b>Cluster Elections</b></p>
+ *
+ * <p>
+ * Any time a member joins or leaves, an election is held by the {@link MicroserviceCluster}. If
+ * this microservice is the elected leader of the cluster, the {@link #isLeader()} method will return true.
+ * </p>
  *
  * @author jonathanl (shibo)
  * @see Deployment
@@ -134,25 +153,27 @@ import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
  * @see MicroserviceSettings
  * @see MicroserviceRestService
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
+ * @see MicroserviceCluster
+ * @see MicroserviceClusterMember
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class Microservice extends Application implements Startable, Stoppable
+public abstract class Microservice<Member> extends Application implements GsonFactorySource, Startable, Stoppable
 {
-    /**
-     * Command line switch for what port to run any REST service on. This will override any value from {@link
-     * MicroserviceSettings} that is loaded from a {@link Deployment}.
-     */
-    private final SwitchParser<Integer> PORT =
-            integerSwitchParser(this, "port", "The port to use")
-                    .optional()
-                    .build();
-
     /**
      * Command line switch for what port to run any GRPC service on. This will override any value from {@link
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> GRPC_PORT =
             integerSwitchParser(this, "grpc-port", "The port to use")
+                    .optional()
+                    .build();
+
+    /**
+     * Command line switch for what port to run any REST service on. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     */
+    private final SwitchParser<Integer> PORT =
+            integerSwitchParser(this, "port", "The port to use")
                     .optional()
                     .build();
 
@@ -164,17 +185,19 @@ public abstract class Microservice extends Application implements Startable, Sto
                     .optional()
                     .build();
 
+    private MicroserviceCluster<Member> cluster;
+
+    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
+
+    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
+
     /** True if this microservice is running */
     private boolean running;
 
     /** Jetty web server */
     private JettyServer server;
 
-    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
-
     private final Lazy<WebApplication> webApplication = Lazy.of(this::onCreateWebApplication);
-
-    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -182,6 +205,14 @@ public abstract class Microservice extends Application implements Startable, Sto
     public Microservice(Project... project)
     {
         super(project);
+    }
+
+    /**
+     * The cluster where this microservice is running
+     */
+    public MicroserviceCluster<Member> cluster()
+    {
+        return cluster;
     }
 
     /**
@@ -196,6 +227,23 @@ public abstract class Microservice extends Application implements Startable, Sto
     public MicroserviceGrpcService grpcService()
     {
         return grpcService.get();
+    }
+
+    /**
+     * @return The {@link Gson} factory for this microservice
+     */
+    @Override
+    public GsonFactory gsonFactory()
+    {
+        return new DefaultGsonFactory(this);
+    }
+
+    /**
+     * @return True if this microservice is the leader of the cluster
+     */
+    public boolean isLeader()
+    {
+        return cluster.thisMember().isLeader();
     }
 
     /**
@@ -233,7 +281,6 @@ public abstract class Microservice extends Application implements Startable, Sto
      */
     public void onInitialize()
     {
-
     }
 
     /**
@@ -386,6 +433,22 @@ public abstract class Microservice extends Application implements Startable, Sto
         return webApplication.get();
     }
 
+    /**
+     * @return The ClusterMember object for this microservice. The ClusterMember object holds information about cluster
+     * members. When a member joins the cluster, the {@link #onJoin(MicroserviceClusterMember)} method is called with
+     * the ClusterMember object for the member. When a member leaves the cluster, the {@link
+     * #onLeave(MicroserviceClusterMember)} is called with the same object.
+     */
+    protected abstract MicroserviceClusterMember<Member> onCreateMember();
+
+    protected void onJoin(MicroserviceClusterMember<Member> member)
+    {
+    }
+
+    protected void onLeave(MicroserviceClusterMember<Member> member)
+    {
+    }
+
     protected void onMountJettyPlugins(JettyServer server)
     {
     }
@@ -400,7 +463,30 @@ public abstract class Microservice extends Application implements Startable, Sto
     @Override
     protected final void onRun()
     {
-        // Initialize this microservice,
+        // Get the Member object for this microservice's cluster,
+        var member = onCreateMember();
+
+        // create cluster instance,
+        var outer = this;
+        cluster = listenTo(new MicroserviceCluster<>()
+        {
+            @Override
+            protected void onJoin(MicroserviceClusterMember<Member> member)
+            {
+                outer.onJoin(member);
+            }
+
+            @Override
+            protected void onLeave(MicroserviceClusterMember<Member> instance)
+            {
+                outer.onLeave(instance);
+            }
+        });
+
+        // and join the cluster.
+        cluster.join(member);
+
+        // Next, initialize this microservice,
         onInitialize();
 
         // register objects,
@@ -411,6 +497,13 @@ public abstract class Microservice extends Application implements Startable, Sto
 
         // and let clients know we're ready.
         ready();
+    }
+
+    @Override
+    @MustBeInvokedByOverriders
+    protected void onRunning()
+    {
+        register(gsonFactory());
     }
 
     /**
