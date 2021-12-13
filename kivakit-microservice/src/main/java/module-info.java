@@ -30,7 +30,8 @@ open module kivakit.microservice
     // JSON
     requires gson;
 
-    // Protocols
+    // Protocols and Platforms
+    requires aws.lambda.java.core;
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
     requires com.google.protobuf;
