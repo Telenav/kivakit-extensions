@@ -126,10 +126,6 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
             {
                 try
                 {
-                    // record the start time,
-                    var start = Time.now();
-                    var startCpuTime = PreciseDuration.cpuTime();
-
                     // handle the request,
                     handleRequest(method, cycle, resolved);
                 }

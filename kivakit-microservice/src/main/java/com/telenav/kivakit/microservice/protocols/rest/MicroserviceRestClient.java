@@ -101,11 +101,14 @@ public class MicroserviceRestClient extends BaseComponent
             {
                 try
                 {
-                    var entity = new StringEntity(request == null ? "{}" : gsonFactory.gson().toJson(request));
-                    entity.setContentType("application/json");
-                    post.setEntity(entity);
-                    post.setHeader("Accept", "application/json");
-                    post.setHeader("Content-Type", "application/json");
+                    if (request != null)
+                    {
+                        var entity = new StringEntity(gsonFactory.gson().toJson(request));
+                        entity.setContentType("application/json");
+                        post.setEntity(entity);
+                        post.setHeader("Accept", "application/json");
+                        post.setHeader("Content-Type", "application/json");
+                    }
                 }
                 catch (Exception e)
                 {
@@ -113,6 +116,7 @@ public class MicroserviceRestClient extends BaseComponent
                 }
             }
         });
+
         return fromJson(post, responseType);
     }
 

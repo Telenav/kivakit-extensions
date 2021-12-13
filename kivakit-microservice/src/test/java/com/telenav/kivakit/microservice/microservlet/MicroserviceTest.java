@@ -20,9 +20,6 @@ import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
 
-// TODO shibo
-// This test is not exiting cleanly due to some aspect of shutdown
-// If the shutdown can't be fixed, some workaround should be found with JUnit
 //@Ignore
 public class MicroserviceTest extends UnitTest
 {
