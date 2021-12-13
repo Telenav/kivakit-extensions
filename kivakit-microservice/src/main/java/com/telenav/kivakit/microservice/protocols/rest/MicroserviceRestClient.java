@@ -94,7 +94,7 @@ public class MicroserviceRestClient extends BaseComponent
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     Response post(String path, Class<Response> responseType, Request request)
     {
-        var post = new HttpPostResource(networkLocation(path), NetworkAccessConstraints.DEFAULT)
+        var post = listenTo(new HttpPostResource(networkLocation(path), NetworkAccessConstraints.DEFAULT)
         {
             @Override
             protected void onInitialize(HttpPost post)
@@ -112,7 +112,7 @@ public class MicroserviceRestClient extends BaseComponent
                     problem(e, "Unable to convert object to JSON: $", request);
                 }
             }
-        };
+        });
         return fromJson(post, responseType);
     }
 
@@ -165,7 +165,7 @@ public class MicroserviceRestClient extends BaseComponent
     {
         if ("application/json".equals(resource.contentType()))
         {
-            String json = resource.reader().string();
+            var json = resource.reader().string();
             if (!Strings.isEmpty(json))
             {
                 return gsonFactory.gson().fromJson(json, type);

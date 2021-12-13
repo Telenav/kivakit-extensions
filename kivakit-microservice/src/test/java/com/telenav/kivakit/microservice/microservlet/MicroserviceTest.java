@@ -8,7 +8,6 @@ import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
-import com.telenav.kivakit.microservice.MicroserviceClusterMember;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
@@ -19,14 +18,13 @@ import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.test.UnitTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
 // TODO shibo
 // This test is not exiting cleanly due to some aspect of shutdown
 // If the shutdown can't be fixed, some workaround should be found with JUnit
-@Ignore
-public class MicroservletTest extends UnitTest
+//@Ignore
+public class MicroserviceTest extends UnitTest
 {
     public static class TestGarbageRequest extends BaseMicroservletRequest
     {
@@ -107,13 +105,7 @@ public class MicroservletTest extends UnitTest
         @Override
         public MicroserviceRestService onNewRestService()
         {
-            return new TestRestService(this);
-        }
-
-        @Override
-        protected MicroserviceClusterMember<String> onCreateMember()
-        {
-            return new MicroserviceClusterMember<>("dummy-value");
+            return new TestRestMicroservice(this);
         }
     }
 
@@ -163,9 +155,9 @@ public class MicroservletTest extends UnitTest
         }
     }
 
-    public static class TestRestService extends MicroserviceRestService
+    public static class TestRestMicroservice extends MicroserviceRestService
     {
-        public TestRestService(Microservice<?> microservice)
+        public TestRestMicroservice(Microservice<?> microservice)
         {
             super(microservice);
         }
@@ -188,7 +180,10 @@ public class MicroservletTest extends UnitTest
     @Test
     public void test()
     {
-        Registry.of(this).register(new MicroserviceSettings().port(8086).grpcPort(8087));
+        Registry.of(this).register(new MicroserviceSettings()
+                .port(8086)
+                .grpcPort(8087)
+                .server(false));
 
         var microservice = listenTo(new TestMicroservice());
 
@@ -199,8 +194,18 @@ public class MicroservletTest extends UnitTest
                 microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
 
         var garbageRequest = new TestGarbageRequest("This request is nonsense");
-        var response4 = client.post("garbage", TestResponse.class, garbageRequest);
-        ensureNull(response4);
+
+        var succeeded = false;
+        try
+        {
+             client.post("garbage", TestResponse.class, garbageRequest);
+             succeeded = true;
+        }
+        catch (Exception ignored)
+        {
+        }
+
+        ensureFalse(succeeded);
 
         // Test POST
         var request = new TestPostRequest(7, 8);
@@ -213,7 +218,7 @@ public class MicroservletTest extends UnitTest
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
-        ensureEqual(27, response3.result);
+        ensureEqual(response3.result, 27);
 
         var grpcClient = listenTo(new MicroserviceGrpcClient(Host.local().port(8087), microservice.version()));
         var response5 = grpcClient.request("test", request, TestResponse.class);

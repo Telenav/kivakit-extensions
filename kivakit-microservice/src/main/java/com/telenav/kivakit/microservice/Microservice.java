@@ -24,6 +24,7 @@ import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactorySource;
+import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
 import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * <p>
@@ -243,6 +245,8 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      */
     public boolean isLeader()
     {
+        ensure(isClustered());
+
         return cluster.thisMember().isLeader();
     }
 
@@ -410,7 +414,10 @@ public abstract class Microservice<Member> extends Application implements GsonFa
             running = true;
 
             // and wait for it to be terminated.
-            server.waitForTermination();
+            if (settings().isServer())
+            {
+                server.waitForTermination();
+            }
         }
         return true;
     }
@@ -439,7 +446,11 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * the ClusterMember object for the member. When a member leaves the cluster, the {@link
      * #onLeave(MicroserviceClusterMember)} is called with the same object.
      */
-    protected abstract MicroserviceClusterMember<Member> onCreateMember();
+    protected MicroserviceClusterMember<Member> onNewMember()
+    {
+        // By default, microservices are not clustered, so this returns null
+        return null;
+    }
 
     protected void onJoin(MicroserviceClusterMember<Member> member)
     {
@@ -454,6 +465,19 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     }
 
     /**
+     * @return True if this microservice is clustered. To be clustered, two things are required:
+     * <ol>
+     *     <li>{@link #onNewMember()} must be overridden to return a value</li>
+     *     <li>A configuration for {@link ZookeeperConnection} must be available (normally in the <i>deployments</i>
+     *     package) next to the application</li>
+     * </ol>
+     */
+    public boolean isClustered()
+    {
+        return cluster != null;
+    }
+
+    /**
      * <b>Not public API</b>
      * <p>
      * This method should not be invoked or overridden. To initialize a microservice, override the {@link
@@ -464,27 +488,30 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     protected final void onRun()
     {
         // Get the Member object for this microservice's cluster,
-        var member = onCreateMember();
+        var member = onNewMember();
 
         // create cluster instance,
-        var outer = this;
-        cluster = listenTo(new MicroserviceCluster<>()
+        if (member != null)
         {
-            @Override
-            protected void onJoin(MicroserviceClusterMember<Member> member)
+            var outer = this;
+            cluster = listenTo(new MicroserviceCluster<>()
             {
-                outer.onJoin(member);
-            }
+                @Override
+                protected void onJoin(MicroserviceClusterMember<Member> member)
+                {
+                    outer.onJoin(member);
+                }
 
-            @Override
-            protected void onLeave(MicroserviceClusterMember<Member> instance)
-            {
-                outer.onLeave(instance);
-            }
-        });
+                @Override
+                protected void onLeave(MicroserviceClusterMember<Member> instance)
+                {
+                    outer.onLeave(instance);
+                }
+            });
 
-        // and join the cluster.
-        cluster.join(member);
+            // and join the cluster.
+            cluster.join(member);
+        }
 
         // Next, initialize this microservice,
         onInitialize();
