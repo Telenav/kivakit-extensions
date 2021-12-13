@@ -47,7 +47,7 @@ public class LambdaRequestHandler implements RequestHandler<MicroservletRequest,
         request.addListener(message -> context.getLogger().log(message.asString()));
 
         // If this request is allowed on this microservice,
-        if (require(Microservice.class).allowedLambdaRequests().contains(request))
+        if (require(Microservice.class).allowedLambdaRequests().contains(request.getClass()))
         {
             // then return the response.
             return request.onRequest();

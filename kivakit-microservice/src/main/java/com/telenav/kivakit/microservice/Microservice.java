@@ -225,7 +225,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     /**
      * @return The microservlet requests that are enabled to be called from AWS lambda
      */
-    public Set<MicroservletRequest> allowedLambdaRequests()
+    public Set<Class<? extends MicroservletRequest>> allowedLambdaRequests()
     {
         return Set.of();
     }
