@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice;
 
 import com.google.gson.Gson;
+import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
@@ -15,6 +16,7 @@ import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -37,7 +39,9 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
+import java.util.Set;
 
+import static com.telenav.kivakit.commandline.SwitchParser.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
@@ -180,6 +184,15 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                     .build();
 
     /**
+     * Command line switch to run this microservice as a blocking server. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     */
+    private final SwitchParser<Boolean> SERVER =
+            booleanSwitchParser(this, "server", "True to run this microservice as a server")
+                    .optional()
+                    .build();
+
+    /**
      * Command line switch to output .proto files to the given folder
      */
     private final SwitchParser<Folder> PROTO_EXPORT_FOLDER =
@@ -207,6 +220,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     public Microservice(Project... project)
     {
         super(project);
+    }
+
+    /**
+     * @return The microservlet requests that are enabled to be called from AWS lambda
+     */
+    public Set<MicroservletRequest> allowedLambdaRequests()
+    {
+        return Set.of();
     }
 
     /**
@@ -337,6 +358,10 @@ public abstract class Microservice<Member> extends Application implements GsonFa
             if (has(GRPC_PORT))
             {
                 settings().grpcPort(get(GRPC_PORT));
+            }
+            if (has(SERVER))
+            {
+                settings().server(get(SERVER));
             }
 
             // create the Jetty server.
@@ -570,6 +595,6 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER);
+        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER);
     }
 }

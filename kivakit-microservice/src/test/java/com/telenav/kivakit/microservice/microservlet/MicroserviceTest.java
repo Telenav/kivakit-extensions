@@ -18,9 +18,10 @@ import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.test.UnitTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
-//@Ignore
+@Ignore
 public class MicroserviceTest extends UnitTest
 {
     public static class TestGarbageRequest extends BaseMicroservletRequest
@@ -184,11 +185,15 @@ public class MicroserviceTest extends UnitTest
 
         var microservice = listenTo(new TestMicroservice());
 
-        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087" }));
+        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087", "-server=false" }));
         microservice.waitForReady();
 
         var client = listenTo(new MicroserviceRestClient(
                 microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
+
+        // Test POST with path parameters but no request object
+        var response3 = client.post("test/a/9/b/3", TestResponse.class);
+        ensureEqual(response3.result, 27);
 
         var garbageRequest = new TestGarbageRequest("This request is nonsense");
 
@@ -212,10 +217,6 @@ public class MicroserviceTest extends UnitTest
         // Test GET
         var response2 = client.get("test", TestResponse.class);
         ensureEqual(42, response2.result);
-
-        // Test POST with path parameters but no request object
-        var response3 = client.post("test/a/9/b/3", TestResponse.class);
-        ensureEqual(response3.result, 27);
 
         var grpcClient = listenTo(new MicroserviceGrpcClient(Host.local().port(8087), microservice.version()));
         var response5 = grpcClient.request("test", request, TestResponse.class);
