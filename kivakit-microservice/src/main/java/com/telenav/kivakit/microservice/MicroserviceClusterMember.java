@@ -5,6 +5,8 @@ import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
 import com.telenav.kivakit.network.core.Host;
 import org.jetbrains.annotations.NotNull;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+
 /**
  * Represents a member of a {@link MicroserviceCluster} with associated user data.
  *

@@ -466,7 +466,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
         // Get the Member object for this microservice's cluster,
         var member = onCreateMember();
 
-        // register it in zookeeper,
+        // create cluster instance,
         var outer = this;
         cluster = listenTo(new MicroserviceCluster<>()
         {

@@ -5,6 +5,7 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
 import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.kernel.language.primitives.Ints;
@@ -61,14 +62,14 @@ public class MicroserviceCluster<Member> extends BaseComponent
     /** Tracks reentrancy to the onSettingsUpdated method to ensure that it is not called recursively */
     private final ReentrancyTracker reentrancy = new ReentrancyTracker();
 
-    /** Store for ephemeral cluster Member objects in Zookeeper */
+    /** Zookeeper settings store used to track cluster members */
     private final Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL)
     {
         @Override
         protected void onSettingsDeleted(StringPath path, SettingsObject settings)
         {
             var member = member(path, settings);
-            announce("Leaving cluster: $", member);
+            announce("Leaving cluster: $", member.identifier());
             onLeave(member);
             unindex(settings);
             electLeader();
@@ -83,7 +84,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                 {
                     var member = member(path, settings);
                     index(settings);
-                    announce("Joining cluster: $", member);
+                    announce("Joining cluster: $", member.identifier());
                     onJoin(member);
                     electLeader();
                 }
@@ -102,12 +103,8 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public void join(MicroserviceClusterMember<Member> member)
     {
-        // For each member that's already in the cluster,
-        for (var at : members())
-        {
-            // notify the subclass that the member has joined,
-            onJoin(at);
-        }
+        // Force loading of existing members,
+        members();
 
         // then add ourselves as a member.
         store().save(new SettingsObject(member.data(), instanceIdentifier()));
@@ -118,7 +115,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public void leave()
     {
-        store().delete(new SettingsObject(new MicroserviceClusterMember<Member>(null).data(), instanceIdentifier()));
+        store().delete(new SettingsObject(thisMember().data(), instanceIdentifier()));
     }
 
     /**
@@ -128,9 +125,17 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
         var members = new IdentitySet<MicroserviceClusterMember<Member>>();
 
-        for (var at : store().indexed())
+        // Force the store to reload from Zookeeper,
+        store().forceLoad();
+
+        // then go through the indexed objects
+        for (var settingsObject : store().indexed())
         {
-            members.add(new MicroserviceClusterMember<>(at.object()));
+            // and add each one as a cluster member
+            var child = settingsObject.identifier().instance().identifier();
+            var flat = store().root().withChild(child);
+            var path = store().unflatten(flat);
+            members.add(member(path, settingsObject));
         }
 
         return ObjectList.objectList(members);
@@ -172,17 +177,23 @@ public class MicroserviceCluster<Member> extends BaseComponent
     private void electLeader()
     {
         var members = members().sorted();
-        var first = members.first();
 
-        var elected = true;
-        for (var member : members)
+        if (members.isNonEmpty())
         {
-            member.elect(elected);
-            if (elected)
+            var first = members.first();
+
+            var elected = true;
+            for (var member : members)
             {
-                announce("Elected as leader: $", first);
+                member.elect(elected);
+                if (elected)
+                {
+                    trace("Elected as leader: $", first);
+                }
+                elected = false;
             }
-            elected = false;
+
+            showMembers(members);
         }
     }
 
@@ -205,8 +216,23 @@ public class MicroserviceCluster<Member> extends BaseComponent
                 settings.object());
     }
 
+    private void showMembers(final ObjectList<MicroserviceClusterMember<Member>> members)
+    {
+        var output = new StringList();
+        for (var member : members)
+        {
+            output.add(member.identifier()
+                    + (member.isThis() ? " [this]" : "")
+                    + (member.isLeader() ? " [leader]" : ""));
+        }
+
+        announce(output.titledBox("Cluster Members"));
+    }
+
     private ZookeeperSettingsStore store()
     {
         return store.get();
     }
+
+
 }
