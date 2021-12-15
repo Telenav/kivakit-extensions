@@ -18,7 +18,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-extensions 1.1.3-SNAPSHOT &nbsp;&nbsp; <img src="https://www.kivakit.org/images/kivakit-64.png" srcset="https://www.kivakit.org/images/kivakit-64-2x.png 2x"/>
+# kivakit-extensions &nbsp;&nbsp; <img src="https://www.kivakit.org/images/kivakit-64.png" srcset="https://www.kivakit.org/images/kivakit-64-2x.png 2x"/>
 
 This project contains modules that extend KivaKit.
 
@@ -38,10 +38,12 @@ This project contains modules that extend KivaKit.
 [**kivakit-filesystems**](kivakit-filesystems/README.md)  
 [**kivakit-logs**](kivakit-logs/README.md)  
 [**kivakit-math**](kivakit-math/README.md)  
+[**kivakit-merged**](kivakit-merged/README.md)  
 [**kivakit-metrics**](kivakit-metrics/README.md)  
 [**kivakit-microservice**](kivakit-microservice/README.md)  
 [**kivakit-primitive-collections**](kivakit-primitive-collections/README.md)  
 [**kivakit-service**](kivakit-service/README.md)  
+[**kivakit-settings-stores**](kivakit-settings-stores/README.md)  
 [**kivakit-ui**](kivakit-ui/README.md)  
 [**kivakit-web**](kivakit-web/README.md)  
 
@@ -97,6 +99,8 @@ This project contains modules that extend KivaKit.
  &nbsp; &nbsp; [**kivakit-service-server**](kivakit-service/server/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-service-viewer**](kivakit-service/viewer/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-settings-stores-zookeeper**](kivakit-settings-stores/zookeeper/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-ui-desktop**](kivakit-ui/desktop/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>

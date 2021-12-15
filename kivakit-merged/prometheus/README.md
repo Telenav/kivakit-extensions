@@ -1,26 +1,33 @@
 [//]: # (start-user-text)
 
 
+
 [//]: # (end-user-text)
 
-# kivakit-merged-prometheus &nbsp;&nbsp; <img src="https://www.kivakit.org/images/bits-32.png" srcset="https://www.kivakit.org/images/bits-32-2x.png 2x"/>
+# kivakit-merged-prometheus &nbsp;&nbsp; <img src="https://www.kivakit.org/images/convert-32.png" srcset="https://www.kivakit.org/images/convert-32-2x.png 2x"/>
 
-This module contains merged classes from Prometheus that resolve split packages to allow use in modular Java
+This module contains a merged prometheus JAR compatible with modular Java
 
 <img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
 
 [//]: # (start-user-text)
 
 
+
 [//]: # (end-user-text)
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
+
+
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
+
+
 [//]: # (start-user-text)
+
 
 
 [//]: # (end-user-text)

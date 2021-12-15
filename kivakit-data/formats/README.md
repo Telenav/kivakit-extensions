@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-data formats &nbsp;&nbsp; <img src="https://www.kivakit.org/images/bits-32.png" srcset="https://www.kivakit.org/images/bits-32-2x.png 2x"/>
+# kivakit-data-formats &nbsp;&nbsp; <img src="https://www.kivakit.org/images/bits-32.png" srcset="https://www.kivakit.org/images/bits-32-2x.png 2x"/>
 
 This project contains support for processing common data formats.
 
