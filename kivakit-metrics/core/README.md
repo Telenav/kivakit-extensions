@@ -20,14 +20,14 @@ This module contains packages for collecting metrics on a server
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-metrics-core</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1-SNAPSHOT</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -48,14 +48,14 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.metrics.core*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.svg)  
-[*com.telenav.kivakit.metrics.core.aggregates*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.svg)  
-[*com.telenav.kivakit.metrics.core.aggregates.bytes*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.bytes.svg)  
-[*com.telenav.kivakit.metrics.core.aggregates.count*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.count.svg)  
-[*com.telenav.kivakit.metrics.core.aggregates.duration*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.duration.svg)  
-[*com.telenav.kivakit.metrics.core.aggregates.rate*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.rate.svg)  
-[*com.telenav.kivakit.metrics.core.reporters*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.reporters.svg)  
-[*com.telenav.kivakit.metrics.core.scalar*](https://www.kivakit.org/1.2.0/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.scalar.svg)
+[*com.telenav.kivakit.metrics.core*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.svg)  
+[*com.telenav.kivakit.metrics.core.aggregates*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.svg)  
+[*com.telenav.kivakit.metrics.core.aggregates.bytes*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.bytes.svg)  
+[*com.telenav.kivakit.metrics.core.aggregates.count*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.count.svg)  
+[*com.telenav.kivakit.metrics.core.aggregates.duration*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.duration.svg)  
+[*com.telenav.kivakit.metrics.core.aggregates.rate*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.aggregates.rate.svg)  
+[*com.telenav.kivakit.metrics.core.reporters*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.reporters.svg)  
+[*com.telenav.kivakit.metrics.core.scalar*](https://www.kivakit.org/1.2.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/core/documentation/diagrams/com.telenav.kivakit.metrics.core.scalar.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -70,34 +70,34 @@ Javadoc coverage for this project is 50.4%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*AggregateMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/AggregateMetric.html) |  |  
-| [*AggregateQuantumMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/AggregateQuantumMetric.html) | Aggregate Metrics |  
-| [*AverageBytesMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/AverageBytesMetric.html) |  |  
-| [*AverageCountMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/AverageCountMetric.html) |  |  
-| [*AverageDurationMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/duration/AverageDurationMetric.html) |  |  
-| [*AverageMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/AverageMetric.html) |  |  
-| [*AverageRateMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/rate/AverageRateMetric.html) |  |  
-| [*BaseMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/BaseMetric.html) |  |  
-| [*ConsoleMetricsReporter*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/reporters/ConsoleMetricsReporter.html) |  |  
-| [*DoubleMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/scalar/DoubleMetric.html) |  |  
-| [*MaximumBytesMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/MaximumBytesMetric.html) |  |  
-| [*MaximumCountMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/MaximumCountMetric.html) |  |  
-| [*MaximumDurationMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/duration/MaximumDurationMetric.html) |  |  
-| [*MaximumMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/MaximumMetric.html) |  |  
-| [*MaximumRateMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/rate/MaximumRateMetric.html) |  |  
-| [*Metric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/Metric.html) |  |  
-| [*Metric.MetricType*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/Metric.MetricType.html) |  |  
-| [*MetricsReporter*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/MetricsReporter.html) |  |  
-| [*MinimumBytesMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/MinimumBytesMetric.html) |  |  
-| [*MinimumCountMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/MinimumCountMetric.html) |  |  
-| [*MinimumDurationMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/duration/MinimumDurationMetric.html) |  |  
-| [*MinimumMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/MinimumMetric.html) |  |  
-| [*MinimumRateMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/rate/MinimumRateMetric.html) |  |  
-| [*NullMetricsReporter*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/reporters/NullMetricsReporter.html) |  |  
-| [*QuantumMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/scalar/QuantumMetric.html) |  |  
-| [*TotalBytesMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/TotalBytesMetric.html) |  |  
-| [*TotalCountMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/TotalCountMetric.html) |  |  
-| [*TotalMetric*](https://www.kivakit.org/1.2.0/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/TotalMetric.html) |  |  
+| [*AggregateMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/AggregateMetric.html) |  |  
+| [*AggregateQuantumMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/AggregateQuantumMetric.html) | Aggregate Metrics |  
+| [*AverageBytesMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/AverageBytesMetric.html) |  |  
+| [*AverageCountMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/AverageCountMetric.html) |  |  
+| [*AverageDurationMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/duration/AverageDurationMetric.html) |  |  
+| [*AverageMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/AverageMetric.html) |  |  
+| [*AverageRateMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/rate/AverageRateMetric.html) |  |  
+| [*BaseMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/BaseMetric.html) |  |  
+| [*ConsoleMetricsReporter*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/reporters/ConsoleMetricsReporter.html) |  |  
+| [*DoubleMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/scalar/DoubleMetric.html) |  |  
+| [*MaximumBytesMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/MaximumBytesMetric.html) |  |  
+| [*MaximumCountMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/MaximumCountMetric.html) |  |  
+| [*MaximumDurationMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/duration/MaximumDurationMetric.html) |  |  
+| [*MaximumMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/MaximumMetric.html) |  |  
+| [*MaximumRateMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/rate/MaximumRateMetric.html) |  |  
+| [*Metric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/Metric.html) |  |  
+| [*Metric.MetricType*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/Metric.MetricType.html) |  |  
+| [*MetricsReporter*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/MetricsReporter.html) |  |  
+| [*MinimumBytesMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/MinimumBytesMetric.html) |  |  
+| [*MinimumCountMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/MinimumCountMetric.html) |  |  
+| [*MinimumDurationMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/duration/MinimumDurationMetric.html) |  |  
+| [*MinimumMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/MinimumMetric.html) |  |  
+| [*MinimumRateMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/rate/MinimumRateMetric.html) |  |  
+| [*NullMetricsReporter*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/reporters/NullMetricsReporter.html) |  |  
+| [*QuantumMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/scalar/QuantumMetric.html) |  |  
+| [*TotalBytesMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/bytes/TotalBytesMetric.html) |  |  
+| [*TotalCountMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/count/TotalCountMetric.html) |  |  
+| [*TotalMetric*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.core/com/telenav/kivakit/metrics/core/aggregates/TotalMetric.html) |  |  
 
 [//]: # (start-user-text)
 
