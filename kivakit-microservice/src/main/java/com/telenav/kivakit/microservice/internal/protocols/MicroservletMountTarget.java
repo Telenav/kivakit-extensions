@@ -19,7 +19,7 @@ public interface MicroservletMountTarget
     /**
      * Mounts the given request handler on the given path
      *
-     * @param path The path
+     * @param path The absolute path
      * @param requestHandlerType The request handler type
      */
     void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType);
