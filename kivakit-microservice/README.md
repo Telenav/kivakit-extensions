@@ -23,7 +23,7 @@ This module provides an abstraction for developing microservices.
 ### Index
 
 [**Summary**](#summary)  
-[**Public API**](#public-api)  
+[**Public API**](#public-api)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -47,7 +47,7 @@ This module provides an abstraction for developing microservices.
 
 ### Summary <a name = "summary"></a>
 
-This module provides an easy way to create a microservice with a REST and web interface.
+This module provides an easy way to create a microservice with multiple service interfaces, including Web, Swagger, REST, GRPC, and AWS Lambda. A single object-oriented request handler can be reused unchanged with all supported protocols (REST, GRPC and AWS Lambda).
 
 ### Public API <a name = "public-api"></a>
 
@@ -55,41 +55,77 @@ The following sections catalog the public API for *kivakit-microservice*.
 
 #### Microservice Mini-framework
 
-A [*Microservice*](https://martinfowler.com/articles/microservices.html) is a small, independent cloud service providing a limited, focused API. The *kivakit-microservice* mini-framework makes it easy to create a microservice that has:
+A [*Microservice*](https://martinfowler.com/articles/microservices.html) is a small, independent cloud service providing a limited, focused API. The *kivakit-microservice*
+mini-framework makes it easy to create a microservice that has these service interfaces:
 
-- JSON Microservlet REST service
-
-+ Swagger OpenAPI specification
-
-- Apache Wicket web interface
+- Web (Apache Wicket)
+- REST (GlassFish Jersey)
+- GRPC (Google Remote Procedure Call)
+- AWS Lambda (Amazon Web Services)
+- Swagger REST Documentation (OpenAPI)
 
 The public API classes in this mini-framework are:
 
-| Class | Purpose |
-|-------|---------|
-| Microservice | Application base class for microservices |
-| MicroserviceMetadata | Metadata describing a microservice |
-| MicroserviceSettings | Settings for microservices applications |
-| MicroserviceWebApplication | Apache Wicket application base class |
-| MicroserviceRestApplication | Base class for REST applications |
-| MicroserviceGsonFactory | Factory that produces configured Gson objects for JSON serialization |
+| Class                      | Purpose                                                              |
+|----------------------------|----------------------------------------------------------------------|
+| Microservice               | Base class for microservices                                         |
+| MicroserviceMetadata       | Metadata describing a microservice                                   |
+| MicroserviceCluster        | The Microservices in a cluster (tracked by Zookeeper)                |
+| MicroserviceClusterMember  | A Microservice that is participating in a cluster                    |
+| MicroserviceSettings       | Settings for microservices applications                              |
+| MicroserviceWebApplication | Apache Wicket application base class                                 |
+| MicroserviceRestService    | Base class for REST service interfaces                               |
+| MicroserviceGrpcService    | Base class for GRPC service interfaces                               |
+| MicroserviceLambdaService  | Base class for AWS Lambda service interfaces                         |
+| MicroserviceGsonFactory    | Factory that produces configured Gson objects for JSON serialization |
 
 #### Microservlet Mini-framework
 
-A *Microservlet* is a handler for HTTP REST methods that can be *mounted* on a specific path in a *MicroserviceRestApplication*. Each method (GET, POST, etc.) takes a subclass of *MicroserviceRequest* and returns a *MicroserviceResponse*. In general, it is not necessary to directly implement a *Microservlet*. Instead, a request class can be directly mounted on a rest application path like this:
+A *Microservlet* is a handler for HTTP REST methods that can be *mounted* on a specific path in the
+*onInitialize()* method of a *MicroserviceRestService* subclass. Each path and method (GET, POST, etc.)
+takes a subclass of *MicroserviceRequest* and returns a subclass of *MicroserviceResponse*. For example:
 
-    mount("api/1.0/create-robot", CreateRobotRequest.class);
+    public class CreateRobotRequest extends MicroserviceRequest { ... }
+    public class CreateRobotResponse extends MicroserviceResponse { ... }
 
-KivaKit will create an anonymous *Microservlet* that instantiates and uses a *CreateRobotRequest* object to handle requests.
+In general, it is not necessary to directly implement a *Microservlet*. Instead, a request class can be directly mounted on a rest service path like this:
 
-The public API classes in this mini-framework are:
+    var v2 = Version.parse(this, "2.0")
 
-| Class | Purpose |
-|-------|---------|
-| Microservlet | Request handler mounted on a path via MicroserviceRestApplication |
-| MicroservletGetRequest | Base class for a GET request handler |
-| MicroservletPostRequest | Base class for a POST request handler |
-| MicroservletResponse | Holds the response to a request |
+    mount("create-robot", POST, CreateRobotRequest.class);
+    mount("get-robot", GET, GetRobotRequest.class);
+    mount("get-robot", GET, v2, GetRobotRequestV2.class);
+
+KivaKit will create and install an anonymous *Microservlet* that instantiates and uses a *CreateRobotRequest* (or other request object) to handle requests. All you need to do is call *mount()* in *onInitialize()*.
+
+The public API classes in the microservlet mini-framework are:
+
+| Class                | Purpose                                                       |
+|----------------------|---------------------------------------------------------------|
+| Microservlet         | Request handler mounted on a path via MicroserviceRestService |
+| MicroservletRequest  | Base class for a request handling object                      |
+| MicroservletResponse | The response object generated by a MicroservletRequest        |
+
+#### GRPC and AWS Lambda Protocols
+
+The unmodified *MicroservletRequest* handler for a REST service can be reused unmodified by the GRPC, and AWS Lambda protocols.
+
+The *MicroserviceGrpcService* class copies its request handler mounts from *MicroserviceRestService*. If you have written a REST service you can turn on GRPC by simply returning an instance of MicroserviceGrpcService from *Microservice.onNewGrpcService()*
+
+*MicroserviceLambdaService* can mount request handlers in its *onInitialize()* method like this:
+
+    public class MyLambdaService extends MicroserviceLambdaService
+    {
+        public MyLambdaService(Microservice<?> microservice)
+        {
+            super(microservice);
+        }
+    
+        public void onInitialize()
+        {
+            mount("get-robot", "1.0", GetRobotRequest.class);
+        }
+    }
 
 [//]: # (end-user-text)
 
@@ -130,14 +166,13 @@ The public API classes in this mini-framework are:
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 63.0%.  
-  
+Javadoc coverage for this project is 63.0%.
+
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
 
+The following significant classes are undocumented:
 
-The following significant classes are undocumented:  
-
-- MicroserviceGrpcClient  
+- MicroserviceGrpcClient
 - RuntimeProtoGenerator
 
 | Class | Documentation Sections |
@@ -236,7 +271,6 @@ The following significant classes are undocumented:
 | [*UUID*](https://www.kivakit.org/1.2.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/UUID.html) |  |  
 
 [//]: # (start-user-text)
-
 
 
 [//]: # (end-user-text)
