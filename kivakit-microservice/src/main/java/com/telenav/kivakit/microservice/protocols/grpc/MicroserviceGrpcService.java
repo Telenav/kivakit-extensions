@@ -22,11 +22,17 @@ import io.grpc.ServerBuilder;
 import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.LAST;
 
 /**
- * GRPC protocol service that allows {@link MicroservletRequestHandler}s to be mounted with {@link #mount(String,
- * Class)} in the {@link #onInitialize()} method (only). The service is created in {@link
- * Microservice#onNewGrpcService()} ()} automatically started by the microservice framework on startup.
+ * GRPC protocol service that simply copies mounted request handlers from {@link MicroserviceRestService}.
+ *
+ * <p><b>Creation</b></p>
+ *
+ * <p>
+ * This service must be created by {@link Microservice#onNewGrpcService()}. Once created, it is automatically
+ * initialized and started by the microservice mini-framework on startup.
+ * </p>
  *
  * @author jonathanl (shibo)
+ * @see MicroserviceRestService
  */
 public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
@@ -35,13 +41,13 @@ public class MicroserviceGrpcService extends BaseComponent implements
         MicroservletMountTarget
 {
     /** The microservice that owns this GRPC service */
-    private final Microservice microservice;
+    private final Microservice<?> microservice;
 
     /** The GRPC server */
     private Server server;
 
-    /** True while the constructor is running */
-    private boolean mountAllowed = false;
+    /** True while the {@link #onInitialize()} method is running */
+    private boolean initializing = false;
 
     /** The object that responds to GRPC requests */
     private final MicroservletGrpcResponder responder;
@@ -49,7 +55,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     /** True if this service is running */
     private boolean running;
 
-    public MicroserviceGrpcService(Microservice microservice)
+    public MicroserviceGrpcService(Microservice<?> microservice)
     {
         this.microservice = microservice;
         responder = listenTo(new MicroservletGrpcResponder());
@@ -60,7 +66,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     {
         try
         {
-            mountAllowed = true;
+            initializing = true;
 
             // Look up any REST service,
             var restService = lookup(MicroserviceRestService.class);
@@ -75,7 +81,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         }
         finally
         {
-            mountAllowed = false;
+            initializing = false;
         }
     }
 
@@ -101,7 +107,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     public void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType)
     {
         // If we're in the onInitialize() method,
-        if (mountAllowed)
+        if (initializing)
         {
             // mount the request type,
             responder.mount(path, requestHandlerType);
@@ -150,18 +156,6 @@ public class MicroserviceGrpcService extends BaseComponent implements
     }
 
     /**
-     * Saves the given type into the given folder as a .proto file
-     */
-    private void writeProtoFile(Folder folder, Class<?> type)
-    {
-        var schema = require(MicroservletGrpcSchemas.class).schemaFor(type);
-        var file = folder.mkdirs().file("$.proto", schema.messageName());
-        information("Exporting $", file);
-        var proto = Generators.newProtoGenerator(schema);
-        file.writer().save(proto.generate());
-    }
-
-    /**
      * Write the .proto definitions for all microservlets that have been registered to the output folder
      */
     public void writeProtoFilesTo(Folder folder)
@@ -174,5 +168,17 @@ public class MicroserviceGrpcService extends BaseComponent implements
                 writeProtoFile(folder.folder("response").mkdirs(), responseType);
             }
         }
+    }
+
+    /**
+     * Saves the given type into the given folder as a .proto file
+     */
+    private void writeProtoFile(Folder folder, Class<?> type)
+    {
+        var schema = require(MicroservletGrpcSchemas.class).schemaFor(type);
+        var file = folder.mkdirs().file("$.proto", schema.messageName());
+        information("Exporting $", file);
+        var proto = Generators.newProtoGenerator(schema);
+        file.writer().save(proto.generate());
     }
 }
