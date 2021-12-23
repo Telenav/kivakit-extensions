@@ -1,7 +1,6 @@
 package com.telenav.kivakit.microservice;
 
 import com.google.gson.Gson;
-import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
@@ -16,9 +15,9 @@ import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
-import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
+import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.ResourceFolder;
@@ -39,7 +38,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
-import java.util.Set;
 
 import static com.telenav.kivakit.commandline.SwitchParser.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
@@ -206,6 +204,8 @@ public abstract class Microservice<Member> extends Application implements GsonFa
 
     private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
 
+    private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.of(this::onNewLambdaService);
+
     /** True if this microservice is running */
     private boolean running;
 
@@ -220,14 +220,6 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     public Microservice(Project... project)
     {
         super(project);
-    }
-
-    /**
-     * @return The microservlet requests that are enabled to be called from AWS lambda
-     */
-    public Set<Class<? extends MicroservletRequest>> allowedLambdaRequests()
-    {
-        return Set.of();
     }
 
     /**
@@ -262,6 +254,19 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     }
 
     /**
+     * @return True if this microservice is clustered. To be clustered, two things are required:
+     * <ol>
+     *     <li>{@link #onNewMember()} must be overridden to return a value</li>
+     *     <li>A configuration for {@link ZookeeperConnection} must be available (normally in the <i>deployments</i>
+     *     package) next to the application</li>
+     * </ol>
+     */
+    public boolean isClustered()
+    {
+        return cluster != null;
+    }
+
+    /**
      * @return True if this microservice is the leader of the cluster
      */
     public boolean isLeader()
@@ -283,6 +288,11 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     public boolean isRunning()
     {
         return running;
+    }
+
+    public MicroserviceLambdaService lambdaService()
+    {
+        return lambdaService.get();
     }
 
     /**
@@ -312,6 +322,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * @return Any GRPC service for this microservice
      */
     public MicroserviceGrpcService onNewGrpcService()
+    {
+        return null;
+    }
+
+    /**
+     * @return Any AWS Lambda service for this microservice
+     */
+    public MicroserviceLambdaService onNewLambdaService()
     {
         return null;
     }
@@ -424,6 +442,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                 grpcService.start();
             }
 
+            // If there is a Lambda service,
+            var lambdaService = lambdaService();
+            if (lambdaService != null)
+            {
+                // initialize it.
+                lambdaService.initialize();
+            }
+
             // If we don't have either a REST or a GRPC service,
             if (restService == null && grpcService == null)
             {
@@ -465,18 +491,6 @@ public abstract class Microservice<Member> extends Application implements GsonFa
         return webApplication.get();
     }
 
-    /**
-     * @return The ClusterMember object for this microservice. The ClusterMember object holds information about cluster
-     * members. When a member joins the cluster, the {@link #onJoin(MicroserviceClusterMember)} method is called with
-     * the ClusterMember object for the member. When a member leaves the cluster, the {@link
-     * #onLeave(MicroserviceClusterMember)} is called with the same object.
-     */
-    protected MicroserviceClusterMember<Member> onNewMember()
-    {
-        // By default, microservices are not clustered, so this returns null
-        return null;
-    }
-
     protected void onJoin(MicroserviceClusterMember<Member> member)
     {
     }
@@ -490,16 +504,15 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     }
 
     /**
-     * @return True if this microservice is clustered. To be clustered, two things are required:
-     * <ol>
-     *     <li>{@link #onNewMember()} must be overridden to return a value</li>
-     *     <li>A configuration for {@link ZookeeperConnection} must be available (normally in the <i>deployments</i>
-     *     package) next to the application</li>
-     * </ol>
+     * @return The ClusterMember object for this microservice. The ClusterMember object holds information about cluster
+     * members. When a member joins the cluster, the {@link #onJoin(MicroserviceClusterMember)} method is called with
+     * the ClusterMember object for the member. When a member leaves the cluster, the {@link
+     * #onLeave(MicroserviceClusterMember)} is called with the same object.
      */
-    public boolean isClustered()
+    protected MicroserviceClusterMember<Member> onNewMember()
     {
-        return cluster != null;
+        // By default, microservices are not clustered, so this returns null
+        return null;
     }
 
     /**

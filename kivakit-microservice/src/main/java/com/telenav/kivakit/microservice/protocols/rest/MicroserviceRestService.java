@@ -124,8 +124,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     @UmlAggregation
     private final Microservice<?> microservice;
 
-    /** True while the constructor is running */
-    private boolean mountAllowed = false;
+    /** True while initializing */
+    private boolean initializing = false;
 
     /** Map from REST path to request handler */
     private final Map<MicroservletRestPath, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
@@ -161,7 +161,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     @Override
     public final void initialize()
     {
-        mountAllowed = true;
+        initializing = true;
         try
         {
             mount("/open-api/swagger.json", GET, JettyOpenApiRequest.class);
@@ -170,7 +170,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         }
         finally
         {
-            mountAllowed = false;
+            initializing = false;
         }
     }
 
@@ -194,20 +194,20 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     public void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
     {
         // If we're in onInitialize(),
-        if (mountAllowed)
+        if (initializing)
         {
             // mount the microservlet,
             require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
         }
         else
         {
-            // otherwise complain.
+            // otherwise, complain.
             problem("Request handlers must be mounted in onInitialize()");
         }
     }
 
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mount(String path, HttpMethod method, Class<Request> requestType, Version version)
+    void mount(String path, HttpMethod method, Version version, Class<Request> requestType)
     {
         var absolutePath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
         mount(absolutePath, method, requestType);
@@ -227,7 +227,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     void mount(String path, HttpMethod method, Class<Request> requestType)
     {
         // If we're in onInitialize(),
-        if (mountAllowed)
+        if (initializing)
         {
             // create a request object, so we can get the response type and HTTP method,
             var request = listenTo(Type.forClass(requestType).newInstance());
