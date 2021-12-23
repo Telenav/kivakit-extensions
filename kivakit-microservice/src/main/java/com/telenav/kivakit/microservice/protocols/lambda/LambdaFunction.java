@@ -22,9 +22,9 @@ import java.util.Objects;
  */
 class LambdaFunction implements RegistryTrait
 {
-    private String name;
+    private final String name;
 
-    private Version version;
+    private final Version version;
 
     public LambdaFunction(String name, Version version)
     {
