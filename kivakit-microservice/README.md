@@ -23,7 +23,7 @@ This module provides an abstraction for developing microservices.
 ### Index
 
 [**Summary**](#summary)  
-[**Public API**](#public-api)
+[**Public API**](#public-api)  
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -166,13 +166,14 @@ The *MicroserviceGrpcService* class copies its request handler mounts from *Micr
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 63.0%.
-
+Javadoc coverage for this project is 63.3%.  
+  
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
 
-The following significant classes are undocumented:
 
-- MicroserviceGrpcClient
+The following significant classes are undocumented:  
+
+- MicroserviceGrpcClient  
 - RuntimeProtoGenerator
 
 | Class | Documentation Sections |
@@ -196,7 +197,10 @@ The following significant classes are undocumented:
 | | Request and Response |  
 | [*JettyOpenApiRequest*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/JettyOpenApiRequest.html) |  |  
 | [*JettyOpenApiRequest.JettyOpenApiResponse*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/JettyOpenApiRequest.JettyOpenApiResponse.html) |  |  
+| [*LambdaFunction*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/lambda/LambdaFunction.html) |  |  
 | [*LambdaRequestHandler*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/lambda/LambdaRequestHandler.html) | Logging |  
+| | Configuration |  
+| | Security |  
 | [*ListSerializer*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/serialization/ListSerializer.html) |  |  
 | [*MapEntryObjectObject*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapEntryObjectObject.html) |  |  
 | [*MapEntryStringObject*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapEntryStringObject.html) |  |  
@@ -216,8 +220,10 @@ The following significant classes are undocumented:
 | [*MicroserviceClusterMember*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceClusterMember.html) | Properties |  
 | | Leader Elections |  
 | [*MicroserviceGrpcClient*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/grpc/MicroserviceGrpcClient.html) |  |  
-| [*MicroserviceGrpcService*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/grpc/MicroserviceGrpcService.html) |  |  
+| [*MicroserviceGrpcService*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/grpc/MicroserviceGrpcService.html) | Creation |  
 | [*MicroserviceGsonObjectSource*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/gson/MicroserviceGsonObjectSource.html) |  |  
+| [*MicroserviceLambdaService*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/lambda/MicroserviceLambdaService.html) | AWS Installation |  
+| | Security |  
 | [*MicroserviceMetadata*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceMetadata.html) |  |  
 | [*MicroserviceProject*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceProject.html) |  |  
 | [*MicroserviceRestClient*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/MicroserviceRestClient.html) |  |  
@@ -271,6 +277,7 @@ The following significant classes are undocumented:
 | [*UUID*](https://www.kivakit.org/1.2.1/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/UUID.html) |  |  
 
 [//]: # (start-user-text)
+
 
 
 [//]: # (end-user-text)
