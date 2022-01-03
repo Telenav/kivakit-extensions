@@ -18,6 +18,8 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import kivakit.merged.grpc.io.netty.util.internal.logging.InternalLoggerFactory;
+import kivakit.merged.grpc.io.netty.util.internal.logging.JdkLoggerFactory;
 
 import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.LAST;
 
@@ -127,6 +129,8 @@ public class MicroserviceGrpcService extends BaseComponent implements
         information("Starting GRPC server");
 
         int port = microservice.settings().grpcPort();
+
+        InternalLoggerFactory.setDefaultFactory(JdkLoggerFactory.INSTANCE);
 
         server = ServerBuilder.forPort(port)
                 .addService(responder)
