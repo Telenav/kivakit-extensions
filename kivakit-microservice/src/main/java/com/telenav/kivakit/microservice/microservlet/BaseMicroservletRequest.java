@@ -31,6 +31,9 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
         aggregator.get().add(this, statistics);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Validator validator(ValidationType type)
     {
