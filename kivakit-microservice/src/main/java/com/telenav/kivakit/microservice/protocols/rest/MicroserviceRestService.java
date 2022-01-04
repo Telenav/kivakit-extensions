@@ -207,7 +207,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mount(String path, HttpMethod method, Version version, Class<Request> requestType)
+    void mount(Version version, String path, HttpMethod method, Class<Request> requestType)
     {
         var absolutePath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
         mount(absolutePath, method, requestType);
@@ -243,7 +243,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                     @JsonProperty
                     public String description()
                     {
-                        return Message.format("Anonymous microservlet for ${class}", requestType());
+                        return Message.format("KivaKit microservlet request handler for ${class}", requestType());
                     }
 
                     @Override

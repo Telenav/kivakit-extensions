@@ -27,4 +27,9 @@ public @interface OpenApiRequestHandler
      * @return A short summary of this request
      */
     String summary() default "";
+
+    /**
+     * @return Any tags for this request handler
+     */
+    String[] tags() default {};
 }

@@ -1,7 +1,9 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.kernel.language.strings.Strip;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
@@ -18,6 +20,8 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.RequestBody;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
+
+import java.util.List;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
@@ -46,7 +50,7 @@ public class OpenApiPathReader extends BaseComponent
 
         // Got through each mount path that the filter has,
         var filter = require(JettyMicroservletFilter.class);
-        for (var path : filter.paths())
+        for (var path : new ObjectList<>(filter.paths()).sorted())
         {
             // and add a PathItem to the list of paths.
             var microservlet = filter.microservlet(path);
@@ -81,16 +85,27 @@ public class OpenApiPathReader extends BaseComponent
      *
      * @param requestType The request type
      * @param responseType The response type
+     * @param path Path to REST operation
      * @return The OpenAPI {@link Operation} model
      */
     private Operation newOperation(Class<? extends MicroservletRequest> requestType,
-                                   Class<? extends MicroservletResponse> responseType)
+                                   Class<? extends MicroservletResponse> responseType,
+                                   MicroservletRestPath path)
     {
-        // then create an operation and populate it with the summary and description of the request,
+        // Create operation,
         var operation = new Operation();
         var annotationReader = new OpenApiAnnotationReader();
-        operation.summary(annotationReader.readAnnotationValue(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
-        operation.description(annotationReader.readAnnotationValue(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::description));
+        var operationId = Strip.leading(path.key().replaceAll("/", "-"), "-");
+
+        operation.operationId(operationId);
+        operation.summary(annotationReader.readAnnotationString(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
+        operation.description(annotationReader.readAnnotationString(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::description));
+        operation.tags(annotationReader.readAnnotationStringList(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::tags));
+
+        if (operation.getTags() == null || operation.getTags().isEmpty())
+        {
+            operation.tags(List.of("api version " + path.version()));
+        }
 
         // add success and error responses,
         var responses = new ApiResponses()
@@ -103,6 +118,7 @@ public class OpenApiPathReader extends BaseComponent
 
         operation.responses(responses);
 
+        // and request body,
         operation.requestBody(new RequestBody().content(newRequestContent(requestType)));
 
         // and return the operation
@@ -140,14 +156,14 @@ public class OpenApiPathReader extends BaseComponent
             switch (path.httpMethod())
             {
                 case GET:
-                    item.get(newOperation(requestType, responseType));
+                    item.get(newOperation(requestType, responseType, path));
                     break;
 
                 case POST:
-                    item.post(newOperation(requestType, responseType));
+                    item.post(newOperation(requestType, responseType, path));
                     break;
                 case DELETE:
-                    item.delete(newOperation(requestType, responseType));
+                    item.delete(newOperation(requestType, responseType, path));
                     break;
             }
 
