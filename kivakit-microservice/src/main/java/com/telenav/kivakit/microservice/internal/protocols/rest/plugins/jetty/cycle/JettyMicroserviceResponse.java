@@ -57,9 +57,6 @@ public final class JettyMicroserviceResponse extends BaseComponent
     @UmlAggregation
     private final JettyMicroservletRequestCycle cycle;
 
-    /** Servlet response */
-    private final HttpServletResponse httpResponse;
-
     /** Error messages that were reported to this response via {@link #problem(int, String, Object...)} */
     @Expose
     @JsonProperty
@@ -67,6 +64,9 @@ public final class JettyMicroserviceResponse extends BaseComponent
     @OpenApiIncludeMember(title = "Errors messages",
                           description = "A list of formatted error messages")
     private final MicroservletErrorResponse errors = new MicroservletErrorResponse();
+
+    /** Servlet response */
+    private final HttpServletResponse httpResponse;
 
     public JettyMicroserviceResponse(JettyMicroservletRequestCycle cycle, HttpServletResponse httpResponse)
     {
@@ -87,16 +87,20 @@ public final class JettyMicroserviceResponse extends BaseComponent
         }
     }
 
+    public MicroservletErrorResponse errors()
+    {
+        return errors;
+    }
+
     public Problem problem(int status, String text, Object... arguments)
     {
-        status(status);
-        return super.problem(text, arguments);
+        return problem(status, null, text, arguments);
     }
 
     public Problem problem(int status, Throwable exception, String text, Object... arguments)
     {
         status(status);
-        return super.problem(exception, text + ": " + exception.getMessage(), arguments);
+        return new Problem(exception, text, arguments);
     }
 
     public int status()
@@ -152,16 +156,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
                 ? toJson(response)
                 : toJson(errors);
 
-        try
-        {
-            // then send the JSON to the servlet output stream.
-            httpResponse.setContentType("application/json");
-            httpResponse.getOutputStream().println(json);
-        }
-        catch (Exception e)
-        {
-            problem(e, "Unable to write JSON response to servlet output stream");
-        }
+        writeResponse(json);
     }
 
     /**
@@ -170,7 +165,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
      * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
      * object.
      */
-    private String toJson(Object response)
+    public String toJson(Object response)
     {
         // We will serialize the response object itself by default.
         var objectToSerialize = response;
@@ -192,6 +187,25 @@ public final class JettyMicroserviceResponse extends BaseComponent
         {
             // otherwise, use the GsonFactory, provided by the application through the request cycle.
             return cycle.gson().toJson(objectToSerialize);
+        }
+    }
+
+    /**
+     * Writes the given string to the response as application/json
+     *
+     * @param json The JSON to write
+     */
+    private void writeResponse(final String json)
+    {
+        try
+        {
+            // then send the JSON to the servlet output stream.
+            httpResponse.setContentType("application/json");
+            httpResponse.getOutputStream().println(json);
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to write response to servlet output stream");
         }
     }
 }

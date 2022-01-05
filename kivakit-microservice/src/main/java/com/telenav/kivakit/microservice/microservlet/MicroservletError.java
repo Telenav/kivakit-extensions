@@ -1,5 +1,7 @@
 package com.telenav.kivakit.microservice.microservlet;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.OperationMessage;
@@ -38,6 +40,7 @@ public class MicroservletError
     @OpenApiIncludeMember(description = "A hierarchical error code per IETF RFC 7807",
                           example = "errors/authentication/my-error",
                           required = false)
+    @Expose
     private final String code;
 
     /**
@@ -46,6 +49,7 @@ public class MicroservletError
     @OpenApiIncludeMember(
             description = "The message type such as Problem or Warning. Used by the microservice REST client and can be ignored",
             example = "Problem")
+    @Expose
     private final String type;
 
     /**
@@ -53,6 +57,7 @@ public class MicroservletError
      */
     @OpenApiIncludeMember(description = "A formatted description of the error",
                           example = "This is a description of the problem that occurred")
+    @Expose
     private final String message;
 
     protected MicroservletError(String code, String type, String message)

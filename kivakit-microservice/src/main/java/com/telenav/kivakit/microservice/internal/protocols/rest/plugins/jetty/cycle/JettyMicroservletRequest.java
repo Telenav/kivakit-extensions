@@ -172,7 +172,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
             if (!request.isValid(response))
             {
                 // then we have an invalid response
-                response.problem(SC_BAD_REQUEST, "Invalid request object: $", json);
+                response.problem(SC_BAD_REQUEST, response.toJson(response.errors()));
                 return null;
             }
 

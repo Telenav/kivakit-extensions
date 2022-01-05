@@ -30,12 +30,12 @@ public @interface OpenApiIncludeMember
     /**
      * @return Description of the annotated member
      */
-    String description();
+    String description() default "No description";
 
     /**
      * @return An example of the annotated member
      */
-    String example() default "";
+    String example() default "No example";
 
     /**
      * @return The format of the member

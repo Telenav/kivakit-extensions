@@ -1,8 +1,9 @@
 package com.telenav.kivakit.microservice.microservlet;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.kernel.data.validation.ValidationType;
 import com.telenav.kivakit.kernel.data.validation.Validator;
-import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
@@ -11,6 +12,9 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMem
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list of error messages used in {@link MicroservletResponse} for specific HTTP error codes. See {@link
@@ -25,9 +29,10 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 public class MicroservletErrorResponse extends BaseMicroservletResponse
 {
     @OpenApiIncludeMember(description = "List of errors that occurred")
-    private final ObjectList<MicroservletError> errors = new ObjectList<>();
+    @Expose
+    private final List<MicroservletError> errors = new ArrayList<>();
 
-    public ObjectList<MicroservletError> errors()
+    public List<MicroservletError> errors()
     {
         return errors;
     }
@@ -46,7 +51,10 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
     @Override
     public void onMessage(Message message)
     {
-        errors.addIfNotNull(MicroservletError.of(message));
+        if (message != null)
+        {
+            errors.add(MicroservletError.of(message));
+        }
     }
 
     /**

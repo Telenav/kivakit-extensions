@@ -16,10 +16,9 @@ public interface ProblemReportingTrait
         return response().problem(httpStatus, text, arguments);
     }
 
-    default Problem problem(int httpStatus, String code, Throwable exception, String text,
-                            Object... arguments)
+    default Problem problem(int httpStatus, String code, Throwable exception, String text, Object... arguments)
     {
-        var problem = new Problem(exception, text + ": " + exception.getMessage(), arguments);
+        var problem = new Problem(exception, text, arguments);
         problem.cause(exception);
         problem.code(code);
         response().status(httpStatus);

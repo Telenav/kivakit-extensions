@@ -224,21 +224,29 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
                     {
                         // get the generic type parameter,
                         var parameters = member.genericTypeParameters();
-                        if (parameters.size() == 1)
+                        if (parameters != null)
                         {
                             // and add the member as an array of the type parameter type.
                             properties.put(property.name(), readArray(member, parameters.get(0)));
                         }
                         else
                         {
-                            var genericType = includeAnnotation.genericType();
-                            if (genericType != Void.class)
+                            parameters = member.arrayElementType();
+                            if (parameters != null)
                             {
-                                properties.put(property.name(), readArray(member, Type.forClass(genericType)));
+                                properties.put(property.name(), readArray(member, parameters.get(0)));
                             }
                             else
                             {
-                                problem("Could not determine generic type parameter for: $.$", type.simpleName(), member.name());
+                                var genericType = includeAnnotation.genericType();
+                                if (genericType != Void.class)
+                                {
+                                    properties.put(property.name(), readArray(member, Type.forClass(genericType)));
+                                }
+                                else
+                                {
+                                    problem("Could not determine generic type parameter for: $.$", type.simpleName(), member.name());
+                                }
                             }
                         }
                     }
