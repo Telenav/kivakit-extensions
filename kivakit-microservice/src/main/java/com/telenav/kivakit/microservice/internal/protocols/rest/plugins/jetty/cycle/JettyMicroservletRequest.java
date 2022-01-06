@@ -81,6 +81,19 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
         this.httpRequest = httpRequest;
     }
 
+    public <T> T fromJson(final String json, final Class<T> type)
+    {
+        return cycle.gson().fromJson(json, type);
+    }
+
+    /**
+     * @return True if this request has a body that can be read with {@link #readObject(Class)}
+     */
+    public boolean hasBody()
+    {
+        return httpRequest.getContentLength() != 0;
+    }
+
     /**
      * @return Parameters to this request
      */
@@ -143,14 +156,6 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
     }
 
     /**
-     * @return True if this request has a body that can be read with {@link #readObject(Class)}
-     */
-    public boolean hasBody()
-    {
-        return httpRequest.getContentLength() != 0;
-    }
-
-    /**
      * Retrieves an object from the JSON in the servlet request input stream.
      *
      * @param <T> The object type
@@ -166,13 +171,13 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
             // Read JSON object from servlet input
             var in = httpRequest.getInputStream();
             String json = IO.string(in);
-            var request = cycle.gson().fromJson(json, requestType);
+            var request = fromJson(json, requestType);
 
             // If the request is invalid (any problems go into the response object),
             if (!request.isValid(response))
             {
                 // then we have an invalid response
-                response.problem(SC_BAD_REQUEST, response.toJson(response.errors()));
+                problem(SC_BAD_REQUEST, "Invalid request");
                 return null;
             }
 
@@ -180,7 +185,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
         }
         catch (Exception e)
         {
-            problem(SC_BAD_REQUEST, e, "Unable to read JSON request from servlet input stream: $", e.getMessage());
+            problem(SC_BAD_REQUEST, e, "Malformed request");
             return null;
         }
     }

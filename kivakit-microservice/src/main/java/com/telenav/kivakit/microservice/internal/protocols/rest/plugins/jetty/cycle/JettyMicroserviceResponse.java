@@ -100,7 +100,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     public Problem problem(int status, Throwable exception, String text, Object... arguments)
     {
         status(status);
-        return new Problem(exception, text, arguments);
+        return transmit( new Problem(exception, text, arguments));
     }
 
     public int status()
