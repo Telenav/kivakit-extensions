@@ -47,7 +47,6 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
             GsonFactorySource,
             MicroserviceGsonObjectSource
     {
-        @Tag(1)
         @Expose
         private final OpenAPI api;
 
@@ -94,7 +93,6 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
         }
     }
 
-    @Tag(1)
     @Expose
     private String ignored = "IGNORED";
 

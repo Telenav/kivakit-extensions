@@ -12,6 +12,8 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 public interface MicroservletRequestHandler
 {
     /**
+     * Handles this request, producing a {@link MicroservletResponse}
+     *
      * @return The response to this microservlet request
      */
     MicroservletResponse onRequest();
