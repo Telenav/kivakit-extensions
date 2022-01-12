@@ -59,26 +59,39 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
  */
 public class MicroserviceCluster<Member> extends BaseComponent
 {
-    /** Tracks reentrancy to the onSettingsUpdated method to ensure that it is not called recursively */
-    private final ReentrancyTracker reentrancy = new ReentrancyTracker();
+    /** The current cluster leader as of the last election by {@link #electLeader()} */
+    private MicroserviceClusterMember<Member> leader;
+
+    /** The members of this cluster as of the last time that {@link #loadMembers()} was called */
+    private ObjectList<MicroserviceClusterMember<Member>> members;
+
+    /** Prevent reentrancy during member loading */
+    private ReentrancyTracker reentrancyTracker = new ReentrancyTracker();
 
     /**
      * Joins this cluster with the given member data. Keeps trying to join the cluster when disconnected.
      *
      * @param member The member data for this cluster member
      */
-    @SuppressWarnings("InfiniteLoopStatement")
     public void join(MicroserviceClusterMember<Member> member)
     {
         // Whenever we connect to Zookeeper,
         require(ZookeeperConnection.class).onConnection(() ->
         {
             // force the loading of existing members,
-            members();
+            loadMembers();
 
             // then add ourselves as a member.
             store().save(new SettingsObject(member.data(), instanceIdentifier()));
         });
+    }
+
+    /**
+     * @return The leader of this cluster
+     */
+    public MicroserviceClusterMember<Member> leader()
+    {
+        return leader;
     }
 
     /**
@@ -99,35 +112,58 @@ public class MicroserviceCluster<Member> extends BaseComponent
     /**
      * @return The members of this cluster at the time this method is called
      */
-    public ObjectList<MicroserviceClusterMember<Member>> members()
+    public boolean loadMembers()
     {
-        var members = new IdentitySet<MicroserviceClusterMember<Member>>();
-
-        if (isConnected())
+        try
         {
-            // Force the store to reload from Zookeeper,
-            store().forceLoad();
-
-            // then go through the indexed objects
-            for (var settingsObject : store().indexed())
+            if (reentrancyTracker.enter())
             {
-                // and add each one as a cluster member
-                var child = settingsObject.identifier().instance().identifier();
-                var flat = store().root().withChild(child);
-                var path = store().unflatten(flat);
-                members.add(member(path, settingsObject));
-            }
-        }
-        else
-        {
-            warning("Cannot load cluster members: Zookeeper is not connected");
-        }
+                var loaded = new IdentitySet<MicroserviceClusterMember<Member>>();
 
-        return ObjectList.objectList(members);
+                if (isConnected())
+                {
+                    // Force the store to reload from Zookeeper,
+                    store().reload();
+
+                    // then go through the indexed objects
+                    for (var settingsObject : store().indexed())
+                    {
+                        // and add each one as a cluster member
+                        var child = settingsObject.identifier().instance().identifier();
+                        var flat = store().root().withChild(child);
+                        var path = store().unflatten(flat);
+                        loaded.add(member(path, settingsObject));
+                    }
+                }
+                else
+                {
+                    warning("Cannot load cluster members: Zookeeper is not connected");
+                }
+
+                var newMembers = ObjectList.objectList(loaded);
+                var updated = !newMembers.equals(members);
+                members = newMembers;
+                return updated;
+            }
+
+            return false;
+        }
+        finally
+        {
+            reentrancyTracker.exit();
+        }
     }
 
     /**
-     * @return The member for this process and host
+     * @return The members of this cluster as of the last call to {@link #loadMembers()}
+     */
+    public ObjectList<MicroserviceClusterMember<Member>> members()
+    {
+        return members;
+    }
+
+    /**
+     * @return The cluster member for this process and host
      */
     public MicroserviceClusterMember<Member> thisMember()
     {
@@ -169,23 +205,18 @@ public class MicroserviceCluster<Member> extends BaseComponent
     private void electLeader()
     {
         var members = members().sorted();
-
         if (members.isNonEmpty())
         {
             var first = members.first();
-
-            var elected = true;
-            for (var member : members)
+            if (leader == null || !leader.equals(first))
             {
-                member.elect(elected);
-                if (elected)
-                {
-                    trace("Elected as leader: $", first);
-                }
-                elected = false;
-            }
+                members.forEach(at -> at.elect(false));
+                first.elect(true);
+                leader = first;
 
-            showMembers(members);
+                announce("Elected as leader: $", first);
+                showMembers(members);
+            }
         }
     }
 
@@ -201,8 +232,8 @@ public class MicroserviceCluster<Member> extends BaseComponent
     }
 
     @NotNull
-    private MicroserviceClusterMember<Member> member(final StringPath path,
-                                                     final SettingsObject settings)
+    private MicroserviceClusterMember<Member> member(StringPath path,
+                                                     SettingsObject settings)
     {
         var parts = path.last().split("#");
 
@@ -213,7 +244,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                 settings.object());
     }
 
-    private void showMembers(final ObjectList<MicroserviceClusterMember<Member>> members)
+    private void showMembers(ObjectList<MicroserviceClusterMember<Member>> members)
     {
         var output = new StringList();
         for (var member : members)
@@ -237,30 +268,26 @@ public class MicroserviceCluster<Member> extends BaseComponent
         @Override
         protected void onSettingsDeleted(StringPath path, SettingsObject settings)
         {
-            var member = member(path, settings);
-            announce("Leaving cluster: $", member.identifier());
-            onLeave(member);
-            unindex(settings);
-            electLeader();
+            if (loadMembers())
+            {
+                var member = member(path, settings);
+                announce("Leaving cluster: $", member.identifier());
+                onLeave(member);
+                unindex(settings);
+                electLeader();
+            }
         }
 
         @Override
         protected void onSettingsUpdated(StringPath path, SettingsObject settings)
         {
-            try
+            if (loadMembers())
             {
-                if (!reentrancy.enter())
-                {
-                    var member = member(path, settings);
-                    index(settings);
-                    announce("Joining cluster: $", member.identifier());
-                    onJoin(member);
-                    electLeader();
-                }
-            }
-            finally
-            {
-                reentrancy.exit();
+                var member = member(path, settings);
+                index(settings);
+                announce("Joining cluster: $", member.identifier());
+                onJoin(member);
+                electLeader();
             }
         }
     });

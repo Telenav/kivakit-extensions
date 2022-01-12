@@ -172,24 +172,95 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
+     * <ol>
+     *     <li>Reads the settings object at the given path from Zookeeper</li>
+     *     <li>Indexes the object</li>
+     *     <li>Propagates changes to any dependent registry</li>
+     *     <li>Calls {@link #onSettingsUpdated(StringPath, SettingsObject)}</li>
+     *     <li>Adds a watcher for the given path</li>
+     * </ol>
+     *
+     * @return The settings object at the given path
+     */
+    public SettingsObject loadSettings(StringPath path)
+    {
+        trace("Loading settings: $", path);
+
+        // Get the settings object type and instance referred to by the given path
+        var type = settingsType(path);
+        if (type != null)
+        {
+            var instance = instance(path);
+
+            try
+            {
+                // read the altered settings object data,
+                var data = connection.read(path);
+                if (data != null)
+                {
+                    // deserialize the object,
+                    var object = onDeserialize(data, type);
+                    if (object != null)
+                    {
+                        // then index it,
+                        var settings = new SettingsObject(object, type, instance);
+                        index(settings);
+
+                        // propagate the change,
+                        var update = propagateChangesTo();
+                        if (update != null)
+                        {
+                            update.index(settings);
+                        }
+
+                        // and tell the subclass we updated.
+                        trace("Load settings: $", path);
+                        onSettingsUpdated(unflatten(path), settings);
+
+                        return settings;
+                    }
+                    else
+                    {
+                        warning("Could not deserialize: $: $", path, new String(data));
+                    }
+                }
+                else
+                {
+                    warning("No data read from: $", path);
+                }
+            }
+            catch (Exception e)
+            {
+                problem(e, "Could not update: $", path);
+            }
+        }
+        else
+        {
+            warning("Could not parse class from: $", path);
+        }
+
+        return null;
+    }
+
+    /**
      * Reload the settings store if children changed
      *
      * @param path The path to the node
      */
     @Override
-    public final void onNodeChildrenChanged(final StringPath path)
+    public final void onNodeChildrenChanged(StringPath path)
     {
         trace("onNodeChildrenChanged($)", path);
-        forceLoad();
+        reload();
 
         connection.watchRoot();
     }
 
     @Override
-    public final void onNodeCreated(final StringPath path)
+    public final void onNodeCreated(StringPath path)
     {
         trace("onNodeCreated($)", path);
-        forceLoad();
+        reload();
 
         connection.watchRoot();
     }
@@ -204,7 +275,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     public final void onNodeDataChanged(StringPath path)
     {
         trace("onNodeDataChanged($)", path);
-        readSettings(path);
+        loadSettings(path);
 
         connection.watch(path);
     }
@@ -245,76 +316,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * <ol>
-     *     <li>Reads the settings object at the given path from Zookeeper</li>
-     *     <li>Indexes the object</li>
-     *     <li>Propagates changes to any dependent registry</li>
-     *     <li>Calls {@link #onSettingsUpdated(StringPath, SettingsObject)}</li>
-     *     <li>Adds a watcher for the given path</li>
-     * </ol>
-     *
-     * @return The settings object at the given path
-     */
-    public SettingsObject readSettings(final StringPath path)
-    {
-        trace("Reading settings: $", path);
-
-        // Get the settings object type and instance referred to by the given path
-        var type = settingsType(path);
-        if (type != null)
-        {
-            var instance = instance(path);
-
-            try
-            {
-                // read the altered settings object data,
-                var data = connection.read(path);
-                if (data != null)
-                {
-                    // deserialize the object,
-                    var object = onDeserialize(data, type);
-                    if (object != null)
-                    {
-                        // then index it,
-                        var settings = new SettingsObject(object, type, instance);
-                        index(settings);
-
-                        // propagate the change,
-                        var update = propagateChangesTo();
-                        if (update != null)
-                        {
-                            update.index(settings);
-                        }
-
-                        // and tell the subclass we updated.
-                        onSettingsUpdated(unflatten(path), settings);
-
-                        return settings;
-                    }
-                    else
-                    {
-                        warning("Could not deserialize: $: $", path, new String(data));
-                    }
-                }
-                else
-                {
-                    warning("No data read from: $", path);
-                }
-            }
-            catch (Exception e)
-            {
-                problem(e, "Could not update: $", path);
-            }
-        }
-        else
-        {
-            warning("Could not parse class from: $", path);
-        }
-
-        return null;
-    }
-
-    /**
      * @return The root path of this settings store
      */
     public StringPath root()
@@ -327,7 +328,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      * node path /a::b::c becomes the hierarchical node path /a/b/c.
      */
     @NotNull
-    public StringPath unflatten(final StringPath path)
+    public StringPath unflatten(StringPath path)
     {
         if (path.size() == 1)
         {
@@ -381,7 +382,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
                 {
                     // then read and add the settings,
                     var path = StringPath.stringPath(child).withRoot("/");
-                    settings.addIfNotNull(readSettings(path));
+                    settings.addIfNotNull(loadSettings(path));
 
                     // and watch the path for changes
                     connection.watch(path);
@@ -512,7 +513,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
         // Add the data at this path
         if (path.size() > 1)
         {
-            settings.addIfNotNull(readSettings(path));
+            settings.addIfNotNull(loadSettings(path));
         }
 
         // Go through each child node of the given path

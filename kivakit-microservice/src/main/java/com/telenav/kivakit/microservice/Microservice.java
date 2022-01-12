@@ -139,7 +139,8 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * When a microservice starts up, it automatically joins a cluster of similar microservices. The {@link MicroserviceCluster}
  * retrieved with the {@link #cluster()} method models the cluster and is organized through Apache Zookeeper. When members
  * join and leave the cluster the {@link #onJoin(MicroserviceClusterMember)} and {@link #onLeave(MicroserviceClusterMember)}
- * methods will be called. The set of members of the cluster can be retrieved with {@link MicroserviceCluster#members()}.
+ * methods will be called. The set of members of the cluster can be retrieved with {@link MicroserviceCluster#members()},
+ * and the leader with {@link MicroserviceCluster#leader()}.
  * </p>
  *
  * <p><b>Cluster Elections</b></p>
@@ -182,6 +183,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                     .build();
 
     /**
+     * Command line switch to output .proto files to the given folder
+     */
+    private final SwitchParser<Folder> PROTO_EXPORT_FOLDER =
+            Folder.folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
+                    .optional()
+                    .build();
+
+    /**
      * Command line switch to run this microservice as a blocking server. This will override any value from {@link
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
@@ -190,21 +199,13 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                     .optional()
                     .build();
 
-    /**
-     * Command line switch to output .proto files to the given folder
-     */
-    private final SwitchParser<Folder> PROTO_EXPORT_FOLDER =
-            Folder.folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
-                    .optional()
-                    .build();
-
     private MicroserviceCluster<Member> cluster;
 
     private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
 
-    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
-
     private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.of(this::onNewLambdaService);
+
+    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
 
     /** True if this microservice is running */
     private boolean running;
@@ -293,6 +294,16 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     public MicroserviceLambdaService lambdaService()
     {
         return lambdaService.get();
+    }
+
+    /**
+     * @return The leader of this cluster
+     */
+    public MicroserviceClusterMember<Member> leader()
+    {
+        ensure(isClustered());
+
+        return cluster.leader();
     }
 
     /**
