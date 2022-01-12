@@ -6,12 +6,12 @@ import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
 import com.telenav.kivakit.configuration.settings.SettingsObject;
 import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.kernel.language.primitives.Ints;
 import com.telenav.kivakit.kernel.language.threading.status.ReentrancyTracker;
 import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
@@ -62,52 +62,23 @@ public class MicroserviceCluster<Member> extends BaseComponent
     /** Tracks reentrancy to the onSettingsUpdated method to ensure that it is not called recursively */
     private final ReentrancyTracker reentrancy = new ReentrancyTracker();
 
-    /** Zookeeper settings store used to track cluster members */
-    private final Lazy<ZookeeperSettingsStore> store = Lazy.of(() -> listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL)
-    {
-        @Override
-        protected void onSettingsDeleted(StringPath path, SettingsObject settings)
-        {
-            var member = member(path, settings);
-            announce("Leaving cluster: $", member.identifier());
-            onLeave(member);
-            unindex(settings);
-            electLeader();
-        }
-
-        @Override
-        protected void onSettingsUpdated(StringPath path, SettingsObject settings)
-        {
-            try
-            {
-                if (!reentrancy.enter())
-                {
-                    var member = member(path, settings);
-                    index(settings);
-                    announce("Joining cluster: $", member.identifier());
-                    onJoin(member);
-                    electLeader();
-                }
-            }
-            finally
-            {
-                reentrancy.exit();
-            }
-        }
-    }));
-
     /**
-     * Joins this cluster with the given member data
+     * Joins this cluster with the given member data. Keeps trying to join the cluster when disconnected.
      *
      * @param member The member data for this cluster member
      */
+    @SuppressWarnings("InfiniteLoopStatement")
     public void join(MicroserviceClusterMember<Member> member)
     {
-        // Force loading of existing members,
-        members();
+        // Whenever we connect to Zookeeper,
+        require(ZookeeperConnection.class).onConnection(() ->
+        {
+            // force the loading of existing members,
+            members();
 
-        // then add ourselves as a member.
-        store().save(new SettingsObject(member.data(), instanceIdentifier()));
+            // then add ourselves as a member.
+            store().save(new SettingsObject(member.data(), instanceIdentifier()));
+        });
     }
 
     /**
@@ -115,7 +86,14 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public void leave()
     {
-        store().delete(new SettingsObject(thisMember().data(), instanceIdentifier()));
+        if (isConnected())
+        {
+            store().delete(new SettingsObject(thisMember().data(), instanceIdentifier()));
+        }
+        else
+        {
+            warning("Cannot leave cluster: Zookeeper is not connected");
+        }
     }
 
     /**
@@ -125,17 +103,24 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
         var members = new IdentitySet<MicroserviceClusterMember<Member>>();
 
-        // Force the store to reload from Zookeeper,
-        store().forceLoad();
-
-        // then go through the indexed objects
-        for (var settingsObject : store().indexed())
+        if (isConnected())
         {
-            // and add each one as a cluster member
-            var child = settingsObject.identifier().instance().identifier();
-            var flat = store().root().withChild(child);
-            var path = store().unflatten(flat);
-            members.add(member(path, settingsObject));
+            // Force the store to reload from Zookeeper,
+            store().forceLoad();
+
+            // then go through the indexed objects
+            for (var settingsObject : store().indexed())
+            {
+                // and add each one as a cluster member
+                var child = settingsObject.identifier().instance().identifier();
+                var flat = store().root().withChild(child);
+                var path = store().unflatten(flat);
+                members.add(member(path, settingsObject));
+            }
+        }
+        else
+        {
+            warning("Cannot load cluster members: Zookeeper is not connected");
         }
 
         return ObjectList.objectList(members);
@@ -146,12 +131,19 @@ public class MicroserviceCluster<Member> extends BaseComponent
      */
     public MicroserviceClusterMember<Member> thisMember()
     {
-        for (var member : members())
+        if (isConnected())
         {
-            if (member.isThis())
+            for (var member : members())
             {
-                return member;
+                if (member.isThis())
+                {
+                    return member;
+                }
             }
+        }
+        else
+        {
+            warning("Cannot get this member: Zookeeper is not connected");
         }
 
         return null;
@@ -203,6 +195,11 @@ public class MicroserviceCluster<Member> extends BaseComponent
         return InstanceIdentifier.of(Host.local().dnsName() + "#" + OperatingSystem.get().processIdentifier() + "#");
     }
 
+    private boolean isConnected()
+    {
+        return require(ZookeeperConnection.class).isConnected();
+    }
+
     @NotNull
     private MicroserviceClusterMember<Member> member(final StringPath path,
                                                      final SettingsObject settings)
@@ -231,8 +228,40 @@ public class MicroserviceCluster<Member> extends BaseComponent
 
     private ZookeeperSettingsStore store()
     {
-        return store.get();
+        return store;
     }
 
+    /** Zookeeper settings store used to track cluster members */
+    private final ZookeeperSettingsStore store = listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL)
+    {
+        @Override
+        protected void onSettingsDeleted(StringPath path, SettingsObject settings)
+        {
+            var member = member(path, settings);
+            announce("Leaving cluster: $", member.identifier());
+            onLeave(member);
+            unindex(settings);
+            electLeader();
+        }
 
+        @Override
+        protected void onSettingsUpdated(StringPath path, SettingsObject settings)
+        {
+            try
+            {
+                if (!reentrancy.enter())
+                {
+                    var member = member(path, settings);
+                    index(settings);
+                    announce("Joining cluster: $", member.identifier());
+                    onJoin(member);
+                    electLeader();
+                }
+            }
+            finally
+            {
+                reentrancy.exit();
+            }
+        }
+    });
 }

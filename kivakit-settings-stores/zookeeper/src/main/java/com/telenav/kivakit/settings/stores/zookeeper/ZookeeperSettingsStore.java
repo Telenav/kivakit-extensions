@@ -122,7 +122,9 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see BaseSettingsStore
  * @see SettingsStore
  */
-public class ZookeeperSettingsStore extends BaseSettingsStore implements ZookeeperChangeListener
+public class ZookeeperSettingsStore extends BaseSettingsStore implements
+        ZookeeperChangeListener,
+        ZookeeperConnectionListener
 {
     /**
      * Path separator used when storing ephemeral nodes in Zookeeper.
@@ -137,7 +139,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Zookeep
     private static final String EPHEMERAL_NODE_SEPARATOR = "::";
 
     /** Connection to Zookeeper */
-    private final ZookeeperConnection connection = listenTo(new ZookeeperConnection());
+    private final ZookeeperConnection connection = listenTo(register(new ZookeeperConnection(this, this)));
 
     /** Create mode for settings in this store */
     private CreateMode createMode;
@@ -151,7 +153,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Zookeep
     public ZookeeperSettingsStore(CreateMode createMode)
     {
         this.createMode = createMode;
-        connection.addChangeListener(this);
     }
 
     /**
@@ -159,7 +160,6 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements Zookeep
      */
     public ZookeeperSettingsStore()
     {
-        connection.addChangeListener(this);
     }
 
     /**

@@ -6,8 +6,10 @@ import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.paths.StringPath;
 import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
 import com.telenav.kivakit.kernel.language.strings.Strip;
+import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.threading.conditions.StateMachine;
 import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.kernel.language.time.Frequency;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
@@ -23,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNull;
 import static org.apache.zookeeper.CreateMode.PERSISTENT;
 
 /**
@@ -32,7 +33,7 @@ import static org.apache.zookeeper.CreateMode.PERSISTENT;
  * <p><b>Reading and Writing</b></p>
  *
  * <ul>
- *     <li>{@link #create(StringPath, List, CreateMode)} - Creates a node at the given path</li>
+ *     <li>{@link #create(StringPath, byte[], List, CreateMode)} - Creates a node at the given path</li>
  *     <li>{@link #delete(StringPath)} - Deletes the node at the given path</li>
  *     <li>{@link #read(StringPath)} - Reads the data from the node at the given path</li>
  *     <li>{@link #write(StringPath, byte[])} - Writes the given data to the node at the given path</li>
@@ -42,7 +43,7 @@ import static org.apache.zookeeper.CreateMode.PERSISTENT;
  * <p><b>Watching for Changes</b></p>
  *
  * <ul>
- *     <li>{@link #addChangeListener(ZookeeperChangeListener)} - Adds a listener to call when nodes are created, deleted and changed</li>
+ *     <li>{@link #ZookeeperConnection(ZookeeperConnectionListener, ZookeeperChangeListener)}</li>
  * </ul>
  *
  * @author jonathanl (shibo)
@@ -92,7 +93,10 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /** Listener to call as Zookeeper reports changes */
-    private ZookeeperChangeListener listener;
+    private final ZookeeperChangeListener changeListener;
+
+    /** Listener to call as Zookeeper connects and disconnects */
+    private final ZookeeperConnectionListener connectionListener;
 
     /** Connection state */
     private final StateMachine<State> state = new StateMachine<>(State.DISCONNECTED);
@@ -103,14 +107,18 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /** Any connected zookeeper instance */
     private transient ZooKeeper zookeeper;
 
-    /**
-     * Sets the change listener to call as the store changes
-     */
-    public void addChangeListener(ZookeeperChangeListener listener)
-    {
-        ensureNull(this.listener, "Cannot add more than one listener");
+    /** Any connecting zookeeper instance */
+    private transient ZooKeeper connectingZookeeper;
 
-        this.listener = listener;
+    /** Code to run when Zookeeper connects */
+    private Runnable onConnection;
+
+    public ZookeeperConnection(ZookeeperConnectionListener connectionListener, ZookeeperChangeListener changeListener)
+    {
+        this.connectionListener = connectionListener;
+        this.changeListener = changeListener;
+
+        connect();
     }
 
     /**
@@ -210,6 +218,24 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
+     * @return True if this Zookeeper connection is connected and ready
+     */
+    public boolean isConnected()
+    {
+        return zookeeper() != null;
+    }
+
+    /**
+     * Sets code to call when Zookeeper connects
+     *
+     * @param code The code to call
+     */
+    public void onConnection(Runnable code)
+    {
+        this.onConnection = code;
+    }
+
+    /**
      * <b>Zookeeper API</b>
      *
      * <p>
@@ -225,19 +251,19 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         switch (event.getType())
         {
             case NodeCreated:
-                invokeListenerMethod(event, listener::onNodeCreated);
+                invokeListenerMethod(event, changeListener::onNodeCreated);
                 break;
 
             case NodeDeleted:
-                invokeListenerMethod(event, listener::onNodeDeleted);
+                invokeListenerMethod(event, changeListener::onNodeDeleted);
                 break;
 
             case NodeDataChanged:
-                invokeListenerMethod(event, listener::onNodeDataChanged);
+                invokeListenerMethod(event, changeListener::onNodeDataChanged);
                 break;
 
             case NodeChildrenChanged:
-                invokeListenerMethod(event, listener::onNodeChildrenChanged);
+                invokeListenerMethod(event, changeListener::onNodeChildrenChanged);
                 break;
 
             case None:
@@ -342,24 +368,45 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /**
      * @return The Zookeeper instance for this connection
      */
-    public ZooKeeper zookeeper()
+    public synchronized ZooKeeper zookeeper()
     {
-        while (zookeeper == null)
+        if (zookeeper == null)
         {
-            try
-            {
-                zookeeper = new ZooKeeper(settings().ports, (int) settings().timeout.asMilliseconds(), this);
-                state.waitFor(State.CONNECTED);
-                return zookeeper;
-            }
-            catch (Exception e)
-            {
-                warning(e, "Unable to connect to zookeeper: $", settings().ports);
-                Duration.seconds(5).sleep();
-            }
+            throw new IllegalStateException("Zookeeper not ready");
         }
-
         return zookeeper;
+    }
+
+    /**
+     * Connects to Zookeeper on a background thread
+     */
+    @SuppressWarnings("InfiniteLoopStatement")
+    private void connect()
+    {
+        // Start a background thread to keep re-connecting to Zookeeper
+        KivaKitThread.run("Zookeeper Connector", () ->
+        {
+            while (true)
+            {
+                synchronized (ZookeeperConnection.this)
+                {
+                    if (connectingZookeeper == null)
+                    {
+                        try
+                        {
+                            // Start Zookeeper with this object as the watcher,
+                            this.connectingZookeeper = new ZooKeeper(settings().ports, (int) settings().timeout.asMilliseconds(), this);
+                        }
+                        catch (Exception e)
+                        {
+                            warning(Frequency.every(Duration.minutes(1.5)), "Unable to connect to zookeeper: $", settings().ports);
+                        }
+                    }
+                }
+
+                Duration.seconds(15).sleep();
+            }
+        });
     }
 
     /**
@@ -387,9 +434,22 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      */
     private void onConnected()
     {
+        // If we can transition to the connected state,
         if (state.transition(State.DISCONNECTED, State.CONNECTED))
         {
+            // assign the connecting Zookeeper instance to the zookeeper field.
             trace("Connected");
+            synchronized (this)
+            {
+                zookeeper = connectingZookeeper;
+            }
+
+            if (connectionListener != null)
+            {
+                connectionListener.onConnected();
+            }
+
+            onConnection.run();
 
             // If we are reconnecting after a connection failure, go through each watched path,
             for (var path : watchers.keySet())
@@ -409,6 +469,13 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
         {
             IO.close(zookeeper);
             zookeeper = null;
+            connectingZookeeper = null;
+
+            if (connectionListener != null)
+            {
+                connectionListener.onDisconnected();
+            }
+
             trace("Disconnected");
         }
     }
