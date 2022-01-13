@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-filesystems</artifactId>
-        <version>1.2.2</version>
+        <version>1.2.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>kivakit-filesystems-hdfs-proxy</artifactId>
