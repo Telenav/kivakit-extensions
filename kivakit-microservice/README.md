@@ -166,7 +166,7 @@ The *MicroserviceGrpcService* class copies its request handler mounts from *Micr
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 63.3%.  
+Javadoc coverage for this project is 62.8%.  
   
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
 
@@ -174,6 +174,7 @@ Javadoc coverage for this project is 63.3%.
 The following significant classes are undocumented:  
 
 - MicroserviceGrpcClient  
+- MicroservletRestPath  
 - RuntimeProtoGenerator
 
 | Class | Documentation Sections |
