@@ -55,7 +55,7 @@ None
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 54.5%.  
+Javadoc coverage for this project is 51.7%.  
   
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
 
@@ -71,6 +71,7 @@ Javadoc coverage for this project is 54.5%.
 | [*ZookeeperConnection.ListenerMethod*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnection.ListenerMethod.html) |  |  
 | [*ZookeeperConnection.Settings*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnection.Settings.html) |  |  
 | [*ZookeeperConnection.State*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnection.State.html) |  |  
+| [*ZookeeperConnectionListener*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnectionListener.html) |  |  
 | [*ZookeeperSettingsStore*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperSettingsStore.html) | Configuration |  
 | | Loading Settings |  
 | | Creating a Zookeeper Settings Store |  
