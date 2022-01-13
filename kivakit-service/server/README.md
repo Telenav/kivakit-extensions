@@ -30,14 +30,14 @@ This module provides port registration services to kivakit-service-client
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.2.2-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.2.2/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-service-server</artifactId>
-        <version>1.2.2-SNAPSHOT</version>
+        <version>1.2.2</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -52,16 +52,16 @@ This module provides port registration services to kivakit-service-client
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
 
-[*Service Registry Server*](https://www.kivakit.org/1.2.2-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/diagram-server.svg)
+[*Service Registry Server*](https://www.kivakit.org/1.2.2/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/diagram-server.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.service.registry.server*](https://www.kivakit.org/1.2.2-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.svg)  
-[*com.telenav.kivakit.service.registry.server.rest*](https://www.kivakit.org/1.2.2-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.rest.svg)  
-[*com.telenav.kivakit.service.registry.server.webapp*](https://www.kivakit.org/1.2.2-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.webapp.svg)  
-[*com.telenav.kivakit.service.registry.server.webapp.pages.home*](https://www.kivakit.org/1.2.2-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.webapp.pages.home.svg)
+[*com.telenav.kivakit.service.registry.server*](https://www.kivakit.org/1.2.2/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.svg)  
+[*com.telenav.kivakit.service.registry.server.rest*](https://www.kivakit.org/1.2.2/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.rest.svg)  
+[*com.telenav.kivakit.service.registry.server.webapp*](https://www.kivakit.org/1.2.2/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.webapp.svg)  
+[*com.telenav.kivakit.service.registry.server.webapp.pages.home*](https://www.kivakit.org/1.2.2/lexakai/kivakit-extensions/kivakit-service/server/documentation/diagrams/com.telenav.kivakit.service.registry.server.webapp.pages.home.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -76,15 +76,15 @@ Javadoc coverage for this project is 95.5%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*HomePage*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/pages/home/HomePage.html) |  |  
-| [*ServicePanel*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/pages/home/ServicePanel.html) |  |  
-| [*ServiceRegistryRestApplication*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/rest/ServiceRegistryRestApplication.html) |  |  
-| [*ServiceRegistryRestResource*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/rest/ServiceRegistryRestResource.html) |  |  
-| [*ServiceRegistryServer*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/ServiceRegistryServer.html) |  |  
-| [*ServiceRegistryServerProject*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/ServiceRegistryServerProject.html) |  |  
-| [*ServiceRegistryServerSettings*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/ServiceRegistryServerSettings.html) |  |  
-| [*ServiceRegistryWebApplication*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/ServiceRegistryWebApplication.html) |  |  
-| [*ServiceRegistryWebPage*](https://www.kivakit.org/1.2.2-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/ServiceRegistryWebPage.html) |  |  
+| [*HomePage*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/pages/home/HomePage.html) |  |  
+| [*ServicePanel*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/pages/home/ServicePanel.html) |  |  
+| [*ServiceRegistryRestApplication*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/rest/ServiceRegistryRestApplication.html) |  |  
+| [*ServiceRegistryRestResource*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/rest/ServiceRegistryRestResource.html) |  |  
+| [*ServiceRegistryServer*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/ServiceRegistryServer.html) |  |  
+| [*ServiceRegistryServerProject*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/ServiceRegistryServerProject.html) |  |  
+| [*ServiceRegistryServerSettings*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/ServiceRegistryServerSettings.html) |  |  
+| [*ServiceRegistryWebApplication*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/ServiceRegistryWebApplication.html) |  |  
+| [*ServiceRegistryWebPage*](https://www.kivakit.org/1.2.2/javadoc/kivakit-extensions/kivakit.service.server/com/telenav/kivakit/service/registry/server/webapp/ServiceRegistryWebPage.html) |  |  
 
 [//]: # (start-user-text)
 
