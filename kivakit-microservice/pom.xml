@@ -129,33 +129,76 @@
                     </argLine>
                 </configuration>
             </plugin>
-            <plugin>
-              <groupId>org.xolstice.maven.plugins</groupId>
-              <artifactId>protobuf-maven-plugin</artifactId>
-              <version>${maven-protobuf-plugin.version}</version>
-              <configuration>
-                <!--suppress MavenModelInspection -->
-                  <protocArtifact>
-                  com.google.protobuf:protoc:3.4.0:exe:${os.detected.classifier}
-                  </protocArtifact>
-                  <protocExecutable>/usr/bin/protoc</protocExecutable>
-                <pluginId>grpc-java</pluginId>
-                  <!--suppress MavenModelInspection -->
-                  <pluginArtifact>
-                  io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
-                </pluginArtifact>
-              </configuration>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>compile</goal>
-                    <goal>compile-custom</goal>
-                  </goals>
-                </execution>
-              </executions>
-            </plugin>
 
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>protoc-docker</id>
+            <activation>
+                <property><name>docker</name></property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                      <groupId>org.xolstice.maven.plugins</groupId>
+                      <artifactId>protobuf-maven-plugin</artifactId>
+                      <version>${maven-protobuf-plugin.version}</version>
+                      <configuration>
+                          <protocExecutable>/usr/bin/protoc</protocExecutable>
+                          <pluginId>grpc-java</pluginId>
+                          <!--suppress MavenModelInspection -->
+                          <pluginArtifact>
+                              io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+                          </pluginArtifact>
+                      </configuration>
+                      <executions>
+                        <execution>
+                          <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                          </goals>
+                        </execution>
+                      </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>protoc-not-docker</id>
+            <activation>
+                <property><name>!docker</name></property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                      <groupId>org.xolstice.maven.plugins</groupId>
+                      <artifactId>protobuf-maven-plugin</artifactId>
+                      <version>${maven-protobuf-plugin.version}</version>
+                      <configuration>
+                          <!--suppress MavenModelInspection -->
+                          <protocArtifact>
+                              com.google.protobuf:protoc:3.4.0:exe:${os.detected.classifier}
+                          </protocArtifact>
+                          <pluginId>grpc-java</pluginId>
+                          <!--suppress MavenModelInspection -->
+                          <pluginArtifact>
+                              io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+                          </pluginArtifact>
+                      </configuration>
+                      <executions>
+                        <execution>
+                          <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                          </goals>
+                        </execution>
+                      </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
