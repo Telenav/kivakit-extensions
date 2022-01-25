@@ -63,7 +63,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
  *     <li>Optionally, override {@link #openApiAssetsFolder()} to provide any package or folder for OpenAPI specification .yaml files</li>
  *     <li>Optionally, override {@link #staticAssetsFolder()} to provide a package or folder with static resources</li>
- *     <li>Optionally, override {@link #onCreateWebApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
+ *     <li>Optionally, override {@link #onNewWebApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
  * </ol>
  *
  * <p><b>Mount Paths</b></p>
@@ -213,7 +213,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     /** Jetty web server */
     private JettyServer server;
 
-    private final Lazy<WebApplication> webApplication = Lazy.of(this::onCreateWebApplication);
+    private final Lazy<WebApplication> webApplication = Lazy.of(this::onNewWebApplication);
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -313,14 +313,6 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     public abstract MicroserviceMetadata metadata();
 
     /**
-     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
-     */
-    public MicroserviceWebApplication onCreateWebApplication()
-    {
-        return null;
-    }
-
-    /**
      * Called to initialize the microservice before it's running. This is a good place to register objects with {@link
      * #register(Object)} or {@link #register(Object, Enum)}. While settings can be registered in this method, for most
      * microservices, it will make more sense to use the more automatic method provided by {@link Deployment}s.
@@ -349,6 +341,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * @return Any REST service for this microservice
      */
     public MicroserviceRestService onNewRestService()
+    {
+        return null;
+    }
+
+    /**
+     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
+     */
+    public MicroserviceWebApplication onNewWebApplication()
     {
         return null;
     }
