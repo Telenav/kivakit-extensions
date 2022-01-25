@@ -133,6 +133,17 @@
               <groupId>org.xolstice.maven.plugins</groupId>
               <artifactId>protobuf-maven-plugin</artifactId>
               <version>${maven-protobuf-plugin.version}</version>
+              <configuration>
+                <!--suppress MavenModelInspection -->
+                  <protocArtifact>
+                  com.google.protobuf:protoc:3.4.0:exe:${os.detected.classifier}
+                </protocArtifact>
+                <pluginId>grpc-java</pluginId>
+                  <!--suppress MavenModelInspection -->
+                  <pluginArtifact>
+                  io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+                </pluginArtifact>
+              </configuration>
               <executions>
                 <execution>
                   <goals>
