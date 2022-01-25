@@ -137,7 +137,8 @@
                 <!--suppress MavenModelInspection -->
                   <protocArtifact>
                   com.google.protobuf:protoc:3.4.0:exe:${os.detected.classifier}
-                </protocArtifact>
+                  </protocArtifact>
+                  <protocExecutable>/usr/bin/protoc</protocExecutable>
                 <pluginId>grpc-java</pluginId>
                   <!--suppress MavenModelInspection -->
                   <pluginArtifact>
