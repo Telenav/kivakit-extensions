@@ -542,24 +542,31 @@ public abstract class Microservice<Member> extends Application implements GsonFa
         // create cluster instance,
         if (member != null)
         {
-            var outer = this;
-            cluster = listenTo(new MicroserviceCluster<>()
+            try
             {
-                @Override
-                protected void onJoin(MicroserviceClusterMember<Member> member)
+                var outer = this;
+                cluster = listenTo(new MicroserviceCluster<>()
                 {
-                    outer.onJoin(member);
-                }
+                    @Override
+                    protected void onJoin(MicroserviceClusterMember<Member> member)
+                    {
+                        outer.onJoin(member);
+                    }
 
-                @Override
-                protected void onLeave(MicroserviceClusterMember<Member> instance)
-                {
-                    outer.onLeave(instance);
-                }
-            });
+                    @Override
+                    protected void onLeave(MicroserviceClusterMember<Member> instance)
+                    {
+                        outer.onLeave(instance);
+                    }
+                });
 
-            // and join the cluster.
-            cluster.join(member);
+                // and join the cluster.
+                cluster.join(member);
+            }
+            catch (Exception e)
+            {
+                warning("Unable to join microservice cluster");
+            }
         }
 
         // Next, initialize this microservice,
