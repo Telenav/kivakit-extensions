@@ -66,24 +66,36 @@ public class MicroserviceCluster<Member> extends BaseComponent
     private ObjectList<MicroserviceClusterMember<Member>> members;
 
     /** Prevent reentrancy during member loading */
-    private ReentrancyTracker reentrancyTracker = new ReentrancyTracker();
+    private final ReentrancyTracker reentrancyTracker = new ReentrancyTracker();
 
     /**
      * Joins this cluster with the given member data. Keeps trying to join the cluster when disconnected.
      *
      * @param member The member data for this cluster member
+     * @return True if the member has signed up to join the cluster when Zookeeper connects. If there is no
+     * ZookeeperConnection.Settings object (defined in the deployment folder), no attempt will be made to join the
+     * cluster and this method will return false.
      */
-    public void join(MicroserviceClusterMember<Member> member)
+    public boolean join(MicroserviceClusterMember<Member> member)
     {
-        // Whenever we connect to Zookeeper,
-        require(ZookeeperConnection.class).onConnection(() ->
+        // Get any settings object (there will be a settings object if the deployment defines it),
+        var settings = lookup(ZookeeperConnection.Settings.class);
+        if (settings != null)
         {
-            // force the loading of existing members,
-            loadMembers();
+            // and whenever we connect to Zookeeper in the future,
+            require(ZookeeperConnection.class).onConnection(() ->
+            {
+                // force the loading of existing members,
+                loadMembers();
 
-            // then add ourselves as a member.
-            store().save(new SettingsObject(member.data(), instanceIdentifier()));
-        });
+                // then add ourselves as a member.
+                store().save(new SettingsObject(member.data(), instanceIdentifier()));
+            });
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -285,6 +297,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
             {
                 var member = member(path, settings);
                 index(settings);
+                register(settings.object(), settings.identifier().instance());
                 announce("Joining cluster: $", member.identifier());
                 onJoin(member);
                 electLeader();

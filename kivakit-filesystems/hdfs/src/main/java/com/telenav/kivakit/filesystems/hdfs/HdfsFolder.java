@@ -83,7 +83,7 @@ public class HdfsFolder extends BaseComponent implements FolderService
     }
 
     @Override
-    public FolderService clear()
+    public HdfsFolder clear()
     {
         for (var folder : folders())
         {

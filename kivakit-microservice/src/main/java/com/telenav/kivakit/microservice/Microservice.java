@@ -474,6 +474,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
             announce("Microservice Jetty server starting on port ${integer}", settings().port());
             server.start();
             running = true;
+            ready();
 
             // and wait for it to be terminated.
             if (settings().isServer())
@@ -540,7 +541,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
         var member = onNewMember();
 
         // create cluster instance,
-        if (member != null)
+        if (member != null && lookup(ZookeeperConnection.Settings.class) != null)
         {
             try
             {
@@ -570,16 +571,13 @@ public abstract class Microservice<Member> extends Application implements GsonFa
         }
 
         // Next, initialize this microservice,
-        onInitialize();
+        tryCatch(this::onInitialize, "Initialization failed");
 
         // register objects,
         register(new MicroservletGrpcSchemas(this));
 
-        // then start it running,
-        start();
-
-        // and let clients know we're ready.
-        ready();
+        // then start our microservice running.
+        tryCatch(this::start, "Microservice startup failed");
     }
 
     @Override
