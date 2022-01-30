@@ -39,7 +39,7 @@ public class MicroserviceTest extends UnitTest
         }
 
         @Override
-        public MicroservletResponse onRequest()
+        public MicroservletResponse onRespond()
         {
             return new TestResponse(-1);
         }
@@ -71,7 +71,7 @@ public class MicroserviceTest extends UnitTest
         }
 
         @Override
-        public MicroservletResponse onRequest()
+        public MicroservletResponse onRespond()
         {
             return new TestResponse(42);
         }
@@ -109,12 +109,6 @@ public class MicroserviceTest extends UnitTest
 
     public static class TestPostRequest extends BaseMicroservletRequest
     {
-        @Expose
-        int a;
-
-        @Expose
-        int b;
-
         public TestPostRequest(int a, int b)
         {
             this.a = a;
@@ -126,7 +120,7 @@ public class MicroserviceTest extends UnitTest
         }
 
         @Override
-        public MicroservletResponse onRequest()
+        public MicroservletResponse onRespond()
         {
             return new TestResponse(a * b);
         }
@@ -136,13 +130,16 @@ public class MicroserviceTest extends UnitTest
         {
             return TestResponse.class;
         }
+
+        @Expose
+        int a;
+
+        @Expose
+        int b;
     }
 
     public static class TestResponse extends BaseMicroservletResponse
     {
-        @Expose
-        int result;
-
         public TestResponse()
         {
         }
@@ -151,6 +148,9 @@ public class MicroserviceTest extends UnitTest
         {
             this.result = result;
         }
+
+        @Expose
+        int result;
     }
 
     public static class TestRestMicroservice extends MicroserviceRestService
@@ -185,7 +185,8 @@ public class MicroserviceTest extends UnitTest
 
         var microservice = listenTo(new TestMicroservice());
 
-        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087", "-server=false" }));
+        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087",
+                "-server=false" }));
         microservice.waitForReady();
 
         var client = listenTo(new MicroserviceRestClient(
@@ -200,8 +201,8 @@ public class MicroserviceTest extends UnitTest
         var succeeded = false;
         try
         {
-             client.post("garbage", TestResponse.class, garbageRequest);
-             succeeded = true;
+            client.post("garbage", TestResponse.class, garbageRequest);
+            succeeded = true;
         }
         catch (Exception ignored)
         {

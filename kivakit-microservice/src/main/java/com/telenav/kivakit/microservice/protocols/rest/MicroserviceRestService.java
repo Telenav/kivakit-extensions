@@ -39,7 +39,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.microservlet.MicroservletRequestStatistics;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.serialization.json.GsonFactory;
@@ -120,12 +120,12 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         DELETE
     }
 
+    /** True while initializing */
+    private boolean initializing = false;
+
     /** The microservice that owns this REST application */
     @UmlAggregation
     private final Microservice<?> microservice;
-
-    /** True while initializing */
-    private boolean initializing = false;
 
     /** Map from REST path to request handler */
     private final Map<MicroservletRestPath, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
@@ -250,7 +250,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                     @SuppressWarnings("unchecked")
                     public Response onRequest(Request request)
                     {
-                        return (Response) request.request(path);
+                        return (Response) request.respond(path);
                     }
                 }));
 
@@ -286,7 +286,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      *
      * @param statistics The statistics
      */
-    public void onRequestStatistics(MicroservletRequestStatistics statistics)
+    public void onRequestStatistics(MicroservletRequestHandlingStatistics statistics)
     {
     }
 

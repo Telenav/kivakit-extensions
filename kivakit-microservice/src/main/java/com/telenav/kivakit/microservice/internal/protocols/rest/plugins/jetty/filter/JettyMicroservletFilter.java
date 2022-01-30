@@ -3,13 +3,11 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
-import com.telenav.kivakit.kernel.language.time.PreciseDuration;
-import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.microservlet.MicroservletRequestStatistics;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
@@ -68,6 +66,9 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
         MicroservletRestPath parameters;
     }
 
+    /** The name of this object for debugging purposes */
+    private String objectName;
+
     /** Map from path to microservlet */
     @UmlAggregation(referent = Microservlet.class, label = "mounts on paths", referentCardinality = "many")
     private final Map<MicroservletRestPath, Microservlet<?, ?>> pathToMicroservlet = new HashMap<>();
@@ -75,9 +76,6 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     /** The microservice rest application */
     @UmlAggregation
     private final MicroserviceRestService restApplication;
-
-    /** The name of this object for debugging purposes */
-    private String objectName;
 
     /**
      * @param restApplication The REST application that is using this filter
@@ -168,6 +166,14 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     }
 
     /**
+     * @return The list of all microservlets installed on this filter
+     */
+    public ObjectList<Microservlet<?, ?>> microservlets()
+    {
+        return ObjectList.objectList(pathToMicroservlet.values());
+    }
+
+    /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
     public final void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
@@ -204,14 +210,6 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
     }
 
     /**
-     * @return The list of all microservlets installed on this filter
-     */
-    public ObjectList<Microservlet<?, ?>> microservlets()
-    {
-        return ObjectList.objectList(pathToMicroservlet.values());
-    }
-
-    /**
      * @return The REST application that installed this filter
      */
     public MicroserviceRestService restApplication()
@@ -230,7 +228,7 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                                JettyMicroservletRequestCycle cycle,
                                ResolvedMicroservlet resolved)
     {
-        var statistics = new MicroservletRequestStatistics();
+        var statistics = new MicroservletRequestHandlingStatistics();
         statistics.start();
         statistics.path(resolved.path.key());
 

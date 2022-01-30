@@ -1,6 +1,5 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
-import com.dyuproject.protostuff.Tag;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.annotations.Expose;
@@ -100,7 +99,7 @@ public class JettyOpenApiRequest extends BaseMicroservletRequest
      * @return Responds to a GET request with the OpenAPI definition for the {@link MicroserviceRestService}.
      */
     @Override
-    public MicroservletResponse onRequest()
+    public MicroservletResponse onRespond()
     {
         return new JettyOpenApiResponse(this);
     }

@@ -35,14 +35,14 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
     {
     }
 
-    public Set<Class<?>> requestTypes()
-    {
-        return new HashSet<>(pathToRequestType.values());
-    }
-
     public void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType)
     {
         pathToRequestType.put(ensureNotNull(path), requestHandlerType);
+    }
+
+    public Set<Class<?>> requestTypes()
+    {
+        return new HashSet<>(pathToRequestType.values());
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
 
             // Next call the user's code and get a response, capturing any errors.
             var errors = new MicroservletErrorResponse();
-            var response = errors.listenTo(request).request(path);
+            var response = errors.listenTo(request).respond(path);
 
             // Turn the MicroservletErrorResponse and MicroservletResponse into a GrpcResponseProtobuf
             var responseProtobuf = MicroservletGrpcResponseProtobuf.newBuilder()

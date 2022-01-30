@@ -23,7 +23,7 @@ public class MicroservletRequestStatisticsAggregator extends BaseComponent
         this.every = every;
     }
 
-    public void add(Listener listener, MicroservletRequestStatistics statistics)
+    public void add(Listener listener, MicroservletRequestHandlingStatistics statistics)
     {
         var path = statistics.path();
         var average = duration.computeIfAbsent(path, ignored -> new AverageDuration());

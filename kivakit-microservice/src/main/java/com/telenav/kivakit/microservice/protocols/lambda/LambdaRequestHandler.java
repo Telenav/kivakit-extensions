@@ -74,7 +74,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
                 request.addListener(message -> context.getLogger().log(message.asString()));
 
                 // then process the request,
-                var response = request.onRequest();
+                var response = request.onRespond();
 
                 // and return the JSON response.
                 json = gson.toJson(request.responseType());

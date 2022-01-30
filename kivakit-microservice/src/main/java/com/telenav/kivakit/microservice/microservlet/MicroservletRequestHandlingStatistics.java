@@ -9,13 +9,13 @@ import com.telenav.kivakit.kernel.messaging.Message;
  *
  * @author jonathanl (shibo)
  */
-public class MicroservletRequestStatistics
+public class MicroservletRequestHandlingStatistics
 {
-    private Time start;
-
     private Time end;
 
     private String path;
+
+    private Time start;
 
     public Duration elapsed()
     {

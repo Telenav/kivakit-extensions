@@ -24,7 +24,7 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
     private static final AtomicReference<MicroservletRequestStatisticsAggregator> aggregator = new AtomicReference<>();
 
     @Override
-    public void onRequestStatistics(MicroservletRequestStatistics statistics)
+    public void onRequestHandlingStatistics(MicroservletRequestHandlingStatistics statistics)
     {
         announce("Request: $", statistics);
         aggregator.compareAndSet(null, new MicroservletRequestStatisticsAggregator(statisticsReportingFrequency()));
