@@ -28,21 +28,21 @@ This project contains projects for compressing data and processing data in commo
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
 
-[**kivakit-data-compression**](compression/README.md)  
-[**kivakit-data-formats**](formats/README.md)  
+[**kivakit-data-compression-**](null/README.md)  
+[**kivakit-data-formats-**](null/README.md)  
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-compression**](compression/README.md)  
+ &nbsp; &nbsp; [**kivakit-data-compression-**](compression//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-csv**](formats/csv/README.md)  
+ &nbsp; &nbsp; [**kivakit-data-formats-csv-**](formats/csv//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-library**](formats/library/README.md)  
+ &nbsp; &nbsp; [**kivakit-data-formats-library-**](formats/library//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-xml**](formats/xml/README.md)
+ &nbsp; &nbsp; [**kivakit-data-formats-xml-**](formats/xml//README.md)
 
 [//]: # (start-user-text)
 

@@ -57,23 +57,23 @@ for more details.
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
 
-[**kivakit-web-jersey**](jersey/README.md)  
-[**kivakit-web-jetty**](jetty/README.md)  
-[**kivakit-web-swagger**](swagger/README.md)  
-[**kivakit-web-wicket**](wicket/README.md)  
+[**kivakit-web-jersey-**](null/README.md)  
+[**kivakit-web-jetty-**](null/README.md)  
+[**kivakit-web-swagger-**](null/README.md)  
+[**kivakit-web-wicket-**](null/README.md)  
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-jersey**](jersey/README.md)  
+ &nbsp; &nbsp; [**kivakit-web-jersey-**](jersey//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-jetty**](jetty/README.md)  
+ &nbsp; &nbsp; [**kivakit-web-jetty-**](jetty//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-swagger**](swagger/README.md)  
+ &nbsp; &nbsp; [**kivakit-web-swagger-**](swagger//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-wicket**](wicket/README.md)
+ &nbsp; &nbsp; [**kivakit-web-wicket-**](wicket//README.md)
 
 [//]: # (start-user-text)
 

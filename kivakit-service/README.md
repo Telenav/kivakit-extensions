@@ -58,23 +58,23 @@ needs to be set up manually.
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
 
-[**kivakit-service-client**](client/README.md)  
-[**kivakit-service-registry**](registry/README.md)  
-[**kivakit-service-server**](server/README.md)  
-[**kivakit-service-viewer**](viewer/README.md)  
+[**kivakit-service-client-**](null/README.md)  
+[**kivakit-service-registry-**](null/README.md)  
+[**kivakit-service-server-**](null/README.md)  
+[**kivakit-service-viewer-**](null/README.md)  
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-client**](client/README.md)  
+ &nbsp; &nbsp; [**kivakit-service-client-**](client//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-registry**](registry/README.md)  
+ &nbsp; &nbsp; [**kivakit-service-registry-**](registry//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-server**](server/README.md)  
+ &nbsp; &nbsp; [**kivakit-service-server-**](server//README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-viewer**](viewer/README.md)
+ &nbsp; &nbsp; [**kivakit-service-viewer-**](viewer//README.md)
 
 [//]: # (start-user-text)
 

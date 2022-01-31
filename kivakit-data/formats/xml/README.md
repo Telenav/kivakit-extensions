@@ -20,14 +20,14 @@ This module reads and writes XML data using Java's StAX pull parser.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.3.0/lexakai/kivakit-extensions/kivakit-data/formats/xml/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-data/formats/xml//documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-data-formats-xml</artifactId>
-        <version>1.3.0</version>
+        <version>1.3.1-SNAPSHOT</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -48,7 +48,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.data.formats.xml.stax*](https://www.kivakit.org/1.3.0/lexakai/kivakit-extensions/kivakit-data/formats/xml/documentation/diagrams/com.telenav.kivakit.data.formats.xml.stax.svg)
+[*com.telenav.kivakit.data.formats.xml.stax*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-data/formats/xml//documentation/diagrams/com.telenav.kivakit.data.formats.xml.stax.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -63,15 +63,15 @@ Javadoc coverage for this project is 67.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*StaxPath*](https://www.kivakit.org/1.3.0/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxPath.html) |  |  
-| [*StaxReader*](https://www.kivakit.org/1.3.0/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.html) | Using a {@link StaxReader} |  
+| [*StaxPath*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc//kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxPath.html) |  |  
+| [*StaxReader*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc//kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.html) | Using a {@link StaxReader} |  
 | | Stream Positioning |  
 | | Reader State |  
 | | Moving Through the Stream |  
 | | StaxPath Positioning Operations |  
-| [*StaxReader.BooleanMatcher*](https://www.kivakit.org/1.3.0/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.BooleanMatcher.html) |  |  
-| [*StaxReader.Match*](https://www.kivakit.org/1.3.0/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.Match.html) |  |  
-| [*StaxReader.Matcher*](https://www.kivakit.org/1.3.0/javadoc/kivakit-extensions/kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.Matcher.html) |  |  
+| [*StaxReader.BooleanMatcher*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc//kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.BooleanMatcher.html) |  |  
+| [*StaxReader.Match*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc//kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.Match.html) |  |  
+| [*StaxReader.Matcher*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc//kivakit.data.formats.xml/com/telenav/kivakit/data/formats/xml/stax/StaxReader.Matcher.html) |  |  
 
 [//]: # (start-user-text)
 
