@@ -105,38 +105,45 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                          ServletResponse servletResponse,
                          FilterChain filterChain)
     {
-        // Cast request and response to HTTP subclasses,
-        var httpRequest = (HttpServletRequest) servletRequest;
-        var httpResponse = (HttpServletResponse) servletResponse;
-        var method = HttpMethod.valueOf(httpRequest.getMethod());
-
-        // create microservlet request cycle,
-        var cycle = listenTo(new JettyMicroservletRequestCycle(restApplication, httpRequest, httpResponse));
-
-        // attach it to the current thread,
-        JettyMicroservletRequestCycle.attach(cycle);
-
         try
         {
-            // resolve the microservlet at the requested path,
-            var resolved = resolve(new MicroservletRestPath(cycle.request().path(), method));
-            if (resolved != null)
+            // Cast request and response to HTTP subclasses,
+            var httpRequest = (HttpServletRequest) servletRequest;
+            var httpResponse = (HttpServletResponse) servletResponse;
+
+            // parse the HTTP method,
+            var handled = false;
+            var method = HttpMethod.parse(httpRequest.getMethod());
+            if (method != null)
             {
-                try
+                // create microservlet request cycle,
+                var cycle = listenTo(new JettyMicroservletRequestCycle(restApplication, httpRequest, httpResponse));
+
+                // attach it to the current thread,
+                JettyMicroservletRequestCycle.attach(cycle);
+
+                // resolve the microservlet at the requested path,
+                var resolved = resolve(new MicroservletRestPath(cycle.request().path(), method));
+                if (resolved != null)
                 {
-                    // handle the request,
-                    handleRequest(method, cycle, resolved);
-                }
-                catch (Exception e)
-                {
-                    problem(e, "REST $ method to $ failed", method.name(), resolved.microservlet.name());
+                    try
+                    {
+                        // and handle the request.
+                        handleRequest(method, cycle, resolved);
+                    }
+                    catch (Exception e)
+                    {
+                        problem(e, "REST $ method to $ failed", method.name(), resolved.microservlet.name());
+                    }
+                    handled = true;
                 }
             }
-            else
+
+            if (!handled)
             {
                 try
                 {
-                    // If there is no microservlet, pass the request down the filter chain.
+                    // If the request wasn't handled, pass it down the filter chain.
                     filterChain.doFilter(servletRequest, servletResponse);
                 }
                 catch (Exception e)
@@ -144,6 +151,10 @@ public class JettyMicroservletFilter implements Filter, ComponentMixin, ProblemR
                     problem(e, "Exception thrown by filter chain");
                 }
             }
+        }
+        catch (Exception e)
+        {
+            problem(e, "Servlet doFilter() method failed");
         }
         finally
         {

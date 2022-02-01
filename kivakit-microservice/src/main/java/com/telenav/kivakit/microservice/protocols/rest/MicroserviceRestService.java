@@ -117,7 +117,25 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     {
         GET,
         POST,
-        DELETE
+        DELETE;
+
+        public static HttpMethod parse(String text)
+        {
+            switch (text.toLowerCase())
+            {
+                case "get":
+                    return GET;
+
+                case "post":
+                    return POST;
+
+                case "delete":
+                    return DELETE;
+
+                default:
+                    return null;
+            }
+        }
     }
 
     /** True while initializing */
