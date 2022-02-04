@@ -15,6 +15,7 @@ import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
+import static com.telenav.kivakit.kernel.language.threading.status.ReentrancyTracker.Reentrancy.ENTERED;
 import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
@@ -66,7 +67,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     private ObjectList<MicroserviceClusterMember<Member>> members;
 
     /** Prevent reentrancy during member loading */
-    private final ReentrancyTracker reentrancyTracker = new ReentrancyTracker();
+    private final ReentrancyTracker reentrancy = new ReentrancyTracker();
 
     /**
      * Joins this cluster with the given member data. Keeps trying to join the cluster when disconnected.
@@ -128,7 +129,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
         try
         {
-            if (reentrancyTracker.enter())
+            if (reentrancy.enter() == ENTERED)
             {
                 var loaded = new IdentitySet<MicroserviceClusterMember<Member>>();
 
@@ -162,7 +163,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
         }
         finally
         {
-            reentrancyTracker.exit();
+            reentrancy.exit();
         }
     }
 
