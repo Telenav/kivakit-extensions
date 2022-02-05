@@ -34,83 +34,83 @@ This project contains modules that extend KivaKit.
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
 
-[**kivakit-data-**](null/README.md)  
-[**kivakit-filesystems-**](null/README.md)  
-[**kivakit-logs-**](null/README.md)  
-[**kivakit-math-**](null/README.md)  
-[**kivakit-merged-**](null/README.md)  
-[**kivakit-metrics-**](null/README.md)  
-[**kivakit-microservice-**](null/README.md)  
-[**kivakit-primitive-collections-**](null/README.md)  
-[**kivakit-service-**](null/README.md)  
-[**kivakit-settings-stores-**](null/README.md)  
-[**kivakit-ui-**](null/README.md)  
-[**kivakit-web-**](null/README.md)  
+[**kivakit-data**](kivakit-data/README.md)  
+[**kivakit-filesystems**](kivakit-filesystems/README.md)  
+[**kivakit-logs**](kivakit-logs/README.md)  
+[**kivakit-math**](kivakit-math/README.md)  
+[**kivakit-merged**](kivakit-merged/README.md)  
+[**kivakit-metrics**](kivakit-metrics/README.md)  
+[**kivakit-microservice**](kivakit-microservice/README.md)  
+[**kivakit-primitive-collections**](kivakit-primitive-collections/README.md)  
+[**kivakit-service**](kivakit-service/README.md)  
+[**kivakit-settings-stores**](kivakit-settings-stores/README.md)  
+[**kivakit-ui**](kivakit-ui/README.md)  
+[**kivakit-web**](kivakit-web/README.md)  
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-compression-**](kivakit-data/compression//README.md)  
+ &nbsp; &nbsp; [**kivakit-data-compression**](kivakit-data/compression/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-csv-**](kivakit-data/formats/csv//README.md)  
+ &nbsp; &nbsp; [**kivakit-data-formats-csv**](kivakit-data/formats/csv/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-library-**](kivakit-data/formats/library//README.md)  
+ &nbsp; &nbsp; [**kivakit-data-formats-library**](kivakit-data/formats/library/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-data-formats-xml-**](kivakit-data/formats/xml//README.md)  
+ &nbsp; &nbsp; [**kivakit-data-formats-xml**](kivakit-data/formats/xml/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-github-**](kivakit-filesystems/github//README.md)  
+ &nbsp; &nbsp; [**kivakit-filesystems-github**](kivakit-filesystems/github/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-hdfs-**](kivakit-filesystems/hdfs//README.md)  
+ &nbsp; &nbsp; [**kivakit-filesystems-hdfs**](kivakit-filesystems/hdfs/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-hdfs-proxy-**](kivakit-filesystems/hdfs-proxy//README.md)  
+ &nbsp; &nbsp; [**kivakit-filesystems-hdfs-proxy**](kivakit-filesystems/hdfs-proxy/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-hdfs-proxy-spi-**](kivakit-filesystems/hdfs-proxy-spi//README.md)  
+ &nbsp; &nbsp; [**kivakit-filesystems-hdfs-proxy-spi**](kivakit-filesystems/hdfs-proxy-spi/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-java-**](kivakit-filesystems/java//README.md)  
+ &nbsp; &nbsp; [**kivakit-filesystems-java**](kivakit-filesystems/java/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-filesystems-s3fs-**](kivakit-filesystems/s3fs//README.md)  
+ &nbsp; &nbsp; [**kivakit-filesystems-s3fs**](kivakit-filesystems/s3fs/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-client-**](kivakit-logs/client//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-client**](kivakit-logs/client/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-email-**](kivakit-logs/email//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-email**](kivakit-logs/email/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-file-**](kivakit-logs/file//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-file**](kivakit-logs/file/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-server-**](kivakit-logs/server//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-server**](kivakit-logs/server/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-viewer-**](kivakit-logs/viewer//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-viewer**](kivakit-logs/viewer/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-math-**](kivakit-math//README.md)  
+ &nbsp; &nbsp; [**kivakit-math**](kivakit-math/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-metrics-core-**](kivakit-metrics/core//README.md)  
+ &nbsp; &nbsp; [**kivakit-metrics-core**](kivakit-metrics/core/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-metrics-prometheus-**](kivakit-metrics/prometheus//README.md)  
+ &nbsp; &nbsp; [**kivakit-metrics-prometheus**](kivakit-metrics/prometheus/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-microservice-**](kivakit-microservice//README.md)  
+ &nbsp; &nbsp; [**kivakit-microservice**](kivakit-microservice/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-primitive-collections-**](kivakit-primitive-collections//README.md)  
+ &nbsp; &nbsp; [**kivakit-primitive-collections**](kivakit-primitive-collections/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-client-**](kivakit-service/client//README.md)  
+ &nbsp; &nbsp; [**kivakit-service-client**](kivakit-service/client/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-registry-**](kivakit-service/registry//README.md)  
+ &nbsp; &nbsp; [**kivakit-service-registry**](kivakit-service/registry/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-100-96.png" srcset="https://www.kivakit.org/images/meter-100-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-server-**](kivakit-service/server//README.md)  
+ &nbsp; &nbsp; [**kivakit-service-server**](kivakit-service/server/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-service-viewer-**](kivakit-service/viewer//README.md)  
+ &nbsp; &nbsp; [**kivakit-service-viewer**](kivakit-service/viewer/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-settings-stores-zookeeper-**](kivakit-settings-stores/zookeeper//README.md)  
+ &nbsp; &nbsp; [**kivakit-settings-stores-zookeeper**](kivakit-settings-stores/zookeeper/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-ui-desktop-**](kivakit-ui/desktop//README.md)  
+ &nbsp; &nbsp; [**kivakit-ui-desktop**](kivakit-ui/desktop/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-jersey-**](kivakit-web/jersey//README.md)  
+ &nbsp; &nbsp; [**kivakit-web-jersey**](kivakit-web/jersey/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-jetty-**](kivakit-web/jetty//README.md)  
+ &nbsp; &nbsp; [**kivakit-web-jetty**](kivakit-web/jetty/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-swagger-**](kivakit-web/swagger//README.md)  
+ &nbsp; &nbsp; [**kivakit-web-swagger**](kivakit-web/swagger/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-web-wicket-**](kivakit-web/wicket//README.md)
+ &nbsp; &nbsp; [**kivakit-web-wicket**](kivakit-web/wicket/README.md)
 
 [//]: # (start-user-text)
 

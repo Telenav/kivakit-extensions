@@ -20,7 +20,7 @@ This module allows users to view service information.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-service/viewer//documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/viewer/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
@@ -48,7 +48,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.service.viewer*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-service/viewer//documentation/diagrams/com.telenav.kivakit.service.viewer.svg)
+[*com.telenav.kivakit.service.viewer*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-service/viewer/documentation/diagrams/com.telenav.kivakit.service.viewer.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -65,7 +65,7 @@ The following significant classes are undocumented:
 
 | Class | Documentation Sections |
 |---|---|
-| [*ServiceRegistryViewerApplication*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc//kivakit.service.viewer/com/telenav/kivakit/service/viewer/ServiceRegistryViewerApplication.html) |  |  
+| [*ServiceRegistryViewerApplication*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.service.viewer/com/telenav/kivakit/service/viewer/ServiceRegistryViewerApplication.html) |  |  
 
 [//]: # (start-user-text)
 

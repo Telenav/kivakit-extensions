@@ -36,26 +36,26 @@ provider interface (SPI) to implement a new log service.
 
 ### Projects <a name = "projects"></a> &nbsp; <img src="https://www.kivakit.org/images/gears-32.png" srcset="https://www.kivakit.org/images/gears-32-2x.png 2x"/>
 
-[**kivakit-logs-client-**](null/README.md)  
-[**kivakit-logs-email-**](null/README.md)  
-[**kivakit-logs-file-**](null/README.md)  
-[**kivakit-logs-server-**](null/README.md)  
-[**kivakit-logs-viewer-**](null/README.md)  
+[**kivakit-logs-client**](client/README.md)  
+[**kivakit-logs-email**](email/README.md)  
+[**kivakit-logs-file**](file/README.md)  
+[**kivakit-logs-server**](server/README.md)  
+[**kivakit-logs-viewer**](viewer/README.md)  
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-client-**](client//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-client**](client/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-email-**](email//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-email**](email/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-file-**](file//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-file**](file/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-server-**](server//README.md)  
+ &nbsp; &nbsp; [**kivakit-logs-server**](server/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-viewer-**](viewer//README.md)
+ &nbsp; &nbsp; [**kivakit-logs-viewer**](viewer/README.md)
 
 [//]: # (start-user-text)
 
