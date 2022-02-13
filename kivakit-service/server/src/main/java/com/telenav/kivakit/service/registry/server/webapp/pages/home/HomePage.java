@@ -22,6 +22,7 @@ import com.telenav.kivakit.kernel.language.collections.Collections;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.messages.Result;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.network.core.cluster.ClusterIdentifier;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.Service;
@@ -99,7 +100,7 @@ public class HomePage extends ServiceRegistryWebPage
             }
         });
 
-        updatingContainer.add(new Label("error", () -> services.getObject().why().description())
+        updatingContainer.add(new Label("error", () -> services.getObject().find(Problem.class).description())
         {
             @Override
             public boolean isVisible()

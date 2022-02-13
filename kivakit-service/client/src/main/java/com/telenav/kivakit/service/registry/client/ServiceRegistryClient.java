@@ -234,7 +234,7 @@ public class ServiceRegistryClient extends BaseComponent
                 ? Scope.localhost()
                 : Scope.network(), request, DiscoverPortServiceResponse.class).asResult();
         trace("Service on port $: ", port, service);
-        return service.failed() ? Result.failed(service.why()) : Result.succeeded(service.get());
+        return service;
     }
 
     /**
@@ -440,7 +440,7 @@ public class ServiceRegistryClient extends BaseComponent
         }
         catch (Exception | AssertionError e)
         {
-            return Result.succeeded(false).problem("Unable to update service $ int network registry: $", service.descriptor(), e.getMessage());
+            return Result.failed("Unable to update service $ int network registry: $", service.descriptor(), e.getMessage());
         }
     }
 

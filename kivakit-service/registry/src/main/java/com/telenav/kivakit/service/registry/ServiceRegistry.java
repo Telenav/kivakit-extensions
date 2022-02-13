@@ -81,16 +81,14 @@ public interface ServiceRegistry extends ComponentMixin
      */
     default Result<Set<Host>> discoverHosts()
     {
-        var result = new Result<Set<Host>>();
         var services = discoverServices();
         if (services.succeeded())
         {
             var hosts = new HashSet<Host>();
             services.get().forEach(service -> hosts.add(service.port().host()));
-            result.set(hosts);
-            return result;
+            return Result.succeeded(hosts);
         }
-        return result.problem("Unable to find hosts");
+        return Result.failed("Unable to find hosts");
     }
 
     /**

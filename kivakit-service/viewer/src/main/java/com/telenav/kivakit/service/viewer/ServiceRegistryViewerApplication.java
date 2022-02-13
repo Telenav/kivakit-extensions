@@ -27,6 +27,7 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.strings.AsciiArt;
 import com.telenav.kivakit.kernel.messaging.Debug;
 import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.network.core.NetworkProject;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.Scope.Type;
@@ -82,7 +83,7 @@ public class ServiceRegistryViewerApplication extends Application
         var services = client.discoverServices(Scope.scope(get(SCOPE_TYPE)));
         if (services.failed())
         {
-            Message.println("\nUnable to find services: $\n", services.why().formatted(WITH_EXCEPTION));
+            Message.println("\nUnable to find services: $\n", services.find(Problem.class).formatted(WITH_EXCEPTION));
         }
         else
         {

@@ -59,7 +59,8 @@ public abstract class BaseResponse<T>
     public void result(Result<T> result)
     {
         value(result.get());
-        problem = (Problem) result.why();
+
+        problem = (Problem) result.find(Problem.class);
     }
 
     @KivaKitIncludeProperty
