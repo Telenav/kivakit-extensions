@@ -105,25 +105,20 @@ import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.F
 @UmlExcludeSuperTypes({ Startable.class })
 public abstract class BaseServiceRegistry extends BaseRepeater implements ServiceRegistry, Startable
 {
-    /**
-     * Store of this registry's data used during registry server deployments and reboots to maintain registrations
-     */
-    private final transient ServiceRegistryStore store = listenTo(new ServiceRegistryStore());
+    /** Services by application */
+    private MultiSet<Application.Identifier, Service> applicationToServices = new MultiSet<>();
+
+    /** Lock accesses to data structures */
+    private transient final ReadWriteLock lock = new ReadWriteLock();
 
     /** Services by port */
     private Map<Port, Service> portToService = new HashMap<>();
 
-    /** Services by type */
-    private MultiSet<ServiceType, Service> serviceTypeToServices = new MultiSet<>();
-
-    /** Services by application */
-    private MultiSet<Application.Identifier, Service> applicationToServices = new MultiSet<>();
+    /** The ports that are currently registered to a service */
+    private Set<Integer> registeredPorts = new HashSet<>();
 
     /** The time each service last renewed its lease */
     private Map<Service, Time> renewedAt = new HashMap<>();
-
-    /** The ports that are currently registered to a service */
-    private Set<Integer> registeredPorts = new HashSet<>();
 
     /** The ports that are still reserved for applications that might come back after losing registration */
     private Map<Integer, Time> reservedPortToExpirationTime = new HashMap<>();
@@ -131,8 +126,13 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
     /** True if the registry has been started and is running */
     private boolean running;
 
-    /** Lock accesses to data structures */
-    private transient final ReadWriteLock lock = new ReadWriteLock();
+    /** Services by type */
+    private MultiSet<ServiceType, Service> serviceTypeToServices = new MultiSet<>();
+
+    /**
+     * Store of this registry's data used during registry server deployments and reboots to maintain registrations
+     */
+    private final transient ServiceRegistryStore store = listenTo(new ServiceRegistryStore());
 
     private ServiceRegistryUpdater updater;
 
@@ -213,13 +213,13 @@ public abstract class BaseServiceRegistry extends BaseRepeater implements Servic
         {
             trace("Discovering $ services of $", type, application);
             var services = new HashSet<Service>();
-            for (var service : discoverServices(application).get())
+            discoverServices(application).get().forEach(service ->
             {
                 if (service.type().equals(type))
                 {
                     services.add(service);
                 }
-            }
+            });
             trace("Discovered: $", services);
             return result(services);
         });

@@ -58,7 +58,7 @@ public abstract class BaseResponse<T>
 
     public void result(Result<T> result)
     {
-        value(result.get());
+        result.ifPresent(this::value);
 
         problem = (Problem) result.find(Problem.class);
     }
