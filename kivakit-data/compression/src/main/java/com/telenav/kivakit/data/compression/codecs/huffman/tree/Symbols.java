@@ -179,7 +179,7 @@ public class Symbols<Symbol>
         for (var symbol : sortedByFrequency())
         {
             var key = converter.unconvert(symbol.value());
-            var value = Count.count(symbol.frequency()).toCommaSeparatedString();
+            var value = Count.count(symbol.frequency()).asCommaSeparatedString();
             ensure(!key.contains("="));
             var comment = commenter.apply(symbol.value());
             if (comment != null)
