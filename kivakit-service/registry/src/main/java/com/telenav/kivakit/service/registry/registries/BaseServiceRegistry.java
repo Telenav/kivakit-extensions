@@ -27,7 +27,7 @@ import com.telenav.kivakit.kernel.language.threading.locks.ReadWriteLock;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
-import com.telenav.kivakit.kernel.messaging.messages.Result;
+import com.telenav.kivakit.kernel.language.monads.Result;
 import com.telenav.kivakit.kernel.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.service.registry.Scope;

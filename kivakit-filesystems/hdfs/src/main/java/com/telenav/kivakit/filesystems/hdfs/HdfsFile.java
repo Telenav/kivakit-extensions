@@ -21,7 +21,7 @@ package com.telenav.kivakit.filesystems.hdfs;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
 import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
-import com.telenav.kivakit.kernel.interfaces.code.Unchecked;
+import com.telenav.kivakit.kernel.interfaces.code.UncheckedCode;
 import com.telenav.kivakit.kernel.language.threading.Retry;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
@@ -211,7 +211,7 @@ public class HdfsFile extends BaseWritableResource implements FileService
         return proxy;
     }
 
-    private <T> Unchecked<T> retry(Unchecked<T> code)
+    private <T> UncheckedCode<T> retry(UncheckedCode<T> code)
     {
         return Retry.retry(code, 16, Duration.seconds(15), () -> proxy = null);
     }

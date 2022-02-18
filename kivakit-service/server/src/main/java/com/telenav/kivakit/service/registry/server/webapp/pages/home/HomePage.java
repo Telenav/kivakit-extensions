@@ -21,7 +21,7 @@ package com.telenav.kivakit.service.registry.server.webapp.pages.home;
 import com.telenav.kivakit.kernel.language.collections.Collections;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
-import com.telenav.kivakit.kernel.messaging.messages.Result;
+import com.telenav.kivakit.kernel.language.monads.Result;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.network.core.cluster.ClusterIdentifier;
 import com.telenav.kivakit.service.registry.Scope;

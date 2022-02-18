@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.service.registry.registries;
 
-import com.telenav.kivakit.kernel.messaging.messages.Result;
+import com.telenav.kivakit.kernel.language.monads.Result;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.service.registry.Service;

@@ -24,7 +24,7 @@ import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
 import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
-import com.telenav.kivakit.kernel.interfaces.code.Unchecked;
+import com.telenav.kivakit.kernel.interfaces.code.UncheckedCode;
 import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
 import com.telenav.kivakit.kernel.language.matchers.AnythingMatcher;
 import com.telenav.kivakit.kernel.language.threading.Retry;
@@ -374,7 +374,7 @@ public class HdfsFolder extends BaseComponent implements FolderService
         return proxy;
     }
 
-    private <T> Unchecked<T> retry(Unchecked<T> code)
+    private <T> UncheckedCode<T> retry(UncheckedCode<T> code)
     {
         return Retry.retry(code, 16, Duration.seconds(15), () -> proxy = null);
     }

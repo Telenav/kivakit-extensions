@@ -20,7 +20,6 @@ package com.telenav.kivakit.service.registry.server.rest;
 
 import com.telenav.kivakit.configuration.settings.Settings;
 import com.telenav.kivakit.kernel.KivaKit;
-import com.telenav.kivakit.kernel.messaging.messages.Result;
 import com.telenav.kivakit.service.registry.Service;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
 import com.telenav.kivakit.service.registry.ServiceRegistrySettings;

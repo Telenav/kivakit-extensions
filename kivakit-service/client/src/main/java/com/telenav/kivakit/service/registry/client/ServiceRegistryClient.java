@@ -30,7 +30,7 @@ import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
-import com.telenav.kivakit.kernel.messaging.messages.Result;
+import com.telenav.kivakit.kernel.language.monads.Result;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher;
 import com.telenav.kivakit.service.registry.Scope;
