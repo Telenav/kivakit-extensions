@@ -86,9 +86,9 @@ public interface ServiceRegistry extends ComponentMixin
         {
             var hosts = new HashSet<Host>();
             services.get().forEach(service -> hosts.add(service.port().host()));
-            return Result.succeeded(hosts);
+            return result(hosts);
         }
-        return Result.failed("Unable to find hosts");
+        return failure("Unable to find hosts");
     }
 
     /**

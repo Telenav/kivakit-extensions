@@ -273,7 +273,7 @@ public class ServiceRegistryRestResource extends BaseRestResource
         }
 
         var response = new NetworkRegistryUpdateResponse();
-        response.result(Result.succeeded(succeeded));
+        response.result(result(succeeded));
         narrate("Returning network registry response: $", response);
         return response;
     }

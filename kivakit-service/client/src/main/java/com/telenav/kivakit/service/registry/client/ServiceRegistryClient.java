@@ -435,12 +435,12 @@ public class ServiceRegistryClient extends BaseComponent
             else
             {
                 warning("Cannot send update on unbound service: $", service);
-                return Result.succeeded(false);
+                return result(false);
             }
         }
         catch (Exception | AssertionError e)
         {
-            return Result.failed("Unable to update service $ int network registry: $", service.descriptor(), e.getMessage());
+            return failure("Unable to update service $ int network registry: $", service.descriptor(), e.getMessage());
         }
     }
 

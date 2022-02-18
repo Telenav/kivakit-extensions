@@ -83,7 +83,7 @@ public class ServiceRegistryViewerApplication extends Application
         var services = client.discoverServices(Scope.scope(get(SCOPE_TYPE)));
         if (services.failed())
         {
-            Message.println("\nUnable to find services: $\n", services.find(Problem.class).formatted(WITH_EXCEPTION));
+            Message.println("\nUnable to find services: $\n", services.messages().find(Problem.class).formatted(WITH_EXCEPTION));
         }
         else
         {

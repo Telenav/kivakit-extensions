@@ -41,7 +41,7 @@ public abstract class BaseResponse<T>
 
     public Result<T> asResult()
     {
-        return problem != null ? Result.failed(problem) : Result.succeeded(value());
+        return problem != null ? Result.failure(problem) : Result.result(value());
     }
 
     public BaseResponse<T> problem(String message, Object... arguments)
@@ -60,7 +60,7 @@ public abstract class BaseResponse<T>
     {
         result.ifPresent(this::value);
 
-        problem = (Problem) result.find(Problem.class);
+        problem = (Problem) result.messages().find(Problem.class);
     }
 
     @KivaKitIncludeProperty
