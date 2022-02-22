@@ -23,6 +23,7 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
+import com.telenav.kivakit.resource.Resource;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -57,5 +58,10 @@ public class JettyMicroservletFilterHolder extends FilterHolder implements Compo
     public void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
     {
         filter.mount(path, microservlet);
+    }
+
+    public void mount(MicroservletRestPath path, Resource jar, int port)
+    {
+        filter.mount(path, jar, port);
     }
 }

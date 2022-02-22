@@ -42,6 +42,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
+import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -224,11 +225,65 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         }
     }
 
+    /**
+     * Mounts the given request handler on the path /api/[version]/path
+     *
+     * @param version The version of the request handler
+     * @param path The path to mount on
+     * @param method The HTTP method
+     * @param requestType The type of the request handler
+     */
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(Version version, String path, HttpMethod method, Class<Request> requestType)
     {
         var absolutePath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
         mount(absolutePath, method, requestType);
+    }
+
+    /**
+     * Mounts the given JAR on the path /api/[version]/path. Requests to the path will be directed to a child process
+     * running the JAR. This permits greater agility with strong backwards compatibility (at the expense of some memory
+     * and compute resources).
+     *
+     * @param version The version of the JAR file
+     * @param method The HTTP method
+     * @param jar The JAR file to launch in a child process
+     * @param port The port to talk to the child process
+     */
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    void mount(Version version, HttpMethod method, Resource jar, int port)
+    {
+        var absolutePath = Message.format("/api/$.$", version.major(), version.minor());
+        mount(absolutePath, method, jar, port);
+    }
+
+    /**
+     * Mounts the given JAR on the given path for the given HTTP method. Requests to the path will be directed to a
+     * child process running the JAR. This permits greater agility with strong backwards compatibility (at the expense
+     * of some memory and compute resources).
+     *
+     * @param path The path to the given JAR. If the path is not absolute (doesn't start with a '/'), it is prefixed
+     * with: "/api/[major.version].[minor.version]/", where the version is retrieved from {@link
+     * Microservice#version()}. For example, the path "users" in microservlet version 3.1 will resolve to
+     * "/api/3.1/users", and the path "/users" will resolve to "/users".
+     * @param method The HTTP method to which the microservlet should respond
+     * @param jar The JAR file to delegate to
+     */
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    void mount(String path, HttpMethod method, Resource jar, int port)
+    {
+        // If we're in onInitialize(),
+        if (initializing)
+        {
+            // mount the jar,
+            var restPath = MicroservletRestPath.parse(this, path, method);
+            require(MicroservletJettyFilterPlugin.class).mount(restPath, jar, port);
+        }
+        else
+        {
+            // otherwise, complain.
+            problem("JAR files must be mounted in onInitialize()");
+        }
     }
 
     /**

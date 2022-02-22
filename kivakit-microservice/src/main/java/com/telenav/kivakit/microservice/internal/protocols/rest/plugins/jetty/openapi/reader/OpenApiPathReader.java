@@ -50,13 +50,13 @@ public class OpenApiPathReader extends BaseComponent
 
         // Got through each mount path that the filter has,
         var filter = require(JettyMicroservletFilter.class);
-        for (var path : new ObjectList<>(filter.paths()).sorted())
+        for (var path : new ObjectList<>(filter.microservletPaths()).sorted())
         {
             // and add a PathItem to the list of paths.
-            var microservlet = filter.microservlet(path);
-            if (microservlet != null)
+            var mounted = filter.mountedMicroservlet(path);
+            if (mounted != null)
             {
-                paths.addPathItem(path.resolvedPath().join(), newPathItem(path, microservlet));
+                paths.addPathItem(path.resolvedPath().join(), newPathItem(path, mounted.microservlet()));
             }
             else
             {

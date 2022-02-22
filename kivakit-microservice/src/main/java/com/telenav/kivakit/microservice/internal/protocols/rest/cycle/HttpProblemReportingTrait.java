@@ -4,7 +4,7 @@ import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 
-public interface ProblemReportingTrait
+public interface HttpProblemReportingTrait
 {
     default Problem problem(int httpStatus, Throwable exception, String text, Object... arguments)
     {

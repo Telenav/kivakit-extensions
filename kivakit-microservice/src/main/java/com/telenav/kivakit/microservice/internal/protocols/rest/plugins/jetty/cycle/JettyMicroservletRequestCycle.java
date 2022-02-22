@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
+import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletRequestCycle extends BaseComponent implements ProblemReportingTrait
+public class JettyMicroservletRequestCycle extends BaseComponent implements HttpProblemReportingTrait
 {
     /** A thread local variable holding the request cycle for a given thread using this servlet */
     private static final ThreadLocal<JettyMicroservletRequestCycle> cycle = new ThreadLocal<>();
@@ -72,9 +72,6 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     /** The REST application that owns this request cycle */
     private final MicroserviceRestService application;
 
-    /** The microservlet that is attached to this request cycle via {@link #attach(Microservlet)} */
-    private Microservlet<?, ?> servlet;
-
     /** The request */
     @UmlAggregation
     private final JettyMicroservletRequest request;
@@ -82,6 +79,9 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     /** The response **/
     @UmlAggregation
     private final JettyMicroserviceResponse response;
+
+    /** The microservlet that is attached to this request cycle via {@link #attach(Microservlet)} */
+    private Microservlet<?, ?> servlet;
 
     /**
      * @param application The REST application that owns this request cycle

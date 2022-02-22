@@ -78,6 +78,16 @@ public final class JettyMicroserviceResponse extends BaseComponent
         status(SC_OK);
     }
 
+    public MicroservletErrorResponse errors()
+    {
+        return errors;
+    }
+
+    public HttpServletResponse httpResponse()
+    {
+        return httpResponse;
+    }
+
     @Override
     public void onMessage(Message message)
     {
@@ -85,11 +95,6 @@ public final class JettyMicroserviceResponse extends BaseComponent
         {
             status(SC_INTERNAL_SERVER_ERROR);
         }
-    }
-
-    public MicroservletErrorResponse errors()
-    {
-        return errors;
     }
 
     public Problem problem(int status, String text, Object... arguments)
@@ -100,7 +105,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     public Problem problem(int status, Throwable exception, String text, Object... arguments)
     {
         status(status);
-        return transmit( new Problem(exception, text, arguments));
+        return transmit(new Problem(exception, text, arguments));
     }
 
     public int status()
@@ -111,6 +116,37 @@ public final class JettyMicroserviceResponse extends BaseComponent
     public void status(int status)
     {
         httpResponse.setStatus(status);
+    }
+
+    /**
+     * @param response The response object to be serialized
+     * @return The object serialized into JSON format, using the application {@link GsonFactory}. This behavior can be
+     * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
+     * object.
+     */
+    public String toJson(Object response)
+    {
+        // We will serialize the response object itself by default.
+        var objectToSerialize = response;
+
+        // If the response object provides another object to serialize,
+        if (response instanceof MicroserviceGsonObjectSource)
+        {
+            // then make that the object to serialize.
+            objectToSerialize = ((MicroserviceGsonObjectSource) response).gsonObject();
+        }
+
+        // If the response object has a custom GsonFactory,
+        if (response instanceof GsonFactorySource)
+        {
+            // use that to convert the response to JSON,
+            return listenTo(((GsonFactorySource) response).gsonFactory()).gson().toJson(objectToSerialize);
+        }
+        else
+        {
+            // otherwise, use the GsonFactory, provided by the application through the request cycle.
+            return cycle.gson().toJson(objectToSerialize);
+        }
     }
 
     @Override
@@ -157,37 +193,6 @@ public final class JettyMicroserviceResponse extends BaseComponent
                 : toJson(errors);
 
         writeResponse(json);
-    }
-
-    /**
-     * @param response The response object to be serialized
-     * @return The object serialized into JSON format, using the application {@link GsonFactory}. This behavior can be
-     * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
-     * object.
-     */
-    public String toJson(Object response)
-    {
-        // We will serialize the response object itself by default.
-        var objectToSerialize = response;
-
-        // If the response object provides another object to serialize,
-        if (response instanceof MicroserviceGsonObjectSource)
-        {
-            // then make that the object to serialize.
-            objectToSerialize = ((MicroserviceGsonObjectSource) response).gsonObject();
-        }
-
-        // If the response object has a custom GsonFactory,
-        if (response instanceof GsonFactorySource)
-        {
-            // use that to convert the response to JSON,
-            return listenTo(((GsonFactorySource) response).gsonFactory()).gson().toJson(objectToSerialize);
-        }
-        else
-        {
-            // otherwise, use the GsonFactory, provided by the application through the request cycle.
-            return cycle.gson().toJson(objectToSerialize);
-        }
     }
 
     /**

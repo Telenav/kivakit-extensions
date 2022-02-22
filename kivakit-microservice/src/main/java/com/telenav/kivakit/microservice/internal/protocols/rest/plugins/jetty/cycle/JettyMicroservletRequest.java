@@ -25,7 +25,7 @@ import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
+import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
@@ -59,7 +59,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
  * @see BaseComponent
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletRequest extends BaseComponent implements ProblemReportingTrait
+public class JettyMicroservletRequest extends BaseComponent implements HttpProblemReportingTrait
 {
     /** The request cycle to which this request belongs */
     @UmlAggregation
@@ -92,6 +92,11 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
     public boolean hasBody()
     {
         return httpRequest.getContentLength() != 0;
+    }
+
+    public HttpServletRequest httpRequest()
+    {
+        return httpRequest;
     }
 
     /**

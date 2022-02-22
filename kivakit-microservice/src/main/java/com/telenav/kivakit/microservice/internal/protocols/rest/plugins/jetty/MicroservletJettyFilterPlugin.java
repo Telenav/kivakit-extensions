@@ -24,6 +24,7 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
+import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -98,9 +99,16 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
     /**
      * Forwards requests to mount microservlets to the filter holder
      */
-    public void mount(MicroservletRestPath path,
-                      Microservlet<?, ?> microservlet)
+    public void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
     {
         filterHolder.mount(path, microservlet);
+    }
+
+    /**
+     * Forwards requests to mount JAR files for alternate API versions to the filter holder
+     */
+    public void mount(MicroservletRestPath path, Resource jar, int port)
+    {
+        filterHolder.mount(path, jar, port);
     }
 }

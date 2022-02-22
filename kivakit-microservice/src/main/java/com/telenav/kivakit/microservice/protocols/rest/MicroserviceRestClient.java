@@ -34,14 +34,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MicroserviceRestClient extends BaseComponent
 {
+    /** {@link Gson} factory for reading and writing JSON object */
+    private final GsonFactory gsonFactory;
+
     /** The remote host and port number */
     private final Port port;
 
     /** The version of the remote host's REST service */
     private final Version version;
-
-    /** {@link Gson} factory for reading and writing JSON object */
-    private final GsonFactory gsonFactory;
 
     /**
      * @param gsonFactory A factory that creates {@link Gson} objects to use when reading and writing JSON objects
