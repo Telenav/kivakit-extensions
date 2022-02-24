@@ -86,18 +86,7 @@ public class MountedJar extends Mounted
         return true;
     }
 
-    private void copyResponse(final HttpServletResponse response, final HttpResponse result)
-    {
-        for (var header : result.getAllHeaders())
-        {
-            response.setHeader(header.getName(), header.getValue());
-        }
-        response.setLocale(result.getLocale());
-        response.setStatus(result.getStatusLine().getStatusCode());
-        tryCatch(() -> IO.copy(result.getEntity().getContent(), response.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
-    }
-
-    private synchronized void maybeLaunch()
+    public synchronized void maybeLaunch()
     {
         if (process == null)
         {
@@ -109,6 +98,17 @@ public class MountedJar extends Mounted
                     .redirectTo(CONSOLE)
                     .run();
         }
+    }
+
+    private void copyResponse(final HttpServletResponse response, final HttpResponse result)
+    {
+        for (var header : result.getAllHeaders())
+        {
+            response.setHeader(header.getName(), header.getValue());
+        }
+        response.setLocale(result.getLocale());
+        response.setStatus(result.getStatusLine().getStatusCode());
+        tryCatch(() -> IO.copy(result.getEntity().getContent(), response.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
     }
 
     /** The JAR */

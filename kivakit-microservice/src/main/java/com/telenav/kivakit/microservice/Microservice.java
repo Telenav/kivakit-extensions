@@ -172,7 +172,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<String> API_VERSIONS =
-            SwitchParser.stringSwitchParser(this, "api-versions", "The semicolon-separated API versions to load, each of the form [api-version],[jar-resource],[port],[command-line]")
+            SwitchParser.stringSwitchParser(this, "api-versions", "The semicolon-separated API versions to load, each of the form: version=[api-version],jar=[jar-resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-versions=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
                     .optional()
                     .build();
 

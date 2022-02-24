@@ -131,14 +131,14 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * somewhere), and then using the <i>-api-versions</i> command line switch:
  *
  * <p>
- * <i>-api-versions=[api-version],[jar-resource],[port],[command-line];[...]</i>.
+ * <i>-api-versions=[api-version],[jar],[port],[command-line];[...]</i>.
  * </p>
  *
  * <p>
  * For example:
  * </p>
  *
- * <pre>-api-versions=0.9,classpath:/apis/my-microservice-0.9.jar,8082;1.0,classpath:/apis/my-microservice-1.0.jar,8083</pre>
+ * <pre>-api-versions=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development</pre>
  *
  * <p>
  * Would mount the 0.9 API JAR in the package <i>apis</i> on port 8082, and the 1.0 API JAR in the package <i>apis</i>

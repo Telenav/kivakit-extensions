@@ -198,6 +198,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         mounted.path = path;
         mounted.port = port;
         mounted.commandLine = parseCommandLine(commandLine);
+        mounted.maybeLaunch();
 
         mountedJars.put(path, mounted);
         information("$: Mounted $ JAR $ => $", microservice.name(), path.method().name(), path, jar);
