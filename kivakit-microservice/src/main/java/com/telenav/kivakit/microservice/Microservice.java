@@ -181,7 +181,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> GRPC_PORT =
-            integerSwitchParser(this, "grpc-port", "The port to use")
+            integerSwitchParser(this, "grpc-port", "The port to use for gRPC")
                     .optional()
                     .build();
 
@@ -190,7 +190,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> PORT =
-            integerSwitchParser(this, "port", "The port to use")
+            integerSwitchParser(this, "port", "The port to use for REST")
                     .optional()
                     .build();
 
