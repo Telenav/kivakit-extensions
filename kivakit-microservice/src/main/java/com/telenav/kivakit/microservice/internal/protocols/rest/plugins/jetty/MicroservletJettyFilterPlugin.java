@@ -107,8 +107,8 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
     /**
      * Forwards requests to mount JAR files for alternate API versions to the filter holder
      */
-    public void mount(MicroservletRestPath path, Resource jar, int port)
+    public void mount(MicroservletRestPath path, Resource jar, String commandLine, int port)
     {
-        filterHolder.mount(path, jar, port);
+        filterHolder.mount(path, jar, commandLine, port);
     }
 }

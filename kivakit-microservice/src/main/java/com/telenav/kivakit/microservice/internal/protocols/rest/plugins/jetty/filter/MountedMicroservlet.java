@@ -8,6 +8,12 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
 
 import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
 
+/**
+ * A mounted {@link Microservlet} which can handle requests with {@link #handleRequest(MicroserviceRestService.HttpMethod,
+ * JettyMicroservletRequestCycle)}
+ *
+ * @author jonathanl (shibo)
+ */
 public class MountedMicroservlet extends Mounted
 {
     public MountedMicroservlet(final MicroserviceRestService service)

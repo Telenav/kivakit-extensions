@@ -1,11 +1,11 @@
 package com.telenav.kivakit.microservice.protocols.rest;
 
 import com.telenav.kivakit.configuration.lookup.RegistryTrait;
+import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
@@ -36,15 +36,6 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
     {
         this.path = path;
         this.httpMethod = httpMethod;
-    }
-
-    public Version version()
-    {
-        if (path.startsWith("/api/"))
-        {
-            return Version.parse(LOGGER, path.withoutRoot().get(1));
-        }
-        return null;
     }
 
     @Override
@@ -99,10 +90,13 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
     {
         if (!path.startsWith("/"))
         {
-            var version = require(Microservice.class).version();
-            var apiPath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
-            return FilePath.parseFilePath(LOGGER, apiPath);
+            var microservice = require(Microservice.class);
+            var version = microservice.version();
+            var restService = require(MicroserviceRestService.class);
+            var apiPath = restService.versionToPath(version);
+            return FilePath.parseFilePath(LOGGER, Paths.concatenate(apiPath, path.asString()));
         }
+
         return path;
     }
 
@@ -110,6 +104,15 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
     public String toString()
     {
         return path.isEmpty() ? "" : resolvedPath().toString();
+    }
+
+    public Version version()
+    {
+        if (path.startsWith("/api/"))
+        {
+            return Version.parse(LOGGER, path.withoutRoot().get(1));
+        }
+        return null;
     }
 
     public MicroservletRestPath withoutLast()

@@ -25,6 +25,7 @@ import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.kernel.messaging.Message;
@@ -43,6 +44,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandling
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.resource.Resource;
+import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -56,18 +58,138 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
 import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.GET;
+import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.POST;
 
 /**
- * Base class for KivaKit microservice REST applications. {@link Microservlet}s can be installed with {@link
- * #mount(MicroservletRestPath, Microservlet)}. ({@link MicroservletRequest} handlers must be installed with {@link
- * #mount(String, HttpMethod, Class)} in the {@link Microservice#onInitialize()} method. The {@link #gsonFactory()}
- * method can be overridden to provide an application-specific {@link Gson} serializer. The {@link #openApiInfo()} class
- * can optionally be overridden to provide OpenAPI details beyond those provided by the {@link Microservice} via {@link
- * MicroserviceMetadata}.
+ * Base class for KivaKit microservice REST applications.
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>Mounting Request Handlers</b></p>
+ *
+ * <p>
+ * ({@link MicroservletRequest} handlers must be installed with {@link #mount(Version, String, HttpMethod, Class)}, or
+ * {@link #mount(String, HttpMethod, Class)}. All calls to mount request handlers must be made in the {@link
+ * Microservice#onInitialize()} method. Attempting to mount a handler outside of {@link Microservice#onInitialize()}
+ * will result in a runtime error. For example:
+ * </p>
+ *
+ * <p>
+ * In this microservice:
+ * </p>
+ *
+ * <pre>
+ * public class MyMicroservice extends Microservice<Void>
+ * {
+ *     public MicroserviceMetadata metadata()
+ *     {
+ *         return new MicroserviceMetadata()
+ *             .withName("my-microservice")
+ *             .withDescription("My microservice")
+ *             .withVersion(Version.of(1, 0));
+ *     }
+ *
+ *         [...]
+ * }</pre>
+ *
+ * <p>
+ * this call to {@link #mount(Version, String, HttpMethod, Class)} in <i>onInitialize()</i>:
+ * </p>
+ *
+ * <pre>
+ * public class MyRestService extends MicroserviceRestService
+ * {
+ *         [...]
+ *
+ *     public void onInitialize()
+ *     {
+ *         var v1 = Version.of(1, 0);
+ *
+ *         mount(v1, "/users/update", POST, UpdateUserRequest.class);
+ *     }
+ * }</pre>
+ *
+ * <p>
+ * would mount the POST request handler <i>UserUpdateRequest</i> on the URL <i>/my-microservice/api/1.0/users/update</i>.
+ * </p>
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>Mounting Backwards-Compatibility JARs</b></p>
+ *
+ * <p>
+ * To make it easy to support previous API versions, JAR {@link Resource}s can be launched in a child process using a
+ * command-line switch. KivaKit will redirect requests for the previous version to the child process on a specific port
+ * on the local host. This ensures full compatibility with the old API with a minimum of effort. This can be
+ * accomplished by simply including one or more JAR files in a package inside the microservice JAR (or in a folder
+ * somewhere), and then using the <i>-api-versions</i> command line switch:
+ *
+ * <p>
+ * <i>-api-versions=[api-version],[jar-resource],[port],[command-line];[...]</i>.
+ * </p>
+ *
+ * <p>
+ * For example:
+ * </p>
+ *
+ * <pre>-api-versions=0.9,classpath:/apis/my-microservice-0.9.jar,8082;1.0,classpath:/apis/my-microservice-1.0.jar,8083</pre>
+ *
+ * <p>
+ * Would mount the 0.9 API JAR in the package <i>apis</i> on port 8082, and the 1.0 API JAR in the package <i>apis</i>
+ * on port 8083. Any {@link ResourceIdentifier} can be used to specify the JAR resource. The example here uses the
+ * <i>classpath</i> scheme, so the JAR will be located on the classpath. See {@link ResourceIdentifier} for details
+ * regarding available resource resolvers and their associated schemes.
+ * </p>
+ *
+ * <p>
+ * If more control is desired, {@link #mountApiVersion(Version, Resource, String, int)} can be used to manually mount
+ * the API JAR for a previous version of the API on the given port number on the local host.
+ * </p>
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>JSON Serialization</b></p>
+ *
+ * <p>
+ * The {@link #gsonFactory()} method can be overridden to provide an application-specific {@link Gson} serializer.
+ * </p>
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>OpenAPI</b></p>
+ *
+ * <p>
+ * The {@link #openApiInfo()} class can optionally be overridden to provide OpenAPI details beyond those provided by the
+ * {@link Microservice} via {@link MicroserviceMetadata}.
+ * </p>
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>Root Path</b></p>
+ *
+ * <p>The method {@link #rootPath()} returns <i>/[microservice-name]</i> by default (where the microservice name is
+ * specified in {@link Microservice#metadata()}). This method can be overridden to put the API under a different root.
+ * So, version 1.0 of the API for <i>my-microservice</i> would be mounted under <i>/my-microservice/api/1.0</i>. If
+ * {@link #rootPath()} returned <i>/</i> (slash), the API root for version 1.0 would be <i>/api/1.0</i>.
+ * </p>
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>API Paths and Versions</b></p>
+ *
+ * <p>
+ * The path to a particular API version can be customized by overriding {@link #versionToPath(Version)}, and {@link
+ * #pathToVersion(String)} (both must be overridden). By default this format used by both methods is
+ * <i>/api/[major-version].[minor-version]</i>. For example, <i>/api/1.0</i>.
+ * </p>
+ *
+ * <p><br/><hr/><br/></p>
  *
  * <p><b>Internal Details - Flow of Control</b></p>
  *
@@ -142,7 +264,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     /** True while initializing */
     private boolean initializing = false;
 
-    /** The microservice that owns this REST application */
+    /** The microservice that owns this REST servcie */
     @UmlAggregation
     private final Microservice<?> microservice;
 
@@ -150,7 +272,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     private final Map<MicroservletRestPath, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
 
     /**
-     * @param microservice The microservice that is creating this REST application
+     * @param microservice The microservice that is creating this REST service
      */
     public MicroserviceRestService(Microservice<?> microservice)
     {
@@ -174,8 +296,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * Mount OpenAPI request handler and initialize the rest application. This method cannot be overridden. Override
-     * {@link #onInitialize()} instead.
+     * Mount OpenAPI request handler and initialize the rest service. This method cannot be overridden. Override {@link
+     * #onInitialize()} instead.
      */
     @Override
     public final void initialize()
@@ -194,7 +316,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * @return The microservice to which this rest application belongs
+     * @return The microservice to which this rest service belongs
      */
     public Microservice<?> microservice()
     {
@@ -236,54 +358,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(Version version, String path, HttpMethod method, Class<Request> requestType)
     {
-        var absolutePath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
-        mount(absolutePath, method, requestType);
-    }
-
-    /**
-     * Mounts the given JAR on the path /api/[version]/path. Requests to the path will be directed to a child process
-     * running the JAR. This permits greater agility with strong backwards compatibility (at the expense of some memory
-     * and compute resources).
-     *
-     * @param version The version of the JAR file
-     * @param method The HTTP method
-     * @param jar The JAR file to launch in a child process
-     * @param port The port to talk to the child process
-     */
-    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mount(Version version, HttpMethod method, Resource jar, int port)
-    {
-        var absolutePath = Message.format("/api/$.$", version.major(), version.minor());
-        mount(absolutePath, method, jar, port);
-    }
-
-    /**
-     * Mounts the given JAR on the given path for the given HTTP method. Requests to the path will be directed to a
-     * child process running the JAR. This permits greater agility with strong backwards compatibility (at the expense
-     * of some memory and compute resources).
-     *
-     * @param path The path to the given JAR. If the path is not absolute (doesn't start with a '/'), it is prefixed
-     * with: "/api/[major.version].[minor.version]/", where the version is retrieved from {@link
-     * Microservice#version()}. For example, the path "users" in microservlet version 3.1 will resolve to
-     * "/api/3.1/users", and the path "/users" will resolve to "/users".
-     * @param method The HTTP method to which the microservlet should respond
-     * @param jar The JAR file to delegate to
-     */
-    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mount(String path, HttpMethod method, Resource jar, int port)
-    {
-        // If we're in onInitialize(),
-        if (initializing)
-        {
-            // mount the jar,
-            var restPath = MicroservletRestPath.parse(this, path, method);
-            require(MicroservletJettyFilterPlugin.class).mount(restPath, jar, port);
-        }
-        else
-        {
-            // otherwise, complain.
-            problem("JAR files must be mounted in onInitialize()");
-        }
+        mount(Paths.concatenate(versionToPath(version), path), method, requestType);
     }
 
     /**
@@ -309,7 +384,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                 // then mount an anonymous microservlet on the given path,
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                var restPath = MicroservletRestPath.parse(this, path, method);
+                var restPath = MicroservletRestPath.parse(this, Paths.concatenate(rootPath(), path), method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
@@ -350,7 +425,53 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     {
         for (var path : pathToRequest.keySet())
         {
-            target.mount(path.resolvedPath().asString(), pathToRequest.get(path));
+            target.mount(Paths.concatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
+        }
+    }
+
+    /**
+     * Mounts the given JAR on the path specified by {@link #versionToPath(Version)}. Requests to the path will be
+     * directed to a child process running the JAR. This permits greater agility with strong backwards compatibility (at
+     * the expense of some memory and compute resources).
+     *
+     * @param version The API version in the JAR file
+     * @param jar The JAR file to launch in a child process
+     * @param commandLine The command line to use when executing the JAR
+     * @param port The port to talk to the child process
+     */
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    void mountApiVersion(Version version, Resource jar, String commandLine, int port)
+    {
+        mountApiVersion(versionToPath(version), jar, commandLine, port);
+    }
+
+    /**
+     * Mounts the given JAR on the given path for the given HTTP method. Requests to the path will be directed to a
+     * child process running the JAR. This permits greater agility with strong backwards compatibility (at the expense
+     * of some memory and compute resources).
+     *
+     * @param path The path to the given JAR. If the path is not absolute (doesn't start with a '/'), it is prefixed
+     * with: "/api/[major.version].[minor.version]/", where the version is retrieved from {@link
+     * Microservice#version()}. For example, the path "users" in microservlet version 3.1 will resolve to
+     * "/api/3.1/users", and the path "/users" will resolve to "/users".
+     * @param jar The JAR file to delegate to
+     * @param commandLine The command line to use when executing the JAR
+     * @param port The port to talk to the child process
+     */
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    void mountApiVersion(String path, Resource jar, String commandLine, int port)
+    {
+        // If we're in onInitialize(),
+        if (initializing)
+        {
+            // mount the jar,
+            var restPath = MicroservletRestPath.parse(this, path, POST);
+            require(MicroservletJettyFilterPlugin.class).mount(restPath, jar, commandLine, port);
+        }
+        else
+        {
+            // otherwise, complain.
+            problem("JAR files must be mounted in onInitialize()");
         }
     }
 
@@ -391,5 +512,47 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                 .version(metadata.version().toString())
                 .description(metadata.description())
                 .title(metadata.name());
+    }
+
+    /**
+     * Extracts any version from the given path, which must be in the format produced by {@link
+     * #versionToPath(Version)}.
+     *
+     * @param path The path containing version information
+     * @return The version
+     */
+    protected Version pathToVersion(String path)
+    {
+        var matcher = Pattern.compile("/api/(<?version>[^/]+)").matcher(path);
+        if (matcher.find())
+        {
+            return Version.parse(this, matcher.group("version"));
+        }
+        return fail("Unable to extract version from: $", path);
+    }
+
+    /**
+     * Returns the root path under which the API is mounted. By default this is <i>/[microservice-name]</i> (slash),
+     * which means the API root path for version 1.0 would be <i>/[microservice-name]/api/1.0</i>. This method can be
+     * overridden to put the API root under an microservice-specific path. For example, returning
+     * <i>/</i> as the root path would result in this base URL for version 1.0 of the API:
+     * <i>/api/1.0</i>
+     *
+     * @return The root path under which the API is found
+     */
+    protected String rootPath()
+    {
+        return Paths.concatenate("/", require(Microservice.class).metadata().name());
+    }
+
+    /**
+     * Returns the absolute API path. By default this is <i>/api/[major-version].[minor-version]</i>
+     *
+     * @param version The API version
+     * @return The path to the APi for the given version
+     */
+    protected String versionToPath(final Version version)
+    {
+        return Message.format("/api/$.$", version.major(), version.minor());
     }
 }

@@ -60,8 +60,8 @@ public class JettyMicroservletFilterHolder extends FilterHolder implements Compo
         filter.mount(path, microservlet);
     }
 
-    public void mount(MicroservletRestPath path, Resource jar, int port)
+    public void mount(MicroservletRestPath path, Resource jar, String commandLine, int port)
     {
-        filter.mount(path, jar, port);
+        filter.mount(path, jar, commandLine, port);
     }
 }

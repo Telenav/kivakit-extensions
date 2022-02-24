@@ -10,6 +10,7 @@ import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
+import com.telenav.kivakit.kernel.language.primitives.Ints;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
@@ -20,6 +21,7 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
+import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
@@ -38,6 +40,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.commandline.SwitchParser.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
@@ -68,7 +71,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  *
  * <p><b>Mount Paths</b></p>
  * <p>
- * Microservice resources are mounted on the following paths:
+ * Microservice resources are mounted on the following paths by default:
  *
  * <p>
  * <table>
@@ -76,13 +79,13 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  *         <td>/</td><td>&nbsp;</td></td><td>Apache Wicket web application</td>
  *     </tr>
  *     <tr>
- *         <td>/</td><td>&nbsp;</td><td>Microservlet REST application</td>
+ *         <td>/[microservice-name]</td><td>&nbsp;</td><td>Microservlet REST application</td>
  *     </tr>
  *     <tr>
  *         <td>/assets</td><td>&nbsp;</td><td>Static resources</td>
  *     </tr>
  *     <tr>
- *         <td>/docs/</td><td>&nbsp;</td><td>Swagger documentation</td>
+ *         <td>/docs</td><td>&nbsp;</td><td>Swagger documentation</td>
  *     </tr>
  *     <tr>
  *         <td>/open-api/assets</td><td>&nbsp;</td><td>Static resources for use in OpenAPI definitions</td>
@@ -164,6 +167,15 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice<Member> extends Application implements GsonFactorySource, Startable, Stoppable
 {
+    /**
+     * Command line switch for what port to run any REST service on. This will override any value from {@link
+     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     */
+    private final SwitchParser<String> API_VERSIONS =
+            SwitchParser.stringSwitchParser(this, "api-versions", "The semicolon-separated API versions to load, each of the form [api-version],[jar-resource],[port],[command-line]")
+                    .optional()
+                    .build();
+
     /**
      * Command line switch for what port to run any GRPC service on. This will override any value from {@link
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
@@ -431,6 +443,13 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
                 server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restService.getClass()));
 
+                // If there are any previous APIs specified by the -api-versions switch,
+                if (has(API_VERSIONS))
+                {
+                    // mount the specified API JAR files.
+                    mountApiVersions(restService);
+                }
+
                 // Initialize the REST service.
                 restService.initialize();
             }
@@ -624,6 +643,39 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER);
+        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_VERSIONS);
+    }
+
+    /**
+     * Mounts the API versions specified by the <i>-api-versions</i> switch
+     *
+     * @param restService The REST service to mount each API version JAR on
+     */
+    private void mountApiVersions(final MicroserviceRestService restService)
+    {
+        var versions = get(API_VERSIONS).split(";");
+        var okay = true;
+        var specifierPattern = Pattern.compile("version=(<?version>\\d+\\.\\d+),jar=(<?jar>[^,]+),port=(<?port>\\d+)(,command-line=(<?commandLine>.*))?");
+        for (var at : versions)
+        {
+            var matcher = specifierPattern.matcher(at);
+            if (matcher.matches())
+            {
+                var version = Version.parse(this, matcher.group("version"));
+                var resource = Resource.resolve(this, matcher.group("jar"));
+                var commandLine = matcher.group("commandLine");
+                var port = Ints.parse(this, matcher.group("port"));
+                restService.mountApiVersion(version, resource, commandLine, port);
+            }
+            else
+            {
+                okay = false;
+            }
+        }
+
+        if (!okay)
+        {
+            exit("Invalid -api-versions: $", get(API_VERSIONS));
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
@@ -182,7 +183,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    public final void mount(MicroservletRestPath path, Resource jar, int port)
+    public final void mount(MicroservletRestPath path, Resource jar, String commandLine, int port)
     {
         var microservice = service.microservice();
         var existing = mountedJars.get(path);
@@ -196,6 +197,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         mounted.jar = jar;
         mounted.path = path;
         mounted.port = port;
+        mounted.commandLine = parseCommandLine(commandLine);
 
         mountedJars.put(path, mounted);
         information("$: Mounted $ JAR $ => $", microservice.name(), path.method().name(), path, jar);
@@ -229,6 +231,17 @@ public class JettyMicroservletFilter extends BaseComponent implements
     public MountedMicroservlet mountedMicroservlet(MicroservletRestPath path)
     {
         return mountedMicroservlets.get(path);
+    }
+
+    /**
+     * The command line for mounted JARs should be a list of arguments, separated by commas
+     *
+     * @param commandLine The command line
+     * @return The list of arguments
+     */
+    private StringList parseCommandLine(final String commandLine)
+    {
+        return StringList.split(commandLine, ",");
     }
 
     /**
