@@ -27,6 +27,7 @@ public class MountedMicroservlet extends Mounted
      * @param method The HTTP request method
      * @param cycle The request cycle
      */
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public void handleRequest(MicroserviceRestService.HttpMethod method,
                               JettyMicroservletRequestCycle cycle)
     {

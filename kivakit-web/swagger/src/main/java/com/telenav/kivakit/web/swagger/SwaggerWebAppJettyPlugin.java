@@ -20,7 +20,7 @@ package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.resource.resources.packaged.Package;
-import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
+import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**
@@ -29,10 +29,15 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class SwaggerAssetsJettyResourcePlugin extends AssetsJettyResourcePlugin
+public class SwaggerWebAppJettyPlugin extends AssetsJettyPlugin
 {
-    public SwaggerAssetsJettyResourcePlugin()
+    public SwaggerWebAppJettyPlugin()
     {
-        super(Package.packageFrom(Listener.console(), SwaggerAssetsJettyResourcePlugin.class, "assets"));
+        super("[SwaggerWebAppJettyPlugin folder = " + folder() + "]", folder());
+    }
+
+    private static Package folder()
+    {
+        return Package.packageFrom(Listener.console(), SwaggerWebAppJettyPlugin.class, "assets");
     }
 }

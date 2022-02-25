@@ -48,4 +48,5 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.protocols.rest;
     exports com.telenav.kivakit.microservice.protocols.rest.openapi;
     exports com.telenav.kivakit.microservice.protocols.rest.gson;
+    exports com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 }

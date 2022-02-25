@@ -2,12 +2,15 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.io.IO;
+import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
 import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
+import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher;
 import org.apache.http.HttpResponse;
@@ -23,6 +26,7 @@ import java.net.URI;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher.RedirectTo.CONSOLE;
+import static org.apache.http.HttpStatus.SC_OK;
 
 /**
  * A JAR file mounted on a path. The JAR will be run in a child process on the specified port. Requests will be
@@ -40,9 +44,6 @@ public class MountedApi extends Mounted
 
     /** The JAR */
     private Resource jar;
-
-    /** Any path parameters */
-    private MicroservletRestPath parameters;
 
     /** The path to the JAR */
     private MicroservletRestPath path;
@@ -119,6 +120,40 @@ public class MountedApi extends Mounted
     }
 
     /**
+     * Returns true if this mounted API is alive.
+     */
+    public boolean isAlive()
+    {
+        var uri = uri("/health/live");
+
+        var response = tryCatch(() -> client.execute(new HttpGet(uri)), "Unable to GET: $", uri);
+        if (response.getStatusLine().getStatusCode() == SC_OK)
+        {
+            var input = tryCatch(() -> response.getEntity().getContent(), "Unable to read content from: $", uri);
+            return "alive".equalsIgnoreCase(IO.string(input));
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if this mounted API is responding.
+     */
+    public boolean isReady()
+    {
+        var uri = uri("/health/ready");
+
+        var response = tryCatch(() -> client.execute(new HttpGet(uri)), "Unable to GET: $", uri);
+        if (response.getStatusLine().getStatusCode() == SC_OK)
+        {
+            var input = tryCatch(() -> response.getEntity().getContent(), "Unable to read content from: $", uri);
+            return "ready".equalsIgnoreCase(IO.string(input));
+        }
+
+        return false;
+    }
+
+    /**
      * Sets the JAR file containing this API
      *
      * @param jar The JAR
@@ -142,14 +177,6 @@ public class MountedApi extends Mounted
                     .run();
         }
         return process != null;
-    }
-
-    /**
-     * Sets the parameters to this API
-     */
-    public void parameters(final MicroservletRestPath parameters)
-    {
-        this.parameters = parameters;
     }
 
     /**
@@ -182,9 +209,33 @@ public class MountedApi extends Mounted
         return this;
     }
 
+    /**
+     * Returns the local port where this API is running
+     */
+    public Port port()
+    {
+        return Host.local().port(port);
+    }
+
     public String toString()
     {
         return Message.format("$ ==> $ ($) on port $", path, version, jar, port);
+    }
+
+    /**
+     * Returns the URI to this API
+     */
+    public URI uri()
+    {
+        return uri("");
+    }
+
+    /**
+     * Returns the URI to the given request handler path in this API
+     */
+    public URI uri(String path)
+    {
+        return port().path(this, Paths.concatenate(this.path.toString(), path)).asUri();
     }
 
     /**

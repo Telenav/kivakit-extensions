@@ -22,6 +22,9 @@ import com.telenav.kivakit.application.Server;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
+import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.resource.ResourceFolder;
+import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.service.registry.Scope;
 import com.telenav.kivakit.service.registry.ServiceRegistry;
 import com.telenav.kivakit.service.registry.ServiceRegistryProject;
@@ -32,17 +35,19 @@ import com.telenav.kivakit.service.registry.server.project.lexakai.diagrams.Diag
 import com.telenav.kivakit.service.registry.server.rest.ServiceRegistryRestApplication;
 import com.telenav.kivakit.service.registry.server.webapp.ServiceRegistryWebApplication;
 import com.telenav.kivakit.service.registry.store.ServiceRegistryStore;
-import com.telenav.kivakit.web.jersey.JerseyJettyServletPlugin;
+import com.telenav.kivakit.web.jersey.JerseyJettyPlugin;
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
-import com.telenav.kivakit.web.swagger.SwaggerIndexJettyResourcePlugin;
-import com.telenav.kivakit.web.swagger.SwaggerJettyServletPlugin;
-import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
-import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerOpenApiJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebAppJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyPlugin;
+import com.telenav.kivakit.web.wicket.WicketJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.UmlNote;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
+
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
  * Service registry server, including Wicket, REST and Swagger resources. Accepts these switches from the command line:
@@ -75,15 +80,15 @@ public class ServiceRegistryServer extends Server
         get().run(arguments);
     }
 
-    private final SwitchParser<Scope.Type> SCOPE = SwitchParser
-            .enumSwitchParser(this, "scope", "The scope of operation for this server", Scope.Type.class)
-            .defaultValue(Scope.localhost().type())
-            .optional()
-            .build();
-
     private final SwitchParser<Integer> PORT = SwitchParser
             .integerSwitchParser(this, "first-port", "The first port in the range of ports to be allocated")
             .defaultValue(50_000)
+            .optional()
+            .build();
+
+    private final SwitchParser<Scope.Type> SCOPE = SwitchParser
+            .enumSwitchParser(this, "scope", "The scope of operation for this server", Scope.Type.class)
+            .defaultValue(Scope.localhost().type())
             .optional()
             .build();
 
@@ -144,15 +149,26 @@ public class ServiceRegistryServer extends Server
         var application = listenTo(new ServiceRegistryRestApplication());
 
         // and start up Jetty with Swagger, Jersey and Wicket.
-        listenTo(new JettyServer())
+        listenTo(new JettyServer("/"))
                 .port(port)
-                .mount("/*", new WicketJettyFilterPlugin(ServiceRegistryWebApplication.class))
-                .mount("/open-api/*", new SwaggerJettyServletPlugin(application))
-                .mount("/docs/*", new SwaggerIndexJettyResourcePlugin(port))
-                .mount("/webapp/*", new SwaggerAssetsJettyResourcePlugin())
-                .mount("/webjar/*", new SwaggerWebJarJettyResourcePlugin(application.getClass()))
-                .mount("/*", new JerseyJettyServletPlugin(application))
+                .mount("/*", new WicketJettyPlugin(ServiceRegistryWebApplication.class))
+                .mount("/open-api/*", new SwaggerOpenApiJettyPlugin(application))
+                .mount("/docs/*", new SwaggerJettyPlugin(openApiAssetsFolder(), port))
+                .mount("/webapp/*", new SwaggerWebAppJettyPlugin())
+                .mount("/webjar/*", new SwaggerWebJarJettyPlugin())
+                .mount("/*", new JerseyJettyPlugin(application))
                 .start();
+    }
+
+    /**
+     * @return The resource folder containing static assets for reference by OpenAPI .yaml files and KivaKit OpenApi
+     * annotations. For example, a microservice might want to include an OAS .yaml file. If this method is not
+     * overridden, the default folder will be the "assets" sub-package of the rest application's package.
+     */
+    protected ResourceFolder openApiAssetsFolder()
+    {
+        var type = ensureNotNull(Type.forName("com.telenav.kivakit.web.swagger.SwaggerJettyPlugin"));
+        return Package.packageFrom(this, type.type(), "assets/openapi");
     }
 
     @Override

@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.metrics.prometheus;
 
-import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import io.prometheus.client.exporter.MetricsServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -29,11 +29,11 @@ import org.eclipse.jetty.servlet.ServletHolder;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class PrometheusJettyServletPlugin extends BaseJettyServletPlugin
+public class PrometheusJettyPlugin extends BaseServletJettyPlugin
 {
-    public PrometheusJettyServletPlugin()
+    public PrometheusJettyPlugin()
     {
-        super("[PrometheusJettyServletPlugin]");
+        super("[PrometheusJettyPlugin]");
     }
 
     @Override

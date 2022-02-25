@@ -4,7 +4,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader.OpenApiReader;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.serialization.ArraySerializer;
@@ -33,11 +33,11 @@ import java.util.Set;
  * <b>Not public API</b>
  * <p>
  * A {@link MicroservletRequest} handler that produces an {@link OpenAPI} definition for a {@link
- * MicroservletJettyFilterPlugin}.
+ * MicroservletJettyPlugin}.
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
 @OpenApiExcludeMember({ "exampleSetFlag" })
-public class JettyOpenApiRequest extends BaseMicroservletRequest
+public class OpenApiJsonRequest extends BaseMicroservletRequest
 {
     /**
      * Response to OpenAPI request

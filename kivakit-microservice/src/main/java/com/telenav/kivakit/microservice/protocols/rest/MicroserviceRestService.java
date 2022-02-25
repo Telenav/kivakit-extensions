@@ -34,12 +34,12 @@ import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequest;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
@@ -123,7 +123,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *
  * <p><br/><hr/><br/></p>
  *
- * <p><b>Mounting Backwards-Compatibility JARs</b></p>
+ * <p><b>API Forwarding - Backwards Compatibility</b></p>
  *
  * <p>
  * To make it easy to support previous API versions, JAR {@link Resource}s can be launched in a child process using a
@@ -173,16 +173,6 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *
  * <p><br/><hr/><br/></p>
  *
- * <p><b>Root Path</b></p>
- *
- * <p>The method {@link #rootPath()} returns <i>/[microservice-name]</i> by default (where the microservice name is
- * specified in {@link Microservice#metadata()}). This method can be overridden to put the API under a different root.
- * So, version 1.0 of the API for <i>my-microservice</i> would be mounted under <i>/my-microservice/api/1.0</i>. If
- * {@link #rootPath()} returned <i>/</i> (slash), the API root for version 1.0 would be <i>/api/1.0</i>.
- * </p>
- *
- * <p><br/><hr/><br/></p>
- *
  * <p><b>API Paths and Versions</b></p>
  *
  * <p>
@@ -198,13 +188,13 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * <ol>
  *     <li>Initializing</li>
  *     <ol>
- *         <li>{@link MicroserviceRestService} creates a {@link MicroservletJettyFilterPlugin}</li>
+ *         <li>{@link MicroserviceRestService} creates a {@link MicroservletJettyPlugin}</li>
  *         <li>In the {@link MicroserviceRestService#onInitialize()} method, <i>mount*()</i> methods are used to bind
  *         {@link MicroservletRequest} handlers to paths</li>
  *     </ol>
  *     <li>Receiving requests</li>
  *     <ol>
- *         <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyFilterPlugin}</li>
+ *         <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyPlugin}</li>
  *         <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} resolves any
  *         {@link Microservlet} mounted on the request path. If no microservlet is found, the request is passed to the next
  *         {@link Filter} in the filter chain</li>
@@ -231,8 +221,17 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *     </ol>
  * </ol>
  *
+ * <p><br/><hr/><br/></p>
+ *
  * @author jonathanl (shibo)
+ * @see Microservice
  * @see MicroservletRequest
+ * @see MicroservletRestPath
+ * @see MicroservletMountTarget
+ * @see GsonFactory
+ * @see HttpMethod
+ * @see Resource
+ * @see Version
  */
 @SuppressWarnings({ "RedundantSuppression", "unused", "unchecked" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
@@ -307,7 +306,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         initializing = true;
         try
         {
-            mount("/open-api/swagger.json", GET, JettyOpenApiRequest.class);
+            mount("/open-api/swagger.json", GET, OpenApiJsonRequest.class);
 
             onInitialize();
         }
@@ -340,7 +339,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         if (initializing)
         {
             // mount the microservlet,
-            require(MicroservletJettyFilterPlugin.class).mount(path, microservlet);
+            require(JettyMicroservletFilter.class).mount(path, microservlet);
         }
         else
         {
@@ -423,7 +422,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * Mounts all paths that have been mounted on this REST service on the given mount target.
      */
     @SuppressWarnings("ClassEscapesDefinedScope")
-    public void mountAll(MicroservletMountTarget target)
+    public void mountAllOn(MicroservletMountTarget target)
     {
         for (var path : pathToRequest.keySet())
         {
@@ -479,7 +478,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
             api.port(port);
 
             // and mount it.
-            require(MicroservletJettyFilterPlugin.class).mount(api);
+            require(JettyMicroservletFilter.class).mount(api);
         }
         else
         {
@@ -553,9 +552,9 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      *
      * @return The root path under which the API is found
      */
-    protected String rootPath()
+    protected final String rootPath()
     {
-        return Paths.concatenate("/", require(Microservice.class).metadata().name());
+        return require(Microservice.class).rootPath();
     }
 
     /**

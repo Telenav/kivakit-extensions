@@ -20,13 +20,11 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty;
 
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilterHolder;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -62,7 +60,7 @@ import static javax.servlet.DispatcherType.REQUEST;
  */
 @LexakaiJavadoc(complete = true)
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
+public class MicroservletJettyPlugin extends BaseFilterJettyPlugin
 {
     /** The Jetty holder for an instance of {@link JettyMicroservletFilter} */
     @UmlAggregation
@@ -71,7 +69,7 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
     /**
      * @param application The REST application
      */
-    public MicroservletJettyFilterPlugin(MicroserviceRestService application)
+    public MicroservletJettyPlugin(MicroserviceRestService application)
     {
         super(application.getClass().getSimpleName());
 
@@ -94,21 +92,5 @@ public class MicroservletJettyFilterPlugin extends BaseJettyFilterPlugin
     public JettyMicroservletFilterHolder holder()
     {
         return filterHolder;
-    }
-
-    /**
-     * Forwards requests to mount microservlets to the filter holder
-     */
-    public void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
-    {
-        filterHolder.mount(path, microservlet);
-    }
-
-    /**
-     * Forwards requests to mount JAR files for alternate API versions to the filter holder
-     */
-    public void mount(MountedApi api)
-    {
-        filterHolder.mount(api);
     }
 }

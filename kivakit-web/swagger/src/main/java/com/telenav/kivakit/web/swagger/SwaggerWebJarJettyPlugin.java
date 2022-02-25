@@ -19,7 +19,7 @@
 package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.kernel.language.types.Classes;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -30,15 +30,11 @@ import org.eclipse.jetty.servlet.ServletHolder;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class SwaggerWebJarJettyResourcePlugin extends BaseJettyResourcePlugin
+public class SwaggerWebJarJettyPlugin extends BaseAssetsJettyPlugin
 {
-    private final Class<?> restApplication;
-
-    public SwaggerWebJarJettyResourcePlugin(Class<?> restApplication)
+    public SwaggerWebJarJettyPlugin()
     {
-        super("[SwaggerWebJarJettyResourcePlugin application = " + restApplication.getSimpleName() + "]");
-
-        this.restApplication = restApplication;
+        super("[SwaggerWebJarJettyPlugin]");
     }
 
     @Override
@@ -51,9 +47,9 @@ public class SwaggerWebJarJettyResourcePlugin extends BaseJettyResourcePlugin
         return holder;
     }
 
-    String resourceBase()
+    private String resourceBase()
     {
         var path = "META-INF/resources/webjars/swagger-ui/3.51.2";
-        return Classes.resourceUri(this, restApplication, path).toString();
+        return Classes.resourceUri(this, SwaggerJettyPlugin.class, path).toString();
     }
 }

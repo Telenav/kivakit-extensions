@@ -21,11 +21,12 @@ package com.telenav.kivakit.web.jetty;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -98,23 +99,31 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         org.eclipse.jetty.util.log.Log.setLog(new StdErrLog());
     }
 
+    /** The static assets to install when Jetty starts */
+    private final List<BaseAssetsJettyPlugin> assets = new ArrayList<>();
+
+    /** The filters to install when Jetty starts */
+    private final List<BaseFilterJettyPlugin> filters = new ArrayList<>();
+
     /** The port to run Jetty on */
     private int port;
 
-    /** The filters to install when Jetty starts */
-    private final List<BaseJettyFilterPlugin> filters = new ArrayList<>();
-
-    /** The servlets to install when Jetty starts */
-    private final List<BaseJettyServletPlugin> servlets = new ArrayList<>();
-
-    /** The static resources to install when Jetty starts */
-    private final List<BaseJettyResourcePlugin> resources = new ArrayList<>();
+    /**
+     * The root path relative to this server. By default this is the name of the microservice, like
+     * <i>/my-microservice</i>
+     */
+    private final String root;
 
     /** Jetty server instance */
     private Server server;
 
-    public JettyServer()
+    /** The servlets to install when Jetty starts */
+    private final List<BaseServletJettyPlugin> servlets = new ArrayList<>();
+
+    public JettyServer(String root)
     {
+        this.root = root;
+
         configureLogging();
     }
 
@@ -124,24 +133,25 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         return server != null;
     }
 
-    public JettyServer mount(String path, BaseJettyFilterPlugin filter)
+    public JettyServer mount(String path, BaseFilterJettyPlugin filter)
     {
         filter.path(path);
         filters.add(filter);
         return this;
     }
 
-    public JettyServer mount(String path, BaseJettyServletPlugin servlet)
+    public JettyServer mount(String path, BaseServletJettyPlugin servlet)
     {
         servlet.path(path);
         servlets.add(servlet);
         return this;
     }
 
-    public JettyServer mount(String path, BaseJettyResourcePlugin resource)
+    public JettyServer mount(String path, BaseAssetsJettyPlugin assets)
     {
-        resource.path(path);
-        resources.add(resource);
+        path = Paths.concatenate(root, path);
+        assets.path(path);
+        this.assets.add(assets);
         return this;
     }
 
@@ -223,11 +233,11 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
             servletContext.setResourceBase(".");
 
             // then for each JettyResource,
-            resources.forEach(resource ->
+            assets.forEach(asset ->
             {
                 // add it to the servlet context at the given path,
-                servletContext.addServlet(resource.holder(), resource.path());
-                narrate("Mounted resource $ => $", resource.path(), resource.name());
+                servletContext.addServlet(asset.holder(), asset.path());
+                narrate("Mounted assets $ => $", asset.path(), asset.name());
             });
 
             // and for each JettyFilter,

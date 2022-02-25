@@ -1,0 +1,56 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Swagger UI</title>
+    <link href="swagger/webjar/swagger-ui.css" rel="stylesheet" type="text/css">
+    <link href="swagger/webjar/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="swagger/webjar/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+    <style>
+
+        html {
+            box-sizing: border-box;
+            overflow: -moz-scrollbars-vertical;
+            overflow-y: scroll;
+        }
+
+        *,
+        *:before,
+        *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            margin: 0;
+            background: #fafafa;
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div id="swagger-ui"></div>
+<script charset="UTF-8" src="swagger/webjar/swagger-ui-bundle.js"></script>
+<script charset="UTF-8" src="swagger/webjar/swagger-ui-standalone-preset.js"></script>
+<script>
+    window.onload = function () {
+
+        const ui = SwaggerUIBundle({
+            url: "open-api/swagger.json",
+            dom_id: '#swagger-ui',
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            layout: "StandaloneLayout"
+        })
+
+        window.ui = ui
+    }
+
+
+</script>
+</body>
+</html>

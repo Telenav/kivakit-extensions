@@ -5,7 +5,7 @@ import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.strings.Strip;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
@@ -77,7 +77,7 @@ public class OpenApiPathReader extends BaseComponent
      */
     private boolean ignoreRequestType(Class<? extends MicroservletRequest> requestType)
     {
-        return JettyOpenApiRequest.class.isAssignableFrom(requestType);
+        return OpenApiJsonRequest.class.isAssignableFrom(requestType);
     }
 
     /**
@@ -98,9 +98,9 @@ public class OpenApiPathReader extends BaseComponent
         var operationId = Strip.leading(path.key().replaceAll("/", "-"), "-");
 
         operation.operationId(operationId);
-        operation.summary(annotationReader.readAnnotationString(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
-        operation.description(annotationReader.readAnnotationString(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::description));
-        operation.tags(annotationReader.readAnnotationStringList(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::tags));
+        operation.summary(annotationReader.readAnnotationString(requestType, "onRespond", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
+        operation.description(annotationReader.readAnnotationString(requestType, "onRespond", OpenApiRequestHandler.class, OpenApiRequestHandler::description));
+        operation.tags(annotationReader.readAnnotationStringList(requestType, "onRespond", OpenApiRequestHandler.class, OpenApiRequestHandler::tags));
 
         if (operation.getTags() == null || operation.getTags().isEmpty())
         {
@@ -162,6 +162,7 @@ public class OpenApiPathReader extends BaseComponent
                 case POST:
                     item.post(newOperation(requestType, responseType, path));
                     break;
+
                 case DELETE:
                     item.delete(newOperation(requestType, responseType, path));
                     break;

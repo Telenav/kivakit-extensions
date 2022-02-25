@@ -21,6 +21,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -200,12 +201,12 @@ public class JettyMicroservletFilter extends BaseComponent implements
                     microservice.name(), path.method(), path.path(), existing.getClass()).throwAsIllegalStateException();
         }
 
-        var mounted = new MountedMicroservlet(service);
+        var mounted = listenTo(new MountedMicroservlet(service));
         mounted.microservlet = microservlet;
         mounted.path = path;
 
         mountedMicroservlets.put(path, mounted);
-        information("$: Mounted $ microservlet $ => $", microservice.name(), path.method().name(), path, microservlet.name());
+        information("Mounted $ microservlet $ => $", path.method().name(), path, microservlet.name());
     }
 
     /**
@@ -232,6 +233,14 @@ public class JettyMicroservletFilter extends BaseComponent implements
         // and finally, put our API in the map of mounted APIs.
         mountedApis.put(api.path(), api);
         information("Mounted $", api);
+    }
+
+    /**
+     * Returns the collection of all {@link MountedApi}s  for this filter.
+     */
+    public Collection<MountedApi> mountedApis()
+    {
+        return mountedApis.values();
     }
 
     /**

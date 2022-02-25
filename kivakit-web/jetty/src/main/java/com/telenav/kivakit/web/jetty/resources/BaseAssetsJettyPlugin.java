@@ -20,23 +20,24 @@ package com.telenav.kivakit.web.jetty.resources;
 
 import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 /**
- * Base class for servlet request handlers.
+ * Base class for request handlers that serve up file resources.
  *
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public abstract class BaseJettyServletPlugin extends BaseJettyRequestHandler
+public abstract class BaseAssetsJettyPlugin extends BaseJettyRequestHandler
 {
-    public BaseJettyServletPlugin(String name)
+    public BaseAssetsJettyPlugin(String name)
     {
         super(name);
     }
 
     /**
-     * @return Jetty-specific adaptor for servlets
+     * @return The Jetty-specific holder of a static resource servlet, normally {@link DefaultServlet}.
      */
     public abstract ServletHolder holder();
 }

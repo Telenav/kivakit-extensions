@@ -42,20 +42,20 @@ public class MicroserviceGrpcService extends BaseComponent implements
         Stoppable,
         MicroservletMountTarget
 {
-    /** The microservice that owns this GRPC service */
-    private final Microservice<?> microservice;
-
-    /** The GRPC server */
-    private Server server;
-
     /** True while the {@link #onInitialize()} method is running */
     private boolean initializing = false;
+
+    /** The microservice that owns this GRPC service */
+    private final Microservice<?> microservice;
 
     /** The object that responds to GRPC requests */
     private final MicroservletGrpcResponder responder;
 
     /** True if this service is running */
     private boolean running;
+
+    /** The GRPC server */
+    private Server server;
 
     public MicroserviceGrpcService(Microservice<?> microservice)
     {
@@ -75,7 +75,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
             if (restService != null)
             {
                 // and mount all the request handlers in that service on this service,
-                restService.mountAll(this);
+                restService.mountAllOn(this);
             }
 
             // then allow the user to add or override request handlers.

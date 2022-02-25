@@ -13,6 +13,7 @@ import com.telenav.kivakit.resource.path.FilePath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * A request path and method for a {@link Microservlet}.
@@ -22,6 +23,8 @@ import java.util.Objects;
 public class MicroservletRestPath implements RegistryTrait, Comparable<MicroservletRestPath>
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
+
+    public static final Pattern VERSION_PATTERN = Pattern.compile("/api/(?<version>\\d+\\.\\d+)/");
 
     public static MicroservletRestPath parse(Listener listener, String path, HttpMethod httpMethod)
     {
@@ -114,9 +117,10 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
 
     public Version version()
     {
-        if (path.startsWith("/api/"))
+        var matcher = VERSION_PATTERN.matcher(path().asString());
+        if (matcher.find())
         {
-            return Version.parse(LOGGER, path.withoutRoot().get(1));
+            return Version.parse(matcher.group("version"));
         }
         return null;
     }

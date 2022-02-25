@@ -36,6 +36,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import org.jetbrains.annotations.NotNull;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
@@ -81,6 +82,13 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
         this.httpRequest = httpRequest;
     }
 
+    /**
+     * Deserializes the given JSON to the given type using Gson
+     *
+     * @param json The JSON to deserialize
+     * @param type The resulting object type
+     * @return The deserialized object
+     */
     public <T> T fromJson(final String json, final Class<T> type)
     {
         return cycle.gson().fromJson(json, type);
@@ -94,9 +102,22 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
         return httpRequest.getContentLength() != 0;
     }
 
+    /**
+     * Returns the underlying {@link HttpServletRequest}
+     */
     public HttpServletRequest httpRequest()
     {
         return httpRequest;
+    }
+
+    /**
+     * Opens servlet input stream for this request
+     *
+     * @return The input stream
+     */
+    public ServletInputStream open()
+    {
+        return tryCatch(httpRequest::getInputStream, "Unable to open input stream");
     }
 
     /**
@@ -174,7 +195,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
         try
         {
             // Read JSON object from servlet input
-            var in = httpRequest.getInputStream();
+            var in = open();
             String json = IO.string(in);
             var request = fromJson(json, requestType);
 

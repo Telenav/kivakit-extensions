@@ -11,11 +11,12 @@ import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.primitives.Ints;
+import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyFilterPlugin;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
@@ -29,11 +30,11 @@ import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactorySource;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
-import com.telenav.kivakit.web.jetty.resources.AssetsJettyResourcePlugin;
-import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyResourcePlugin;
-import com.telenav.kivakit.web.swagger.SwaggerIndexJettyResourcePlugin;
-import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyResourcePlugin;
-import com.telenav.kivakit.web.wicket.WicketJettyFilterPlugin;
+import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebAppJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyPlugin;
+import com.telenav.kivakit.web.wicket.WicketJettyPlugin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -45,16 +46,19 @@ import java.util.regex.Pattern;
 import static com.telenav.kivakit.commandline.SwitchParser.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
 
 /**
  * <p>
- * Defines a <a href="https://martinfowler.com/articles/microservices.html">microservice</a> application.
+ * Base class for KivaKit <a href="https://martinfowler.com/articles/microservices.html">microservices</a>.
  * </p>
+ *
+ * <p><br/><hr/><br/></p>
  *
  * <p><b>Creating a Microservice</b></p>
  *
  * <p>
- * A microservice application extending this base class needs to:
+ * A microservice extending this base class needs to:
  * </p>
  *
  * <ol>
@@ -62,12 +66,59 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  *     <li>Call {@link #run(String[])}, passing in the arguments to main()</li>
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
  *     <li>Override {@link #onNewRestService()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
- *     <li>Override {@link #description()} to provide a description of the microservice for display in administrative user interfaces</li>
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
- *     <li>Optionally, override {@link #openApiAssetsFolder()} to provide any package or folder for OpenAPI specification .yaml files</li>
- *     <li>Optionally, override {@link #staticAssetsFolder()} to provide a package or folder with static resources</li>
  *     <li>Optionally, override {@link #onNewWebApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
  * </ol>
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>Example:</b></p>
+ *
+ * <pre>
+ * public class MyMicroservice extends Microservice
+ * {
+ *     public static void main( String[] arguments)
+ *     {
+ *         new MyMicroservice().run(arguments);
+ *     }
+ *
+ *     protected MyMicroservice()
+ *     {
+ *         super(new MyMicroserviceProject());
+ *     }
+ *
+ *     public MicroserviceMetaData metadata()
+ *     {
+ *         return new MicroserviceMetadata()
+ *             .withName("my-microservice")
+ *             .withDescription("My microservice!")
+ *             .withVersion(Version.of(1, 0));
+ *     }
+ *
+ *     &#064;Override
+ *     public MyRestService onNewRestService()
+ *     {
+ *         return new MyRestService(this);
+ *     }
+ *
+ *     &#064;Override
+ *     public MyWebApplication onNewWebApplication()
+ *     {
+ *         return new MyWebApplication(this);
+ *     }
+ * }</pre>
+ *
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>Command Line Switches</b></p>
+ *
+ * <p>
+ * KivaKit will parse the command line and start the microservice on any port passed to the command line with
+ * <i>-port=[port]</i>. If no port is specified, the port in {@link MicroserviceSettings} will be used, as loaded
+ * from the {@link Deployment} specified on the command line with <i>-deployment=[deployment]</i>.
+ * </p>
+ *
+ * <p><br/><hr/><br/></p>
  *
  * <p><b>Mount Paths</b></p>
  * <p>
@@ -79,7 +130,7 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  *         <td>/</td><td>&nbsp;</td></td><td>Apache Wicket web application</td>
  *     </tr>
  *     <tr>
- *         <td>/[microservice-name]</td><td>&nbsp;</td><td>Microservlet REST application</td>
+ *         <td>/</td><td>&nbsp;</td><td>Microservlet REST application</td>
  *     </tr>
  *     <tr>
  *         <td>/assets</td><td>&nbsp;</td><td>Static resources</td>
@@ -102,39 +153,17 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * </table>
  * </p>
  *
- * <p>
- * KivaKit will parse the command line and start the microservice on any port passed to the command line with
- * -port=[port]. If no port is specified, the port in {@link MicroserviceSettings} will be used, as loaded from the
- * {@link Deployment} specified on the command line with -deployment=[deployment].
+ * <p><br/><hr/><br/></p>
+ *
+ * <p><b>Root Path</b></p>
+ *
+ * <p>The method {@link #rootPath()} returns <i>/[microservice-name]</i> by default (where the microservice name is
+ * specified in {@link Microservice#metadata()}). This method can be overridden to put all resources under a different root.
+ * For example, version 1.0 of the REST API for <i>my-microservice</i> would be mounted under <i>/my-microservice/api/1.0</i>.
+ * But if {@link #rootPath()} returned <i>/</i> (slash), the API root for version 1.0 would be <i>/api/1.0</i>.
  * </p>
  *
- * <p><b>Example</b></p>
- *
- * <pre>
- * public class MyMicroservice extends Microservice
- * {
- *     public static void main( String[] arguments)
- *     {
- *         new MyMicroservice().run(arguments);
- *     }
- *
- *     protected MyMicroservice()
- *     {
- *         super(new MyMicroserviceProject());
- *     }
- *
- *     &#064;Override
- *     public MyRestApplication restApplication()
- *     {
- *         return new MyRestApplication(this);
- *     }
- *
- *     &#064;Override
- *     public MyWebApplication webApplication()
- *     {
- *         return new MyWebApplication(this);
- *     }
- * }</pre>
+ * <p><br/><hr/><br/></p>
  *
  * <p><b>Cluster Membership</b></p>
  *
@@ -146,12 +175,16 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * and the leader with {@link MicroserviceCluster#leader()}.
  * </p>
  *
+ * <p><br/><hr/><br/></p>
+ *
  * <p><b>Cluster Elections</b></p>
  *
  * <p>
  * Any time a member joins or leaves, an election is held by the {@link MicroserviceCluster}. If
  * this microservice is the elected leader of the cluster, the {@link #isLeader()} method will return true.
  * </p>
+ *
+ * <p><br/><hr/><br/></p>
  *
  * @author jonathanl (shibo)
  * @see Deployment
@@ -365,9 +398,20 @@ public abstract class Microservice<Member> extends Application implements GsonFa
         return null;
     }
 
+    /**
+     * Returns the rest service for this microservice
+     */
     public MicroserviceRestService restService()
     {
         return restService.get();
+    }
+
+    /**
+     * The root of this microservice. By default this is <i>/[microservice-name]</i>, like <i>/my-microservice</i>
+     */
+    public String rootPath()
+    {
+        return "/" + metadata().name();
     }
 
     @UmlRelation(label = "has")
@@ -406,14 +450,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
             }
 
             // create the Jetty server.
-            server = listenTo(new JettyServer().port(settings().port()));
+            server = listenTo(new JettyServer(rootPath()).port(settings().port()));
 
             // If there's an Apache Wicket web application,
             var webApplication = webApplication();
             if (webApplication != null)
             {
                 // mount them on the server.
-                server.mount("/*", new WicketJettyFilterPlugin(webApplication));
+                server.mount("/*", new WicketJettyPlugin(webApplication));
             }
 
             // If there are static resources,
@@ -421,7 +465,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
             if (staticAssets != null)
             {
                 // mount them on the server.
-                server.mount("/assets/*", new AssetsJettyResourcePlugin(staticAssets));
+                server.mount("/assets/*", new AssetsJettyPlugin(staticAssets));
             }
 
             // If there is a microservlet REST application,
@@ -434,14 +478,14 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                 if (openApiAssets != null)
                 {
                     // mount them on the server.
-                    server.mount("/open-api/assets/*", new AssetsJettyResourcePlugin(openApiAssets));
+                    server.mount("/open-api/assets/*", new AssetsJettyPlugin(openApiAssets));
                 }
 
                 // Mount Swagger resources for the REST application.
-                server.mount("/*", register(new MicroservletJettyFilterPlugin(restService)));
-                server.mount("/docs/*", new SwaggerIndexJettyResourcePlugin(settings().port()));
-                server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
-                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restService.getClass()));
+                server.mount("/*", register(new MicroservletJettyPlugin(restService)));
+                server.mount("/docs/*", new SwaggerJettyPlugin(openApiAssets, settings().port()));
+                server.mount("/swagger/webapp/*", new SwaggerWebAppJettyPlugin());
+                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyPlugin());
 
                 // If there are any previous APIs specified by the -api-forwarding switch,
                 if (has(API_FORWARDING))
@@ -613,7 +657,8 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      */
     protected ResourceFolder openApiAssetsFolder()
     {
-        return Package.packageFrom(this, restService().getClass(), "assets");
+        var type = ensureNotNull(Type.forName("com.telenav.kivakit.web.swagger.SwaggerJettyPlugin"));
+        return Package.packageFrom(this, type.type(), "assets/openapi");
     }
 
     /**
@@ -622,7 +667,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      */
     protected ResourceFolder staticAssetsFolder()
     {
-        return Package.packageFrom(this, getClass(), "assets");
+        return Package.packageFrom(this, restService().getClass(), "assets");
     }
 
     /**
