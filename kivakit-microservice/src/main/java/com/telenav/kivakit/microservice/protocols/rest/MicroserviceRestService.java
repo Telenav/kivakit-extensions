@@ -306,7 +306,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         initializing = true;
         try
         {
-            mount("/open-api/swagger.json", GET, OpenApiJsonRequest.class);
+            mount("/docs/open-api/swagger.json", GET, OpenApiJsonRequest.class);
+            mount("/api/" + microservice().version() + "/docs/open-api/swagger.json", GET, OpenApiJsonRequest.class);
 
             onInitialize();
         }

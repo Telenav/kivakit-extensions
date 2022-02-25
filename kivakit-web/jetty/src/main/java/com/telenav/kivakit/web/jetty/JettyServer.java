@@ -23,7 +23,6 @@ import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
@@ -177,7 +176,7 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         }
         catch (Exception e)
         {
-            throw new Problem(e, "Couldn't start embedded Jetty web server").asException();
+            throw problem(e, "Couldn't start embedded Jetty web server").asException();
         }
     }
 

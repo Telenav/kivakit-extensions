@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Swagger UI</title>
-    <link href="swagger/webjar/swagger-ui.css" rel="stylesheet" type="text/css">
-    <link href="swagger/webjar/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
-    <link href="swagger/webjar/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
+    <link href="docs/assets/swagger/webjar/swagger-ui.css" rel="stylesheet" type="text/css">
+    <link href="docs/assetsswagger/webjar/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/>
+    <link href="docs/assets/swagger/webjar/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/>
     <style>
 
         html {
@@ -32,13 +32,13 @@
 
 <body>
 <div id="swagger-ui"></div>
-<script charset="UTF-8" src="swagger/webjar/swagger-ui-bundle.js"></script>
-<script charset="UTF-8" src="swagger/webjar/swagger-ui-standalone-preset.js"></script>
+<script charset="UTF-8" src="docs/assets/swagger/webjar/swagger-ui-bundle.js"></script>
+<script charset="UTF-8" src="docs/assets/swagger/webjar/swagger-ui-standalone-preset.js"></script>
 <script>
     window.onload = function () {
 
         const ui = SwaggerUIBundle({
-            url: "open-api/swagger.json",
+            url: "docs/open-api/swagger.json",
             dom_id: '#swagger-ui',
             presets: [
                 SwaggerUIBundle.presets.apis,

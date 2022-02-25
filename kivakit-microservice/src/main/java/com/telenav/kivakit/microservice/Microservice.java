@@ -483,20 +483,18 @@ public abstract class Microservice<Member> extends Application implements GsonFa
             var restService = restService();
             if (restService != null)
             {
-                // and there are static OpenAPI assets,
+                // mount the (filter) plugin for it,
+                server.mount("/*", register(new MicroservletJettyPlugin(restService)));
+
+                // and if there are any OpenAPI assets,
                 listenTo(restService);
                 var openApiAssets = openApiAssetsFolder();
                 if (openApiAssets != null)
                 {
-                    // mount them on the server.
-                    server.mount("/open-api/assets/*", new AssetsJettyPlugin(openApiAssets));
+                    // mount them.
+                    mountOpenApiAssets("/docs", openApiAssets);
+                    mountOpenApiAssets("/api/" + version() + "/docs", openApiAssets);
                 }
-
-                // Mount Swagger resources for the REST application.
-                server.mount("/*", register(new MicroservletJettyPlugin(restService)));
-                server.mount("/docs/*", new SwaggerJettyPlugin(openApiAssets, settings().port()));
-                server.mount("/swagger/webapp/*", new SwaggerWebAppJettyPlugin());
-                server.mount("/swagger/webjar/*", new SwaggerWebJarJettyPlugin());
 
                 // If there are any previous APIs specified by the -api-forwarding switch,
                 if (has(API_FORWARDING))
@@ -736,5 +734,13 @@ public abstract class Microservice<Member> extends Application implements GsonFa
         {
             exit("Invalid -api-forwarding switch value: $", get(API_FORWARDING));
         }
+    }
+
+    private void mountOpenApiAssets(String path, final ResourceFolder openApiAssets)
+    {
+        server.mount(path, new SwaggerJettyPlugin(openApiAssets, settings().port()));
+        server.mount(path + "/assets/openapi/*", new AssetsJettyPlugin(openApiAssets));
+        server.mount(path + "/assets/swagger/webapp/*", new SwaggerWebAppJettyPlugin());
+        server.mount(path + "/assets/swagger/webjar/*", new SwaggerWebJarJettyPlugin());
     }
 }

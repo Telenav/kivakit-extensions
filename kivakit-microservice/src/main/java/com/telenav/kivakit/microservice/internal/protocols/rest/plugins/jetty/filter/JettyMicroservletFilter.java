@@ -206,7 +206,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         mounted.path = path;
 
         mountedMicroservlets.put(path, mounted);
-        information("Mounted $ microservlet $ => $", path.method().name(), path, microservlet.name());
+        information("Mounted microservlet $ $ => $", path.method().name(), path, microservlet.name());
     }
 
     /**
@@ -227,7 +227,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         if (!api.maybeLaunch())
         {
             // or fail trying,
-            problem("Unable to launch: $", api).throwAsIllegalStateException();
+            problem("Unable to launch API JAR: $", api).throwAsIllegalStateException();
         }
 
         // and finally, put our API in the map of mounted APIs.
