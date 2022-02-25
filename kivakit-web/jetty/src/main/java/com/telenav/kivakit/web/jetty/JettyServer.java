@@ -135,22 +135,21 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
 
     public JettyServer mount(String path, BaseFilterJettyPlugin filter)
     {
-        filter.path(path);
+        filter.path(resolvePath(path));
         filters.add(filter);
         return this;
     }
 
     public JettyServer mount(String path, BaseServletJettyPlugin servlet)
     {
-        servlet.path(path);
+        servlet.path(resolvePath(path));
         servlets.add(servlet);
         return this;
     }
 
     public JettyServer mount(String path, BaseAssetsJettyPlugin assets)
     {
-        path = Paths.concatenate(root, path);
-        assets.path(path);
+        assets.path(resolvePath(path));
         this.assets.add(assets);
         return this;
     }
@@ -160,6 +159,11 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         ensure(port > 0);
         this.port = port;
         return this;
+    }
+
+    public String resolvePath(String path)
+    {
+        return Paths.concatenate(root, path);
     }
 
     public boolean start()

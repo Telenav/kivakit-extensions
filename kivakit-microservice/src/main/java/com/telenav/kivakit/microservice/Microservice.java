@@ -12,6 +12,7 @@ import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.primitives.Ints;
 import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
@@ -157,10 +158,10 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  *
  * <p><b>Root Path</b></p>
  *
- * <p>The method {@link #rootPath()} returns <i>/[microservice-name]</i> by default (where the microservice name is
- * specified in {@link Microservice#metadata()}). This method can be overridden to put all resources under a different root.
- * For example, version 1.0 of the REST API for <i>my-microservice</i> would be mounted under <i>/my-microservice/api/1.0</i>.
- * But if {@link #rootPath()} returned <i>/</i> (slash), the API root for version 1.0 would be <i>/api/1.0</i>.
+ * <p>The method {@link #rootPath()} returns <i>/</i> (slash) by default. This method can be overridden to put all resources
+ * under a different root. For example, version 1.0 of the REST API for <i>my-microservice</i> would be mounted under
+ * <i>/api/1.0</i>. But if {@link #rootPath()} returned <i>/[microservice-name]</i>, the API root for version
+ * 1.0 would be <i>/my-microservice/api/1.0</i>.
  * </p>
  *
  * <p><br/><hr/><br/></p>
@@ -399,6 +400,16 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     }
 
     /**
+     * Returns the full path to the given mount path
+     *
+     * @param mountPath The relative path on which something is mounted
+     */
+    public String resolvePath(String mountPath)
+    {
+        return Paths.concatenate(rootPath(), mountPath);
+    }
+
+    /**
      * Returns the rest service for this microservice
      */
     public MicroserviceRestService restService()
@@ -411,7 +422,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      */
     public String rootPath()
     {
-        return "/" + metadata().name();
+        return "/";
     }
 
     @UmlRelation(label = "has")
