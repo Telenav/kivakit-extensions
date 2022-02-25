@@ -2,7 +2,6 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
@@ -11,7 +10,6 @@ import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
 import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
-import com.telenav.kivakit.resource.Resource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -52,10 +50,10 @@ import java.util.Set;
  * <p><b>JAR Mounts</b></p>
  *
  * <p>
- * To permit robust backwards compatibility, JAR files can be mounted with {@link #mount(MicroservletRestPath, Resource,
- * int)}. When {@link #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation,
- * the path is parsed. If there is a JAR mounted on the path, it is executed in a child process (if it is not already
- * running) using the given port for HTTP. The request is delegated to the child process' port.
+ * To permit robust backwards compatibility, JAR files can be mounted with {@link #mount(MountedApi)} When {@link
+ * #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is parsed.
+ * If there is a JAR mounted on the path, it is executed in a child process (if it is not already running) using the
+ * given port for HTTP. The request is delegated to the child process' port.
  * </p>
  *
  * @author jonathanl (shibo)
@@ -66,7 +64,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         HttpProblemReportingTrait
 {
     /** Map from path to mounted JAR */
-    private final Map<MicroservletRestPath, MountedJar> mountedJars = new HashMap<>();
+    private final Map<MicroservletRestPath, MountedApi> mountedApis = new HashMap<>();
 
     /** Map from path to mounted microservlet */
     @UmlAggregation(referent = Microservlet.class, label = "mounts on paths", referentCardinality = "many")
@@ -133,7 +131,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                 else
                 {
                     // and if no microservlet was resolved, try resolving the path to a JAR mount,
-                    var mountedJar = resolveJar(new MicroservletRestPath(cycle.request().path(), method));
+                    var mountedJar = resolveApi(new MicroservletRestPath(cycle.request().path()));
                     if (mountedJar != null)
                     {
                         // and handle the request that way.
@@ -173,35 +171,20 @@ public class JettyMicroservletFilter extends BaseComponent implements
     }
 
     /**
+     * @param path The request path
+     * @return Any microservice at the given path with the given request method, or null if none exists
+     */
+    public MountedMicroservlet microservlet(MicroservletRestPath path)
+    {
+        return mountedMicroservlets.get(path);
+    }
+
+    /**
      * @return The set of all microservlet paths. This includes an automatically appended HTTP method name.
      */
     public Set<MicroservletRestPath> microservletPaths()
     {
         return mountedMicroservlets.keySet();
-    }
-
-    /**
-     * Mounts the given request method on the given path. Paths descend from the root of the server.
-     */
-    public final void mount(MicroservletRestPath path, Resource jar, String commandLine, int port)
-    {
-        var microservice = service.microservice();
-        var existing = mountedJars.get(path);
-        if (existing != null)
-        {
-            problem("$: There is already a $ JAR mounted on $: $",
-                    microservice.name(), path.method(), path.path(), existing).throwAsIllegalStateException();
-        }
-
-        var mounted = new MountedJar(service);
-        mounted.jar = jar;
-        mounted.path = path;
-        mounted.port = port;
-        mounted.commandLine = parseCommandLine(commandLine);
-        mounted.maybeLaunch();
-
-        mountedJars.put(path, mounted);
-        information("$: Mounted $ JAR $ => $", microservice.name(), path.method().name(), path, jar);
     }
 
     /**
@@ -226,41 +209,46 @@ public class JettyMicroservletFilter extends BaseComponent implements
     }
 
     /**
-     * @param path The request path
-     * @return Any microservice at the given path with the given request method, or null if none exists
+     * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    public MountedMicroservlet mountedMicroservlet(MicroservletRestPath path)
+    public final void mount(MountedApi api)
     {
-        return mountedMicroservlets.get(path);
-    }
+        // If there is already an existing api for the given path,
+        var existing = mountedApis.get(api.path());
+        if (existing != null)
+        {
+            // then throw an exception,
+            problem("There is already an API mounted on $: $",
+                    api.path(), existing).throwAsIllegalStateException();
+        }
 
-    /**
-     * The command line for mounted JARs should be a list of arguments, separated by commas
-     *
-     * @param commandLine The command line
-     * @return The list of arguments
-     */
-    private StringList parseCommandLine(final String commandLine)
-    {
-        return StringList.split(commandLine, ",");
+        // otherwise, launch the API,
+        if (!api.maybeLaunch())
+        {
+            // or fail trying,
+            problem("Unable to launch: $", api).throwAsIllegalStateException();
+        }
+
+        // and finally, put our API in the map of mounted APIs.
+        mountedApis.put(api.path(), api);
+        information("Mounted $", api);
     }
 
     /**
      * Resolves the given rest path to a JAR. Paths are resolved to the most specific match by removing the last
-     * component of the path until a JAR is found.s
+     * component of the path until a mounted JAR is found
      *
      * @param path The mount path
      * @return The JAR at the given path, or null if the path does not map to any JAR
      */
-    private MountedJar resolveJar(final MicroservletRestPath path)
+    private MountedApi resolveApi(final MicroservletRestPath path)
     {
         int removed = 0;
         for (var at = path; at.isNonEmpty(); at = at.withoutLast(), removed++)
         {
-            var mounted = mountedJars.get(at);
+            var mounted = mountedApis.get(at);
             if (mounted != null)
             {
-                mounted.parameters = new MicroservletRestPath(path.path().last(removed), path.method());
                 return mounted;
             }
         }
@@ -280,7 +268,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         int removed = 0;
         for (var at = path; at.isNonEmpty(); at = at.withoutLast(), removed++)
         {
-            var mounted = mountedMicroservlet(at);
+            var mounted = microservlet(at);
             if (mounted != null)
             {
                 mounted.parameters = new MicroservletRestPath(path.path().last(removed), path.method());

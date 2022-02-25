@@ -53,7 +53,7 @@ public class OpenApiPathReader extends BaseComponent
         for (var path : new ObjectList<>(filter.microservletPaths()).sorted())
         {
             // and add a PathItem to the list of paths.
-            var mounted = filter.mountedMicroservlet(path);
+            var mounted = filter.microservlet(path);
             if (mounted != null)
             {
                 paths.addPathItem(path.resolvedPath().join(), newPathItem(path, mounted.microservlet()));

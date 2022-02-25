@@ -24,6 +24,7 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.validation.Validatable;
 import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.values.version.Version;
@@ -37,6 +38,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.Mi
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequest;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -128,17 +130,17 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * command-line switch. KivaKit will redirect requests for the previous version to the child process on a specific port
  * on the local host. This ensures full compatibility with the old API with a minimum of effort. This can be
  * accomplished by simply including one or more JAR files in a package inside the microservice JAR (or in a folder
- * somewhere), and then using the <i>-api-versions</i> command line switch:
+ * somewhere), and then using the <i>-api-forwarding</i> command line switch:
  *
  * <p>
- * <i>-api-versions=[api-version],[jar],[port],[command-line];[...]</i>.
+ * <i>-api-forwarding=[version],[jar],[port],[command-line];[...]</i>.
  * </p>
  *
  * <p>
  * For example:
  * </p>
  *
- * <pre>-api-versions=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development</pre>
+ * <pre>-api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development</pre>
  *
  * <p>
  * Would mount the 0.9 API JAR in the package <i>apis</i> on port 8082, and the 1.0 API JAR in the package <i>apis</i>
@@ -148,8 +150,8 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * </p>
  *
  * <p>
- * If more control is desired, {@link #mountApiVersion(Version, Resource, String, int)} can be used to manually mount
- * the API JAR for a previous version of the API on the given port number on the local host.
+ * If more control is desired, {@link #mountApi(Version, Resource, String, int)} can be used to manually mount the API
+ * JAR for a previous version of the API on the given port number on the local host.
  * </p>
  *
  * <p><br/><hr/><br/></p>
@@ -264,7 +266,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     /** True while initializing */
     private boolean initializing = false;
 
-    /** The microservice that owns this REST servcie */
+    /** The microservice that owns this REST service */
     @UmlAggregation
     private final Microservice<?> microservice;
 
@@ -440,9 +442,9 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param port The port to talk to the child process
      */
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mountApiVersion(Version version, Resource jar, String commandLine, int port)
+    void mountApi(Version version, Resource jar, String commandLine, int port)
     {
-        mountApiVersion(versionToPath(version), jar, commandLine, port);
+        mountApi(version, versionToPath(version), jar, commandLine, port);
     }
 
     /**
@@ -450,6 +452,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * child process running the JAR. This permits greater agility with strong backwards compatibility (at the expense
      * of some memory and compute resources).
      *
+     * @param version The API version in the JAR file
      * @param path The path to the given JAR. If the path is not absolute (doesn't start with a '/'), it is prefixed
      * with: "/api/[major.version].[minor.version]/", where the version is retrieved from {@link
      * Microservice#version()}. For example, the path "users" in microservlet version 3.1 will resolve to
@@ -459,14 +462,24 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param port The port to talk to the child process
      */
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    void mountApiVersion(String path, Resource jar, String commandLine, int port)
+    void mountApi(Version version, String path, Resource jar, String commandLine, int port)
     {
         // If we're in onInitialize(),
         if (initializing)
         {
-            // mount the jar,
+            // get the path to this API,
             var restPath = MicroservletRestPath.parse(this, path, POST);
-            require(MicroservletJettyFilterPlugin.class).mount(restPath, jar, commandLine, port);
+
+            // then populate the API descriptor,
+            var api = new MountedApi(this);
+            api.version(version);
+            api.path(restPath);
+            api.jar(jar);
+            api.commandLine(parseCommandLine(commandLine));
+            api.port(port);
+
+            // and mount it.
+            require(MicroservletJettyFilterPlugin.class).mount(api);
         }
         else
         {
@@ -554,5 +567,16 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     protected String versionToPath(final Version version)
     {
         return Message.format("/api/$.$", version.major(), version.minor());
+    }
+
+    /**
+     * The command line for mounted APIs should be a list of arguments, separated by commas
+     *
+     * @param commandLine The command line
+     * @return The list of arguments
+     */
+    private StringList parseCommandLine(final String commandLine)
+    {
+        return StringList.split(commandLine, ",");
     }
 }

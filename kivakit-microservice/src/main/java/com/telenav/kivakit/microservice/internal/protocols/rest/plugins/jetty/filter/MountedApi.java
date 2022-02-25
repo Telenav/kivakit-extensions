@@ -2,6 +2,8 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.io.IO;
+import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
@@ -28,11 +30,41 @@ import static com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher.Re
  *
  * @author jonathanl (shibo)
  */
-public class MountedJar extends Mounted
+public class MountedApi extends Mounted
 {
-    public MountedJar(final MicroserviceRestService service)
+    /** HTTP client */
+    private HttpClient client;
+
+    /** Command line for application in JAR */
+    private StringList commandLine = new StringList();
+
+    /** The JAR */
+    private Resource jar;
+
+    /** Any path parameters */
+    private MicroservletRestPath parameters;
+
+    /** The path to the JAR */
+    private MicroservletRestPath path;
+
+    /** The port that the JAR is running on */
+    private int port;
+
+    /** Any process running the JAR */
+    private Process process;
+
+    /** The API version */
+    private Version version;
+
+    public MountedApi(final MicroserviceRestService service)
     {
         super(service);
+    }
+
+    public MountedApi commandLine(final StringList commandLine)
+    {
+        this.commandLine = commandLine;
+        return this;
     }
 
     /**
@@ -86,11 +118,22 @@ public class MountedJar extends Mounted
         return true;
     }
 
-    public synchronized void maybeLaunch()
+    /**
+     * Sets the JAR file containing this API
+     *
+     * @param jar The JAR
+     */
+    public MountedApi jar(final Resource jar)
+    {
+        this.jar = jar;
+        return this;
+    }
+
+    public synchronized boolean maybeLaunch()
     {
         if (process == null)
         {
-            commandLine.append("-port=" + port);
+            commandLine.prepend("-port=" + port);
             process = listenTo(new JarLauncher())
                     .arguments(commandLine)
                     .processType(CHILD)
@@ -98,6 +141,61 @@ public class MountedJar extends Mounted
                     .redirectTo(CONSOLE)
                     .run();
         }
+        return process != null;
+    }
+
+    /**
+     * Sets the parameters to this API
+     */
+    public void parameters(final MicroservletRestPath parameters)
+    {
+        this.parameters = parameters;
+    }
+
+    /**
+     * Sets the path to this API
+     *
+     * @param path The path
+     */
+    public MountedApi path(final MicroservletRestPath path)
+    {
+        this.path = path;
+        return this;
+    }
+
+    /**
+     * Returns the path to this API
+     */
+    public MicroservletRestPath path()
+    {
+        return path;
+    }
+
+    /**
+     * Sets the local IPC port that this API should be accessed on
+     *
+     * @param port The port
+     */
+    public MountedApi port(final int port)
+    {
+        this.port = port;
+        return this;
+    }
+
+    public String toString()
+    {
+        return Message.format("$ ==> $ ($) on port $", path, version, jar, port);
+    }
+
+    /**
+     * Sets the version of this API
+     *
+     * @param version The API version
+     */
+    public MountedApi version(final Version version)
+    {
+        this.version = version;
+        return this;
     }
 
     private void copyResponse(final HttpServletResponse response, final HttpResponse result)
@@ -110,25 +208,4 @@ public class MountedJar extends Mounted
         response.setStatus(result.getStatusLine().getStatusCode());
         tryCatch(() -> IO.copy(result.getEntity().getContent(), response.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
     }
-
-    /** The JAR */
-    Resource jar;
-
-    /** The port that the JAR is running on */
-    int port;
-
-    /** Any process running the JAR */
-    Process process;
-
-    /** HTTP client */
-    HttpClient client;
-
-    /** The path to the JAR */
-    MicroservletRestPath path;
-
-    /** Any path parameters */
-    MicroservletRestPath parameters;
-
-    /** Command line for application in JAR */
-    public StringList commandLine = new StringList();
 }

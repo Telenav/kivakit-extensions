@@ -171,8 +171,8 @@ public abstract class Microservice<Member> extends Application implements GsonFa
      * Command line switch for what port to run any REST service on. This will override any value from {@link
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
-    private final SwitchParser<String> API_VERSIONS =
-            SwitchParser.stringSwitchParser(this, "api-versions", "The semicolon-separated API versions to load, each of the form: version=[api-version],jar=[jar-resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-versions=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
+    private final SwitchParser<String> API_FORWARDING =
+            SwitchParser.stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
                     .optional()
                     .build();
 
@@ -443,11 +443,11 @@ public abstract class Microservice<Member> extends Application implements GsonFa
                 server.mount("/swagger/webapp/*", new SwaggerAssetsJettyResourcePlugin());
                 server.mount("/swagger/webjar/*", new SwaggerWebJarJettyResourcePlugin(restService.getClass()));
 
-                // If there are any previous APIs specified by the -api-versions switch,
-                if (has(API_VERSIONS))
+                // If there are any previous APIs specified by the -api-forwarding switch,
+                if (has(API_FORWARDING))
                 {
                     // mount the specified API JAR files.
-                    mountApiVersions(restService);
+                    mountApis(restService);
                 }
 
                 // Initialize the REST service.
@@ -643,29 +643,32 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_VERSIONS);
+        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_FORWARDING);
     }
 
     /**
-     * Mounts the API versions specified by the <i>-api-versions</i> switch
+     * Mounts the API versions specified by the <i>-api-forwarding</i> switch
      *
      * @param restService The REST service to mount each API version JAR on
      */
-    private void mountApiVersions(final MicroserviceRestService restService)
+    private void mountApis(final MicroserviceRestService restService)
     {
-        var versions = get(API_VERSIONS).split(";");
+        var apis = get(API_FORWARDING).split(";");
+        var apiSpecifier = Pattern.compile("version=(<?version>\\d+\\.\\d+),jar=(<?jar>[^,]+),port=(<?port>\\d+)(,command-line=(<?commandLine>.*))?");
+
         var okay = true;
-        var specifierPattern = Pattern.compile("version=(<?version>\\d+\\.\\d+),jar=(<?jar>[^,]+),port=(<?port>\\d+)(,command-line=(<?commandLine>.*))?");
-        for (var at : versions)
+
+        for (var api : apis)
         {
-            var matcher = specifierPattern.matcher(at);
+            var matcher = apiSpecifier.matcher(api);
             if (matcher.matches())
             {
                 var version = Version.parse(this, matcher.group("version"));
                 var resource = Resource.resolve(this, matcher.group("jar"));
                 var commandLine = matcher.group("commandLine");
                 var port = Ints.parse(this, matcher.group("port"));
-                restService.mountApiVersion(version, resource, commandLine, port);
+
+                restService.mountApi(version, resource, commandLine, port);
             }
             else
             {
@@ -675,7 +678,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
 
         if (!okay)
         {
-            exit("Invalid -api-versions: $", get(API_VERSIONS));
+            exit("Invalid -api-forwarding switch value: $", get(API_FORWARDING));
         }
     }
 }
