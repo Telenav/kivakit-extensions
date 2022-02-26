@@ -13,7 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.Component;
 
-import static com.telenav.kivakit.kernel.language.strings.conversion.StringFormat.USER_LABEL;
+import static com.telenav.kivakit.interfaces.string.Stringable.Format.USER_LABEL;
 import static com.telenav.kivakit.logs.client.view.panels.table.TableModel.COLUMNS;
 
 /**

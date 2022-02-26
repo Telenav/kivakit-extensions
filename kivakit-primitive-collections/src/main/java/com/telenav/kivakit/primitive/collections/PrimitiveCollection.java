@@ -22,11 +22,11 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoSerializable;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.telenav.kivakit.interfaces.collection.Sized;
+import com.telenav.kivakit.interfaces.lifecycle.Initializable;
+import com.telenav.kivakit.interfaces.naming.Named;
+import com.telenav.kivakit.interfaces.naming.NamedObject;
 import com.telenav.kivakit.kernel.KivaKit;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
-import com.telenav.kivakit.kernel.interfaces.naming.Named;
-import com.telenav.kivakit.kernel.interfaces.naming.NamedObject;
-import com.telenav.kivakit.kernel.interfaces.numeric.Sized;
 import com.telenav.kivakit.kernel.language.collections.CompressibleCollection;
 import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.collections.map.count.ConcurrentCountMap;
@@ -39,6 +39,7 @@ import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.types.Classes;
 import com.telenav.kivakit.kernel.language.values.count.Bytes;
 import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.kernel.language.values.count.Countable;
 import com.telenav.kivakit.kernel.language.values.count.Estimate;
 import com.telenav.kivakit.kernel.language.values.count.Maximum;
 import com.telenav.kivakit.kernel.language.values.version.Version;
@@ -157,7 +158,12 @@ import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.F
  */
 @SuppressWarnings({ "UnusedReturnValue" })
 @UmlClassDiagram(diagram = DiagramPrimitiveCollection.class)
-public abstract class PrimitiveCollection implements NamedObject, Initializable, Sized, CompressibleCollection, KryoSerializable
+public abstract class PrimitiveCollection implements
+        KryoSerializable,
+        NamedObject,
+        Initializable,
+        Countable,
+        CompressibleCollection
 {
     /** The number of elements to show when converting a collection to a String */
     protected static final int TO_STRING_MAXIMUM_ELEMENTS = 20;
@@ -238,14 +244,6 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      */
     private static class CompressionRecord implements Comparable<CompressionRecord>
     {
-        final Class<?> type;
-
-        final String objectName;
-
-        final int before;
-
-        final int after;
-
         CompressionRecord(Class<?> type, String objectName, int before, int after)
         {
             this.type = type;
@@ -303,55 +301,39 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         {
             return type + "-" + objectName;
         }
+
+        final Class<?> type;
+
+        final String objectName;
+
+        final int before;
+
+        final int after;
     }
 
-    /** The maximum size of this collection */
-    private int maximumSize = Integer.MAX_VALUE;
-
-    /** The initial size of this collection */
-    private int initialSize = 2_048;
-
-    /** The size of any child collections */
-    private int initialChildSize = 262_144;
-
-    /** The maximum size of any child collections */
-    private int maximumChildSize = 262_144;
-
-    /** The size of this collection */
-    private int size;
-
-    /** True if this collection defines a null long value */
-    private boolean hasNullLong = true;
-
-    /** True if this collection defines a null int value */
-    private boolean hasNullInt = true;
-
-    /** True if this collection defines a null short value */
-    private boolean hasNullShort = true;
-
-    /** True if this collection defines a null char value */
-    private boolean hasNullChar = true;
+    /** Any compression method that has been applied to this collection (see {@link CompressibleCollection}) */
+    private Method compressionMethod = Method.NONE;
 
     /** True if this collection defines a null byte value */
     private boolean hasNullByte = true;
 
-    /** Null long value for this collection if hasNullLong is true */
-    private long nullLong;
+    /** True if this collection defines a null char value */
+    private boolean hasNullChar = true;
 
-    /** Null int value for this collection if hasNullInt is true */
-    private int nullInt;
+    /** True if this collection defines a null int value */
+    private boolean hasNullInt = true;
 
-    /** Null short value for this collection if hasNullShort is true */
-    private short nullShort;
+    /** True if this collection defines a null long value */
+    private boolean hasNullLong = true;
 
-    /** Null char value for this collection if hasNullChar is true */
-    private char nullChar;
+    /** True if this collection defines a null short value */
+    private boolean hasNullShort = true;
 
-    /** Null byte value for this collection if hasNullByte is true */
-    private byte nullByte;
+    /** The size of any child collections */
+    private int initialChildSize = 262_144;
 
-    /** Any compression method that has been applied to this collection (see {@link CompressibleCollection}) */
-    private Method compressionMethod = Method.NONE;
+    /** The initial size of this collection */
+    private int initialSize = 2_048;
 
     /**
      * True if the collection is initialized
@@ -361,8 +343,32 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
     /** Minimum size of allocations which should be logged */
     private int logAllocationsMinimumSize;
 
+    /** The maximum size of any child collections */
+    private int maximumChildSize = 262_144;
+
+    /** The maximum size of this collection */
+    private int maximumSize = Integer.MAX_VALUE;
+
+    /** Null byte value for this collection if hasNullByte is true */
+    private byte nullByte;
+
+    /** Null char value for this collection if hasNullChar is true */
+    private char nullChar;
+
+    /** Null int value for this collection if hasNullInt is true */
+    private int nullInt;
+
+    /** Null long value for this collection if hasNullLong is true */
+    private long nullLong;
+
+    /** Null short value for this collection if hasNullShort is true */
+    private short nullShort;
+
     /** The name of this collection for debugging purposes */
     private transient String objectName;
+
+    /** The size of this collection */
+    private int size;
 
     /**
      * A {@link PrimitiveCollection} is assigned an object name, retrievable through {@link NamedObject#objectName()},
@@ -880,6 +886,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
      */
     @Override
     @MustBeInvokedByOverriders
+    @SuppressWarnings("DuplicatedCode")
     public void write(Kryo kryo, Output output)
     {
         kryo.writeObject(output, KivaKit.get().projectVersion());
@@ -976,7 +983,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
                 stack = new AllocationStackTrace();
             }
 
-            // If there is a child (as in a multimap),
+            // If there is a child (as in a multi-map),
             if (estimatedChildSize != -1)
             {
                 // show both dimensions of the primitive collection
@@ -1144,6 +1151,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return ++size;
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected byte[] newByteArray(Object who, String why)
     {
         return newByteArray(who, why, initialSize());
@@ -1165,6 +1173,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return allocated(who, why, values, size);
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected char[] newCharArray(Object who, String why)
     {
         return newCharArray(who, why, initialSize());
@@ -1208,6 +1217,7 @@ public abstract class PrimitiveCollection implements NamedObject, Initializable,
         return allocated(who, why, values, size);
     }
 
+    @SuppressWarnings("SameParameterValue")
     protected long[] newLongArray(Object who, String why)
     {
         return newLongArray(who, why, initialSize());

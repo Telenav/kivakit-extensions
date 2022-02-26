@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.primitive.collections.list;
 
-import com.telenav.kivakit.kernel.interfaces.factory.LongMapFactory;
-import com.telenav.kivakit.kernel.interfaces.numeric.Sized;
+import com.telenav.kivakit.interfaces.collection.Sized;
+import com.telenav.kivakit.interfaces.factory.LongMapFactory;
 import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
 import com.telenav.kivakit.kernel.language.values.count.Count;
 import com.telenav.kivakit.primitive.collections.project.lexakai.diagrams.DiagramPrimitiveList;

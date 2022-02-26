@@ -30,8 +30,6 @@ import static org.junit.Assume.assumeTrue;
 @Category({ SlowTests.class })
 public class S3FileTest extends UnitTest
 {
-    final S3File file = new S3File("s3://default-region/kivakit/test-data/test.txt");
-
     @Before
     public void beforeMethod()
     {
@@ -42,6 +40,8 @@ public class S3FileTest extends UnitTest
     @Test
     public void testReadFile()
     {
-        ensure("123".equals(file.reader().string().trim()));
+        ensure("123".equals(file.reader().asString().trim()));
     }
+
+    final S3File file = new S3File("s3://default-region/kivakit/test-data/test.txt");
 }

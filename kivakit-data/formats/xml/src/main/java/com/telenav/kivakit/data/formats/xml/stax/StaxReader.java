@@ -1,7 +1,7 @@
 package com.telenav.kivakit.data.formats.xml.stax;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.interfaces.function.BooleanFunction;
+import com.telenav.kivakit.interfaces.function.BooleanFunction;
 import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.resource.Resource;
 

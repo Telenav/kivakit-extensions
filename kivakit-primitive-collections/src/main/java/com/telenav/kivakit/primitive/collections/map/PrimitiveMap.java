@@ -21,13 +21,13 @@ package com.telenav.kivakit.primitive.collections.map;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.telenav.kivakit.interfaces.naming.NamedObject;
 import com.telenav.kivakit.kernel.language.objects.Hash;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.kernel.language.progress.reporters.Progress;
 import com.telenav.kivakit.kernel.language.strings.Indent;
 import com.telenav.kivakit.kernel.language.values.count.Count;
 import com.telenav.kivakit.kernel.language.values.level.Percent;
-import com.telenav.kivakit.kernel.language.values.name.Name;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.Debug;
@@ -72,11 +72,11 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         String toString(long key, long value);
     }
 
-    /** The threshold at which we should resize */
-    private int rehashThreshold;
-
     /** The current hashingStrategy of this map */
     private HashingStrategy hashingStrategy;
+
+    /** The threshold at which we should resize */
+    private int rehashThreshold;
 
     protected PrimitiveMap(String name)
     {
@@ -743,7 +743,7 @@ public abstract class PrimitiveMap extends PrimitiveCollection
         {
             if (!copy.equals(this))
             {
-                LOGGER.warning("Unable to rehash $ ($)", objectName(), Name.synthetic(this));
+                LOGGER.warning("Unable to rehash $ ($)", objectName(), NamedObject.syntheticName(this));
                 compare(copy);
             }
         }

@@ -35,9 +35,9 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
         NO_HEALTH_PANEL
     }
 
-    private final JLabel status = theme().applyToComponentLabel(new JLabel("Ready"));
-
     private final HealthPanel healthPanel = new HealthPanel();
+
+    private final JLabel status = theme().applyToComponentLabel(new JLabel("Ready"));
 
     public StatusPanel(Display type)
     {
@@ -135,7 +135,7 @@ public class StatusPanel extends JPanel implements StatusDisplay, Listener
                     }
                     timer.cancel();
                 }
-            }, stayFor.asMilliseconds());
+            }, stayFor.milliseconds());
         }
     }
 }

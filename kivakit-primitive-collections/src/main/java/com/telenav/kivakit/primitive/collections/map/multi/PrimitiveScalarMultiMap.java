@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.primitive.collections.map.multi;
 
-import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
+import com.telenav.kivakit.interfaces.numeric.Quantizable;
 import com.telenav.kivakit.primitive.collections.list.PrimitiveList;
 import com.telenav.kivakit.primitive.collections.map.multi.fixed.IntToByteFixedMultiMap;
 import com.telenav.kivakit.primitive.collections.map.multi.fixed.LongToLongFixedMultiMap;

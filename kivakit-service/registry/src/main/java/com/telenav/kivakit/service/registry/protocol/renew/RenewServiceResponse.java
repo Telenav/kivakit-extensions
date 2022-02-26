@@ -19,8 +19,8 @@
 package com.telenav.kivakit.service.registry.protocol.renew;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.telenav.kivakit.interfaces.string.Stringable;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.language.strings.formatting.KivaKitFormatProperty;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
@@ -48,7 +48,7 @@ public class RenewServiceResponse extends BaseResponse<Service>
     private Service service;
 
     @KivaKitIncludeProperty
-    @KivaKitFormatProperty(format = StringFormat.LOG_IDENTIFIER)
+    @KivaKitFormatProperty(format = Stringable.Format.LOG)
     public Service service()
     {
         return service;

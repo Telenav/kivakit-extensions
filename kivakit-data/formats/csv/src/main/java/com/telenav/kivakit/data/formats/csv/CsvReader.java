@@ -19,7 +19,7 @@
 package com.telenav.kivakit.data.formats.csv;
 
 import com.telenav.kivakit.data.formats.csv.project.lexakai.diagrams.DiagramCsv;
-import com.telenav.kivakit.kernel.interfaces.io.Closeable;
+import com.telenav.kivakit.interfaces.io.Closeable;
 import com.telenav.kivakit.kernel.language.io.LookAheadReader;
 import com.telenav.kivakit.kernel.language.iteration.BaseIterator;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;

@@ -2,7 +2,7 @@ package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
+import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.resource.compression.archive.ZipArchive;

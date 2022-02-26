@@ -23,7 +23,7 @@ public class JavaFileTest extends UnitTest
 
         ensure(file.exists());
         ensure(file.sizeInBytes().isGreaterThan(Bytes._0));
-        ensureEqual(file.reader().string(), "output");
+        ensureEqual(file.reader().asString(), "output");
     }
 
     @Test
@@ -31,7 +31,7 @@ public class JavaFileTest extends UnitTest
     {
         var archive = archive(file("test-integration.txt", "output"));
         var path = Message.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
-        ensureEqual(listenTo(File.parse(this, path)).reader().string(), "output");
+        ensureEqual(listenTo(File.parse(this, path)).reader().asString(), "output");
     }
 
     @NotNull

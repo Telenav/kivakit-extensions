@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.telenav.kivakit.interfaces.string.Stringable.Format.USER_LABEL;
 import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
-import static com.telenav.kivakit.kernel.language.strings.conversion.StringFormat.USER_LABEL;
 
 /**
  * @author jonathanl (shibo)
@@ -59,11 +59,9 @@ public class TableModel extends AbstractTableModel
         COLUMN_TYPES[MESSAGE] = Message.class;
     }
 
-    private final ClientLogPanel parent;
-
     private final int maximumRows;
 
-    final LinkedList<LogEntry> rows = new LinkedList<>();
+    private final ClientLogPanel parent;
 
     public TableModel(ClientLogPanel parent, int maximumRows)
     {
@@ -163,4 +161,6 @@ public class TableModel extends AbstractTableModel
     {
         return rows.get(which);
     }
+
+    final LinkedList<LogEntry> rows = new LinkedList<>();
 }

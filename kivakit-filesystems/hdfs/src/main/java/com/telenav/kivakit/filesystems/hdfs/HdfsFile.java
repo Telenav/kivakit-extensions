@@ -21,7 +21,7 @@ package com.telenav.kivakit.filesystems.hdfs;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystems.hdfs.project.lexakai.diagrams.DiagramHdfs;
 import com.telenav.kivakit.filesystems.hdfs.proxy.spi.HdfsProxy;
-import com.telenav.kivakit.kernel.interfaces.code.UncheckedCode;
+import com.telenav.kivakit.kernel.language.code.UncheckedCode;
 import com.telenav.kivakit.kernel.language.threading.Retry;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
@@ -55,10 +55,10 @@ public class HdfsFile extends BaseWritableResource implements FileService
 {
     private final FilePath path;
 
-    private Bytes size;
-
     @UmlAggregation
     private HdfsProxy proxy;
+
+    private Bytes size;
 
     public HdfsFile(FilePath path)
     {

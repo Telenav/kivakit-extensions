@@ -79,7 +79,7 @@ public class SwaggerJettyPlugin extends BaseAssetsJettyPlugin
     {
         return folder.resource("index.html")
                 .reader()
-                .string()
+                .asString()
                 .replaceAll("PORT", Integer.toString(port));
     }
 }

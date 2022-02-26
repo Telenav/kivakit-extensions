@@ -21,10 +21,9 @@ package com.telenav.kivakit.data.compression.codecs.huffman;
 import com.telenav.kivakit.data.compression.SymbolConsumer;
 import com.telenav.kivakit.data.compression.SymbolConsumer.Directive;
 import com.telenav.kivakit.data.compression.codecs.huffman.tree.CodedSymbol;
+import com.telenav.kivakit.interfaces.string.Stringable;
 import com.telenav.kivakit.kernel.language.collections.list.StringList;
 import com.telenav.kivakit.kernel.language.strings.StringTo;
-import com.telenav.kivakit.kernel.language.strings.conversion.AsString;
-import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.logging.Logger;
 import com.telenav.kivakit.kernel.logging.LoggerFactory;
 import com.telenav.kivakit.kernel.messaging.Debug;
@@ -62,17 +61,11 @@ public final class FastHuffmanDecoder<Symbol>
      * of this, including an example set of decoding tables, see page 69 of <a href="https://people.ucalgary.ca/~dfeder/449/Huffman.pdf">Fast
      * Huffman Decoding</a>
      */
-    public static class Table<Symbol> implements AsString
+    public static class Table<Symbol> implements Stringable
     {
         /** An entry in this fast decoder table */
-        public static class Entry<Symbol> implements AsString
+        public static class Entry<Symbol> implements Stringable
         {
-            /** The list of values for this table entry, if any */
-            final List<Symbol> values = new ArrayList<>();
-
-            /** The next table to look in, possibly the root table if there are no bits left */
-            Table<Symbol> next;
-
             /** The table that owns this entry */
             private Table<Symbol> table;
 
@@ -86,7 +79,7 @@ public final class FastHuffmanDecoder<Symbol>
             }
 
             @Override
-            public String asString(StringFormat format)
+            public String asString(Format format)
             {
                 return Message.format("[Entry next = '$', values = $]", next.prefix,
                         new StringList(values).join(", "));
@@ -139,12 +132,13 @@ public final class FastHuffmanDecoder<Symbol>
                 // root table if there are no bits left)
                 next = table.prefixToTable(remainder, bitsLeft);
             }
-        }
 
-        /** The list of entries in this table */
-        @SuppressWarnings("unchecked")
-        final
-        Entry<Symbol>[] byteToEntry = new Entry[256];
+            /** The list of values for this table entry, if any */
+            final List<Symbol> values = new ArrayList<>();
+
+            /** The next table to look in, possibly the root table if there are no bits left */
+            Table<Symbol> next;
+        }
 
         /** The outer decoder */
         private FastHuffmanDecoder<Symbol> decoder;
@@ -165,7 +159,7 @@ public final class FastHuffmanDecoder<Symbol>
         }
 
         @Override
-        public String asString(StringFormat format)
+        public String asString(Format format)
         {
             var entries = new StringList();
             for (var index = 0; index < byteToEntry.length; index++)
@@ -231,19 +225,21 @@ public final class FastHuffmanDecoder<Symbol>
 
             return table;
         }
+
+        /** The list of entries in this table */
+        @SuppressWarnings("unchecked")
+        final
+        Entry<Symbol>[] byteToEntry = new Entry[256];
     }
-
-    /** A map from prefixes to tables */
-    final Map<String, Table<Symbol>> prefixToTable = new HashMap<>();
-
-    /** Root lookup table for fast Huffman decoding */
-    private Table<Symbol> root;
 
     /** The codec */
     private HuffmanCodec<Symbol> codec;
 
     /** The escape symbol used by the codec */
     private Symbol escape;
+
+    /** Root lookup table for fast Huffman decoding */
+    private Table<Symbol> root;
 
     /**
      * Creates a table-driven decoder for the given codec
@@ -322,4 +318,7 @@ public final class FastHuffmanDecoder<Symbol>
             table = entry.next;
         }
     }
+
+    /** A map from prefixes to tables */
+    final Map<String, Table<Symbol>> prefixToTable = new HashMap<>();
 }

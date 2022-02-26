@@ -2,10 +2,10 @@ package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.interfaces.lifecycle.Initializable;
+import com.telenav.kivakit.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
@@ -151,7 +151,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void stop(Duration wait)
+    public void stop(LengthOfTime wait)
     {
         if (server != null)
         {

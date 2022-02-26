@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.primitive.collections.list;
 
-import com.telenav.kivakit.kernel.interfaces.naming.Named;
-import com.telenav.kivakit.kernel.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.kernel.interfaces.numeric.Sized;
+import com.telenav.kivakit.interfaces.collection.Sized;
+import com.telenav.kivakit.interfaces.naming.Named;
+import com.telenav.kivakit.interfaces.numeric.Quantizable;
 import com.telenav.kivakit.primitive.collections.ShortCollection;
 import com.telenav.kivakit.primitive.collections.iteration.ShortIterable;
 import com.telenav.kivakit.primitive.collections.iteration.ShortIterator;
@@ -126,8 +126,6 @@ public interface ShortList extends ShortCollection, PrimitiveList
     {
         return new ShortIterator()
         {
-            int index;
-
             @Override
             public boolean hasNext()
             {
@@ -145,6 +143,8 @@ public interface ShortList extends ShortCollection, PrimitiveList
                 while (isNull(next) && index < size());
                 return next;
             }
+
+            int index;
         };
     }
 

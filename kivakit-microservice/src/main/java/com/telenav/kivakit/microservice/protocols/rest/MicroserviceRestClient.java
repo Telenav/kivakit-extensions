@@ -169,7 +169,7 @@ public class MicroserviceRestClient extends BaseComponent
     {
         if ("application/json".equals(resource.contentType()))
         {
-            var json = resource.reader().string();
+            var json = resource.reader().asString();
             if (!Strings.isEmpty(json))
             {
                 return gsonFactory.gson().fromJson(json, type);

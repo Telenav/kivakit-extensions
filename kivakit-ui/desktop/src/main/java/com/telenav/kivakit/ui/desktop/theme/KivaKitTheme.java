@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.ui.desktop.theme;
 
-import com.telenav.kivakit.kernel.interfaces.value.Source;
+import com.telenav.kivakit.interfaces.value.Source;
 import com.telenav.kivakit.kernel.messaging.Message;
 import com.telenav.kivakit.kernel.messaging.messages.status.Glitch;
 import com.telenav.kivakit.kernel.messaging.messages.status.Problem;

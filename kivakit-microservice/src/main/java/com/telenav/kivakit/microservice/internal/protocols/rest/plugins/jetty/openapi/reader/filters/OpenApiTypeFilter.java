@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader.filters;
 
-import com.telenav.kivakit.kernel.interfaces.comparison.Filter;
+import com.telenav.kivakit.interfaces.comparison.Filter;
 import com.telenav.kivakit.kernel.language.patterns.character.Character;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;

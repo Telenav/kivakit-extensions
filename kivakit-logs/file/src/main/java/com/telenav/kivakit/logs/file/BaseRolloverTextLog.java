@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.kernel.language.io.ByteSizedOutput;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
@@ -56,21 +57,21 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         HOURLY
     }
 
-    @UmlAggregation
-    private Rollover rollover = Rollover.NONE;
-
     @UmlAggregation(label = "maximum size")
     private Bytes maximumLogSize;
-
-    @UmlAggregation(label = "start time")
-    private Time started = Time.now();
-
-    @UmlAggregation(label = "rollover time")
-    private Time rolloverAt = nextRollover();
 
     private PrintWriter out;
 
     private ByteSizedOutput outputSize;
+
+    @UmlAggregation
+    private Rollover rollover = Rollover.NONE;
+
+    @UmlAggregation(label = "rollover time")
+    private Time rolloverAt = nextRollover();
+
+    @UmlAggregation(label = "start time")
+    private Time started = Time.now();
 
     protected BaseRolloverTextLog()
     {
@@ -98,7 +99,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     }
 
     @Override
-    public void flush(Duration maximumWaitTime)
+    public void flush(LengthOfTime maximumWaitTime)
     {
         super.flush(maximumWaitTime);
         out.flush();

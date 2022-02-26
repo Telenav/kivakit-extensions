@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.primitive.collections.map.multi;
 
-import com.telenav.kivakit.kernel.interfaces.collection.Keyed;
+import com.telenav.kivakit.interfaces.collection.Keyed;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.kernel.language.strings.Indent;
 import com.telenav.kivakit.primitive.collections.PrimitiveCollection;

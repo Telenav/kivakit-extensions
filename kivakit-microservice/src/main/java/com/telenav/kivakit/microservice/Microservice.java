@@ -6,14 +6,14 @@ import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.configuration.settings.Deployment;
 import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
 import com.telenav.kivakit.kernel.language.objects.Lazy;
 import com.telenav.kivakit.kernel.language.primitives.Ints;
 import com.telenav.kivakit.kernel.language.reflection.Type;
 import com.telenav.kivakit.kernel.language.strings.Paths;
-import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
@@ -558,7 +558,7 @@ public abstract class Microservice<Member> extends Application implements GsonFa
     }
 
     @Override
-    public void stop(Duration wait)
+    public void stop(LengthOfTime wait)
     {
         server.stop(wait);
         grpcService().stop();

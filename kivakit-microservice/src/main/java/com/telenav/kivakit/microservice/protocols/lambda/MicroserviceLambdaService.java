@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
+import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.kernel.language.values.version.Version;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;

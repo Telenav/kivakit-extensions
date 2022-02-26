@@ -25,7 +25,7 @@ import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.kernel.language.strings.conversion.StringFormat.USER_LABEL;
+import static com.telenav.kivakit.interfaces.string.Stringable.Format.USER_LABEL;
 import static com.telenav.kivakit.kernel.logging.logs.text.formatters.ColumnarLogFormatter.DEFAULT;
 import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.logs.client.view.panels.table.TableModel.CONTEXT;
@@ -42,23 +42,23 @@ import static javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
  */
 public class TablePanel extends KivaKitPanel
 {
-    private JTable table;
+    private final EventCoalescer addCoalescer;
 
     private volatile int firstSelectedIndex = -1;
 
     private volatile int lastSelectedIndex = -1;
 
-    private boolean scrolledToBottom;
-
     private final TableModel model;
-
-    private final List<LogEntry> toAdd = new ArrayList<>();
 
     private final ClientLogPanel parent;
 
-    private final EventCoalescer addCoalescer;
-
     private JScrollPane scrollPane;
+
+    private boolean scrolledToBottom;
+
+    private JTable table;
+
+    private final List<LogEntry> toAdd = new ArrayList<>();
 
     public TablePanel(ClientLogPanel parent)
     {

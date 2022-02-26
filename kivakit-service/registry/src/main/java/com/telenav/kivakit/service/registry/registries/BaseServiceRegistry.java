@@ -20,7 +20,7 @@ package com.telenav.kivakit.service.registry.registries;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.collections.map.MultiSet;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.kernel.language.collections.set.Sets;
 import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
 import com.telenav.kivakit.kernel.language.threading.locks.ReadWriteLock;

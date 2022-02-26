@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.kernel.data.conversion.Converter;
-import com.telenav.kivakit.kernel.interfaces.naming.Named;
+import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;

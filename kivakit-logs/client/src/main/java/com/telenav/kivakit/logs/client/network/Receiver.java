@@ -1,11 +1,11 @@
 package com.telenav.kivakit.logs.client.network;
 
+import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.kernel.KivaKit;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.kernel.language.io.IO;
 import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
 import com.telenav.kivakit.kernel.language.threading.latches.CompletionLatch;
-import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.values.version.VersionedObject;
 import com.telenav.kivakit.kernel.messaging.Debug;
@@ -107,7 +107,7 @@ public class Receiver extends BaseRepeater implements Stoppable
     }
 
     @Override
-    public void stop(Duration wait)
+    public void stop(LengthOfTime wait)
     {
         if (state == RUNNING)
         {

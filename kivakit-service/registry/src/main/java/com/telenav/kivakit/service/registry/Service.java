@@ -22,9 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.interfaces.string.Stringable;
 import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.kernel.language.strings.conversion.AsString;
-import com.telenav.kivakit.kernel.language.strings.conversion.StringFormat;
 import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.kernel.language.time.Time;
 import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachineHealth;
@@ -88,7 +87,7 @@ import static com.telenav.kivakit.kernel.language.strings.formatting.ObjectForma
 @UmlClassDiagram(diagram = DiagramRegistry.class)
 @UmlExcludeSuperTypes
 @LexakaiJavadoc(complete = true)
-public class Service extends BaseComponent implements Comparable<Service>, AsString
+public class Service extends BaseComponent implements Comparable<Service>, Stringable
 {
     public static final Port UNBOUND = Host.local().port(0);
 
@@ -97,10 +96,8 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     @UmlAggregation
     private Application.Identifier application;
 
-    @JsonProperty
-    @OpenApiIncludeMember(description = "The scope that the service is visible to")
-    @UmlAggregation(label = "visibility")
-    private Scope scope;
+    @UmlAggregation(label = "health status")
+    private JavaVirtualMachineHealth health;
 
     @JsonProperty
     @OpenApiIncludeMember(description = "Metadata describing the service")
@@ -108,20 +105,22 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     private ServiceMetadata metadata;
 
     @JsonProperty
-    @OpenApiIncludeMember(description = "The type of service")
-    @UmlAggregation(label = "provided service")
-    private ServiceType type;
-
-    @JsonProperty
     @OpenApiIncludeMember(
             description = "The port that has been allocated for use by the service on the local host by the local KivaKit registry")
     @UmlAggregation(label = "allocated port")
     private Port port;
 
-    @UmlAggregation(label = "health status")
-    private JavaVirtualMachineHealth health;
-
     private long renewedAt;
+
+    @JsonProperty
+    @OpenApiIncludeMember(description = "The scope that the service is visible to")
+    @UmlAggregation(label = "visibility")
+    private Scope scope;
+
+    @JsonProperty
+    @OpenApiIncludeMember(description = "The type of service")
+    @UmlAggregation(label = "provided service")
+    private ServiceType type;
 
     public Service()
     {
@@ -140,11 +139,12 @@ public class Service extends BaseComponent implements Comparable<Service>, AsStr
     }
 
     @Override
-    public String asString(StringFormat format)
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
+    public String asString(Format format)
     {
-        switch (format.identifier())
+        switch (format)
         {
-            case StringFormat.LOG_IDENTIFIER:
+            case LOG:
                 return new ObjectFormatter(this).toString(SINGLE_LINE);
 
             default:

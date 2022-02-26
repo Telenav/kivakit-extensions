@@ -19,8 +19,9 @@
 package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.kernel.language.strings.Paths;
 import com.telenav.kivakit.kernel.language.time.Duration;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
@@ -90,7 +91,9 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyServer extends BaseComponent implements Startable, Stoppable
+public class JettyServer extends BaseComponent implements
+        Startable,
+        Stoppable
 {
     public static void configureLogging()
     {
@@ -181,7 +184,7 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
     }
 
     @Override
-    public void stop(Duration wait)
+    public void stop(LengthOfTime wait)
     {
         if (isRunning())
         {
@@ -213,7 +216,7 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         // Return an HTTP Jetty server connector for the port that was specified
         ServerConnector http = new ServerConnector(server);
         http.setPort(port);
-        http.setIdleTimeout(Duration.hours(1).asMilliseconds());
+        http.setIdleTimeout(Duration.hours(1).milliseconds());
         return http;
     }
 
