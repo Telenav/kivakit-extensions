@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+
 /**
  * A request path and method for a {@link Microservlet}.
  *
@@ -38,7 +40,7 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
     public MicroservletRestPath(FilePath path, HttpMethod httpMethod)
     {
         this.path = path;
-        this.httpMethod = httpMethod;
+        this.httpMethod = ensureNotNull(httpMethod);
     }
 
     public MicroservletRestPath(FilePath path)
@@ -82,7 +84,7 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
 
     public String key()
     {
-        return resolvedPath() + ":" + httpMethod.name();
+        return resolvedPath() + (httpMethod == null ? "ALL" : ":" + httpMethod.name());
     }
 
     public HttpMethod method()

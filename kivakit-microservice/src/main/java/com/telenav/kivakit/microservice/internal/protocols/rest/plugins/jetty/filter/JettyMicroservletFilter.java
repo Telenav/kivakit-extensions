@@ -142,6 +142,10 @@ public class JettyMicroservletFilter extends BaseComponent implements
                     }
                 }
             }
+            else
+            {
+                problem("Invalid request method");
+            }
 
             if (!handled)
             {
