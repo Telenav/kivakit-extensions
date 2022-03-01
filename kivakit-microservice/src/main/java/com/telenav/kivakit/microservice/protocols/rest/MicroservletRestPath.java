@@ -43,12 +43,6 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
         this.httpMethod = ensureNotNull(httpMethod);
     }
 
-    public MicroservletRestPath(FilePath path)
-    {
-        this.path = path;
-        this.httpMethod = null;
-    }
-
     @Override
     public int compareTo(@NotNull final MicroservletRestPath that)
     {
@@ -84,7 +78,7 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
 
     public String key()
     {
-        return resolvedPath() + (httpMethod == null ? "ALL" : ":" + httpMethod.name());
+        return resolvedPath() + httpMethod.name();
     }
 
     public HttpMethod method()
