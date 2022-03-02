@@ -21,16 +21,16 @@ package com.telenav.kivakit.microservice.protocols.rest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.coredata.validation.Validatable;
-import com.telenav.kivakit.coredata.validation.Validator;
+import com.telenav.kivakit.kernel.data.validation.Validatable;
+import com.telenav.kivakit.kernel.data.validation.Validator;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
-import com.telenav.kivakit.core.language.collections.list.StringList;
-import com.telenav.kivakit.core.language.reflection.Type;
-import com.telenav.kivakit.core.language.strings.Paths;
-import com.telenav.kivakit.language.version.Version;
-import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.messaging.Message;
-import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.kernel.language.collections.list.StringList;
+import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.kernel.language.strings.Paths;
+import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
@@ -44,7 +44,7 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
+import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.serialization.json.GsonFactory;
@@ -62,9 +62,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.ensure.Ensure.fail;
-import static com.telenav.kivakit.core.string.Formatter.Format.WITHOUT_EXCEPTION;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.GET;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.POST;
 
@@ -118,7 +118,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * }</pre>
  *
  * <p>
- * would mount the POST request handler <i>UserUpdateRequest</i> on the URL <i>/api/1.0/users/update</i>.
+ * would mount the POST request handler <i>UserUpdateRequest</i> on the URL <i>/my-microservice/api/1.0/users/update</i>.
  * </p>
  *
  * <p><br/><hr/><br/></p>
@@ -241,7 +241,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     {
         GET,
         POST,
-        DELETE;
+        DELETE,
+        NONE;
 
         public static HttpMethod parse(String text)
         {

@@ -132,7 +132,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                 else
                 {
                     // and if no microservlet was resolved, try resolving the path to a JAR mount,
-                    var mountedJar = resolveApi(new MicroservletRestPath(cycle.request().path()));
+                    var mountedJar = resolveApi(new MicroservletRestPath(cycle.request().path(), HttpMethod.NONE));
                     if (mountedJar != null)
                     {
                         // and handle the request that way.
@@ -141,6 +141,10 @@ public class JettyMicroservletFilter extends BaseComponent implements
                         handled = true;
                     }
                 }
+            }
+            else
+            {
+                problem("Invalid request method");
             }
 
             if (!handled)
