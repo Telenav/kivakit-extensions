@@ -18,11 +18,11 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
+import com.telenav.kivakit.core.count.Bytes;
+import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.filesystem.spi.FileService;
-import com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams.DiagramS3;
-import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.filesystems.s3fs.project.lexakai.DiagramS3;
+import com.telenav.kivakit.language.time.Time;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -32,7 +32,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.attribute.PosixFilePermission;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.ensure.Ensure.unsupported;
 
 /**
  * <b>Not public API</b>

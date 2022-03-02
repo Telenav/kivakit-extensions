@@ -2,10 +2,9 @@ open module kivakit.settings.stores.zookeeper
 {
     // KivaKit
     requires transitive kivakit.application;
-    requires transitive kivakit.configuration;
+    requires transitive kivakit.settings;
     requires transitive kivakit.network.core;
     requires transitive kivakit.component;
-    requires kivakit.test;
 
     // Zookeeper
     requires transitive kivakit.merged.zookeeper;

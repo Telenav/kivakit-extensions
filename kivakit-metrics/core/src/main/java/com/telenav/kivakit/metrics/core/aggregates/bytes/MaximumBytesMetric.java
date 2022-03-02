@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.bytes;
 
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.language.count.Bytes;
 import com.telenav.kivakit.metrics.core.aggregates.MaximumMetric;
 
 public class MaximumBytesMetric extends MaximumMetric<Bytes>

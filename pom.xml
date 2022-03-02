@@ -8,6 +8,8 @@
 <project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>superpom</artifactId>
@@ -15,7 +17,6 @@
         <relativePath>../kivakit/superpom</relativePath>
     </parent>
 
-    <modelVersion>4.0.0</modelVersion>
     <artifactId>kivakit-extensions</artifactId>
     <version>1.3.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -93,13 +94,8 @@
     <modules>
 
         <module>kivakit-settings-stores</module>
-        <module>kivakit-primitive-collections</module>
-        <module>kivakit-math</module>
-        <module>kivakit-ui</module>
-        <module>kivakit-data</module>
         <module>kivakit-logs</module>
         <module>kivakit-web</module>
-        <module>kivakit-service</module>
         <module>kivakit-filesystems</module>
         <module>kivakit-metrics</module>
         <module>kivakit-microservice</module>

@@ -3,7 +3,6 @@ open module kivakit.web.jetty
     // KivaKit
     requires transitive kivakit.component;
     requires transitive kivakit.network.http;
-    requires kivakit.test;
 
     // Jetty
     requires org.eclipse.jetty.server;

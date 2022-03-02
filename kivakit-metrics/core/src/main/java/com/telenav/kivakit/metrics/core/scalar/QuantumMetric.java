@@ -1,8 +1,8 @@
 package com.telenav.kivakit.metrics.core.scalar;
 
 import com.telenav.kivakit.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.metrics.core.AggregateMetric;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 

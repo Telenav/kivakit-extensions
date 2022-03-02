@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservlet;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**

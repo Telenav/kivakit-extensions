@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.filesystem.java;
 
+import com.telenav.kivakit.core.count.Bytes;
 import com.telenav.kivakit.filesystem.spi.FileService;
-import com.telenav.kivakit.kernel.language.traits.TryTrait;
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.core.language.traits.TryTrait;
 import com.telenav.kivakit.resource.path.FilePath;
 
 import java.io.InputStream;

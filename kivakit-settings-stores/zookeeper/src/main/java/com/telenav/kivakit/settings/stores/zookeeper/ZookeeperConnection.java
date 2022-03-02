@@ -1,16 +1,16 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.io.IO;
-import com.telenav.kivakit.kernel.language.paths.StringPath;
-import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
-import com.telenav.kivakit.kernel.language.strings.Strip;
-import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
-import com.telenav.kivakit.kernel.language.threading.conditions.StateMachine;
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.time.Frequency;
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.core.language.collections.list.StringList;
+import com.telenav.kivakit.core.language.io.IO;
+import com.telenav.kivakit.core.path.StringPath;
+import com.telenav.kivakit.core.language.reflection.populator.KivaKitPropertyConverter;
+import com.telenav.kivakit.core.language.strings.Strip;
+import com.telenav.kivakit.core.language.threading.KivaKitThread;
+import com.telenav.kivakit.core.language.threading.conditions.StateMachine;
+import com.telenav.kivakit.language.time.Duration;
+import com.telenav.kivakit.language.time.Frequency;
+import com.telenav.kivakit.language.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
 import org.apache.zookeeper.CreateMode;

@@ -30,7 +30,7 @@ import com.telenav.kivakit.resource.path.FilePath;
 
 import java.nio.file.Paths;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.ensure.Ensure.unsupported;
 
 /**
  * <b>Not public API</b>

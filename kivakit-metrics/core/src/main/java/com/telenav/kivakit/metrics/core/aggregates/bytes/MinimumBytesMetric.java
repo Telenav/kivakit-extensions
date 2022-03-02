@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.bytes;
 
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.language.count.Bytes;
 import com.telenav.kivakit.metrics.core.aggregates.MinimumMetric;
 
 public class MinimumBytesMetric extends MinimumMetric<Bytes>

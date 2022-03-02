@@ -21,8 +21,8 @@ package com.telenav.kivakit.filesystems.s3fs;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.Folder.Type;
-import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.core.language.progress.ProgressReporter;
+import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
@@ -72,7 +72,7 @@ public class S3Output extends OutputStream
         {
             object.delete();
         }
-        object.copyFrom(cacheFile, OVERWRITE, ProgressReporter.NULL);
+        object.copyFrom(cacheFile, OVERWRITE, ProgressReporter.none());
     }
 
     @Override

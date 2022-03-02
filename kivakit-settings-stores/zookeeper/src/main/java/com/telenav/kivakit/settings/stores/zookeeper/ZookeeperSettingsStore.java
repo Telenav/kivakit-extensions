@@ -1,17 +1,17 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
-import com.telenav.kivakit.configuration.lookup.Registry;
-import com.telenav.kivakit.configuration.settings.BaseSettingsStore;
-import com.telenav.kivakit.configuration.settings.SettingsObject;
-import com.telenav.kivakit.configuration.settings.SettingsStore;
-import com.telenav.kivakit.kernel.KivaKit;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
-import com.telenav.kivakit.kernel.language.paths.StringPath;
-import com.telenav.kivakit.kernel.language.types.Classes;
-import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
+import com.telenav.kivakit.core.registry.InstanceIdentifier;
+import com.telenav.kivakit.core.registry.Registry;
+import com.telenav.kivakit.settings.settings.BaseSettingsStore;
+import com.telenav.kivakit.settings.settings.SettingsObject;
+import com.telenav.kivakit.settings.settings.SettingsStore;
+import com.telenav.kivakit.coreKivaKit;
+import com.telenav.kivakit.core.language.collections.list.StringList;
+import com.telenav.kivakit.collections.set.ObjectSet;
+import com.telenav.kivakit.core.path.StringPath;
+import com.telenav.kivakit.core.language.types.Classes;
+import com.telenav.kivakit.core.vm.JavaVirtualMachine;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import org.apache.zookeeper.CreateMode;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
@@ -19,11 +19,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.DELETE;
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.INDEX;
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.LOAD;
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.SAVE;
-import static com.telenav.kivakit.configuration.settings.SettingsStore.AccessMode.UNLOAD;
+import static com.telenav.kivakit.settings.settings.SettingsStore.AccessMode.DELETE;
+import static com.telenav.kivakit.settings.settings.SettingsStore.AccessMode.INDEX;
+import static com.telenav.kivakit.settings.settings.SettingsStore.AccessMode.LOAD;
+import static com.telenav.kivakit.settings.settings.SettingsStore.AccessMode.SAVE;
+import static com.telenav.kivakit.settings.settings.SettingsStore.AccessMode.UNLOAD;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 

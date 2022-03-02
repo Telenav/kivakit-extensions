@@ -4,11 +4,11 @@ import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.configuration.settings.stores.resource.PackageSettingsStore;
-import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.settings.settings.stores.resource.PackageSettingsStore;
+import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.language.version.Version;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.core.test.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
 

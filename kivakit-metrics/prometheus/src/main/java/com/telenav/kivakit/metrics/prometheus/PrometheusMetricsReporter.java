@@ -1,7 +1,7 @@
 package com.telenav.kivakit.metrics.prometheus;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.MetricsReporter;
 import io.prometheus.client.Counter;

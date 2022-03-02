@@ -1,8 +1,8 @@
 package com.telenav.kivakit.filesystems.github;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.strings.Strip;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.core.language.strings.Strip;
+import com.telenav.kivakit.core.messaging.Listener;
 import org.kohsuke.github.GHTree;
 import org.kohsuke.github.GHTreeEntry;
 import org.kohsuke.github.GitHub;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.ensure.Ensure.unsupported;
 
 /**
  * Holds information for an entire GitHub repository tree, given a username, repository and branch.

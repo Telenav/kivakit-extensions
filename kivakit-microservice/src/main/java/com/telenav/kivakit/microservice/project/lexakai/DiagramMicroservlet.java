@@ -16,28 +16,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.web.jersey;
+package com.telenav.kivakit.microservice.project.lexakai;
 
-import com.telenav.kivakit.core.object.Lazy;
-import com.telenav.kivakit.coreproject.Project;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import com.telenav.lexakai.annotations.diagrams.UmlDiagramIdentifier;
 
 /**
- * Project class for kivakit-web-jersey
- *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
-public class JettyJerseyProject extends Project
+public class DiagramMicroservlet implements UmlDiagramIdentifier
 {
-    private static final Lazy<JettyJerseyProject> project = Lazy.of(JettyJerseyProject::new);
-
-    public static JettyJerseyProject get()
-    {
-        return project.get();
-    }
-
-    protected JettyJerseyProject()
-    {
-    }
 }

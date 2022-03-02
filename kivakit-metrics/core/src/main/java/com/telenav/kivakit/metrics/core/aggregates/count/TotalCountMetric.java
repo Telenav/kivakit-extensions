@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.count;
 
-import com.telenav.kivakit.kernel.language.values.count.Count;
+import com.telenav.kivakit.language.count.Count;
 import com.telenav.kivakit.metrics.core.aggregates.TotalMetric;
 
 public class TotalCountMetric extends TotalMetric<Count>

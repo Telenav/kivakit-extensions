@@ -19,22 +19,22 @@
 package com.telenav.kivakit.logs.file;
 
 import com.telenav.kivakit.filesystem.File;
-import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
-import com.telenav.kivakit.kernel.language.strings.StringTo;
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
-import com.telenav.kivakit.kernel.language.vm.Console;
-import com.telenav.kivakit.kernel.logging.Log;
-import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.logs.file.project.lexakai.diagrams.DiagramLogsFile;
+import com.telenav.kivakit.collections.map.string.VariableMap;
+import com.telenav.kivakit.core.language.strings.StringTo;
+import com.telenav.kivakit.language.time.Duration;
+import com.telenav.kivakit.language.count.Bytes;
+import com.telenav.kivakit.core.os.Console;
+import com.telenav.kivakit.core.logging.Log;
+import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.logs.file.project.lexakai.DiagramLogsFile;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.ensure.Ensure.fail;
 
 /**
  * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line. See

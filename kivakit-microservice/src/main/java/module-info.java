@@ -9,7 +9,6 @@ open module kivakit.microservice
 
     requires transitive kivakit.merged.protostuff;
     requires transitive kivakit.merged.grpc;
-    requires kivakit.test;
 
     requires org.junit.platform.commons;
     requires org.junit.platform.engine;

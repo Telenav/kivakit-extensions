@@ -24,7 +24,7 @@ This module is a text file log service provider.
 
 [**Summary**](#summary)  
 [**Including the Provider**](#including-the-provider)  
-[**Log Configuration Parameters**](#log-configuration-parameters)  
+[**Log Configuration Parameters**](#log-configuration-parameters)
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -48,8 +48,7 @@ This module is a text file log service provider.
 
 ### Summary <a name = "summary"></a>
 
-This module is a log service provider which logs messages to the filesystem.
-It includes log roll-over, based on time or log size.
+This module is a log service provider which logs messages to the filesystem. It includes log roll-over, based on time or log size.
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -63,7 +62,7 @@ To include the *EmailLog* service provider, all that is required is to:
 
        java -DKIVAKIT_LOG="Console,File level=Warning file=~/log.txt rollover=daily maximum-size=100M
 
-More details about logging are available at [*kivakit-kernel logging*](../../kivakit/kernel/documentation/logging.md).
+More details about logging are available at [*kivakit-core logging*](../../kivakit/kernel/documentation/logging.md).
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -91,12 +90,9 @@ More details about logging are available at [*kivakit-kernel logging*](../../kiv
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 83.3%.  
-  
+Javadoc coverage for this project is 83.3%.
+
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
-
-
-
 
 | Class | Documentation Sections |
 |---|---|
@@ -106,7 +102,6 @@ Javadoc coverage for this project is 83.3%.
 | [*FileLogProject*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/FileLogProject.html) |  |  
 
 [//]: # (start-user-text)
-
 
 
 [//]: # (end-user-text)

@@ -4,21 +4,19 @@ import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
-import com.telenav.kivakit.configuration.settings.Deployment;
+import com.telenav.kivakit.commandline.SwitchParsers;
+import com.telenav.kivakit.core.object.Lazy;
+import com.telenav.kivakit.core.language.reflection.Type;
+import com.telenav.kivakit.core.project.Project;
+import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.interfaces.time.LengthOfTime;
-import com.telenav.kivakit.kernel.language.collections.set.ObjectSet;
-import com.telenav.kivakit.kernel.language.objects.Lazy;
-import com.telenav.kivakit.kernel.language.primitives.Ints;
-import com.telenav.kivakit.kernel.language.reflection.Type;
-import com.telenav.kivakit.kernel.language.strings.Paths;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.project.Project;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
+import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -29,6 +27,7 @@ import com.telenav.kivakit.resource.resources.packaged.Package;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactorySource;
+import com.telenav.kivakit.settings.settings.Deployment;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
@@ -44,10 +43,9 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.commandline.SwitchParser.booleanSwitchParser;
-import static com.telenav.kivakit.commandline.SwitchParser.integerSwitchParser;
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.commandline.SwitchParsers.booleanSwitchParser;
+import static com.telenav.kivakit.commandline.SwitchParsers.integerSwitchParser;
+import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 
 /**
  * <p>
@@ -199,14 +197,17 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNot
  * @see MicroserviceClusterMember
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class Microservice<Member> extends Application implements GsonFactorySource, Startable, Stoppable
+public abstract class Microservice<Member> extends Application implements
+        GsonFactorySource,
+        Startable,
+        Stoppable
 {
     /**
      * Command line switch for what port to run any REST service on. This will override any value from {@link
      * MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<String> API_FORWARDING =
-            SwitchParser.stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
+            SwitchParsers.stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
                     .optional()
                     .build();
 

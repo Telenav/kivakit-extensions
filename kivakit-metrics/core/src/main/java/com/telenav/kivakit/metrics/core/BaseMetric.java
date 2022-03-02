@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core;
 
-import com.telenav.kivakit.kernel.language.time.Time;
+import com.telenav.kivakit.language.time.Time;
 
 /**
  * Base class for metrics. All metrics have a {@link #created()} time, which is the time at which the metric started

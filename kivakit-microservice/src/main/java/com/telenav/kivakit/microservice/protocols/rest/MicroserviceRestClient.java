@@ -2,9 +2,9 @@ package com.telenav.kivakit.microservice.protocols.rest;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.strings.Strings;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.core.language.strings.Strings;
+import com.telenav.kivakit.language.version.Version;
+import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;

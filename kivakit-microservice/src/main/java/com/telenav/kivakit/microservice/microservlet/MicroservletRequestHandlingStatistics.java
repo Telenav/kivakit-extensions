@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.language.time.Duration;
+import com.telenav.kivakit.language.time.Time;
+import com.telenav.kivakit.core.messaging.Message;
 
 /**
  * Statistics about a given request

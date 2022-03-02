@@ -19,8 +19,8 @@
 package com.telenav.kivakit.web.jersey;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.logging.Logger;
-import com.telenav.kivakit.kernel.logging.LoggerFactory;
+import com.telenav.kivakit.core.logging.Logger;
+import com.telenav.kivakit.core.logging.LoggerFactory;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**

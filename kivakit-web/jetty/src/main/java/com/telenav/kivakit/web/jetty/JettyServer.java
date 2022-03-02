@@ -22,8 +22,8 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.interfaces.time.LengthOfTime;
-import com.telenav.kivakit.kernel.language.strings.Paths;
-import com.telenav.kivakit.kernel.language.time.Duration;
+import com.telenav.kivakit.core.language.strings.Paths;
+import com.telenav.kivakit.language.time.Duration;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
@@ -37,7 +37,7 @@ import org.eclipse.jetty.util.log.StdErrLog;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.ensure.Ensure.ensure;
 
 /**
  * A convenient way to use Jetty for simple web applications.

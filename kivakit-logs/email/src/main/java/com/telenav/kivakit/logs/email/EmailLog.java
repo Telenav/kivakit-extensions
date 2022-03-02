@@ -18,14 +18,14 @@
 
 package com.telenav.kivakit.logs.email;
 
-import com.telenav.kivakit.configuration.lookup.Registry;
-import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
-import com.telenav.kivakit.kernel.logging.Log;
-import com.telenav.kivakit.kernel.logging.LogEntry;
-import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
-import com.telenav.kivakit.kernel.logging.logs.text.BaseTextLog;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.logs.email.project.lexakai.diagrams.DiagramLogsEmail;
+import com.telenav.kivakit.core.registry.Registry;
+import com.telenav.kivakit.collections.map.string.VariableMap;
+import com.telenav.kivakit.core.logging.Log;
+import com.telenav.kivakit.core.logging.LogEntry;
+import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
+import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.logs.email.project.lexakai.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.email.Email;
@@ -41,7 +41,7 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.ensure.Ensure.fail;
 
 /**
  * A {@link Log} service provider that sends emails. Configuration occurs via the command line. See {@link

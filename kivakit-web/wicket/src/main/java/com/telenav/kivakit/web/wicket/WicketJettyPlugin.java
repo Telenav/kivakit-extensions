@@ -26,7 +26,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.ERROR;
 import static javax.servlet.DispatcherType.FORWARD;

@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.language.version.Version;
+import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
@@ -13,7 +13,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqual;
+import static com.telenav.kivakit.ensure.Ensure.ensureEqual;
 
 /**
  * Client for sending microservlet requests to a microservice via GRPC.

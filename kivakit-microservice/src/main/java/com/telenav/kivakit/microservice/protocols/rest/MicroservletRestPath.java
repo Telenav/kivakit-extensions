@@ -1,11 +1,11 @@
 package com.telenav.kivakit.microservice.protocols.rest;
 
-import com.telenav.kivakit.configuration.lookup.RegistryTrait;
-import com.telenav.kivakit.kernel.language.strings.Paths;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.logging.Logger;
-import com.telenav.kivakit.kernel.logging.LoggerFactory;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.core.registry.RegistryTrait;
+import com.telenav.kivakit.core.language.strings.Paths;
+import com.telenav.kivakit.language.version.Version;
+import com.telenav.kivakit.core.logging.Logger;
+import com.telenav.kivakit.core.logging.LoggerFactory;
+import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;

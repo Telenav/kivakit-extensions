@@ -1,13 +1,9 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.telenav.kivakit.configuration.lookup.RegistryTrait;
-import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
-import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.core.registry.RegistryTrait;
+import com.telenav.kivakit.language.version.Version;
+import com.telenav.kivakit.core.messaging.Listener;
 
 import java.util.Objects;
 

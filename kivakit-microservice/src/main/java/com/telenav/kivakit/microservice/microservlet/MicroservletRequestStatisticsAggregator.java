@@ -1,10 +1,10 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.time.Frequency;
-import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.core.language.collections.list.StringList;
+import com.telenav.kivakit.language.time.Frequency;
+import com.telenav.kivakit.language.time.Time;
+import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.math.statistics.AverageDuration;
 
 import java.util.Map;

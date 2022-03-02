@@ -19,16 +19,16 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.data.validation.Validatable;
-import com.telenav.kivakit.kernel.data.validation.Validator;
-import com.telenav.kivakit.kernel.language.io.IO;
-import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.coredata.validation.Validatable;
+import com.telenav.kivakit.coredata.validation.Validator;
+import com.telenav.kivakit.core.language.io.IO;
+import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.strings.formatting.ObjectFormatter;
+import com.telenav.kivakit.language.version.Version;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
+import com.telenav.kivakit.microservice.project.lexakai.DiagramJetty;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.other.PropertyMap;
@@ -40,7 +40,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.ensure.Ensure.ensure;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 /**

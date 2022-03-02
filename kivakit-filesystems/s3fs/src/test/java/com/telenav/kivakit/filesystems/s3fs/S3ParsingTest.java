@@ -20,10 +20,10 @@ package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.kernel.KivaKit;
+import com.telenav.kivakit.coreKivaKit;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.core.test.UnitTest;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 

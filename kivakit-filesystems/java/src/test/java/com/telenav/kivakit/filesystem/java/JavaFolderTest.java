@@ -3,13 +3,13 @@ package com.telenav.kivakit.filesystem.java;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
-import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.core.language.progress.ProgressReporter;
+import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.resource.compression.archive.ZipArchive;
 import com.telenav.kivakit.resource.path.Extension;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.string.StringResource;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.core.test.UnitTest;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -74,7 +74,7 @@ public class JavaFolderTest extends UnitTest
     private ZipArchive archive()
     {
         var zip = File.temporary(Extension.ZIP);
-        var archive = ZipArchive.open(this, zip, ProgressReporter.NULL, ZipArchive.Mode.WRITE);
+        var archive = ZipArchive.open(this, zip, ProgressReporter.none(), ZipArchive.Mode.WRITE);
         archive.save("/child/a.txt", new StringResource("a"));
         archive.save("/child/b.txt", new StringResource("b"));
         archive.save("/c.txt", new StringResource("c"));

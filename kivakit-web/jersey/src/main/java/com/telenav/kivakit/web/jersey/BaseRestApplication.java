@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.jersey;
 
-import com.telenav.kivakit.kernel.messaging.repeaters.RepeaterMixin;
+import com.telenav.kivakit.core.messaging.repeaters.RepeaterMixin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.glassfish.jersey.server.ResourceConfig;
 

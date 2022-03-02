@@ -20,14 +20,14 @@ package com.telenav.kivakit.web.wicket.components.feedback;
 
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.interfaces.messaging.Transmittable;
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.kernel.messaging.messages.status.Warning;
+import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.web.wicket.theme.KivaKitTheme;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 
-import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
+import static com.telenav.kivakit.core.string.Formatter.Format.WITHOUT_EXCEPTION;
 
 /**
  * A KivaKit feedback panel in the KivaKit style.

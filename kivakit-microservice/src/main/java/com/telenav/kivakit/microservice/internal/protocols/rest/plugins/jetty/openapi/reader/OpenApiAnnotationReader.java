@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.strings.Strings;
+import com.telenav.kivakit.core.language.collections.list.StringList;
+import com.telenav.kivakit.core.language.strings.Strings;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 
 import java.lang.annotation.Annotation;
@@ -67,4 +67,5 @@ public class OpenApiAnnotationReader extends BaseComponent
             problem(e, "No $() method in $", method, requestType);
             return null;
         }
-    }}
+    }
+}

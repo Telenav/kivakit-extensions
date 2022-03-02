@@ -2,7 +2,7 @@ package com.telenav.kivakit.metrics.core;
 
 import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.kernel.language.time.CreatedAt;
+import com.telenav.kivakit.language.time.CreatedAt;
 
 /**
  * A named measurement {@link #created()} at some point in time

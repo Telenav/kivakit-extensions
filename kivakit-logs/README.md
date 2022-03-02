@@ -16,7 +16,7 @@
 
 # kivakit-logs &nbsp;&nbsp; <img src="https://www.kivakit.org/images/log-32.png" srcset="https://www.kivakit.org/images/log-32-2x.png 2x"/>
 
-This project provides log services that satisfy the kivakit-kernel logging service provider interface.
+This project provides log services that satisfy the kivakit-core logging service provider interface.
 
 <img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
 
@@ -24,13 +24,9 @@ This project provides log services that satisfy the kivakit-kernel logging servi
 
 ### Summary <a name = "summary"></a>
 
-To use the [file](file/README.md) or [email](email/README.md) log providers with the KivaKit logging mini-framework,
-all that is required is to add the appropriate dependency to *pom.xml* and
-add an *import* statement to module-info.java.
+To use the [file](file/README.md) or [email](email/README.md) log providers with the KivaKit logging mini-framework, all that is required is to add the appropriate dependency to *pom.xml* and add an *import* statement to module-info.java.
 
-See [kivakit-kernel logging](../kivakit/kernel/documentation/logging.md) for details on how to use the logging mini-framework
-and the [Log](https://telenav.github.io/kivakit/javadoc/kivakit.kernel/com/telenav/kivakit/kernel/logging/Log.html) service
-provider interface (SPI) to implement a new log service.
+See [kivakit-core logging](../kivakit/kernel/documentation/logging.md) for details on how to use the logging mini-framework and the [Log](https://telenav.github.io/kivakit/javadoc/kivakit.kernel/com/telenav/kivakit/kernel/logging/Log.html) service provider interface (SPI) to implement a new log service.
 
 [//]: # (end-user-text)
 
@@ -40,25 +36,24 @@ provider interface (SPI) to implement a new log service.
 [**kivakit-logs-email**](email/README.md)  
 [**kivakit-logs-file**](file/README.md)  
 [**kivakit-logs-server**](server/README.md)  
-[**kivakit-logs-viewer**](viewer/README.md)  
+[**kivakit-logs-viewer**](viewer/README.md)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-client**](client/README.md)  
+&nbsp; &nbsp; [**kivakit-logs-client**](client/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-email**](email/README.md)  
+&nbsp; &nbsp; [**kivakit-logs-email**](email/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-file**](file/README.md)  
+&nbsp; &nbsp; [**kivakit-logs-file**](file/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-server**](server/README.md)  
+&nbsp; &nbsp; [**kivakit-logs-server**](server/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-30-96.png" srcset="https://www.kivakit.org/images/meter-30-96-2x.png 2x"/>
- &nbsp; &nbsp; [**kivakit-logs-viewer**](viewer/README.md)
+&nbsp; &nbsp; [**kivakit-logs-viewer**](viewer/README.md)
 
 [//]: # (start-user-text)
-
 
 
 [//]: # (end-user-text)

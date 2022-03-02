@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.cycle;
 
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 

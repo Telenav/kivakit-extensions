@@ -18,18 +18,20 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
-import com.telenav.kivakit.test.UnitTest;
-import com.telenav.kivakit.test.annotations.SlowTests;
+import com.telenav.kivakit.core.vm.JavaVirtualMachine;
+import com.telenav.kivakit.core.test.SlowTest;
+import com.telenav.kivakit.core.test.UnitTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import static org.junit.Assume.assumeTrue;
 
-@Category({ SlowTests.class })
+@Category({ SlowTest.class })
 public class S3FileTest extends UnitTest
 {
+    final S3File file = new S3File("s3://default-region/kivakit/test-data/test.txt");
+
     @Before
     public void beforeMethod()
     {
@@ -42,6 +44,4 @@ public class S3FileTest extends UnitTest
     {
         ensure("123".equals(file.reader().asString().trim()));
     }
-
-    final S3File file = new S3File("s3://default-region/kivakit/test-data/test.txt");
 }

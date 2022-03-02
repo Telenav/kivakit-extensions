@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
-import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.core.language.reflection.Type;
 
 public class ReferenceResolver
 {

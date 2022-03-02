@@ -6,7 +6,7 @@ import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.interfaces.time.LengthOfTime;
-import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
+import com.telenav.kivakit.core.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
@@ -21,7 +21,7 @@ import io.grpc.ServerBuilder;
 import kivakit.merged.grpc.io.netty.util.internal.logging.InternalLoggerFactory;
 import kivakit.merged.grpc.io.netty.util.internal.logging.JdkLoggerFactory;
 
-import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.LAST;
+import static com.telenav.kivakit.core.language.vm.KivaKitShutdownHook.Order.LAST;
 
 /**
  * GRPC protocol service that simply copies mounted request handlers from {@link MicroserviceRestService}.

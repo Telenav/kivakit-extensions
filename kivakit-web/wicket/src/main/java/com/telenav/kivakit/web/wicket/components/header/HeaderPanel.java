@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.web.wicket.components.header;
 
-import com.telenav.kivakit.kernel.KivaKit;
-import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.coreKivaKit;
+import com.telenav.kivakit.language.version.Version;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;

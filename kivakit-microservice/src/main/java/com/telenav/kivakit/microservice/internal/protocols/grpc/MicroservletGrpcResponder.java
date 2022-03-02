@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.internal.protocols.grpc;
 
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
-import com.telenav.kivakit.kernel.language.reflection.Type;
+import com.telenav.kivakit.core.language.collections.list.ObjectList;
+import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcResponseProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
 
 /**
  * <b>Not public API</b>
