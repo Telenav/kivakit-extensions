@@ -64,7 +64,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         // register a Gson factory,
         register(new DefaultGsonFactory(this)
                 .withPrettyPrinting(true)
-                .withVersion(Version.parse(this, "1.0"))
+                .withVersion(Version.parseVersion(this, "1.0"))
                 .withRequireExposeAnnotation(false));
 
         // save settings to store with x = 7,

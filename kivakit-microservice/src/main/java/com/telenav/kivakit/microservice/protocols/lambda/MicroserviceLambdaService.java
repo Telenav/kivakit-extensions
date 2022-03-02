@@ -90,7 +90,7 @@ public class MicroserviceLambdaService extends BaseComponent implements Initiali
      */
     public void mount(String lambdaName, String lambdaVersion, Class<? extends MicroservletRequest> requestType)
     {
-        mount(lambdaName, Version.parse(Listener.throwing(), lambdaVersion), requestType);
+        mount(lambdaName, Version.parseVersion(Listener.throwing(), lambdaVersion), requestType);
     }
 
     /**

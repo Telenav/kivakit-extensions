@@ -721,7 +721,7 @@ public abstract class Microservice<Member> extends Application implements
             var matcher = apiSpecifier.matcher(api);
             if (matcher.matches())
             {
-                var version = Version.parse(this, matcher.group("version"));
+                var version = Version.parseVersion(this, matcher.group("version"));
                 var resource = Resource.resolve(this, matcher.group("jar"));
                 var commandLine = matcher.group("commandLine");
                 var port = Ints.parse(this, matcher.group("port"));

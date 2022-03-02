@@ -118,7 +118,7 @@ public class MicroservletRestPath implements
         var matcher = VERSION_PATTERN.matcher(path().asString());
         if (matcher.find())
         {
-            return Version.parse(matcher.group("version"));
+            return Version.parseVersion(matcher.group("version"));
         }
         return null;
     }

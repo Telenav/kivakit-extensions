@@ -31,7 +31,7 @@ public class JavaFileTest extends UnitTest
     {
         var archive = archive(file("test-integration.txt", "output"));
         var path = Formatter.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
-        ensureEqual(listenTo(File.parse(this, path)).reader().asString(), "output");
+        ensureEqual(listenTo(File.parseFile(this, path)).reader().asString(), "output");
     }
 
     private ZipArchive archive(File file)

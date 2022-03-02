@@ -106,6 +106,6 @@ public class S3Output extends OutputStream
         // Flatten path being cached into a long filename by turning all file
         // system meta characters into underscores.
         // For example, "a/b/c.txt" becomes "a_b_c.txt"
-        return File.parse(Listener.console(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
+        return File.parseFile(Listener.console(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
     }
 }

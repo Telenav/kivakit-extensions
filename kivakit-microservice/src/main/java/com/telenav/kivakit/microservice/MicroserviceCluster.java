@@ -251,7 +251,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
         var parts = path.last().split("#");
 
         return new MicroserviceClusterMember<>(
-                Host.parse(this, parts[0]),
+                Host.parseHost(this, parts[0]),
                 Ints.parse(this, parts[1]),
                 Ints.parse(this, parts[2]),
                 settings.object());

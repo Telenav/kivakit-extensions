@@ -538,7 +538,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         var matcher = Pattern.compile("/api/(<?version>[^/]+)").matcher(path);
         if (matcher.find())
         {
-            return Version.parse(this, matcher.group("version"));
+            return Version.parseVersion(this, matcher.group("version"));
         }
         return fail("Unable to extract version from: $", path);
     }

@@ -92,7 +92,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parse(Listener.console(), at));
+                this.to.add(EmailAddress.parseEmail(Listener.console(), at));
             }
         }
         else
@@ -104,7 +104,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parse(Listener.console(), from);
+            this.from = EmailAddress.parseEmail(Listener.console(), from);
         }
         else
         {
@@ -118,7 +118,7 @@ public class EmailLog extends BaseTextLog
         if (host != null && username != null && password != null)
         {
             var configuration = new SmtpEmailSender.Configuration();
-            configuration.host(Host.parse(Listener.console(), host));
+            configuration.host(Host.parseHost(Listener.console(), host));
             configuration.username(UserName.parse(Listener.console(), username));
             configuration.password(PlainTextPassword.parse(Listener.console(), password));
             sender = new SmtpEmailSender(configuration);
