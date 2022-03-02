@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.rest.health;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.core.language.reflection.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.core.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
@@ -18,19 +18,21 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  *
  * @author jonathanl (shibo)
  */
-@OpenApiIncludeType(description = "Request for server liveness")
+@SuppressWarnings("SpellCheckingInspection") @OpenApiIncludeType(description = "Request for server liveness")
 public class HealthLiveRequest extends BaseMicroservletRequest
 {
     /**
      * Response object for this request
      */
+    @SuppressWarnings("SpellCheckingInspection")
     @OpenApiIncludeType(description = "Response to a liveness request")
     public static class HealthLiveResponse extends BaseMicroservletResponse
     {
         @Expose
+        @SuppressWarnings({ "SpellCheckingInspection", "FieldCanBeLocal" })
         @KivaKitIncludeProperty
         @OpenApiIncludeMember(description = "The server liveness status")
-        private String status;
+        private final String status;
 
         private HealthLiveResponse(String status)
         {
@@ -39,7 +41,7 @@ public class HealthLiveRequest extends BaseMicroservletRequest
     }
 
     @Expose
-    private String ignored = null;
+    private final String ignored = null;
 
     /**
      * {@inheritDoc}

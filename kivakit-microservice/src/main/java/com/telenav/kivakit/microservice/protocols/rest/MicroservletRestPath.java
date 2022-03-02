@@ -22,7 +22,9 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *
  * @author jonathanl (shibo)
  */
-public class MicroservletRestPath implements RegistryTrait, Comparable<MicroservletRestPath>
+public class MicroservletRestPath implements
+        RegistryTrait,
+        Comparable<MicroservletRestPath>
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
 

@@ -1,18 +1,18 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.application.Application;
+import com.telenav.kivakit.core.KivaKit;
+import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.collections.set.ObjectSet;
+import com.telenav.kivakit.core.language.Classes;
+import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.registry.Registry;
+import com.telenav.kivakit.core.vm.SystemProperties;
+import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.settings.settings.BaseSettingsStore;
 import com.telenav.kivakit.settings.settings.SettingsObject;
 import com.telenav.kivakit.settings.settings.SettingsStore;
-import com.telenav.kivakit.coreKivaKit;
-import com.telenav.kivakit.core.language.collections.list.StringList;
-import com.telenav.kivakit.collections.set.ObjectSet;
-import com.telenav.kivakit.core.path.StringPath;
-import com.telenav.kivakit.core.language.types.Classes;
-import com.telenav.kivakit.core.vm.JavaVirtualMachine;
-import com.telenav.kivakit.serialization.json.GsonFactory;
 import org.apache.zookeeper.CreateMode;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
- * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects so they can be easily accessed
+ * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects, so they can be easily accessed
  * in a clustered environment.
  *
  * <p><b>Creating a Zookeeper Settings Store</b></p>
@@ -163,7 +163,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * This settings store supports all access modes
+     * This store supports all access modes
      */
     @Override
     public Set<AccessMode> accessModes()
@@ -327,6 +327,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      * @return The given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
      * node path /a::b::c becomes the hierarchical node path /a/b/c.
      */
+    @SuppressWarnings("SpellCheckingInspection")
     @NotNull
     public StringPath unflatten(StringPath path)
     {
@@ -349,7 +350,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * Deserializes the given data into an instance of the given type. By default uses the registered {@link
+     * Deserializes the given data into an instance of the given type. By default, uses the registered {@link
      * GsonFactory} to deserialize the data from JSON format.
      *
      * @param data The data to deserialize
@@ -460,7 +461,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The create mode for paths in this store
+     * @return Create mode for paths in this store
      * @see CreateMode
      */
     private CreateMode createMode()
@@ -530,7 +531,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The given path flattened or not based on whether or not this is an ephemeral store
+     * @return The given path flattened or not based on whether this is an ephemeral store
      */
     private StringPath maybeFlatten(StringPath path)
     {
@@ -641,7 +642,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
                 createMode().name(),
                 "kivakit",
                 String.valueOf(KivaKit.get().kivakitVersion()),
-                JavaVirtualMachine.property("user.name"),
+                SystemProperties.property("user.name"),
                 application.name(),
                 application.version().toString());
     }

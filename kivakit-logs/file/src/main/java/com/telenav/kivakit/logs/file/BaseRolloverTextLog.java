@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.interfaces.time.LengthOfTime;
-import com.telenav.kivakit.core.language.io.ByteSizedOutput;
-import com.telenav.kivakit.language.time.Duration;
-import com.telenav.kivakit.language.time.Time;
-import com.telenav.kivakit.language.count.Bytes;
+import com.telenav.kivakit.core.io.ByteSizedOutputStream;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
+import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.core.time.Time;
+import com.telenav.kivakit.core.value.count.Bytes;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.logs.file.project.lexakai.DiagramLogsFile;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -33,7 +33,7 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
  * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a {@link
@@ -62,7 +62,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     private PrintWriter out;
 
-    private ByteSizedOutput outputSize;
+    private ByteSizedOutputStream byteSizedOutputStream;
 
     @UmlAggregation
     private Rollover rollover = Rollover.NONE;
@@ -114,7 +114,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     public final synchronized void onLog(LogEntry entry)
     {
         var timeToRollOver = Time.now().isAfter(rolloverAt);
-        var sizeToRollOver = outputSize != null && outputSize.sizeInBytes().isGreaterThan(maximumLogSize);
+        var sizeToRollOver = byteSizedOutputStream != null && byteSizedOutputStream.sizeInBytes().isGreaterThan(maximumLogSize);
         if (timeToRollOver || sizeToRollOver)
         {
             try
@@ -172,8 +172,8 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     private PrintWriter newPrintWriter()
     {
-        outputSize = new ByteSizedOutput(newOutputStream());
-        return new PrintWriter(outputSize);
+        byteSizedOutputStream = new ByteSizedOutputStream(newOutputStream());
+        return new PrintWriter(byteSizedOutputStream);
     }
 
     private PrintWriter out()

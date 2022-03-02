@@ -1,13 +1,12 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.language.reflection.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.core.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.language.version.Version;
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramJetty;
@@ -59,7 +58,6 @@ public final class JettyMicroserviceResponse extends BaseComponent
 
     /** Error messages that were reported to this response via {@link #problem(int, String, Object...)} */
     @Expose
-    @JsonProperty
     @UmlAggregation
     @OpenApiIncludeMember(title = "Errors messages",
                           description = "A list of formatted error messages")

@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.collections.list.StringList;
-import com.telenav.kivakit.core.language.strings.Strings;
+import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 
 import java.lang.annotation.Annotation;

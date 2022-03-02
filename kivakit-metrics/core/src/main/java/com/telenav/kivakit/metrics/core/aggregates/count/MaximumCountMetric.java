@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.count;
 
-import com.telenav.kivakit.language.count.Count;
+import com.telenav.kivakit.core.value.count.Count;
 import com.telenav.kivakit.metrics.core.aggregates.MaximumMetric;
 
 public class MaximumCountMetric extends MaximumMetric<Count>

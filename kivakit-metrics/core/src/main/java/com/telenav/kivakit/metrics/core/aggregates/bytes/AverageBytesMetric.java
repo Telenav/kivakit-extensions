@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.bytes;
 
-import com.telenav.kivakit.language.count.Bytes;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.metrics.core.aggregates.AverageMetric;
 
 public class AverageBytesMetric extends AverageMetric<Bytes>

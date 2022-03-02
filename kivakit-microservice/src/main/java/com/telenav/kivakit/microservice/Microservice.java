@@ -5,8 +5,10 @@ import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.commandline.SwitchParsers;
-import com.telenav.kivakit.core.object.Lazy;
+import com.telenav.kivakit.core.collections.set.ObjectSet;
+import com.telenav.kivakit.core.language.primitive.Ints;
 import com.telenav.kivakit.core.language.reflection.Type;
+import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.project.Project;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.version.Version;
@@ -46,6 +48,7 @@ import java.util.regex.Pattern;
 import static com.telenav.kivakit.commandline.SwitchParsers.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParsers.integerSwitchParser;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
 /**
  * <p>
@@ -419,7 +422,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * The root of this microservice. By default this is <i>/[microservice-name]</i>, like <i>/my-microservice</i>
+     * The root of this microservice. By default, this is <i>/[microservice-name]</i>, like <i>/my-microservice</i>
      */
     public String rootPath()
     {

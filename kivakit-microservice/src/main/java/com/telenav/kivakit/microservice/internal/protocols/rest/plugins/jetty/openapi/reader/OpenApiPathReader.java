@@ -1,9 +1,9 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.collections.list.ObjectList;
+import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.language.reflection.Type;
-import com.telenav.kivakit.core.language.strings.Strip;
+import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
@@ -23,7 +23,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 import java.util.List;
 
-import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
@@ -137,7 +137,7 @@ public class OpenApiPathReader extends BaseComponent
     {
         ensureNotNull(microservlet);
 
-        // Create the path item and give it the microservlet's description,
+        // Create the path item and give it the microservlet description,
         var item = new PathItem();
         item.description(microservlet.description());
 

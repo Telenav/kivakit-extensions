@@ -18,16 +18,16 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.core.count.Bytes;
 import com.telenav.kivakit.core.logging.Logger;
 import com.telenav.kivakit.core.logging.LoggerFactory;
 import com.telenav.kivakit.core.thread.Monitor;
+import com.telenav.kivakit.core.time.Time;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.project.lexakai.DiagramS3;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
-import com.telenav.kivakit.language.time.Time;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -39,8 +39,8 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.ensure.Ensure.fail;
-import static com.telenav.kivakit.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
  * <b>Not public API</b>
@@ -58,7 +58,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     private static final Monitor LOCK = new Monitor();
 
     // In the S3 world, there no folder physically, so we created a metadata file to
-    // represents its existence
+    // represent its existence
     private final FileName METADATA = FileName.parse(this, ".metadata");
 
     public S3Folder(FilePath path)

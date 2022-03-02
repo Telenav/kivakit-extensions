@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
-import com.telenav.kivakit.collections.set.ObjectSet;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.reflection.Member;
 import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader.filters.OpenApiPropertyFilter;
@@ -22,8 +22,8 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static com.telenav.kivakit.ensure.Ensure.ensureFalse;
-import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureFalse;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
 /**
  * <b>Not public API</b>

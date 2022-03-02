@@ -2,9 +2,9 @@ package com.telenav.kivakit.microservice.protocols.rest;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.strings.Strings;
-import com.telenav.kivakit.language.version.Version;
-import com.telenav.kivakit.core.messaging.Message;
+import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.string.Strings;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
@@ -159,7 +159,7 @@ public class MicroserviceRestClient extends BaseComponent
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Message.format("/api/$.$/$", version.major(), version.minor(), path);
+            path = Formatter.format("/api/$.$/$", version.major(), version.minor(), path);
         }
 
         return new NetworkLocation(port.path(this, path));

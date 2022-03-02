@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.filesystem.java;
 
+import com.telenav.kivakit.core.io.Nio;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.progress.ProgressReporter;
+import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.core.language.Nio;
-import com.telenav.kivakit.core.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.language.strings.Paths;
-import com.telenav.kivakit.language.time.Time;
-import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.WritableResource;
 import com.telenav.kivakit.resource.path.FilePath;
@@ -40,8 +40,8 @@ import java.nio.file.Path;
 import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFilePermission;
 
-import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
  * Base functionality common to both {@link JavaFile} and {@link JavaFolder}.

@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.reporters;
 
-import com.telenav.kivakit.core.language.Console;
+import com.telenav.kivakit.core.os.Console;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.MetricsReporter;
 

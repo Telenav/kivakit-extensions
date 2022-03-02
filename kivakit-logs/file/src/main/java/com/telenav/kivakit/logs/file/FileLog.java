@@ -18,23 +18,23 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.filesystem.File;
-import com.telenav.kivakit.collections.map.string.VariableMap;
-import com.telenav.kivakit.core.language.strings.StringTo;
-import com.telenav.kivakit.language.time.Duration;
-import com.telenav.kivakit.language.count.Bytes;
-import com.telenav.kivakit.core.os.Console;
+import com.telenav.kivakit.conversion.core.time.DurationConverter;
+import com.telenav.kivakit.conversion.core.value.BytesConverter;
+import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.os.Console;
+import com.telenav.kivakit.core.string.StringTo;
+import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.core.value.count.Bytes;
+import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.logs.file.project.lexakai.DiagramLogsFile;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
-
-import static com.telenav.kivakit.ensure.Ensure.fail;
 
 /**
  * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line. See
@@ -76,10 +76,10 @@ public class FileLog extends BaseRolloverTextLog
                 }
 
                 maximumLogFileAge = properties.asObject("maximum-age",
-                        new Duration.Converter(Listener.none()), Duration.MAXIMUM);
+                        new DurationConverter(Listener.none()), Duration.MAXIMUM);
 
                 maximumLogSize(properties.asObject("maximum-size",
-                        new Bytes.Converter(Listener.none()), Bytes.MAXIMUM));
+                        new BytesConverter(Listener.none()), Bytes.MAXIMUM));
             }
             catch (Exception e)
             {

@@ -1,12 +1,12 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.interfaces.time.LengthOfTime;
-import com.telenav.kivakit.core.language.vm.KivaKitShutdownHook;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
@@ -21,7 +21,7 @@ import io.grpc.ServerBuilder;
 import kivakit.merged.grpc.io.netty.util.internal.logging.InternalLoggerFactory;
 import kivakit.merged.grpc.io.netty.util.internal.logging.JdkLoggerFactory;
 
-import static com.telenav.kivakit.core.language.vm.KivaKitShutdownHook.Order.LAST;
+import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 
 /**
  * GRPC protocol service that simply copies mounted request handlers from {@link MicroserviceRestService}.
@@ -139,7 +139,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            KivaKitShutdownHook.register(LAST, this::stop);
+            ShutdownHook.register(LAST, this::stop);
             running = true;
             return true;
         }

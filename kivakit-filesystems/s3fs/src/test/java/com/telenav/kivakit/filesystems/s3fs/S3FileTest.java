@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.core.vm.JavaVirtualMachine;
 import com.telenav.kivakit.core.test.SlowTest;
 import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.core.vm.SystemProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -35,8 +35,8 @@ public class S3FileTest extends UnitTest
     @Before
     public void beforeMethod()
     {
-        assumeTrue(JavaVirtualMachine.property("AWS_ACCESS_KEY_ID") != null);
-        assumeTrue(JavaVirtualMachine.property("AWS_SECRET_ACCESS_KEY") != null);
+        assumeTrue(SystemProperties.property("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(SystemProperties.property("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test

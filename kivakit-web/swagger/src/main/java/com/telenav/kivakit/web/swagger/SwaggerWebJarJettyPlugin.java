@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.swagger;
 
-import com.telenav.kivakit.core.language.types.Classes;
+import com.telenav.kivakit.core.language.Classes;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.DefaultServlet;
@@ -50,6 +50,6 @@ public class SwaggerWebJarJettyPlugin extends BaseAssetsJettyPlugin
     private String resourceBase()
     {
         var path = "META-INF/resources/webjars/swagger-ui/3.51.2";
-        return Classes.resourceUri(this, SwaggerJettyPlugin.class, path).toString();
+        return Classes.resourceUri(SwaggerJettyPlugin.class, path).toString();
     }
 }

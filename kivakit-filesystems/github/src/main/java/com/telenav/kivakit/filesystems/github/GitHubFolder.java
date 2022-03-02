@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.filesystems.github;
 
-import com.telenav.kivakit.core.count.Bytes;
 import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.time.Time;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
-import com.telenav.kivakit.language.time.Time;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -32,7 +32,7 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
  * <b>Not public API</b>

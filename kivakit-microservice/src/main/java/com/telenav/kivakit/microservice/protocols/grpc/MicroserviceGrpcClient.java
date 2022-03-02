@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.language.version.Version;
-import com.telenav.kivakit.core.messaging.Message;
+import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
@@ -13,7 +13,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.ensure.Ensure.ensureEqual;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureEqual;
 
 /**
  * Client for sending microservlet requests to a microservice via GRPC.
@@ -76,11 +76,6 @@ import static com.telenav.kivakit.ensure.Ensure.ensureEqual;
         return (T) schemas().deserialize(request.responseType(), response.getObject());
     }
 
-    private MicroservletGrpcSchemas schemas()
-    {
-        return require(MicroservletGrpcSchemas.class);
-    }
-
     /**
      * Performs a blocking GRPC call to the given path with the given request object
      *
@@ -127,9 +122,14 @@ import static com.telenav.kivakit.ensure.Ensure.ensureEqual;
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Message.format("/api/$.$/$", version.major(), version.minor(), path);
+            path = Formatter.format("/api/$.$/$", version.major(), version.minor(), path);
         }
 
         return path;
+    }
+
+    private MicroservletGrpcSchemas schemas()
+    {
+        return require(MicroservletGrpcSchemas.class);
     }
 }

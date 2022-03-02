@@ -4,8 +4,8 @@ import io.swagger.v3.oas.models.media.Schema;
 
 public class SchemaCopier
 {
-    @SuppressWarnings("unchecked")
-    public void copy(Schema from, Schema to)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public void copy(Schema from, Schema<?> to)
     {
         to.set$ref(from.get$ref());
         to.setDefault(from.getDefault());
@@ -19,7 +19,7 @@ public class SchemaCopier
         to.properties(from.getProperties());
     }
 
-    public Schema copy(Schema that)
+    public Schema<?> copy(Schema<?> that)
     {
         var copy = new Schema<>();
         copy(that, copy);

@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.duration;
 
-import com.telenav.kivakit.language.time.Duration;
+import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.metrics.core.aggregates.MaximumMetric;
 
 public class MaximumDurationMetric extends MaximumMetric<Duration>

@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.rate;
 
-import com.telenav.kivakit.language.time.Rate;
+import com.telenav.kivakit.core.time.Rate;
 import com.telenav.kivakit.metrics.core.aggregates.MaximumMetric;
 
 public class MaximumRateMetric extends MaximumMetric<Rate>

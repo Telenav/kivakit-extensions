@@ -1,9 +1,9 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.conversion.Converter;
 import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservlet;
@@ -13,12 +13,12 @@ import com.telenav.kivakit.resource.resources.other.PropertyMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 
-import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
- * A microservlet responds to requests by implementing {@link #onRequest(MicroservletRequest)}. The response object must
- * be a subclass of {@link MicroservletResponse}.
+ * A microservlet responds to a request by implementing {@link #onRequest(MicroservletRequest)}. The response object
+ * must be a subclass of {@link MicroservletResponse}.
  *
  * <p>The request and response type for a microservlet are provided by {@link #requestType()} and a {@link
  * #responseType()}. Parameters to a microservlet can be retrieved in a subclass with {@link #parameters()} and the

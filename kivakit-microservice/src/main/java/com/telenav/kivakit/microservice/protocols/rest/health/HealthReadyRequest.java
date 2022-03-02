@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.rest.health;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.core.language.reflection.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.core.language.strings.formatting.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
@@ -27,10 +27,11 @@ public class HealthReadyRequest extends BaseMicroservletRequest
     @OpenApiIncludeType(description = "Response to a readiness request")
     public static class HealthReadyResponse extends BaseMicroservletResponse
     {
+        @SuppressWarnings("FieldCanBeLocal")
         @Expose
         @KivaKitIncludeProperty
         @OpenApiIncludeMember(description = "The server status")
-        private String status;
+        private final String status;
 
         private HealthReadyResponse(String status)
         {
@@ -39,7 +40,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
     }
 
     @Expose
-    private String ignored = null;
+    private final String ignored = null;
 
     /**
      * {@inheritDoc}

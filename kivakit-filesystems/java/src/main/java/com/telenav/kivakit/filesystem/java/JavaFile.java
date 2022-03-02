@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.filesystem.java;
 
-import com.telenav.kivakit.core.count.Bytes;
+import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.spi.FileService;
-import com.telenav.kivakit.core.language.traits.TryTrait;
 import com.telenav.kivakit.resource.path.FilePath;
 
 import java.io.InputStream;
@@ -34,7 +34,9 @@ import java.nio.file.Files;
  *
  * @author yinyinz
  */
-public class JavaFile extends JavaFileSystemObject implements FileService, TryTrait
+public class JavaFile extends JavaFileSystemObject implements
+        FileService,
+        TryTrait
 {
     public JavaFile(FilePath path)
     {

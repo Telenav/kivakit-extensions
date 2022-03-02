@@ -1,8 +1,8 @@
 package com.telenav.kivakit.metrics.core.aggregates;
 
+import com.telenav.kivakit.core.value.count.Count;
 import com.telenav.kivakit.interfaces.factory.MapFactory;
 import com.telenav.kivakit.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.language.count.Count;
 import com.telenav.kivakit.metrics.core.AggregateMetric;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 import com.telenav.kivakit.metrics.core.Metric;

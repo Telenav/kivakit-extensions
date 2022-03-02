@@ -2,11 +2,9 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.registry.Registry;
-import com.telenav.kivakit.coredata.validation.BaseValidator;
-import com.telenav.kivakit.coredata.validation.ValidationType;
-import com.telenav.kivakit.coredata.validation.Validator;
-import com.telenav.kivakit.core.language.threading.KivaKitThread;
-import com.telenav.kivakit.language.version.Version;
+import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.core.thread.KivaKitThread;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
@@ -17,7 +15,9 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.json.GsonFactory;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.validation.BaseValidator;
+import com.telenav.kivakit.validation.ValidationType;
+import com.telenav.kivakit.validation.Validator;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -26,6 +26,7 @@ public class MicroserviceTest extends UnitTest
 {
     public static class TestGarbageRequest extends BaseMicroservletRequest
     {
+        @SuppressWarnings("FieldCanBeLocal")
         @Expose
         private String trash;
 
@@ -109,6 +110,12 @@ public class MicroserviceTest extends UnitTest
 
     public static class TestPostRequest extends BaseMicroservletRequest
     {
+        @Expose
+        int a;
+
+        @Expose
+        int b;
+
         public TestPostRequest(int a, int b)
         {
             this.a = a;
@@ -130,16 +137,13 @@ public class MicroserviceTest extends UnitTest
         {
             return TestResponse.class;
         }
-
-        @Expose
-        int a;
-
-        @Expose
-        int b;
     }
 
     public static class TestResponse extends BaseMicroservletResponse
     {
+        @Expose
+        int result;
+
         public TestResponse()
         {
         }
@@ -148,9 +152,6 @@ public class MicroserviceTest extends UnitTest
         {
             this.result = result;
         }
-
-        @Expose
-        int result;
     }
 
     public static class TestRestMicroservice extends MicroserviceRestService

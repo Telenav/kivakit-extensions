@@ -19,7 +19,7 @@
 package com.telenav.kivakit.web.jersey;
 
 import com.telenav.kivakit.core.object.Lazy;
-import com.telenav.kivakit.coreproject.Project;
+import com.telenav.kivakit.core.project.Project;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 /**

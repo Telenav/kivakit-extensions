@@ -1,16 +1,16 @@
 package com.telenav.kivakit.microservice;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.registry.InstanceIdentifier;
-import com.telenav.kivakit.settings.settings.SettingsObject;
+import com.telenav.kivakit.core.collections.list.ObjectList;
+import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.collections.set.IdentitySet;
-import com.telenav.kivakit.core.language.collections.list.ObjectList;
-import com.telenav.kivakit.core.language.collections.list.StringList;
-import com.telenav.kivakit.core.language.vm.OperatingSystem;
+import com.telenav.kivakit.core.language.primitive.Ints;
+import com.telenav.kivakit.core.os.OperatingSystem;
 import com.telenav.kivakit.core.path.StringPath;
+import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.thread.ReentrancyTracker;
-import com.telenav.kivakit.language.primitive.Ints;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.settings.settings.SettingsObject;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +52,7 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
  * single host). For example:
  * </p>
  *
- * <pre>Jonathans-iMac.local#83874</pre>
+ * <pre>Jonathan-iMac.local#83874</pre>
  *
  * @param <Member> The type of member information to store for each cluster member
  * @author jonathanl (shibo)

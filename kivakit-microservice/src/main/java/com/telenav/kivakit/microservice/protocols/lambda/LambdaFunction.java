@@ -1,9 +1,9 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.telenav.kivakit.core.registry.RegistryTrait;
-import com.telenav.kivakit.language.version.Version;
 import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.registry.RegistryTrait;
+import com.telenav.kivakit.core.version.Version;
 
 import java.util.Objects;
 

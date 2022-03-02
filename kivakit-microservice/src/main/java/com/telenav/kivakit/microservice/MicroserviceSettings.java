@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.conversion.string.primitive.BooleanConverter;
-import com.telenav.kivakit.conversion.string.primitive.IntegerConverter;
-import com.telenav.kivakit.core.language.reflection.populator.KivaKitPropertyConverter;
+import com.telenav.kivakit.conversion.KivaKitPropertyConverter;
+import com.telenav.kivakit.conversion.core.language.primitive.BooleanConverter;
+import com.telenav.kivakit.conversion.core.language.primitive.IntegerConverter;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
@@ -34,12 +34,6 @@ public class MicroserviceSettings
         return server;
     }
 
-    public MicroserviceSettings server(final boolean server)
-    {
-        this.server = server;
-        return this;
-    }
-
     public MicroserviceSettings port(int port)
     {
         this.port = port;
@@ -49,5 +43,11 @@ public class MicroserviceSettings
     public int port()
     {
         return port;
+    }
+
+    public MicroserviceSettings server(final boolean server)
+    {
+        this.server = server;
+        return this;
     }
 }

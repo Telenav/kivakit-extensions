@@ -18,13 +18,14 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.Folder.Type;
-import com.telenav.kivakit.core.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -89,7 +90,7 @@ public class S3Output extends OutputStream
     }
 
     @Override
-    public void write(byte[] bytes, int offset, int length) throws IOException
+    public void write(byte @NotNull [] bytes, int offset, int length) throws IOException
     {
         outputStream.write(bytes, offset, length);
     }

@@ -16,6 +16,15 @@ import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
  */
 public class MountedMicroservlet extends Mounted
 {
+    /** The microservlet */
+    Microservlet<?, ?> microservlet;
+
+    /** The path to the microservlet */
+    MicroservletRestPath path;
+
+    /** Any path parameters */
+    MicroservletRestPath parameters;
+
     public MountedMicroservlet(final MicroserviceRestService service)
     {
         super(service);
@@ -52,7 +61,7 @@ public class MountedMicroservlet extends Mounted
                     }
                     else
                     {
-                        // otherwise convert any parameters to a JSON request object,
+                        // otherwise, convert any parameters to a JSON request object,
                         request = cycle.gson().fromJson(parameters.asJson(), requestType);
                     }
 
@@ -103,13 +112,4 @@ public class MountedMicroservlet extends Mounted
     {
         return microservlet;
     }
-
-    /** The microservlet */
-    Microservlet<?, ?> microservlet;
-
-    /** The path to the microservlet */
-    MicroservletRestPath path;
-
-    /** Any path parameters */
-    MicroservletRestPath parameters;
 }
