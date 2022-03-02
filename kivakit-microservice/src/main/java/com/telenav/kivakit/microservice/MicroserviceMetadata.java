@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.language.version.Version;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 

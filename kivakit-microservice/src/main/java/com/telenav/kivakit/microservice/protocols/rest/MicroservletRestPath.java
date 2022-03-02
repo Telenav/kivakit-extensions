@@ -1,11 +1,11 @@
 package com.telenav.kivakit.microservice.protocols.rest;
 
-import com.telenav.kivakit.core.registry.RegistryTrait;
-import com.telenav.kivakit.core.language.strings.Paths;
-import com.telenav.kivakit.language.version.Version;
 import com.telenav.kivakit.core.logging.Logger;
 import com.telenav.kivakit.core.logging.LoggerFactory;
 import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.registry.RegistryTrait;
+import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
 /**
  * A request path and method for a {@link Microservlet}.

@@ -1,10 +1,10 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
-import com.telenav.kivakit.core.language.collections.list.StringList;
-import com.telenav.kivakit.core.language.io.IO;
-import com.telenav.kivakit.core.language.strings.Paths;
-import com.telenav.kivakit.language.version.Version;
-import com.telenav.kivakit.core.messaging.Message;
+import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.io.IO;
+import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
@@ -23,7 +23,7 @@ import org.apache.http.client.methods.HttpPost;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
-import static com.telenav.kivakit.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.resource.resources.jar.launcher.JarLauncher.RedirectTo.CONSOLE;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -74,6 +74,7 @@ public class MountedApi extends Mounted
      * @param method The HTTP method
      * @param cycle The request cycle
      */
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public boolean handleRequest(final HttpMethod method, final JettyMicroservletRequestCycle cycle)
     {
         measure(path, () ->
@@ -219,7 +220,7 @@ public class MountedApi extends Mounted
 
     public String toString()
     {
-        return Message.format("$ ==> $ ($) on port $", path, version, jar, port);
+        return Formatter.format("$ ==> $ ($) on port $", path, version, jar, port);
     }
 
     /**

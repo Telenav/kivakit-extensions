@@ -18,19 +18,16 @@
 
 package com.telenav.kivakit.microservice.protocols.rest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.data.validation.Validatable;
-import com.telenav.kivakit.kernel.data.validation.Validator;
+import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.language.reflection.Type;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.reflection.Type;
-import com.telenav.kivakit.kernel.language.strings.Paths;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.kernel.messaging.Message;
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
@@ -44,11 +41,13 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservice;
+import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.serialization.json.GsonFactory;
 import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
+import com.telenav.kivakit.validation.Validatable;
+import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -62,9 +61,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
-import static com.telenav.kivakit.kernel.messaging.messages.MessageFormatter.Format.WITHOUT_EXCEPTION;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.string.Formatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.GET;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.POST;
 
@@ -391,10 +390,9 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
-                    @JsonProperty
                     public String description()
                     {
-                        return Message.format("KivaKit microservlet request handler for ${class}", requestType());
+                        return Formatter.format("KivaKit microservlet request handler for ${class}", requestType());
                     }
 
                     @Override
@@ -546,9 +544,9 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * Returns the root path under which the API is mounted. By default this is <i>/[microservice-name]</i> (slash),
+     * Returns the root path under which the API is mounted. By default, this is <i>/[microservice-name]</i> (slash),
      * which means the API root path for version 1.0 would be <i>/[microservice-name]/api/1.0</i>. This method can be
-     * overridden to put the API root under an microservice-specific path. For example, returning
+     * overridden to put the API root under a microservice-specific path. For example, returning
      * <i>/</i> as the root path would result in this base URL for version 1.0 of the API:
      * <i>/api/1.0</i>
      *
@@ -560,14 +558,14 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * Returns the absolute API path. By default this is <i>/api/[major-version].[minor-version]</i>
+     * Returns the absolute API path. By default, this is <i>/api/[major-version].[minor-version]</i>
      *
      * @param version The API version
      * @return The path to the APi for the given version
      */
     protected String versionToPath(final Version version)
     {
-        return Message.format("/api/$.$", version.major(), version.minor());
+        return Formatter.format("/api/$.$", version.major(), version.minor());
     }
 
     /**
