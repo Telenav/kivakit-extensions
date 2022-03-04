@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
+import com.telenav.kivakit.conversion.core.collections.map.VariableMapConverter;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
 import com.telenav.kivakit.core.collections.map.VariableMap;
@@ -35,6 +36,8 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
+
+import static com.telenav.kivakit.core.ensure.Ensure.fail;
 
 /**
  * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line. See
@@ -75,11 +78,9 @@ public class FileLog extends BaseRolloverTextLog
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
                 }
 
-                maximumLogFileAge = properties.asObject("maximum-age",
-                        new DurationConverter(Listener.none()), Duration.MAXIMUM);
-
-                maximumLogSize(properties.asObject("maximum-size",
-                        new BytesConverter(Listener.none()), Bytes.MAXIMUM));
+                var converter = new VariableMapConverter(Listener.console(), properties);
+                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
+                maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
             catch (Exception e)
             {
