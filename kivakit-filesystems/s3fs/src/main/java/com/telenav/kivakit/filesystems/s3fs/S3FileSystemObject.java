@@ -18,11 +18,10 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.core.language.patterns.group.Group;
-import com.telenav.kivakit.core.language.progress.ProgressReporter;
-import com.telenav.kivakit.core.logging.Logger;
-import com.telenav.kivakit.core.logging.LoggerFactory;
+import com.telenav.kivakit.core.ensure.Ensure;
+import com.telenav.kivakit.core.language.Patterns;
 import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
@@ -50,8 +49,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
  * Base functionality common to both {@link S3File} and {@link S3Folder}.
@@ -62,44 +61,15 @@ import static com.telenav.kivakit.ensure.Ensure.unsupported;
 @LexakaiJavadoc(complete = true)
 public abstract class S3FileSystemObject extends BaseWritableResource implements FileSystemObjectService
 {
-    protected static final Logger LOGGER = LoggerFactory.newLogger();
+    /** s3://${region}/${bucket}/${key} */
+    private static final Pattern PATTERN = Pattern.compile("(<?scheme>s3)://(<?region>[a-z0-9]+)/(<?bucket>[\\w-\\d.]+)/(<?key>.*)");
 
-    // A bucket name in the path
-    private static final Pattern BUCKET_NAME = Pattern.expression("[\\w-\\d\\.]").oneOrMore();
-
-    // A region name in the path
-    private static final Pattern REGION_NAME = Pattern.expression("[a-z0-9-]").oneOrMore();
-
-    // A key name in the path
-    private static final Pattern KEY_NAME = Pattern.ANYTHING;
-
-    private static final Group<String> regionGroup = REGION_NAME.group(Listener.none());
-
-    private static final Group<String> bucketGroup = BUCKET_NAME.group(Listener.none());
-
-    private static final Group<String> keyGroup = KEY_NAME.group(Listener.none());
-
-    private static Pattern schemePattern;
-
-    private static final Group<String> schemeGroup = schemePattern().group(Listener.none());
-
-    // s3://${region}/${bucket}/${key}
-    private static final Pattern pattern = schemeGroup
-            .then(Pattern.constant("://"))
-            .then(regionGroup)
-            .then(Pattern.SLASH)
-            .then(bucketGroup)
-            .then(Pattern.SLASH.optional())
-            .then(keyGroup.optional());
-
-    // S3 client
+    /** S3 client */
     protected static final Map<String, S3Client> clientForRegion = new ConcurrentHashMap<>();
 
     public static boolean accepts(String path)
     {
-        return schemePattern()
-                .then(Pattern.ANYTHING)
-                .matches(path);
+        return Patterns.matches(PATTERN, path);
     }
 
     protected static S3Client clientFor(Region region)
@@ -121,7 +91,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         return FilePath.parseFilePath(listener, scheme + "://" + (region != null ? region.id() : "default-region") + "/" + bucketName + "/" + keyName);
     }
 
-    // The scheme of path, such as "s3://"
+    // The scheme of path, such as "s3"
     private final String scheme;
 
     // Name of s3 bucket
@@ -130,7 +100,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     // Name of s3 object key
     private final String key;
 
-    // Meta data attached to the object
+    // Metadata attached to the object
     private Map<String, String> metadata;
 
     // True if it's a folder
@@ -145,10 +115,10 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
 
         this.isFolder = isFolder;
 
-        var matcher = pattern.matcher(path().toString());
+        var matcher = PATTERN.matcher(path().toString());
         if (matcher.matches())
         {
-            var regionName = regionGroup.get(matcher);
+            var regionName = matcher.group("region");
             for (var at : Region.regions())
             {
                 if (at.id().equals(regionName))
@@ -164,9 +134,9 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
             {
                 ensureNotNull(this.region, "Region '$' is not recognized", regionName);
             }
-            scheme = schemeGroup.get(matcher);
-            bucket = bucketGroup.get(matcher);
-            key = isFolder ? keyGroup.get(matcher, "") + "/" : keyGroup.get(matcher, "");
+            scheme = matcher.group("scheme");
+            bucket = matcher.group("bucket");
+            key = isFolder ? matcher.group("key") + "/" : matcher.group("key");
         }
         else
         {
@@ -301,7 +271,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
             }
             catch (Exception ex)
             {
-                LOGGER.problem(ex, "failed to create aws endpoint URI: $", endpoint);
+                Ensure.illegalState(ex, "failed to create aws endpoint URI: $", endpoint);
             }
         }
         return endpointURI;
@@ -310,17 +280,6 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     private static FilePath normalize(FilePath path)
     {
         return path;
-    }
-
-    // The S3 path schema
-    private static Pattern schemePattern()
-    {
-        if (schemePattern == null)
-        {
-            schemePattern = Pattern.expression("s3")
-                    .then(Pattern.expression("[na]").optional());
-        }
-        return schemePattern;
     }
 
     final String bucket()
@@ -333,17 +292,17 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         var canRename = true;
         if (to != null && to.exists())
         {
-            LOGGER.warning("Can't rename " + this + " to " + to);
+            warning("Can't rename " + this + " to " + to);
             canRename = false;
         }
         else if (equals(to))
         {
-            LOGGER.warning("Can't rename to the same Aws S3 object as " + to);
+            warning("Can't rename to the same Aws S3 object as " + to);
             canRename = false;
         }
         else if (to != null && !inSameBucket(to))
         {
-            LOGGER.warning("Can't move S3 object from ${debug} to another bucket ${debug} ", bucket(), to.bucket());
+            warning("Can't move S3 object from ${debug} to another bucket ${debug} ", bucket(), to.bucket());
             canRename = false;
         }
         return canRename;
@@ -404,7 +363,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         {
             response = inputStream.response();
         }
-        catch (Exception ex)
+        catch (Exception ignored)
         {
         }
 

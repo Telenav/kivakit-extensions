@@ -724,7 +724,7 @@ public abstract class Microservice<Member> extends Application implements
                 var version = Version.parseVersion(this, matcher.group("version"));
                 var resource = Resource.resolve(this, matcher.group("jar"));
                 var commandLine = matcher.group("commandLine");
-                var port = Ints.parse(this, matcher.group("port"));
+                var port = Ints.parseInt(this, matcher.group("port"));
 
                 restService.mountApi(version, resource, commandLine, port);
             }

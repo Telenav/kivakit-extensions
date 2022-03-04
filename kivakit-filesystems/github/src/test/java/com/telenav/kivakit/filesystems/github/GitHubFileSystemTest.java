@@ -1,7 +1,7 @@
 package com.telenav.kivakit.filesystems.github;
 
 import com.telenav.kivakit.interfaces.comparison.Filter;
-import com.telenav.kivakit.language.count.Bytes;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.core.test.UnitTest;
 import org.junit.Ignore;

@@ -252,8 +252,8 @@ public class MicroserviceCluster<Member> extends BaseComponent
 
         return new MicroserviceClusterMember<>(
                 Host.parseHost(this, parts[0]),
-                Ints.parse(this, parts[1]),
-                Ints.parse(this, parts[2]),
+                Ints.parseInt(this, parts[1]),
+                Ints.parseInt(this, parts[2]),
                 settings.object());
     }
 
