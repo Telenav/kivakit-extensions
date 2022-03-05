@@ -1,7 +1,7 @@
 package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.progress.ProgressReporter;
-import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
@@ -31,7 +31,7 @@ public class JavaFolderTest extends UnitTest
     public void test()
     {
         var archive = archive();
-        var path = Formatter.format("jar:file:$/$", archive, "child");
+        var path = Strings.format("jar:file:$/$", archive, "child");
         var folder = new JavaFolder(FilePath.parseFilePath(this, path));
 
         ensure(folder.isFolder());
@@ -50,7 +50,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(this, Formatter.format("java:jar:file:$", archive)));
+        var folder = listenTo(Folder.parse(this, Strings.format("java:jar:file:$", archive)));
         ensureEqual(folder.files().size(), 1);
         ensureEqual(folder.folders().size(), 1);
         var files = new HashSet<>();
@@ -62,7 +62,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegrationChild()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(this, Formatter.format("java:jar:file:$/child", archive)));
+        var folder = listenTo(Folder.parse(this, Strings.format("java:jar:file:$/child", archive)));
         ensureEqual(folder.files().size(), 2);
         var files = new HashSet<>();
         files.add(folder.files().get(0).fileName().name());

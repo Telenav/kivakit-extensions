@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.time.Time;
 
@@ -44,6 +44,6 @@ public class MicroservletRequestHandlingStatistics
 
     public String toString()
     {
-        return Formatter.format("$ => $", path, elapsed());
+        return Strings.format("$ => $", path, elapsed());
     }
 }

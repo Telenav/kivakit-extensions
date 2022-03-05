@@ -24,8 +24,8 @@ import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
-import com.telenav.kivakit.core.string.Formatter;
 import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
@@ -392,7 +392,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                     @Override
                     public String description()
                     {
-                        return Formatter.format("KivaKit microservlet request handler for ${class}", requestType());
+                        return Strings.format("KivaKit microservlet request handler for ${class}", requestType());
                     }
 
                     @Override
@@ -565,7 +565,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      */
     protected String versionToPath(final Version version)
     {
-        return Formatter.format("/api/$.$", version.major(), version.minor());
+        return Strings.format("/api/$.$", version.major(), version.minor());
     }
 
     /**

@@ -159,7 +159,7 @@ public class MicroserviceRestClient extends BaseComponent
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Formatter.format("/api/$.$/$", version.major(), version.minor(), path);
+            path = Strings.format("/api/$.$/$", version.major(), version.minor(), path);
         }
 
         return new NetworkLocation(port.path(this, path));

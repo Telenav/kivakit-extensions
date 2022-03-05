@@ -1,7 +1,7 @@
 package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.progress.ProgressReporter;
-import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
@@ -18,7 +18,7 @@ public class JavaFileTest extends UnitTest
     public void test()
     {
         var archive = archive(file("test-integration.txt", "output"));
-        var path = Formatter.format("jar:file:$/$", archive, "test-integration.txt");
+        var path = Strings.format("jar:file:$/$", archive, "test-integration.txt");
         var file = new JavaFile(FilePath.parseFilePath(this, path));
 
         ensure(file.exists());
@@ -30,7 +30,7 @@ public class JavaFileTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive(file("test-integration.txt", "output"));
-        var path = Formatter.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
+        var path = Strings.format("java:jar:file:$/$", archive, file("test-integration.txt", "output").fileName().name());
         ensureEqual(listenTo(File.parseFile(this, path)).reader().asString(), "output");
     }
 

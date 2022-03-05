@@ -2,8 +2,8 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
-import com.telenav.kivakit.core.string.Formatter;
 import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
@@ -220,7 +220,7 @@ public class MountedApi extends Mounted
 
     public String toString()
     {
-        return Formatter.format("$ ==> $ ($) on port $", path, version, jar, port);
+        return Strings.format("$ ==> $ ($) on port $", path, version, jar, port);
     }
 
     /**

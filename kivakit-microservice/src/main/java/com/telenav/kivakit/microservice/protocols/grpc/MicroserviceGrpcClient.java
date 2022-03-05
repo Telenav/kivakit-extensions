@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.string.Formatter;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
@@ -122,7 +122,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureEqual;
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Formatter.format("/api/$.$/$", version.major(), version.minor(), path);
+            path = Strings.format("/api/$.$/$", version.major(), version.minor(), path);
         }
 
         return path;

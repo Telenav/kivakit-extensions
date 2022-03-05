@@ -122,7 +122,7 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see BaseSettingsStore
  * @see SettingsStore
  */
-public class ZookeeperSettingsStore extends BaseSettingsStore implements
+@SuppressWarnings("SpellCheckingInspection") public class ZookeeperSettingsStore extends BaseSettingsStore implements
         ZookeeperChangeListener,
         ZookeeperConnectionListener
 {
