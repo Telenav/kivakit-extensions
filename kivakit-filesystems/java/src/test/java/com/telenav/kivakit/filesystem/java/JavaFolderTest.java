@@ -9,7 +9,7 @@ import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.compression.archive.ZipArchive;
 import com.telenav.kivakit.resource.path.Extension;
 import com.telenav.kivakit.resource.path.FilePath;
-import com.telenav.kivakit.resource.resources.string.StringResource;
+import com.telenav.kivakit.resource.resources.StringResource;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 

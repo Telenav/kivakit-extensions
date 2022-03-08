@@ -19,7 +19,7 @@
 package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.resource.resources.packaged.Package;
+import com.telenav.kivakit.resource.Package;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 

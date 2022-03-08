@@ -9,7 +9,7 @@ import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
-import com.telenav.kivakit.resource.resources.properties.PropertyMap;
+import com.telenav.kivakit.resource.PropertyMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 

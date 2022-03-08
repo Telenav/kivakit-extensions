@@ -10,7 +10,7 @@ import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.thread.ReentrancyTracker;
 import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.settings.settings.SettingsObject;
+import com.telenav.kivakit.settings.SettingsObject;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;

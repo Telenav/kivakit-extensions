@@ -8,7 +8,7 @@ import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludePrope
 import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
-import com.telenav.kivakit.settings.settings.stores.PackageSettingsStore;
+import com.telenav.kivakit.settings.stores.PackageSettingsStore;
 import org.junit.Ignore;
 import org.junit.Test;
 
