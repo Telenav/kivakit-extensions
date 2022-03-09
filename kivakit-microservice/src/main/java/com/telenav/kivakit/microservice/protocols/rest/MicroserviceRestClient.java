@@ -15,7 +15,7 @@ import com.telenav.kivakit.network.http.HttpPostResource;
 import com.telenav.kivakit.resource.SerializedObject;
 import com.telenav.kivakit.resource.resources.StringOutputResource;
 import com.telenav.kivakit.resource.resources.StringResource;
-import com.telenav.kivakit.serialization.gson.JsonSerializer;
+import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
  * A client for easy interaction with KivaKit {@link MicroserviceRestService}s.
  *
  * <p>
- * The constructor of this class takes a {@link JsonSerializer} to read and write JSON, a {@link Port} specifying the
+ * The constructor of this class takes a {@link ObjectSerializer} to read and write JSON, a {@link Port} specifying the
  * host and port number to communicate with, and a {@link Version} specifying the version of the REST server. The {@link
  * #get(String, Class)} method reads a JSON object of the given type from a path relative to the server specified in the
  * constructor. The {@link #post(String, Class, MicroservletRequest)} method posts the given request object to the given
@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 public class MicroserviceRestClient extends BaseComponent
 {
     /** Serializer for JSON request serialization and deserialization */
-    private final JsonSerializer serializer;
+    private final ObjectSerializer serializer;
 
     /** The remote host and port number */
     private final Port port;
@@ -49,7 +49,7 @@ public class MicroserviceRestClient extends BaseComponent
      * @param port The (host and) port of the remote REST service to communicate with
      * @param version The version of the remote REST service
      */
-    public MicroserviceRestClient(JsonSerializer serializer, Port port, Version version)
+    public MicroserviceRestClient(ObjectSerializer serializer, Port port, Version version)
     {
         this.serializer = serializer;
         this.port = port;

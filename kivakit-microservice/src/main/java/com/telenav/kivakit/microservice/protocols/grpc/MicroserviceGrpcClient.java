@@ -20,7 +20,8 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureEqual;
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("unchecked") public class MicroserviceGrpcClient extends BaseComponent
+@SuppressWarnings("unchecked")
+public class MicroserviceGrpcClient extends BaseComponent
 {
     /** Grpc server port to talk to */
     private final Port port;

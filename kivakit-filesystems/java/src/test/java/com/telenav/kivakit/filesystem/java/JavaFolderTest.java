@@ -1,6 +1,5 @@
 package com.telenav.kivakit.filesystem.java;
 
-import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.filesystem.File;
@@ -10,7 +9,6 @@ import com.telenav.kivakit.resource.compression.archive.ZipArchive;
 import com.telenav.kivakit.resource.path.Extension;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.resources.StringResource;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -18,7 +16,7 @@ import java.util.Set;
 
 public class JavaFolderTest extends UnitTest
 {
-    public class TxtFileMatcher implements Matcher<FilePath>
+    public static class TxtFileMatcher implements Matcher<FilePath>
     {
         @Override
         public boolean matches(FilePath path)
@@ -70,11 +68,10 @@ public class JavaFolderTest extends UnitTest
         ensureEqual(files, Set.of("a.txt", "b.txt"));
     }
 
-    @NotNull
     private ZipArchive archive()
     {
         var zip = File.temporary(Extension.ZIP);
-        var archive = ZipArchive.open(this, zip, ProgressReporter.none(), ZipArchive.Mode.WRITE);
+        var archive = ZipArchive.open(this, zip, ZipArchive.Mode.WRITE);
         if (archive != null)
         {
             archive.save("/child/a.txt", new StringResource("a"));

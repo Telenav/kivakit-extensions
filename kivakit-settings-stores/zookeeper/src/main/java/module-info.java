@@ -5,6 +5,7 @@ open module kivakit.settings.stores.zookeeper
     requires transitive kivakit.settings;
     requires transitive kivakit.network.core;
     requires transitive kivakit.component;
+    requires transitive kivakit.serialization.gson;
 
     // Zookeeper
     requires transitive kivakit.merged.zookeeper;

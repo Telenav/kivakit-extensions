@@ -42,7 +42,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
-import com.telenav.kivakit.serialization.gson.JsonSerializer;
+import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -202,7 +202,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *         <li>The request handler's return value is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
  *         <ol>
  *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
- *             <li>Converts the object to JSON using the {@link JsonSerializer} object provided by {@link MicroserviceRestService#jsonSerializer()}</li>
+ *             <li>Converts the object to output (normally JSON) using the {@link ObjectSerializer} object provided by {@link MicroserviceRestService#serializer()}</li>
  *             <li>Writes the JSON object to the servlet response output stream</li>
  *         </ol>
  *     </ol>
@@ -215,7 +215,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * @see MicroservletRequest
  * @see MicroservletRestPath
  * @see MicroservletMountTarget
- * @see JsonSerializer
+ * @see ObjectSerializer
  * @see HttpMethod
  * @see Resource
  * @see Version
@@ -290,14 +290,6 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         {
             initializing = false;
         }
-    }
-
-    /**
-     * @return The {@link JsonSerializer} to use for serializing and deserializing requests.
-     */
-    public JsonSerializer jsonSerializer()
-    {
-        return require(JsonSerializer.class);
     }
 
     /**
@@ -508,6 +500,14 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                 .version(metadata.version().toString())
                 .description(metadata.description())
                 .title(metadata.name());
+    }
+
+    /**
+     * @return The {@link ObjectSerializer} to use for serializing and deserializing requests.
+     */
+    public ObjectSerializer serializer()
+    {
+        return require(ObjectSerializer.class);
     }
 
     /**

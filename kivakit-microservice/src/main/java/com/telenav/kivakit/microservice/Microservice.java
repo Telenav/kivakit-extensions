@@ -1,11 +1,11 @@
 package com.telenav.kivakit.microservice;
 
-import com.google.gson.Gson;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.commandline.SwitchParsers;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
+import com.telenav.kivakit.core.language.Arrays;
 import com.telenav.kivakit.core.language.primitive.Ints;
 import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.object.Lazy;
@@ -23,12 +23,11 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
+import com.telenav.kivakit.resource.Package;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
-import com.telenav.kivakit.resource.Package;
-import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
-import com.telenav.kivakit.serialization.json.GsonFactory;
-import com.telenav.kivakit.serialization.json.GsonFactorySource;
+import com.telenav.kivakit.serialization.gson.DefaultGsonFactory;
+import com.telenav.kivakit.serialization.gson.GsonFactory;
 import com.telenav.kivakit.settings.Deployment;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
@@ -201,7 +200,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice<Member> extends Application implements
-        GsonFactorySource,
         Startable,
         Stoppable
 {
@@ -270,7 +268,9 @@ public abstract class Microservice<Member> extends Application implements
      */
     public Microservice(Project... project)
     {
-        super(project);
+        super(Arrays.concatenate(project, new Project[] { new MicroserviceProject() }));
+
+        register(gsonFactory());
     }
 
     /**
@@ -296,9 +296,8 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return The {@link Gson} factory for this microservice
+     * @return The {@link GsonFactory} factory for this microservice
      */
-    @Override
     public GsonFactory gsonFactory()
     {
         return new DefaultGsonFactory(this);

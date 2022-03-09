@@ -1,6 +1,7 @@
 open module kivakit.microservice
 {
     // KivaKit
+    requires transitive kivakit.interfaces;
     requires transitive kivakit.application;
     requires transitive kivakit.settings.stores.zookeeper;
     requires transitive kivakit.web.swagger;
@@ -34,6 +35,7 @@ open module kivakit.microservice
 
     // Jetty
     requires org.eclipse.jetty.servlet;
+    requires gson;
 
     // Module exports
     exports com.telenav.kivakit.microservice;

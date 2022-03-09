@@ -21,7 +21,7 @@ package com.telenav.kivakit.web.jersey;
 import com.telenav.kivakit.resource.SerializedObject;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
-import com.telenav.kivakit.serialization.gson.JsonSerializer;
+import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import javax.ws.rs.Consumes;
@@ -46,11 +46,13 @@ import java.lang.reflect.Type;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @LexakaiJavadoc(complete = true)
-public class JerseyJsonSerializer<T> implements MessageBodyReader<T>, MessageBodyWriter<T>
+public class JerseyJsonSerializer<T> implements
+        MessageBodyReader<T>,
+        MessageBodyWriter<T>
 {
-    private final JsonSerializer serializer;
+    private final GsonObjectSerializer serializer;
 
-    public JerseyJsonSerializer(JsonSerializer serializer)
+    public JerseyJsonSerializer(GsonObjectSerializer serializer)
     {
         this.serializer = serializer;
     }

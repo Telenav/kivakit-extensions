@@ -4,7 +4,11 @@ import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.test.UnitTest;
-import com.telenav.kivakit.resource.serialization.serializers.JsonSerializer;
+import com.telenav.kivakit.resource.path.Extension;
+import com.telenav.kivakit.resource.serialization.ObjectSerializers;
+import com.telenav.kivakit.serialization.gson.DefaultGsonFactory;
+import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
 import com.telenav.kivakit.settings.stores.PackageSettingsStore;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -35,11 +39,18 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     @Test
     public void test()
     {
+        register(new DefaultGsonFactory(this));
+
+        var serializers = new ObjectSerializers();
+        serializers.add(Extension.JSON, new GsonObjectSerializer());
+        serializers.add(Extension.PROPERTIES, new PropertiesObjectSerializer());
+        register(serializers);
+
         // Register zookeeper settings,
         registerSettingsIn(listenTo(PackageSettingsStore.of(this, packagePath())));
 
         // create zookeeper settings store,
-        var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT, new JsonSerializer())));
+        var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT, new GsonObjectSerializer())));
 
         // register a dummy application because settings are saved under application name and version,
         register(new Application()

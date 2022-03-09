@@ -70,7 +70,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Http
     }
 
     /** The REST application that owns this request cycle */
-    private final MicroserviceRestService application;
+    private final MicroserviceRestService restService;
 
     /** The request */
     @UmlAggregation
@@ -84,25 +84,17 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Http
     private Microservlet<?, ?> servlet;
 
     /**
-     * @param application The REST application that owns this request cycle
+     * @param restService The REST application that owns this request cycle
      * @param request The Java Servlet API HTTP request object
      * @param response The Java Servlet API HTTP response object
      */
-    public JettyMicroservletRequestCycle(MicroserviceRestService application,
+    public JettyMicroservletRequestCycle(MicroserviceRestService restService,
                                          HttpServletRequest request,
                                          HttpServletResponse response)
     {
-        this.application = application;
+        this.restService = restService;
         this.request = listenTo(new JettyMicroservletRequest(this, request));
         this.response = listenTo(new JettyMicroserviceResponse(this, response));
-    }
-
-    /**
-     * @return The REST application that owns this request cycle
-     */
-    public MicroserviceRestService application()
-    {
-        return application;
     }
 
     /**
@@ -123,12 +115,13 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Http
     {
         var pretty = request().parameters().asBoolean("pretty");
 
-        return application()
+        return restService()
+                .microservice()
                 .gsonFactory()
                 .withPrettyPrinting(pretty)
                 .gson();
     }
-
+ 
     /**
      * @return The request
      */
@@ -144,6 +137,14 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Http
     public JettyMicroserviceResponse response()
     {
         return response;
+    }
+
+    /**
+     * @return The REST application that owns this request cycle
+     */
+    public MicroserviceRestService restService()
+    {
+        return restService;
     }
 
     /**

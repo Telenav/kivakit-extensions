@@ -21,6 +21,7 @@ open module kivakit.web.jersey
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires java.logging;
+    requires kivakit.serialization.gson;
 
     // Module exports
     exports com.telenav.kivakit.web.jersey;

@@ -45,6 +45,10 @@
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-merged-zookeeper</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-serialization-gson</artifactId>
+        </dependency>
 
         <!-- Netty for Apache Zookeeper -->
 

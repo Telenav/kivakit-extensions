@@ -28,8 +28,8 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramJetty;
 import com.telenav.kivakit.network.core.QueryParameters;
-import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.resource.PropertyMap;
+import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -228,7 +228,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
     @KivaKitIncludeProperty
     public Version version()
     {
-        return cycle.application()
+        return cycle.restService()
                 .microservice()
                 .version();
     }

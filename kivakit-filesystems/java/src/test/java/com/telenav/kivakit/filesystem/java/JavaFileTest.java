@@ -1,6 +1,5 @@
 package com.telenav.kivakit.filesystem.java;
 
-import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.core.value.count.Bytes;
@@ -37,7 +36,7 @@ public class JavaFileTest extends UnitTest
     private ZipArchive archive(File file)
     {
         var zip = File.temporary(Extension.ZIP);
-        var archive = ZipArchive.open(this, zip, ProgressReporter.none(), ZipArchive.Mode.WRITE);
+        var archive = ZipArchive.open(this, zip, ZipArchive.Mode.WRITE);
         if (archive != null)
         {
             archive.save(file.fileName().name(), file);

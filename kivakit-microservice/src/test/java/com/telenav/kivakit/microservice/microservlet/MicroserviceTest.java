@@ -13,8 +13,10 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
-import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.resource.path.Extension;
+import com.telenav.kivakit.resource.serialization.ObjectSerializers;
+import com.telenav.kivakit.serialization.gson.DefaultGsonFactory;
+import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.validation.BaseValidator;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
@@ -162,12 +164,6 @@ public class MicroserviceTest extends UnitTest
         }
 
         @Override
-        public GsonFactory gsonFactory()
-        {
-            return new DefaultGsonFactory(this);
-        }
-
-        @Override
         public void onInitialize()
         {
             mount("test", HttpMethod.POST, TestPostRequest.class);
@@ -179,6 +175,12 @@ public class MicroserviceTest extends UnitTest
     @Test
     public void test()
     {
+        register(new DefaultGsonFactory(this));
+
+        var serializers = new ObjectSerializers();
+        serializers.add(Extension.JSON, new GsonObjectSerializer());
+        register(serializers);
+
         Registry.of(this).register(new MicroserviceSettings()
                 .port(8086)
                 .grpcPort(8087)
@@ -191,7 +193,7 @@ public class MicroserviceTest extends UnitTest
         microservice.waitForReady();
 
         var client = listenTo(new MicroserviceRestClient(
-                microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
+                new GsonObjectSerializer(), Host.local().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);

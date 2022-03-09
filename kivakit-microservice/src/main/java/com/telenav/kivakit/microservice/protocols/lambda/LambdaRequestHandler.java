@@ -7,7 +7,7 @@ import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.serialization.gson.GsonFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
