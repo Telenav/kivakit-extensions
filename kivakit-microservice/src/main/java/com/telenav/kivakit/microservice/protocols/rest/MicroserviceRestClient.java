@@ -1,8 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.rest;
 
-import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.string.Formatter;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
@@ -14,7 +12,10 @@ import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.BaseHttpResource;
 import com.telenav.kivakit.network.http.HttpGetResource;
 import com.telenav.kivakit.network.http.HttpPostResource;
-import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.resource.SerializedObject;
+import com.telenav.kivakit.resource.resources.StringOutputResource;
+import com.telenav.kivakit.resource.resources.StringResource;
+import com.telenav.kivakit.serialization.gson.JsonSerializer;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.jetbrains.annotations.NotNull;
@@ -23,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
  * A client for easy interaction with KivaKit {@link MicroserviceRestService}s.
  *
  * <p>
- * The constructor of this class takes a {@link Gson} factory to read and write JSON, a {@link Port} specifying the host
- * and port number to communicate with, and a {@link Version} specifying the version of the REST server. The {@link
+ * The constructor of this class takes a {@link JsonSerializer} to read and write JSON, a {@link Port} specifying the
+ * host and port number to communicate with, and a {@link Version} specifying the version of the REST server. The {@link
  * #get(String, Class)} method reads a JSON object of the given type from a path relative to the server specified in the
  * constructor. The {@link #post(String, Class, MicroservletRequest)} method posts the given request object to the given
  * path as JSON and then reads a JSON object response.
@@ -34,8 +35,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class MicroserviceRestClient extends BaseComponent
 {
-    /** {@link Gson} factory for reading and writing JSON object */
-    private final GsonFactory gsonFactory;
+    /** Serializer for JSON request serialization and deserialization */
+    private final JsonSerializer serializer;
 
     /** The remote host and port number */
     private final Port port;
@@ -44,20 +45,19 @@ public class MicroserviceRestClient extends BaseComponent
     private final Version version;
 
     /**
-     * @param gsonFactory A factory that creates {@link Gson} objects to use when reading and writing JSON objects
+     * @param serializer JSON serialization
      * @param port The (host and) port of the remote REST service to communicate with
      * @param version The version of the remote REST service
      */
-    public MicroserviceRestClient(GsonFactory gsonFactory, Port port, Version version)
+    public MicroserviceRestClient(JsonSerializer serializer, Port port, Version version)
     {
-        this.gsonFactory = gsonFactory;
+        this.serializer = serializer;
         this.port = port;
         this.version = version;
     }
 
     /**
-     * Uses HTTP GET to read a JSON object of the given type from the given path. The {@link
-     * MicroserviceRestService#gsonFactory()} is used to read the JSON object.
+     * Uses HTTP GET to read a JSON object of the given type from the given path.
      *
      * @param path The path to the microservlet request handler. If the path is not absolute (doesn't start with a '/'),
      * it is prefixed with: "/api/[major.version].[minor.version]/". For example, the path "users" in microservlet
@@ -80,8 +80,7 @@ public class MicroserviceRestClient extends BaseComponent
     }
 
     /**
-     * Uses HTTP POST to write the given object to read a JSON object of the given type from the given path. The {@link
-     * MicroserviceRestService#gsonFactory()} is used to read the JSON object.
+     * Uses HTTP POST to write the given object to read a JSON object of the given type from the given path.
      *
      * @param path The path to the microservlet request handler. If the path is not absolute (doesn't start with a '/'),
      * it is prefixed with: "/api/[major.version].[minor.version]/". For example, the path "users" in microservlet
@@ -103,11 +102,15 @@ public class MicroserviceRestClient extends BaseComponent
                 {
                     if (request != null)
                     {
-                        var entity = new StringEntity(gsonFactory.gson().toJson(request));
-                        entity.setContentType("application/json");
-                        post.setEntity(entity);
-                        post.setHeader("Accept", "application/json");
-                        post.setHeader("Content-Type", "application/json");
+                        var string = new StringOutputResource();
+                        if (serializer.write(string, new SerializedObject<>(request)))
+                        {
+                            var entity = new StringEntity(string.string());
+                            entity.setContentType("application/json");
+                            post.setEntity(entity);
+                            post.setHeader("Accept", "application/json");
+                            post.setHeader("Content-Type", "application/json");
+                        }
                     }
                 }
                 catch (Exception e)
@@ -172,7 +175,7 @@ public class MicroserviceRestClient extends BaseComponent
             var json = resource.reader().asString();
             if (!Strings.isEmpty(json))
             {
-                return gsonFactory.gson().fromJson(json, type);
+                return serializer.read(new StringResource(json), type).object();
             }
             else
             {

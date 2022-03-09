@@ -26,9 +26,6 @@ open module kivakit.microservice
     // Java
     requires java.sql;
 
-    // JSON
-    requires gson;
-
     // Protocols and Platforms
     requires aws.lambda.java.core;
     requires org.apache.httpcomponents.httpclient;

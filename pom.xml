@@ -95,6 +95,7 @@
 
         <module>kivakit-settings-stores</module>
         <module>kivakit-logs</module>
+        <module>kivakit-serialization</module>
         <module>kivakit-web</module>
         <module>kivakit-filesystems</module>
         <module>kivakit-metrics</module>

@@ -18,12 +18,10 @@
 
 package com.telenav.kivakit.microservice.protocols.rest;
 
-import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
@@ -44,8 +42,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
-import com.telenav.kivakit.serialization.json.GsonFactory;
-import com.telenav.kivakit.serialization.json.serializers.ProblemGsonSerializer;
+import com.telenav.kivakit.serialization.gson.JsonSerializer;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -63,7 +60,6 @@ import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
-import static com.telenav.kivakit.core.string.Formatter.Format.WITHOUT_EXCEPTION;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.GET;
 import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.POST;
 
@@ -155,14 +151,6 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *
  * <p><br/><hr/><br/></p>
  *
- * <p><b>JSON Serialization</b></p>
- *
- * <p>
- * The {@link #gsonFactory()} method can be overridden to provide an application-specific {@link Gson} serializer.
- * </p>
- *
- * <p><br/><hr/><br/></p>
- *
  * <p><b>OpenAPI</b></p>
  *
  * <p>
@@ -214,7 +202,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *         <li>The request handler's return value is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
  *         <ol>
  *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
- *             <li>Converts the object to JSON using the {@link Gson} object provided by {@link MicroserviceRestService#gsonFactory()}</li>
+ *             <li>Converts the object to JSON using the {@link JsonSerializer} object provided by {@link MicroserviceRestService#jsonSerializer()}</li>
  *             <li>Writes the JSON object to the servlet response output stream</li>
  *         </ol>
  *     </ol>
@@ -227,7 +215,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * @see MicroservletRequest
  * @see MicroservletRestPath
  * @see MicroservletMountTarget
- * @see GsonFactory
+ * @see JsonSerializer
  * @see HttpMethod
  * @see Resource
  * @see Version
@@ -284,19 +272,6 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * @return Factory that can create a {@link Gson} instance for serializing JSON object
-     */
-    @UmlRelation(label = "creates")
-    public GsonFactory gsonFactory()
-    {
-        return microservice.gsonFactory()
-                .withSerializer(Problem.class, new ProblemGsonSerializer(WITHOUT_EXCEPTION))
-                .withDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS")
-                .withHtmlEscaping(false)
-                .withPrettyPrinting(true);
-    }
-
-    /**
      * Mount OpenAPI request handler and initialize the rest service. This method cannot be overridden. Override {@link
      * #onInitialize()} instead.
      */
@@ -315,6 +290,14 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         {
             initializing = false;
         }
+    }
+
+    /**
+     * @return The {@link JsonSerializer} to use for serializing and deserializing requests.
+     */
+    public JsonSerializer jsonSerializer()
+    {
+        return require(JsonSerializer.class);
     }
 
     /**
@@ -384,6 +367,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
             if (request != null)
             {
                 // then mount an anonymous microservlet on the given path,
+                @SuppressWarnings("unchecked")
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
                 var restPath = MicroservletRestPath.parse(this, Paths.concatenate(rootPath(), path), method);

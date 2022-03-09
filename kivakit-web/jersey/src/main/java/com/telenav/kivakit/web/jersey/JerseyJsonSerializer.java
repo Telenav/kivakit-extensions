@@ -18,8 +18,10 @@
 
 package com.telenav.kivakit.web.jersey;
 
-import com.google.gson.Gson;
-import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.resource.SerializedObject;
+import com.telenav.kivakit.resource.resources.InputResource;
+import com.telenav.kivakit.resource.resources.OutputResource;
+import com.telenav.kivakit.serialization.gson.JsonSerializer;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import javax.ws.rs.Consumes;
@@ -30,14 +32,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Performs serialization compatible with the Jersey REST API via *javax.ws.rs* interfaces.
@@ -48,17 +46,13 @@ import java.nio.charset.StandardCharsets;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @LexakaiJavadoc(complete = true)
-public class JerseyGsonSerializer<T> implements MessageBodyReader<T>, MessageBodyWriter<T>
+public class JerseyJsonSerializer<T> implements MessageBodyReader<T>, MessageBodyWriter<T>
 {
-    private Gson gson;
+    private final JsonSerializer serializer;
 
-    public JerseyGsonSerializer()
+    public JerseyJsonSerializer(JsonSerializer serializer)
     {
-    }
-
-    public JerseyGsonSerializer(GsonFactory factory)
-    {
-        gson = factory.gson();
+        this.serializer = serializer;
     }
 
     @Override
@@ -86,12 +80,9 @@ public class JerseyGsonSerializer<T> implements MessageBodyReader<T>, MessageBod
     public T readFrom(Class<T> type, Type genericType,
                       Annotation[] annotations, MediaType mediaType,
                       MultivaluedMap<String, String> map, InputStream in)
-            throws IOException, WebApplicationException
+            throws WebApplicationException
     {
-        try (var reader = new InputStreamReader(in, StandardCharsets.UTF_8))
-        {
-            return gson.fromJson(reader, type);
-        }
+        return serializer.read(new InputResource(in), type).object();
     }
 
     @Override
@@ -100,16 +91,6 @@ public class JerseyGsonSerializer<T> implements MessageBodyReader<T>, MessageBod
                         MultivaluedMap<String, Object> httpHeaders, OutputStream out)
             throws WebApplicationException
     {
-        try (var writer = new PrintWriter(out))
-        {
-            var json = gson.toJson(object);
-            writer.write(json);
-            writer.flush();
-        }
-    }
-
-    protected Gson gson()
-    {
-        return gson;
+        serializer.write(new OutputResource(out), new SerializedObject<>(object));
     }
 }

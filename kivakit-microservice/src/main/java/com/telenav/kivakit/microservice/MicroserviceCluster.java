@@ -10,6 +10,7 @@ import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.thread.ReentrancyTracker;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.serialization.gson.JsonSerializer;
 import com.telenav.kivakit.settings.SettingsObject;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
@@ -276,7 +277,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     }
 
     /** Zookeeper settings store used to track cluster members */
-    private final ZookeeperSettingsStore store = listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL)
+    private final ZookeeperSettingsStore store = listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL, new JsonSerializer())
     {
         @Override
         protected void onSettingsDeleted(StringPath path, SettingsObject settings)

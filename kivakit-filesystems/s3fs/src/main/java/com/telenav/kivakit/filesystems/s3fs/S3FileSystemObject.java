@@ -62,7 +62,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 public abstract class S3FileSystemObject extends BaseWritableResource implements FileSystemObjectService
 {
     /** s3://${region}/${bucket}/${key} */
-    private static final Pattern PATTERN = Pattern.compile("(<?scheme>s3)://(<?region>[a-z0-9]+)/(<?bucket>[\\w-\\d.]+)/(<?key>.*)");
+    private static final Pattern PATTERN = Pattern.compile("(?<scheme>s3)://(?<region>[A-Za-z0-9-]+)/(?<bucket>[^/]+)/(?<key>.*)");
 
     /** S3 client */
     protected static final Map<String, S3Client> clientForRegion = new ConcurrentHashMap<>();

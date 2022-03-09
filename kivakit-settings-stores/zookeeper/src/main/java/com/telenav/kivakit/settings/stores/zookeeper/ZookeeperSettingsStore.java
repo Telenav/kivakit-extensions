@@ -9,7 +9,11 @@ import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.registry.Registry;
 import com.telenav.kivakit.core.vm.SystemProperties;
-import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.resource.SerializedObject;
+import com.telenav.kivakit.resource.resources.InputResource;
+import com.telenav.kivakit.resource.resources.OutputResource;
+import com.telenav.kivakit.resource.serialization.ObjectMetadata;
+import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.settings.BaseSettingsStore;
 import com.telenav.kivakit.settings.SettingsObject;
 import com.telenav.kivakit.settings.SettingsStore;
@@ -17,6 +21,8 @@ import org.apache.zookeeper.CreateMode;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.DELETE;
@@ -24,7 +30,6 @@ import static com.telenav.kivakit.settings.SettingsStore.AccessMode.INDEX;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.SAVE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.UNLOAD;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
@@ -144,22 +149,27 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
     /** Create mode for settings in this store */
     private CreateMode createMode;
 
+    /** The serializer for saving and loading objects in the store */
+    private final ObjectSerializer serializer;
+
     /**
      * Creates a settings store with the given explicit {@link CreateMode}. This overrides any setting in {@link
      * ZookeeperConnection.Settings}.
      *
      * @param createMode The explicit create mode to use for nodes in this store
      */
-    public ZookeeperSettingsStore(CreateMode createMode)
+    public ZookeeperSettingsStore(CreateMode createMode, ObjectSerializer serializer)
     {
         this.createMode = createMode;
+        this.serializer = serializer;
     }
 
     /**
      * Creates a settings store that uses the default {@link CreateMode} from {@link ZookeeperConnection.Settings}
      */
-    public ZookeeperSettingsStore()
+    public ZookeeperSettingsStore(ObjectSerializer serializer)
     {
+        this.serializer = serializer;
     }
 
     /**
@@ -350,18 +360,16 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
     }
 
     /**
-     * Deserializes the given data into an instance of the given type. By default, uses the registered {@link
-     * GsonFactory} to deserialize the data from JSON format.
+     * Deserializes the given data into an instance of the given type using the {@link ObjectSerializer} passed to the
+     * constructor.
      *
      * @param data The data to deserialize
      * @param type The type of object to deserialize
      */
-    @SuppressWarnings("unchecked")
-    protected <T> T onDeserialize(byte[] data, Class<?> type)
+    protected <T> T onDeserialize(byte[] data, Class<T> type)
     {
-        var gson = require(GsonFactory.class).gson();
-        var json = new String(data, UTF_8);
-        return (T) gson.fromJson(json, type);
+        var input = new InputResource(new ByteArrayInputStream(data));
+        return serializer.read(input, type, ObjectMetadata.TYPE).object();
     }
 
     /**
@@ -431,13 +439,14 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
     }
 
     /**
-     * Serializes the given object. By default, uses the registered{@link GsonFactory} to serialize to JSON format.
+     * Serializes the given object using the {@link ObjectSerializer} passed to the constructor.
      */
     protected byte[] onSerialize(Object object)
     {
-        var gson = require(GsonFactory.class).gson();
-        var json = gson.toJson(object);
-        return json.getBytes(UTF_8);
+        var bytes = new ByteArrayOutputStream();
+        var output = new OutputResource(bytes);
+        serializer.write(output, new SerializedObject<>(object));
+        return bytes.toByteArray();
     }
 
     /**
