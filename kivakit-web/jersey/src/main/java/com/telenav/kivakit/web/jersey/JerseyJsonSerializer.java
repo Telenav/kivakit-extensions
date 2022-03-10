@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.jersey;
 
-import com.telenav.kivakit.resource.SerializedObject;
+import com.telenav.kivakit.resource.SerializableObject;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
@@ -93,6 +93,6 @@ public class JerseyJsonSerializer<T> implements
                         MultivaluedMap<String, Object> httpHeaders, OutputStream out)
             throws WebApplicationException
     {
-        serializer.write(new OutputResource(out), new SerializedObject<>(object));
+        serializer.write(new OutputResource(out), new SerializableObject<>(object));
     }
 }

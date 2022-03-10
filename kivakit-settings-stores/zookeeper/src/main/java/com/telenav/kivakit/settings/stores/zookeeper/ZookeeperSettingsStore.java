@@ -9,7 +9,7 @@ import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.registry.Registry;
 import com.telenav.kivakit.core.vm.SystemProperties;
-import com.telenav.kivakit.resource.SerializedObject;
+import com.telenav.kivakit.resource.SerializableObject;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.resource.serialization.ObjectMetadata;
@@ -445,7 +445,7 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
     {
         var bytes = new ByteArrayOutputStream();
         var output = new OutputResource(bytes);
-        serializer.write(output, new SerializedObject<>(object));
+        serializer.write(output, new SerializableObject<>(object));
         return bytes.toByteArray();
     }
 
