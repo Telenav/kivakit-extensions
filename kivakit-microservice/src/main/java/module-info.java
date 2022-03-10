@@ -6,7 +6,6 @@ open module kivakit.microservice
     requires transitive kivakit.settings.stores.zookeeper;
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.web.wicket;
-    requires transitive kivakit.math;
 
     requires transitive kivakit.merged.protostuff;
     requires transitive kivakit.merged.grpc;
