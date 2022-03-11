@@ -26,8 +26,8 @@ import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
 import com.telenav.kivakit.resource.Package;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
-import com.telenav.kivakit.serialization.gson.DefaultGsonFactory;
-import com.telenav.kivakit.serialization.gson.GsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import com.telenav.kivakit.settings.Deployment;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
@@ -300,7 +300,7 @@ public abstract class Microservice<Member> extends Application implements
      */
     public GsonFactory gsonFactory()
     {
-        return new DefaultGsonFactory(this);
+        return new CoreGsonFactory(this);
     }
 
     /**

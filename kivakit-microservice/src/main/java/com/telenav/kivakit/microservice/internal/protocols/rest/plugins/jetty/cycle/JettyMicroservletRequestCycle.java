@@ -118,10 +118,10 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Http
         return restService()
                 .microservice()
                 .gsonFactory()
-                .withPrettyPrinting(pretty)
+                .prettyPrinting(pretty)
                 .gson();
     }
- 
+
     /**
      * @return The request
      */

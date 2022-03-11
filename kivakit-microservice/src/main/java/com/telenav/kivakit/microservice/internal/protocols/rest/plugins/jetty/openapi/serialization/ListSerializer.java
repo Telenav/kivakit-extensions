@@ -8,10 +8,10 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class ListSerializer implements JsonSerializer<List<?>>
+public class ListSerializer<T> implements JsonSerializer<List<T>>
 {
     @Override
-    public JsonElement serialize(List<?> list, Type typeOfSrc, JsonSerializationContext context)
+    public JsonElement serialize(List<T> list, Type typeOfSrc, JsonSerializationContext context)
     {
         if (list == null || list.isEmpty())
         {

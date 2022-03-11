@@ -20,8 +20,8 @@ import com.telenav.kivakit.microservice.project.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
-import com.telenav.kivakit.serialization.gson.GsonFactory;
-import com.telenav.kivakit.serialization.gson.GsonFactorySource;
+import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import io.swagger.v3.oas.models.OpenAPI;
 
@@ -54,6 +54,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
             api = listener.listenTo(new OpenApiReader()).read();
         }
 
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         public GsonFactory gsonFactory()
         {
@@ -62,15 +63,15 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
                     .microservice()
                     .gsonFactory();
 
-            return factory.withPrettyPrinting(true)
-                    .withRequireExposeAnnotation(false)
-                    .withSerializeNulls(false)
-                    .withSerializer(List.class, new ListSerializer())
-                    .withSerializer(Set.class, new SetSerializer())
-                    .withSerializer(Map.class, new MapSerializer())
-                    .withSerializer(Object[].class, new ArraySerializer<>())
-                    .withSerializer(String.class, new StringSerializer())
-                    .withExclusionStrategy(new ExclusionStrategy()
+            return factory.prettyPrinting(true)
+                    .requireExposeAnnotation(false)
+                    .serializeNulls(false)
+                    .addJsonSerializer(List.class, new ListSerializer())
+                    .addJsonSerializer(Set.class, new SetSerializer())
+                    .addJsonSerializer(Map.class, new MapSerializer())
+                    .addJsonSerializer(Object[].class, new ArraySerializer<>())
+                    .addJsonSerializer(String.class, new StringSerializer())
+                    .exclusionStrategy(new ExclusionStrategy()
                     {
                         @Override
                         public boolean shouldSkipClass(Class<?> clazz)

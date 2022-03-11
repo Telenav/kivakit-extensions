@@ -15,8 +15,8 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.resource.path.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializers;
-import com.telenav.kivakit.serialization.gson.DefaultGsonFactory;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
 import com.telenav.kivakit.validation.BaseValidator;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
@@ -175,7 +175,7 @@ public class MicroserviceTest extends UnitTest
     @Test
     public void test()
     {
-        register(new DefaultGsonFactory(this));
+        register(new CoreGsonFactory(this));
 
         var serializers = new ObjectSerializers();
         serializers.add(Extension.JSON, new GsonObjectSerializer());

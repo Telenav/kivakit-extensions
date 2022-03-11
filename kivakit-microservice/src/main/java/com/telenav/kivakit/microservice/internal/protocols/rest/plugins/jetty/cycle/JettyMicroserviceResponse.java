@@ -13,8 +13,8 @@ import com.telenav.kivakit.microservice.project.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.serialization.gson.GsonFactory;
-import com.telenav.kivakit.serialization.gson.GsonFactorySource;
+import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
