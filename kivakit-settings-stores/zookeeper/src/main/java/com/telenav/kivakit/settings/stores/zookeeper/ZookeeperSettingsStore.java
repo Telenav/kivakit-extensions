@@ -9,7 +9,7 @@ import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.registry.Registry;
 import com.telenav.kivakit.core.vm.SystemProperties;
-import com.telenav.kivakit.resource.SerializableObject;
+import com.telenav.kivakit.resource.serialization.SerializableObject;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.resource.serialization.ObjectMetadata;

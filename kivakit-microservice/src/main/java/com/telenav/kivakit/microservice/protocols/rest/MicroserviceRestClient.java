@@ -12,10 +12,10 @@ import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.BaseHttpResource;
 import com.telenav.kivakit.network.http.HttpGetResource;
 import com.telenav.kivakit.network.http.HttpPostResource;
-import com.telenav.kivakit.resource.SerializableObject;
 import com.telenav.kivakit.resource.resources.StringOutputResource;
 import com.telenav.kivakit.resource.resources.StringResource;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
+import com.telenav.kivakit.resource.serialization.SerializableObject;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.jetbrains.annotations.NotNull;
@@ -103,14 +103,12 @@ public class MicroserviceRestClient extends BaseComponent
                     if (request != null)
                     {
                         var string = new StringOutputResource();
-                        if (serializer.write(string, new SerializableObject<>(request)))
-                        {
-                            var entity = new StringEntity(string.string());
-                            entity.setContentType("application/json");
-                            post.setEntity(entity);
-                            post.setHeader("Accept", "application/json");
-                            post.setHeader("Content-Type", "application/json");
-                        }
+                        serializer.write(string, new SerializableObject<>(request));
+                        var entity = new StringEntity(string.string());
+                        entity.setContentType("application/json");
+                        post.setEntity(entity);
+                        post.setHeader("Accept", "application/json");
+                        post.setHeader("Content-Type", "application/json");
                     }
                 }
                 catch (Exception e)

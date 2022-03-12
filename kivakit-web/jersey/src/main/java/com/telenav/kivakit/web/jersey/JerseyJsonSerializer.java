@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.jersey;
 
-import com.telenav.kivakit.resource.SerializableObject;
+import com.telenav.kivakit.resource.serialization.SerializableObject;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
