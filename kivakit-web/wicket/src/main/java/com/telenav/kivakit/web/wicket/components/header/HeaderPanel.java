@@ -26,6 +26,8 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 
+import static com.telenav.kivakit.core.project.Project.resolveProject;
+
 /**
  * A standardized KivaKit header panel with a title, logo and version information.
  *
@@ -48,6 +50,8 @@ public class HeaderPanel extends Panel
                 new PackageResourceReference(getClass(), "kivakit-48-2x.png"));
         icon.setXValues("2x");
         add(icon);
-        add(new Label("version", version + " / KivaKit " + KivaKit.get().projectVersion() + " " + KivaKit.get().build()));
+        add(new Label("version", version + " / KivaKit "
+                + resolveProject(KivaKit.class).projectVersion() + " "
+                + resolveProject(KivaKit.class).build()));
     }
 }

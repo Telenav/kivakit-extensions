@@ -48,6 +48,7 @@ import static com.telenav.kivakit.commandline.SwitchParsers.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParsers.integerSwitchParser;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.project.Project.resolveProject;
 
 /**
  * <p>
@@ -268,7 +269,7 @@ public abstract class Microservice<Member> extends Application implements
      */
     public Microservice(Project... project)
     {
-        super(Arrays.concatenate(project, new Project[] { new MicroserviceProject() }));
+        super(Arrays.concatenate(project, new Project[] { resolveProject(MicroserviceProject.class) }));
 
         register(gsonFactory());
     }

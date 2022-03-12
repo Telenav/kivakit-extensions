@@ -63,7 +63,7 @@ public class S3ParsingTest extends UnitTest
     {
         FolderService folder = file.parent();
         ensure("docs".equals(folder.baseName().toString()));
-        ensure(("s3://default-region/kivakit/" + KivaKit.get().projectVersion() + "/docs").equals(folder.path().toString()));
+        ensure(("s3://default-region/kivakit/" + kivakit().projectVersion() + "/docs").equals(folder.path().toString()));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class S3ParsingTest extends UnitTest
     @Test
     public void testInSameBucket()
     {
-        ensure(file.inSameBucket(new S3File("s3://default-region/kivakit/" + KivaKit.get().projectVersion() + "/another")));
+        ensure(file.inSameBucket(new S3File("s3://default-region/kivakit/" + kivakit().projectVersion() + "/another")));
     }
 
     @Test
@@ -162,6 +162,6 @@ public class S3ParsingTest extends UnitTest
     @SuppressWarnings("SpellCheckingInspection")
     private String apidocs()
     {
-        return KivaKit.get().projectVersion() + "/docs/index.html";
+        return kivakit().projectVersion() + "/docs/index.html";
     }
 }
