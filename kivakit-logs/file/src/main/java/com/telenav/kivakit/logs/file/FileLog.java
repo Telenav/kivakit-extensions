@@ -30,7 +30,7 @@ import com.telenav.kivakit.core.string.StringTo;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
-import com.telenav.kivakit.logs.file.project.lexakai.DiagramLogsFile;
+import com.telenav.kivakit.logs.file.lexakai.DiagramLogsFile;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;

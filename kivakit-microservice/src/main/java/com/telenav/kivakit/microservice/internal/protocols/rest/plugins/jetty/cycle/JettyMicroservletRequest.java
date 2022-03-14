@@ -26,7 +26,7 @@ import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.project.lexakai.DiagramJetty;
+import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.resource.PropertyMap;
 import com.telenav.kivakit.resource.path.FilePath;

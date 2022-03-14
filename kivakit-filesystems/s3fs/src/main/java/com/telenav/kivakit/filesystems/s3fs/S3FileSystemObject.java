@@ -25,7 +25,7 @@ import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.filesystems.s3fs.project.lexakai.DiagramS3;
+import com.telenav.kivakit.filesystems.s3fs.lexakai.DiagramS3;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.path.FilePath;

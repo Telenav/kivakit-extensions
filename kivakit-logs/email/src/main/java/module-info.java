@@ -10,5 +10,5 @@ open module kivakit.logs.email
 
     // Module exports
     exports com.telenav.kivakit.logs.email;
-    exports com.telenav.kivakit.logs.email.project.lexakai;
+    exports com.telenav.kivakit.logs.email.lexakai;
 }

@@ -25,7 +25,7 @@ import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.interfaces.time.LengthOfTime;
-import com.telenav.kivakit.logs.file.project.lexakai.DiagramLogsFile;
+import com.telenav.kivakit.logs.file.lexakai.DiagramLogsFile;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;

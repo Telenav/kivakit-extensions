@@ -16,5 +16,5 @@ open module kivakit.filesystems.s3fs
 
     // Module exports
     exports com.telenav.kivakit.filesystems.s3fs;
-    exports com.telenav.kivakit.filesystems.s3fs.project.lexakai;
+    exports com.telenav.kivakit.filesystems.s3fs.lexakai;
 }

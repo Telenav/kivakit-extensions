@@ -18,7 +18,7 @@ import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
-import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
+import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;

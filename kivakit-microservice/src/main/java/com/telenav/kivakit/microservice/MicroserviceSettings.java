@@ -3,7 +3,7 @@ package com.telenav.kivakit.microservice;
 import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
 import com.telenav.kivakit.conversion.core.language.primitive.BooleanConverter;
 import com.telenav.kivakit.conversion.core.language.primitive.IntegerConverter;
-import com.telenav.kivakit.microservice.project.lexakai.DiagramMicroservice;
+import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 @UmlClassDiagram(diagram = DiagramMicroservice.class)

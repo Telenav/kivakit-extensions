@@ -16,13 +16,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.project.lexakai;
+package com.telenav.kivakit.logs.file.lexakai;
 
 import com.telenav.lexakai.annotations.diagrams.UmlDiagramIdentifier;
 
 /**
  * @author jonathanl (shibo)
  */
-public class DiagramJetty implements UmlDiagramIdentifier
+public class DiagramLogsFile implements UmlDiagramIdentifier
 {
 }

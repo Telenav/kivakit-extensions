@@ -25,7 +25,7 @@ import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.registry.Registry;
-import com.telenav.kivakit.logs.email.project.lexakai.DiagramLogsEmail;
+import com.telenav.kivakit.logs.email.lexakai.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.authentication.UserName;

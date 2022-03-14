@@ -9,7 +9,7 @@ import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.project.lexakai.DiagramJetty;
+import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;

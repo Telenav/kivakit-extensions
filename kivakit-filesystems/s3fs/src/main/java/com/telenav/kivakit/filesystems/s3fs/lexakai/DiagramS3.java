@@ -16,13 +16,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.logs.email.project.lexakai;
+package com.telenav.kivakit.filesystems.s3fs.lexakai;
 
+import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.diagrams.UmlDiagramIdentifier;
 
 /**
  * @author jonathanl (shibo)
  */
-public class DiagramLogsEmail implements UmlDiagramIdentifier
+@LexakaiJavadoc(complete = true)
+public class DiagramS3 implements UmlDiagramIdentifier
 {
 }
