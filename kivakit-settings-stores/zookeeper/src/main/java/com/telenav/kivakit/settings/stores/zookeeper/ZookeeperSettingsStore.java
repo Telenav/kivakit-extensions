@@ -8,7 +8,7 @@ import com.telenav.kivakit.core.language.Classes;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.registry.Registry;
-import com.telenav.kivakit.core.vm.SystemProperties;
+import com.telenav.kivakit.core.vm.Properties;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.resource.serialization.ObjectMetadata;
@@ -652,7 +652,7 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
                 createMode().name(),
                 "kivakit",
                 String.valueOf(resolveProject(KivaKit.class).kivakitVersion()),
-                SystemProperties.property("user.name"),
+                Properties.property("user.name"),
                 application.name(),
                 application.version().toString());
     }

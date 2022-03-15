@@ -3,7 +3,9 @@ package com.telenav.kivakit.microservice;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.project.Project;
 import com.telenav.kivakit.core.project.ProjectTrait;
-import com.telenav.kivakit.serialization.gson.GsonSerializationProject;
+import com.telenav.kivakit.settings.SettingsProject;
+
+import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
 
 /**
  * This class defines a KivaKit {@link Project}. It cannot be constructed with the new operator since it has a private
@@ -15,8 +17,8 @@ import com.telenav.kivakit.serialization.gson.GsonSerializationProject;
 public class MicroserviceProject extends Project
 {
     @Override
-    public ObjectSet<Project> dependencies()
+    public ObjectSet<Class<? extends Project>> dependencies()
     {
-        return ObjectSet.objectSet(project(GsonSerializationProject.class));
+        return objectSet(SettingsProject.class);
     }
 }

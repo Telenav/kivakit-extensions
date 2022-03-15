@@ -5,7 +5,6 @@ import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.commandline.SwitchParsers;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
-import com.telenav.kivakit.core.language.Arrays;
 import com.telenav.kivakit.core.language.primitive.Ints;
 import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.object.Lazy;
@@ -46,9 +45,9 @@ import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.commandline.SwitchParsers.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParsers.integerSwitchParser;
+import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.core.project.Project.resolveProject;
 
 /**
  * <p>
@@ -267,11 +266,11 @@ public abstract class Microservice<Member> extends Application implements
     /**
      * Initializes this microservice and any project(s) it depends on
      */
-    public Microservice(Project... project)
+    public Microservice()
     {
-        super(Arrays.concatenate(project, new Project[] { resolveProject(MicroserviceProject.class) }));
-
         register(gsonFactory());
+
+        addProject(MicroserviceProject.class);
     }
 
     /**
@@ -701,7 +700,7 @@ public abstract class Microservice<Member> extends Application implements
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_FORWARDING);
+        return objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_FORWARDING);
     }
 
     /**
