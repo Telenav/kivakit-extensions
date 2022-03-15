@@ -79,7 +79,7 @@ None
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 87.5%.  
+Javadoc coverage for this project is 85.7%.  
   
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
 
@@ -92,11 +92,10 @@ Javadoc coverage for this project is 87.5%.
 | [*FeedbackPanel*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/feedback/FeedbackPanel.html) |  |  
 | [*HeaderPanel*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/header/HeaderPanel.html) |  |  
 | [*JettyWicketFilterHolder*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/JettyWicketFilterHolder.html) |  |  
-| [*JettyWicketProject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/JettyWicketProject.html) |  |  
 | [*KivaKitTheme*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/theme/KivaKitTheme.html) |  |  
 | [*MessageColor*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/behaviors/status/MessageColor.html) |  |  
 | [*UpdatingContainer*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/refresh/UpdatingContainer.html) |  |  
-| [*WicketJettyFilterPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/WicketJettyFilterPlugin.html) |  |  
+| [*WicketJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/WicketJettyPlugin.html) |  |  
 
 [//]: # (start-user-text)
 

@@ -63,7 +63,7 @@ Javadoc coverage for this project is 50.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*PrometheusJettyServletPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.metrics.prometheus/com/telenav/kivakit/metrics/prometheus/PrometheusJettyServletPlugin.html) |  |  
+| [*PrometheusJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.metrics.prometheus/com/telenav/kivakit/metrics/prometheus/PrometheusJettyPlugin.html) |  |  
 | [*PrometheusMetricsReporter*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.metrics.prometheus/com/telenav/kivakit/metrics/prometheus/PrometheusMetricsReporter.html) |  |  
 
 [//]: # (start-user-text)

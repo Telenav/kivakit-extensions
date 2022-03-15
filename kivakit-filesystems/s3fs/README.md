@@ -76,13 +76,14 @@ would access the file *my-file.txt* in the bucket *my-bucket* in the *us-west-1*
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystems.s3fs*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.svg)
+[*com.telenav.kivakit.filesystems.s3fs*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.svg)  
+[*com.telenav.kivakit.filesystems.s3fs.lexakai*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.lexakai.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 82.5%.  
+Javadoc coverage for this project is 82.3%.  
   
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
 
@@ -91,9 +92,9 @@ Javadoc coverage for this project is 82.5%.
 
 | Class | Documentation Sections |
 |---|---|
+| [*DiagramS3*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/lexakai/DiagramS3.html) |  |  
 | [*S3File*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3File.html) |  |  
 | [*S3FileSystemObject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemObject.html) |  |  
-| [*S3FileSystemProject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemProject.html) |  |  
 | [*S3FileSystemService*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemService.html) |  |  
 | [*S3Folder*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Folder.html) |  |  
 | [*S3Output*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Output.html) |  |  

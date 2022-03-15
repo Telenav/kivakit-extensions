@@ -73,9 +73,9 @@ None
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 81.3%.  
+Javadoc coverage for this project is 91.7%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
 
 
 
@@ -84,9 +84,8 @@ Javadoc coverage for this project is 81.3%.
 |---|---|
 | [*BaseRestApplication*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/BaseRestApplication.html) |  |  
 | [*BaseRestResource*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/BaseRestResource.html) |  |  
-| [*JerseyGsonSerializer*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyGsonSerializer.html) |  |  
-| [*JerseyJettyServletPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyJettyServletPlugin.html) |  |  
-| [*JettyJerseyProject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JettyJerseyProject.html) |  |  
+| [*JerseyJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyJettyPlugin.html) |  |  
+| [*JerseyJsonSerializer*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyJsonSerializer.html) |  |  
 
 [//]: # (start-user-text)
 

@@ -85,9 +85,9 @@ None
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 75.1%.  
+Javadoc coverage for this project is 72.5%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
 
 
 The following significant classes are undocumented:  
@@ -98,7 +98,6 @@ The following significant classes are undocumented:
 |---|---|
 | [*GitHubFile*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFile.html) |  |  
 | [*GitHubFileSystemObject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemObject.html) |  |  
-| [*GitHubFileSystemProject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemProject.html) |  |  
 | [*GitHubFileSystemService*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemService.html) |  |  
 | [*GitHubFolder*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFolder.html) |  |  
 | [*GitHubTree*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubTree.html) |  |  

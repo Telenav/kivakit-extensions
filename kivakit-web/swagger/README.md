@@ -78,21 +78,20 @@ None
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 75.0%.  
+Javadoc coverage for this project is 66.7%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
 
 
 
 
 | Class | Documentation Sections |
 |---|---|
-| [*JettySwaggerProject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/JettySwaggerProject.html) |  |  
-| [*SwaggerAssetsJettyResourcePlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerAssetsJettyResourcePlugin.html) |  |  
-| [*SwaggerIndexJettyResourcePlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerIndexJettyResourcePlugin.html) |  |  
-| [*SwaggerIndexJettyResourcePlugin.IndexServlet*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerIndexJettyResourcePlugin.IndexServlet.html) |  |  
-| [*SwaggerJettyServletPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerJettyServletPlugin.html) |  |  
-| [*SwaggerWebJarJettyResourcePlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerWebJarJettyResourcePlugin.html) |  |  
+| [*SwaggerJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerJettyPlugin.html) |  |  
+| [*SwaggerJettyPlugin.IndexServlet*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerJettyPlugin.IndexServlet.html) |  |  
+| [*SwaggerOpenApiJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerOpenApiJettyPlugin.html) |  |  
+| [*SwaggerWebAppJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerWebAppJettyPlugin.html) |  |  
+| [*SwaggerWebJarJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerWebJarJettyPlugin.html) |  |  
 
 [//]: # (start-user-text)
 

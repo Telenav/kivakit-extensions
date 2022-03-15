@@ -67,7 +67,7 @@ None
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 72.3%.  
+Javadoc coverage for this project is 71.1%.  
   
 &nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
 
@@ -76,12 +76,11 @@ Javadoc coverage for this project is 72.3%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*AssetsJettyResourcePlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/AssetsJettyResourcePlugin.html) |  |  
-| [*BaseJettyFilterPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyFilterPlugin.html) |  |  
+| [*AssetsJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/AssetsJettyPlugin.html) |  |  
+| [*BaseAssetsJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseAssetsJettyPlugin.html) |  |  
+| [*BaseFilterJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseFilterJettyPlugin.html) |  |  
 | [*BaseJettyRequestHandler*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/BaseJettyRequestHandler.html) |  |  
-| [*BaseJettyResourcePlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyResourcePlugin.html) |  |  
-| [*BaseJettyServletPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseJettyServletPlugin.html) |  |  
-| [*JettyProject*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/JettyProject.html) |  |  
+| [*BaseServletJettyPlugin*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseServletJettyPlugin.html) |  |  
 | [*JettyServer*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/JettyServer.html) | Example: |  
 | [*WebUnitTest*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/WebUnitTest.html) |  |  
 
