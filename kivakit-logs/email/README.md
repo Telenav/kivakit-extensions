@@ -24,7 +24,7 @@ This module is an email log service provider.
 
 [**Summary**](#summary)  
 [**Including the Provider**](#including-the-provider)  
-[**Log Configuration Parameters**](#log-configuration-parameters)
+[**Log Configuration Parameters**](#log-configuration-parameters)  
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
@@ -32,14 +32,14 @@ This module is an email log service provider.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-logs-email</artifactId>
-        <version>1.3.1-SNAPSHOT</version>
+        <version>1.4.0</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -83,28 +83,33 @@ More details about logging are available at [*kivakit-core logging*](../../kivak
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
 
-[*Email Log*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/diagram-logs-email.svg)
+[*Email Log*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/diagram-logs-email.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.logs.email*](https://www.kivakit.org/1.3.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.svg)
+[*com.telenav.kivakit.logs.email*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.svg)  
+[*com.telenav.kivakit.logs.email.lexakai*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.lexakai.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 75.0%.
+Javadoc coverage for this project is 41.7%.  
+  
+&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-40-96.png" srcset="https://www.kivakit.org/images/meter-40-96-2x.png 2x"/>
 
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-80-96.png" srcset="https://www.kivakit.org/images/meter-80-96-2x.png 2x"/>
+
+
 
 | Class | Documentation Sections |
 |---|---|
-| [*EmailLog*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/EmailLog.html) |  |  
-| [*EmailLogProject*](https://www.kivakit.org/1.3.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/EmailLogProject.html) |  |  
+| [*DiagramLogsEmail*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/lexakai/DiagramLogsEmail.html) |  |  
+| [*EmailLog*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/EmailLog.html) |  |  
 
 [//]: # (start-user-text)
+
 
 
 [//]: # (end-user-text)
