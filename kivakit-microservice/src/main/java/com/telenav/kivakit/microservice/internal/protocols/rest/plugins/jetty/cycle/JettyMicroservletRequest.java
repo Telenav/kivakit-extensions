@@ -19,27 +19,28 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.data.validation.Validatable;
-import com.telenav.kivakit.kernel.data.validation.Validator;
-import com.telenav.kivakit.kernel.language.io.IO;
-import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.kernel.language.strings.formatting.ObjectFormatter;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
+import com.telenav.kivakit.core.io.IO;
+import com.telenav.kivakit.core.language.object.ObjectFormatter;
+import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.version.Version;
+import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
+import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.network.core.QueryParameters;
+import com.telenav.kivakit.resource.PropertyMap;
 import com.telenav.kivakit.resource.path.FilePath;
-import com.telenav.kivakit.resource.resources.other.PropertyMap;
+import com.telenav.kivakit.validation.Validatable;
+import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import org.jetbrains.annotations.NotNull;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 /**
@@ -59,7 +60,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
  * @see BaseComponent
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletRequest extends BaseComponent implements ProblemReportingTrait
+public class JettyMicroservletRequest extends BaseComponent implements HttpProblemReportingTrait
 {
     /** The request cycle to which this request belongs */
     @UmlAggregation
@@ -81,6 +82,13 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
         this.httpRequest = httpRequest;
     }
 
+    /**
+     * Deserializes the given JSON to the given type using Gson
+     *
+     * @param json The JSON to deserialize
+     * @param type The resulting object type
+     * @return The deserialized object
+     */
     public <T> T fromJson(final String json, final Class<T> type)
     {
         return cycle.gson().fromJson(json, type);
@@ -92,6 +100,24 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
     public boolean hasBody()
     {
         return httpRequest.getContentLength() != 0;
+    }
+
+    /**
+     * Returns the underlying {@link HttpServletRequest}
+     */
+    public HttpServletRequest httpRequest()
+    {
+        return httpRequest;
+    }
+
+    /**
+     * Opens servlet input stream for this request
+     *
+     * @return The input stream
+     */
+    public ServletInputStream open()
+    {
+        return tryCatch(httpRequest::getInputStream, "Unable to open input stream");
     }
 
     /**
@@ -169,7 +195,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
         try
         {
             // Read JSON object from servlet input
-            var in = httpRequest.getInputStream();
+            var in = open();
             String json = IO.string(in);
             var request = fromJson(json, requestType);
 
@@ -202,7 +228,7 @@ public class JettyMicroservletRequest extends BaseComponent implements ProblemRe
     @KivaKitIncludeProperty
     public Version version()
     {
-        return cycle.application()
+        return cycle.restService()
                 .microservice()
                 .version();
     }

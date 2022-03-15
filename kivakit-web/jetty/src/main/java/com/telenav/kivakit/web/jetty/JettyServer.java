@@ -19,13 +19,14 @@
 package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.messaging.messages.status.Problem;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyFilterPlugin;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyResourcePlugin;
-import com.telenav.kivakit.web.jetty.resources.BaseJettyServletPlugin;
+import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
+import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
+import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -36,7 +37,7 @@ import org.eclipse.jetty.util.log.StdErrLog;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
+import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 
 /**
  * A convenient way to use Jetty for simple web applications.
@@ -90,7 +91,9 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
  * @author jonathanl (shibo)
  */
 @LexakaiJavadoc(complete = true)
-public class JettyServer extends BaseComponent implements Startable, Stoppable
+public class JettyServer extends BaseComponent implements
+        Startable,
+        Stoppable
 {
     public static void configureLogging()
     {
@@ -98,23 +101,31 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         org.eclipse.jetty.util.log.Log.setLog(new StdErrLog());
     }
 
+    /** The static assets to install when Jetty starts */
+    private final List<BaseAssetsJettyPlugin> assets = new ArrayList<>();
+
+    /** The filters to install when Jetty starts */
+    private final List<BaseFilterJettyPlugin> filters = new ArrayList<>();
+
     /** The port to run Jetty on */
     private int port;
 
-    /** The filters to install when Jetty starts */
-    private final List<BaseJettyFilterPlugin> filters = new ArrayList<>();
-
-    /** The servlets to install when Jetty starts */
-    private final List<BaseJettyServletPlugin> servlets = new ArrayList<>();
-
-    /** The static resources to install when Jetty starts */
-    private final List<BaseJettyResourcePlugin> resources = new ArrayList<>();
+    /**
+     * The root path relative to this server. By default, this is the name of the microservice, like
+     * <i>/my-microservice</i>
+     */
+    private final String root;
 
     /** Jetty server instance */
     private Server server;
 
-    public JettyServer()
+    /** The servlets to install when Jetty starts */
+    private final List<BaseServletJettyPlugin> servlets = new ArrayList<>();
+
+    public JettyServer(String root)
     {
+        this.root = root;
+
         configureLogging();
     }
 
@@ -124,24 +135,24 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         return server != null;
     }
 
-    public JettyServer mount(String path, BaseJettyFilterPlugin filter)
+    public JettyServer mount(String path, BaseFilterJettyPlugin filter)
     {
-        filter.path(path);
+        filter.path(resolvePath(path));
         filters.add(filter);
         return this;
     }
 
-    public JettyServer mount(String path, BaseJettyServletPlugin servlet)
+    public JettyServer mount(String path, BaseServletJettyPlugin servlet)
     {
-        servlet.path(path);
+        servlet.path(resolvePath(path));
         servlets.add(servlet);
         return this;
     }
 
-    public JettyServer mount(String path, BaseJettyResourcePlugin resource)
+    public JettyServer mount(String path, BaseAssetsJettyPlugin assets)
     {
-        resource.path(path);
-        resources.add(resource);
+        assets.path(resolvePath(path));
+        this.assets.add(assets);
         return this;
     }
 
@@ -150,6 +161,11 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         ensure(port > 0);
         this.port = port;
         return this;
+    }
+
+    public String resolvePath(String path)
+    {
+        return Paths.concatenate(root, path);
     }
 
     public boolean start()
@@ -163,12 +179,12 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         }
         catch (Exception e)
         {
-            throw new Problem(e, "Couldn't start embedded Jetty web server").asException();
+            throw problem(e, "Couldn't start embedded Jetty web server").asException();
         }
     }
 
     @Override
-    public void stop(Duration wait)
+    public void stop(LengthOfTime wait)
     {
         if (isRunning())
         {
@@ -200,7 +216,7 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
         // Return an HTTP Jetty server connector for the port that was specified
         ServerConnector http = new ServerConnector(server);
         http.setPort(port);
-        http.setIdleTimeout(Duration.hours(1).asMilliseconds());
+        http.setIdleTimeout(Duration.hours(1).milliseconds());
         return http;
     }
 
@@ -223,11 +239,11 @@ public class JettyServer extends BaseComponent implements Startable, Stoppable
             servletContext.setResourceBase(".");
 
             // then for each JettyResource,
-            resources.forEach(resource ->
+            assets.forEach(asset ->
             {
                 // add it to the servlet context at the given path,
-                servletContext.addServlet(resource.holder(), resource.path());
-                narrate("Mounted resource $ => $", resource.path(), resource.name());
+                servletContext.addServlet(asset.holder(), asset.path());
+                narrate("Mounted assets $ => $", asset.path(), asset.name());
             });
 
             // and for each JettyFilter,

@@ -1,20 +1,22 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.collections.set.IdentitySet;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.configuration.lookup.InstanceIdentifier;
-import com.telenav.kivakit.configuration.settings.SettingsObject;
-import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.paths.StringPath;
-import com.telenav.kivakit.kernel.language.primitives.Ints;
-import com.telenav.kivakit.kernel.language.threading.status.ReentrancyTracker;
-import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
+import com.telenav.kivakit.core.collections.list.ObjectList;
+import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.collections.set.IdentitySet;
+import com.telenav.kivakit.core.language.primitive.Ints;
+import com.telenav.kivakit.core.os.OperatingSystem;
+import com.telenav.kivakit.core.path.StringPath;
+import com.telenav.kivakit.core.registry.InstanceIdentifier;
+import com.telenav.kivakit.core.thread.ReentrancyTracker;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import com.telenav.kivakit.settings.SettingsObject;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
+import static com.telenav.kivakit.core.thread.ReentrancyTracker.Reentrancy.ENTERED;
 import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
@@ -51,7 +53,7 @@ import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
  * single host). For example:
  * </p>
  *
- * <pre>Jonathans-iMac.local#83874</pre>
+ * <pre>Jonathan-iMac.local#83874</pre>
  *
  * @param <Member> The type of member information to store for each cluster member
  * @author jonathanl (shibo)
@@ -66,7 +68,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     private ObjectList<MicroserviceClusterMember<Member>> members;
 
     /** Prevent reentrancy during member loading */
-    private final ReentrancyTracker reentrancyTracker = new ReentrancyTracker();
+    private final ReentrancyTracker reentrancy = new ReentrancyTracker();
 
     /**
      * Joins this cluster with the given member data. Keeps trying to join the cluster when disconnected.
@@ -128,7 +130,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
         try
         {
-            if (reentrancyTracker.enter())
+            if (reentrancy.enter() == ENTERED)
             {
                 var loaded = new IdentitySet<MicroserviceClusterMember<Member>>();
 
@@ -162,7 +164,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
         }
         finally
         {
-            reentrancyTracker.exit();
+            reentrancy.exit();
         }
     }
 
@@ -250,9 +252,9 @@ public class MicroserviceCluster<Member> extends BaseComponent
         var parts = path.last().split("#");
 
         return new MicroserviceClusterMember<>(
-                Host.parse(this, parts[0]),
-                Ints.parse(this, parts[1]),
-                Ints.parse(this, parts[2]),
+                Host.parseHost(this, parts[0]),
+                Ints.parseInt(this, parts[1]),
+                Ints.parseInt(this, parts[2]),
                 settings.object());
     }
 
@@ -275,7 +277,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     }
 
     /** Zookeeper settings store used to track cluster members */
-    private final ZookeeperSettingsStore store = listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL)
+    private final ZookeeperSettingsStore store = listenTo(new ZookeeperSettingsStore(EPHEMERAL_SEQUENTIAL, new GsonObjectSerializer())
     {
         @Override
         protected void onSettingsDeleted(StringPath path, SettingsObject settings)

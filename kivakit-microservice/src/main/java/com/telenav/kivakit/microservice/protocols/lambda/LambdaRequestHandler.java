@@ -3,11 +3,11 @@ package com.telenav.kivakit.microservice.protocols.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.kernel.language.io.IO;
-import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.core.io.IO;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.serialization.json.GsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;

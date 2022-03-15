@@ -9,7 +9,7 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
  * <p>
  * This interface is implemented by protocol services, like ({@link MicroserviceGrpcService}, that wish to copy all
  * mounted request objects from {@link MicroserviceRestService} by calling the method {@link
- * MicroserviceRestService#mountAll(MicroservletMountTarget)}.
+ * MicroserviceRestService#mountAllOn(MicroservletMountTarget)}.
  *
  * @author jonathanl (shibo)
  * @see MicroserviceGrpcService

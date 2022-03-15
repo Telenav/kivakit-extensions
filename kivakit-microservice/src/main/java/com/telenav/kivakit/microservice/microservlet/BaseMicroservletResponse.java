@@ -1,9 +1,9 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.data.validation.ValidationType;
-import com.telenav.kivakit.kernel.data.validation.Validator;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramMicroservlet;
+import com.telenav.kivakit.microservice.lexakai.DiagramMicroservlet;
+import com.telenav.kivakit.validation.ValidationType;
+import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 /**

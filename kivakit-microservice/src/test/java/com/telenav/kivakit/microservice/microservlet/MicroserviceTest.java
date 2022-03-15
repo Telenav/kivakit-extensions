@@ -1,12 +1,10 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.configuration.lookup.Registry;
-import com.telenav.kivakit.kernel.data.validation.BaseValidator;
-import com.telenav.kivakit.kernel.data.validation.ValidationType;
-import com.telenav.kivakit.kernel.data.validation.Validator;
-import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
-import com.telenav.kivakit.kernel.language.values.version.Version;
+import com.telenav.kivakit.core.registry.Registry;
+import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.core.thread.KivaKitThread;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
@@ -15,9 +13,13 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
-import com.telenav.kivakit.serialization.json.GsonFactory;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.resource.path.Extension;
+import com.telenav.kivakit.resource.serialization.ObjectSerializers;
+import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
+import com.telenav.kivakit.validation.BaseValidator;
+import com.telenav.kivakit.validation.ValidationType;
+import com.telenav.kivakit.validation.Validator;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -26,6 +28,7 @@ public class MicroserviceTest extends UnitTest
 {
     public static class TestGarbageRequest extends BaseMicroservletRequest
     {
+        @SuppressWarnings("FieldCanBeLocal")
         @Expose
         private String trash;
 
@@ -91,7 +94,7 @@ public class MicroserviceTest extends UnitTest
             return new MicroserviceMetadata()
                     .withName("Test")
                     .withDescription("This is a test REST application")
-                    .withVersion(Version.parse(this, "0.9"));
+                    .withVersion(Version.parseVersion(this, "0.9"));
         }
 
         @Override
@@ -109,6 +112,12 @@ public class MicroserviceTest extends UnitTest
 
     public static class TestPostRequest extends BaseMicroservletRequest
     {
+        @Expose
+        int a;
+
+        @Expose
+        int b;
+
         public TestPostRequest(int a, int b)
         {
             this.a = a;
@@ -130,16 +139,13 @@ public class MicroserviceTest extends UnitTest
         {
             return TestResponse.class;
         }
-
-        @Expose
-        int a;
-
-        @Expose
-        int b;
     }
 
     public static class TestResponse extends BaseMicroservletResponse
     {
+        @Expose
+        int result;
+
         public TestResponse()
         {
         }
@@ -148,9 +154,6 @@ public class MicroserviceTest extends UnitTest
         {
             this.result = result;
         }
-
-        @Expose
-        int result;
     }
 
     public static class TestRestMicroservice extends MicroserviceRestService
@@ -158,12 +161,6 @@ public class MicroserviceTest extends UnitTest
         public TestRestMicroservice(Microservice<?> microservice)
         {
             super(microservice);
-        }
-
-        @Override
-        public GsonFactory gsonFactory()
-        {
-            return new DefaultGsonFactory(this);
         }
 
         @Override
@@ -178,6 +175,12 @@ public class MicroserviceTest extends UnitTest
     @Test
     public void test()
     {
+        register(new CoreGsonFactory(this));
+
+        var serializers = new ObjectSerializers();
+        serializers.add(Extension.JSON, new GsonObjectSerializer());
+        register(serializers);
+
         Registry.of(this).register(new MicroserviceSettings()
                 .port(8086)
                 .grpcPort(8087)
@@ -190,7 +193,7 @@ public class MicroserviceTest extends UnitTest
         microservice.waitForReady();
 
         var client = listenTo(new MicroserviceRestClient(
-                microservice.restService().gsonFactory(), Host.local().http(8086), microservice.version()));
+                new GsonObjectSerializer(), Host.local().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);

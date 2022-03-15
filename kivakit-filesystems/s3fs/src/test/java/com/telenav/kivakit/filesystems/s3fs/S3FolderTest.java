@@ -18,12 +18,11 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
+import com.telenav.kivakit.core.test.SlowTest;
+import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
 import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.test.UnitTest;
-import com.telenav.kivakit.test.annotations.SlowTests;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,7 +30,7 @@ import org.junit.experimental.categories.Category;
 
 import static org.junit.Assume.assumeTrue;
 
-@Category({ SlowTests.class })
+@Category({ SlowTest.class })
 public class S3FolderTest extends UnitTest
 {
     @SuppressWarnings("EmptyMethod")
@@ -43,8 +42,8 @@ public class S3FolderTest extends UnitTest
     @Before
     public void beforeMethod()
     {
-        assumeTrue(JavaVirtualMachine.property("AWS_ACCESS_KEY_ID") != null);
-        assumeTrue(JavaVirtualMachine.property("AWS_SECRET_ACCESS_KEY") != null);
+        assumeTrue(systemProperty("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(systemProperty("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test

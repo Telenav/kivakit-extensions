@@ -6,8 +6,7 @@ open module kivakit.filesystems.s3fs
     provides FileSystemService with S3FileSystemService;
 
     // KivaKit
-    requires kivakit.configuration;
-    requires kivakit.test;
+    requires kivakit.settings;
 
     // S3
     requires software.amazon.awssdk.services.s3;
@@ -17,5 +16,5 @@ open module kivakit.filesystems.s3fs
 
     // Module exports
     exports com.telenav.kivakit.filesystems.s3fs;
-    exports com.telenav.kivakit.filesystems.s3fs.project.lexakai.diagrams;
+    exports com.telenav.kivakit.filesystems.s3fs.lexakai;
 }

@@ -18,22 +18,22 @@
 
 package com.telenav.kivakit.logs.email;
 
-import com.telenav.kivakit.configuration.lookup.Registry;
-import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
-import com.telenav.kivakit.kernel.logging.Log;
-import com.telenav.kivakit.kernel.logging.LogEntry;
-import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
-import com.telenav.kivakit.kernel.logging.logs.text.BaseTextLog;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.logs.email.project.lexakai.diagrams.DiagramLogsEmail;
+import com.telenav.kivakit.core.collections.map.VariableMap;
+import com.telenav.kivakit.core.logging.Log;
+import com.telenav.kivakit.core.logging.LogEntry;
+import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
+import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.registry.Registry;
+import com.telenav.kivakit.logs.email.lexakai.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.network.core.authentication.UserName;
+import com.telenav.kivakit.network.core.authentication.passwords.PlainTextPassword;
 import com.telenav.kivakit.network.email.Email;
 import com.telenav.kivakit.network.email.EmailBody;
 import com.telenav.kivakit.network.email.EmailSender;
 import com.telenav.kivakit.network.email.senders.SmtpEmailSender;
-import com.telenav.kivakit.security.authentication.UserName;
-import com.telenav.kivakit.security.authentication.passwords.PlainTextPassword;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -41,7 +41,7 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.ensure.Ensure.fail;
 
 /**
  * A {@link Log} service provider that sends emails. Configuration occurs via the command line. See {@link
@@ -92,7 +92,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parse(Listener.console(), at));
+                this.to.add(EmailAddress.parseEmail(Listener.console(), at));
             }
         }
         else
@@ -104,7 +104,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parse(Listener.console(), from);
+            this.from = EmailAddress.parseEmail(Listener.console(), from);
         }
         else
         {
@@ -118,7 +118,7 @@ public class EmailLog extends BaseTextLog
         if (host != null && username != null && password != null)
         {
             var configuration = new SmtpEmailSender.Configuration();
-            configuration.host(Host.parse(Listener.console(), host));
+            configuration.host(Host.parseHost(Listener.console(), host));
             configuration.username(UserName.parse(Listener.console(), username));
             configuration.password(PlainTextPassword.parse(Listener.console(), password));
             sender = new SmtpEmailSender(configuration);

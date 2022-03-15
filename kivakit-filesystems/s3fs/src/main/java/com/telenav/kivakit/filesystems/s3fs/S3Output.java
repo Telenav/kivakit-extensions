@@ -18,13 +18,14 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.Folder.Type;
-import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.kernel.messaging.Listener;
 import com.telenav.kivakit.resource.path.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -72,7 +73,7 @@ public class S3Output extends OutputStream
         {
             object.delete();
         }
-        object.copyFrom(cacheFile, OVERWRITE, ProgressReporter.NULL);
+        object.copyFrom(cacheFile, OVERWRITE, ProgressReporter.none());
     }
 
     @Override
@@ -89,7 +90,7 @@ public class S3Output extends OutputStream
     }
 
     @Override
-    public void write(byte[] bytes, int offset, int length) throws IOException
+    public void write(byte @NotNull [] bytes, int offset, int length) throws IOException
     {
         outputStream.write(bytes, offset, length);
     }
@@ -105,6 +106,6 @@ public class S3Output extends OutputStream
         // Flatten path being cached into a long filename by turning all file
         // system meta characters into underscores.
         // For example, "a/b/c.txt" becomes "a_b_c.txt"
-        return File.parse(Listener.console(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
+        return File.parseFile(Listener.console(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
     }
 }

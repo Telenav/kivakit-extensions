@@ -18,23 +18,26 @@
 
 package com.telenav.kivakit.logs.file;
 
+import com.telenav.kivakit.conversion.core.collections.map.VariableMapConverter;
+import com.telenav.kivakit.conversion.core.time.DurationConverter;
+import com.telenav.kivakit.conversion.core.value.BytesConverter;
+import com.telenav.kivakit.core.collections.map.VariableMap;
+import com.telenav.kivakit.core.logging.Log;
+import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.os.Console;
+import com.telenav.kivakit.core.string.StringTo;
+import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
-import com.telenav.kivakit.kernel.language.collections.map.string.VariableMap;
-import com.telenav.kivakit.kernel.language.strings.StringTo;
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
-import com.telenav.kivakit.kernel.language.vm.Console;
-import com.telenav.kivakit.kernel.logging.Log;
-import com.telenav.kivakit.kernel.logging.loggers.LogServiceLogger;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.logs.file.project.lexakai.diagrams.DiagramLogsFile;
+import com.telenav.kivakit.logs.file.lexakai.DiagramLogsFile;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.ensure.Ensure.fail;
 
 /**
  * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line. See
@@ -67,7 +70,7 @@ public class FileLog extends BaseRolloverTextLog
         {
             try
             {
-                file = File.parse(Listener.console(), path);
+                file = File.parseFile(Listener.console(), path);
 
                 var rollover = properties.get("rollover");
                 if (rollover != null)
@@ -75,11 +78,9 @@ public class FileLog extends BaseRolloverTextLog
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
                 }
 
-                maximumLogFileAge = properties.asObject("maximum-age",
-                        new Duration.Converter(Listener.none()), Duration.MAXIMUM);
-
-                maximumLogSize(properties.asObject("maximum-size",
-                        new Bytes.Converter(Listener.none()), Bytes.MAXIMUM));
+                var converter = new VariableMapConverter(Listener.console(), properties);
+                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
+                maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
             catch (Exception e)
             {
@@ -106,15 +107,15 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        var newFile = File.parse(Listener.console(), file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
+        var newFile = File.parseFile(Listener.console(), file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
         var console = Console.get();
-        console.printLine("Creating new FileLog output file: " + newFile);
+        console.println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
-        console.printLine("Pruning files older than $ from: $", maximumLogFileAge, folder);
+        console.println("Pruning files older than $ from: $", maximumLogFileAge, folder);
         folder.files(file -> file.isOlderThan(maximumLogFileAge)).forEach(at ->
         {
-            console.printLine("Removed $", at);
+            console.println("Removed $", at);
             at.delete();
         });
         return newFile;

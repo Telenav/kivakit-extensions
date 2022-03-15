@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.wicket.components.refresh;
 
-import com.telenav.kivakit.kernel.language.time.Frequency;
+import com.telenav.kivakit.core.time.Frequency;
 import com.telenav.kivakit.web.wicket.library.Components;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.ajax.AjaxRequestTarget;

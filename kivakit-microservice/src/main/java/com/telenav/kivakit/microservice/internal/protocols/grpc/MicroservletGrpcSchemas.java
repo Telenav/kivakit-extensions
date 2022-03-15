@@ -6,7 +6,7 @@ import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
 import com.google.protobuf.ByteString;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.core.messaging.Listener;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

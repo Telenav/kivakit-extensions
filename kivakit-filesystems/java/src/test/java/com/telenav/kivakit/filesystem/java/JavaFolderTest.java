@@ -1,16 +1,14 @@
 package com.telenav.kivakit.filesystem.java;
 
+import com.telenav.kivakit.core.string.Strings;
+import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.kernel.interfaces.comparison.Matcher;
-import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.compression.archive.ZipArchive;
 import com.telenav.kivakit.resource.path.Extension;
 import com.telenav.kivakit.resource.path.FilePath;
-import com.telenav.kivakit.resource.resources.string.StringResource;
-import com.telenav.kivakit.test.UnitTest;
-import org.jetbrains.annotations.NotNull;
+import com.telenav.kivakit.resource.resources.StringResource;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -18,7 +16,7 @@ import java.util.Set;
 
 public class JavaFolderTest extends UnitTest
 {
-    public class TxtFileMatcher implements Matcher<FilePath>
+    public static class TxtFileMatcher implements Matcher<FilePath>
     {
         @Override
         public boolean matches(FilePath path)
@@ -31,7 +29,7 @@ public class JavaFolderTest extends UnitTest
     public void test()
     {
         var archive = archive();
-        var path = Message.format("jar:file:$/$", archive, "child");
+        var path = Strings.format("jar:file:$/$", archive, "child");
         var folder = new JavaFolder(FilePath.parseFilePath(this, path));
 
         ensure(folder.isFolder());
@@ -50,7 +48,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(this, Message.format("java:jar:file:$", archive)));
+        var folder = listenTo(Folder.parse(this, Strings.format("java:jar:file:$", archive)));
         ensureEqual(folder.files().size(), 1);
         ensureEqual(folder.folders().size(), 1);
         var files = new HashSet<>();
@@ -62,7 +60,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegrationChild()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(this, Message.format("java:jar:file:$/child", archive)));
+        var folder = listenTo(Folder.parse(this, Strings.format("java:jar:file:$/child", archive)));
         ensureEqual(folder.files().size(), 2);
         var files = new HashSet<>();
         files.add(folder.files().get(0).fileName().name());
@@ -70,15 +68,17 @@ public class JavaFolderTest extends UnitTest
         ensureEqual(files, Set.of("a.txt", "b.txt"));
     }
 
-    @NotNull
     private ZipArchive archive()
     {
         var zip = File.temporary(Extension.ZIP);
-        var archive = ZipArchive.open(this, zip, ProgressReporter.NULL, ZipArchive.Mode.WRITE);
-        archive.save("/child/a.txt", new StringResource("a"));
-        archive.save("/child/b.txt", new StringResource("b"));
-        archive.save("/c.txt", new StringResource("c"));
-        archive.close();
+        var archive = ZipArchive.open(this, zip, ZipArchive.Mode.WRITE);
+        if (archive != null)
+        {
+            archive.save("/child/a.txt", new StringResource("a"));
+            archive.save("/child/b.txt", new StringResource("b"));
+            archive.save("/c.txt", new StringResource("c"));
+            archive.close();
+        }
         return archive;
     }
 }

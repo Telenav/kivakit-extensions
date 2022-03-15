@@ -8,10 +8,10 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-public class MapSerializer implements JsonSerializer<Map<?, ?>>
+public class MapSerializer<Key, Value> implements JsonSerializer<Map<Key, Value>>
 {
     @Override
-    public JsonElement serialize(Map<?, ?> map, Type typeOfSrc, JsonSerializationContext context)
+    public JsonElement serialize(Map<Key, Value> map, Type typeOfSrc, JsonSerializationContext context)
     {
         if (map == null || map.isEmpty())
         {

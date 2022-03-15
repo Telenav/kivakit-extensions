@@ -1,9 +1,9 @@
 package com.telenav.kivakit.filesystems.github;
 
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
-import com.telenav.kivakit.kernel.messaging.filters.operators.All;
+import com.telenav.kivakit.interfaces.comparison.Filter;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.core.test.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testFile()
     {
         var file = listenTo(new GitHubFile("github://Telenav/lexakai/develop/README.md"));
-        ensure(file.string().contains("lexakai"));
+        ensure(file.asString().contains("lexakai"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }
 
@@ -41,7 +41,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testNestedFiles()
     {
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var files = folder.nestedFiles(new All<>());
+        var files = folder.nestedFiles(Filter.all());
         ensure(!files.isEmpty());
         ensure(files.contains(folder.file(FileName.parse(this, "README.md"))));
         ensure(files.contains(folder.file(FileName.parse(this, "pom.xml"))));
@@ -52,7 +52,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testNestedFolders()
     {
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var folders = folder.nestedFolders(new All<>());
+        var folders = folder.nestedFolders(Filter.all());
         ensure(!folders.isEmpty());
         ensure(folders.contains(folder.folder(FileName.parse(this, "documentation"))));
         ensure(folders.contains(folder.folder(FileName.parse(this, "legal"))));
@@ -64,7 +64,7 @@ public class GitHubFileSystemTest extends UnitTest
     {
         var token = "";
         var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
-        ensure(file.string().contains("30909955"));
+        ensure(file.asString().contains("30909955"));
         ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
     }
 }

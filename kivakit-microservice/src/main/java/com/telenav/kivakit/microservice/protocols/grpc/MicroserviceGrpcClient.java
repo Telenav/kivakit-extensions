@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.core.string.Strings;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
@@ -13,14 +13,15 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqual;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureEqual;
 
 /**
  * Client for sending microservlet requests to a microservice via GRPC.
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("unchecked") public class MicroserviceGrpcClient extends BaseComponent
+@SuppressWarnings("unchecked")
+public class MicroserviceGrpcClient extends BaseComponent
 {
     /** Grpc server port to talk to */
     private final Port port;
@@ -76,11 +77,6 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqu
         return (T) schemas().deserialize(request.responseType(), response.getObject());
     }
 
-    private MicroservletGrpcSchemas schemas()
-    {
-        return require(MicroservletGrpcSchemas.class);
-    }
-
     /**
      * Performs a blocking GRPC call to the given path with the given request object
      *
@@ -127,9 +123,14 @@ import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureEqu
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Message.format("/api/$.$/$", version.major(), version.minor(), path);
+            path = Strings.format("/api/$.$/$", version.major(), version.minor(), path);
         }
 
         return path;
+    }
+
+    private MicroservletGrpcSchemas schemas()
+    {
+        return require(MicroservletGrpcSchemas.class);
     }
 }

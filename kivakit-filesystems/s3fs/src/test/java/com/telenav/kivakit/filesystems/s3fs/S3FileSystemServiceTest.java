@@ -18,25 +18,24 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.kernel.language.progress.ProgressReporter;
-import com.telenav.kivakit.kernel.language.vm.JavaVirtualMachine;
+import com.telenav.kivakit.core.progress.ProgressReporter;
+import com.telenav.kivakit.core.test.SlowTest;
+import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.test.UnitTest;
-import com.telenav.kivakit.test.annotations.SlowTests;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import static org.junit.Assume.assumeTrue;
 
-@Category({ SlowTests.class })
+@Category({ SlowTest.class })
 public class S3FileSystemServiceTest extends UnitTest
 {
     @Before
     public void beforeMethod()
     {
-        assumeTrue(JavaVirtualMachine.property("AWS_ACCESS_KEY_ID") != null);
-        assumeTrue(JavaVirtualMachine.property("AWS_SECRET_ACCESS_KEY") != null);
+        assumeTrue(systemProperty("AWS_ACCESS_KEY_ID") != null);
+        assumeTrue(systemProperty("AWS_SECRET_ACCESS_KEY") != null);
     }
 
     @Test
@@ -51,10 +50,10 @@ public class S3FileSystemServiceTest extends UnitTest
 
             var file2 = new S3File("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/s3-test.gz");
             var printWriter = file2.printWriter();
-            printWriter.println("the 3rd test case for s3 outputstream");
+            printWriter.println("the 3rd test case for s3 output stream");
             printWriter.close();
 
-            for (String line : file2.reader().lines(ProgressReporter.NULL))
+            for (String line : file2.reader().lines(ProgressReporter.none()))
             {
                 System.out.println(line);
                 break;

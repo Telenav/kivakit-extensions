@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
+import com.telenav.kivakit.core.KivaKit;
+import com.telenav.kivakit.core.test.UnitTest;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.kernel.KivaKit;
 import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.resource.path.FilePath;
-import com.telenav.kivakit.test.UnitTest;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
@@ -63,7 +63,7 @@ public class S3ParsingTest extends UnitTest
     {
         FolderService folder = file.parent();
         ensure("docs".equals(folder.baseName().toString()));
-        ensure(("s3://default-region/kivakit/" + KivaKit.get().projectVersion() + "/docs").equals(folder.path().toString()));
+        ensure(("s3://default-region/kivakit/" + kivakit().projectVersion() + "/docs").equals(folder.path().toString()));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class S3ParsingTest extends UnitTest
     @Test
     public void testInSameBucket()
     {
-        ensure(file.inSameBucket(new S3File("s3://default-region/kivakit/" + KivaKit.get().projectVersion() + "/another")));
+        ensure(file.inSameBucket(new S3File("s3://default-region/kivakit/" + kivakit().projectVersion() + "/another")));
     }
 
     @Test
@@ -159,8 +159,9 @@ public class S3ParsingTest extends UnitTest
     }
 
     @NotNull
+    @SuppressWarnings("SpellCheckingInspection")
     private String apidocs()
     {
-        return KivaKit.get().projectVersion() + "/docs/index.html";
+        return kivakit().projectVersion() + "/docs/index.html";
     }
 }

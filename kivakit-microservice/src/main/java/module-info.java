@@ -1,15 +1,14 @@
 open module kivakit.microservice
 {
     // KivaKit
+    requires transitive kivakit.interfaces;
     requires transitive kivakit.application;
     requires transitive kivakit.settings.stores.zookeeper;
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.web.wicket;
-    requires transitive kivakit.math;
 
     requires transitive kivakit.merged.protostuff;
     requires transitive kivakit.merged.grpc;
-    requires kivakit.test;
 
     requires org.junit.platform.commons;
     requires org.junit.platform.engine;
@@ -27,9 +26,6 @@ open module kivakit.microservice
     // Java
     requires java.sql;
 
-    // JSON
-    requires gson;
-
     // Protocols and Platforms
     requires aws.lambda.java.core;
     requires org.apache.httpcomponents.httpclient;
@@ -38,6 +34,7 @@ open module kivakit.microservice
 
     // Jetty
     requires org.eclipse.jetty.servlet;
+    requires gson;
 
     // Module exports
     exports com.telenav.kivakit.microservice;
@@ -48,4 +45,5 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.protocols.rest;
     exports com.telenav.kivakit.microservice.protocols.rest.openapi;
     exports com.telenav.kivakit.microservice.protocols.rest.gson;
+    exports com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 }

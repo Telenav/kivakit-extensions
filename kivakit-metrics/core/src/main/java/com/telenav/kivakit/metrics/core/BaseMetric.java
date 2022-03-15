@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core;
 
-import com.telenav.kivakit.kernel.language.time.Time;
+import com.telenav.kivakit.core.time.Time;
 
 /**
  * Base class for metrics. All metrics have a {@link #created()} time, which is the time at which the metric started
@@ -16,7 +16,7 @@ public abstract class BaseMetric<T> implements Metric<T>
     /** The logical name of the metric */
     private String name;
 
-    /** A human readable description of the metric */
+    /** A human-readable description of the metric */
     private String description;
 
     /** The unit of the metric */

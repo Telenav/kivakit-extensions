@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
-import com.telenav.kivakit.kernel.language.reflection.Member;
-import com.telenav.kivakit.kernel.language.strings.Strings;
+import com.telenav.kivakit.core.language.reflection.Member;
+import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import io.swagger.v3.oas.models.media.Schema;
 

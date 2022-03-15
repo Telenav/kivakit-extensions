@@ -1,14 +1,15 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.esotericsoftware.kryo.serializers.TaggedFieldSerializer.Tag;
-import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.configuration.settings.stores.resource.PackageSettingsStore;
-import com.telenav.kivakit.kernel.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.serialization.json.DefaultGsonFactory;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.resource.path.Extension;
+import com.telenav.kivakit.resource.serialization.ObjectSerializers;
+import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
+import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
+import com.telenav.kivakit.settings.stores.PackageSettingsStore;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -22,8 +23,6 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
 {
     public static class Settings
     {
-        @Tag(1)
-        @Expose
         @KivaKitIncludeProperty
         int x;
 
@@ -40,11 +39,18 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     @Test
     public void test()
     {
+        register(new CoreGsonFactory(this));
+
+        var serializers = new ObjectSerializers();
+        serializers.add(Extension.JSON, new GsonObjectSerializer());
+        serializers.add(Extension.PROPERTIES, new PropertiesObjectSerializer());
+        register(serializers);
+
         // Register zookeeper settings,
         registerSettingsIn(listenTo(PackageSettingsStore.of(this, packagePath())));
 
         // create zookeeper settings store,
-        var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT)));
+        var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT, new GsonObjectSerializer())));
 
         // register a dummy application because settings are saved under application name and version,
         register(new Application()
@@ -60,12 +66,6 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
             {
             }
         });
-
-        // register a Gson factory,
-        register(new DefaultGsonFactory(this)
-                .withPrettyPrinting(true)
-                .withVersion(Version.parse(this, "1.0"))
-                .withRequireExposeAnnotation(false));
 
         // save settings to store with x = 7,
         saveSettingsTo(store, new Settings(7));

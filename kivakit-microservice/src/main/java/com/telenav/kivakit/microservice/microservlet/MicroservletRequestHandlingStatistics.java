@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.core.string.Strings;
+import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.core.time.Time;
 
 /**
  * Statistics about a given request
@@ -44,6 +44,6 @@ public class MicroservletRequestHandlingStatistics
 
     public String toString()
     {
-        return Message.format("$ => $", path, elapsed());
+        return Strings.format("$ => $", path, elapsed());
     }
 }

@@ -1,12 +1,12 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Startable;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook;
+import com.telenav.kivakit.interfaces.lifecycle.Initializable;
+import com.telenav.kivakit.interfaces.lifecycle.Startable;
+import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
@@ -21,7 +21,7 @@ import io.grpc.ServerBuilder;
 import kivakit.merged.grpc.io.netty.util.internal.logging.InternalLoggerFactory;
 import kivakit.merged.grpc.io.netty.util.internal.logging.JdkLoggerFactory;
 
-import static com.telenav.kivakit.kernel.language.vm.KivaKitShutdownHook.Order.LAST;
+import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 
 /**
  * GRPC protocol service that simply copies mounted request handlers from {@link MicroserviceRestService}.
@@ -42,20 +42,20 @@ public class MicroserviceGrpcService extends BaseComponent implements
         Stoppable,
         MicroservletMountTarget
 {
-    /** The microservice that owns this GRPC service */
-    private final Microservice<?> microservice;
-
-    /** The GRPC server */
-    private Server server;
-
     /** True while the {@link #onInitialize()} method is running */
     private boolean initializing = false;
+
+    /** The microservice that owns this GRPC service */
+    private final Microservice<?> microservice;
 
     /** The object that responds to GRPC requests */
     private final MicroservletGrpcResponder responder;
 
     /** True if this service is running */
     private boolean running;
+
+    /** The GRPC server */
+    private Server server;
 
     public MicroserviceGrpcService(Microservice<?> microservice)
     {
@@ -75,7 +75,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
             if (restService != null)
             {
                 // and mount all the request handlers in that service on this service,
-                restService.mountAll(this);
+                restService.mountAllOn(this);
             }
 
             // then allow the user to add or override request handlers.
@@ -139,7 +139,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            KivaKitShutdownHook.register(LAST, this::stop);
+            ShutdownHook.register(LAST, this::stop);
             running = true;
             return true;
         }
@@ -151,7 +151,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void stop(Duration wait)
+    public void stop(LengthOfTime wait)
     {
         if (server != null)
         {

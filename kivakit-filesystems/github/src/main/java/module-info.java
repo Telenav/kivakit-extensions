@@ -7,7 +7,6 @@ open module kivakit.filesystems.github
 
     // KivaKit
     requires kivakit.component;
-    requires kivakit.test;
 
     // GitHub API
     requires github.api;

@@ -18,13 +18,14 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.kernel.language.io.ByteSizedOutput;
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.time.Time;
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
-import com.telenav.kivakit.kernel.logging.LogEntry;
-import com.telenav.kivakit.kernel.logging.logs.text.BaseTextLog;
-import com.telenav.kivakit.logs.file.project.lexakai.diagrams.DiagramLogsFile;
+import com.telenav.kivakit.core.io.ByteSizedOutputStream;
+import com.telenav.kivakit.core.logging.LogEntry;
+import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
+import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.core.time.Time;
+import com.telenav.kivakit.core.value.count.Bytes;
+import com.telenav.kivakit.interfaces.time.LengthOfTime;
+import com.telenav.kivakit.logs.file.lexakai.DiagramLogsFile;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -32,7 +33,7 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
  * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a {@link
@@ -56,21 +57,21 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         HOURLY
     }
 
-    @UmlAggregation
-    private Rollover rollover = Rollover.NONE;
-
     @UmlAggregation(label = "maximum size")
     private Bytes maximumLogSize;
 
-    @UmlAggregation(label = "start time")
-    private Time started = Time.now();
+    private PrintWriter out;
+
+    private ByteSizedOutputStream byteSizedOutputStream;
+
+    @UmlAggregation
+    private Rollover rollover = Rollover.NONE;
 
     @UmlAggregation(label = "rollover time")
     private Time rolloverAt = nextRollover();
 
-    private PrintWriter out;
-
-    private ByteSizedOutput outputSize;
+    @UmlAggregation(label = "start time")
+    private Time started = Time.now();
 
     protected BaseRolloverTextLog()
     {
@@ -98,7 +99,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     }
 
     @Override
-    public void flush(Duration maximumWaitTime)
+    public void flush(LengthOfTime maximumWaitTime)
     {
         super.flush(maximumWaitTime);
         out.flush();
@@ -113,7 +114,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     public final synchronized void onLog(LogEntry entry)
     {
         var timeToRollOver = Time.now().isAfter(rolloverAt);
-        var sizeToRollOver = outputSize != null && outputSize.sizeInBytes().isGreaterThan(maximumLogSize);
+        var sizeToRollOver = byteSizedOutputStream != null && byteSizedOutputStream.sizeInBytes().isGreaterThan(maximumLogSize);
         if (timeToRollOver || sizeToRollOver)
         {
             try
@@ -171,8 +172,8 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     private PrintWriter newPrintWriter()
     {
-        outputSize = new ByteSizedOutput(newOutputStream());
-        return new PrintWriter(outputSize);
+        byteSizedOutputStream = new ByteSizedOutputStream(newOutputStream());
+        return new PrintWriter(byteSizedOutputStream);
     }
 
     private PrintWriter out()

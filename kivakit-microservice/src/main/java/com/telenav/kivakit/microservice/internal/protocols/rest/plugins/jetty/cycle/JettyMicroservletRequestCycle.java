@@ -2,10 +2,10 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.ProblemReportingTrait;
+import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.project.lexakai.diagrams.DiagramJetty;
+import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletRequestCycle extends BaseComponent implements ProblemReportingTrait
+public class JettyMicroservletRequestCycle extends BaseComponent implements HttpProblemReportingTrait
 {
     /** A thread local variable holding the request cycle for a given thread using this servlet */
     private static final ThreadLocal<JettyMicroservletRequestCycle> cycle = new ThreadLocal<>();
@@ -70,10 +70,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     }
 
     /** The REST application that owns this request cycle */
-    private final MicroserviceRestService application;
-
-    /** The microservlet that is attached to this request cycle via {@link #attach(Microservlet)} */
-    private Microservlet<?, ?> servlet;
+    private final MicroserviceRestService restService;
 
     /** The request */
     @UmlAggregation
@@ -83,26 +80,21 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     @UmlAggregation
     private final JettyMicroserviceResponse response;
 
+    /** The microservlet that is attached to this request cycle via {@link #attach(Microservlet)} */
+    private Microservlet<?, ?> servlet;
+
     /**
-     * @param application The REST application that owns this request cycle
+     * @param restService The REST application that owns this request cycle
      * @param request The Java Servlet API HTTP request object
      * @param response The Java Servlet API HTTP response object
      */
-    public JettyMicroservletRequestCycle(MicroserviceRestService application,
+    public JettyMicroservletRequestCycle(MicroserviceRestService restService,
                                          HttpServletRequest request,
                                          HttpServletResponse response)
     {
-        this.application = application;
+        this.restService = restService;
         this.request = listenTo(new JettyMicroservletRequest(this, request));
         this.response = listenTo(new JettyMicroserviceResponse(this, response));
-    }
-
-    /**
-     * @return The REST application that owns this request cycle
-     */
-    public MicroserviceRestService application()
-    {
-        return application;
     }
 
     /**
@@ -123,9 +115,10 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     {
         var pretty = request().parameters().asBoolean("pretty");
 
-        return application()
+        return restService()
+                .microservice()
                 .gsonFactory()
-                .withPrettyPrinting(pretty)
+                .prettyPrinting(pretty)
                 .gson();
     }
 
@@ -144,6 +137,14 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Prob
     public JettyMicroserviceResponse response()
     {
         return response;
+    }
+
+    /**
+     * @return The REST application that owns this request cycle
+     */
+    public MicroserviceRestService restService()
+    {
+        return restService;
     }
 
     /**

@@ -1,11 +1,9 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.kernel.language.objects.Hash;
-import com.telenav.kivakit.kernel.language.vm.OperatingSystem;
+import com.telenav.kivakit.core.language.Hash;
+import com.telenav.kivakit.core.os.OperatingSystem;
 import com.telenav.kivakit.network.core.Host;
 import org.jetbrains.annotations.NotNull;
-
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensure;
 
 /**
  * Represents a member of a {@link MicroserviceCluster} with associated user data.

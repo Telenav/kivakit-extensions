@@ -1,6 +1,6 @@
 package com.telenav.kivakit.metrics.core.aggregates.rate;
 
-import com.telenav.kivakit.kernel.language.time.Rate;
+import com.telenav.kivakit.core.time.Rate;
 import com.telenav.kivakit.metrics.core.aggregates.AverageMetric;
 
 public class AverageRateMetric extends AverageMetric<Rate>

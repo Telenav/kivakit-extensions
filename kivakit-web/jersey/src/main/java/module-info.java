@@ -2,7 +2,6 @@ open module kivakit.web.jersey
 {
     // KivaKit
     requires transitive kivakit.web.jetty;
-    requires transitive kivakit.serialization.json;
 
     // Java
     requires transitive java.ws.rs;
@@ -18,13 +17,11 @@ open module kivakit.web.jersey
     // Jetty
     requires org.eclipse.jetty.servlet;
 
-    // JSON
-    requires gson;
-
     // XML
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires java.logging;
+    requires kivakit.serialization.gson;
 
     // Module exports
     exports com.telenav.kivakit.web.jersey;

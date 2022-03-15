@@ -1,11 +1,11 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.collections.list.ObjectList;
-import com.telenav.kivakit.kernel.language.reflection.Type;
-import com.telenav.kivakit.kernel.language.strings.Strip;
+import com.telenav.kivakit.core.collections.list.ObjectList;
+import com.telenav.kivakit.core.language.reflection.Type;
+import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
@@ -23,7 +23,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 import java.util.List;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
@@ -50,13 +50,13 @@ public class OpenApiPathReader extends BaseComponent
 
         // Got through each mount path that the filter has,
         var filter = require(JettyMicroservletFilter.class);
-        for (var path : new ObjectList<>(filter.paths()).sorted())
+        for (var path : new ObjectList<>(filter.microservletPaths()).sorted())
         {
             // and add a PathItem to the list of paths.
-            var microservlet = filter.microservlet(path);
-            if (microservlet != null)
+            var mounted = filter.microservlet(path);
+            if (mounted != null)
             {
-                paths.addPathItem(path.resolvedPath().join(), newPathItem(path, microservlet));
+                paths.addPathItem(path.resolvedPath().join(), newPathItem(path, mounted.microservlet()));
             }
             else
             {
@@ -77,7 +77,7 @@ public class OpenApiPathReader extends BaseComponent
      */
     private boolean ignoreRequestType(Class<? extends MicroservletRequest> requestType)
     {
-        return JettyOpenApiRequest.class.isAssignableFrom(requestType);
+        return OpenApiJsonRequest.class.isAssignableFrom(requestType);
     }
 
     /**
@@ -98,9 +98,9 @@ public class OpenApiPathReader extends BaseComponent
         var operationId = Strip.leading(path.key().replaceAll("/", "-"), "-");
 
         operation.operationId(operationId);
-        operation.summary(annotationReader.readAnnotationString(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
-        operation.description(annotationReader.readAnnotationString(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::description));
-        operation.tags(annotationReader.readAnnotationStringList(requestType, "onRequest", OpenApiRequestHandler.class, OpenApiRequestHandler::tags));
+        operation.summary(annotationReader.readAnnotationString(requestType, "onRespond", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));
+        operation.description(annotationReader.readAnnotationString(requestType, "onRespond", OpenApiRequestHandler.class, OpenApiRequestHandler::description));
+        operation.tags(annotationReader.readAnnotationStringList(requestType, "onRespond", OpenApiRequestHandler.class, OpenApiRequestHandler::tags));
 
         if (operation.getTags() == null || operation.getTags().isEmpty())
         {
@@ -137,7 +137,7 @@ public class OpenApiPathReader extends BaseComponent
     {
         ensureNotNull(microservlet);
 
-        // Create the path item and give it the microservlet's description,
+        // Create the path item and give it the microservlet description,
         var item = new PathItem();
         item.description(microservlet.description());
 
@@ -162,6 +162,7 @@ public class OpenApiPathReader extends BaseComponent
                 case POST:
                     item.post(newOperation(requestType, responseType, path));
                     break;
+
                 case DELETE:
                     item.delete(newOperation(requestType, responseType, path));
                     break;

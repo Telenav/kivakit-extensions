@@ -1,16 +1,17 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.language.collections.list.StringList;
-import com.telenav.kivakit.kernel.language.io.IO;
-import com.telenav.kivakit.kernel.language.paths.StringPath;
-import com.telenav.kivakit.kernel.language.reflection.populator.KivaKitPropertyConverter;
-import com.telenav.kivakit.kernel.language.strings.Strip;
-import com.telenav.kivakit.kernel.language.threading.KivaKitThread;
-import com.telenav.kivakit.kernel.language.threading.conditions.StateMachine;
-import com.telenav.kivakit.kernel.language.time.Duration;
-import com.telenav.kivakit.kernel.language.time.Frequency;
-import com.telenav.kivakit.kernel.language.values.count.Bytes;
+import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
+import com.telenav.kivakit.conversion.core.time.DurationConverter;
+import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.io.IO;
+import com.telenav.kivakit.core.path.StringPath;
+import com.telenav.kivakit.core.string.Strip;
+import com.telenav.kivakit.core.thread.KivaKitThread;
+import com.telenav.kivakit.core.thread.StateMachine;
+import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.core.time.Frequency;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
 import org.apache.zookeeper.CreateMode;
@@ -80,15 +81,15 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     public static class Settings
     {
         /** Comma separated list of ports to use when connecting to Zookeeper */
-        @KivaKitPropertyConverter(Port.Converter.class)
+        @KivaKitConverted(Port.Converter.class)
         String ports;
 
         /** The maximum timeout when connecting to Zookeeper */
-        @KivaKitPropertyConverter(Duration.Converter.class)
+        @KivaKitConverted(DurationConverter.class)
         Duration timeout;
 
         /** The default kind of data accessed by this Zookeeper connection (see {@link CreateMode}) */
-        @KivaKitPropertyConverter(CreateModeConverter.class)
+        @KivaKitConverted(CreateModeConverter.class)
         CreateMode createMode = PERSISTENT;
     }
 

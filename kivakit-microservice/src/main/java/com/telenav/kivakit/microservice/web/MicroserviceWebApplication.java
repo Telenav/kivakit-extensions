@@ -34,7 +34,7 @@ public abstract class MicroserviceWebApplication extends WebApplication
     /**
      * The microservice parameter to this class is ignored for now
      */
-    public MicroserviceWebApplication(Microservice ignored)
+    public MicroserviceWebApplication(Microservice<?> ignored)
     {
     }
 

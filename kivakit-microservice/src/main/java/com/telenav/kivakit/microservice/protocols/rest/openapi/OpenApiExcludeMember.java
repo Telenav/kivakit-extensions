@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.JettyOpenApiRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 
 import java.lang.annotation.ElementType;
@@ -21,7 +21,7 @@ public @interface OpenApiExcludeMember
 {
     /**
      * @return The names of the methods or fields in any supertype that are to be excluded from the OpenAPI
-     * specification produced by the {@link JettyOpenApiRequest} request handler.
+     * specification produced by the {@link OpenApiJsonRequest} request handler.
      */
     String[] value() default {};
 }

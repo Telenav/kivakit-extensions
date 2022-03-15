@@ -1,16 +1,16 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.kernel.interfaces.lifecycle.Initializable;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.messaging.Listener;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.version.Version;
+import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.telenav.kivakit.kernel.data.validation.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
 /**
  * AWS Lambda protocol service that allows {@link MicroservletRequest}s to be exposed with {@link #mount(String
@@ -90,7 +90,7 @@ public class MicroserviceLambdaService extends BaseComponent implements Initiali
      */
     public void mount(String lambdaName, String lambdaVersion, Class<? extends MicroservletRequest> requestType)
     {
-        mount(lambdaName, Version.parse(Listener.throwing(), lambdaVersion), requestType);
+        mount(lambdaName, Version.parseVersion(Listener.throwing(), lambdaVersion), requestType);
     }
 
     /**

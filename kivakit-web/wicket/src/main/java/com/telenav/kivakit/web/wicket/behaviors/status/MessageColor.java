@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.wicket.behaviors.status;
 
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.model.IModel;

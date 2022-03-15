@@ -1,11 +1,11 @@
 package com.telenav.kivakit.microservice.protocols.rest;
 
-import com.telenav.kivakit.configuration.lookup.RegistryTrait;
-import com.telenav.kivakit.kernel.language.values.version.Version;
-import com.telenav.kivakit.kernel.logging.Logger;
-import com.telenav.kivakit.kernel.logging.LoggerFactory;
-import com.telenav.kivakit.kernel.messaging.Listener;
-import com.telenav.kivakit.kernel.messaging.Message;
+import com.telenav.kivakit.core.logging.Logger;
+import com.telenav.kivakit.core.logging.LoggerFactory;
+import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.core.registry.RegistryTrait;
+import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
@@ -13,15 +13,22 @@ import com.telenav.kivakit.resource.path.FilePath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.regex.Pattern;
+
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
 /**
  * A request path and method for a {@link Microservlet}.
  *
  * @author jonathanl (shibo)
  */
-public class MicroservletRestPath implements RegistryTrait, Comparable<MicroservletRestPath>
+public class MicroservletRestPath implements
+        RegistryTrait,
+        Comparable<MicroservletRestPath>
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
+
+    public static final Pattern VERSION_PATTERN = Pattern.compile("/api/(?<version>\\d+\\.\\d+)/");
 
     public static MicroservletRestPath parse(Listener listener, String path, HttpMethod httpMethod)
     {
@@ -35,16 +42,7 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
     public MicroservletRestPath(FilePath path, HttpMethod httpMethod)
     {
         this.path = path;
-        this.httpMethod = httpMethod;
-    }
-
-    public Version version()
-    {
-        if (path.startsWith("/api/"))
-        {
-            return Version.parse(LOGGER, path.withoutRoot().get(1));
-        }
-        return null;
+        this.httpMethod = ensureNotNull(httpMethod);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
 
     public String key()
     {
-        return resolvedPath() + ":" + httpMethod.name();
+        return resolvedPath() + httpMethod.name();
     }
 
     public HttpMethod method()
@@ -99,10 +97,13 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
     {
         if (!path.startsWith("/"))
         {
-            var version = require(Microservice.class).version();
-            var apiPath = Message.format("/api/$.$/$", version.major(), version.minor(), path);
-            return FilePath.parseFilePath(LOGGER, apiPath);
+            var microservice = require(Microservice.class);
+            var version = microservice.version();
+            var restService = require(MicroserviceRestService.class);
+            var apiPath = restService.versionToPath(version);
+            return FilePath.parseFilePath(LOGGER, Paths.concatenate(apiPath, path.asString()));
         }
+
         return path;
     }
 
@@ -110,6 +111,16 @@ public class MicroservletRestPath implements RegistryTrait, Comparable<Microserv
     public String toString()
     {
         return path.isEmpty() ? "" : resolvedPath().toString();
+    }
+
+    public Version version()
+    {
+        var matcher = VERSION_PATTERN.matcher(path().asString());
+        if (matcher.find())
+        {
+            return Version.version(matcher.group("version"));
+        }
+        return null;
     }
 
     public MicroservletRestPath withoutLast()

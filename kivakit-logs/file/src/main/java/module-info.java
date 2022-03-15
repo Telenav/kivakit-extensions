@@ -1,4 +1,4 @@
-import com.telenav.kivakit.kernel.logging.Log;
+import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.logs.file.FileLog;
 
 open module kivakit.logs.file
@@ -10,5 +10,5 @@ open module kivakit.logs.file
 
     // Module exports
     exports com.telenav.kivakit.logs.file;
-    exports com.telenav.kivakit.logs.file.project.lexakai.diagrams;
+    exports com.telenav.kivakit.logs.file.lexakai;
 }

@@ -1,6 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.telenav.kivakit.kernel.language.paths.StringPath;
+import com.telenav.kivakit.core.path.StringPath;
 
 /**
  * Methods that are called when Zookeeper data is created, changes or is deleted.
