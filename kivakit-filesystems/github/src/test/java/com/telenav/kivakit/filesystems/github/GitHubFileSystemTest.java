@@ -1,11 +1,12 @@
 package com.telenav.kivakit.filesystems.github;
 
-import com.telenav.kivakit.interfaces.comparison.Filter;
-import com.telenav.kivakit.core.value.count.Bytes;
-import com.telenav.kivakit.resource.path.FileName;
 import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.interfaces.comparison.Filter;
+import com.telenav.kivakit.resource.path.FileName;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static com.telenav.kivakit.core.value.count.Bytes.bytes;
 
 /**
  * Test for GitHub filesystem.
@@ -24,7 +25,7 @@ public class GitHubFileSystemTest extends UnitTest
     {
         var file = listenTo(new GitHubFile("github://Telenav/lexakai/develop/README.md"));
         ensure(file.asString().contains("lexakai"));
-        ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
+        ensure(file.sizeInBytes().isGreaterThan(bytes(128)));
     }
 
     @Test
@@ -63,8 +64,9 @@ public class GitHubFileSystemTest extends UnitTest
     public void testPrivateFile()
     {
         var token = "";
+        @SuppressWarnings("SpellCheckingInspection")
         var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
         ensure(file.asString().contains("30909955"));
-        ensure(file.sizeInBytes().isGreaterThan(Bytes._128));
+        ensure(file.sizeInBytes().isGreaterThan(bytes(128)));
     }
 }

@@ -32,14 +32,14 @@ This module is a text file log service provider.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.4.1/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-logs-file</artifactId>
-        <version>1.4.0</version>
+        <version>1.4.1</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -78,14 +78,14 @@ More details about logging are available at [*kivakit-core logging*](../../kivak
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
 
-[*File Logs*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/diagram-logs-file.svg)
+[*File Logs*](https://www.kivakit.org/1.4.1/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/diagram-logs-file.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)  
-[*com.telenav.kivakit.logs.file.lexakai*](https://www.kivakit.org/1.4.0/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.lexakai.svg)
+[*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.4.1/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)  
+[*com.telenav.kivakit.logs.file.lexakai*](https://www.kivakit.org/1.4.1/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.lexakai.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -100,10 +100,10 @@ Javadoc coverage for this project is 69.3%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*BaseRolloverTextLog*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.html) |  |  
-| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.Rollover.html) |  |  
-| [*DiagramLogsFile*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/lexakai/DiagramLogsFile.html) |  |  
-| [*FileLog*](https://www.kivakit.org/1.4.0/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/FileLog.html) |  |  
+| [*BaseRolloverTextLog*](https://www.kivakit.org/1.4.1/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.html) |  |  
+| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.4.1/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.Rollover.html) |  |  
+| [*DiagramLogsFile*](https://www.kivakit.org/1.4.1/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/lexakai/DiagramLogsFile.html) |  |  
+| [*FileLog*](https://www.kivakit.org/1.4.1/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/FileLog.html) |  |  
 
 [//]: # (start-user-text)
 
