@@ -27,7 +27,14 @@ This module contains JAR files that have been merged to eliminate split packages
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://www.kivakit.org/images/bargraph-32.png" srcset="https://www.kivakit.org/images/bargraph-32-2x.png 2x"/>
 
-
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-grpc**](grpc/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-prometheus**](prometheus/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-protostuff**](protostuff/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-zookeeper**](zookeeper/README.md)
 
 [//]: # (start-user-text)
 
