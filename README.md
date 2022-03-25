@@ -57,6 +57,14 @@ This project contains modules that extend KivaKit.
 &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-logs-file**](kivakit-logs/file/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-grpc**](kivakit-merged/grpc/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-prometheus**](kivakit-merged/prometheus/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-protostuff**](kivakit-merged/protostuff/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+ &nbsp; &nbsp; [**kivakit-merged-zookeeper**](kivakit-merged/zookeeper/README.md)  
+&nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-metrics-core**](kivakit-metrics/core/README.md)  
 &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-metrics-prometheus**](kivakit-metrics/prometheus/README.md)  
