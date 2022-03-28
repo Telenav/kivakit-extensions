@@ -19,10 +19,10 @@
 package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.core.test.SlowTest;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.resource.path.FileName;
+import com.telenav.kivakit.resource.FileName;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public class S3FolderTest extends UnitTest
     public void testClear()
     {
         FolderService folder = new S3Folder("s3://default-region/kivakit/test-data/folder");
-        var child = folder.folder(FileName.parse(this, "child"));
+        var child = folder.folder(FileName.parseFileName(this, "child"));
         child.mkdirs();
         ensure(child.exists());
         ensureFalse(folder.isEmpty());
@@ -76,7 +76,7 @@ public class S3FolderTest extends UnitTest
         var folder = Folder.parse(this, "s3://default-region/kivakit/test-data/old-" + FileName.dateTime());
         assert folder != null;
         folder.mkdirs();
-        var file = folder.file(FileName.parse(this, "tmp.txt"));
+        var file = folder.file(FileName.parseFileName(this, "tmp.txt"));
         var printWriter = file.printWriter();
         printWriter.println("for test");
         printWriter.close();

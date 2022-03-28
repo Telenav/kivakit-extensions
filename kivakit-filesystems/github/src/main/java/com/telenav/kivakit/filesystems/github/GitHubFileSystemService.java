@@ -25,9 +25,10 @@ import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FileSystemService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
+import org.jetbrains.annotations.NotNull;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
@@ -56,21 +57,21 @@ public class GitHubFileSystemService implements FileSystemService
     }
 
     @Override
-    public DiskService diskService(FilePath path)
+    public @NotNull DiskService diskService(FilePath path)
     {
         return unsupported();
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public GitHubFile fileService(FilePath path)
+    public @NotNull GitHubFile fileService(FilePath path)
     {
         return new GitHubFile(path);
     }
 
     @Override
     @UmlRelation(label = "provides")
-    public GitHubFolder folderService(FilePath path)
+    public @NotNull GitHubFolder folderService(FilePath path)
     {
         return new GitHubFolder(path);
     }

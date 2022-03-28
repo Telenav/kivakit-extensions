@@ -22,7 +22,7 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.spi.FileService;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import java.io.InputStream;

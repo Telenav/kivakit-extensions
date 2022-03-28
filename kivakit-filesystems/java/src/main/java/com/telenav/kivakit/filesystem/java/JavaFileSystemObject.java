@@ -26,8 +26,8 @@ import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.CopyMode;
-import com.telenav.kivakit.resource.WritableResource;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.resource.writing.WritableResource;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 
 import java.io.IOException;
@@ -170,7 +170,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public FolderService parent()
+    public FolderService parentService()
     {
         return new JavaFolder(path().parent());
     }

@@ -22,7 +22,7 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
-import com.telenav.kivakit.resource.Package;
+import com.telenav.kivakit.resource.packages.Package;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
@@ -670,7 +670,7 @@ public abstract class Microservice<Member> extends Application implements
     protected ResourceFolder openApiAssetsFolder()
     {
         var type = ensureNotNull(Type.forName("com.telenav.kivakit.web.swagger.SwaggerJettyPlugin"));
-        return Package.packageFrom(this, type.type(), "assets/openapi");
+        return Package.parsePackage(this, type.type(), "assets/openapi");
     }
 
     /**
@@ -679,7 +679,7 @@ public abstract class Microservice<Member> extends Application implements
      */
     protected ResourceFolder staticAssetsFolder()
     {
-        return Package.packageFrom(this, restService().getClass(), "assets");
+        return Package.parsePackage(this, restService().getClass(), "assets");
     }
 
     /**

@@ -1,4 +1,3 @@
-@SuppressWarnings("JavaRequiresAutoModule")
 open module kivakit.settings.stores.zookeeper
 {
     // KivaKit

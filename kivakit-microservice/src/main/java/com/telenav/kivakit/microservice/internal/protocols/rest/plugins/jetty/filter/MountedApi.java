@@ -12,7 +12,7 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.resource.JarLauncher;
+import com.telenav.kivakit.launcher.JarLauncher;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
-import static com.telenav.kivakit.resource.JarLauncher.ProcessType.CHILD;
-import static com.telenav.kivakit.resource.JarLauncher.RedirectTo.CONSOLE;
+import static com.telenav.kivakit.launcher.JarLauncher.ProcessType.CHILD;
+import static com.telenav.kivakit.launcher.JarLauncher.RedirectTo.CONSOLE;
 import static org.apache.http.HttpStatus.SC_OK;
 
 /**

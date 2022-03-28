@@ -23,7 +23,7 @@ import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.Folder.Type;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.jetbrains.annotations.NotNull;
 

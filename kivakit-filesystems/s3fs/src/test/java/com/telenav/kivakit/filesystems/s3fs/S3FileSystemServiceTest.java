@@ -20,8 +20,8 @@ package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.test.SlowTest;
-import com.telenav.kivakit.core.test.UnitTest;
-import com.telenav.kivakit.resource.path.FileName;
+import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.resource.FileName;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -46,7 +46,7 @@ public class S3FileSystemServiceTest extends UnitTest
             var folder = new S3Folder("s3://com-telenav-nav-user-analytics-dev/test");
             folder.delete();
 
-            folder.folder(FileName.parse(this, "2nd")).mkdirs();
+            folder.folder(FileName.parseFileName(this, "2nd")).mkdirs();
 
             var file2 = new S3File("s3://com-telenav-nav-user-analytics-dev/nav-user-analytics/s3-test.gz");
             var printWriter = file2.printWriter();

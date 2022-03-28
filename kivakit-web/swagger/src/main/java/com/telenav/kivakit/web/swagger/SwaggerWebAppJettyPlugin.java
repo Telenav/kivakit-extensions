@@ -19,7 +19,7 @@
 package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.resource.Package;
+import com.telenav.kivakit.resource.packages.Package;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
@@ -38,6 +38,6 @@ public class SwaggerWebAppJettyPlugin extends AssetsJettyPlugin
 
     private static Package folder()
     {
-        return Package.packageFrom(Listener.console(), SwaggerWebAppJettyPlugin.class, "assets");
+        return Package.parsePackage(Listener.console(), SwaggerWebAppJettyPlugin.class, "assets");
     }
 }

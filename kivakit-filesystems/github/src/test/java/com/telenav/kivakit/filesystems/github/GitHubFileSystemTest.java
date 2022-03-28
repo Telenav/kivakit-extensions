@@ -1,8 +1,8 @@
 package com.telenav.kivakit.filesystems.github;
 
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.interfaces.comparison.Filter;
-import com.telenav.kivakit.resource.path.FileName;
+import com.telenav.kivakit.resource.FileName;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -34,8 +34,8 @@ public class GitHubFileSystemTest extends UnitTest
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
         var files = folder.files();
         ensure(!files.isEmpty());
-        ensure(files.contains(folder.file(FileName.parse(this, "README.md"))));
-        ensure(files.contains(folder.file(FileName.parse(this, "pom.xml"))));
+        ensure(files.contains(folder.file(FileName.parseFileName(this, "README.md"))));
+        ensure(files.contains(folder.file(FileName.parseFileName(this, "pom.xml"))));
     }
 
     @Test
@@ -44,9 +44,9 @@ public class GitHubFileSystemTest extends UnitTest
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
         var files = folder.nestedFiles(Filter.all());
         ensure(!files.isEmpty());
-        ensure(files.contains(folder.file(FileName.parse(this, "README.md"))));
-        ensure(files.contains(folder.file(FileName.parse(this, "pom.xml"))));
-        ensure(files.contains(folder.folder(FileName.parse(this, "setup")).file(FileName.parse(this, "setup.sh"))));
+        ensure(files.contains(folder.file(FileName.parseFileName(this, "README.md"))));
+        ensure(files.contains(folder.file(FileName.parseFileName(this, "pom.xml"))));
+        ensure(files.contains(folder.folder(FileName.parseFileName(this, "setup")).file(FileName.parseFileName(this, "setup.sh"))));
     }
 
     @Test
@@ -55,9 +55,9 @@ public class GitHubFileSystemTest extends UnitTest
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
         var folders = folder.nestedFolders(Filter.all());
         ensure(!folders.isEmpty());
-        ensure(folders.contains(folder.folder(FileName.parse(this, "documentation"))));
-        ensure(folders.contains(folder.folder(FileName.parse(this, "legal"))));
-        ensure(folders.contains(folder.folder(FileName.parse(this, "src")).folder(FileName.parse(this, "main"))));
+        ensure(folders.contains(folder.folder(FileName.parseFileName(this, "documentation"))));
+        ensure(folders.contains(folder.folder(FileName.parseFileName(this, "legal"))));
+        ensure(folders.contains(folder.folder(FileName.parseFileName(this, "src")).folder(FileName.parseFileName(this, "main"))));
     }
 
     @Test

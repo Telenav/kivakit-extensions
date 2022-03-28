@@ -25,9 +25,9 @@ import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.CopyMode;
-import com.telenav.kivakit.resource.WritableResource;
-import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.resource.writing.WritableResource;
+import com.telenav.kivakit.resource.FileName;
+import com.telenav.kivakit.filesystem.FilePath;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;
@@ -167,6 +167,6 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     @NotNull
     private FileName fileName(Path at)
     {
-        return FileName.parse(this, at.getFileName().toString());
+        return FileName.parseFileName(this, at.getFileName().toString());
     }
 }

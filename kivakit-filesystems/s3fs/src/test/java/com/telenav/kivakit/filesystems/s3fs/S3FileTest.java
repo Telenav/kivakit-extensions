@@ -19,7 +19,7 @@
 package com.telenav.kivakit.filesystems.s3fs;
 
 import com.telenav.kivakit.core.test.SlowTest;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.test.UnitTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

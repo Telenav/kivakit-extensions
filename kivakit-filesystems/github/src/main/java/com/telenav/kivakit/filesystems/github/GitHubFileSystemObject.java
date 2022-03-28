@@ -30,7 +30,7 @@ import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.kohsuke.github.GHTreeEntry;
@@ -189,7 +189,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     }
 
     @Override
-    public GitHubFolder parent()
+    public GitHubFolder parentService()
     {
         var parent = path().parent();
         if (parent != null)

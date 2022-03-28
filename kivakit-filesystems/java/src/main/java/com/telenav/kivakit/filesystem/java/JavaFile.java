@@ -21,7 +21,7 @@ package com.telenav.kivakit.filesystem.java;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.spi.FileService;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.filesystem.FilePath;
 
 import java.io.InputStream;
 import java.io.OutputStream;

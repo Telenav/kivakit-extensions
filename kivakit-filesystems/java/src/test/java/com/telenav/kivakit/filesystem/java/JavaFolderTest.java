@@ -1,13 +1,13 @@
 package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.string.Strings;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.compression.archive.ZipArchive;
-import com.telenav.kivakit.resource.path.Extension;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.resource.Extension;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.resources.StringResource;
 import org.junit.Test;
 

@@ -1,13 +1,13 @@
 package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.string.Strings;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.resource.compression.archive.ZipArchive;
-import com.telenav.kivakit.resource.path.Extension;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.resource.Extension;
+import com.telenav.kivakit.filesystem.FilePath;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 

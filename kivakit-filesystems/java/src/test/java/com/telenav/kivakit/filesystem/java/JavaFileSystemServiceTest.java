@@ -1,7 +1,7 @@
 package com.telenav.kivakit.filesystem.java;
 
-import com.telenav.kivakit.resource.path.FilePath;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.test.UnitTest;
 import org.junit.Test;
 
 public class JavaFileSystemServiceTest extends UnitTest

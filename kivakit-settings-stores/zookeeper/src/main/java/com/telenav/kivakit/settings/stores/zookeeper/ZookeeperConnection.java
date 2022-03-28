@@ -96,8 +96,14 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     /** Listener to call as Zookeeper reports changes */
     private final ZookeeperChangeListener changeListener;
 
+    /** Any connecting zookeeper instance */
+    private transient ZooKeeper connectingZookeeper;
+
     /** Listener to call as Zookeeper connects and disconnects */
     private final ZookeeperConnectionListener connectionListener;
+
+    /** Code to run when Zookeeper connects */
+    private Runnable onConnection;
 
     /** Connection state */
     private final StateMachine<State> state = new StateMachine<>(State.DISCONNECTED);
@@ -107,12 +113,6 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
 
     /** Any connected zookeeper instance */
     private transient ZooKeeper zookeeper;
-
-    /** Any connecting zookeeper instance */
-    private transient ZooKeeper connectingZookeeper;
-
-    /** Code to run when Zookeeper connects */
-    private Runnable onConnection;
 
     public ZookeeperConnection(ZookeeperConnectionListener connectionListener, ZookeeperChangeListener changeListener)
     {
@@ -309,9 +309,8 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * Watches the given path for changes, which will be given to the {@link ZookeeperChangeListener} added with {@link
-     * #addChangeListener(ZookeeperChangeListener)}. If the connection is dropped, the watch will be automatically
-     * re-established when the connection is established again.
+     * Watches the given path for changes, which will be given to the {@link ZookeeperChangeListener}. If the connection
+     * is dropped, the watch will be automatically re-established when the connection is established again.
      */
     public void watch(StringPath path)
     {

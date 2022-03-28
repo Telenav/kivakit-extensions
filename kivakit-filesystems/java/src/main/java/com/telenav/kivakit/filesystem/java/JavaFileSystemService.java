@@ -26,7 +26,8 @@ import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FileSystemService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.filesystem.FilePath;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Paths;
 
@@ -47,7 +48,9 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * @see File
  * @see Folder
  */
-public class JavaFileSystemService implements FileSystemService, ComponentMixin
+public class JavaFileSystemService implements
+        FileSystemService,
+        ComponentMixin
 {
     public static final String SCHEME = "java:";
 
@@ -77,19 +80,19 @@ public class JavaFileSystemService implements FileSystemService, ComponentMixin
     }
 
     @Override
-    public DiskService diskService(FilePath path)
+    public @NotNull DiskService diskService(FilePath path)
     {
         return unsupported();
     }
 
     @Override
-    public FileService fileService(FilePath path)
+    public @NotNull FileService fileService(FilePath path)
     {
         return new JavaFile(path.withoutPrefix(SCHEME));
     }
 
     @Override
-    public FolderService folderService(FilePath path)
+    public @NotNull FolderService folderService(FilePath path)
     {
         return new JavaFolder(path.withoutPrefix(SCHEME));
     }

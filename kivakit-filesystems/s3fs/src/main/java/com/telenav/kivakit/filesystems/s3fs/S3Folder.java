@@ -28,8 +28,8 @@ import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.lexakai.DiagramS3;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
-import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.resource.FileName;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import software.amazon.awssdk.services.s3.model.ListBucketsRequest;
@@ -59,7 +59,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
 
     // In the S3 world, there no folder physically, so we created a metadata file to
     // represent its existence
-    private final FileName METADATA = FileName.parse(this, ".metadata");
+    private final FileName METADATA = FileName.parseFileName(this, ".metadata");
 
     public S3Folder(FilePath path)
     {

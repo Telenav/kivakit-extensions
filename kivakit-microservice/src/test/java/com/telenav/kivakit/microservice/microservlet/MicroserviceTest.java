@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.registry.Registry;
-import com.telenav.kivakit.core.test.UnitTest;
+import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.core.thread.KivaKitThread;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
@@ -13,7 +13,7 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.resource.path.Extension;
+import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializers;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;

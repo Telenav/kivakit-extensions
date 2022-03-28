@@ -28,7 +28,7 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.lexakai.DiagramS3;
 import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.Resource;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -219,7 +219,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public S3Folder parent()
+    public S3Folder parentService()
     {
         var parent = path().parent();
         if (parent != null)

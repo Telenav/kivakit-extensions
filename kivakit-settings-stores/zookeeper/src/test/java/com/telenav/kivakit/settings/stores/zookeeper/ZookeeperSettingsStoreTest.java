@@ -3,13 +3,13 @@ package com.telenav.kivakit.settings.stores.zookeeper;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.core.test.UnitTest;
-import com.telenav.kivakit.resource.path.Extension;
+import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializers;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
 import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
-import com.telenav.kivakit.settings.stores.PackageSettingsStore;
+import com.telenav.kivakit.settings.stores.ResourceFolderSettingsStore;
+import com.telenav.kivakit.test.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -23,9 +23,6 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
 {
     public static class Settings
     {
-        @KivaKitIncludeProperty
-        int x;
-
         public Settings()
         {
         }
@@ -34,6 +31,9 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         {
             this.x = x;
         }
+
+        @KivaKitIncludeProperty
+        int x;
     }
 
     @Test
@@ -47,7 +47,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         register(serializers);
 
         // Register zookeeper settings,
-        registerSettingsIn(listenTo(PackageSettingsStore.of(this, packagePath())));
+        registerSettingsIn(listenTo(new ResourceFolderSettingsStore(this, thisPackage())));
 
         // create zookeeper settings store,
         var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT, new GsonObjectSerializer())));

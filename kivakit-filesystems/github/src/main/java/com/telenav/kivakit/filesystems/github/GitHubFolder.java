@@ -25,8 +25,8 @@ import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
-import com.telenav.kivakit.resource.path.FileName;
-import com.telenav.kivakit.resource.path.FilePath;
+import com.telenav.kivakit.resource.FileName;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import java.util.ArrayList;
