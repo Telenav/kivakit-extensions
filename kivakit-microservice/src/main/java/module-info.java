@@ -1,3 +1,4 @@
+@SuppressWarnings("JavaRequiresAutoModule")
 open module kivakit.microservice
 {
     // KivaKit
@@ -27,6 +28,7 @@ open module kivakit.microservice
     requires java.sql;
 
     // Protocols and Platforms
+    requires gson;
     requires aws.lambda.java.core;
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
@@ -34,7 +36,6 @@ open module kivakit.microservice
 
     // Jetty
     requires org.eclipse.jetty.servlet;
-    requires gson;
 
     // Module exports
     exports com.telenav.kivakit.microservice;
