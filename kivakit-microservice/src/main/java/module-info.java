@@ -33,6 +33,7 @@ open module kivakit.microservice
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
     requires com.google.protobuf;
+    requires io.netty.common;
 
     // JSON
     requires gson;
