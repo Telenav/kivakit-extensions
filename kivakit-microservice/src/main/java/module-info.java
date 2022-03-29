@@ -1,3 +1,4 @@
+@SuppressWarnings("JavaRequiresAutoModule")
 open module kivakit.microservice
 {
     // KivaKit
@@ -38,10 +39,6 @@ open module kivakit.microservice
 
     // Jetty
     requires org.eclipse.jetty.servlet;
-    requires io.netty.common;
-    requires grpc.api;
-    requires grpc.stub;
-    requires grpc.protobuf;
 
     // Module exports
     exports com.telenav.kivakit.microservice;

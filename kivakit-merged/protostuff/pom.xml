@@ -13,7 +13,7 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-merged</artifactId>
-        <version>1.4.3-SNAPSHOT</version>
+        <version>1.5.0</version>
     </parent>
 
     <artifactId>kivakit-merged-protostuff</artifactId>
@@ -68,7 +68,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>kivakit-merged-protostuff-${kivakit.version}</finalName>
+                            <finalName>kivakit-merged-protostuff-${kivakit.merged.version}</finalName>
                             <minimizeJar>false</minimizeJar>
                             <createDependencyReducedPom>true</createDependencyReducedPom>
                             <artifactSet>
