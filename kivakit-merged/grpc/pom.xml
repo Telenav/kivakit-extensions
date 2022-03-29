@@ -158,9 +158,6 @@
                                 <relocation>
                                   <pattern>io.netty</pattern>
                                   <shadedPattern>kivakit.merged.grpc.io.netty</shadedPattern>
-                                    <excludes>
-                                        <exclude>io.netty.util.internal.Hidden$NettyBlockHoundIntegration</exclude>
-                                    </excludes>
                                 </relocation>
                             </relocations>
                         </configuration>

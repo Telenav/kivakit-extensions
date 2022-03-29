@@ -11,28 +11,32 @@ open module kivakit.microservice
     requires transitive kivakit.merged.protostuff;
     requires transitive kivakit.merged.grpc;
 
+    // Java
+    requires java.sql;
+    requires java.annotation;
+    requires javax.servlet.api;
+
+    // Test
     requires org.junit.platform.commons;
     requires org.junit.platform.engine;
     requires org.junit.jupiter;
     requires org.junit.jupiter.api;
     requires org.junit.jupiter.engine;
 
-    // Java
-    requires java.annotation;
-    requires javax.servlet.api;
-
     // Utilities
     requires com.google.common;
 
-    // Java
-    requires java.sql;
-
-    // Protocols and Platforms
-    requires gson;
+    // AWS
     requires aws.lambda.java.core;
+
+    // Protocols
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
     requires com.google.protobuf;
+    requires io.netty.common;
+
+    // JSON
+    requires gson;
 
     // Jetty
     requires org.eclipse.jetty.servlet;

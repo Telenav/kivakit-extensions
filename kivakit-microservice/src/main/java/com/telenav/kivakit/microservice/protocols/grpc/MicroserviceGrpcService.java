@@ -18,8 +18,8 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import kivakit.merged.grpc.io.netty.util.internal.logging.InternalLoggerFactory;
-import kivakit.merged.grpc.io.netty.util.internal.logging.JdkLoggerFactory;
+import io.netty.util.internal.logging.InternalLoggerFactory;
+import io.netty.util.internal.logging.JdkLoggerFactory;
 
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 

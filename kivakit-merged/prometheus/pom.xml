@@ -74,6 +74,13 @@
                                     <include>*:*</include>
                                 </includes>
                             </artifactSet>
+                            <transformers>
+                                <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                 <manifestEntries>
+                                     <Automatic-Module-Name>kivakit.merged.prometheus</Automatic-Module-Name>
+                                 </manifestEntries>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>

@@ -22,9 +22,8 @@
 
     <!--
 
-        This project is here solely to build the protostuff project into a single JAR to resolve the split package
-        problem between protostuff-core and protostuff-runtime. The JAR is built and then manually installed in the
-        kivakit-merged project in the lib folder.
+        This project is here to build the protostuff project into a single JAR to resolve the split package
+        problem between protostuff-core and protostuff-runtime.
 
      -->
 
@@ -36,6 +35,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.dyuproject.protostuff</groupId>
+            <artifactId>protostuff-api</artifactId>
+            <version>${protostuff.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.dyuproject.protostuff</groupId>
             <artifactId>protostuff-core</artifactId>
@@ -66,11 +70,18 @@
                         <configuration>
                             <finalName>kivakit-merged-protostuff-${kivakit.merged.version}</finalName>
                             <minimizeJar>false</minimizeJar>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
                                     <include>*:*</include>
                                 </includes>
                             </artifactSet>
+                            <relocations>
+                                <relocation>
+                                  <pattern>io.netty</pattern>
+                                  <shadedPattern>kivakit.merged.protostuff.io.netty</shadedPattern>
+                                </relocation>
+                            </relocations>
                             <transformers>
                                 <transformer implementation = "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                  <manifestEntries>
@@ -78,16 +89,6 @@
                                  </manifestEntries>
                                 </transformer>
                             </transformers>
-                            <relocations>
-                                <relocation>
-                                  <pattern>io.netty</pattern>
-                                  <shadedPattern>kivakit.merged.protostuff.io.netty</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                  <pattern>io.netty</pattern>
-                                  <shadedPattern>kivakit.merged.protostuff.io.netty</shadedPattern>
-                                </relocation>
-                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
