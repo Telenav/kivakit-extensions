@@ -93,7 +93,6 @@
 
     <modules>
 
-        <module>kivakit-merged</module>
         <module>kivakit-settings-stores</module>
         <module>kivakit-logs</module>
         <module>kivakit-web</module>
