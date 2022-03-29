@@ -109,13 +109,12 @@ public class FileLog extends BaseRolloverTextLog
     {
         var newFile = File.parseFile(Listener.console(), file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
-        var console = Console.get();
-        console.println("Creating new FileLog output file: " + newFile);
+        Console.println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
-        console.println("Pruning files older than $ from: $", maximumLogFileAge, folder);
-        folder.files(file -> file.isOlderThan(maximumLogFileAge)).forEach(at ->
+        Console.println("Pruning files older than $ from: $", maximumLogFileAge, folder);
+        folder.files(file -> file.lastModified().isOlderThan(maximumLogFileAge)).forEach(at ->
         {
-            console.println("Removed $", at);
+            Console.println("Removed $", at);
             at.delete();
         });
         return newFile;

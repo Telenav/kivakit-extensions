@@ -9,6 +9,7 @@
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions</artifactId>
@@ -69,16 +70,7 @@
             </exclusions>
         </dependency>
 
-        <!-- These merged JAR files are built by the kivakit-merged project -->
-
-        <!-- Protostuff -->
-
-        <dependency>
-            <groupId>com.telenav.kivakit</groupId>
-            <artifactId>kivakit-merged-protostuff</artifactId>
-        </dependency>
-
-        <!-- AWS Lambda -->
+        <!-- AWS -->
 
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -86,11 +78,35 @@
             <version>1.2.1</version>
         </dependency>
 
+        <!-- Netty -->
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- These merged JAR files are built by the kivakit-merged project -->
+
+        <!-- Protostuff -->
+
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-merged-protostuff</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+
         <!-- GRPC -->
 
         <dependency>
             <groupId>com.telenav.kivakit</groupId>
             <artifactId>kivakit-merged-grpc</artifactId>
+            <version>1.4.2</version>
         </dependency>
 
     </dependencies>

@@ -9,6 +9,7 @@
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-merged</artifactId>
@@ -29,24 +30,19 @@
 
     <properties>
 
-        <grpc.version>1.41.0</grpc.version>
+        <grpc.version>1.45.0</grpc.version>
 
     </properties>
 
     <dependencies>
 
         <dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>${netty.version}</version>
-		</dependency>
-        <dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-protobuf</artifactId>
 			<version>${grpc.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>*</groupId>
+                    <groupId>com.google.errorprone</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
@@ -55,45 +51,21 @@
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-protobuf-lite</artifactId>
 			<version>${grpc.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
         <dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-api</artifactId>
 			<version>${grpc.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
         <dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-core</artifactId>
 			<version>${grpc.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
         <dependency>
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-context</artifactId>
 			<version>${grpc.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>io.grpc</groupId>
@@ -101,8 +73,8 @@
 			<version>${grpc.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-resolver</artifactId>
                 </exclusion>
             </exclusions>
 		</dependency>
@@ -110,12 +82,6 @@
 			<groupId>io.grpc</groupId>
 			<artifactId>grpc-stub</artifactId>
 			<version>${grpc.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
 		</dependency>
 
     </dependencies>
@@ -137,6 +103,7 @@
                         <configuration>
                             <finalName>kivakit-merged-grpc-${kivakit.version}</finalName>
                             <minimizeJar>false</minimizeJar>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
                                     <include>*:*</include>
@@ -150,16 +117,29 @@
                                 </transformer>
                             </transformers>
                             <relocations>
+{                               <relocation>
+}                                  <pattern>com.google</pattern>
+                                  <shadedPattern>kivakit.merged.grpc.com.google</shadedPattern>
+                                </relocation>
+                                 <relocation>
+}                                  <pattern>javax.annotation</pattern>
+                                  <shadedPattern>kivakit.merged.grpc.javax.annotation</shadedPattern>
+                                </relocation>
                                 <relocation>
                                   <pattern>io.perfmark</pattern>
                                   <shadedPattern>kivakit.merged.grpc.io.perfmark</shadedPattern>
                                 </relocation>
                                 <relocation>
+                                  <pattern>io.grpc</pattern>
+                                  <shadedPattern>kivakit.merged.grpc.io.grpc</shadedPattern>
+                                </relocation>
+                                <relocation>
                                   <pattern>io.netty</pattern>
                                   <shadedPattern>kivakit.merged.grpc.io.netty</shadedPattern>
-                                    <excludes>
-                                        <exclude>io.netty.util.internal.Hidden$NettyBlockHoundIntegration</exclude>
-                                    </excludes>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.google.errorprone</pattern>
+                                    <shadedPattern>kivakit.merged.grpc.com.google.errorprone</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
