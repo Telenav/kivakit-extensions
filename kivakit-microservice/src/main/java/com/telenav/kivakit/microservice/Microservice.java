@@ -446,10 +446,7 @@ public abstract class Microservice<Member> extends Application implements
     {
         if (!running)
         {
-            // Show command line arguments,
-            showCommandLine();
-
-            // get any port overrides from the command line,
+            // Get any port overrides from the command line,
             if (has(PORT))
             {
                 settings().port(get(PORT));
