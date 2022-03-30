@@ -195,7 +195,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *
  *     <li>Handling requests</li>
  *     <ol>
- *         <li>The {@link Microservlet#onRequest(MicroservletRequest)} method is called</li>
+ *         <li>The {@link Microservlet#onRespond(MicroservletRequest)} method is called</li>
  *     </ol>
  *     <li>Producing a response</li>
  *     <ol>
@@ -373,7 +373,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
 
                     @Override
                     @SuppressWarnings("unchecked")
-                    public Response onRequest(Request request)
+                    public Response onRespond(Request request)
                     {
                         return (Response) request.respond(path);
                     }

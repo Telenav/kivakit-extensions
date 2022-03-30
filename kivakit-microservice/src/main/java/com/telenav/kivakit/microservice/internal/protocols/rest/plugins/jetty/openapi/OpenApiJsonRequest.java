@@ -103,7 +103,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
     @Override
     public MicroservletResponse onRespond()
     {
-        return new JettyOpenApiResponse(this);
+        return listenTo(new JettyOpenApiResponse(this));
     }
 
     /**

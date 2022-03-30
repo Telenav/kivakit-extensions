@@ -27,6 +27,7 @@ import java.net.URI;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.launcher.JarLauncher.RedirectTo.CONSOLE;
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
 import static org.apache.http.HttpStatus.SC_OK;
 
 /**
@@ -116,7 +117,7 @@ public class MountedApi extends Mounted
             }
             catch (Exception e)
             {
-                problem(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Bad URI: $", uri);
+                problem(SC_INTERNAL_SERVER_ERROR, "Bad URI: $", uri);
             }
         });
 

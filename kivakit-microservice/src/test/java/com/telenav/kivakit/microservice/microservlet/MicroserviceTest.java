@@ -26,6 +26,7 @@ import org.junit.Test;
 @Ignore
 public class MicroserviceTest extends UnitTest
 {
+    @SuppressWarnings("unused")
     public static class TestGarbageRequest extends BaseMicroservletRequest
     {
         @SuppressWarnings("FieldCanBeLocal")
@@ -44,7 +45,7 @@ public class MicroserviceTest extends UnitTest
         @Override
         public MicroservletResponse onRespond()
         {
-            return new TestResponse(-1);
+            return listenTo(new TestResponse(-1));
         }
 
         @Override
@@ -76,7 +77,7 @@ public class MicroserviceTest extends UnitTest
         @Override
         public MicroservletResponse onRespond()
         {
-            return new TestResponse(42);
+            return listenTo(new TestResponse(42));
         }
 
         @Override
@@ -131,7 +132,7 @@ public class MicroserviceTest extends UnitTest
         @Override
         public MicroservletResponse onRespond()
         {
-            return new TestResponse(a * b);
+            return listenTo(new TestResponse(a * b));
         }
 
         @Override
@@ -145,10 +146,6 @@ public class MicroserviceTest extends UnitTest
     {
         @Expose
         int result;
-
-        public TestResponse()
-        {
-        }
 
         public TestResponse(int result)
         {

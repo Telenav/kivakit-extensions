@@ -69,9 +69,9 @@ public class MountedMicroservlet extends Mounted
                     if (request != null)
                     {
                         listenTo(request);
-                        service().onRequesting(request, method);
-                        response.writeObject(microservlet.request(request));
-                        service().onRequested(request, method);
+                        restService().onRequesting(request, method);
+                        response.writeObject(microservlet.respond(request));
+                        restService().onRequested(request, method);
                     }
                     else
                     {
@@ -90,9 +90,9 @@ public class MountedMicroservlet extends Mounted
                     if (request != null)
                     {
                         listenTo(request);
-                        service().onRequesting(request, method);
-                        response.writeObject(microservlet.request(request));
-                        service().onRequested(request, method);
+                        restService().onRequesting(request, method);
+                        response.writeObject(microservlet.respond(request));
+                        restService().onRequested(request, method);
                     }
                     else
                     {

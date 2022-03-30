@@ -17,7 +17,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
- * A microservlet responds to a request by implementing {@link #onRequest(MicroservletRequest)}. The response object
+ * A microservlet responds to a request by implementing {@link #onRespond(MicroservletRequest)}. The response object
  * must be a subclass of {@link MicroservletResponse}.
  *
  * <p>The request and response type for a microservlet are provided by {@link #requestType()} and a {@link
@@ -77,15 +77,15 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     /**
      * This method is unsupported unless overridden
      */
-    public Response onRequest(Request request)
+    public Response onRespond(Request request)
     {
         return unsupported("Microservlet has no request handling implementation", objectName());
     }
 
     @SuppressWarnings("unchecked")
-    public Response request(MicroservletRequest request)
+    public Response respond(MicroservletRequest request)
     {
-        return onRequest((Request) request);
+        return onRespond((Request) request);
     }
 
     /**

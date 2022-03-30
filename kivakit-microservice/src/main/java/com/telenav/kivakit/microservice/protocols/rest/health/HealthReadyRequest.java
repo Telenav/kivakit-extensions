@@ -61,7 +61,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
             }
         }
 
-        return new HealthReadyResponse("READY");
+        return listenTo(new HealthReadyResponse("READY"));
     }
 
     /**

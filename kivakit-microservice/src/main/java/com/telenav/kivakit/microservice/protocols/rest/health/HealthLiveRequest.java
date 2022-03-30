@@ -62,7 +62,7 @@ public class HealthLiveRequest extends BaseMicroservletRequest
         }
 
         // otherwise, we are alive.
-        return new HealthLiveResponse("ALIVE");
+        return listenTo(new HealthLiveResponse("ALIVE"));
     }
 
     /**

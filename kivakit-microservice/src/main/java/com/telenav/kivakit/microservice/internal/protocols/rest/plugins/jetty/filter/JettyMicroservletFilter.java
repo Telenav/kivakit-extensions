@@ -42,7 +42,7 @@ import java.util.Set;
  * </p>
  *
  * <p>
- * All HTTP methods result in a call to {@link Microservlet#onRequest(MicroservletRequest)}, where the parameter is the
+ * All HTTP methods result in a call to {@link Microservlet#onRespond(MicroservletRequest)}, where the parameter is the
  * posted JSON object (in the case of POST requests). The object returned from the onRequest method is written to the
  * response output in JSON format. The {@link Gson} object used to serialize and deserialize JSON objects is obtained
  * from the {@link MicroserviceRestService} passed to the filter constructor.

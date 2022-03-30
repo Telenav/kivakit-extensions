@@ -44,7 +44,10 @@ public interface MicroservletRequestHandler extends Listener
             try
             {
                 // prepare it for transmission,
-                response.prepare();
+                response.prepareResponse();
+
+                // complete the response,
+                response.endResponse();
             }
             catch (Exception e)
             {

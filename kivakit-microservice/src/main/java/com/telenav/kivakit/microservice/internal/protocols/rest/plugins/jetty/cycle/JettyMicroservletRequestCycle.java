@@ -113,7 +113,7 @@ public class JettyMicroservletRequestCycle extends BaseComponent implements Http
      */
     public Gson gson()
     {
-        var pretty = request().parameters().asBoolean("pretty");
+        var pretty = request().parameters().asBoolean("pretty", false);
 
         return restService()
                 .microservice()

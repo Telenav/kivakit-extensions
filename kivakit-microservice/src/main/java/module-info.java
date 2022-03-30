@@ -7,6 +7,7 @@ open module kivakit.microservice
     requires transitive kivakit.settings.stores.zookeeper;
     requires transitive kivakit.web.swagger;
     requires transitive kivakit.web.wicket;
+    requires transitive kivakit.network.http;
 
     requires transitive kivakit.merged.protostuff;
     requires transitive kivakit.merged.grpc;
@@ -26,15 +27,18 @@ open module kivakit.microservice
     requires org.apache.httpcomponents.httpclient;
     requires org.apache.httpcomponents.httpcore;
     requires com.google.protobuf;
-    requires io.netty.common;
+
+    // OpenAPI
+    requires io.swagger.v3.oas.models;
 
     // JSON
     requires gson;
 
+    // Netty
+    requires io.netty.common;
+
     // Jetty
     requires org.eclipse.jetty.servlet;
-    requires io.swagger.v3.oas.models;
-    requires kivakit.network.http;
 
     // Module exports
     exports com.telenav.kivakit.microservice;

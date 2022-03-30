@@ -17,7 +17,17 @@ public interface MicroservletResponse extends
         Component,
         HttpProblemReportingTrait
 {
-    default void prepare()
+    /**
+     * Called to prepare the response
+     */
+    default void prepareResponse()
+    {
+    }
+
+    /**
+     * Called when the response is complete
+     */
+    default void endResponse()
     {
     }
 }

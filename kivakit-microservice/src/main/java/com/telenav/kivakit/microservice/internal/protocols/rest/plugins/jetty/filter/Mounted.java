@@ -13,11 +13,11 @@ import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
  */
 public class Mounted extends BaseComponent implements HttpProblemReportingTrait
 {
-    private final MicroserviceRestService service;
+    private final MicroserviceRestService restService;
 
-    public Mounted(final MicroserviceRestService service)
+    public Mounted(final MicroserviceRestService restService)
     {
-        this.service = service;
+        this.restService = restService;
     }
 
     /**
@@ -39,12 +39,12 @@ public class Mounted extends BaseComponent implements HttpProblemReportingTrait
         finally
         {
             statistics.end();
-            service.onRequestStatistics(statistics);
+            restService.onRequestStatistics(statistics);
         }
     }
 
-    protected MicroserviceRestService service()
+    protected MicroserviceRestService restService()
     {
-        return service;
+        return restService;
     }
 }
