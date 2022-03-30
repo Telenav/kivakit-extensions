@@ -19,6 +19,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
@@ -37,7 +38,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class MountedApi extends Mounted
 {
     /** HTTP client */
-    private HttpClient client;
+    private final HttpClient client;
 
     /** Command line for application in JAR */
     private StringList commandLine = new StringList();
@@ -60,6 +61,8 @@ public class MountedApi extends Mounted
     public MountedApi(final MicroserviceRestService service)
     {
         super(service);
+
+        client = HttpClientBuilder.create().build();
     }
 
     public MountedApi commandLine(final StringList commandLine)

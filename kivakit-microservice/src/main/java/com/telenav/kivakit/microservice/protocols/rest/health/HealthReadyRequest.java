@@ -27,7 +27,6 @@ public class HealthReadyRequest extends BaseMicroservletRequest
     @OpenApiIncludeType(description = "Response to a readiness request")
     public static class HealthReadyResponse extends BaseMicroservletResponse
     {
-        @SuppressWarnings("FieldCanBeLocal")
         @Expose
         @KivaKitIncludeProperty
         @OpenApiIncludeMember(description = "The server status")

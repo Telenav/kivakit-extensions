@@ -6,14 +6,14 @@ import org.eclipse.jetty.servlet.ServletHolder;
 
 public class AssetsJettyPlugin extends BaseAssetsJettyPlugin
 {
-    private final ResourceFolder folder;
+    private final ResourceFolder<?> folder;
 
-    public AssetsJettyPlugin(ResourceFolder folder)
+    public AssetsJettyPlugin(ResourceFolder<?> folder)
     {
         this("[AssetsJettyPlugin folder = " + folder.toString() + "]", folder);
     }
 
-    public AssetsJettyPlugin(String name, ResourceFolder folder)
+    public AssetsJettyPlugin(String name, ResourceFolder<?> folder)
     {
         super(name);
         this.folder = folder;

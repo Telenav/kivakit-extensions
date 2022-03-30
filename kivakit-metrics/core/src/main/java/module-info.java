@@ -1,7 +1,8 @@
 open module kivakit.metrics.core
 {
     // KivaKit
-    requires transitive kivakit.component;
+    requires kivakit.interfaces;
+    requires kivakit.core;
 
     // Exports
     exports com.telenav.kivakit.metrics.core;

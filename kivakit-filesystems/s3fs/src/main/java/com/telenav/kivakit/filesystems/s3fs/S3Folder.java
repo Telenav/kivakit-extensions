@@ -378,10 +378,6 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return file(METADATA);
     }
 
-    private void mkdir(S3Folder folder)
-    {
-    }
-
     private List<FileService> nestedFiles(FolderService folder, List<FileService> files)
     {
         files.addAll(folder.files());

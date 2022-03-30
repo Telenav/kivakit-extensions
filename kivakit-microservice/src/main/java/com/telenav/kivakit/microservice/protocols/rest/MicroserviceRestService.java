@@ -487,7 +487,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * OpenAPI {@link Info} for the microservice. This method can be overridden to provide more detail that what is in
+     * OpenAPI Info for the microservice. This method can be overridden to provide more detail that what is in
      * {@link MicroserviceMetadata}.
      */
     public Info openApiInfo()

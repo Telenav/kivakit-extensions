@@ -78,6 +78,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
 
                 // and return the JSON response.
                 json = gson.toJson(request.responseType());
+                response.status(200);
                 print.println(json);
             }
             else

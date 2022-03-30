@@ -6,9 +6,9 @@ import com.dyuproject.protostuff.Tag;
  * @author Alex Shvid
  */
 
+@SuppressWarnings("RedundantIfStatement")
 public class JavaObject
 {
-
     @Tag(1)
     public boolean unknown = false;
 

@@ -16,13 +16,6 @@ open module kivakit.microservice
     requires java.annotation;
     requires javax.servlet.api;
 
-    // Test
-    requires org.junit.platform.commons;
-    requires org.junit.platform.engine;
-    requires org.junit.jupiter;
-    requires org.junit.jupiter.api;
-    requires org.junit.jupiter.engine;
-
     // Utilities
     requires com.google.common;
 
@@ -40,6 +33,8 @@ open module kivakit.microservice
 
     // Jetty
     requires org.eclipse.jetty.servlet;
+    requires io.swagger.v3.oas.models;
+    requires kivakit.network.http;
 
     // Module exports
     exports com.telenav.kivakit.microservice;

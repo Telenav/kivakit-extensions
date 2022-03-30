@@ -35,7 +35,7 @@ import java.util.Set;
  * A {@link MicroservletRequest} handler that produces an {@link OpenAPI} definition for a {@link
  * MicroservletJettyPlugin}.
  */
-@UmlClassDiagram(diagram = DiagramJetty.class)
+@SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramJetty.class)
 @OpenApiExcludeMember({ "exampleSetFlag" })
 public class OpenApiJsonRequest extends BaseMicroservletRequest
 {

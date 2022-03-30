@@ -55,14 +55,14 @@ public class SwaggerJettyPlugin extends BaseAssetsJettyPlugin
         }
     }
 
-    private final ResourceFolder folder;
+    private final ResourceFolder<?> folder;
 
     private final int port;
 
     /**
      * @param port The port where Swagger is running
      */
-    public SwaggerJettyPlugin(ResourceFolder folder, int port)
+    public SwaggerJettyPlugin(ResourceFolder<?> folder, int port)
     {
         super("[SwaggerJettyPlugin folder = " + folder + "]");
         this.folder = folder;

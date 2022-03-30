@@ -18,18 +18,16 @@ import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("SpellCheckingInspection") @OpenApiIncludeType(description = "Request for server liveness")
+@OpenApiIncludeType(description = "Request for server liveness")
 public class HealthLiveRequest extends BaseMicroservletRequest
 {
     /**
      * Response object for this request
      */
-    @SuppressWarnings("SpellCheckingInspection")
     @OpenApiIncludeType(description = "Response to a liveness request")
     public static class HealthLiveResponse extends BaseMicroservletResponse
     {
         @Expose
-        @SuppressWarnings({ "SpellCheckingInspection", "FieldCanBeLocal" })
         @KivaKitIncludeProperty
         @OpenApiIncludeMember(description = "The server liveness status")
         private final String status;

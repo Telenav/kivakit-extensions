@@ -128,7 +128,7 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see BaseSettingsStore
  * @see SettingsStore
  */
-@SuppressWarnings("SpellCheckingInspection") public class ZookeeperSettingsStore extends BaseSettingsStore implements
+public class ZookeeperSettingsStore extends BaseSettingsStore implements
         ZookeeperChangeListener,
         ZookeeperConnectionListener
 {
@@ -338,7 +338,6 @@ import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
      * @return The given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
      * node path /a::b::c becomes the hierarchical node path /a/b/c.
      */
-    @SuppressWarnings("SpellCheckingInspection")
     @NotNull
     public StringPath unflatten(StringPath path)
     {
