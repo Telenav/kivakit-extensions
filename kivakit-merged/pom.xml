@@ -10,6 +10,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <name>kivakit-merged</name>
+
     <groupId>com.telenav.kivakit</groupId>
     <artifactId>kivakit-merged</artifactId>
     <version>1.5.0</version>
@@ -31,6 +33,77 @@
         <netty.version>4.1.66.Final</netty.version>
 
     </properties>
+
+    <!-- Project -->
+
+    <description>The kivakit-merged project contains JAR files that have been re-built for modular Java.</description>
+    <url>https://www.kivakit.org</url>
+    <inceptionYear>2011</inceptionYear>
+    <organization>
+        <name>Telenav</name>
+        <url>https://www.telenav.com</url>
+    </organization>
+
+    <!-- Licensing -->
+
+    <licenses>
+
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+
+    </licenses>
+
+    <!-- Contributors -->
+
+    <developers>
+
+        <developer>
+            <id>jonathanl</id>
+            <name>Jonathan Locke (Luo Shibo)</name>
+            <email>jonathanl@telenav.com</email>
+            <organization>Telenav</organization>
+            <organizationUrl>https://www.telenav.com/</organizationUrl>
+            <roles>
+                <role>lead</role>
+                <role>administrator</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>haifeng</id>
+            <name>Haifeng Zhu</name>
+            <email>hfzhu@telenav.com</email>
+            <organization>Telenav</organization>
+            <organizationUrl>https://www.telenav.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+                <role>administrator</role>
+            </roles>
+        </developer>
+
+    </developers>
+
+    <!-- Source Code -->
+
+    <scm>
+
+        <connection>scm:git:https://Telenav/kivakit.git</connection>
+        <developerConnection>scm:git:https://Telenav/kivakit.git</developerConnection>
+        <url>https://Telenav/kivakit.git</url>
+
+    </scm>
+
+    <!-- Issue Tracking -->
+
+    <issueManagement>
+
+        <system>GitHub</system>
+        <url>https://github.com/Telenav/kivakit/issues</url>
+
+    </issueManagement>
 
     <build>
 
@@ -148,35 +221,24 @@
                 </executions>
             </plugin>
 
+
+            <!-- OSSRH -->
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>${maven-nexus-staging-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
         </plugins>
 
     </build>
-
-    <profiles>
-
-        <profile>
-            <id>deploy-ossrh</id>
-            <build>
-                <plugins>
-
-                    <!-- OSSRH -->
-
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${maven-nexus-staging-plugin.version}</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-    </profiles>
 
     <modules>
 
