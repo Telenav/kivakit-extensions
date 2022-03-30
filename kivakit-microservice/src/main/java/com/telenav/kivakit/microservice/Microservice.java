@@ -198,6 +198,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see MicroserviceCluster
  * @see MicroserviceClusterMember
  */
+@SuppressWarnings("unused")
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice<Member> extends Application implements
         Startable,
@@ -564,12 +565,6 @@ public abstract class Microservice<Member> extends Application implements
         grpcService().stop();
     }
 
-    @Override
-    public Version version()
-    {
-        return metadata().version();
-    }
-
     public WebApplication webApplication()
     {
         return webApplication.get();
@@ -664,7 +659,7 @@ public abstract class Microservice<Member> extends Application implements
      * annotations. For example, a microservice might want to include an OAS .yaml file. If this method is not
      * overridden, the default folder will be the "assets" sub-package of the rest application's package.
      */
-    protected ResourceFolder openApiAssetsFolder()
+    protected ResourceFolder<?> openApiAssetsFolder()
     {
         var type = ensureNotNull(Type.forName("com.telenav.kivakit.web.swagger.SwaggerJettyPlugin"));
         return Package.parsePackage(this, type.type(), "assets/openapi");
@@ -674,7 +669,7 @@ public abstract class Microservice<Member> extends Application implements
      * @return The resource folder containing static assets. The resources will be mounted on <i>/assets</i>. If this
      * method is not overridden, the default folder will be the "assets" sub-package of the rest application's package.
      */
-    protected ResourceFolder staticAssetsFolder()
+    protected ResourceFolder<?> staticAssetsFolder()
     {
         return Package.parsePackage(this, restService().getClass(), "assets");
     }
@@ -736,7 +731,7 @@ public abstract class Microservice<Member> extends Application implements
         }
     }
 
-    private void mountOpenApiAssets(String path, final ResourceFolder openApiAssets)
+    private void mountOpenApiAssets(String path, ResourceFolder<?> openApiAssets)
     {
         server.mount(path, new SwaggerJettyPlugin(openApiAssets, settings().port()));
         server.mount(path + "/assets/openapi/*", new AssetsJettyPlugin(openApiAssets));
