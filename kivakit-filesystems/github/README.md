@@ -31,14 +31,14 @@ Read only filesystem service provider for GitHub.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.4.2/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.5.0/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-filesystems-github</artifactId>
-        <version>1.4.2</version>
+        <version>1.5.0</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -79,7 +79,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystems.github*](https://www.kivakit.org/1.4.2/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/com.telenav.kivakit.filesystems.github.svg)
+[*com.telenav.kivakit.filesystems.github*](https://www.kivakit.org/1.5.0/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/com.telenav.kivakit.filesystems.github.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -96,12 +96,12 @@ The following significant classes are undocumented:
 
 | Class | Documentation Sections |
 |---|---|
-| [*GitHubFile*](https://www.kivakit.org/1.4.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFile.html) |  |  
-| [*GitHubFileSystemObject*](https://www.kivakit.org/1.4.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemObject.html) |  |  
-| [*GitHubFileSystemService*](https://www.kivakit.org/1.4.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemService.html) |  |  
-| [*GitHubFolder*](https://www.kivakit.org/1.4.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFolder.html) |  |  
-| [*GitHubTree*](https://www.kivakit.org/1.4.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubTree.html) |  |  
-| [*GitHubTree.EntryType*](https://www.kivakit.org/1.4.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubTree.EntryType.html) |  |  
+| [*GitHubFile*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFile.html) |  |  
+| [*GitHubFileSystemObject*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemObject.html) |  |  
+| [*GitHubFileSystemService*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemService.html) |  |  
+| [*GitHubFolder*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFolder.html) |  |  
+| [*GitHubTree*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubTree.html) |  |  
+| [*GitHubTree.EntryType*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubTree.EntryType.html) |  |  
 
 [//]: # (start-user-text)
 

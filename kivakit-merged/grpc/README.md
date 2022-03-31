@@ -20,14 +20,14 @@ This module contains a merged grpc JAR compatible with modular Java
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.4.2/lexakai/kivakit-extensions/kivakit-merged/grpc/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.5.0/lexakai/kivakit-extensions/kivakit-merged/grpc/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-merged-grpc</artifactId>
-        <version>1.4.2</version>
+        <version>1.5.0</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -48,7 +48,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.merged.grpc*](https://www.kivakit.org/1.4.2/lexakai/kivakit-extensions/kivakit-merged/grpc/documentation/diagrams/com.telenav.kivakit.merged.grpc.svg)
+[*com.telenav.kivakit.merged.grpc*](https://www.kivakit.org/1.5.0/lexakai/kivakit-extensions/kivakit-merged/grpc/documentation/diagrams/com.telenav.kivakit.merged.grpc.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -63,7 +63,7 @@ Javadoc coverage for this project is 50.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*MergedGrpcProject*](https://www.kivakit.org/1.4.2/javadoc/kivakit-extensions/kivakit.merged.grpc/com/telenav/kivakit/merged/grpc/MergedGrpcProject.html) |  |  
+| [*MergedGrpcProject*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.merged.grpc/com/telenav/kivakit/merged/grpc/MergedGrpcProject.html) |  |  
 
 [//]: # (start-user-text)
 
