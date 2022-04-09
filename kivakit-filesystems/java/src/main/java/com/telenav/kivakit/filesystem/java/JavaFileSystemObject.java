@@ -118,7 +118,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
         try
         {
             var creationTime = (FileTime) Files.getAttribute(javaPath(), "creationTime");
-            return Time.milliseconds(creationTime.toMillis());
+            return Time.epochMilliseconds(creationTime.toMillis());
         }
         catch (IOException e)
         {
