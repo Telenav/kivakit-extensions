@@ -21,9 +21,9 @@ package com.telenav.kivakit.filesystems.s3fs;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystems.s3fs.lexakai.DiagramS3;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -62,7 +62,7 @@ public class S3File extends S3FileSystemObject implements FileService
     }
 
     @Override
-    public Time created()
+    public Time createdAt()
     {
         return unsupported();
     }

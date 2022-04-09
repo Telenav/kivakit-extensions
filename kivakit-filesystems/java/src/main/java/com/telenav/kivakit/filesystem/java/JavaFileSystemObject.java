@@ -23,12 +23,12 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Time;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.CopyMode;
-import com.telenav.kivakit.resource.writing.WritableResource;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
+import com.telenav.kivakit.resource.writing.WritableResource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,7 +113,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public Time created()
+    public Time createdAt()
     {
         try
         {

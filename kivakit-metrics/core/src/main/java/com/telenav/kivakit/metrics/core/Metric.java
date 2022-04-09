@@ -5,7 +5,7 @@ import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.interfaces.numeric.Quantizable;
 
 /**
- * A named measurement {@link #created()} at some point in time
+ * A named measurement {@link #createdAt()} at some point in time
  *
  * @author jonathanl (shibo)
  */
