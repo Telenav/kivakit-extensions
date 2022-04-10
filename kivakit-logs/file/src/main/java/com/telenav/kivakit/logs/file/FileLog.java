@@ -79,7 +79,7 @@ public class FileLog extends BaseRolloverTextLog
                 }
 
                 var converter = new VariableMapConverter(Listener.console(), properties);
-                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
+                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.FOREVER);
                 maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
             catch (Exception e)
@@ -107,7 +107,7 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        var newFile = File.parseFile(Listener.console(), file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
+        var newFile = File.parseFile(Listener.console(), file.withoutExtension() + "-" + FileName.dateTime(started().asLocalTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
         Console.println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();

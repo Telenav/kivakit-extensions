@@ -22,9 +22,9 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
-import com.telenav.kivakit.resource.packages.Package;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
+import com.telenav.kivakit.resource.packages.Package;
 import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import com.telenav.kivakit.settings.Deployment;
@@ -559,10 +559,10 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     @Override
-    public void stop(LengthOfTime wait)
+    public void stop(LengthOfTime<?> wait)
     {
         server.stop(wait);
-        grpcService().stop();
+        grpcService().stop(wait);
     }
 
     public WebApplication webApplication()

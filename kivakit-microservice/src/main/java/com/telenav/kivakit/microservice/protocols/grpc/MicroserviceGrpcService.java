@@ -21,6 +21,7 @@ import io.grpc.ServerBuilder;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 
+import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 
 /**
@@ -105,6 +106,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
      * @param requestHandlerType The type of the request handler
      */
+    @Override
     @UmlRelation(label = "mounts", referent = Microservlet.class)
     public void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType)
     {
@@ -124,6 +126,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     /**
      * Starts this GRPC service
      */
+    @Override
     public boolean start()
     {
         information("Starting GRPC server");
@@ -139,7 +142,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.register(LAST, this::stop);
+            ShutdownHook.register(LAST, () -> stop(FOREVER));
             running = true;
             return true;
         }
@@ -151,7 +154,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void stop(LengthOfTime wait)
+    public void stop(LengthOfTime<?> wait)
     {
         if (server != null)
         {

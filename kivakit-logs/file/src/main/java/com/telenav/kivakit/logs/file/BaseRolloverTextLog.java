@@ -34,6 +34,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.time.LocalTime.nowInLocalTime;
 
 /**
  * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a {@link
@@ -57,12 +58,12 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         HOURLY
     }
 
+    private ByteSizedOutputStream byteSizedOutputStream;
+
     @UmlAggregation(label = "maximum size")
     private Bytes maximumLogSize;
 
     private PrintWriter out;
-
-    private ByteSizedOutputStream byteSizedOutputStream;
 
     @UmlAggregation
     private Rollover rollover = Rollover.NONE;
@@ -99,7 +100,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     }
 
     @Override
-    public void flush(LengthOfTime maximumWaitTime)
+    public void flush(LengthOfTime<?> maximumWaitTime)
     {
         super.flush(maximumWaitTime);
         out.flush();
@@ -155,10 +156,10 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
                 return Time.now().plus(Duration.ONE_MINUTE); // Time.MAXIMUM;
 
             case DAILY:
-                return Time.now().localTime().startOfTomorrow();
+                return nowInLocalTime().startOfTomorrow().asTime();
 
             case HOURLY:
-                return Time.now().localTime().startOfNextHour();
+                return nowInLocalTime().startOfNextHour().asTime();
 
             default:
                 return unsupported();
