@@ -52,7 +52,7 @@ public class S3File extends S3FileSystemObject implements FileService
 
     public S3File(String path)
     {
-        super(FilePath.parseFilePath(Listener.console(), path), false);
+        super(FilePath.parseFilePath(Listener.consoleListener(), path), false);
     }
 
     @Override

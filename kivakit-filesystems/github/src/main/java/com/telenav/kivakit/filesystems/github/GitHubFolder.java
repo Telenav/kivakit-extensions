@@ -51,7 +51,7 @@ public class GitHubFolder extends GitHubFileSystemObject implements FolderServic
 
     public GitHubFolder(String path)
     {
-        this(FilePath.parseFilePath(Listener.console(), path));
+        this(FilePath.parseFilePath(Listener.consoleListener(), path));
     }
 
     @Override

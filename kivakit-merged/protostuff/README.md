@@ -20,14 +20,14 @@ This module contains a merged protostuff JAR compatible with modular Java
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.5.0/lexakai/kivakit-extensions/kivakit-merged/protostuff/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-merged/protostuff/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-merged-protostuff</artifactId>
-        <version>1.5.0</version>
+        <version>1.5.1-SNAPSHOT</version>
     </dependency>
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
@@ -48,7 +48,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.merged.protostuff*](https://www.kivakit.org/1.5.0/lexakai/kivakit-extensions/kivakit-merged/protostuff/documentation/diagrams/com.telenav.kivakit.merged.protostuff.svg)
+[*com.telenav.kivakit.merged.protostuff*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-merged/protostuff/documentation/diagrams/com.telenav.kivakit.merged.protostuff.svg)
 
 <img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
 
@@ -63,7 +63,7 @@ Javadoc coverage for this project is 50.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*MergedProtostuffProject*](https://www.kivakit.org/1.5.0/javadoc/kivakit-extensions/kivakit.merged.protostuff/com/telenav/kivakit/merged/protostuff/MergedProtostuffProject.html) |  |  
+| [*MergedProtostuffProject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.merged.protostuff/com/telenav/kivakit/merged/protostuff/MergedProtostuffProject.html) |  |  
 
 [//]: # (start-user-text)
 

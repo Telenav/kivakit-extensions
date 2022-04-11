@@ -68,7 +68,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             String tail = Paths.tail(pathString, "!/");
 
             var uri = URI.create(head);
-            filesystem = Nio.filesystem(Listener.none(), uri);
+            filesystem = Nio.filesystem(Listener.deafListener(), uri);
             if (filesystem != null)
             {
                 this.path = filesystem.getPath(tail);
@@ -81,7 +81,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             {
                 // until we find a filesystem.
                 var uri = URI.create(at.toString());
-                filesystem = Nio.filesystem(Listener.none(), uri);
+                filesystem = Nio.filesystem(Listener.deafListener(), uri);
                 if (filesystem != null)
                 {
                     this.path = path().last(path().size() - at.size()).withoutSchemes().asJavaPath();

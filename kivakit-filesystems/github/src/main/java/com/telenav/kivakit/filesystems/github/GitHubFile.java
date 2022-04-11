@@ -48,7 +48,7 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
 
     public GitHubFile(String path)
     {
-        super(FilePath.parseFilePath(Listener.console(), path));
+        super(FilePath.parseFilePath(Listener.consoleListener(), path));
     }
 
     @Override

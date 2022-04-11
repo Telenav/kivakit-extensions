@@ -21,9 +21,9 @@ package com.telenav.kivakit.filesystems.s3fs;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.filesystem.File;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.Folder.Type;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,14 +43,14 @@ public class S3Output extends OutputStream
     // The temporary cache folder for storing materialized files
     private static final Folder cacheFolder = Folder.temporaryForProcess(Type.CLEAN_UP_ON_EXIT).ensureExists();
 
+    // The cache file
+    private final File cacheFile;
+
     /** The {@link S3FileSystemObject} this stream writes to */
     private final S3FileSystemObject object;
 
     // The underline output stream
     private final OutputStream outputStream;
-
-    // The cache file
-    private final File cacheFile;
 
     /**
      * Create an {@link OutputStream} writing to an {@link S3FileSystemObject}
@@ -106,6 +106,6 @@ public class S3Output extends OutputStream
         // Flatten path being cached into a long filename by turning all file
         // system meta characters into underscores.
         // For example, "a/b/c.txt" becomes "a_b_c.txt"
-        return File.parseFile(Listener.console(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
+        return File.parseFile(Listener.consoleListener(), cacheFolder + "/" + filePath.toString().replaceAll("[/:]", "_"));
     }
 }

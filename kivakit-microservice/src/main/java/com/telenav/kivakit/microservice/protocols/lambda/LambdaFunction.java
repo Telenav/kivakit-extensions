@@ -31,7 +31,7 @@ class LambdaFunction implements RegistryTrait
     public LambdaFunction(Context context)
     {
         this.name = context.getFunctionName();
-        this.version = Version.parseVersion(Listener.throwing(), context.getFunctionVersion());
+        this.version = Version.parseVersion(Listener.throwingListener(), context.getFunctionVersion());
     }
 
     @Override
@@ -52,6 +52,7 @@ class LambdaFunction implements RegistryTrait
         return Objects.hash(name, version);
     }
 
+    @Override
     public String toString()
     {
         return name + "-" + version;

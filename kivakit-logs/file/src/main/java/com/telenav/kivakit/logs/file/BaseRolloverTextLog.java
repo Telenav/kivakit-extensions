@@ -34,7 +34,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
-import static com.telenav.kivakit.core.time.LocalTime.nowInLocalTime;
+import static com.telenav.kivakit.core.time.ZonedTime.nowLocal;
 
 /**
  * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a {@link
@@ -156,10 +156,10 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
                 return Time.now().plus(Duration.ONE_MINUTE); // Time.MAXIMUM;
 
             case DAILY:
-                return nowInLocalTime().startOfTomorrow().asTime();
+                return nowLocal().startOfTomorrow().asTime();
 
             case HOURLY:
-                return nowInLocalTime().startOfNextHour().asTime();
+                return nowLocal().startOfNextHour().asTime();
 
             default:
                 return unsupported();

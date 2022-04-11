@@ -34,11 +34,11 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  */
 public class MicroserviceLambdaService extends BaseComponent implements Initializable
 {
-    /** Exposed Lambda functions and their request handlers */
-    private final Map<LambdaFunction, Class<? extends MicroservletRequest>> mounted = new HashMap<>();
-
     /** True while the {@link #onInitialize()} method is running */
     private boolean initializing = false;
+
+    /** Exposed Lambda functions and their request handlers */
+    private final Map<LambdaFunction, Class<? extends MicroservletRequest>> mounted = new HashMap<>();
 
     public MicroserviceLambdaService(Microservice<?> microservice)
     {
@@ -90,7 +90,7 @@ public class MicroserviceLambdaService extends BaseComponent implements Initiali
      */
     public void mount(String lambdaName, String lambdaVersion, Class<? extends MicroservletRequest> requestType)
     {
-        mount(lambdaName, Version.parseVersion(Listener.throwing(), lambdaVersion), requestType);
+        mount(lambdaName, Version.parseVersion(Listener.throwingListener(), lambdaVersion), requestType);
     }
 
     /**
