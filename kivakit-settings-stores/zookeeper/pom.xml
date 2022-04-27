@@ -71,7 +71,11 @@
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-epoll</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

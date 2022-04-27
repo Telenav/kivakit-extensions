@@ -49,7 +49,13 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-test</artifactId>
+            <type>jar</type>
+            <!-- Move WebUnitTest to a separate package and uncomment: -->
+            <!--<scope>test</scope>-->
+        </dependency>
     </dependencies>
 
 </project>
