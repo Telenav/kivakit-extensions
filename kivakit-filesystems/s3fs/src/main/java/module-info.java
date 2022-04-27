@@ -12,7 +12,7 @@ open module kivakit.filesystems.s3fs
     requires software.amazon.awssdk.services.s3;
     requires software.amazon.awssdk.core;
     requires software.amazon.awssdk.regions;
-
+    
     // Module exports
     exports com.telenav.kivakit.filesystems.s3fs;
     exports com.telenav.kivakit.filesystems.s3fs.lexakai;
