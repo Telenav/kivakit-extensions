@@ -127,6 +127,27 @@
 
     <profiles>
         <profile>
+            <id>protoc-apple-silicon</id>
+            <!-- There currently is no Apple silicon build of protoc
+                 available from Maven Central, but an M1 mac will run
+                 x86_64 binaries.
+                 
+                 While forcing the maven-os-plugin to misdetect the
+                 platform is awful, it _is_ slightly less awful than
+                 putting this in `~/.m2/settings.xml` for all maven
+                 builds system-wide, or not being able to build at all. -->
+            <properties>
+                <os.detected.classifier>osx-x86_64</os.detected.classifier>                
+            </properties>
+            <activation>
+                <os>
+                    <name>mac os x</name>
+                    <arch>aarch64</arch>
+                    <family>mac</family>
+                </os>
+            </activation>
+        </profile>        
+        <profile>
             <id>protoc-docker</id>
             <activation>
                 <property><name>docker</name></property>
