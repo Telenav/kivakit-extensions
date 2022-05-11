@@ -10,11 +10,11 @@ import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.project.Project;
 import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
 import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
@@ -202,7 +202,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice<Member> extends Application implements
         Startable,
-        Stoppable
+        Stoppable<Duration>
 {
     /**
      * Command line switch for what port to run any REST service on. This will override any value from {@link
@@ -559,7 +559,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     @Override
-    public void stop(LengthOfTime<?> wait)
+    public void stop(Duration wait)
     {
         server.stop(wait);
         grpcService().stop(wait);

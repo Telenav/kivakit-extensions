@@ -79,7 +79,7 @@ public class FileLog extends BaseRolloverTextLog
                 }
 
                 var converter = new VariableMapConverter(Listener.consoleListener(), properties);
-                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.FOREVER);
+                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
                 maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
             catch (Exception e)
