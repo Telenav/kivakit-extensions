@@ -568,7 +568,11 @@ public abstract class Microservice<Member> extends Application implements
     public void stop(Duration wait)
     {
         server.stop(wait);
-        grpcService().stop(wait);
+
+        if (grpcService() != null)
+        {
+            grpcService().stop(wait);
+        }
     }
 
     public WebApplication webApplication()
