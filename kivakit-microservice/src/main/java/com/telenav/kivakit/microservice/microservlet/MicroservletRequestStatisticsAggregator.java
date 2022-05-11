@@ -3,7 +3,7 @@ package com.telenav.kivakit.microservice.microservlet;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.math.AverageDuration;
+import com.telenav.kivakit.core.time.AverageDuration;
 import com.telenav.kivakit.core.time.Frequency;
 import com.telenav.kivakit.core.time.Time;
 

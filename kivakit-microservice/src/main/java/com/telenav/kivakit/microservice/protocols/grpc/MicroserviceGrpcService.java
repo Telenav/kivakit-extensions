@@ -1,12 +1,12 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
@@ -21,7 +21,6 @@ import io.grpc.ServerBuilder;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 
-import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 
 /**
@@ -40,7 +39,7 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
         Startable,
-        Stoppable,
+        Stoppable<Duration>,
         MicroservletMountTarget
 {
     /** True while the {@link #onInitialize()} method is running */
@@ -97,6 +96,12 @@ public class MicroserviceGrpcService extends BaseComponent implements
         return running;
     }
 
+    @Override
+    public Duration maximumWaitTime()
+    {
+        return Duration.MAXIMUM;
+    }
+
     /**
      * Mounts the given request class on the given path.
      *
@@ -142,7 +147,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.register(LAST, () -> stop(FOREVER));
+            ShutdownHook.register(LAST, () -> stop(Duration.MAXIMUM));
             running = true;
             return true;
         }
@@ -154,7 +159,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void stop(LengthOfTime<?> wait)
+    public void stop(Duration wait)
     {
         if (server != null)
         {

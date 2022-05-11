@@ -42,6 +42,7 @@ import java.nio.file.attribute.PosixFilePermission;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
 
 /**
  * Base functionality common to both {@link JavaFile} and {@link JavaFolder}.
@@ -68,7 +69,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             String tail = Paths.tail(pathString, "!/");
 
             var uri = URI.create(head);
-            filesystem = Nio.filesystem(Listener.deafListener(), uri);
+            filesystem = Nio.filesystem(emptyListener(), uri);
             if (filesystem != null)
             {
                 this.path = filesystem.getPath(tail);
@@ -81,7 +82,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             {
                 // until we find a filesystem.
                 var uri = URI.create(at.toString());
-                filesystem = Nio.filesystem(Listener.deafListener(), uri);
+                filesystem = Nio.filesystem(emptyListener(), uri);
                 if (filesystem != null)
                 {
                     this.path = path().last(path().size() - at.size()).withoutSchemes().asJavaPath();
@@ -118,7 +119,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
         try
         {
             var creationTime = (FileTime) Files.getAttribute(javaPath(), "creationTime");
-            return Time.epochMilliseconds(creationTime.toMillis());
+            return Time.milliseconds(creationTime.toMillis());
         }
         catch (IOException e)
         {

@@ -3,6 +3,7 @@ package com.telenav.kivakit.microservice.microservlet;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.registry.Registry;
 import com.telenav.kivakit.core.thread.KivaKitThread;
+import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
@@ -22,8 +23,6 @@ import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static com.telenav.kivakit.core.time.Duration.FOREVER;
 
 @Ignore
 public class MicroserviceTest extends UnitTest
@@ -91,6 +90,12 @@ public class MicroserviceTest extends UnitTest
 
     public static class TestMicroservice extends Microservice<String>
     {
+        @Override
+        public Duration maximumWaitTime()
+        {
+            return Duration.MAXIMUM;
+        }
+
         @Override
         public MicroserviceMetadata metadata()
         {
@@ -225,6 +230,6 @@ public class MicroserviceTest extends UnitTest
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 
-        microservice.stop(FOREVER);
+        microservice.stop(Duration.MAXIMUM);
     }
 }

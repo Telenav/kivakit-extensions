@@ -356,6 +356,12 @@ public abstract class Microservice<Member> extends Application implements
         return cluster.leader();
     }
 
+    @Override
+    public Duration maximumWaitTime()
+    {
+        return Duration.MAXIMUM;
+    }
+
     /**
      * @return Metadata about this microservice
      */

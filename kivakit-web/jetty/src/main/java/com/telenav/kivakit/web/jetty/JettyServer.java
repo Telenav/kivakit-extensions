@@ -23,7 +23,6 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
@@ -93,7 +92,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 @LexakaiJavadoc(complete = true)
 public class JettyServer extends BaseComponent implements
         Startable,
-        Stoppable
+        Stoppable<Duration>
 {
     public static void configureLogging()
     {
@@ -133,6 +132,12 @@ public class JettyServer extends BaseComponent implements
     public boolean isRunning()
     {
         return server != null;
+    }
+
+    @Override
+    public Duration maximumWaitTime()
+    {
+        return Duration.MAXIMUM;
     }
 
     public JettyServer mount(String path, BaseFilterJettyPlugin filter)
@@ -184,7 +189,7 @@ public class JettyServer extends BaseComponent implements
     }
 
     @Override
-    public void stop(LengthOfTime wait)
+    public void stop(Duration wait)
     {
         if (isRunning())
         {
