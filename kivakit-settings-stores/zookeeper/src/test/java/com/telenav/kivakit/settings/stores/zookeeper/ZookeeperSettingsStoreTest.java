@@ -13,7 +13,7 @@ import com.telenav.kivakit.test.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.apache.zookeeper.CreateMode.PERSISTENT;
+import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
 
 /**
  * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default

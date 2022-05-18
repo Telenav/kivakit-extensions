@@ -2,7 +2,7 @@ package com.telenav.kivakit.settings.stores.zookeeper.converters;
 
 import com.telenav.kivakit.conversion.core.language.EnumConverter;
 import com.telenav.kivakit.core.messaging.Listener;
-import org.apache.zookeeper.CreateMode;
+import kivakit.merged.zookeeper.CreateMode;
 
 public class CreateModeConverter extends EnumConverter<CreateMode>
 {

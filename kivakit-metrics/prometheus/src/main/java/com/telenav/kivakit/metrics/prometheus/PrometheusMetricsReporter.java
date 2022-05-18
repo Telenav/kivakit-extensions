@@ -4,11 +4,11 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.MetricsReporter;
-import io.prometheus.client.Counter;
-import io.prometheus.client.Gauge;
-import io.prometheus.client.Histogram;
-import io.prometheus.client.SimpleCollector;
-import io.prometheus.client.hotspot.DefaultExports;
+import kivakit.merged.prometheus.client.Counter;
+import kivakit.merged.prometheus.client.Gauge;
+import kivakit.merged.prometheus.client.Histogram;
+import kivakit.merged.prometheus.client.SimpleCollector;
+import kivakit.merged.prometheus.client.hotspot.DefaultExports;
 
 import java.util.HashMap;
 import java.util.Map;

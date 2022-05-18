@@ -650,9 +650,6 @@ public abstract class Microservice<Member> extends Application implements
         // Next, initialize this microservice,
         tryCatch(this::onInitialize, "Initialization failed");
 
-        // register objects,
-        register(new MicroservletGrpcSchemas(this));
-
         // then start our microservice running.
         tryCatch(this::start, "Microservice startup failed");
     }
@@ -662,6 +659,16 @@ public abstract class Microservice<Member> extends Application implements
     protected void onRunning()
     {
         register(gsonFactory());
+    }
+
+    @Override
+    protected void onSerializationInitialize()
+    {
+        // Register any object serializers
+        onRegisterObjectSerializers();
+
+        // and gRPC schemas.
+        register(new MicroservletGrpcSchemas(this));
     }
 
     /**
@@ -710,7 +717,7 @@ public abstract class Microservice<Member> extends Application implements
      *
      * @param restService The REST service to mount each API version JAR on
      */
-    private void mountApis(final MicroserviceRestService restService)
+    private void mountApis(MicroserviceRestService restService)
     {
         var apis = get(API_FORWARDING).split(";");
         var apiSpecifier = Pattern.compile("version=(<?version>\\d+\\.\\d+),jar=(<?jar>[^,]+),port=(<?port>\\d+)(,command-line=(<?commandLine>.*))?");

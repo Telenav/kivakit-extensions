@@ -20,7 +20,7 @@ package com.telenav.kivakit.metrics.prometheus;
 
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
-import io.prometheus.client.exporter.MetricsServlet;
+import kivakit.merged.prometheus.client.exporter.MetricsServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 /**

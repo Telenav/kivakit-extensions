@@ -14,19 +14,19 @@ import com.telenav.kivakit.core.time.Frequency;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException.NodeExistsException;
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.data.ACL;
+import kivakit.merged.zookeeper.CreateMode;
+import kivakit.merged.zookeeper.KeeperException;
+import kivakit.merged.zookeeper.WatchedEvent;
+import kivakit.merged.zookeeper.Watcher;
+import kivakit.merged.zookeeper.ZooKeeper;
+import kivakit.merged.zookeeper.data.ACL;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.zookeeper.CreateMode.PERSISTENT;
+import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
 
 /**
  * Maintains a connection to zookeeper and performs operations using that connection
@@ -160,7 +160,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
                 return StringPath.parseStringPath(this, newPath, "/", "/");
             }
         }
-        catch (NodeExistsException ignored)
+        catch (KeeperException.NodeExistsException ignored)
         {
             trace("Node already exists: $", path);
             return path;

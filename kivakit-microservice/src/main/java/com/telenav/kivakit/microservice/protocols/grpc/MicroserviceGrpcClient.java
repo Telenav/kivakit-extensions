@@ -9,6 +9,10 @@ import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpc
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.core.Port;
+import com.telenav.kivakit.resource.Extension;
+import com.telenav.kivakit.resource.serialization.ObjectSerializers;
+import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.jetbrains.annotations.NotNull;
@@ -23,11 +27,11 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureEqual;
 @SuppressWarnings("unchecked")
 public class MicroserviceGrpcClient extends BaseComponent
 {
-    /** Grpc server port to talk to */
-    private final Port port;
-
     // Create a GRPC channel,
     private final ManagedChannel channel;
+
+    /** Grpc server port to talk to */
+    private final Port port;
 
     /** The default version to use for non-absolute paths */
     private final Version version;
@@ -45,6 +49,12 @@ public class MicroserviceGrpcClient extends BaseComponent
         channel = ManagedChannelBuilder.forAddress(port.host().name(), port.number())
                 .usePlaintext()
                 .build();
+
+        // Register any object serializers
+        onRegisterObjectSerializers();
+
+        // and gRPC schemas.
+        register(new MicroservletGrpcSchemas(this));
     }
 
     /**
@@ -114,6 +124,14 @@ public class MicroserviceGrpcClient extends BaseComponent
     public void stop()
     {
         channel.shutdown();
+    }
+
+    protected void onRegisterObjectSerializers()
+    {
+        var serializers = new ObjectSerializers();
+        serializers.add(Extension.JSON, new GsonObjectSerializer());
+        serializers.add(Extension.PROPERTIES, new PropertiesObjectSerializer());
+        register(serializers);
     }
 
     @NotNull

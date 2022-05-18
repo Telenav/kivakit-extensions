@@ -98,7 +98,6 @@
         <module>kivakit-web</module>
         <module>kivakit-filesystems</module>
         <module>kivakit-metrics</module>
-        <module>kivakit-merged</module>
         <module>kivakit-microservice</module>
 
     </modules>
