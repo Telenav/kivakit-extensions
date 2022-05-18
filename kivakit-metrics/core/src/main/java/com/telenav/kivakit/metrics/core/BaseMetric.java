@@ -3,7 +3,7 @@ package com.telenav.kivakit.metrics.core;
 import com.telenav.kivakit.core.time.Time;
 
 /**
- * Base class for metrics. All metrics have a {@link #created()} time, which is the time at which the metric started
+ * Base class for metrics. All metrics have a {@link #createdAt()} time, which is the time at which the metric started
  * collecting data.
  *
  * @author jonathanl (shibo)
@@ -38,7 +38,7 @@ public abstract class BaseMetric<T> implements Metric<T>
     }
 
     @Override
-    public Time created()
+    public Time createdAt()
     {
         return created;
     }
@@ -73,6 +73,7 @@ public abstract class BaseMetric<T> implements Metric<T>
         return this;
     }
 
+    @Override
     public MetricType type()
     {
         return type;

@@ -19,7 +19,7 @@
 package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
-import com.telenav.kivakit.core.test.support.CoreUnitTest;
+import com.telenav.kivakit.internal.test.support.CoreUnitTest;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.test.UnitTest;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;

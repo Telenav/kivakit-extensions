@@ -63,16 +63,16 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
 @LexakaiJavadoc(complete = true)
 public class EmailLog extends BaseTextLog
 {
-    @UmlAggregation
-    private EmailSender sender;
-
-    @UmlAggregation(label = "to")
-    private final Set<EmailAddress> to = new HashSet<>();
-
     @UmlAggregation(label = "from")
     private EmailAddress from;
 
+    @UmlAggregation
+    private EmailSender sender;
+
     private String subject;
+
+    @UmlAggregation(label = "to")
+    private final Set<EmailAddress> to = new HashSet<>();
 
     @Override
     public void configure(VariableMap<String> properties)
@@ -92,7 +92,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parseEmail(Listener.console(), at));
+                this.to.add(EmailAddress.parseEmail(Listener.consoleListener(), at));
             }
         }
         else
@@ -104,7 +104,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parseEmail(Listener.console(), from);
+            this.from = EmailAddress.parseEmail(Listener.consoleListener(), from);
         }
         else
         {
@@ -118,9 +118,9 @@ public class EmailLog extends BaseTextLog
         if (host != null && username != null && password != null)
         {
             var configuration = new SmtpEmailSender.Configuration();
-            configuration.host(Host.parseHost(Listener.console(), host));
-            configuration.username(UserName.parse(Listener.console(), username));
-            configuration.password(PlainTextPassword.parse(Listener.console(), password));
+            configuration.host(Host.parseHost(Listener.consoleListener(), host));
+            configuration.username(UserName.parse(Listener.consoleListener(), username));
+            configuration.password(PlainTextPassword.parse(Listener.consoleListener(), password));
             sender = new SmtpEmailSender(configuration);
         }
     }

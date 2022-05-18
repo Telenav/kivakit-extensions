@@ -10,11 +10,11 @@ import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.project.Project;
 import com.telenav.kivakit.core.string.Paths;
+import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
 import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
@@ -22,9 +22,9 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
-import com.telenav.kivakit.resource.packages.Package;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
+import com.telenav.kivakit.resource.packages.Package;
 import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import com.telenav.kivakit.settings.Deployment;
@@ -202,7 +202,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice<Member> extends Application implements
         Startable,
-        Stoppable
+        Stoppable<Duration>
 {
     /**
      * Command line switch for what port to run any REST service on. This will override any value from {@link
@@ -354,6 +354,12 @@ public abstract class Microservice<Member> extends Application implements
         ensure(isClustered());
 
         return cluster.leader();
+    }
+
+    @Override
+    public Duration maximumWaitTime()
+    {
+        return Duration.MAXIMUM;
     }
 
     /**
@@ -559,10 +565,14 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     @Override
-    public void stop(LengthOfTime wait)
+    public void stop(Duration wait)
     {
         server.stop(wait);
-        grpcService().stop();
+
+        if (grpcService() != null)
+        {
+            grpcService().stop(wait);
+        }
     }
 
     public WebApplication webApplication()
@@ -640,9 +650,6 @@ public abstract class Microservice<Member> extends Application implements
         // Next, initialize this microservice,
         tryCatch(this::onInitialize, "Initialization failed");
 
-        // register objects,
-        register(new MicroservletGrpcSchemas(this));
-
         // then start our microservice running.
         tryCatch(this::start, "Microservice startup failed");
     }
@@ -652,6 +659,16 @@ public abstract class Microservice<Member> extends Application implements
     protected void onRunning()
     {
         register(gsonFactory());
+    }
+
+    @Override
+    protected void onSerializationInitialize()
+    {
+        // Register any object serializers
+        onRegisterObjectSerializers();
+
+        // and gRPC schemas.
+        register(new MicroservletGrpcSchemas(this));
     }
 
     /**
@@ -700,7 +717,7 @@ public abstract class Microservice<Member> extends Application implements
      *
      * @param restService The REST service to mount each API version JAR on
      */
-    private void mountApis(final MicroserviceRestService restService)
+    private void mountApis(MicroserviceRestService restService)
     {
         var apis = get(API_FORWARDING).split(";");
         var apiSpecifier = Pattern.compile("version=(<?version>\\d+\\.\\d+),jar=(<?jar>[^,]+),port=(<?port>\\d+)(,command-line=(<?commandLine>.*))?");

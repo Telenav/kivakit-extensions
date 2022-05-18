@@ -43,6 +43,14 @@ public class MicroservletError
     private final String code;
 
     /**
+     * Details of the problem
+     */
+    @OpenApiIncludeMember(description = "A formatted description of the error",
+                          example = "This is a description of the problem that occurred")
+    @Expose
+    private final String message;
+
+    /**
      * The type of error, such as Problem, Warning or Alert.
      */
     @OpenApiIncludeMember(
@@ -50,14 +58,6 @@ public class MicroservletError
             example = "Problem")
     @Expose
     private final String type;
-
-    /**
-     * Details of the problem
-     */
-    @OpenApiIncludeMember(description = "A formatted description of the error",
-                          example = "This is a description of the problem that occurred")
-    @Expose
-    private final String message;
 
     protected MicroservletError(String code, String type, String message)
     {
@@ -71,8 +71,8 @@ public class MicroservletError
      */
     public void send(Listener listener)
     {
-        var type = Message.parseMessageName(Listener.console(), this.type).getClass();
-        var message = OperationMessage.newInstance(Listener.console(), type, this.message, new Object[] {});
+        var type = Message.parseMessageName(Listener.consoleListener(), this.type).getClass();
+        var message = OperationMessage.newInstance(Listener.consoleListener(), type, this.message, new Object[] {});
         if (message instanceof OperationMessage)
         {
             var statusMessage = (OperationStatusMessage) message;

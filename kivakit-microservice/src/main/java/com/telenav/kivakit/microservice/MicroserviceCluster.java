@@ -17,7 +17,7 @@ import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
 import static com.telenav.kivakit.core.thread.ReentrancyTracker.Reentrancy.ENTERED;
-import static org.apache.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
+import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
  * <p>

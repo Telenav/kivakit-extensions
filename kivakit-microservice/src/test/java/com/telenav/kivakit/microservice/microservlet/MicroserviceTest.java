@@ -2,8 +2,8 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.registry.Registry;
-import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.core.thread.KivaKitThread;
+import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
@@ -17,6 +17,7 @@ import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializers;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
+import com.telenav.kivakit.test.UnitTest;
 import com.telenav.kivakit.validation.BaseValidator;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
@@ -90,6 +91,12 @@ public class MicroserviceTest extends UnitTest
     public static class TestMicroservice extends Microservice<String>
     {
         @Override
+        public Duration maximumWaitTime()
+        {
+            return Duration.MAXIMUM;
+        }
+
+        @Override
         public MicroserviceMetadata metadata()
         {
             return new MicroserviceMetadata()
@@ -113,12 +120,6 @@ public class MicroserviceTest extends UnitTest
 
     public static class TestPostRequest extends BaseMicroservletRequest
     {
-        @Expose
-        int a;
-
-        @Expose
-        int b;
-
         public TestPostRequest(int a, int b)
         {
             this.a = a;
@@ -140,17 +141,23 @@ public class MicroserviceTest extends UnitTest
         {
             return TestResponse.class;
         }
+
+        @Expose
+        int a;
+
+        @Expose
+        int b;
     }
 
     public static class TestResponse extends BaseMicroservletResponse
     {
-        @Expose
-        int result;
-
         public TestResponse(int result)
         {
             this.result = result;
         }
+
+        @Expose
+        int result;
     }
 
     public static class TestRestMicroservice extends MicroserviceRestService
@@ -223,6 +230,6 @@ public class MicroserviceTest extends UnitTest
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 
-        microservice.stop();
+        microservice.stop(Duration.MAXIMUM);
     }
 }

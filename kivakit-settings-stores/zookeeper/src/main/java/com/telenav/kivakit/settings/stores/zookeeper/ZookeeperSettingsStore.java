@@ -17,7 +17,7 @@ import com.telenav.kivakit.resource.serialization.SerializableObject;
 import com.telenav.kivakit.settings.BaseSettingsStore;
 import com.telenav.kivakit.settings.SettingsObject;
 import com.telenav.kivakit.settings.SettingsStore;
-import org.apache.zookeeper.CreateMode;
+import kivakit.merged.zookeeper.CreateMode;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ import static com.telenav.kivakit.settings.SettingsStore.AccessMode.INDEX;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.SAVE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.UNLOAD;
-import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
+import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
  * A {@link SettingsStore} that uses Apache Zookeeper to load and save settings objects, so they can be easily accessed

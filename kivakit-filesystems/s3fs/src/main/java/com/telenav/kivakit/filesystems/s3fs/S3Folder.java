@@ -23,13 +23,13 @@ import com.telenav.kivakit.core.logging.LoggerFactory;
 import com.telenav.kivakit.core.thread.Monitor;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.lexakai.DiagramS3;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
 import com.telenav.kivakit.resource.FileName;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import software.amazon.awssdk.services.s3.model.ListBucketsRequest;
@@ -97,7 +97,7 @@ public class S3Folder extends S3FileSystemObject implements FolderService
     }
 
     @Override
-    public Time created()
+    public Time createdAt()
     {
         return unsupported();
     }
@@ -206,11 +206,13 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return folders;
     }
 
+    @Override
     public boolean hasFiles()
     {
         return exists() && files().iterator().hasNext();
     }
 
+    @Override
     public boolean hasSubFolders()
     {
         return exists() && folders().iterator().hasNext();

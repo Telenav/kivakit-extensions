@@ -38,6 +38,6 @@ public class SwaggerWebAppJettyPlugin extends AssetsJettyPlugin
 
     private static Package folder()
     {
-        return Package.parsePackage(Listener.console(), SwaggerWebAppJettyPlugin.class, "assets");
+        return Package.parsePackage(Listener.consoleListener(), SwaggerWebAppJettyPlugin.class, "assets");
     }
 }

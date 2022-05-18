@@ -22,9 +22,9 @@ import com.telenav.kivakit.core.io.ByteSizedOutputStream;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
 import com.telenav.kivakit.core.time.Duration;
+import com.telenav.kivakit.core.time.LocalTime;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
-import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.logs.file.lexakai.DiagramLogsFile;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -57,12 +57,12 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         HOURLY
     }
 
+    private ByteSizedOutputStream byteSizedOutputStream;
+
     @UmlAggregation(label = "maximum size")
     private Bytes maximumLogSize;
 
     private PrintWriter out;
-
-    private ByteSizedOutputStream byteSizedOutputStream;
 
     @UmlAggregation
     private Rollover rollover = Rollover.NONE;
@@ -99,7 +99,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     }
 
     @Override
-    public void flush(LengthOfTime maximumWaitTime)
+    public void flush(Duration maximumWaitTime)
     {
         super.flush(maximumWaitTime);
         out.flush();
@@ -155,10 +155,10 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
                 return Time.now().plus(Duration.ONE_MINUTE); // Time.MAXIMUM;
 
             case DAILY:
-                return Time.now().localTime().startOfTomorrow();
+                return LocalTime.now().startOfTomorrow();
 
             case HOURLY:
-                return Time.now().localTime().startOfNextHour();
+                return LocalTime.now().startOfNextHour();
 
             default:
                 return unsupported();

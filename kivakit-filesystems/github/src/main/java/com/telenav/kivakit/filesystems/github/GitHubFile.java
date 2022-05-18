@@ -21,8 +21,8 @@ package com.telenav.kivakit.filesystems.github;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
-import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
 import java.io.InputStream;
@@ -48,7 +48,7 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
 
     public GitHubFile(String path)
     {
-        super(FilePath.parseFilePath(Listener.console(), path));
+        super(FilePath.parseFilePath(Listener.consoleListener(), path));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class GitHubFile extends GitHubFileSystemObject implements FileService
     }
 
     @Override
-    public Time created()
+    public Time createdAt()
     {
         return unsupported();
     }

@@ -1,12 +1,12 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.interfaces.time.LengthOfTime;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcResponder;
@@ -39,7 +39,7 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
         Startable,
-        Stoppable,
+        Stoppable<Duration>,
         MicroservletMountTarget
 {
     /** True while the {@link #onInitialize()} method is running */
@@ -96,6 +96,12 @@ public class MicroserviceGrpcService extends BaseComponent implements
         return running;
     }
 
+    @Override
+    public Duration maximumWaitTime()
+    {
+        return Duration.MAXIMUM;
+    }
+
     /**
      * Mounts the given request class on the given path.
      *
@@ -105,6 +111,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
      * @param requestHandlerType The type of the request handler
      */
+    @Override
     @UmlRelation(label = "mounts", referent = Microservlet.class)
     public void mount(String path, Class<? extends MicroservletRequestHandler> requestHandlerType)
     {
@@ -124,6 +131,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     /**
      * Starts this GRPC service
      */
+    @Override
     public boolean start()
     {
         information("Starting GRPC server");
@@ -139,7 +147,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.register(LAST, this::stop);
+            ShutdownHook.register(LAST, () -> stop(Duration.MAXIMUM));
             running = true;
             return true;
         }
@@ -151,7 +159,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void stop(LengthOfTime wait)
+    public void stop(Duration wait)
     {
         if (server != null)
         {

@@ -70,7 +70,7 @@ public class FileLog extends BaseRolloverTextLog
         {
             try
             {
-                file = File.parseFile(Listener.console(), path);
+                file = File.parseFile(Listener.consoleListener(), path);
 
                 var rollover = properties.get("rollover");
                 if (rollover != null)
@@ -78,7 +78,7 @@ public class FileLog extends BaseRolloverTextLog
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
                 }
 
-                var converter = new VariableMapConverter(Listener.console(), properties);
+                var converter = new VariableMapConverter(Listener.consoleListener(), properties);
                 maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
                 maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
@@ -107,12 +107,12 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        var newFile = File.parseFile(Listener.console(), file.withoutExtension() + "-" + FileName.dateTime(started().localTime())
+        var newFile = File.parseFile(Listener.consoleListener(), file.withoutExtension() + "-" + FileName.dateTime(started().asLocalTime())
                 + StringTo.nonNullString(file.extension())).withoutOverwriting();
         Console.println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
         Console.println("Pruning files older than $ from: $", maximumLogFileAge, folder);
-        folder.files(file -> file.lastModified().isOlderThan(maximumLogFileAge)).forEach(at ->
+        folder.files(file -> file.modifiedAt().isOlderThan(maximumLogFileAge)).forEach(at ->
         {
             Console.println("Removed $", at);
             at.delete();
