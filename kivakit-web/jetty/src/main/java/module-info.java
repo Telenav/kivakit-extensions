@@ -9,8 +9,6 @@ open module kivakit.web.jetty
     requires org.eclipse.jetty.util;
     requires org.eclipse.jetty.webapp;
     requires transitive javax.servlet.api;
-    requires transitive kivakit.test;
-    requires transitive kivakit.test.internal;
     requires kivakit.network.http;
 
     // Module exports

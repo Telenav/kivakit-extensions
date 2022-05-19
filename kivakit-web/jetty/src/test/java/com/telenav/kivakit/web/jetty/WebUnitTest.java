@@ -19,7 +19,6 @@
 package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
-import com.telenav.kivakit.internal.test.support.CoreUnitTest;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.test.UnitTest;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -30,7 +29,7 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
- * Adds a web server to {@link CoreUnitTest} that can be started with {@link #startWebServer(int, FilePath)} where {@link
+ * Adds a web server to {@link UnitTest} that can be started with {@link #startWebServer(int, FilePath)} where {@link
  * FilePath} is the folder for WAR resources.
  *
  * @author jonathanl (shibo)

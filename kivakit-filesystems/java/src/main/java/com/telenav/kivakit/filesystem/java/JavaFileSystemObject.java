@@ -19,7 +19,6 @@
 package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.io.Nio;
-import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Time;
@@ -119,7 +118,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
         try
         {
             var creationTime = (FileTime) Files.getAttribute(javaPath(), "creationTime");
-            return Time.milliseconds(creationTime.toMillis());
+            return Time.epochMilliseconds(creationTime.toMillis());
         }
         catch (IOException e)
         {
