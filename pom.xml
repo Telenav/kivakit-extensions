@@ -18,7 +18,6 @@
     </parent>
 
     <artifactId>kivakit-extensions</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- Project -->
@@ -103,4 +102,3 @@
     </modules>
 
 </project>
-
