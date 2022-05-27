@@ -20,7 +20,7 @@ package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.filesystem.FilePath;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;

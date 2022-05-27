@@ -54,7 +54,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * Base class for KivaKit <a href="https://martinfowler.com/articles/microservices.html">microservices</a>.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Creating a Microservice</b></p>
  *
@@ -71,7 +71,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *     <li>Optionally, override {@link #onNewWebApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
  * </ol>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Example:</b></p>
  *
@@ -109,7 +109,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *     }
  * }</pre>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Command Line Switches</b></p>
  *
@@ -119,7 +119,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * from the {@link Deployment} specified on the command line with <i>-deployment=[deployment]</i>.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Mount Paths</b></p>
  * <p>
@@ -154,7 +154,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * </table>
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Root Path</b></p>
  *
@@ -164,7 +164,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * 1.0 would be <i>/my-microservice/api/1.0</i>.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Cluster Membership</b></p>
  *
@@ -176,7 +176,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * and the leader with {@link MicroserviceCluster#leader()}.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Cluster Elections</b></p>
  *
@@ -185,7 +185,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * this microservice is the elected leader of the cluster, the {@link #isLeader()} method will return true.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * @author jonathanl (shibo)
  * @see Deployment

@@ -1,6 +1,6 @@
 package com.telenav.kivakit.filesystems.github;
 
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.interfaces.comparison.Filter;
 import com.telenav.kivakit.resource.FileName;
 import org.junit.Ignore;

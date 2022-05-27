@@ -1,7 +1,7 @@
 package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.string.Strings;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
@@ -48,7 +48,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegration()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(this, Strings.format("java:jar:file:$", archive)));
+        var folder = listenTo(Folder.parseFolder(this, Strings.format("java:jar:file:$", archive)));
         ensureEqual(folder.files().size(), 1);
         ensureEqual(folder.folders().size(), 1);
         var files = new HashSet<>();
@@ -60,7 +60,7 @@ public class JavaFolderTest extends UnitTest
     public void testIntegrationChild()
     {
         var archive = archive();
-        var folder = listenTo(Folder.parse(this, Strings.format("java:jar:file:$/child", archive)));
+        var folder = listenTo(Folder.parseFolder(this, Strings.format("java:jar:file:$/child", archive)));
         ensureEqual(folder.files().size(), 2);
         var files = new HashSet<>();
         files.add(folder.files().get(0).fileName().name());

@@ -66,7 +66,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
 /**
  * Base class for KivaKit microservice REST applications.
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Mounting Request Handlers</b></p>
  *
@@ -116,7 +116,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * would mount the POST request handler <i>UserUpdateRequest</i> on the URL <i>/my-microservice/api/1.0/users/update</i>.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>API Forwarding - Backwards Compatibility</b></p>
  *
@@ -149,7 +149,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * JAR for a previous version of the API on the given port number on the local host.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>OpenAPI</b></p>
  *
@@ -158,7 +158,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * {@link Microservice} via {@link MicroserviceMetadata}.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>API Paths and Versions</b></p>
  *
@@ -168,7 +168,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * <i>/api/[major-version].[minor-version]</i>. For example, <i>/api/1.0</i>.
  * </p>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * <p><b>Internal Details - Flow of Control</b></p>
  *
@@ -208,7 +208,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *     </ol>
  * </ol>
  *
- * <p><br/><hr/><br/></p>
+ * <hr>
  *
  * @author jonathanl (shibo)
  * @see Microservice

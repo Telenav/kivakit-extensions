@@ -31,7 +31,7 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-test</artifactId>
+            <artifactId>kivakit-testing</artifactId>
             <scope>test</scope>
         </dependency>
 

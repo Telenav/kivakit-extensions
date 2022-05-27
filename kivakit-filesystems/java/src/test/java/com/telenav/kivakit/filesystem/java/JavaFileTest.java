@@ -1,7 +1,7 @@
 package com.telenav.kivakit.filesystem.java;
 
 import com.telenav.kivakit.core.string.Strings;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.filesystem.Folder;

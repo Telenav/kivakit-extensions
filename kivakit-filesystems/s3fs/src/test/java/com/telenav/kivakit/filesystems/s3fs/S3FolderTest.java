@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.test.SlowTest;
-import com.telenav.kivakit.test.UnitTest;
+import com.telenav.kivakit.testing.SlowTest;
+import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.resource.FileName;
@@ -73,7 +73,7 @@ public class S3FolderTest extends UnitTest
     @Test
     public void testRename()
     {
-        var folder = Folder.parse(this, "s3://default-region/kivakit/test-data/old-" + FileName.dateTime());
+        var folder = Folder.parseFolder(this, "s3://default-region/kivakit/test-data/old-" + FileName.dateTime());
         assert folder != null;
         folder.mkdirs();
         var file = folder.file(FileName.parseFileName(this, "tmp.txt"));
