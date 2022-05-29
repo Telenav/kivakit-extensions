@@ -17,12 +17,19 @@
         <version>1.5.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
+
+    <groupId>com.telenav.kivakit</groupId>
     <artifactId>kivakit-metrics-core</artifactId>
+    <version>1.5.1-SNAPSHOT</version>
+
     <dependencies>
-                <!-- KivaKit -->
+
+        <!-- KivaKit -->
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-component</artifactId>
         </dependency>
+
     </dependencies>
 </project>
