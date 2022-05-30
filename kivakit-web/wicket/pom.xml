@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// © 2011-2022 Telenav, Inc.
-// Licensed under Apache License, Version 2.0
-//
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
--->
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //
+ // © 2011-2022 Telenav, Inc.
+ // Licensed under Apache License, Version 2.0
+ //
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ -->
 
 <project
-     xmlns="http://maven.apache.org/POM/4.0.0"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
     <modelVersion>4.0.0</modelVersion>
-
+    
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit</artifactId>
         <version>1.5.1-SNAPSHOT</version>
         <relativePath/>
     </parent>
-
+    
     <artifactId>kivakit-web-wicket</artifactId>
-
+    
     <dependencies>
-
+        
         <!-- KivaKit -->
-
+        
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-component</artifactId>
@@ -36,9 +36,9 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-web-jetty</artifactId>
         </dependency>
-
+        
         <!-- Servlet API -->
-
+        
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -63,9 +63,9 @@
             <artifactId>apiguardian-api</artifactId>
             <version>1.1.2</version>
         </dependency>
-
+        
         <!-- Apache Wicket -->
-
+        
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-core</artifactId>
@@ -86,20 +86,20 @@
             <groupId>org.danekja</groupId>
             <artifactId>jdk-serializable-functional</artifactId>
         </dependency>
-
+        
     </dependencies>
-
+    
     <build>
         <plugins>
-
+            
             <plugin>
-
+                
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
                     <excludedGroups>${exclude.test.groups}</excludedGroups>
-
+                    
                     <systemPropertyVariables>
                         <testQuick>${testQuick}</testQuick>
                     </systemPropertyVariables>
@@ -110,12 +110,11 @@
                         -Xmx2g
                     </argLine>
                 </configuration>
-
+                
             </plugin>
-
+            
         </plugins>
-
+        
     </build>
-
+    
 </project>
-

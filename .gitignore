@@ -15,3 +15,7 @@
 **/*.class
 **/*.hprof
 **/dependency-reduced-pom.xml
+*.orig
+nbactions.xml
+nb-configuration.xml
+
