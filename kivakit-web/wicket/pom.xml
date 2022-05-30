@@ -8,21 +8,21 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
 
-<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xmlns = "http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+     xmlns="http://maven.apache.org/POM/4.0.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.telenav</groupId>
-        <artifactId>telenav-superpom</artifactId>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit</artifactId>
         <version>1.5.1-SNAPSHOT</version>
+        <relativePath/>
     </parent>
 
-    <groupId>com.telenav.kivakit</groupId>
     <artifactId>kivakit-web-wicket</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
 
     <dependencies>
 
@@ -91,21 +91,31 @@
 
     <build>
         <plugins>
+
             <plugin>
+
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
                     <excludedGroups>${exclude.test.groups}</excludedGroups>
+
                     <systemPropertyVariables>
                         <testQuick>${testQuick}</testQuick>
                     </systemPropertyVariables>
-                    <argLine>--add-opens org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+                    <argLine>
+                        --add-opens org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
                         --add-opens org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
                         --add-opens org.apiguardian.api/org.apiguardian.api=ALL-UNNAMED
-                        -Xmx2g</argLine>
+                        -Xmx2g
+                    </argLine>
                 </configuration>
+
             </plugin>
+
         </plugins>
+
     </build>
+
 </project>
+

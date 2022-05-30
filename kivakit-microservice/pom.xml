@@ -7,22 +7,21 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
-
-<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xmlns = "http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+     xmlns="http://maven.apache.org/POM/4.0.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.telenav</groupId>
-        <artifactId>telenav-superpom</artifactId>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit</artifactId>
         <version>1.5.1-SNAPSHOT</version>
+        <relativePath/>
     </parent>
 
-    <groupId>com.telenav.kivakit</groupId>
     <artifactId>kivakit-microservice</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
 
     <dependencies>
 
@@ -56,6 +55,7 @@
         <!-- Utilities -->
 
         <dependency>
+
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <exclusions>
@@ -64,11 +64,13 @@
                     <artifactId>error_prone_annotations</artifactId>
                 </exclusion>
             </exclusions>
+
         </dependency>
 
         <!-- Protocols -->
 
         <dependency>
+
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <exclusions>
@@ -77,6 +79,7 @@
                     <artifactId>error_prone_annotations</artifactId>
                 </exclusion>
             </exclusions>
+
         </dependency>
 
         <!-- AWS Lambda -->
@@ -88,7 +91,6 @@
         </dependency>
 
         <!-- These merged JAR files are built by the kivakit-merged project -->
-
         <!-- Protostuff -->
 
         <dependency>
@@ -114,27 +116,38 @@
             </extension>
         </extensions>
         <plugins>
+
             <plugin>
+
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
                 <configuration>
                     <excludedGroups>${exclude.test.groups}</excludedGroups>
+
                     <systemPropertyVariables>
                         <testQuick>${testQuick}</testQuick>
                     </systemPropertyVariables>
-                    <argLine>--add-opens org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+                    <argLine>
+                        --add-opens org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
                         --add-opens org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
                         --add-opens org.apiguardian.api/org.apiguardian.api=ALL-UNNAMED
-                        -Xmx2g</argLine>
+                        -Xmx2g
+                    </argLine>
                 </configuration>
+
             </plugin>
+
         </plugins>
+
     </build>
 
     <profiles>
+
         <profile>
+
             <id>protoc-apple-silicon</id>
+
             <!-- There currently is no Apple silicon build of protoc
                  available from Maven Central, but an M1 mac will run
                  x86_64 binaries.
@@ -143,7 +156,6 @@
                  platform is awful, it _is_ slightly less awful than
                  putting this in `~/.m2/settings.xml` for all maven
                  builds system-wide, or not being able to build at all. -->
-
             <properties>
                 <os.detected.classifier>osx-x86_64</os.detected.classifier>
             </properties>
@@ -154,25 +166,31 @@
                     <family>mac</family>
                 </os>
             </activation>
+
         </profile>
+
         <profile>
+
             <id>protoc-docker</id>
             <activation>
                 <property>
                     <name>docker</name>
                 </property>
             </activation>
-
             <build>
                 <plugins>
+
                     <plugin>
+
                         <groupId>org.xolstice.maven.plugins</groupId>
                         <artifactId>protobuf-maven-plugin</artifactId>
                         <version>${maven-protobuf-plugin.version}</version>
                         <configuration>
                             <protocExecutable>/usr/bin/protoc</protocExecutable>
                             <pluginId>grpc-java</pluginId>
+
                             <!-- suppress MavenModelInspection -->
+
                             <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}</pluginArtifact>
                         </configuration>
                         <executions>
@@ -183,29 +201,40 @@
                                 </goals>
                             </execution>
                         </executions>
+
                     </plugin>
+
                 </plugins>
+
             </build>
+
         </profile>
+
         <profile>
+
             <id>protoc-not-docker</id>
             <activation>
                 <property>
                     <name>!docker</name>
                 </property>
             </activation>
-
             <build>
                 <plugins>
+
                     <plugin>
+
                         <groupId>org.xolstice.maven.plugins</groupId>
                         <artifactId>protobuf-maven-plugin</artifactId>
                         <version>${maven-protobuf-plugin.version}</version>
                         <configuration>
-                                                        <!-- suppress MavenModelInspection -->
+
+                            <!-- suppress MavenModelInspection -->
+
                             <protocArtifact>com.google.protobuf:protoc:3.4.0:exe:${os.detected.classifier}</protocArtifact>
                             <pluginId>grpc-java</pluginId>
+
                             <!-- suppress MavenModelInspection -->
+
                             <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}</pluginArtifact>
                         </configuration>
                         <executions>
@@ -216,9 +245,15 @@
                                 </goals>
                             </execution>
                         </executions>
+
                     </plugin>
+
                 </plugins>
+
             </build>
+
         </profile>
+
     </profiles>
+
 </project>

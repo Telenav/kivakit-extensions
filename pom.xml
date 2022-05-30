@@ -7,29 +7,27 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
-
-<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-         xmlns = "http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project
+     xmlns="http://maven.apache.org/POM/4.0.0"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.telenav.kivakit</groupId>
+    <parent>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit</artifactId>
+        <version>1.5.1-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
     <artifactId>kivakit-extensions</artifactId>
-    <version>1.5.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
     <!-- Project -->
 
     <description>A collection of modules that extend KivaKit</description>
-    <url>https://www.kivakit.org</url>
-    <inceptionYear>2011</inceptionYear>
-
-    <organization>
-        <name>Telenav</name>
-        <url>https://www.telenav.com</url>
-    </organization>
 
     <!-- Licensing -->
 
@@ -41,45 +39,18 @@
         </license>
     </licenses>
 
-    <!-- Contributors -->
+    <!-- Modules -->
 
-    <developers>
-        <developer>
-            <id>jonathanl</id>
-            <name>Jonathan Locke (Luo Shibo)</name>
-            <email>jonathanl@telenav.com</email>
+    <modules>
 
-            <organization>Telenav</organization>
-            <organizationUrl>https://www.telenav.com/</organizationUrl>
-            <roles>
-                <role>lead</role>
-                <role>administrator</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>haifeng</id>
-            <name>Haifeng Zhu</name>
-            <email>hfzhu@telenav.com</email>
+        <module>kivakit-settings-stores</module>
+        <module>kivakit-logs</module>
+        <module>kivakit-web</module>
+        <module>kivakit-filesystems</module>
+        <module>kivakit-metrics</module>
+        <module>kivakit-microservice</module>
 
-            <organization>Telenav</organization>
-            <organizationUrl>https://www.telenav.com/</organizationUrl>
-            <roles>
-                <role>developer</role>
-                <role>administrator</role>
-            </roles>
-        </developer>
-        <developer>
-            <id>timboudreau</id>
-            <name>Tim Boudreau</name>
-            <email>tim@timboudreau.com</email>
-            <organization>Telenav</organization>
-            <organizationUrl>https://www.telenav.com/</organizationUrl>
-            <roles>
-                <role>developer</role>
-                <role>administrator</role>
-            </roles>
-        </developer>
-    </developers>
+    </modules>
 
     <!-- Source Code -->
 
@@ -89,6 +60,8 @@
         <url>https://Telenav/kivakit.git</url>
     </scm>
 
+    <url>https://www.kivakit.org</url>
+
     <!-- Issue Tracking -->
 
     <issueManagement>
@@ -96,15 +69,59 @@
         <url>https://github.com/Telenav/kivakit/issues</url>
     </issueManagement>
 
-    <!-- Modules -->
+    <inceptionYear>2011</inceptionYear>
 
-    <modules>
-        <module>kivakit-settings-stores</module>
-        <module>kivakit-logs</module>
-        <module>kivakit-web</module>
-        <module>kivakit-filesystems</module>
-        <module>kivakit-metrics</module>
-        <module>kivakit-microservice</module>
-    </modules>
+    <organization>
+        <name>Telenav</name>
+        <url>https://www.telenav.com</url>
+    </organization>
+
+    <!-- Contributors -->
+
+    <developers>
+
+        <developer>
+
+            <id>jonathanl</id>
+            <name>Jonathan Locke (Luo Shibo)</name>
+            <email>jonathanl@telenav.com</email>
+            <organization>Telenav</organization>
+            <organizationUrl>https://www.telenav.com/</organizationUrl>
+            <roles>
+                <role>lead</role>
+                <role>administrator</role>
+            </roles>
+
+        </developer>
+
+        <developer>
+
+            <id>haifeng</id>
+            <name>Haifeng Zhu</name>
+            <email>hfzhu@telenav.com</email>
+            <organization>Telenav</organization>
+            <organizationUrl>https://www.telenav.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+                <role>administrator</role>
+            </roles>
+
+        </developer>
+
+        <developer>
+
+            <id>timboudreau</id>
+            <name>Tim Boudreau</name>
+            <email>tim@timboudreau.com</email>
+            <organization>Telenav</organization>
+            <organizationUrl>https://www.telenav.com/</organizationUrl>
+            <roles>
+                <role>developer</role>
+                <role>administrator</role>
+            </roles>
+
+        </developer>
+
+    </developers>
 
 </project>
