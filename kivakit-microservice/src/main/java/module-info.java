@@ -32,7 +32,7 @@ open module kivakit.microservice
     requires io.swagger.v3.oas.models;
 
     // JSON
-    requires gson;
+    requires com.google.gson;
 
     // Netty
     requires io.netty.common;
