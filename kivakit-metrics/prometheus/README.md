@@ -4,11 +4,11 @@
 
 [//]: # (end-user-text)
 
-# kivakit-metrics &nbsp;&nbsp; <img src="https://www.kivakit.org/images/ruler-64.png" srcset="https://www.kivakit.org/images/ruler-64-2x.png 2x"/>
+# kivakit-metrics &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-64.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-64-2x.png 2x"/>
 
 This module contains a provider for kivakit-metrics that makes Prometheus monitoring available
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Index
 
@@ -16,9 +16,9 @@ This module contains a provider for kivakit-metrics that makes Prometheus monito
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
-### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
+### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdependencies-32-2x.png 2x"/>
 
 [*Dependency Diagram*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/prometheus/documentation/diagrams/dependencies.svg)
 
@@ -30,7 +30,7 @@ This module contains a provider for kivakit-metrics that makes Prometheus monito
         <version>1.5.1-SNAPSHOT</version>
     </dependency>
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
 [//]: # (start-user-text)
 
@@ -38,33 +38,33 @@ This module contains a provider for kivakit-metrics that makes Prometheus monito
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
+### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdiagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdiagram-40-2x.png 2x"/>
 
 None
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbox-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbox-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.metrics.prometheus*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/prometheus/documentation/diagrams/com.telenav.kivakit.metrics.prometheus.svg)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
+### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbooks-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbooks-32-2x.png 2x"/>
 
 Javadoc coverage for this project is 50.0%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-50-96.png" srcset="https://www.kivakit.org/images/meter-50-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/meter-50-96-2x.png 2x"/>
 
 
 
 
 | Class | Documentation Sections |
 |---|---|
-| [*PrometheusJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.prometheus/com/telenav/kivakit/metrics/prometheus/PrometheusJettyPlugin.html) |  |  
-| [*PrometheusMetricsReporter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.prometheus/com/telenav/kivakit/metrics/prometheus/PrometheusMetricsReporter.html) |  |  
+| [*PrometheusJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////.html) |  |  
+| [*PrometheusMetricsReporter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 
@@ -72,8 +72,7 @@ Javadoc coverage for this project is 50.0%.
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 <sub>Copyright &#169; 2011-2021 [Telenav](https://telenav.com), Inc. Distributed under [Apache License, Version 2.0](LICENSE)</sub>  
 <sub>This documentation was generated by [Lexakai](https://lexakai.org). UML diagrams courtesy of [PlantUML](https://plantuml.com).</sub>
-

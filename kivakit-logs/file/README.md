@@ -1,24 +1,24 @@
 [//]: # (start-user-text)
 
 <a href="https://www.kivakit.org">
-<img src="https://www.kivakit.org/images/web-32.png" srcset="https://www.kivakit.org/images/web-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconsweb-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsweb-32-2x.png 2x"/>
 </a>
 &nbsp;
 <a href="https://twitter.com/openkivakit">
-<img src="https://www.kivakit.org/images/twitter-32.png" srcset="https://www.kivakit.org/images/twitter-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconstwitter-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconstwitter-32-2x.png 2x"/>
 </a>
 &nbsp;
 <a href="https://kivakit.zulipchat.com">
-<img src="https://www.kivakit.org/images/zulip-32.png" srcset="https://www.kivakit.org/images/zulip-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconszulip-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconszulip-32-2x.png 2x"/>
 </a>
 
 [//]: # (end-user-text)
 
-# kivakit-logs-file &nbsp;&nbsp; <img src="https://www.kivakit.org/images/log-32.png" srcset="https://www.kivakit.org/images/log-32-2x.png 2x"/>
+# kivakit-logs-file &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/log-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/log-32-2x.png 2x"/>
 
 This module is a text file log service provider.
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Index
 
@@ -28,9 +28,9 @@ This module is a text file log service provider.
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
-### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
+### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdependencies-32-2x.png 2x"/>
 
 [*Dependency Diagram*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/dependencies.svg)
 
@@ -42,7 +42,7 @@ This module is a text file log service provider.
         <version>1.5.1-SNAPSHOT</version>
     </dependency>
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
 [//]: # (start-user-text)
 
@@ -50,7 +50,7 @@ This module is a text file log service provider.
 
 This module is a log service provider which logs messages to the filesystem. It includes log roll-over, based on time or log size.
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Including the Provider <a name = "including-the-provider"></a>
 
@@ -64,7 +64,7 @@ To include the *EmailLog* service provider, all that is required is to:
 
 More details about logging are available at [*kivakit-core logging*](../../kivakit/kernel/documentation/logging.md).
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Log Configuration Parameters <a name = "log-configuration-parameters"></a>
 
@@ -74,36 +74,36 @@ More details about logging are available at [*kivakit-core logging*](../../kivak
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
+### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdiagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdiagram-40-2x.png 2x"/>
 
 [*File Logs*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/diagram-logs-file.svg)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbox-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbox-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)  
 [*com.telenav.kivakit.logs.file.lexakai*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.lexakai.svg)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
+### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbooks-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbooks-32-2x.png 2x"/>
 
 Javadoc coverage for this project is 69.3%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-70-96.png" srcset="https://www.kivakit.org/images/meter-70-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meter-70-96-2x.png 2x"/>
 
 
 
 
 | Class | Documentation Sections |
 |---|---|
-| [*BaseRolloverTextLog*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.html) |  |  
-| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.Rollover.html) |  |  
-| [*DiagramLogsFile*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/lexakai/DiagramLogsFile.html) |  |  
-| [*FileLog*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/FileLog.html) |  |  
+| [*BaseRolloverTextLog*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file//////////////////////////////////////////////////.html) |  |  
+| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file///////////////////////////////////////////////////////////.html) |  |  
+| [*DiagramLogsFile*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file//////////////////////////////////////////////////////.html) |  |  
+| [*FileLog*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.logs.file//////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 
@@ -111,8 +111,7 @@ Javadoc coverage for this project is 69.3%.
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 <sub>Copyright &#169; 2011-2021 [Telenav](https://telenav.com), Inc. Distributed under [Apache License, Version 2.0](LICENSE)</sub>  
 <sub>This documentation was generated by [Lexakai](https://lexakai.org). UML diagrams courtesy of [PlantUML](https://plantuml.com).</sub>
-

@@ -1,24 +1,24 @@
 [//]: # (start-user-text)
 
 <a href="https://www.kivakit.org">
-<img src="https://www.kivakit.org/images/web-32.png" srcset="https://www.kivakit.org/images/web-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconsweb-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsweb-32-2x.png 2x"/>
 </a>
 &nbsp;
 <a href="https://twitter.com/openkivakit">
-<img src="https://www.kivakit.org/images/twitter-32.png" srcset="https://www.kivakit.org/images/twitter-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconstwitter-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconstwitter-32-2x.png 2x"/>
 </a>
 &nbsp;
 <a href="https://kivakit.zulipchat.com">
-<img src="https://www.kivakit.org/images/zulip-32.png" srcset="https://www.kivakit.org/images/zulip-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconszulip-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconszulip-32-2x.png 2x"/>
 </a>
 
 [//]: # (end-user-text)
 
-# kivakit-web-wicket &nbsp;&nbsp; <img src="https://www.kivakit.org/images/wicket-32.png" srcset="https://www.kivakit.org/images/wicket-32-2x.png 2x"/>
+# kivakit-web-wicket &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/wicket-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/wicket-32-2x.png 2x"/>
 
 This project contains support for using Apache Wicket on Jetty.
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Index
 
@@ -26,9 +26,9 @@ This project contains support for using Apache Wicket on Jetty.
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
-### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
+### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdependencies-32-2x.png 2x"/>
 
 [*Dependency Diagram*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/dependencies.svg)
 
@@ -40,7 +40,7 @@ This project contains support for using Apache Wicket on Jetty.
         <version>1.5.1-SNAPSHOT</version>
     </dependency>
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
 [//]: # (start-user-text)
 
@@ -57,15 +57,15 @@ Other servlets and filters, for example [Swagger](../swagger/README.md) and [Jer
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
+### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdiagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdiagram-40-2x.png 2x"/>
 
 None
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbox-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbox-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.web.wicket*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.svg)  
 [*com.telenav.kivakit.web.wicket.behaviors.status*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.behaviors.status.svg)  
@@ -75,27 +75,27 @@ None
 [*com.telenav.kivakit.web.wicket.library*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.library.svg)  
 [*com.telenav.kivakit.web.wicket.theme*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.theme.svg)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
+### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbooks-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbooks-32-2x.png 2x"/>
 
 Javadoc coverage for this project is 85.7%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-90-96.png" srcset="https://www.kivakit.org/images/meter-90-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/meter-90-96-2x.png 2x"/>
 
 
 
 
 | Class | Documentation Sections |
 |---|---|
-| [*Components*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/library/Components.html) |  |  
-| [*FeedbackPanel*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/feedback/FeedbackPanel.html) |  |  
-| [*HeaderPanel*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/header/HeaderPanel.html) |  |  
-| [*JettyWicketFilterHolder*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/JettyWicketFilterHolder.html) |  |  
-| [*KivaKitTheme*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/theme/KivaKitTheme.html) |  |  
-| [*MessageColor*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/behaviors/status/MessageColor.html) |  |  
-| [*UpdatingContainer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/components/refresh/UpdatingContainer.html) |  |  
-| [*WicketJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/com/telenav/kivakit/web/wicket/WicketJettyPlugin.html) |  |  
+| [*Components*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket//////////////////////////////////////////////////.html) |  |  
+| [*FeedbackPanel*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////////.html) |  |  
+| [*HeaderPanel*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////.html) |  |  
+| [*JettyWicketFilterHolder*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket///////////////////////////////////////////////////////.html) |  |  
+| [*KivaKitTheme*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket//////////////////////////////////////////////////.html) |  |  
+| [*MessageColor*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////.html) |  |  
+| [*UpdatingContainer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket////////////////////////////////////////////////////////////////////.html) |  |  
+| [*WicketJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 
@@ -103,8 +103,7 @@ Javadoc coverage for this project is 85.7%.
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 <sub>Copyright &#169; 2011-2021 [Telenav](https://telenav.com), Inc. Distributed under [Apache License, Version 2.0](LICENSE)</sub>  
 <sub>This documentation was generated by [Lexakai](https://lexakai.org). UML diagrams courtesy of [PlantUML](https://plantuml.com).</sub>
-

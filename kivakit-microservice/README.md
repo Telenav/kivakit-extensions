@@ -1,24 +1,24 @@
 [//]: # (start-user-text)
 
 <a href="https://www.kivakit.org">
-<img src="https://www.kivakit.org/images/web-32.png" srcset="https://www.kivakit.org/images/web-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconsweb-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsweb-32-2x.png 2x"/>
 </a>
 &nbsp;
 <a href="https://twitter.com/openkivakit">
-<img src="https://www.kivakit.org/images/twitter-32.png" srcset="https://www.kivakit.org/images/twitter-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconstwitter-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconstwitter-32-2x.png 2x"/>
 </a>
 &nbsp;
 <a href="https://kivakit.zulipchat.com">
-<img src="https://www.kivakit.org/images/zulip-32.png" srcset="https://www.kivakit.org/images/zulip-32-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconszulip-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconszulip-32-2x.png 2x"/>
 </a>
 
 [//]: # (end-user-text)
 
-# kivakit-microservice &nbsp;&nbsp; <img src="https://www.kivakit.org/images/puzzle-32.png" srcset="https://www.kivakit.org/images/puzzle-32-2x.png 2x"/>
+# kivakit-microservice &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/puzzle-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/puzzle-32-2x.png 2x"/>
 
 This module provides an abstraction for developing microservices.
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Index
 
@@ -27,9 +27,9 @@ This module provides an abstraction for developing microservices.
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
-### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/dependencies-32.png" srcset="https://www.kivakit.org/images/dependencies-32-2x.png 2x"/>
+### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdependencies-32-2x.png 2x"/>
 
 [*Dependency Diagram*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/dependencies.svg)
 
@@ -41,7 +41,7 @@ This module provides an abstraction for developing microservices.
         <version>1.5.1-SNAPSHOT</version>
     </dependency>
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
 [//]: # (start-user-text)
 
@@ -129,17 +129,17 @@ The *MicroserviceGrpcService* class copies its request handler mounts from *Micr
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://www.kivakit.org/images/diagram-40.png" srcset="https://www.kivakit.org/images/diagram-40-2x.png 2x"/>
+### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdiagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdiagram-40-2x.png 2x"/>
 
 [*Jetty Microservice Plugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/diagram-jetty.svg)  
 [*Microservices*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/diagram-microservice.svg)  
 [*Microservlets*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/diagram-microservlet.svg)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/box-32.png" srcset="https://www.kivakit.org/images/box-32-2x.png 2x"/>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbox-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbox-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.microservice*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.svg)  
 [*com.telenav.kivakit.microservice.internal.protocols*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.internal.protocols.svg)  
@@ -164,136 +164,136 @@ The *MicroserviceGrpcService* class copies its request handler mounts from *Micr
 [*com.telenav.kivakit.microservice.protocols.rest.openapi*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.protocols.rest.openapi.svg)  
 [*com.telenav.kivakit.microservice.web*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-microservice/documentation/diagrams/com.telenav.kivakit.microservice.web.svg)
 
-<img src="https://www.kivakit.org/images/horizontal-line-128.png" srcset="https://www.kivakit.org/images/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://www.kivakit.org/images/books-32.png" srcset="https://www.kivakit.org/images/books-32-2x.png 2x"/>
+### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbooks-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbooks-32-2x.png 2x"/>
 
-Javadoc coverage for this project is 61.8%.  
+Javadoc coverage for this project is 61.3%.  
   
-&nbsp; &nbsp; <img src="https://www.kivakit.org/images/meter-60-96.png" srcset="https://www.kivakit.org/images/meter-60-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meter-60-96.png" srcset="https://telenav.github.io/telenav-assets/meter-60-96-2x.png 2x"/>
 
 
 The following significant classes are undocumented:  
 
-- MicroserviceGrpcClient  
-- MicroservletRestPath  
-- RuntimeProtoGenerator
+- com.telenav.kivakit.microservice.protocols.grpc  
+- com.telenav.kivakit.microservice.protocols.rest  
+- com.telenav.kivakit.microservice.internal.protocols.grpc.runtimeproto
 
 | Class | Documentation Sections |
 |---|---|
-| [*AnnotationReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/AnnotationReader.html) |  |  
-| [*ArrayObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/ArrayObject.html) |  |  
-| [*ArraySerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/serialization/ArraySerializer.html) |  |  
-| [*BaseMicroservletRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/BaseMicroservletRequest.html) |  |  
-| [*BaseMicroservletResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/BaseMicroservletResponse.html) |  |  
-| [*Constants*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/Constants.html) |  |  
-| [*DiagramJetty*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/lexakai/DiagramJetty.html) |  |  
-| [*DiagramMicroservice*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/lexakai/DiagramMicroservice.html) |  |  
-| [*DiagramMicroservlet*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/lexakai/DiagramMicroservlet.html) |  |  
-| [*DynamicObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/DynamicObject.html) |  |  
-| [*EnumObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/EnumObject.html) |  |  
-| [*Generators*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/Generators.html) |  |  
-| [*HealthLiveRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/health/HealthLiveRequest.html) |  |  
-| [*HealthLiveRequest.HealthLiveResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/health/HealthLiveRequest.HealthLiveResponse.html) |  |  
-| [*HealthReadyRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/health/HealthReadyRequest.html) |  |  
-| [*HealthReadyRequest.HealthReadyResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/health/HealthReadyRequest.HealthReadyResponse.html) |  |  
-| [*HttpProblemReportingTrait*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/cycle/HttpProblemReportingTrait.html) |  |  
-| [*JavaObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/JavaObject.html) |  |  
-| [*JettyMicroserviceResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/cycle/JettyMicroserviceResponse.html) |  |  
-| [*JettyMicroservletFilter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/filter/JettyMicroservletFilter.html) | Microservlet Mounts |  
+| [*AnnotationReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ArrayObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ArraySerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*BaseMicroservletRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////.html) |  |  
+| [*BaseMicroservletResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////.html) |  |  
+| [*Constants*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*DiagramJetty*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////.html) |  |  
+| [*DiagramMicroservice*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////.html) |  |  
+| [*DiagramMicroservlet*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////.html) |  |  
+| [*DynamicObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*EnumObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*Generators*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*HealthLiveRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*HealthLiveRequest.HealthLiveResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*HealthReadyRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*HealthReadyRequest.HealthReadyResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*HttpProblemReportingTrait*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*JavaObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*JettyMicroserviceResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*JettyMicroservletFilter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////////.html) | Microservlet Mounts |  
 | | JAR Mounts |  
-| [*JettyMicroservletFilterHolder*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/filter/JettyMicroservletFilterHolder.html) |  |  
-| [*JettyMicroservletRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/cycle/JettyMicroservletRequest.html) |  |  
-| [*JettyMicroservletRequestCycle*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/cycle/JettyMicroservletRequestCycle.html) | Microservlet Binding |  
+| [*JettyMicroservletFilterHolder*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*JettyMicroservletRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*JettyMicroservletRequestCycle*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////////////.html) | Microservlet Binding |  
 | | Request and Response |  
-| [*LambdaFunction*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/lambda/LambdaFunction.html) |  |  
-| [*LambdaRequestHandler*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/lambda/LambdaRequestHandler.html) | Logging |  
+| [*LambdaFunction*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////.html) |  |  
+| [*LambdaRequestHandler*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////.html) | Logging |  
 | | Configuration |  
 | | Security |  
-| [*ListSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/serialization/ListSerializer.html) |  |  
-| [*MapEntryObjectObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapEntryObjectObject.html) |  |  
-| [*MapEntryStringObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapEntryStringObject.html) |  |  
-| [*MapEntryStringString*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapEntryStringString.html) |  |  
-| [*MapObjectObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapObjectObject.html) |  |  
-| [*MapSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/serialization/MapSerializer.html) |  |  
-| [*MapStringObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapStringObject.html) |  |  
-| [*MapStringString*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/MapStringString.html) |  |  
-| [*Microservice*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/Microservice.html) | Creating a Microservice |  
+| [*ListSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MapEntryObjectObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MapEntryStringObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MapEntryStringString*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MapObjectObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MapSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MapStringObject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MapStringString*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*Microservice*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////.html) | Creating a Microservice |  
 | | Command Line Switches |  
 | | Example: |  
 | | Cluster Elections |  
 | | Cluster Membership |  
 | | Mount Paths |  
 | | Root Path |  
-| [*MicroserviceCluster*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceCluster.html) | Starting Up |  
+| [*MicroserviceCluster*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////.html) | Starting Up |  
 | | As Members Join and Leave |  
 | | Leader Elections |  
-| [*MicroserviceClusterMember*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceClusterMember.html) | Properties |  
+| [*MicroserviceClusterMember*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////.html) | Properties |  
 | | Leader Elections |  
-| [*MicroserviceGrpcClient*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/grpc/MicroserviceGrpcClient.html) |  |  
-| [*MicroserviceGrpcService*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/grpc/MicroserviceGrpcService.html) | Creation |  
-| [*MicroserviceGsonObjectSource*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/gson/MicroserviceGsonObjectSource.html) |  |  
-| [*MicroserviceLambdaService*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/lambda/MicroserviceLambdaService.html) | AWS Installation |  
+| [*MicroserviceGrpcClient*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroserviceGrpcService*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////.html) | Creation |  
+| [*MicroserviceGsonObjectSource*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroserviceLambdaService*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////.html) | AWS Installation |  
 | | Security |  
-| [*MicroserviceMetadata*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceMetadata.html) |  |  
-| [*MicroserviceProject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceProject.html) |  |  
-| [*MicroserviceRestClient*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/MicroserviceRestClient.html) |  |  
-| [*MicroserviceRestService*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/MicroserviceRestService.html) | Internal Details - Flow of Control |  
+| [*MicroserviceMetadata*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////.html) |  |  
+| [*MicroserviceProject*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////.html) |  |  
+| [*MicroserviceRestClient*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroserviceRestService*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////.html) | Internal Details - Flow of Control |  
 | | API Forwarding - Backwards Compatibility |  
 | | API Paths and Versions |  
 | | Mounting Request Handlers |  
 | | OpenAPI |  
-| [*MicroserviceRestService.HttpMethod*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/MicroserviceRestService.HttpMethod.html) |  |  
-| [*MicroserviceSettings*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/MicroserviceSettings.html) |  |  
-| [*MicroserviceWebApplication*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/web/MicroserviceWebApplication.html) |  |  
-| [*Microservlet*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/Microservlet.html) | IMPORTANT NOTE |  
-| [*MicroservletError*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/MicroservletError.html) |  |  
-| [*MicroservletErrorResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/MicroservletErrorResponse.html) |  |  
-| [*MicroservletFutureResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/grpc/MicroservletFutureResponse.html) |  |  
-| [*MicroservletGrpcResponder*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/MicroservletGrpcResponder.html) |  |  
-| [*MicroservletGrpcSchemas*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/MicroservletGrpcSchemas.html) |  |  
-| [*MicroservletJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/MicroservletJettyPlugin.html) | NOTE |  
-| [*MicroservletMountTarget*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/MicroservletMountTarget.html) |  |  
-| [*MicroservletRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/MicroservletRequest.html) |  |  
-| [*MicroservletRequestHandler*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/MicroservletRequestHandler.html) |  |  
-| [*MicroservletRequestHandlingStatistics*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/MicroservletRequestHandlingStatistics.html) |  |  
-| [*MicroservletRequestStatisticsAggregator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/MicroservletRequestStatisticsAggregator.html) |  |  
-| [*MicroservletResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/microservlet/MicroservletResponse.html) |  |  
-| [*MicroservletRestPath*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/MicroservletRestPath.html) |  |  
-| [*Mounted*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/filter/Mounted.html) |  |  
-| [*MountedApi*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/filter/MountedApi.html) |  |  
-| [*MountedMicroservlet*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/filter/MountedMicroservlet.html) |  |  
-| [*OpenApiAnnotationReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/OpenApiAnnotationReader.html) |  |  
-| [*OpenApiExcludeMember*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/openapi/OpenApiExcludeMember.html) |  |  
-| [*OpenApiIncludeMember*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/openapi/OpenApiIncludeMember.html) |  |  
-| [*OpenApiIncludeMemberFromSuperType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/openapi/OpenApiIncludeMemberFromSuperType.html) |  |  
-| [*OpenApiIncludeMemberFromSuperTypeRepeater*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/openapi/OpenApiIncludeMemberFromSuperTypeRepeater.html) |  |  
-| [*OpenApiIncludeType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/openapi/OpenApiIncludeType.html) |  |  
-| [*OpenApiJsonRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/OpenApiJsonRequest.html) |  |  
-| [*OpenApiJsonRequest.JettyOpenApiResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/OpenApiJsonRequest.JettyOpenApiResponse.html) |  |  
-| [*OpenApiPathReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/OpenApiPathReader.html) |  |  
-| [*OpenApiPropertyFilter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/filters/OpenApiPropertyFilter.html) |  |  
-| [*OpenApiReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/OpenApiReader.html) | Annotations |  
-| [*OpenApiRequestHandler*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/protocols/rest/openapi/OpenApiRequestHandler.html) |  |  
-| [*OpenApiSchemaReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/OpenApiSchemaReader.html) |  |  
-| [*OpenApiTypeFilter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/filters/OpenApiTypeFilter.html) |  |  
-| [*Pair*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/Pair.html) |  |  
-| [*PrimitiveReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/PrimitiveReader.html) |  |  
-| [*ProtoGenerator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/ProtoGenerator.html) |  |  
-| [*ProtostuffThreadLocal*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/ProtostuffThreadLocal.html) |  |  
-| [*ProtostuffThreadLocal.Instantiator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/ProtostuffThreadLocal.Instantiator.html) |  |  
-| [*ReferenceResolver*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/ReferenceResolver.html) |  |  
-| [*ReflectionUtil*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/ReflectionUtil.html) |  |  
-| [*RuntimeFieldType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/RuntimeFieldType.html) |  |  
-| [*RuntimeProtoGenerator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/RuntimeProtoGenerator.html) |  |  
-| [*RuntimeProtoGenerator.ClassNameComparator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/RuntimeProtoGenerator.ClassNameComparator.html) |  |  
-| [*RuntimeProtoGenerator.EnumObj*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/RuntimeProtoGenerator.EnumObj.html) |  |  
-| [*RuntimeProtoGenerator.Message*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/RuntimeProtoGenerator.Message.html) |  |  
-| [*RuntimeSchemaType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/RuntimeSchemaType.html) |  |  
-| [*SchemaCopier*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/reader/SchemaCopier.html) |  |  
-| [*SetSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/serialization/SetSerializer.html) |  |  
-| [*StringSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/rest/plugins/jetty/openapi/serialization/StringSerializer.html) |  |  
-| [*UUID*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/com/telenav/kivakit/microservice/internal/protocols/grpc/runtimeproto/UUID.html) |  |  
+| [*MicroserviceRestService.HttpMethod*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroserviceSettings*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////.html) |  |  
+| [*MicroserviceWebApplication*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////.html) |  |  
+| [*Microservlet*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////.html) | IMPORTANT NOTE |  
+| [*MicroservletError*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletErrorResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletFutureResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletGrpcResponder*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletGrpcSchemas*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////.html) | NOTE |  
+| [*MicroservletMountTarget*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletRequestHandler*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletRequestHandlingStatistics*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletRequestStatisticsAggregator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////.html) |  |  
+| [*MicroservletRestPath*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////.html) |  |  
+| [*Mounted*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MountedApi*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*MountedMicroservlet*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiAnnotationReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiExcludeMember*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiIncludeMember*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiIncludeMemberFromSuperType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiIncludeMemberFromSuperTypeRepeater*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiIncludeType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiJsonRequest*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiJsonRequest.JettyOpenApiResponse*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiPathReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiPropertyFilter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////.html) | Annotations |  
+| [*OpenApiRequestHandler*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiSchemaReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*OpenApiTypeFilter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*Pair*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*PrimitiveReader*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ProtoGenerator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ProtostuffThreadLocal*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ProtostuffThreadLocal.Instantiator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ReferenceResolver*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ReflectionUtil*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice/////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*RuntimeFieldType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*RuntimeProtoGenerator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*RuntimeProtoGenerator.ClassNameComparator*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*RuntimeProtoGenerator.EnumObj*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*RuntimeProtoGenerator.Message*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*RuntimeSchemaType*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*SchemaCopier*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*SetSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*StringSerializer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice//////////////////////////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*UUID*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.microservice///////////////////////////////////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 
@@ -301,8 +301,7 @@ The following significant classes are undocumented:
 
 [//]: # (end-user-text)
 
-<img src="https://www.kivakit.org/images/horizontal-line-512.png" srcset="https://www.kivakit.org/images/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-512-2x.png 2x"/>
 
 <sub>Copyright &#169; 2011-2021 [Telenav](https://telenav.com), Inc. Distributed under [Apache License, Version 2.0](LICENSE)</sub>  
 <sub>This documentation was generated by [Lexakai](https://lexakai.org). UML diagrams courtesy of [PlantUML](https://plantuml.com).</sub>
-
