@@ -20,14 +20,14 @@ This module contains a provider for kivakit-metrics that makes Prometheus monito
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/prometheus/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-metrics/prometheus/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-metrics-prometheus</artifactId>
-        <version>1.5.1-SNAPSHOT</version>
+        <version>1.6.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
@@ -48,7 +48,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbox-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbox-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.metrics.prometheus*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-metrics/prometheus/documentation/diagrams/com.telenav.kivakit.metrics.prometheus.svg)
+[*com.telenav.kivakit.metrics.prometheus*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-metrics/prometheus/documentation/diagrams/com.telenav.kivakit.metrics.prometheus.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
@@ -63,8 +63,8 @@ Javadoc coverage for this project is 50.0%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*PrometheusJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////.html) |  |  
-| [*PrometheusMetricsReporter*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////////.html) |  |  
+| [*PrometheusJettyPlugin*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////.html) |  |  
+| [*PrometheusMetricsReporter*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 

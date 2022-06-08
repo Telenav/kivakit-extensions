@@ -30,14 +30,14 @@ This project contains support for using Apache Wicket on Jetty.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsdependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsdependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web-wicket</artifactId>
-        <version>1.5.1-SNAPSHOT</version>
+        <version>1.6.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
@@ -67,13 +67,13 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/iconsbox-32.png" srcset="https://telenav.github.io/telenav-assets/images/iconsbox-32-2x.png 2x"/>
 
-[*com.telenav.kivakit.web.wicket*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.svg)  
-[*com.telenav.kivakit.web.wicket.behaviors.status*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.behaviors.status.svg)  
-[*com.telenav.kivakit.web.wicket.components.feedback*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.components.feedback.svg)  
-[*com.telenav.kivakit.web.wicket.components.header*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.components.header.svg)  
-[*com.telenav.kivakit.web.wicket.components.refresh*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.components.refresh.svg)  
-[*com.telenav.kivakit.web.wicket.library*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.library.svg)  
-[*com.telenav.kivakit.web.wicket.theme*](https://www.kivakit.org/1.5.1-SNAPSHOT/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.theme.svg)
+[*com.telenav.kivakit.web.wicket*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.svg)  
+[*com.telenav.kivakit.web.wicket.behaviors.status*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.behaviors.status.svg)  
+[*com.telenav.kivakit.web.wicket.components.feedback*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.components.feedback.svg)  
+[*com.telenav.kivakit.web.wicket.components.header*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.components.header.svg)  
+[*com.telenav.kivakit.web.wicket.components.refresh*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.components.refresh.svg)  
+[*com.telenav.kivakit.web.wicket.library*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.library.svg)  
+[*com.telenav.kivakit.web.wicket.theme*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/wicket/documentation/diagrams/com.telenav.kivakit.web.wicket.theme.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/iconshorizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/png/separators/horizontal-line-128-2x.png 2x"/>
 
@@ -88,14 +88,14 @@ Javadoc coverage for this project is 85.7%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*Components*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket//////////////////////////////////////////////////.html) |  |  
-| [*FeedbackPanel*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////////.html) |  |  
-| [*HeaderPanel*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////.html) |  |  
-| [*JettyWicketFilterHolder*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket///////////////////////////////////////////////////////.html) |  |  
-| [*KivaKitTheme*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket//////////////////////////////////////////////////.html) |  |  
-| [*MessageColor*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////.html) |  |  
-| [*UpdatingContainer*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket////////////////////////////////////////////////////////////////////.html) |  |  
-| [*WicketJettyPlugin*](https://www.kivakit.org/1.5.1-SNAPSHOT/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////.html) |  |  
+| [*Components*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket//////////////////////////////////////////////////.html) |  |  
+| [*FeedbackPanel*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////////.html) |  |  
+| [*HeaderPanel*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////.html) |  |  
+| [*JettyWicketFilterHolder*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket///////////////////////////////////////////////////////.html) |  |  
+| [*KivaKitTheme*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket//////////////////////////////////////////////////.html) |  |  
+| [*MessageColor*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////////////////.html) |  |  
+| [*UpdatingContainer*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket////////////////////////////////////////////////////////////////////.html) |  |  
+| [*WicketJettyPlugin*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.wicket/////////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 
