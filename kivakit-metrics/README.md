@@ -25,9 +25,9 @@ This module contains packages for collecting metrics on a server
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/bargraph-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/bargraph-24-2x.png 2x"/>
 
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/meter-50-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-metrics-core**](core/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/meter-50-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-metrics-prometheus**](prometheus/README.md)
 
 [//]: # (start-user-text)

@@ -45,31 +45,31 @@ This project contains modules that extend KivaKit.
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/bargraph-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/bargraph-24-2x.png 2x"/>
 
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-github**](kivakit-filesystems/github/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-java**](kivakit-filesystems/java/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/meter-80-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-80-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-filesystems-s3fs**](kivakit-filesystems/s3fs/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/meter-40-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-40-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-logs-email**](kivakit-logs/email/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-logs-file**](kivakit-logs/file/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/meter-50-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-metrics-core**](kivakit-metrics/core/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/meter-50-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-metrics-prometheus**](kivakit-metrics/prometheus/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-60-96.png" srcset="https://telenav.github.io/telenav-assets/meter-60-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-60-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-60-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-microservice**](kivakit-microservice/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/meter-50-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-50-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-settings-stores-zookeeper**](kivakit-settings-stores/zookeeper/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/meter-90-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-jersey**](kivakit-web/jersey/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-jetty**](kivakit-web/jetty/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-swagger**](kivakit-web/swagger/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/meter-90-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-wicket**](kivakit-web/wicket/README.md)
 
 [//]: # (start-user-text)

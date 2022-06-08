@@ -39,9 +39,9 @@ See [kivakit-core logging](../kivakit/kernel/documentation/logging.md) for detai
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/bargraph-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/bargraph-24-2x.png 2x"/>
 
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/meter-40-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-40-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-logs-email**](email/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-logs-file**](file/README.md)
 
 [//]: # (start-user-text)
