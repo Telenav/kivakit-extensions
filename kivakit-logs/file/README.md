@@ -18,7 +18,7 @@
 
 This module is a text file log service provider.
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Index
 
@@ -28,7 +28,7 @@ This module is a text file log service provider.
 
 [**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
@@ -42,7 +42,7 @@ This module is a text file log service provider.
         <version>1.6.0</version>
     </dependency>
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 [//]: # (start-user-text)
 
@@ -50,7 +50,7 @@ This module is a text file log service provider.
 
 This module is a log service provider which logs messages to the filesystem. It includes log roll-over, based on time or log size.
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Including the Provider <a name = "including-the-provider"></a>
 
@@ -64,7 +64,7 @@ To include the *EmailLog* service provider, all that is required is to:
 
 More details about logging are available at [*kivakit-core logging*](../../kivakit/kernel/documentation/logging.md).
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Log Configuration Parameters <a name = "log-configuration-parameters"></a>
 
@@ -74,20 +74,20 @@ More details about logging are available at [*kivakit-core logging*](../../kivak
 
 [//]: # (end-user-text)
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-40-2x.png 2x"/>
 
 [*File Logs*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/diagram-logs-file.svg)
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-32-2x.png 2x"/>
 
 [*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)  
 [*com.telenav.kivakit.logs.file.lexakai*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.lexakai.svg)
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
@@ -111,7 +111,7 @@ Javadoc coverage for this project is 69.3%.
 
 [//]: # (end-user-text)
 
-<img src="https://telenav.github.io/telenav-assets/images/icons/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
 
 <sub>Copyright &#169; 2011-2021 [Telenav](https://telenav.com), Inc. Distributed under [Apache License, Version 2.0](LICENSE)</sub>  
 <sub>This documentation was generated by [Lexakai](https://lexakai.org). UML diagrams courtesy of [PlantUML](https://plantuml.com).</sub>
