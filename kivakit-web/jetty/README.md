@@ -58,7 +58,7 @@ None
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-32-2x.png 2x"/>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
 [*com.telenav.kivakit.web.jetty*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.svg)  
 [*com.telenav.kivakit.web.jetty.resources*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.resources.svg)

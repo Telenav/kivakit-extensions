@@ -74,7 +74,7 @@ would access the file *my-file.txt* in the bucket *my-bucket* in the *us-west-1*
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
-### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-32-2x.png 2x"/>
+### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
 [*com.telenav.kivakit.filesystems.s3fs*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.svg)  
 [*com.telenav.kivakit.filesystems.s3fs.lexakai*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.lexakai.svg)
