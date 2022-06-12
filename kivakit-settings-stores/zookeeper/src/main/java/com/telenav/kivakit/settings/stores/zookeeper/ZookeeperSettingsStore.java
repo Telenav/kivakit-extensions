@@ -118,8 +118,6 @@ import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  *     <li>{@link #onSettingsDeleted(StringPath, SettingsObject)} - Called when a settings object is deleted</li>
  * </ul>
  *
- * </p>
- *
  * @author jonathanl (shibo)
  * @see ZookeeperConnection
  * @see SettingsObject

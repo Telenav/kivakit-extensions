@@ -82,7 +82,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * </p>
  *
  * <pre>
- * public class MyMicroservice extends Microservice<Void>
+ * public class MyMicroservice extends Microservice&lt;Void&gt;
  * {
  *     public MicroserviceMetadata metadata()
  *     {
@@ -174,38 +174,50 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *
  * <ol>
  *     <li>Initializing</li>
- *     <ol>
- *         <li>{@link MicroserviceRestService} creates a {@link MicroservletJettyPlugin}</li>
- *         <li>In the {@link MicroserviceRestService#onInitialize()} method, <i>mount*()</i> methods are used to bind
- *         {@link MicroservletRequest} handlers to paths</li>
- *     </ol>
- *     <li>Receiving requests</li>
- *     <ol>
- *         <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyPlugin}</li>
- *         <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} resolves any
- *         {@link Microservlet} mounted on the request path. If no microservlet is found, the request is passed to the next
- *         {@link Filter} in the filter chain</li>
- *         <li>Request parameters are processed</li>
+ *     <li>
  *         <ol>
- *             <li>If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
- *             <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
- *             <li>If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
+ *             <li>{@link MicroserviceRestService} creates a {@link MicroservletJettyPlugin}</li>
+ *             <li>In the {@link MicroserviceRestService#onInitialize()} method, <i>mount*()</i> methods are used to bind
+ *             {@link MicroservletRequest} handlers to paths</li>
  *         </ol>
- *     </ol>
+ *     </li>
+ *     <li>Receiving requests</li>
+ *     <li>
+ *         <ol>
+ *             <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyPlugin}</li>
+ *             <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} resolves any
+ *             {@link Microservlet} mounted on the request path. If no microservlet is found, the request is passed to the next
+ *             {@link Filter} in the filter chain</li>
+ *             <li>Request parameters are processed</li>
+ *             <li>
+ *               <ol>
+ *                 <li>If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
+ *                 <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
+ *                 <li>If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
+ *               </ol>
+ *             </li>
+ *         </ol>
+ *     </li>
  *
  *     <li>Handling requests</li>
- *     <ol>
+ *     <li>
+ *       <ol>
  *         <li>The {@link Microservlet#onRespond(MicroservletRequest)} method is called</li>
- *     </ol>
+ *       </ol>
+ *     </li>
  *     <li>Producing a response</li>
+ *     <li>
  *     <ol>
  *         <li>The request handler's return value is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
- *         <ol>
+ *         <li>
+ *           <ol>
  *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
  *             <li>Converts the object to output (normally JSON) using the {@link ObjectSerializer} object provided by {@link MicroserviceRestService#serializer()}</li>
  *             <li>Writes the JSON object to the servlet response output stream</li>
- *         </ol>
+ *           </ol>
+ *         </li>
  *     </ol>
+ *     </li>
  * </ol>
  *
  * <hr>

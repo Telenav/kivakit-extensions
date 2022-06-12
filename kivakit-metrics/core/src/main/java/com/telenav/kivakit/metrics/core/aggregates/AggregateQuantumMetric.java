@@ -42,7 +42,7 @@ import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
  * </p>
  *
  * <pre>
- * public class AverageMetric<T extends QuantizableMetric> extends AggregateQuantumMetric<T>
+ * public class AverageMetric&lt;T extends QuantizableMetric&gt; extends AggregateQuantumMetric&lt;T&gt;
  * {
  *     public AverageMetric(MapFactory&lt;Long, T&gt; factory)
  *     {

@@ -125,10 +125,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * <p>
  * Microservice resources are mounted on the following paths by default:
  *
- * <p>
  * <table>
+ *     <caption>Mount Paths</caption>
  *     <tr>
- *         <td>/</td><td>&nbsp;</td></td><td>Apache Wicket web application</td>
+ *         <td>/</td><td>&nbsp;</td><td>Apache Wicket web application</td>
  *     </tr>
  *     <tr>
  *         <td>/</td><td>&nbsp;</td><td>Microservlet REST application</td>
@@ -152,7 +152,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *         <td>/swagger/webjar</td><td>&nbsp;</td><td>Swagger design webjar</td>
  *     </tr>
  * </table>
- * </p>
  *
  * <hr>
  *
