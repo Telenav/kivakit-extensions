@@ -23,7 +23,8 @@
     </parent>
     
     <artifactId>kivakit-metrics-prometheus</artifactId>
-    
+    <version>1.6.0</version>
+
     <dependencies>
         
         <!-- KivaKit -->

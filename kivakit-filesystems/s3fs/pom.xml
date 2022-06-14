@@ -23,7 +23,8 @@
     </parent>
     
     <artifactId>kivakit-filesystems-s3fs</artifactId>
-    
+    <version>1.6.0</version>
+
     <dependencies>
         
         <!-- KivaKit -->

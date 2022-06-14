@@ -23,7 +23,8 @@
     </parent>
     
     <artifactId>kivakit-filesystems-java</artifactId>
-    
+    <version>1.6.0</version>
+
     <dependencies>
         
         <!-- KivaKit -->
