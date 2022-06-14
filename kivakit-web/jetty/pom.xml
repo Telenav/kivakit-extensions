@@ -9,9 +9,9 @@
  -->
 
 <project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        xmlns = "http://maven.apache.org/POM/4.0.0"
+        xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     
     <modelVersion>4.0.0</modelVersion>
     
@@ -28,7 +28,7 @@
     <dependencies>
         
         <!-- KivaKit -->
-        
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-component</artifactId>
@@ -37,9 +37,9 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-network-http</artifactId>
         </dependency>
-        
+
         <!-- Jetty -->
-        
+
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
@@ -56,13 +56,13 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
-        
+
         <!-- Testing -->
-        
+
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-testing</artifactId>
-            
+
             <!-- Move WebUnitTest to a separate package and uncomment: -->
             <!-- <scope>test</scope> -->
             

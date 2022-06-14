@@ -29,8 +29,8 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
- * Adds a web server to {@link UnitTest} that can be started with {@link #startWebServer(int, FilePath)} where {@link
- * FilePath} is the folder for WAR resources.
+ * Adds a web server to {@link UnitTest} that can be started with {@link #startWebServer(int, FilePath)} where
+ * {@link FilePath} is the folder for WAR resources.
  *
  * @author jonathanl (shibo)
  */
@@ -45,8 +45,6 @@ public class WebUnitTest extends UnitTest
     protected void startWebServer(int portNumber, FilePath war)
     {
         var http = new HttpConfiguration();
-        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.NoLogging");
-        System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
         var server = new Server();
         var connector = new ServerConnector(server, new HttpConnectionFactory(http));
         connector.setPort(portNumber);
@@ -59,6 +57,7 @@ public class WebUnitTest extends UnitTest
 
         try
         {
+            org.eclipse.jetty.util.log.Log.setLog(new NullLogger());
             server.start();
         }
         catch (Exception e)
