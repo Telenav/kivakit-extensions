@@ -45,6 +45,7 @@ public class WebUnitTest extends UnitTest
     protected void startWebServer(int portNumber, FilePath war)
     {
         var http = new HttpConfiguration();
+        org.eclipse.jetty.util.log.Log.setLog(new NullLogger());
         var server = new Server();
         var connector = new ServerConnector(server, new HttpConnectionFactory(http));
         connector.setPort(portNumber);
@@ -57,7 +58,6 @@ public class WebUnitTest extends UnitTest
 
         try
         {
-            org.eclipse.jetty.util.log.Log.setLog(new NullLogger());
             server.start();
         }
         catch (Exception e)
