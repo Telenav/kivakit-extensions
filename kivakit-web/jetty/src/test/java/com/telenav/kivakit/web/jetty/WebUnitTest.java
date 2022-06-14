@@ -45,6 +45,8 @@ public class WebUnitTest extends UnitTest
     protected void startWebServer(int portNumber, FilePath war)
     {
         var http = new HttpConfiguration();
+        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+        System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
         var server = new Server();
         var connector = new ServerConnector(server, new HttpConnectionFactory(http));
         connector.setPort(portNumber);
