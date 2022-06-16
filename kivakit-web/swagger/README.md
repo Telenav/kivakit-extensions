@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-web-swagger &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//books-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//books-32-2x.png 2x"/>
+# kivakit-web-swagger &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 This project contains support for using Swagger with Jersey and Jetty.
 
@@ -80,7 +80,7 @@ None
 
 Javadoc coverage for this project is 66.7%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-70-96-2x.png 2x"/>
 
 
 

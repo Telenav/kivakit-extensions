@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-web-wicket &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//wicket-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//wicket-32-2x.png 2x"/>
+# kivakit-web-wicket &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/wicket-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/wicket-32-2x.png 2x"/>
 
 This project contains support for using Apache Wicket on Jetty.
 
@@ -81,7 +81,7 @@ None
 
 Javadoc coverage for this project is 85.7%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-90-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-90-96-2x.png 2x"/>
 
 
 

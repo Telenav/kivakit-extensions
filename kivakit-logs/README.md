@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-logs &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//log-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//log-32-2x.png 2x"/>
+# kivakit-logs &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/log-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/log-32-2x.png 2x"/>
 
 This project provides log services that satisfy the kivakit-core logging service provider interface.
 
@@ -30,7 +30,7 @@ See [kivakit-core logging](../kivakit/kernel/documentation/logging.md) for detai
 
 [//]: # (end-user-text)
 
-### Projects <a name = "projects"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/gears-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/gears-32-2x.png 2x"/>
+### Sub-Projects <a name = "projects"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-32-2x.png 2x"/>
 
 [**kivakit-logs-email**](email/README.md)  
 [**kivakit-logs-file**](file/README.md)  
@@ -39,9 +39,9 @@ See [kivakit-core logging](../kivakit/kernel/documentation/logging.md) for detai
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/bargraph-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/bargraph-24-2x.png 2x"/>
 
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-40-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-40-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-logs-email**](email/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-logs-file**](file/README.md)
 
 [//]: # (start-user-text)

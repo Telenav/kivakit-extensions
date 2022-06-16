@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-filesystems-github &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//disks-32-2x.png 2x"/>
+# kivakit-filesystems-github &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/disks-32-2x.png 2x"/>
 
 Read only filesystem service provider for GitHub.
 
@@ -87,7 +87,7 @@ None
 
 Javadoc coverage for this project is 72.5%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-70-96-2x.png 2x"/>
 
 
 The following significant classes are undocumented:  

@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-filesystems-s3fs &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//disks-32-2x.png 2x"/>
+# kivakit-filesystems-s3fs &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/disks-32-2x.png 2x"/>
 
 Service provider for AWS S3 filesystems.
 
@@ -85,7 +85,7 @@ would access the file *my-file.txt* in the bucket *my-bucket* in the *us-west-1*
 
 Javadoc coverage for this project is 82.3%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-80-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-80-96-2x.png 2x"/>
 
 
 

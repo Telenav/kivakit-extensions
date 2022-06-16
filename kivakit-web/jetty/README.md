@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-web-jetty &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//server-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//server-32-2x.png 2x"/>
+# kivakit-web-jetty &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/server-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/server-32-2x.png 2x"/>
 
 This project contains support for using the Jetty web server.
 
@@ -69,7 +69,7 @@ None
 
 Javadoc coverage for this project is 72.2%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-70-96-2x.png 2x"/>
 
 
 

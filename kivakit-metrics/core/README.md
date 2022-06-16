@@ -4,7 +4,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-metrics-core &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//ruler-64.png" srcset="https://telenav.github.io/telenav-assets/images/icons//ruler-64-2x.png 2x"/>
+# kivakit-metrics-core &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-64.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-64-2x.png 2x"/>
 
 This module contains packages for collecting metrics on a server
 
@@ -63,7 +63,7 @@ None
 
 Javadoc coverage for this project is 50.4%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-50-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-50-96-2x.png 2x"/>
 
 
 

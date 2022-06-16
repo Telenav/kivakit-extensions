@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-microservice &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//puzzle-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//puzzle-32-2x.png 2x"/>
+# kivakit-microservice &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/puzzle-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/puzzle-32-2x.png 2x"/>
 
 This module provides an abstraction for developing microservices.
 
@@ -170,7 +170,7 @@ The *MicroserviceGrpcService* class copies its request handler mounts from *Micr
 
 Javadoc coverage for this project is 61.3%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-60-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-60-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-60-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-60-96-2x.png 2x"/>
 
 
 The following significant classes are undocumented:  

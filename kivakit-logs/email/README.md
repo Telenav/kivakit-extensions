@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-logs-email &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//envelope-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//envelope-32-2x.png 2x"/>
+# kivakit-logs-email &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/envelope-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/envelope-32-2x.png 2x"/>
 
 This module is an email log service provider.
 
@@ -98,7 +98,7 @@ More details about logging are available at [*kivakit-core logging*](../../kivak
 
 Javadoc coverage for this project is 41.7%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-40-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-40-96-2x.png 2x"/>
 
 
 

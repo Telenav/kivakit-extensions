@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-web &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons//world-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons//world-32-2x.png 2x"/>
+# kivakit-web &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/world-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/world-32-2x.png 2x"/>
 
 This module contains modules that relate to the world-wide web.
 
@@ -55,7 +55,7 @@ for more details.
 
 [//]: # (end-user-text)
 
-### Projects <a name = "projects"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/gears-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/gears-32-2x.png 2x"/>
+### Sub-Projects <a name = "projects"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-32-2x.png 2x"/>
 
 [**kivakit-web-jersey**](jersey/README.md)  
 [**kivakit-web-jetty**](jetty/README.md)  
@@ -66,13 +66,13 @@ for more details.
 
 ### Javadoc Coverage <a name = "javadoc-coverage"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/bargraph-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/bargraph-24-2x.png 2x"/>
 
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-90-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-jersey**](jersey/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-jetty**](jetty/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-70-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-70-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-swagger**](swagger/README.md)  
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meter/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/images/meter/meter-90-96-2x.png 2x"/>
+&nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-90-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-90-96-2x.png 2x"/>
  &nbsp; &nbsp; [**kivakit-web-wicket**](wicket/README.md)
 
 [//]: # (start-user-text)
