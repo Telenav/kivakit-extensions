@@ -98,7 +98,7 @@ More details about logging are available at [*kivakit-core logging*](../../kivak
 
 Javadoc coverage for this project is 41.7%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/meters/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/meters/meter-40-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-40-96-2x.png 2x"/>
 
 
 
