@@ -26,8 +26,8 @@ This project contains filesystem service providers for the service provider inte
 
 To use the [hdfs](hdfs/README.md), [s3fs](s3fs/README.md) or [github](github/README.md) providers with the KivaKit resource mini-framework, all that is required is to add the appropriate dependency to *pom.xml* and add an *import* statement to module-info.java.
 
-See [filesystem](https://github.com/Telenav/kivakit/blob/master/kivakit/resource/documentation/diagrams/com.telenav.kivakit.filesystem.spi.svg)
-and [resource](https://github.com/Telenav/kivakit/blob/master/kivakit/resource/documentation/diagrams/com.telenav.kivakit.resource.svg)
+See [filesystem](https://github.com/Telenav/kivakit/blob/release/current/kivakit/resource/documentation/diagrams/com.telenav.kivakit.filesystem.spi.svg)
+and [resource](https://github.com/Telenav/kivakit/blob/release/current/kivakit/resource/documentation/diagrams/com.telenav.kivakit.resource.svg)
 UML diagrams as well as  [FileSystem](https://telenav.github.io/kivakit/javadoc/kivakit.resource/com/telenav/kivakit/filesystem/spi/FileSystemService.html)
 and [FileSystemServiceLoader](https://telenav.github.io/kivakit/javadoc/kivakit.resource/com/telenav/kivakit/filesystem/loader/FileSystemServiceLoader.html)
 classes.
