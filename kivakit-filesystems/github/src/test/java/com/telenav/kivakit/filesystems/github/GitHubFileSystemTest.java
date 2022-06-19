@@ -65,7 +65,7 @@ public class GitHubFileSystemTest extends UnitTest
     {
         var token = "";
         @SuppressWarnings("SpellCheckingInspection")
-        var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/master/borrelia-pmids.txt"));
+        var file = listenTo(new GitHubFile("github://jonathanlocke/access-token/" + token + "/borrelia-corpus/develop/borrelia-pmids.txt"));
         ensure(file.asString().contains("30909955"));
         ensure(file.sizeInBytes().isGreaterThan(bytes(128)));
     }
