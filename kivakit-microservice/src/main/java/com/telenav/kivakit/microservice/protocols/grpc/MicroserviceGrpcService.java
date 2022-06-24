@@ -21,6 +21,7 @@ import io.grpc.ServerBuilder;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 
+import static com.telenav.kivakit.core.time.Duration.minutes;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 
 /**
@@ -147,7 +148,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.register(LAST, () -> stop(Duration.MAXIMUM));
+            ShutdownHook.register(getClass().getSimpleName(), LAST, minutes(1), () -> stop(Duration.MAXIMUM));
             running = true;
             return true;
         }
