@@ -5,6 +5,8 @@ open module kivakit.web.wicket
 
     // Wicket
     requires transitive org.apache.wicket.core;
+    requires org.junit.jupiter;
+    requires org.junit.platform.commons;
 
     // Jetty
     requires org.eclipse.jetty.servlet;
