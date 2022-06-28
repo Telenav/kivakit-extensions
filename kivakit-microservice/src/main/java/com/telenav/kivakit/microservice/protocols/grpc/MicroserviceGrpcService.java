@@ -147,7 +147,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.register(LAST, () -> stop(Duration.MAXIMUM));
+            ShutdownHook.register("GrpcServiceShutdown", LAST, () -> stop(Duration.MAXIMUM));
             running = true;
             return true;
         }
