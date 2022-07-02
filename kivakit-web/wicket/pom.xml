@@ -98,11 +98,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <detectJavaApiLink>false</detectJavaApiLink>
-                    <additionalJOptions>
-                        <additionalJOption>--add-opens org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED</additionalJOption>
-                        <additionalJOption>--add-opens org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED</additionalJOption>
-                        <additionalJOption>--add-opens org.apiguardian.api/org.apiguardian.api=ALL-UNNAMED</additionalJOption>
-                    </additionalJOptions>
                 </configuration>
             </plugin>            
             <plugin>
