@@ -16,9 +16,9 @@
 
     <parent>
         <groupId>com.telenav</groupId>
-         <artifactId>telenav-superpom-project-family</artifactId>
-         <version>2.0.0</version>
-         <relativePath/>
+        <artifactId>telenav-superpom-intermediate-bom</artifactId>
+        <version>2.0.0</version>
+        <relativePath/>
     </parent>
 
     <groupId>com.telenav.kivakit</groupId>
