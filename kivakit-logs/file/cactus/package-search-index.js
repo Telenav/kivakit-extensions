@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"kivakit.logs.file","l":"com.telenav.kivakit.logs.file"},{"m":"kivakit.logs.file","l":"com.telenav.kivakit.logs.file.lexakai"}];updateSearchResults();

@@ -1,0 +1,8 @@
+module:kivakit.web.wicket
+com.telenav.kivakit.web.wicket
+com.telenav.kivakit.web.wicket.behaviors.status
+com.telenav.kivakit.web.wicket.components.feedback
+com.telenav.kivakit.web.wicket.components.header
+com.telenav.kivakit.web.wicket.components.refresh
+com.telenav.kivakit.web.wicket.library
+com.telenav.kivakit.web.wicket.theme

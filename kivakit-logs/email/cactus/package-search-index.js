@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"kivakit.logs.email","l":"com.telenav.kivakit.logs.email"},{"m":"kivakit.logs.email","l":"com.telenav.kivakit.logs.email.lexakai"}];updateSearchResults();

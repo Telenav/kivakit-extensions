@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.telenav.kivakit.web.jersey","l":"BaseRestApplication"},{"p":"com.telenav.kivakit.web.jersey","l":"BaseRestResource"},{"p":"com.telenav.kivakit.web.jersey","l":"JerseyJettyPlugin"},{"p":"com.telenav.kivakit.web.jersey","l":"JerseyJsonSerializer"}];updateSearchResults();

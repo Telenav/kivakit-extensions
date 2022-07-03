@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.telenav.kivakit.logs.file","l":"BaseRolloverTextLog"},{"p":"com.telenav.kivakit.logs.file.lexakai","l":"DiagramLogsFile"},{"p":"com.telenav.kivakit.logs.file","l":"FileLog"},{"p":"com.telenav.kivakit.logs.file","l":"BaseRolloverTextLog.Rollover"}];updateSearchResults();

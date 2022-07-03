@@ -1,0 +1,3 @@
+module:kivakit.web.jetty
+com.telenav.kivakit.web.jetty
+com.telenav.kivakit.web.jetty.resources

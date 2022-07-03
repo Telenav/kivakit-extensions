@@ -1,0 +1,11 @@
+module:kivakit.microservice
+com.telenav.kivakit.microservice
+com.telenav.kivakit.microservice.grpc
+com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter
+com.telenav.kivakit.microservice.microservlet
+com.telenav.kivakit.microservice.protocols.grpc
+com.telenav.kivakit.microservice.protocols.lambda
+com.telenav.kivakit.microservice.protocols.rest
+com.telenav.kivakit.microservice.protocols.rest.gson
+com.telenav.kivakit.microservice.protocols.rest.openapi
+com.telenav.kivakit.microservice.web

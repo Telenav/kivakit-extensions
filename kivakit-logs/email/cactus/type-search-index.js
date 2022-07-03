@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.telenav.kivakit.logs.email.lexakai","l":"DiagramLogsEmail"},{"p":"com.telenav.kivakit.logs.email","l":"EmailLog"}];updateSearchResults();

@@ -1,0 +1,9 @@
+module:kivakit.metrics.core
+com.telenav.kivakit.metrics.core
+com.telenav.kivakit.metrics.core.aggregates
+com.telenav.kivakit.metrics.core.aggregates.bytes
+com.telenav.kivakit.metrics.core.aggregates.count
+com.telenav.kivakit.metrics.core.aggregates.duration
+com.telenav.kivakit.metrics.core.aggregates.rate
+com.telenav.kivakit.metrics.core.reporters
+com.telenav.kivakit.metrics.core.scalar
