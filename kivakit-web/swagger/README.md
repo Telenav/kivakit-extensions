@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-web-swagger &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
+# kivakit-web-swagger &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/books-24-2x.png 2x"/>
 
 This project contains support for using Swagger with Jersey and Jetty.
 
@@ -30,14 +30,14 @@ This project contains support for using Swagger with Jersey and Jetty.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.6.1/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web-swagger</artifactId>
-        <version>1.6.0</version>
+        <version>1.6.1</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -72,7 +72,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.web.swagger*](https://www.kivakit.org/1.6.0/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/com.telenav.kivakit.web.swagger.svg)
+[*com.telenav.kivakit.web.swagger*](https://www.kivakit.org/1.6.1/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/com.telenav.kivakit.web.swagger.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
@@ -87,11 +87,11 @@ Javadoc coverage for this project is 66.7%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*SwaggerJettyPlugin*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.swagger///////////////////////////////////////////////////.html) |  |  
-| [*SwaggerJettyPlugin.IndexServlet*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.swagger////////////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerOpenApiJettyPlugin*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.swagger//////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerWebAppJettyPlugin*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerWebJarJettyPlugin*](https://www.kivakit.org/1.6.0/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.swagger///////////////////////////////////////////////////.html) |  |  
+| [*SwaggerJettyPlugin.IndexServlet*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.swagger////////////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerOpenApiJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.swagger//////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerWebAppJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerWebJarJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 
