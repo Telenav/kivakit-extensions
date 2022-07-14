@@ -24,11 +24,11 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import java.util.List;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
-import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
-import static org.apache.http.HttpStatus.SC_FORBIDDEN;
-import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
-import static org.apache.http.HttpStatus.SC_NOT_FOUND;
-import static org.apache.http.HttpStatus.SC_OK;
+import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
+import static com.telenav.kivakit.network.http.HttpStatus.FORBIDDEN;
+import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static com.telenav.kivakit.network.http.HttpStatus.NOT_FOUND;
+import static com.telenav.kivakit.network.http.HttpStatus.OK;
 
 /**
  * <b>Not public API</b>
@@ -39,7 +39,7 @@ import static org.apache.http.HttpStatus.SC_OK;
  *
  * @author jonathanl (shibo)
  */
-public class OpenApiPathReader extends BaseComponent
+@SuppressWarnings("SpellCheckingInspection") public class OpenApiPathReader extends BaseComponent
 {
     /**
      * @return Path models for all mounted paths in
@@ -109,12 +109,12 @@ public class OpenApiPathReader extends BaseComponent
 
         // add success and error responses,
         var responses = new ApiResponses()
-                .addApiResponse(Integer.toString(SC_OK), newResponseSuccess(responseType))
-                .addApiResponse(Integer.toString(SC_FORBIDDEN), newResponseItem("Forbidden", null))
-                .addApiResponse(Integer.toString(SC_NOT_FOUND), newResponseItem("Not Found", null));
+                .addApiResponse(Integer.toString(OK), newResponseSuccess(responseType))
+                .addApiResponse(Integer.toString(FORBIDDEN), newResponseItem("Forbidden", null))
+                .addApiResponse(Integer.toString(NOT_FOUND), newResponseItem("Not Found", null));
 
-        addErrorResponse(responses, SC_INTERNAL_SERVER_ERROR, "Server Error");
-        addErrorResponse(responses, SC_BAD_REQUEST, "Invalid Request");
+        addErrorResponse(responses, INTERNAL_SERVER_ERROR, "Server Error");
+        addErrorResponse(responses, BAD_REQUEST, "Invalid Request");
 
         operation.responses(responses);
 

@@ -16,23 +16,24 @@ import com.telenav.kivakit.resource.resources.StringOutputResource;
 import com.telenav.kivakit.resource.resources.StringResource;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.resource.serialization.SerializableObject;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.jetbrains.annotations.NotNull;
+
+import java.net.http.HttpRequest;
 
 /**
  * A client for easy interaction with KivaKit {@link MicroserviceRestService}s.
  *
  * <p>
  * The constructor of this class takes a {@link ObjectSerializer} to read and write JSON, a {@link Port} specifying the
- * host and port number to communicate with, and a {@link Version} specifying the version of the REST server. The {@link
- * #get(String, Class)} method reads a JSON object of the given type from a path relative to the server specified in the
- * constructor. The {@link #post(String, Class, MicroservletRequest)} method posts the given request object to the given
- * path as JSON and then reads a JSON object response.
+ * host and port number to communicate with, and a {@link Version} specifying the version of the REST server. The
+ * {@link #get(String, Class)} method reads a JSON object of the given type from a path relative to the server specified
+ * in the constructor. The {@link #post(String, Class, MicroservletRequest)} method posts the given request object to
+ * the given path as JSON and then reads a JSON object response.
  * </p>
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class MicroserviceRestClient extends BaseComponent
 {
     /** Serializer for JSON request serialization and deserialization */
@@ -73,6 +74,7 @@ public class MicroserviceRestClient extends BaseComponent
     /**
      * Convenience method when "posting" a JSON object using path parameters
      */
+    @SuppressWarnings("unused")
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     Response post(String path, Class<Response> responseType)
     {
@@ -93,28 +95,32 @@ public class MicroserviceRestClient extends BaseComponent
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     Response post(String path, Class<Response> responseType, Request request)
     {
+        var outer = this;
         var post = listenTo(new HttpPostResource(networkLocation(path), NetworkAccessConstraints.DEFAULT)
         {
             @Override
-            protected void onInitialize(HttpPost post)
+            public void onInitialize(HttpRequest.Builder builder)
             {
-                try
+                if (request != null)
                 {
-                    if (request != null)
+                    try
                     {
-                        var string = new StringOutputResource();
-                        serializer.write(string, new SerializableObject<>(request));
-                        var entity = new StringEntity(string.string());
-                        entity.setContentType("application/json");
-                        post.setEntity(entity);
-                        post.setHeader("Accept", "application/json");
-                        post.setHeader("Content-Type", "application/json");
+                        var serialized = new StringOutputResource();
+                        serializer.write(serialized, new SerializableObject<>(request));
+                        builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
+                    }
+                    catch (Exception e)
+                    {
+                        outer.problem("Could not post request: $", request);
                     }
                 }
-                catch (Exception e)
-                {
-                    problem(e, "Unable to convert object to JSON: $", request);
-                }
+            }
+
+            @Override
+            public void onInitialize(HttpRequest post)
+            {
+                header(post, "Accept", "application/json");
+                header(post, "Content-Type", "application/json");
             }
         });
 
