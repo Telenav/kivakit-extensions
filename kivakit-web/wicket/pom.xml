@@ -25,10 +25,6 @@
     <artifactId>kivakit-web-wicket</artifactId>
     <version>1.6.2-SNAPSHOT</version>
 
-    <properties>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
-    </properties>
-
     <dependencies>
         
         <!-- KivaKit -->
