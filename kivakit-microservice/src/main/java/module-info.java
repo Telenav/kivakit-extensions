@@ -9,6 +9,8 @@ open module kivakit.microservice
     requires transitive kivakit.web.wicket;
     requires transitive kivakit.network.http;
 
+    requires transitive org.apache.wicket.core;
+
     requires transitive kivakit.merged.protostuff;
     requires transitive kivakit.merged.grpc;
 
