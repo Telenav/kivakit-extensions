@@ -10,26 +10,26 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
-
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import com.telenav.kivakit.network.http.HttpStatus;
 
 /**
- * Request handler that provides server liveness.
+ * Request handler that provides server live-ness.
  *
  * @author jonathanl (shibo)
  */
-@OpenApiIncludeType(description = "Request for server liveness")
+@SuppressWarnings("unused")
+@OpenApiIncludeType(description = "Request for server live-ness")
 public class HealthLiveRequest extends BaseMicroservletRequest
 {
     /**
      * Response object for this request
      */
-    @OpenApiIncludeType(description = "Response to a liveness request")
+    @OpenApiIncludeType(description = "Response to a live-ness request")
     public static class HealthLiveResponse extends BaseMicroservletResponse
     {
         @Expose
         @KivaKitIncludeProperty
-        @OpenApiIncludeMember(description = "The server liveness status")
+        @OpenApiIncludeMember(description = "The server live-ness status")
         private final String status;
 
         private HealthLiveResponse(String status)
@@ -45,7 +45,7 @@ public class HealthLiveRequest extends BaseMicroservletRequest
      * {@inheritDoc}
      */
     @Override
-    @OpenApiRequestHandler(tags = { "server liveness" })
+    @OpenApiRequestHandler(tags = { "server live-ness" })
     public MicroservletResponse onRespond()
     {
         // Go through each MountedApi,
@@ -56,7 +56,7 @@ public class HealthLiveRequest extends BaseMicroservletRequest
             {
                 // then this server is not alive,
                 var response = new HealthLiveResponse("Forwarded API is failing: " + api.uri());
-                response.status(SC_INTERNAL_SERVER_ERROR);
+                response.status(HttpStatus.INTERNAL_SERVER_ERROR);
                 return response;
             }
         }

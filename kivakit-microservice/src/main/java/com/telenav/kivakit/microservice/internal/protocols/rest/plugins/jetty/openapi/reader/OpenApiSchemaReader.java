@@ -42,7 +42,8 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see OpenApiExcludeMember
  * @see OpenApiIncludeMember
  */
-@SuppressWarnings("rawtypes") public class OpenApiSchemaReader extends BaseComponent
+@SuppressWarnings({ "rawtypes", "SpellCheckingInspection" })
+public class OpenApiSchemaReader extends BaseComponent
 {
     /** Models for which to make schemas */
     private final ObjectSet<Type<?>> modelsToRead = new ObjectSet<>();

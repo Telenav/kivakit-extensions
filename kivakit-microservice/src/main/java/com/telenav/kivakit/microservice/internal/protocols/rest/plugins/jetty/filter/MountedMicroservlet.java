@@ -5,8 +5,7 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
-
-import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
+import com.telenav.kivakit.network.http.HttpStatus;
 
 /**
  * A mounted {@link Microservlet} which can handle requests with {@link #handleRequest(MicroserviceRestService.HttpMethod,
@@ -14,6 +13,7 @@ import static javax.servlet.http.HttpServletResponse.SC_METHOD_NOT_ALLOWED;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class MountedMicroservlet extends Mounted
 {
     /** The microservlet */
@@ -102,7 +102,7 @@ public class MountedMicroservlet extends Mounted
                 break;
 
                 default:
-                    problem(SC_METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
+                    problem(HttpStatus.METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
                     break;
             }
         });

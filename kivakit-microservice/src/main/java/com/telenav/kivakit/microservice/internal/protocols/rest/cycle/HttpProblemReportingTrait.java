@@ -3,7 +3,9 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.cycle;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
+import com.telenav.kivakit.network.http.HttpStatus;
 
+@SuppressWarnings("unused")
 public interface HttpProblemReportingTrait
 {
     default Problem problem(int httpStatus, Throwable exception, String text, Object... arguments)
@@ -14,6 +16,12 @@ public interface HttpProblemReportingTrait
     default Problem problem(int httpStatus, String text, Object... arguments)
     {
         return response().problem(httpStatus, text, arguments);
+    }
+
+    default void okay(String text, Object... arguments)
+    {
+        status(HttpStatus.OK);
+        response().information(text, arguments);
     }
 
     default Problem problemWithCode(int httpStatus, String code, Throwable exception, String text, Object... arguments)

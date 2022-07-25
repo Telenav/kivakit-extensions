@@ -23,13 +23,14 @@ import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.language.object.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.version.Version;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
+import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.network.core.QueryParameters;
+import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.properties.PropertyMap;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -41,7 +42,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 /**
  * <b>Not public API</b>
@@ -59,6 +59,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
  * @see Validatable
  * @see BaseComponent
  */
+@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletRequest extends BaseComponent implements HttpProblemReportingTrait
 {
@@ -142,7 +143,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
                 // Parse the path in pairs, adding each to the properties map,
                 if (path.size() % 2 != 0)
                 {
-                    problem(SC_BAD_REQUEST, "Path parameters must be paired");
+                    problem(HttpStatus.BAD_REQUEST, "Path parameters must be paired");
                 }
                 else
                 {
@@ -158,7 +159,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
             }
             catch (Exception e)
             {
-                problem(SC_BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
+                problem(HttpStatus.BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
             }
         }
         return properties;
@@ -203,7 +204,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
             if (!request.isValid(response))
             {
                 // then we have an invalid response
-                problem(SC_BAD_REQUEST, "Invalid request");
+                problem(HttpStatus.BAD_REQUEST, "Invalid request");
                 return null;
             }
 
@@ -211,7 +212,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
         }
         catch (Exception e)
         {
-            problem(SC_BAD_REQUEST, e, "Malformed request");
+            problem(HttpStatus.BAD_REQUEST, e, "Malformed request");
             return null;
         }
     }
