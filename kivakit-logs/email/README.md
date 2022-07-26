@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-logs-email &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/envelope-32.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/envelope-32-2x.png 2x"/>
+# kivakit-logs-email &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/envelope-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/envelope-32-2x.png 2x"/>
 
 This module is an email log service provider.
 
