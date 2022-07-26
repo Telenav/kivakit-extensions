@@ -9,6 +9,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public interface MicroservletRequestHandler extends Listener
 {
@@ -44,10 +45,10 @@ public interface MicroservletRequestHandler extends Listener
             try
             {
                 // prepare it for transmission,
-                response.prepareResponse();
+                response.onPrepareResponse();
 
                 // complete the response,
-                response.endResponse();
+                response.onEndResponse();
             }
             catch (Exception e)
             {

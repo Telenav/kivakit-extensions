@@ -37,7 +37,7 @@ public class HttpNetworkLocationTest extends WebUnitTest
         startWebServer(port, temporary.parent().path());
 
         var location = new HttpNetworkLocation(Host.loopback().http(port).path(this, filename));
-        var text = location.content();
+        var text = location.content(this);
         ensureEqual(text, "testing!");
     }
 }

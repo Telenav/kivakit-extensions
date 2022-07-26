@@ -59,6 +59,7 @@ import java.util.Set;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletFilter extends BaseComponent implements
         Filter,
@@ -126,7 +127,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                 {
                     // and handle the request.
                     tryCatch(() -> mounted.handleRequest(method, cycle),
-                            "REST $ method to $ failed", method.name(), mounted.microservlet.name());
+                            "Unable to handle $ to $", method.name(), mounted.microservlet.name());
                     handled = true;
                 }
                 else
@@ -137,7 +138,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                     {
                         // and handle the request that way.
                         tryCatch(() -> mountedJar.handleRequest(method, cycle),
-                                "REST $ method to $ failed", method.name(), mountedJar);
+                                "Unable to forward $ to $", method.name(), mountedJar);
                         handled = true;
                     }
                 }

@@ -37,6 +37,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * @see MicroservletResponse
  * @see PropertyMap
  */
+@SuppressWarnings({ "SpellCheckingInspection", "unused" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 @UmlRelation(label = "attaches", referent = JettyMicroservletRequestCycle.class)
