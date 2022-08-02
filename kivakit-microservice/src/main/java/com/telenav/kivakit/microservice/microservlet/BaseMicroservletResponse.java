@@ -41,6 +41,11 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     }
 
     @Override
+    public void onPrepareResponse()
+    {
+    }
+
+    @Override
     public void onEndResponse()
     {
         if (result != null)
