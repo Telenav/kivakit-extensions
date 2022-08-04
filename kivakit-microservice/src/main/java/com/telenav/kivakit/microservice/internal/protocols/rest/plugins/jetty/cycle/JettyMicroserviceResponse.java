@@ -13,15 +13,13 @@ import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
+import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.http.HttpServletResponse;
-
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
 
 /**
  * <b>Not public API</b>
@@ -49,7 +47,7 @@ import static javax.servlet.http.HttpServletResponse.SC_OK;
  *
  * @author jonathanl (shibo)
  */
-@UmlClassDiagram(diagram = DiagramJetty.class)
+@SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramJetty.class)
 public final class JettyMicroserviceResponse extends BaseComponent
 {
     /** The request cycle to which this response belongs */
@@ -73,7 +71,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
 
         errors.listenTo(this);
 
-        status(SC_OK);
+        status(HttpStatus.OK);
     }
 
     public MicroservletErrorResponse errors()
@@ -89,10 +87,6 @@ public final class JettyMicroserviceResponse extends BaseComponent
     @Override
     public void onMessage(Message message)
     {
-        if (status() == SC_OK && message.isWorseThanOrEqualTo(Problem.class))
-        {
-            status(SC_INTERNAL_SERVER_ERROR);
-        }
     }
 
     public Problem problem(int status, String text, Object... arguments)

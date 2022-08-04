@@ -7,17 +7,16 @@ import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-
 /**
  * Base class for response implementations.
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public abstract class BaseMicroservletResponse extends BaseComponent implements MicroservletResponse
 {
-    private Result<?> result;
+    private transient Result<?> result;
 
     /**
      * This constructor can be called in simple cases where the {@link Result} class is not being used.
@@ -49,7 +48,7 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     {
         if (result != null && result.failed())
         {
-            problem(SC_INTERNAL_SERVER_ERROR, "Request failed");
+            okay("Request failed");
 
             for (var message : result.messages())
             {
