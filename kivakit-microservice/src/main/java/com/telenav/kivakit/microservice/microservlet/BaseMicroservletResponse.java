@@ -2,9 +2,7 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.function.Result;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblem;
 import com.telenav.kivakit.microservice.lexakai.DiagramMicroservlet;
-import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -48,7 +46,7 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     @Override
     public void onEndResponse()
     {
-        if (result != null)
+        if (result != null && result.failed())
         {
             // Propagate any messages in the result object to the request cycle response
             for (var message : result.messages())
