@@ -20,7 +20,7 @@ public interface MicroservletResponse extends
     /**
      * Called to prepare the response
      */
-    default void prepareResponse()
+    default void onPrepareResponse()
     {
     }
 
