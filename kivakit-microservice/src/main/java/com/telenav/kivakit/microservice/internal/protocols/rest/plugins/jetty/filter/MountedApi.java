@@ -125,7 +125,7 @@ public class MountedApi extends Mounted
             }
             catch (Exception e)
             {
-                problem(HttpStatus.INTERNAL_SERVER_ERROR, "Bad URI: $", uri);
+                problem(HttpStatus.BAD_REQUEST, "Bad URI: $", uri);
             }
         });
 

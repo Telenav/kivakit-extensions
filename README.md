@@ -18,7 +18,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-extensions &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/logos/kivakit/kivakit-64.png" srcset="https://telenav.github.io/telenav-assets/images/images/logos/kivakit/kivakit-64-2x.png 2x"/>
+# kivakit-extensions &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64.png" srcset="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64-2x.png 2x"/>
 
 This project contains modules that extend KivaKit.
 

@@ -11,6 +11,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public interface MicroservletResponse extends
         Validatable,
@@ -25,9 +26,9 @@ public interface MicroservletResponse extends
     }
 
     /**
-     * Called when the response is complete
+     * Called when the response is complete, but before it is sent back
      */
-    default void endResponse()
+    default void onEndResponse()
     {
     }
 }

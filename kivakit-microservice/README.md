@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-microservice &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/puzzle-32.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/puzzle-32-2x.png 2x"/>
+# kivakit-microservice &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/puzzle-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/puzzle-32-2x.png 2x"/>
 
 This module provides an abstraction for developing microservices.
 

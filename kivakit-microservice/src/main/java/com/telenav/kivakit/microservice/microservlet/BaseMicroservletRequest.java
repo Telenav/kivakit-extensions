@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public abstract class BaseMicroservletRequest extends BaseComponent implements
         MicroservletRequest,

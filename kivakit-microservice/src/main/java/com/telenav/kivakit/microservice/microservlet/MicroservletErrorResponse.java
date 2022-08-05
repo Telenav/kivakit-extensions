@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A list of error messages used in {@link MicroservletResponse} for specific HTTP error codes. See {@link
- * HttpStatus#hasAssociatedErrorMessages()} for details.
+ * A list of error messages used in {@link MicroservletResponse} for specific HTTP error codes.
  *
  * @author jonathanl (shibo)
  * @see HttpStatus
  */
+@SuppressWarnings({ "SpellCheckingInspection", "unused" })
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 @OpenApiIncludeType(
         description = "List of problems, warnings and other error messages in the event of a client or server problem")
@@ -34,6 +34,19 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
     public List<MicroservletError> errors()
     {
         return errors;
+    }
+
+    public HttpStatus httpStatus()
+    {
+        for (var error : errors)
+        {
+            var status = error.httpStatus();
+            if (status.isFailure())
+            {
+                return status;
+            }
+        }
+        return HttpStatus.OK;
     }
 
     public boolean isEmpty()
@@ -52,7 +65,11 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
     {
         if (message != null)
         {
-            errors.add(MicroservletError.of(message));
+            var error = MicroservletError.microservletError(message);
+            if (error != null)
+            {
+                errors.add(error);
+            }
         }
     }
 
@@ -61,7 +78,7 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
      *
      * @param listener The listener to send to
      */
-    public void send(Listener listener)
+    public void sendTo(Listener listener)
     {
         errors.forEach(error -> error.send(listener));
     }

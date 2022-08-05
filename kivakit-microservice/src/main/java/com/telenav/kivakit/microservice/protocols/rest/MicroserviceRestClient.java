@@ -138,21 +138,21 @@ public class MicroserviceRestClient extends BaseComponent
         var status = resource.status();
 
         // and if the status is okay,
-        if (status.isOkay())
+        if (status.isSuccess())
         {
             // then return the JSON payload.
             return readResponse(resource, type);
         }
 
         // If the status code indicates that there are associated error messages,
-        if (status.hasAssociatedErrorMessages())
+        if (status.isFailure())
         {
             // then read the errors,
             var errors = readResponse(resource, MicroservletErrorResponse.class);
             if (errors != null)
             {
                 // and send them to listeners of this client.
-                errors.send(this);
+                errors.sendTo(this);
             }
         }
 

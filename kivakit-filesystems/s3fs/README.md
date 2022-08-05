@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-filesystems-s3fs &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/disks-32-2x.png 2x"/>
+# kivakit-filesystems-s3fs &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/disks-32-2x.png 2x"/>
 
 Service provider for AWS S3 filesystems.
 

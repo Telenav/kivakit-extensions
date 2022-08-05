@@ -44,12 +44,11 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     }
 
     @Override
-    public void endResponse()
+    public void onEndResponse()
     {
         if (result != null && result.failed())
         {
-            okay("Request failed");
-
+            // Propagate any messages in the result object to the request cycle response
             for (var message : result.messages())
             {
                 response().receive(message);

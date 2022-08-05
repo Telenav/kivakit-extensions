@@ -35,6 +35,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @LexakaiJavadoc(complete = true)
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletFilterHolder extends FilterHolder implements ComponentMixin

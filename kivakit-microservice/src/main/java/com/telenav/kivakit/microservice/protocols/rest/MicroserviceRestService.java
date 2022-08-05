@@ -232,7 +232,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * @see Resource
  * @see Version
  */
-@SuppressWarnings({ "RedundantSuppression", "unused", "unchecked" })
+@SuppressWarnings({ "RedundantSuppression", "unused", "unchecked", "SpellCheckingInspection" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class MicroserviceRestService extends BaseComponent implements Initializable
 {

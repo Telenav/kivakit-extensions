@@ -4,7 +4,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-settings-stores-zookeeper &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/disks-32-2x.png 2x"/>
+# kivakit-settings-stores-zookeeper &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/disks-32-2x.png 2x"/>
 
 Apache Zookeeper clustered settings store
 

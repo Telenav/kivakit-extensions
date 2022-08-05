@@ -8,35 +8,20 @@ import com.telenav.kivakit.network.http.HttpStatus;
 @SuppressWarnings("unused")
 public interface HttpProblemReportingTrait
 {
-    default Problem problem(int httpStatus, Throwable exception, String text, Object... arguments)
-    {
-        return response().problem(httpStatus, exception, text + ": " + exception.getMessage(), arguments);
-    }
-
-    default Problem problem(int httpStatus, String text, Object... arguments)
-    {
-        return response().problem(httpStatus, text, arguments);
-    }
-
     default void okay(String text, Object... arguments)
     {
         status(HttpStatus.OK);
         response().information(text, arguments);
     }
 
-    default Problem problemWithCode(int httpStatus, String code, Throwable exception, String text, Object... arguments)
+    default Problem problem(HttpStatus httpStatus, String text, Object... arguments)
     {
-        var problem = new Problem(exception, text, arguments);
-        problem.cause(exception);
-        problem.code(code);
-        response().status(httpStatus);
-        response().receive(problem);
-        return problem;
+        return response().problem(httpStatus, text, arguments);
     }
 
-    default Problem problemWithCode(int httpStatus, String code, String text, Object... arguments)
+    default Problem problem(HttpStatus httpStatus, Throwable exception, String text, Object... arguments)
     {
-        return problem(httpStatus, code, null, text, arguments);
+        return response().problem(httpStatus, exception, text + ": " + exception.getMessage(), arguments);
     }
 
     default JettyMicroserviceResponse response()
@@ -44,8 +29,8 @@ public interface HttpProblemReportingTrait
         return JettyMicroservletRequestCycle.cycle().response();
     }
 
-    default void status(int status)
+    default void status(HttpStatus status)
     {
-        response().status(status);
+        response().httpStatus(status);
     }
 }

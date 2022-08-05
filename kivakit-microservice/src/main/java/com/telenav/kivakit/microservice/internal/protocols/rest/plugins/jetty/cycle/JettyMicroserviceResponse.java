@@ -7,9 +7,10 @@ import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludePrope
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.version.Version;
+import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblem;
+import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
@@ -32,8 +33,8 @@ import javax.servlet.http.HttpServletResponse;
  * This response object contains an {@link HttpServletResponse} and belongs to a {@link JettyMicroservletRequestCycle}.
  * Errors can be reported to the response with:
  * <ul>
- *     <li>{@link #problem(int, String, Object...)}</li>
- *     <li>{@link #problem(int, Throwable, String, Object...)}</li>
+ *     <li>{@link #problem(HttpStatus, String, Object...)}</li>
+ *     <li>{@link #problem(HttpStatus, Throwable, String, Object...)}</li>
  * </ul>
  * where the first parameter of each method is an HTTP status code.
  * </p>
@@ -47,14 +48,15 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramJetty.class)
+@SuppressWarnings({ "unused", "UnusedReturnValue" })
+@UmlClassDiagram(diagram = DiagramJetty.class)
 public final class JettyMicroserviceResponse extends BaseComponent
 {
     /** The request cycle to which this response belongs */
     @UmlAggregation
     private final JettyMicroservletRequestCycle cycle;
 
-    /** Error messages that were reported to this response via {@link #problem(int, String, Object...)} */
+    /** Error messages that were reported to this response via {@link #problem(HttpStatus, String, Object...)} */
     @Expose
     @UmlAggregation
     @OpenApiIncludeMember(title = "Errors messages",
@@ -71,7 +73,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
 
         errors.listenTo(this);
 
-        status(HttpStatus.OK);
+        httpStatus(HttpStatus.OK);
     }
 
     public MicroservletErrorResponse errors()
@@ -84,30 +86,29 @@ public final class JettyMicroserviceResponse extends BaseComponent
         return httpResponse;
     }
 
+    public HttpStatus httpStatus()
+    {
+        return HttpStatus.httpStatus(httpResponse.getStatus());
+    }
+
+    public void httpStatus(HttpStatus status)
+    {
+        httpResponse.setStatus(status.code());
+    }
+
     @Override
     public void onMessage(Message message)
     {
     }
 
-    public Problem problem(int status, String text, Object... arguments)
+    public Problem problem(HttpStatus httpStatus, String text, Object... arguments)
     {
-        return problem(status, null, text, arguments);
+        return problem(httpStatus, null, text, arguments);
     }
 
-    public Problem problem(int status, Throwable exception, String text, Object... arguments)
+    public Problem problem(HttpStatus httpStatus, Throwable exception, String text, Object... arguments)
     {
-        status(status);
-        return transmit(new Problem(exception, text, arguments));
-    }
-
-    public int status()
-    {
-        return httpResponse.getStatus();
-    }
-
-    public void status(int status)
-    {
-        httpResponse.setStatus(status);
+        return transmit(new HttpProblem(httpStatus, exception, text, arguments));
     }
 
     /**
@@ -168,23 +169,54 @@ public final class JettyMicroserviceResponse extends BaseComponent
      */
     public void writeObject(MicroservletResponse response)
     {
+        var responseWritten = false;
+
         // Validate the response
         if (response != null)
         {
             // and if the response is invalid (any problems go into the response object),
-            if (!response.isValid(response))
+            if (response.isValid(response))
+            {
+                var responseType = cycle.request().parameters().getOrDefault("response-type", "always-okay");
+
+                switch (responseType)
+                {
+                    case "http-status":
+                        var json = errors.isEmpty()
+                                ? toJson(response)
+                                : toJson(errors);
+                        writeResponse(json);
+                        httpStatus(errors.httpStatus());
+                        responseWritten = true;
+                        break;
+
+                    case "always-okay":
+                        writeResponse(toJson(response));
+                        writeResponse(toJson(errors));
+                        httpStatus(HttpStatus.OK);
+                        responseWritten = true;
+                        break;
+
+                    default:
+                        problem(HttpStatus.BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
+                        break;
+                }
+            }
+            else
             {
                 // then transmit a problem message.
-                problem("Response object is invalid");
+                problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
             }
         }
+        else
+        {
+            problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
+        }
 
-        // Get either the response JSON or the errors JSON if there are errors or there is no response,
-        var json = errors.isEmpty() && response != null
-                ? toJson(response)
-                : toJson(errors);
-
-        writeResponse(json);
+        if (!responseWritten)
+        {
+            writeResponse(toJson(response));
+        }
     }
 
     /**

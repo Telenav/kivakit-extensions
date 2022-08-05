@@ -1,15 +1,17 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
 import com.telenav.kivakit.network.http.HttpStatus;
+import com.telenav.kivakit.properties.PropertyMap;
 
 /**
- * A mounted {@link Microservlet} which can handle requests with {@link #handleRequest(MicroserviceRestService.HttpMethod,
- * JettyMicroservletRequestCycle)}
+ * A mounted {@link Microservlet} which can handle requests with
+ * {@link #handleRequest(MicroserviceRestService.HttpMethod, JettyMicroservletRequestCycle)}
  *
  * @author jonathanl (shibo)
  */
@@ -52,57 +54,19 @@ public class MountedMicroservlet extends Mounted
             {
                 case POST:
                 {
-                    // and there is a request body,
-                    MicroservletRequest request;
-                    if (cycle.request().hasBody())
-                    {
-                        // then convert the JSON in the body to a request object,
-                        request = cycle.request().readObject(requestType);
-                    }
-                    else
-                    {
-                        // otherwise, convert any parameters to a JSON request object,
-                        request = cycle.gson().fromJson(parameters.asJson(), requestType);
-                    }
-
-                    // Then, we respond with the object returned from onPost().
-                    if (request != null)
-                    {
-                        listenTo(request);
-                        restService().onRequesting(request, method);
-                        response.writeObject(microservlet.respond(request));
-                        restService().onRequested(request, method);
-                    }
-                    else
-                    {
-                        response.writeObject(null);
-                    }
+                    handlePost(method, cycle, response, requestType, parameters);
                 }
                 break;
 
                 case GET:
                 case DELETE:
                 {
-                    // then turn parameters into a JSON object and then treat that like it was POSTed.
-                    var request = cycle.gson().fromJson(parameters.asJson(), requestType);
-
-                    // Respond with the object returned from onGet.
-                    if (request != null)
-                    {
-                        listenTo(request);
-                        restService().onRequesting(request, method);
-                        response.writeObject(microservlet.respond(request));
-                        restService().onRequested(request, method);
-                    }
-                    else
-                    {
-                        response.writeObject(null);
-                    }
+                    handleGetDelete(method, cycle, response, requestType, parameters);
                 }
                 break;
 
                 default:
-                    problem(HttpStatus.METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
+                    response.problem(HttpStatus.METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
                     break;
             }
         });
@@ -111,5 +75,61 @@ public class MountedMicroservlet extends Mounted
     public Microservlet<?, ?> microservlet()
     {
         return microservlet;
+    }
+
+    private void handleGetDelete(MicroserviceRestService.HttpMethod method,
+                                 JettyMicroservletRequestCycle cycle,
+                                 JettyMicroserviceResponse response,
+                                 Class<? extends MicroservletRequest> requestType,
+                                 PropertyMap parameters)
+    {
+        // then turn parameters into a JSON object and then treat that like it was POSTed.
+        var request = cycle.gson().fromJson(parameters.asJson(), requestType);
+
+        // Respond with the object returned from onGet.
+        if (request != null)
+        {
+            listenTo(request);
+            restService().onRequesting(request, method);
+            response.writeObject(microservlet.respond(request));
+            restService().onRequested(request, method);
+        }
+        else
+        {
+            response.problem(HttpStatus.BAD_REQUEST, "Bad request: unable to deserialize");
+        }
+    }
+
+    private void handlePost(MicroserviceRestService.HttpMethod method,
+                            JettyMicroservletRequestCycle cycle,
+                            JettyMicroserviceResponse response,
+                            Class<? extends MicroservletRequest> requestType,
+                            PropertyMap parameters)
+    {
+        // If there is a request body,
+        MicroservletRequest request;
+        if (cycle.request().hasBody())
+        {
+            // then convert the JSON in the body to a request object,
+            request = cycle.request().readObject(requestType);
+        }
+        else
+        {
+            // otherwise, convert any parameters to a JSON request object,
+            request = cycle.gson().fromJson(parameters.asJson(), requestType);
+        }
+
+        // Respond with the object returned from respond(request).
+        if (request != null)
+        {
+            listenTo(request);
+            restService().onRequesting(request, method);
+            response.writeObject(microservlet.respond(request));
+            restService().onRequested(request, method);
+        }
+        else
+        {
+            response.problem(HttpStatus.BAD_REQUEST, "Bad request: unable to deserialize");
+        }
     }
 }
