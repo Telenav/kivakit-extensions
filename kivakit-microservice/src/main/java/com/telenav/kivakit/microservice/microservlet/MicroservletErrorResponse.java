@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservlet;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.network.http.HttpStatus;

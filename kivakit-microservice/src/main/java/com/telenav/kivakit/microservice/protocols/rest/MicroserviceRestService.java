@@ -39,7 +39,7 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
