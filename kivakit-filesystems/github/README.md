@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-filesystems-github &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/disks-32-2x.png 2x"/>
+# kivakit-filesystems-github &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/disks-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/disks-32-2x.png 2x"/>
 
 Read only filesystem service provider for GitHub.
 

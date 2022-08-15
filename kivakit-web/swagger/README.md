@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-web-swagger &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/books-24-2x.png 2x"/>
+# kivakit-web-swagger &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 This project contains support for using Swagger with Jersey and Jetty.
 

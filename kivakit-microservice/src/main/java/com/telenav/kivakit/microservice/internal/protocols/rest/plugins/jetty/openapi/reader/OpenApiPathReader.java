@@ -109,12 +109,12 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
 
         // add success and error responses,
         var responses = new ApiResponses()
-                .addApiResponse(Integer.toString(OK), newResponseSuccess(responseType))
-                .addApiResponse(Integer.toString(FORBIDDEN), newResponseItem("Forbidden", null))
-                .addApiResponse(Integer.toString(NOT_FOUND), newResponseItem("Not Found", null));
+                .addApiResponse(OK.toString(), newResponseSuccess(responseType))
+                .addApiResponse(FORBIDDEN.toString(), newResponseItem("Forbidden", null))
+                .addApiResponse(NOT_FOUND.toString(), newResponseItem("Not Found", null));
 
-        addErrorResponse(responses, INTERNAL_SERVER_ERROR, "Server Error");
-        addErrorResponse(responses, BAD_REQUEST, "Invalid Request");
+        addErrorResponse(responses, INTERNAL_SERVER_ERROR.code(), "Server Error");
+        addErrorResponse(responses, BAD_REQUEST.code(), "Invalid Request");
 
         operation.responses(responses);
 

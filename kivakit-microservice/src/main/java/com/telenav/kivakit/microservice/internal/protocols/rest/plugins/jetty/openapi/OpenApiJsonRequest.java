@@ -16,7 +16,7 @@ import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;

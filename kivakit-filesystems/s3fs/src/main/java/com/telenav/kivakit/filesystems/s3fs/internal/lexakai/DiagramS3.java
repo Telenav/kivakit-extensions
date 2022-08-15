@@ -16,13 +16,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.lexakai;
+package com.telenav.kivakit.filesystems.s3fs.internal.lexakai;
 
+import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.diagrams.UmlDiagramIdentifier;
 
 /**
  * @author jonathanl (shibo)
  */
-public class DiagramJetty implements UmlDiagramIdentifier
+@LexakaiJavadoc(complete = true)
+public class DiagramS3 implements UmlDiagramIdentifier
 {
 }

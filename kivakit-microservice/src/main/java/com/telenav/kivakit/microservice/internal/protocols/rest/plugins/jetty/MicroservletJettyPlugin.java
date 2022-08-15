@@ -21,7 +21,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilterHolder;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
@@ -58,6 +58,7 @@ import static javax.servlet.DispatcherType.REQUEST;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @LexakaiJavadoc(complete = true)
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class MicroservletJettyPlugin extends BaseFilterJettyPlugin

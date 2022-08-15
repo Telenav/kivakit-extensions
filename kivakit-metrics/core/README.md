@@ -4,7 +4,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-metrics-core &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/ruler-64.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/ruler-64-2x.png 2x"/>
+# kivakit-metrics-core &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-64.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-64-2x.png 2x"/>
 
 This module contains packages for collecting metrics on a server
 

@@ -5,8 +5,8 @@ import com.telenav.kivakit.conversion.Converter;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservlet;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
 import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
 import com.telenav.kivakit.properties.PropertyMap;
@@ -37,6 +37,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * @see MicroservletResponse
  * @see PropertyMap
  */
+@SuppressWarnings({ "SpellCheckingInspection", "unused" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 @UmlRelation(label = "attaches", referent = JettyMicroservletRequestCycle.class)

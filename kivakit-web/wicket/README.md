@@ -14,7 +14,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-web-wicket &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/icons/wicket-32.png" srcset="https://telenav.github.io/telenav-assets/images/images/icons/wicket-32-2x.png 2x"/>
+# kivakit-web-wicket &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/wicket-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/wicket-32-2x.png 2x"/>
 
 This project contains support for using Apache Wicket on Jetty.
 

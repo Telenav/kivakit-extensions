@@ -25,7 +25,7 @@ import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludePrope
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
-import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.network.core.QueryParameters;
@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
+import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
 
 /**
  * <b>Not public API</b>
@@ -126,7 +127,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
      */
     public PropertyMap parameters()
     {
-        return parameters(null);
+        return parameters(FilePath.parseFilePath(emptyListener(),""));
     }
 
     /**

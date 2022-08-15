@@ -7,8 +7,10 @@ import com.telenav.kivakit.core.messaging.messages.OperationMessage;
 import com.telenav.kivakit.core.messaging.messages.OperationStatusMessage;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
+import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.network.http.HttpStatus;
 
 /**
  * Describes an error. Any hierarchical error code (per IETF RFC 7807) in an {@link OperationStatusMessage} subclass,
@@ -17,25 +19,49 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeTyp
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings({ "SpellCheckingInspection", "unused" })
 @OpenApiIncludeType(
         description = "An error description, including a hierarchical error code, an error type and a message")
 public class MicroservletError
 {
-    public static MicroservletError of(Message message)
+    /**
+     * Convert the given message into a {@link MicroservletError}, if possible
+     *
+     * @param message The message to convert
+     * @return The {@link MicroservletError} for the message, or null if the message isn't an error
+     */
+    public static MicroservletError microservletError(Message message)
     {
         // If we get a status message like a Warning or Problem,
-        if (message instanceof OperationStatusMessage && message.isWorseThanOrEqualTo(Warning.class))
+        if (message instanceof OperationStatusMessage)
         {
-            // then add a MicroservletError to the errors list.
-            var statusMessage = (OperationStatusMessage) message;
-            return new MicroservletError(statusMessage.code(), statusMessage.getClass().getSimpleName(), statusMessage.formatted());
+            if (message.isWorseThanOrEqualTo(Warning.class))
+            {
+                // then add a MicroservletError to the errors list.
+                var statusMessage = (OperationStatusMessage) message;
+                var httpStatus = HttpStatus.OK;
+                if (message instanceof HttpProblem)
+                {
+                    httpStatus = ((HttpProblem) message).httpStatus();
+                }
+                if (message.isFailure())
+                {
+                    httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                }
+
+                return new MicroservletError(httpStatus,
+                        statusMessage.code(),
+                        statusMessage.getClass().getSimpleName(),
+                        statusMessage.formatted());
+            }
         }
         return null;
     }
 
-    /**
-     * A hierarchical error code per IETF RFC 7807. For example, "errors/authentication/incorrect-password".
-     */
+    /** HTTP status code for this error */
+    private final transient HttpStatus httpStatus;
+
+    /** Hierarchical error code per IETF RFC 7807. For example, "errors/authentication/incorrect-password". */
     @OpenApiIncludeMember(description = "A hierarchical error code per IETF RFC 7807",
                           example = "errors/authentication/my-error",
                           required = false)
@@ -59,11 +85,17 @@ public class MicroservletError
     @Expose
     private final String type;
 
-    protected MicroservletError(String code, String type, String message)
+    protected MicroservletError(HttpStatus httpStatus, String code, String type, String message)
     {
+        this.httpStatus = httpStatus;
         this.code = code;
         this.type = type;
         this.message = message;
+    }
+
+    public HttpStatus httpStatus()
+    {
+        return httpStatus;
     }
 
     /**

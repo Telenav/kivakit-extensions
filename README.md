@@ -18,7 +18,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-extensions &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/images/logos/kivakit/kivakit-64.png" srcset="https://telenav.github.io/telenav-assets/images/images/logos/kivakit/kivakit-64-2x.png 2x"/>
+# kivakit-extensions &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64.png" srcset="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64-2x.png 2x"/>
 
 This project contains modules that extend KivaKit.
 
@@ -32,6 +32,19 @@ This project contains modules that extend KivaKit.
 [**Example Code**](https://github.com/Telenav/kivakit-examples)  
 [**KivaKit Blog Articles**](https://state-of-the-art.org/)  
 [**How to Build This Project**](https://github.com/Telenav/telenav-build/blob/release/1.6.2/documentation/building.md) <!-- [cactus.replacement-branch-name] -->   
+
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+
+### Build Status <a name = "quick-start"></a>&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/gears-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/gears-32-2x.png 2x"/>
+
+| Repository                                                                  | Develop                                                                                                  | Release                                                                                                  |
+|-----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| [kivakit](https://github.com/Telenav/kivakit/actions)                       | <img src="https://github.com/Telenav/kivakit/actions/workflows/build-develop.yml/badge.svg"/>            | <img src="https://github.com/Telenav/kivakit/actions/workflows/build-release.yml/badge.svg"/>            |
+| [kivakit-extensions](https://github.com/Telenav/kivakit-extensions/actions) | <img src="https://github.com/Telenav/kivakit-extensions/actions/workflows/build-develop.yml/badge.svg"/> | <img src="https://github.com/Telenav/kivakit-extensions/actions/workflows/build-release.yml/badge.svg"/> |
+| [kivakit-stuff](https://github.com/Telenav/kivakit-stuff/actions)           | <img src="https://github.com/Telenav/kivakit-stuff/actions/workflows/build-develop.yml/badge.svg"/>      | <img src="https://github.com/Telenav/kivakit-stuff/actions/workflows/build-release.yml/badge.svg"/>      |
+| [kivakit-examples](https://github.com/Telenav/kivakit-examples/actions)     | <img src="https://github.com/Telenav/kivakit-examples/actions/workflows/build-develop.yml/badge.svg"/>   | <img src="https://github.com/Telenav/kivakit-examples/actions/workflows/build-release.yml/badge.svg"/>   |
+
+<br/>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
