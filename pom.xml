@@ -45,12 +45,12 @@
     
     <modules>
         
-        <module>kivakit-settings-stores</module>
-        <module>kivakit-logs</module>
-        <module>kivakit-web</module>
         <module>kivakit-filesystems</module>
+        <module>kivakit-web</module>
         <module>kivakit-metrics</module>
+        <module>kivakit-settings-stores</module>
         <module>kivakit-microservice</module>
+        <module>kivakit-logs</module>
         
     </modules>
     

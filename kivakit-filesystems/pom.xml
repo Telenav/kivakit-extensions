@@ -28,8 +28,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>s3fs</module>
         <module>github</module>
+        <module>s3fs</module>
         <module>java</module>
     </modules>
 
