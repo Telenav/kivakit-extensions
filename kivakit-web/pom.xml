@@ -28,9 +28,9 @@
 
     <modules>
         <module>jetty</module>
-        <module>wicket</module>
         <module>jersey</module>
         <module>swagger</module>
+        <module>wicket</module>
     </modules>
 
 </project>

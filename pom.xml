@@ -17,7 +17,7 @@
     <parent>
         <groupId>com.telenav</groupId>
         <artifactId>telenav-superpom-project-family</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.3</version>
         <relativePath/>
     </parent>
     
@@ -45,12 +45,12 @@
     
     <modules>
         
-        <module>kivakit-settings-stores</module>
-        <module>kivakit-logs</module>
-        <module>kivakit-web</module>
         <module>kivakit-filesystems</module>
+        <module>kivakit-web</module>
         <module>kivakit-metrics</module>
+        <module>kivakit-settings-stores</module>
         <module>kivakit-microservice</module>
+        <module>kivakit-logs</module>
         
     </modules>
     
