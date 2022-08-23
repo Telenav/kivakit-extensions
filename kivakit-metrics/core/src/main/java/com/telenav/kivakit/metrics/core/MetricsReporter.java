@@ -5,6 +5,7 @@ package com.telenav.kivakit.metrics.core;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("unused")
 public interface MetricsReporter
 {
     /**
