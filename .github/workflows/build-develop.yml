@@ -31,6 +31,6 @@ on:
 
 jobs:
   build:
-    uses: Telenav/telenav-github/.github/workflows/build-branch.yml@main
+    uses: Telenav/telenav-github/.github/workflows/build-branch-cactus-debug.yml@main
     secrets:
       ZULIP_API_KEY: ${{ secrets.ZULIP_API_KEY }}
