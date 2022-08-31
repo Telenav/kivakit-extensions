@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
@@ -10,7 +10,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 
 /**
- * Reads simplified OpenApi annotations from a {@link MicroserviceRestService}.
+ * Reads simplified OpenApi annotations from a {@link RestService}.
  *
  * <p><b>Annotations</b></p>
  * <ul>
@@ -32,7 +32,7 @@ public class OpenApiReader extends BaseComponent
     {
         var api = new OpenAPI();
 
-        var restApplication = require(MicroserviceRestService.class);
+        var restApplication = require(RestService.class);
         var schemaReader = listenTo(new OpenApiSchemaReader());
         var pathReader = listenTo(new OpenApiPathReader());
 

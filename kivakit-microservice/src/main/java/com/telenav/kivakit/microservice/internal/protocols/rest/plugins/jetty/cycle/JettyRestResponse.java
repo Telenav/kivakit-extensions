@@ -4,15 +4,15 @@ import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.object.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.version.Version;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblem;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
+import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
@@ -30,8 +30,8 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * <p>
- * This response object contains an {@link HttpServletResponse} and belongs to a {@link JettyMicroservletRequestCycle}.
- * Errors can be reported to the response with:
+ * This response object contains an {@link HttpServletResponse} and belongs to a {@link JettyRestRequestCycle}. Errors
+ * can be reported to the response with:
  * <ul>
  *     <li>{@link #problem(HttpStatus, String, Object...)}</li>
  *     <li>{@link #problem(HttpStatus, Throwable, String, Object...)}</li>
@@ -40,9 +40,9 @@ import javax.servlet.http.HttpServletResponse;
  * </p>
  *
  * <p>
- * The {@link #writeObject(MicroservletResponse)} method validates the given {@link MicroservletResponse}
- * object before serializing it to JSON format using the {@link JettyMicroservletRequestCycle#gson()}
- * object obtained from the {@link MicroserviceRestService}. It then writes the JSON string to the
+ * The {@link #writeResponse(MicroservletResponse)} method validates the given {@link MicroservletResponse}
+ * object before serializing it to JSON format using the {@link JettyRestRequestCycle#gson()}
+ * object obtained from the {@link RestService}. It then writes the JSON string to the
  * {@link HttpServletResponse}.
  * </p>
  *
@@ -50,11 +50,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public final class JettyMicroserviceResponse extends BaseComponent
+public final class JettyRestResponse extends BaseComponent
+        implements RestResponse
 {
     /** The request cycle to which this response belongs */
     @UmlAggregation
-    private final JettyMicroservletRequestCycle cycle;
+    private final JettyRestRequestCycle cycle;
 
     /** Error messages that were reported to this response via {@link #problem(HttpStatus, String, Object...)} */
     @Expose
@@ -66,7 +67,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     /** Servlet response */
     private final HttpServletResponse httpResponse;
 
-    public JettyMicroserviceResponse(JettyMicroservletRequestCycle cycle, HttpServletResponse httpResponse)
+    public JettyRestResponse(JettyRestRequestCycle cycle, HttpServletResponse httpResponse)
     {
         this.cycle = cycle;
         this.httpResponse = httpResponse;
@@ -76,36 +77,37 @@ public final class JettyMicroserviceResponse extends BaseComponent
         httpStatus(HttpStatus.OK);
     }
 
+    @Override
     public MicroservletErrorResponse errors()
     {
         return errors;
     }
 
-    public HttpServletResponse httpResponse()
+    @Override
+    public HttpServletResponse httpServletResponse()
     {
         return httpResponse;
     }
 
+    @Override
     public HttpStatus httpStatus()
     {
         return HttpStatus.httpStatus(httpResponse.getStatus());
     }
 
+    @Override
     public void httpStatus(HttpStatus status)
     {
         httpResponse.setStatus(status.code());
     }
 
     @Override
-    public void onMessage(Message message)
-    {
-    }
-
     public Problem problem(HttpStatus httpStatus, String text, Object... arguments)
     {
         return problem(httpStatus, null, text, arguments);
     }
 
+    @Override
     public Problem problem(HttpStatus httpStatus, Throwable exception, String text, Object... arguments)
     {
         return transmit(new HttpProblem(httpStatus, exception, text, arguments));
@@ -117,6 +119,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
      * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
      * object.
      */
+    @Override
     public String toJson(Object response)
     {
         // We will serialize the response object itself by default.
@@ -151,6 +154,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
     /**
      * @return The version of the microservice that is responding to a request
      */
+    @Override
     @KivaKitIncludeProperty
     @OpenApiIncludeMember(title = "Version", description = "The microservice version from metadata")
     public Version version()
@@ -167,7 +171,8 @@ public final class JettyMicroserviceResponse extends BaseComponent
      *
      * @param response The response to write to the HTTP output stream
      */
-    public void writeObject(MicroservletResponse response)
+    @Override
+    public void writeResponse(MicroservletResponse response)
     {
         var responseWritten = false;
 
@@ -177,7 +182,7 @@ public final class JettyMicroserviceResponse extends BaseComponent
             // and if the response is invalid (any problems go into the response object),
             if (response.isValid(response))
             {
-                var responseType = cycle.request().parameters().getOrDefault("response-type", "always-okay");
+                var responseType = cycle.restRequest().parameters().getOrDefault("response-type", "always-okay");
 
                 switch (responseType)
                 {

@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A list of error messages used in {@link MicroservletResponse} for specific HTTP error codes.
+ * A list of {@link MicroservletError} messages, with a translation to {@link HttpStatus}
  *
  * @author jonathanl (shibo)
  * @see HttpStatus

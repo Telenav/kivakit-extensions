@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Adds metadata to a {@link MicroservletRequest} handler. This metadata is used when producing an OpenAPI specification
- * for a {@link MicroserviceRestService}.
+ * for a {@link RestService}.
  *
  * @author jonathanl (shibo)
  */

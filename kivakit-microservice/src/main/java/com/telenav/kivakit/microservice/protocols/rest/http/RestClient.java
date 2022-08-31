@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.protocols.rest;
+package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.string.Strings;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.net.http.HttpRequest;
 
 /**
- * A client for easy interaction with KivaKit {@link MicroserviceRestService}s.
+ * A client for easy interaction with KivaKit {@link RestService}s.
  *
  * <p>
  * The constructor of this class takes a {@link ObjectSerializer} to read and write JSON, a {@link Port} specifying the
@@ -34,7 +34,7 @@ import java.net.http.HttpRequest;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("SpellCheckingInspection")
-public class MicroserviceRestClient extends BaseComponent
+public class RestClient extends BaseComponent
 {
     /** Serializer for JSON request serialization and deserialization */
     private final ObjectSerializer serializer;
@@ -50,7 +50,7 @@ public class MicroserviceRestClient extends BaseComponent
      * @param port The (host and) port of the remote REST service to communicate with
      * @param version The version of the remote REST service
      */
-    public MicroserviceRestClient(ObjectSerializer serializer, Port port, Version version)
+    public RestClient(ObjectSerializer serializer, Port port, Version version)
     {
         this.serializer = serializer;
         this.port = port;

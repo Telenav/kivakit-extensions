@@ -4,8 +4,8 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader.OpenApiReader;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.serialization.ArraySerializer;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.serialization.ListSerializer;
@@ -16,9 +16,9 @@ import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
@@ -32,8 +32,8 @@ import java.util.Set;
 /**
  * <b>Not public API</b>
  * <p>
- * A {@link MicroservletRequest} handler that produces an {@link OpenAPI} definition for a {@link
- * MicroservletJettyPlugin}.
+ * A {@link MicroservletRequest} handler that produces an {@link OpenAPI} definition for a
+ * {@link MicroservletJettyPlugin}.
  */
 @SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramJetty.class)
 @OpenApiExcludeMember({ "exampleSetFlag" })
@@ -54,11 +54,11 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
             api = listener.listenTo(new OpenApiReader()).read();
         }
 
-        @SuppressWarnings({ "unchecked", "rawtypes" })
+        @SuppressWarnings({ "rawtypes" })
         @Override
         public GsonFactory gsonFactory()
         {
-            var factory = JettyMicroservletRequestCycle.cycle()
+            var factory = RestRequestThread.get()
                     .restService()
                     .microservice()
                     .gsonFactory();
@@ -98,7 +98,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
     private String ignored = "IGNORED";
 
     /**
-     * @return Responds to a GET request with the OpenAPI definition for the {@link MicroserviceRestService}.
+     * @return Responds to a GET request with the OpenAPI definition for the {@link RestService}.
      */
     @Override
     public MicroservletResponse onRespond()

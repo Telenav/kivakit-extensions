@@ -10,8 +10,8 @@ import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.MicroserviceSettings;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestClient;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializers;
@@ -112,9 +112,9 @@ public class MicroserviceTest extends UnitTest
         }
 
         @Override
-        public MicroserviceRestService onNewRestService()
+        public RestService onNewRestService()
         {
-            return new TestRestMicroservice(this);
+            return new TestRest(this);
         }
     }
 
@@ -160,9 +160,9 @@ public class MicroserviceTest extends UnitTest
         int result;
     }
 
-    public static class TestRestMicroservice extends MicroserviceRestService
+    public static class TestRest extends RestService
     {
-        public TestRestMicroservice(Microservice<?> microservice)
+        public TestRest(Microservice<?> microservice)
         {
             super(microservice);
         }
@@ -196,7 +196,7 @@ public class MicroserviceTest extends UnitTest
                 "-server=false" }));
         microservice.waitForReady();
 
-        var client = listenTo(new MicroserviceRestClient(
+        var client = listenTo(new RestClient(
                 new GsonObjectSerializer(), Host.local().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
