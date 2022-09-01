@@ -559,12 +559,6 @@ public abstract class Microservice<Member> extends Application implements
         }
     }
 
-    @Override
-    public Version version()
-    {
-        return metadata().version();
-    }
-
     public org.apache.wicket.protocol.http.WebApplication webApplication()
     {
         return webApplication.get();

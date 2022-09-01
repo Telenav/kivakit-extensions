@@ -196,8 +196,10 @@ public final class JettyRestResponse extends BaseComponent
                         break;
 
                     case "always-okay":
+                        writeResponse("{");
                         writeResponse(toJson(response));
                         writeResponse(toJson(errors));
+                        writeResponse("}");
                         httpStatus(HttpStatus.OK);
                         responseWritten = true;
                         break;
