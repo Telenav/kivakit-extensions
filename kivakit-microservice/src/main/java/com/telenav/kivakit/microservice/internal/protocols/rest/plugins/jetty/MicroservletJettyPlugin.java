@@ -22,7 +22,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilterHolder;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
@@ -70,7 +70,7 @@ public class MicroservletJettyPlugin extends BaseFilterJettyPlugin
     /**
      * @param application The REST application
      */
-    public MicroservletJettyPlugin(MicroserviceRestService application)
+    public MicroservletJettyPlugin(RestService application)
     {
         super(application.getClass().getSimpleName());
 

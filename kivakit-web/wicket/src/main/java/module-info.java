@@ -18,7 +18,4 @@ open module kivakit.web.wicket
     exports com.telenav.kivakit.web.wicket.library;
     exports com.telenav.kivakit.web.wicket.theme;
     exports com.telenav.kivakit.web.wicket;
-
-    // Temporary, to solve persistent javadoc aggregation problems
-    exports org.apiguardian.api;
 }

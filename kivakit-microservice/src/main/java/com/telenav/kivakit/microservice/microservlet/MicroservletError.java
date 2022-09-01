@@ -7,7 +7,7 @@ import com.telenav.kivakit.core.messaging.messages.OperationMessage;
 import com.telenav.kivakit.core.messaging.messages.OperationStatusMessage;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblem;
+import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.network.http.HttpStatus;

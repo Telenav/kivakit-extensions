@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.protocols.rest;
+package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.core.logging.Logger;
 import com.telenav.kivakit.core.logging.LoggerFactory;
@@ -8,7 +8,7 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService.HttpMethod;
 import com.telenav.kivakit.filesystem.FilePath;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,31 +22,31 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *
  * @author jonathanl (shibo)
  */
-public class MicroservletRestPath implements
+public class RestPath implements
         RegistryTrait,
-        Comparable<MicroservletRestPath>
+        Comparable<RestPath>
 {
     private static final Logger LOGGER = LoggerFactory.newLogger();
 
     public static final Pattern VERSION_PATTERN = Pattern.compile("/api/(?<version>\\d+\\.\\d+)/");
 
-    public static MicroservletRestPath parse(Listener listener, String path, HttpMethod httpMethod)
+    public static RestPath parse(Listener listener, String path, HttpMethod httpMethod)
     {
-        return new MicroservletRestPath(FilePath.parseFilePath(listener, path), httpMethod);
+        return new RestPath(FilePath.parseFilePath(listener, path), httpMethod);
     }
 
     private final HttpMethod httpMethod;
 
     private final FilePath path;
 
-    public MicroservletRestPath(FilePath path, HttpMethod httpMethod)
+    public RestPath(FilePath path, HttpMethod httpMethod)
     {
         this.path = path;
         this.httpMethod = ensureNotNull(httpMethod);
     }
 
     @Override
-    public int compareTo(@NotNull final MicroservletRestPath that)
+    public int compareTo(@NotNull final RestPath that)
     {
         return key().compareTo(that.key());
     }
@@ -54,9 +54,9 @@ public class MicroservletRestPath implements
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof MicroservletRestPath)
+        if (object instanceof RestPath)
         {
-            var that = (MicroservletRestPath) object;
+            var that = (RestPath) object;
             return key().equals(that.key());
         }
         return false;
@@ -99,7 +99,7 @@ public class MicroservletRestPath implements
         {
             var microservice = require(Microservice.class);
             var version = microservice.version();
-            var restService = require(MicroserviceRestService.class);
+            var restService = require(RestService.class);
             var apiPath = restService.versionToPath(version);
             return FilePath.parseFilePath(LOGGER, Paths.concatenate(apiPath, path.asString()));
         }
@@ -123,8 +123,8 @@ public class MicroservletRestPath implements
         return null;
     }
 
-    public MicroservletRestPath withoutLast()
+    public RestPath withoutLast()
     {
-        return new MicroservletRestPath(path.withoutLast(), httpMethod);
+        return new RestPath(path.withoutLast(), httpMethod);
     }
 }
