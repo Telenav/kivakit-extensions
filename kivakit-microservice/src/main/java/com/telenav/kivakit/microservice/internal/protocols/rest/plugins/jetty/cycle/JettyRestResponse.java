@@ -198,7 +198,11 @@ public final class JettyRestResponse extends BaseComponent
 
                     case "always-okay":
                         writeResponse("{");
-                        writeResponse(stripBrackets(toJson(response)) + ",");
+                        var payload = stripBrackets(toJson(response));
+                        if (!payload.isEmpty())
+                        {
+                            writeResponse(payload + ",");
+                        }
                         writeResponse(stripBrackets(toJson(errors)));
                         writeResponse("}");
                         httpStatus(HttpStatus.OK);
