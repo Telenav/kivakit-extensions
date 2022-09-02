@@ -14,7 +14,7 @@ import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpc
 import com.telenav.kivakit.microservice.internal.protocols.grpc.runtimeproto.Generators;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -24,7 +24,7 @@ import io.netty.util.internal.logging.JdkLoggerFactory;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 
 /**
- * GRPC protocol service that simply copies mounted request handlers from {@link MicroserviceRestService}.
+ * GRPC protocol service that simply copies mounted request handlers from {@link RestService}.
  *
  * <p><b>Creation</b></p>
  *
@@ -34,7 +34,7 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
  * </p>
  *
  * @author jonathanl (shibo)
- * @see MicroserviceRestService
+ * @see RestService
  */
 public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
@@ -71,7 +71,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
             initializing = true;
 
             // Look up any REST service,
-            var restService = lookup(MicroserviceRestService.class);
+            var restService = lookup(RestService.class);
             if (restService != null)
             {
                 // and mount all the request handlers in that service on this service,

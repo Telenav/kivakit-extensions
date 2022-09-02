@@ -57,7 +57,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
             {
                 // then this server is not alive,
                 var response = new HealthReadyResponse("Forwarded API is failing: " + api.uri());
-                response.status(HttpStatus.INTERNAL_SERVER_ERROR);
+                response.restResponse().httpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
                 return response;
             }
         }

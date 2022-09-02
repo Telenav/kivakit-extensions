@@ -29,12 +29,12 @@ import static org.apache.wicket.RuntimeConfigurationType.DEVELOPMENT;
  *
  * @author jonathanl (shibo)
  */
-public abstract class MicroserviceWebApplication extends WebApplication
+public abstract class WicketWebApplication extends WebApplication
 {
     /**
      * The microservice parameter to this class is ignored for now
      */
-    public MicroserviceWebApplication(Microservice<?> ignored)
+    public WicketWebApplication(Microservice<?> ignored)
     {
     }
 

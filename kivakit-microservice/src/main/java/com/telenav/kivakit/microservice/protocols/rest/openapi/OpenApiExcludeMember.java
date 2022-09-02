@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates that a supertype (class or interface) member (field or method) should be excluded from the OpenAPI
- * specification for a {@link MicroserviceRestService} even if they were included in the supertype with {@link
+ * specification for a {@link RestService} even if they were included in the supertype with {@link
  * OpenApiExcludeMember}.
  *
  * @author jonathanl (shibo)

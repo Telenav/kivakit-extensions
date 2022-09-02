@@ -51,7 +51,7 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
             // Propagate any messages in the result object to the request cycle response
             for (var message : result.messages())
             {
-                response().receive(message);
+                restResponse().receive(message);
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.internal.protocols.rest.openapi;
+package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMemberFromSuperType;
 

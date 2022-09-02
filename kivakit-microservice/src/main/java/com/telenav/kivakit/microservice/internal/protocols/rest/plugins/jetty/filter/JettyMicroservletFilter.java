@@ -2,14 +2,15 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
-import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService.HttpMethod;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -36,7 +37,7 @@ import java.util.Set;
  * <p><b>Microservlet Mounts</b></p>
  *
  * <p>
- * {@link Microservlet}s are mounted on paths with {@link #mount(MicroservletRestPath, Microservlet)}. When {@link
+ * {@link Microservlet}s are mounted on paths with {@link #mount(RestPath, Microservlet)}. When {@link
  * #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is parsed
  * and the associated microservlet (if any) is invoked.
  * </p>
@@ -45,7 +46,7 @@ import java.util.Set;
  * All HTTP methods result in a call to {@link Microservlet#onRespond(MicroservletRequest)}, where the parameter is the
  * posted JSON object (in the case of POST requests). The object returned from the onRequest method is written to the
  * response output in JSON format. The {@link Gson} object used to serialize and deserialize JSON objects is obtained
- * from the {@link MicroserviceRestService} passed to the filter constructor.
+ * from the {@link RestService} passed to the filter constructor.
  * </p>
  *
  * <p><b>JAR Mounts</b></p>
@@ -63,23 +64,23 @@ import java.util.Set;
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletFilter extends BaseComponent implements
         Filter,
-        HttpProblemReportingTrait
+        RestProblemReportingTrait
 {
     /** Map from path to mounted JAR */
-    private final Map<MicroservletRestPath, MountedApi> mountedApis = new HashMap<>();
+    private final Map<RestPath, MountedApi> mountedApis = new HashMap<>();
 
     /** Map from path to mounted microservlet */
     @UmlAggregation(referent = Microservlet.class, label = "mounts on paths", referentCardinality = "many")
-    private final Map<MicroservletRestPath, MountedMicroservlet> mountedMicroservlets = new HashMap<>();
+    private final Map<RestPath, MountedMicroservlet> mountedMicroservlets = new HashMap<>();
 
     /** The microservice rest application */
     @UmlAggregation
-    private final MicroserviceRestService service;
+    private final RestService service;
 
     /**
      * @param service The REST application that is using this filter
      */
-    public JettyMicroservletFilter(MicroserviceRestService service)
+    public JettyMicroservletFilter(RestService service)
     {
         this.service = service;
 
@@ -99,7 +100,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
      * @param filterChain The filter chain to delegate to
      */
     @Override
-    @UmlRelation(label = "creates", referent = JettyMicroservletRequestCycle.class)
+    @UmlRelation(label = "creates", referent = JettyRestRequestCycle.class)
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
                          FilterChain filterChain)
@@ -115,16 +116,19 @@ public class JettyMicroservletFilter extends BaseComponent implements
             var method = HttpMethod.parse(httpRequest.getMethod());
             if (method != null)
             {
-                // create microservlet request cycle,
-                var cycle = listenTo(new JettyMicroservletRequestCycle(service, httpRequest, httpResponse));
+                // create REST request cycle,
+                var cycle = listenTo(new JettyRestRequestCycle(service, httpRequest, httpResponse));
 
                 // attach it to the current thread,
-                JettyMicroservletRequestCycle.attach(cycle);
+                RestRequestThread.attach(cycle);
 
                 // resolve any microservlet at the requested path,
-                var mounted = resolveMicroservlet(new MicroservletRestPath(cycle.request().path(), method));
+                var mounted = resolveMicroservlet(new RestPath(cycle.restRequest().path(), method));
                 if (mounted != null)
                 {
+                    // then attach the microservlet to the request cycle,
+                    cycle.attach(mounted.microservlet());
+
                     // and handle the request.
                     tryCatch(() -> mounted.handleRequest(method, cycle),
                             "Unable to handle $ to $", method.name(), mounted.microservlet.name());
@@ -133,7 +137,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                 else
                 {
                     // and if no microservlet was resolved, try resolving the path to a JAR mount,
-                    var mountedJar = resolveApi(new MicroservletRestPath(cycle.request().path(), HttpMethod.NONE));
+                    var mountedJar = resolveApi(new RestPath(cycle.restRequest().path(), HttpMethod.NONE));
                     if (mountedJar != null)
                     {
                         // and handle the request that way.
@@ -167,7 +171,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         }
         finally
         {
-            JettyMicroservletRequestCycle.detach();
+            RestRequestThread.detach();
         }
     }
 
@@ -180,7 +184,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
      * @param path The request path
      * @return Any microservice at the given path with the given request method, or null if none exists
      */
-    public MountedMicroservlet microservlet(MicroservletRestPath path)
+    public MountedMicroservlet microservlet(RestPath path)
     {
         return mountedMicroservlets.get(path);
     }
@@ -188,7 +192,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
     /**
      * @return The set of all microservlet paths. This includes an automatically appended HTTP method name.
      */
-    public Set<MicroservletRestPath> microservletPaths()
+    public Set<RestPath> microservletPaths()
     {
         return mountedMicroservlets.keySet();
     }
@@ -196,7 +200,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
     /**
      * Mounts the given request method on the given path. Paths descend from the root of the server.
      */
-    public final void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
+    public final void mount(RestPath path, Microservlet<?, ?> microservlet)
     {
         var microservice = service.microservice();
         var existing = mountedMicroservlets.get(path);
@@ -255,7 +259,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
      * @param path The mount path
      * @return The JAR at the given path, or null if the path does not map to any JAR
      */
-    private MountedApi resolveApi(final MicroservletRestPath path)
+    private MountedApi resolveApi(final RestPath path)
     {
         int removed = 0;
         for (var at = path; at.isNonEmpty(); at = at.withoutLast(), removed++)
@@ -277,7 +281,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
      * @param path The mount path
      * @return The microservlet at the given path, or null if the path does not map to any microservlet
      */
-    private MountedMicroservlet resolveMicroservlet(MicroservletRestPath path)
+    private MountedMicroservlet resolveMicroservlet(RestPath path)
     {
         int removed = 0;
         for (var at = path; at.isNonEmpty(); at = at.withoutLast(), removed++)
@@ -285,7 +289,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
             var mounted = microservlet(at);
             if (mounted != null)
             {
-                mounted.parameters = new MicroservletRestPath(path.path().last(removed), path.method());
+                mounted.parameters = new RestPath(path.path().last(removed), path.method());
                 return mounted;
             }
         }

@@ -47,8 +47,8 @@ open module kivakit.microservice
     exports com.telenav.kivakit.microservice.microservlet;
     exports com.telenav.kivakit.microservice.protocols.grpc;
     exports com.telenav.kivakit.microservice.protocols.lambda;
-    exports com.telenav.kivakit.microservice.protocols.rest;
     exports com.telenav.kivakit.microservice.protocols.rest.openapi;
+    exports com.telenav.kivakit.microservice.protocols.rest.http;
     exports com.telenav.kivakit.microservice.protocols.rest.gson;
     exports com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 }
