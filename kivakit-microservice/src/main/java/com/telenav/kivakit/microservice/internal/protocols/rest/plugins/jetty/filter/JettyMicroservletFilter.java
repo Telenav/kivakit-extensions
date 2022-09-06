@@ -8,9 +8,9 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cy
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService.HttpMethod;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;

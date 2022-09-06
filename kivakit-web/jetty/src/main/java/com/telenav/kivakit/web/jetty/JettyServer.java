@@ -19,10 +19,13 @@
 package com.telenav.kivakit.web.jetty;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.network.core.NetworkLocation;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
@@ -30,10 +33,14 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.eclipse.jetty.util.log.StdErrLog;
 
+import javax.servlet.DispatcherType;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
@@ -89,7 +96,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensure;
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@SuppressWarnings("unused") @LexakaiJavadoc(complete = true)
 public class JettyServer extends BaseComponent implements
         Startable,
         Stoppable<Duration>
@@ -105,6 +112,9 @@ public class JettyServer extends BaseComponent implements
 
     /** The filters to install when Jetty starts */
     private final List<BaseFilterJettyPlugin> filters = new ArrayList<>();
+
+    /** Any CORS filter */
+    private FilterHolder crossOriginFilter;
 
     /** The port to run Jetty on */
     private int port;
@@ -138,6 +148,28 @@ public class JettyServer extends BaseComponent implements
     public Duration maximumWaitTime()
     {
         return Duration.MAXIMUM;
+    }
+
+    /**
+     * Adds a cross-origin filter to this server for all requests
+     * @param allowedMethods The {@link HttpMethod}s allowed
+     * @param allowedOrigins The origins that a request can come from
+     * @param allowedHeaders The headers that are allowed
+     * @param maximumPreflightAge The maximum age of pre-flight requests
+     */
+    public void addCrossOriginFilter(ObjectSet<HttpMethod> allowedMethods,
+                              ObjectSet<NetworkLocation> allowedOrigins,
+                              ObjectSet<String> allowedHeaders,
+                              Duration maximumPreflightAge)
+    {
+        // Add cross-origin filter
+        crossOriginFilter = new FilterHolder();
+        crossOriginFilter.setInitParameter("allowedOrigins", allowedOrigins.join(","));
+        crossOriginFilter.setInitParameter("allowedMethods", allowedMethods.join(","));
+        crossOriginFilter.setInitParameter("allowedHeaders", allowedHeaders.join(","));
+        crossOriginFilter.setInitParameter("preflightMaxAge", "" + (int)maximumPreflightAge.asSeconds());
+        crossOriginFilter.setInitParameter("allowCredentials", "true");
+        crossOriginFilter.setFilter(new CrossOriginFilter());
     }
 
     public JettyServer mount(String path, BaseFilterJettyPlugin filter)
@@ -242,6 +274,12 @@ public class JettyServer extends BaseComponent implements
             servletContext.setServer(server);
             servletContext.setSessionHandler(new SessionHandler());
             servletContext.setResourceBase(".");
+
+            // Add any cross-origin filter
+            if (crossOriginFilter != null)
+            {
+                servletContext.addFilter(crossOriginFilter, "/*", EnumSet.of(DispatcherType.REQUEST));
+            }
 
             // then for each JettyResource,
             assets.forEach(asset ->
