@@ -5,14 +5,15 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.object.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
@@ -197,8 +198,12 @@ public final class JettyRestResponse extends BaseComponent
 
                     case "always-okay":
                         writeResponse("{");
-                        writeResponse(toJson(response));
-                        writeResponse(toJson(errors));
+                        var payload = stripBrackets(toJson(response));
+                        if (!payload.isEmpty())
+                        {
+                            writeResponse(payload + ",");
+                        }
+                        writeResponse(stripBrackets(toJson(errors)));
                         writeResponse("}");
                         httpStatus(HttpStatus.OK);
                         responseWritten = true;
@@ -224,6 +229,12 @@ public final class JettyRestResponse extends BaseComponent
         {
             writeResponse(toJson(response));
         }
+    }
+
+    private String stripBrackets(String json)
+    {
+        json = Strip.leading(json, "{");
+        return Strip.trailing(json, "}");
     }
 
     /**
