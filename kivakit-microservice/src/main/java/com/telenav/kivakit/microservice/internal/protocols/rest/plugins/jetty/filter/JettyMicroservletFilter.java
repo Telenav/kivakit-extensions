@@ -105,6 +105,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                          ServletResponse servletResponse,
                          FilterChain filterChain)
     {
+        var handled = false;
         try
         {
             // Cast request and response to HTTP subclasses,
@@ -112,9 +113,8 @@ public class JettyMicroservletFilter extends BaseComponent implements
             var httpResponse = (HttpServletResponse) servletResponse;
 
             // parse the HTTP method,
-            var handled = false;
             var method = HttpMethod.parse(httpRequest.getMethod());
-            if (method != null)
+            if (method != null && method != HttpMethod.OPTIONS)
             {
                 // create REST request cycle,
                 var cycle = listenTo(new JettyRestRequestCycle(service, httpRequest, httpResponse));
@@ -147,23 +147,6 @@ public class JettyMicroservletFilter extends BaseComponent implements
                     }
                 }
             }
-            else
-            {
-                problem("Invalid request method");
-            }
-
-            if (!handled)
-            {
-                try
-                {
-                    // If the request wasn't handled, pass it down the filter chain.
-                    filterChain.doFilter(servletRequest, servletResponse);
-                }
-                catch (Exception e)
-                {
-                    problem(e, "Exception thrown by filter chain");
-                }
-            }
         }
         catch (Exception e)
         {
@@ -172,6 +155,19 @@ public class JettyMicroservletFilter extends BaseComponent implements
         finally
         {
             RestRequestThread.detach();
+        }
+
+        if (!handled)
+        {
+            try
+            {
+                // If the request wasn't handled, pass it down the filter chain.
+                filterChain.doFilter(servletRequest, servletResponse);
+            }
+            catch (Exception e)
+            {
+                problem(e, "Exception thrown by filter chain");
+            }
         }
     }
 
