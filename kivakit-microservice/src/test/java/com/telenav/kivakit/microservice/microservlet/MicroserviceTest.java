@@ -13,6 +13,7 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializers;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
@@ -126,6 +127,7 @@ public class MicroserviceTest extends UnitTest
             this.b = b;
         }
 
+        @SuppressWarnings("unused")
         public TestPostRequest()
         {
         }

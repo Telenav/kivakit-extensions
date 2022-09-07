@@ -474,8 +474,12 @@ public abstract class Microservice<Member> extends Application implements
             var restService = restService();
             if (restService != null)
             {
+                // let the service initialize the server,
+                restService.onInitialize(server);
+
                 // mount the (filter) plugin for it,
-                server.mount("/*", register(new MicroservletJettyPlugin(restService)));
+                var jettyPlugin = new MicroservletJettyPlugin(restService);
+                server.mount("/*", register(jettyPlugin));
 
                 // and if there are any OpenAPI assets,
                 listenTo(restService);
