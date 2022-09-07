@@ -6,10 +6,10 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.registry.RegistryTrait;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.version.Version;
+import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService.HttpMethod;
-import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.network.http.HttpMethod;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

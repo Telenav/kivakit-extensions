@@ -40,11 +40,13 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
+import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -60,8 +62,8 @@ import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
-import static com.telenav.kivakit.microservice.protocols.rest.http.RestService.HttpMethod.GET;
-import static com.telenav.kivakit.microservice.protocols.rest.http.RestService.HttpMethod.POST;
+import static com.telenav.kivakit.network.http.HttpMethod.GET;
+import static com.telenav.kivakit.network.http.HttpMethod.POST;
 
 /**
  * Base class for KivaKit microservice REST applications.
@@ -209,7 +211,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.http.RestService.H
  *     <li>Producing a response</li>
  *     <li>
  *     <ol>
- *         <li>The request handler's return value is passed to {@link JettyRestResponse#writeObject(MicroservletResponse)}, which:</li>
+ *         <li>The request handler's return value is passed to {@link JettyRestResponse#writeResponse(MicroservletResponse)}, which:</li>
  *         <li>
  *           <ol>
  *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
@@ -237,32 +239,6 @@ import static com.telenav.kivakit.microservice.protocols.rest.http.RestService.H
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class RestService extends BaseComponent implements Initializable
 {
-    public enum HttpMethod
-    {
-        GET,
-        POST,
-        DELETE,
-        NONE;
-
-        public static HttpMethod parse(String text)
-        {
-            switch (text.toLowerCase())
-            {
-                case "get":
-                    return GET;
-
-                case "post":
-                    return POST;
-
-                case "delete":
-                    return DELETE;
-
-                default:
-                    return null;
-            }
-        }
-    }
-
     /** True while initializing */
     private boolean initializing = false;
 
@@ -474,6 +450,10 @@ public abstract class RestService extends BaseComponent implements Initializable
             // otherwise, complain.
             problem("JAR files must be mounted in onInitialize()");
         }
+    }
+
+    public void onInitialize(JettyServer server)
+    {
     }
 
     /**

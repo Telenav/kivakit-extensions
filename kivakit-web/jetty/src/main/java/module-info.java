@@ -8,6 +8,7 @@ open module kivakit.web.jetty
     requires org.eclipse.jetty.servlet;
     requires org.eclipse.jetty.util;
     requires org.eclipse.jetty.webapp;
+    requires org.eclipse.jetty.servlets;
     requires transitive javax.servlet.api;
     requires kivakit.network.http;
 

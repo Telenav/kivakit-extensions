@@ -58,7 +58,6 @@ import static javax.servlet.DispatcherType.REQUEST;
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("SpellCheckingInspection")
 @LexakaiJavadoc(complete = true)
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class MicroservletJettyPlugin extends BaseFilterJettyPlugin

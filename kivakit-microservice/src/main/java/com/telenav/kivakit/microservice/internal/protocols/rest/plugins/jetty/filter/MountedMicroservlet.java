@@ -6,12 +6,13 @@ import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.properties.PropertyMap;
 
 /**
  * A mounted {@link Microservlet} which can handle requests with
- * {@link #handleRequest(RestService.HttpMethod, RestRequestCycle)}
+ * {@link #handleRequest(HttpMethod, RestRequestCycle)}
  *
  * @author jonathanl (shibo)
  */
@@ -37,7 +38,7 @@ public class MountedMicroservlet extends Mounted
      * @param method The HTTP request method
      * @param cycle The request cycle
      */
-    public void handleRequest(RestService.HttpMethod method,
+    public void handleRequest(HttpMethod method,
                               RestRequestCycle cycle)
     {
         measure(path, () ->
@@ -78,7 +79,7 @@ public class MountedMicroservlet extends Mounted
         return microservlet;
     }
 
-    private void handleGetDelete(RestService.HttpMethod method,
+    private void handleGetDelete(HttpMethod method,
                                  RestRequestCycle cycle,
                                  RestResponse response,
                                  Class<? extends MicroservletRequest> requestType,
@@ -101,7 +102,7 @@ public class MountedMicroservlet extends Mounted
         }
     }
 
-    private void handlePost(RestService.HttpMethod method,
+    private void handlePost(HttpMethod method,
                             RestRequestCycle cycle,
                             RestResponse response,
                             Class<? extends MicroservletRequest> requestType,
