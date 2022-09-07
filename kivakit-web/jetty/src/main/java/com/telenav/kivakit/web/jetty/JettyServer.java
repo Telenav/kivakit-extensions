@@ -24,7 +24,6 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
-import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
@@ -45,7 +44,6 @@ import java.util.List;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
-import static com.telenav.kivakit.interfaces.string.Stringable.Format.PROGRAMMATIC;
 
 /**
  * A convenient way to use Jetty for simple web applications.
@@ -140,29 +138,18 @@ public class JettyServer extends BaseComponent implements
         configureLogging();
     }
 
-    @Override
-    public boolean isRunning()
-    {
-        return server != null;
-    }
-
-    @Override
-    public Duration maximumWaitTime()
-    {
-        return Duration.MAXIMUM;
-    }
-
     /**
      * Adds a cross-origin filter to this server for all requests
+     *
      * @param allowedMethods The {@link HttpMethod}s allowed
      * @param allowedOrigins The origins that a request can come from
      * @param allowedHeaders The headers that are allowed
      * @param maximumPreflightAge The maximum age of pre-flight requests
      */
     public void addCrossOriginFilter(ObjectSet<HttpMethod> allowedMethods,
-                              ObjectSet<String> allowedOrigins,
-                              ObjectSet<String> allowedHeaders,
-                              Duration maximumPreflightAge)
+                                     ObjectSet<String> allowedOrigins,
+                                     ObjectSet<String> allowedHeaders,
+                                     Duration maximumPreflightAge)
     {
         if (crossOriginFilter != null)
         {
@@ -174,9 +161,21 @@ public class JettyServer extends BaseComponent implements
         crossOriginFilter.setInitParameter("allowedOrigins", allowedOrigins.join(","));
         crossOriginFilter.setInitParameter("allowedMethods", allowedMethods.join(","));
         crossOriginFilter.setInitParameter("allowedHeaders", allowedHeaders.join(","));
-        crossOriginFilter.setInitParameter("preflightMaxAge", "" + (int)maximumPreflightAge.asSeconds());
+        crossOriginFilter.setInitParameter("preflightMaxAge", "" + (int) maximumPreflightAge.asSeconds());
         crossOriginFilter.setInitParameter("allowCredentials", "true");
         crossOriginFilter.setFilter(new CrossOriginFilter());
+    }
+
+    @Override
+    public boolean isRunning()
+    {
+        return server != null;
+    }
+
+    @Override
+    public Duration maximumWaitTime()
+    {
+        return Duration.MAXIMUM;
     }
 
     public JettyServer mount(String path, BaseFilterJettyPlugin filter)
