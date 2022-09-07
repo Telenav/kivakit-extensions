@@ -160,7 +160,7 @@ public class JettyServer extends BaseComponent implements
      * @param maximumPreflightAge The maximum age of pre-flight requests
      */
     public void addCrossOriginFilter(ObjectSet<HttpMethod> allowedMethods,
-                              ObjectSet<Port> allowedOrigins,
+                              ObjectSet<String> allowedOrigins,
                               ObjectSet<String> allowedHeaders,
                               Duration maximumPreflightAge)
     {
@@ -171,7 +171,7 @@ public class JettyServer extends BaseComponent implements
 
         // Add cross-origin filter
         crossOriginFilter = new FilterHolder();
-        crossOriginFilter.setInitParameter("allowedOrigins", allowedOrigins.join(",", origin -> origin.asString(PROGRAMMATIC)));
+        crossOriginFilter.setInitParameter("allowedOrigins", allowedOrigins.join(","));
         crossOriginFilter.setInitParameter("allowedMethods", allowedMethods.join(","));
         crossOriginFilter.setInitParameter("allowedHeaders", allowedHeaders.join(","));
         crossOriginFilter.setInitParameter("preflightMaxAge", "" + (int)maximumPreflightAge.asSeconds());
