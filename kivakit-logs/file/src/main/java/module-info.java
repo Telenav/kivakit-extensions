@@ -10,5 +10,4 @@ open module kivakit.logs.file
 
     // Module exports
     exports com.telenav.kivakit.logs.file;
-    exports com.telenav.kivakit.logs.file.lexakai;
 }

@@ -4,11 +4,12 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.Converter;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.interfaces.naming.Named;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservlet;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.properties.PropertyMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -27,9 +28,9 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  *
  * <p><b>IMPORTANT NOTE</b></p>
  * <p>
- * For most applications, it isn't necessary (or desirable) to directly subclass {@link Microservlet}. Instead a ({@link
- * MicroservletRequest} request handler should be mounted directly on a {@link MicroserviceRestService} with the {@link
- * MicroserviceRestService#mount(String, HttpMethod, Class)}.
+ * For most applications, it isn't necessary (or desirable) to directly subclass {@link Microservlet}. Instead a
+ * ({@link MicroservletRequest} request handler should be mounted directly on a {@link RestService} with the
+ * {@link RestService#mount(String, HttpMethod, Class)}.
  * </p>
  *
  * @author jonathanl (shibo)
@@ -37,9 +38,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * @see MicroservletResponse
  * @see PropertyMap
  */
+@SuppressWarnings({ "unused" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-@UmlRelation(label = "attaches", referent = JettyMicroservletRequestCycle.class)
+@UmlRelation(label = "attaches", referent = JettyRestRequestCycle.class)
 public abstract class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent implements Named
 {
     /** The type of the request object */
@@ -82,18 +84,18 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
         return unsupported("Microservlet has no request handling implementation", objectName());
     }
 
-    @SuppressWarnings("unchecked")
-    public Response respond(MicroservletRequest request)
-    {
-        return onRespond((Request) request);
-    }
-
     /**
      * @return The request object type
      */
     public Class<? extends Request> requestType()
     {
         return requestType;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Response respond(MicroservletRequest request)
+    {
+        return onRespond((Request) request);
     }
 
     /**
@@ -161,6 +163,6 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      */
     protected PropertyMap parameters()
     {
-        return JettyMicroservletRequestCycle.cycle().request().parameters();
+        return RestRequestThread.get().restRequest().parameters();
     }
 }

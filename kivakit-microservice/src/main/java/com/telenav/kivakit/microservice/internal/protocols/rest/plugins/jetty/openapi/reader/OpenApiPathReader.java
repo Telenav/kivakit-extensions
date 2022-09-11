@@ -9,7 +9,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.op
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
@@ -90,7 +90,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
      */
     private Operation newOperation(Class<? extends MicroservletRequest> requestType,
                                    Class<? extends MicroservletResponse> responseType,
-                                   MicroservletRestPath path)
+                                   RestPath path)
     {
         // Create operation,
         var operation = new Operation();
@@ -109,12 +109,12 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
 
         // add success and error responses,
         var responses = new ApiResponses()
-                .addApiResponse(Integer.toString(OK), newResponseSuccess(responseType))
-                .addApiResponse(Integer.toString(FORBIDDEN), newResponseItem("Forbidden", null))
-                .addApiResponse(Integer.toString(NOT_FOUND), newResponseItem("Not Found", null));
+                .addApiResponse(OK.toString(), newResponseSuccess(responseType))
+                .addApiResponse(FORBIDDEN.toString(), newResponseItem("Forbidden", null))
+                .addApiResponse(NOT_FOUND.toString(), newResponseItem("Not Found", null));
 
-        addErrorResponse(responses, INTERNAL_SERVER_ERROR, "Server Error");
-        addErrorResponse(responses, BAD_REQUEST, "Invalid Request");
+        addErrorResponse(responses, INTERNAL_SERVER_ERROR.code(), "Server Error");
+        addErrorResponse(responses, BAD_REQUEST.code(), "Invalid Request");
 
         operation.responses(responses);
 
@@ -132,7 +132,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
      * @return The {@link PathItem}
      */
     private PathItem newPathItem(
-            MicroservletRestPath path,
+            RestPath path,
             Microservlet<?, ?> microservlet)
     {
         ensureNotNull(microservlet);

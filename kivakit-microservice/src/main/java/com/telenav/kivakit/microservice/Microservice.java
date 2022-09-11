@@ -15,13 +15,13 @@ import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.internal.protocols.grpc.MicroservletGrpcSchemas;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.web.MicroserviceWebApplication;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
+import com.telenav.kivakit.microservice.web.WicketWebApplication;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.packages.Package;
@@ -54,8 +54,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * Base class for KivaKit <a href="https://martinfowler.com/articles/microservices.html">microservices</a>.
  * </p>
  *
- * <hr>
- *
  * <p><b>Creating a Microservice</b></p>
  *
  * <p>
@@ -66,12 +64,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *     <li>Create the {@link Microservice} subclass in the application's main(String[]) method</li>
  *     <li>Call {@link #run(String[])}, passing in the arguments to main()</li>
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
- *     <li>Override {@link #onNewRestService()} to provide the microservice's {@link MicroserviceRestService} subclass</li>
+ *     <li>Override {@link #onNewRestService()} to provide the microservice's {@link RestService} subclass</li>
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
- *     <li>Optionally, override {@link #onNewWebApplication()} to provide an Apache Wicket {@link MicroserviceWebApplication} subclass</li>
+ *     <li>Optionally, override {@link #onNewWebApplication()} to provide an Apache Wicket {@link WicketWebApplication} subclass</li>
  * </ol>
- *
- * <hr>
  *
  * <p><b>Example:</b></p>
  *
@@ -109,8 +105,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *     }
  * }</pre>
  *
- * <hr>
- *
  * <p><b>Command Line Switches</b></p>
  *
  * <p>
@@ -118,8 +112,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * <i>-port=[port]</i>. If no port is specified, the port in {@link MicroserviceSettings} will be used, as loaded
  * from the {@link Deployment} specified on the command line with <i>-deployment=[deployment]</i>.
  * </p>
- *
- * <hr>
  *
  * <p><b>Mount Paths</b></p>
  * <p>
@@ -153,8 +145,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *     </tr>
  * </table>
  *
- * <hr>
- *
  * <p><b>Root Path</b></p>
  *
  * <p>The method {@link #rootPath()} returns <i>/</i> (slash) by default. This method can be overridden to put all resources
@@ -162,8 +152,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * <i>/api/1.0</i>. But if {@link #rootPath()} returned <i>/[microservice-name]</i>, the API root for version
  * 1.0 would be <i>/my-microservice/api/1.0</i>.
  * </p>
- *
- * <hr>
  *
  * <p><b>Cluster Membership</b></p>
  *
@@ -175,8 +163,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * and the leader with {@link MicroserviceCluster#leader()}.
  * </p>
  *
- * <hr>
- *
  * <p><b>Cluster Elections</b></p>
  *
  * <p>
@@ -184,15 +170,13 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * this microservice is the elected leader of the cluster, the {@link #isLeader()} method will return true.
  * </p>
  *
- * <hr>
- *
  * @author jonathanl (shibo)
  * @see Deployment
  * @see Switch
  * @see ResourceFolder
  * @see MicroserviceMetadata
  * @see MicroserviceSettings
- * @see MicroserviceRestService
+ * @see RestService
  * @see <a href="https://martinfowler.com/articles/microservices.html">Martin Fowler on Microservices</a>
  * @see MicroserviceCluster
  * @see MicroserviceClusterMember
@@ -204,8 +188,8 @@ public abstract class Microservice<Member> extends Application implements
         Stoppable<Duration>
 {
     /**
-     * Command line switch for what port to run any REST service on. This will override any value from {@link
-     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     * Command line switch for what port to run any REST service on. This will override any value from
+     * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<String> API_FORWARDING =
             SwitchParsers.stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
@@ -213,8 +197,8 @@ public abstract class Microservice<Member> extends Application implements
                     .build();
 
     /**
-     * Command line switch for what port to run any GRPC service on. This will override any value from {@link
-     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     * Command line switch for what port to run any GRPC service on. This will override any value from
+     * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> GRPC_PORT =
             integerSwitchParser(this, "grpc-port", "The port to use for gRPC")
@@ -222,8 +206,8 @@ public abstract class Microservice<Member> extends Application implements
                     .build();
 
     /**
-     * Command line switch for what port to run any REST service on. This will override any value from {@link
-     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     * Command line switch for what port to run any REST service on. This will override any value from
+     * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> PORT =
             integerSwitchParser(this, "port", "The port to use for REST")
@@ -239,8 +223,8 @@ public abstract class Microservice<Member> extends Application implements
                     .build();
 
     /**
-     * Command line switch to run this microservice as a blocking server. This will override any value from {@link
-     * MicroserviceSettings} that is loaded from a {@link Deployment}.
+     * Command line switch to run this microservice as a blocking server. This will override any value from
+     * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Boolean> SERVER =
             booleanSwitchParser(this, "server", "True to run this microservice as a server")
@@ -253,7 +237,7 @@ public abstract class Microservice<Member> extends Application implements
 
     private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.of(this::onNewLambdaService);
 
-    private final Lazy<MicroserviceRestService> restService = Lazy.of(this::onNewRestService);
+    private final Lazy<RestService> restService = Lazy.of(this::onNewRestService);
 
     /** True if this microservice is running */
     private boolean running;
@@ -261,7 +245,7 @@ public abstract class Microservice<Member> extends Application implements
     /** Jetty web server */
     private JettyServer server;
 
-    private final Lazy<WebApplication> webApplication = Lazy.of(this::onNewWebApplication);
+    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = Lazy.of(this::onNewWebApplication);
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -368,9 +352,10 @@ public abstract class Microservice<Member> extends Application implements
     public abstract MicroserviceMetadata metadata();
 
     /**
-     * Called to initialize the microservice before it's running. This is a good place to register objects with {@link
-     * #register(Object)} or {@link #register(Object, Enum)}. While settings can be registered in this method, for most
-     * microservices, it will make more sense to use the more automatic method provided by {@link Deployment}s.
+     * Called to initialize the microservice before it's running. This is a good place to register objects with
+     * {@link #register(Object)} or {@link #register(Object, Enum)}. While settings can be registered in this method,
+     * for most microservices, it will make more sense to use the more automatic method provided by
+     * {@link Deployment}s.
      */
     public void onInitialize()
     {
@@ -395,7 +380,7 @@ public abstract class Microservice<Member> extends Application implements
     /**
      * @return Any REST service for this microservice
      */
-    public MicroserviceRestService onNewRestService()
+    public RestService onNewRestService()
     {
         return null;
     }
@@ -403,7 +388,7 @@ public abstract class Microservice<Member> extends Application implements
     /**
      * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
      */
-    public MicroserviceWebApplication onNewWebApplication()
+    public WebApplication onNewWebApplication()
     {
         return null;
     }
@@ -421,7 +406,7 @@ public abstract class Microservice<Member> extends Application implements
     /**
      * Returns the rest service for this microservice
      */
-    public MicroserviceRestService restService()
+    public RestService restService()
     {
         return restService.get();
     }
@@ -489,8 +474,12 @@ public abstract class Microservice<Member> extends Application implements
             var restService = restService();
             if (restService != null)
             {
+                // let the service initialize the server,
+                restService.onInitialize(server);
+
                 // mount the (filter) plugin for it,
-                server.mount("/*", register(new MicroservletJettyPlugin(restService)));
+                var jettyPlugin = new MicroservletJettyPlugin(restService);
+                server.mount("/*", register(jettyPlugin));
 
                 // and if there are any OpenAPI assets,
                 listenTo(restService);
@@ -574,7 +563,7 @@ public abstract class Microservice<Member> extends Application implements
         }
     }
 
-    public WebApplication webApplication()
+    public org.apache.wicket.protocol.http.WebApplication webApplication()
     {
         return webApplication.get();
     }
@@ -594,8 +583,8 @@ public abstract class Microservice<Member> extends Application implements
     /**
      * @return The ClusterMember object for this microservice. The ClusterMember object holds information about cluster
      * members. When a member joins the cluster, the {@link #onJoin(MicroserviceClusterMember)} method is called with
-     * the ClusterMember object for the member. When a member leaves the cluster, the {@link
-     * #onLeave(MicroserviceClusterMember)} is called with the same object.
+     * the ClusterMember object for the member. When a member leaves the cluster, the
+     * {@link #onLeave(MicroserviceClusterMember)} is called with the same object.
      */
     protected MicroserviceClusterMember<Member> onNewMember()
     {
@@ -606,8 +595,8 @@ public abstract class Microservice<Member> extends Application implements
     /**
      * <b>Not public API</b>
      * <p>
-     * This method should not be invoked or overridden. To initialize a microservice, override the {@link
-     * #onInitialize()} method.
+     * This method should not be invoked or overridden. To initialize a microservice, override the
+     * {@link #onInitialize()} method.
      * </p>
      */
     @Override
@@ -716,7 +705,7 @@ public abstract class Microservice<Member> extends Application implements
      *
      * @param restService The REST service to mount each API version JAR on
      */
-    private void mountApis(MicroserviceRestService restService)
+    private void mountApis(RestService restService)
     {
         var apis = get(API_FORWARDING).split(";");
         var apiSpecifier = Pattern.compile("version=(<?version>\\d+\\.\\d+),jar=(<?jar>[^,]+),port=(<?port>\\d+)(,command-line=(<?commandLine>.*))?");

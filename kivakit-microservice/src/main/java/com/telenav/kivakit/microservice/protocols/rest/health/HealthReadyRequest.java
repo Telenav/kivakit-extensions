@@ -10,20 +10,21 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
-
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import com.telenav.kivakit.network.http.HttpStatus;
 
 /**
  * Request handler that provides server readiness.
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("unused")
 @OpenApiIncludeType(description = "Request for server readiness")
 public class HealthReadyRequest extends BaseMicroservletRequest
 {
     /**
      * Response object for this request
      */
+    @SuppressWarnings("unused")
     @OpenApiIncludeType(description = "Response to a readiness request")
     public static class HealthReadyResponse extends BaseMicroservletResponse
     {
@@ -56,7 +57,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
             {
                 // then this server is not alive,
                 var response = new HealthReadyResponse("Forwarded API is failing: " + api.uri());
-                response.status(SC_INTERNAL_SERVER_ERROR);
+                response.restResponse().httpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
                 return response;
             }
         }

@@ -1,7 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
-import com.telenav.kivakit.microservice.internal.protocols.rest.openapi.OpenApiIncludeMemberFromSuperTypeRepeater;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
@@ -11,7 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates that a supertype (class or interface) member (method or field) should be included in the OpenAPI
- * specification for a {@link MicroserviceRestService}
+ * specification for a {@link RestService}
  *
  * @author jonathanl (shibo)
  */

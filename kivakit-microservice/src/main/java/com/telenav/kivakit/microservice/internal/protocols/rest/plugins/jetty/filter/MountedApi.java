@@ -7,17 +7,17 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.launcher.JarLauncher;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequestCycle;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod;
-import com.telenav.kivakit.microservice.protocols.rest.MicroservletRestPath;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.core.Port;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.network.http.HttpNetworkLocation;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.resource.Resource;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -31,7 +31,7 @@ import static java.net.http.HttpResponse.BodyHandlers.ofString;
 
 /**
  * A JAR file mounted on a path. The JAR will be run in a child process on the specified port. Requests will be
- * forwarded by {@link #handleRequest(HttpMethod, JettyMicroservletRequestCycle)} to the child process.
+ * forwarded by {@link #handleRequest(HttpMethod, JettyRestRequestCycle)} to the child process.
  *
  * @author jonathanl (shibo)
  */
@@ -47,7 +47,7 @@ public class MountedApi extends Mounted
     private Resource jar;
 
     /** The path to the JAR */
-    private MicroservletRestPath path;
+    private RestPath path;
 
     /** The port that the JAR is running on */
     private int port;
@@ -58,7 +58,7 @@ public class MountedApi extends Mounted
     /** The API version */
     private Version version;
 
-    public MountedApi(final MicroserviceRestService service)
+    public MountedApi(final RestService service)
     {
         super(service);
 
@@ -78,14 +78,14 @@ public class MountedApi extends Mounted
      * @param cycle The request cycle
      */
     @SuppressWarnings("ClassEscapesDefinedScope")
-    public boolean handleRequest(final HttpMethod method, final JettyMicroservletRequestCycle cycle)
+    public boolean handleRequest(final HttpMethod method, final JettyRestRequestCycle cycle)
     {
         measure(path, () ->
         {
             maybeLaunch();
 
-            var response = cycle.response().httpResponse();
-            var uri = URI.create(cycle.request().httpRequest().getRequestURI());
+            var response = cycle.restResponse().restResponse();
+            var uri = URI.create(cycle.restRequest().httpServletRequest().getRequestURI());
             try
             {
                 var forwardTo = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), port, uri.getPath(), uri.getQuery(), uri.getFragment());
@@ -97,17 +97,17 @@ public class MountedApi extends Mounted
                     {
                         copyResponse(response, tryCatch(() ->
                                         client.send(request.GET().build(), ofString()),
-                                "GET request forwarding failed: $", cycle.request().path()));
+                                "GET request forwarding failed: $", cycle.restRequest().path()));
                     }
                     break;
 
                     case POST:
                     {
-                        var payload = IO.string(cycle.request().httpRequest().getInputStream());
+                        var payload = IO.string(cycle.restRequest().httpServletRequest().getInputStream());
                         var postRequest = request.POST(HttpRequest.BodyPublishers.ofString(payload)).build();
                         copyResponse(response, tryCatch(() ->
                                         client.send(postRequest, ofString()),
-                                "POST request forwarding failed: $", cycle.request().path()));
+                                "POST request forwarding failed: $", cycle.restRequest().path()));
                     }
                     break;
 
@@ -115,7 +115,7 @@ public class MountedApi extends Mounted
                     {
                         copyResponse(response, tryCatch(() ->
                                         client.send(request.DELETE().build(), ofString()),
-                                "DELETE request forwarding failed: $", cycle.request().path()));
+                                "DELETE request forwarding failed: $", cycle.restRequest().path()));
                     }
                     break;
 
@@ -125,7 +125,7 @@ public class MountedApi extends Mounted
             }
             catch (Exception e)
             {
-                problem(HttpStatus.INTERNAL_SERVER_ERROR, "Bad URI: $", uri);
+                problem(HttpStatus.BAD_REQUEST, "Bad URI: $", uri);
             }
         });
 
@@ -183,7 +183,7 @@ public class MountedApi extends Mounted
      *
      * @param path The path
      */
-    public MountedApi path(final MicroservletRestPath path)
+    public MountedApi path(final RestPath path)
     {
         this.path = path;
         return this;
@@ -192,7 +192,7 @@ public class MountedApi extends Mounted
     /**
      * Returns the path to this API
      */
-    public MicroservletRestPath path()
+    public RestPath path()
     {
         return path;
     }
@@ -216,6 +216,7 @@ public class MountedApi extends Mounted
         return Host.local().port(port);
     }
 
+    @Override
     public String toString()
     {
         return Strings.format("$ ==> $ ($) on port $", path, version, jar, port);
@@ -248,22 +249,23 @@ public class MountedApi extends Mounted
         return this;
     }
 
-    private void copyResponse(HttpServletResponse response, HttpResponse<String> result)
+    private void copyResponse(RestResponse response, HttpResponse<String> result)
     {
+        var httpServletResponse = response.httpServletResponse();
         var map = result.headers().map();
         for (var name : map.keySet())
         {
-            response.setHeader(name, map.get(name).get(0));
+            httpServletResponse.setHeader(name, map.get(name).get(0));
         }
-        response.setStatus(result.statusCode());
+        httpServletResponse.setStatus(result.statusCode());
         var languages = map.get("Content-Language");
         if (languages.size() > 0)
         {
             var language = languages.get(0);
             var array = language.split("_");
-            response.setLocale(new Locale(array[0], array[1]));
+            httpServletResponse.setLocale(new Locale(array[0], array[1]));
         }
 
-        tryCatch(() -> IO.copy(new StringInputStream(result.body()), response.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
+        tryCatch(() -> IO.copy(new StringInputStream(result.body()), httpServletResponse.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
     }
 }

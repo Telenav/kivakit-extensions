@@ -2,22 +2,21 @@ package com.telenav.kivakit.microservice.microservlet;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.function.Result;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservlet;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
-
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 /**
  * Base class for response implementations.
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 public abstract class BaseMicroservletResponse extends BaseComponent implements MicroservletResponse
 {
-    private Result<?> result;
+    private transient Result<?> result;
 
     /**
      * This constructor can be called in simple cases where the {@link Result} class is not being used.
@@ -40,15 +39,19 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     }
 
     @Override
-    public void endResponse()
+    public void onPrepareResponse()
+    {
+    }
+
+    @Override
+    public void onEndResponse()
     {
         if (result != null && result.failed())
         {
-            problem(SC_INTERNAL_SERVER_ERROR, "Request failed");
-
+            // Propagate any messages in the result object to the request cycle response
             for (var message : result.messages())
             {
-                response().receive(message);
+                restResponse().receive(message);
             }
         }
     }

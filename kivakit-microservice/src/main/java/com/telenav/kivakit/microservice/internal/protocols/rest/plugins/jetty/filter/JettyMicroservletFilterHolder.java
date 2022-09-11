@@ -19,8 +19,8 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -42,7 +42,7 @@ public class JettyMicroservletFilterHolder extends FilterHolder implements Compo
     @UmlAggregation
     private final JettyMicroservletFilter filter;
 
-    public JettyMicroservletFilterHolder(MicroserviceRestService application)
+    public JettyMicroservletFilterHolder(RestService application)
     {
         setFilter(filter = listenTo(new JettyMicroservletFilter(application)));
     }

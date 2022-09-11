@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.microservice.protocols.rest;
+package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.StringList;
@@ -28,10 +28,11 @@ import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroserviceResponse;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyMicroservletRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
@@ -39,12 +40,13 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.lexakai.DiagramMicroservice;
+import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
+import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -60,8 +62,8 @@ import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
-import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.GET;
-import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService.HttpMethod.POST;
+import static com.telenav.kivakit.network.http.HttpMethod.GET;
+import static com.telenav.kivakit.network.http.HttpMethod.POST;
 
 /**
  * Base class for KivaKit microservice REST applications.
@@ -72,9 +74,9 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *
  * <p>
  * ({@link MicroservletRequest} handlers must be installed with {@link #mount(Version, String, HttpMethod, Class)}, or
- * {@link #mount(String, HttpMethod, Class)}. All calls to mount request handlers must be made in the {@link
- * Microservice#onInitialize()} method. Attempting to mount a handler outside of {@link Microservice#onInitialize()}
- * will result in a runtime error. For example:
+ * {@link #mount(String, HttpMethod, Class)}. All calls to mount request handlers must be made in the
+ * {@link Microservice#onInitialize()} method. Attempting to mount a handler outside of
+ * {@link Microservice#onInitialize()} will result in a runtime error. For example:
  * </p>
  *
  * <p>
@@ -100,7 +102,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * </p>
  *
  * <pre>
- * public class MyRestService extends MicroserviceRestService
+ * public class MyRestService extends RestService
  * {
  *         [...]
  *
@@ -113,7 +115,8 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * }</pre>
  *
  * <p>
- * would mount the POST request handler <i>UserUpdateRequest</i> on the URL <i>/my-microservice/api/1.0/users/update</i>.
+ * would mount the POST request handler <i>UserUpdateRequest</i> on the URL
+ * <i>/my-microservice/api/1.0/users/update</i>.
  * </p>
  *
  * <hr>
@@ -163,8 +166,8 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * <p><b>API Paths and Versions</b></p>
  *
  * <p>
- * The path to a particular API version can be customized by overriding {@link #versionToPath(Version)}, and {@link
- * #pathToVersion(String)} (both must be overridden). By default this format used by both methods is
+ * The path to a particular API version can be customized by overriding {@link #versionToPath(Version)}, and
+ * {@link #pathToVersion(String)} (both must be overridden). By default this format used by both methods is
  * <i>/api/[major-version].[minor-version]</i>. For example, <i>/api/1.0</i>.
  * </p>
  *
@@ -176,8 +179,8 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *     <li>Initializing</li>
  *     <li>
  *         <ol>
- *             <li>{@link MicroserviceRestService} creates a {@link MicroservletJettyPlugin}</li>
- *             <li>In the {@link MicroserviceRestService#onInitialize()} method, <i>mount*()</i> methods are used to bind
+ *             <li>{@link RestService} creates a {@link MicroservletJettyPlugin}</li>
+ *             <li>In the {@link RestService#onInitialize()} method, <i>mount*()</i> methods are used to bind
  *             {@link MicroservletRequest} handlers to paths</li>
  *         </ol>
  *     </li>
@@ -192,7 +195,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *             <li>
  *               <ol>
  *                 <li>If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
- *                 <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyMicroservletRequest#readObject(Class)}</li>
+ *                 <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyRestRequest#readRequest(Class)}</li>
  *                 <li>If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
  *               </ol>
  *             </li>
@@ -208,11 +211,11 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  *     <li>Producing a response</li>
  *     <li>
  *     <ol>
- *         <li>The request handler's return value is passed to {@link JettyMicroserviceResponse#writeObject(MicroservletResponse)}, which:</li>
+ *         <li>The request handler's return value is passed to {@link JettyRestResponse#writeResponse(MicroservletResponse)}, which:</li>
  *         <li>
  *           <ol>
  *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
- *             <li>Converts the object to output (normally JSON) using the {@link ObjectSerializer} object provided by {@link MicroserviceRestService#serializer()}</li>
+ *             <li>Converts the object to output (normally JSON) using the {@link ObjectSerializer} object provided by {@link RestService#serializer()}</li>
  *             <li>Writes the JSON object to the servlet response output stream</li>
  *           </ol>
  *         </li>
@@ -225,43 +228,17 @@ import static com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestSe
  * @author jonathanl (shibo)
  * @see Microservice
  * @see MicroservletRequest
- * @see MicroservletRestPath
+ * @see RestPath
  * @see MicroservletMountTarget
  * @see ObjectSerializer
  * @see HttpMethod
  * @see Resource
  * @see Version
  */
-@SuppressWarnings({ "RedundantSuppression", "unused", "unchecked" })
+@SuppressWarnings({ "RedundantSuppression", "unused", "unchecked", "SpellCheckingInspection" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-public abstract class MicroserviceRestService extends BaseComponent implements Initializable
+public abstract class RestService extends BaseComponent implements Initializable
 {
-    public enum HttpMethod
-    {
-        GET,
-        POST,
-        DELETE,
-        NONE;
-
-        public static HttpMethod parse(String text)
-        {
-            switch (text.toLowerCase())
-            {
-                case "get":
-                    return GET;
-
-                case "post":
-                    return POST;
-
-                case "delete":
-                    return DELETE;
-
-                default:
-                    return null;
-            }
-        }
-    }
-
     /** True while initializing */
     private boolean initializing = false;
 
@@ -270,12 +247,12 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     private final Microservice<?> microservice;
 
     /** Map from REST path to request handler */
-    private final Map<MicroservletRestPath, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
+    private final Map<RestPath, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
 
     /**
      * @param microservice The microservice that is creating this REST service
      */
-    public MicroserviceRestService(Microservice<?> microservice)
+    public RestService(Microservice<?> microservice)
     {
         this.microservice = microservice;
         microservice.listenTo(this);
@@ -284,8 +261,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * Mount OpenAPI request handler and initialize the rest service. This method cannot be overridden. Override {@link
-     * #onInitialize()} instead.
+     * Mount OpenAPI request handler and initialize the rest service. This method cannot be overridden. Override
+     * {@link #onInitialize()} instead.
      */
     @Override
     public final void initialize()
@@ -321,7 +298,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      * @param microservlet The microservlet to mount
      */
     @UmlRelation(label = "mounts", referent = Microservlet.class)
-    public void mount(MicroservletRestPath path, Microservlet<?, ?> microservlet)
+    public void mount(RestPath path, Microservlet<?, ?> microservlet)
     {
         // If we're in onInitialize(),
         if (initializing)
@@ -374,7 +351,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
                 @SuppressWarnings("unchecked")
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                var restPath = MicroservletRestPath.parse(this, Paths.concatenate(rootPath(), path), method);
+                var restPath = RestPath.parse(this, Paths.concatenate(rootPath(), path), method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
@@ -441,8 +418,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
      *
      * @param version The API version in the JAR file
      * @param path The path to the given JAR. If the path is not absolute (doesn't start with a '/'), it is prefixed
-     * with: "/api/[major.version].[minor.version]/", where the version is retrieved from {@link
-     * Microservice#version()}. For example, the path "users" in microservlet version 3.1 will resolve to
+     * with: "/api/[major.version].[minor.version]/", where the version is retrieved from
+     * {@link Microservice#version()}. For example, the path "users" in microservlet version 3.1 will resolve to
      * "/api/3.1/users", and the path "/users" will resolve to "/users".
      * @param jar The JAR file to delegate to
      * @param commandLine The command line to use when executing the JAR
@@ -455,7 +432,7 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         if (initializing)
         {
             // get the path to this API,
-            var restPath = MicroservletRestPath.parse(this, path, POST);
+            var restPath = RestPath.parse(this, path, POST);
 
             // then populate the API descriptor,
             var api = new MountedApi(this);
@@ -475,6 +452,10 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
         }
     }
 
+    public void onInitialize(JettyServer server)
+    {
+    }
+
     /**
      * Called to give statistics for each request
      *
@@ -485,7 +466,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * Called for every request to this rest service after producing a response
+     * Called for every request to this rest service after producing a response but before the response is closed.
+     * Overriding this method can be used to add response header(s) to all responses.
      */
     public void onRequested(MicroservletRequest request, HttpMethod method)
     {
@@ -523,8 +505,8 @@ public abstract class MicroserviceRestService extends BaseComponent implements I
     }
 
     /**
-     * Extracts any version from the given path, which must be in the format produced by {@link
-     * #versionToPath(Version)}.
+     * Extracts any version from the given path, which must be in the format produced by
+     * {@link #versionToPath(Version)}.
      *
      * @param path The path containing version information
      * @return The version

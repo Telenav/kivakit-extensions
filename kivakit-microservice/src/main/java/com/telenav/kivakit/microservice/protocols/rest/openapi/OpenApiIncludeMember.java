@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
-import com.telenav.kivakit.microservice.protocols.rest.MicroserviceRestService;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * Indicates that a member (method or field) should be included in the OpenAPI specification produced for a {@link
- * MicroserviceRestService}
+ * RestService}
  *
  * @author jonathanl (shibo)
  */

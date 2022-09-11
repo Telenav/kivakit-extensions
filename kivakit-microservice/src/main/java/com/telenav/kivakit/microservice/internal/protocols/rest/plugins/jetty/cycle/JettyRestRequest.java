@@ -23,13 +23,15 @@ import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.language.object.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.version.Version;
-import com.telenav.kivakit.microservice.internal.protocols.rest.cycle.HttpProblemReportingTrait;
+import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.lexakai.DiagramJetty;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestRequest;
 import com.telenav.kivakit.network.core.QueryParameters;
+import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.properties.PropertyMap;
-import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -41,15 +43,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
 
 /**
  * <b>Not public API</b>
  * <p>
- * Represents a request to a microservlet.
+ * Represents an HTTP REST request to a microservlet in Jetty.
  *
  * <p>
- * The {@link #readObject(Class)} method parses the JSON payload of a POST request into an object of the given type. It
+ * The {@link #readRequest(Class)} method parses the JSON payload of a POST request into an object of the given type. It
  * then calls the {@link Validator} of the object. Parameters to the request (both path and query parameters) can be
  * retrieved with {@link #parameters()}. The requested path is available through {@link #path()}, and the version of the
  * REST application is provided by {@link #version()}.
@@ -59,12 +61,15 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
  * @see Validatable
  * @see BaseComponent
  */
+@SuppressWarnings({ "unused" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
-public class JettyMicroservletRequest extends BaseComponent implements HttpProblemReportingTrait
+public class JettyRestRequest extends BaseComponent implements
+        RestRequest,
+        RestProblemReportingTrait
 {
     /** The request cycle to which this request belongs */
     @UmlAggregation
-    private final JettyMicroservletRequestCycle cycle;
+    private final JettyRestRequestCycle cycle;
 
     /** Servlet request */
     private final HttpServletRequest httpRequest;
@@ -76,7 +81,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
      * @param cycle The request cycle for the {@link Microservlet}
      * @param httpRequest The Java Servlet API HTTP request object
      */
-    public JettyMicroservletRequest(JettyMicroservletRequestCycle cycle, HttpServletRequest httpRequest)
+    public JettyRestRequest(JettyRestRequestCycle cycle, HttpServletRequest httpRequest)
     {
         this.cycle = cycle;
         this.httpRequest = httpRequest;
@@ -89,14 +94,16 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
      * @param type The resulting object type
      * @return The deserialized object
      */
+    @Override
     public <T> T fromJson(final String json, final Class<T> type)
     {
         return cycle.gson().fromJson(json, type);
     }
 
     /**
-     * @return True if this request has a body that can be read with {@link #readObject(Class)}
+     * @return True if this request has a body that can be read with {@link #readRequest(Class)}
      */
+    @Override
     public boolean hasBody()
     {
         return httpRequest.getContentLength() != 0;
@@ -105,7 +112,8 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
     /**
      * Returns the underlying {@link HttpServletRequest}
      */
-    public HttpServletRequest httpRequest()
+    @Override
+    public HttpServletRequest httpServletRequest()
     {
         return httpRequest;
     }
@@ -115,6 +123,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
      *
      * @return The input stream
      */
+    @Override
     public ServletInputStream open()
     {
         return tryCatch(httpRequest::getInputStream, "Unable to open input stream");
@@ -123,14 +132,16 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
     /**
      * @return Parameters to this request
      */
+    @Override
     public PropertyMap parameters()
     {
-        return parameters(null);
+        return parameters(FilePath.parseFilePath(emptyListener(), ""));
     }
 
     /**
      * @return Parameters to this request
      */
+    @Override
     public PropertyMap parameters(FilePath path)
     {
         if (properties == null)
@@ -142,7 +153,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
                 // Parse the path in pairs, adding each to the properties map,
                 if (path.size() % 2 != 0)
                 {
-                    problem(SC_BAD_REQUEST, "Path parameters must be paired");
+                    problem(HttpStatus.BAD_REQUEST, "Path parameters must be paired");
                 }
                 else
                 {
@@ -158,7 +169,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
             }
             catch (Exception e)
             {
-                problem(SC_BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
+                problem(HttpStatus.BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
             }
         }
         return properties;
@@ -167,6 +178,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
     /**
      * @return The "context" path of the servlet from the root of the REST application
      */
+    @Override
     @NotNull
     public FilePath path()
     {
@@ -188,9 +200,10 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
      * @param requestType The type of object to deserialize from JSON
      * @return The deserialized object, or null if deserialization failed
      */
-    public <T extends MicroservletRequest> T readObject(Class<T> requestType)
+    @Override
+    public <T extends MicroservletRequest> T readRequest(Class<T> requestType)
     {
-        var response = cycle.response();
+        var response = cycle.restResponse();
 
         try
         {
@@ -203,7 +216,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
             if (!request.isValid(response))
             {
                 // then we have an invalid response
-                problem(SC_BAD_REQUEST, "Invalid request");
+                problem(HttpStatus.BAD_REQUEST, "Invalid request");
                 return null;
             }
 
@@ -211,7 +224,7 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
         }
         catch (Exception e)
         {
-            problem(SC_BAD_REQUEST, e, "Malformed request");
+            problem(HttpStatus.BAD_REQUEST, e, "Malformed request");
             return null;
         }
     }
@@ -225,11 +238,10 @@ public class JettyMicroservletRequest extends BaseComponent implements HttpProbl
     /**
      * @return The version of the microservice for this request
      */
+    @Override
     @KivaKitIncludeProperty
     public Version version()
     {
-        return cycle.restService()
-                .microservice()
-                .version();
+        return cycle.version();
     }
 }
