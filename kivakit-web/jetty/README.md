@@ -30,14 +30,14 @@ This project contains support for using the Jetty web server.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.6.1/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web-jetty</artifactId>
-        <version>1.6.1</version>
+        <version>1.7.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -60,14 +60,14 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.web.jetty*](https://www.kivakit.org/1.6.1/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.svg)  
-[*com.telenav.kivakit.web.jetty.resources*](https://www.kivakit.org/1.6.1/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.resources.svg)
+[*com.telenav.kivakit.web.jetty*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.svg)  
+[*com.telenav.kivakit.web.jetty.resources*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.resources.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
-Javadoc coverage for this project is 72.2%.  
+Javadoc coverage for this project is 73.2%.  
   
 &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-70-96-2x.png 2x"/>
 
@@ -76,12 +76,12 @@ Javadoc coverage for this project is 72.2%.
 
 | Class | Documentation Sections |
 |---|---|
-| [*AssetsJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////.html) |  |  
-| [*BaseAssetsJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////////.html) |  |  
-| [*BaseFilterJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////////.html) |  |  
-| [*BaseJettyRequestHandler*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////.html) |  |  
-| [*BaseServletJettyPlugin*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.jetty///////////////////////////////////////////////////////////////.html) |  |  
-| [*JettyServer*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////.html) | Example: |  
+| [*AssetsJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////.html) |  |  
+| [*BaseAssetsJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////////.html) |  |  
+| [*BaseFilterJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////////.html) |  |  
+| [*BaseJettyRequestHandler*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////.html) |  |  
+| [*BaseServletJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.jetty///////////////////////////////////////////////////////////////.html) |  |  
+| [*JettyServer*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////.html) | Example: |  
 
 [//]: # (start-user-text)
 
