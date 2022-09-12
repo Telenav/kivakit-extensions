@@ -20,14 +20,14 @@ Service provider for Java filesystems.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.6.1/lexakai/kivakit-extensions/kivakit-filesystems/java/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-filesystems/java/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-filesystems-java</artifactId>
-        <version>1.6.1</version>
+        <version>1.7.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -48,7 +48,7 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystem.java*](https://www.kivakit.org/1.6.1/lexakai/kivakit-extensions/kivakit-filesystems/java/documentation/diagrams/com.telenav.kivakit.filesystem.java.svg)
+[*com.telenav.kivakit.filesystem.java*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-filesystems/java/documentation/diagrams/com.telenav.kivakit.filesystem.java.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
@@ -61,14 +61,14 @@ Javadoc coverage for this project is 74.2%.
 
 The following significant classes are undocumented:  
 
-- com.telenav.kivakit.filesystem.java
+- com.telenav.kivakit.filesystem.java.JavaFileSystemObject
 
 | Class | Documentation Sections |
 |---|---|
-| [*JavaFile*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.filesystems.java/////////////////////////////////////////////.html) |  |  
-| [*JavaFileSystemObject*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.filesystems.java/////////////////////////////////////////////////////////.html) |  |  
-| [*JavaFileSystemService*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.filesystems.java//////////////////////////////////////////////////////////.html) |  |  
-| [*JavaFolder*](https://www.kivakit.org/1.6.1/javadoc/kivakit-extensions/kivakit.filesystems.java///////////////////////////////////////////////.html) |  |  
+| [*JavaFile*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.filesystems.java/////////////////////////////////////////////.html) |  |  
+| [*JavaFileSystemObject*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.filesystems.java/////////////////////////////////////////////////////////.html) |  |  
+| [*JavaFileSystemService*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.filesystems.java//////////////////////////////////////////////////////////.html) |  |  
+| [*JavaFolder*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.filesystems.java///////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 
