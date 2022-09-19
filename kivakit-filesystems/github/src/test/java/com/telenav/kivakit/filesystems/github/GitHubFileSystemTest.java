@@ -42,7 +42,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testNestedFiles()
     {
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var files = folder.nestedFiles(Filter.all());
+        var files = folder.nestedFiles(Filter.acceptingAll());
         ensure(!files.isEmpty());
         ensure(files.contains(folder.file(FileName.parseFileName(this, "README.md"))));
         ensure(files.contains(folder.file(FileName.parseFileName(this, "pom.xml"))));
@@ -53,7 +53,7 @@ public class GitHubFileSystemTest extends UnitTest
     public void testNestedFolders()
     {
         var folder = listenTo(new GitHubFolder("github://Telenav/lexakai/develop"));
-        var folders = folder.nestedFolders(Filter.all());
+        var folders = folder.nestedFolders(Filter.acceptingAll());
         ensure(!folders.isEmpty());
         ensure(folders.contains(folder.folder(FileName.parseFileName(this, "documentation"))));
         ensure(folders.contains(folder.folder(FileName.parseFileName(this, "legal"))));

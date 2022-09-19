@@ -173,7 +173,7 @@ public class JettyServer extends BaseComponent implements
     }
 
     @Override
-    public Duration maximumWaitTime()
+    public Duration maximumStopTime()
     {
         return Duration.MAXIMUM;
     }

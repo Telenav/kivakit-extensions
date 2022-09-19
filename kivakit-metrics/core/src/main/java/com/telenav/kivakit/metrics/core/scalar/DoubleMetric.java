@@ -19,7 +19,7 @@ public class DoubleMetric extends BaseMetric<Double>
     public DoubleMetric(BaseMetric<Double> that)
     {
         super(that);
-        quantum = that.doubleQuantum();
+        quantum = that.quantumDouble();
     }
 
     @Override
@@ -29,7 +29,7 @@ public class DoubleMetric extends BaseMetric<Double>
     }
 
     @Override
-    public double doubleQuantum()
+    public double quantumDouble()
     {
         return quantum;
     }

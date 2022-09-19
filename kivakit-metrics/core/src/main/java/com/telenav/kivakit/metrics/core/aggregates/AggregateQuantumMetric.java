@@ -10,7 +10,7 @@ import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
 
 /**
  * A quantum aggregate metric is an {@link AggregateMetric} for arbitrary {@link Quantizable} objects. The {@link
- * Quantizable#doubleQuantum()} method yields each object's quantum value (a double precision floating point number)
+ * Quantizable#quantumDouble()} method yields each object's quantum value (a double precision floating point number)
  * when it is added to the aggregate with {@link #add(Quantizable)}. Aggregation maintains these measurements for the
  * quanta that are added:
  *
@@ -96,7 +96,7 @@ public abstract class AggregateQuantumMetric<T extends Quantizable> extends Base
     @Override
     public boolean add(T metric)
     {
-        double quantum = metric.doubleQuantum();
+        double quantum = metric.quantumDouble();
 
         total += quantum;
         maximum = Math.max(maximum, quantum);
@@ -107,7 +107,7 @@ public abstract class AggregateQuantumMetric<T extends Quantizable> extends Base
     }
 
     @Override
-    public double doubleQuantum()
+    public double quantumDouble()
     {
         return compute();
     }
@@ -126,7 +126,7 @@ public abstract class AggregateQuantumMetric<T extends Quantizable> extends Base
 
     public boolean subtract(T metric)
     {
-        double quantum = metric.doubleQuantum();
+        double quantum = metric.quantumDouble();
 
         total -= quantum;
         maximum = Math.max(maximum, quantum);
