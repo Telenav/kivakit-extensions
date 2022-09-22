@@ -34,7 +34,7 @@ public class QuantumMetric<T extends Quantizable> extends BaseMetric<T>
     }
 
     @Override
-    public double doubleQuantum()
+    public double quantumDouble()
     {
         return measurement.quantum();
     }

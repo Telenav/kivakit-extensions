@@ -92,7 +92,7 @@ public class MicroserviceTest extends UnitTest
     public static class TestMicroservice extends Microservice<String>
     {
         @Override
-        public Duration maximumWaitTime()
+        public Duration maximumStopTime()
         {
             return Duration.MAXIMUM;
         }

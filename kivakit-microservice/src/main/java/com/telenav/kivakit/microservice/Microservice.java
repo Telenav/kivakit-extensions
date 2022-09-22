@@ -340,7 +340,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     @Override
-    public Duration maximumWaitTime()
+    public Duration maximumStopTime()
     {
         return Duration.MAXIMUM;
     }
