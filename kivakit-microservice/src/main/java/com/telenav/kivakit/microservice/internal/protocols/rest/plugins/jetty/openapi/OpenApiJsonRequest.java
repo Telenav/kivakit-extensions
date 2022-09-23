@@ -54,7 +54,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
             api = listener.listenTo(new OpenApiReader()).read();
         }
 
-        @SuppressWarnings({ "rawtypes" })
+        @SuppressWarnings({ "rawtypes", "unchecked" })
         @Override
         public GsonFactory gsonFactory()
         {

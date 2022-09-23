@@ -2,14 +2,15 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
+import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -37,9 +38,9 @@ import java.util.Set;
  * <p><b>Microservlet Mounts</b></p>
  *
  * <p>
- * {@link Microservlet}s are mounted on paths with {@link #mount(RestPath, Microservlet)}. When {@link
- * #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is parsed
- * and the associated microservlet (if any) is invoked.
+ * {@link Microservlet}s are mounted on paths with {@link #mount(RestPath, Microservlet)}. When
+ * {@link #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is
+ * parsed and the associated microservlet (if any) is invoked.
  * </p>
  *
  * <p>
@@ -52,10 +53,10 @@ import java.util.Set;
  * <p><b>JAR Mounts</b></p>
  *
  * <p>
- * To permit robust backwards compatibility, JAR files can be mounted with {@link #mount(MountedApi)} When {@link
- * #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is parsed.
- * If there is a JAR mounted on the path, it is executed in a child process (if it is not already running) using the
- * given port for HTTP. The request is delegated to the child process' port.
+ * To permit robust backwards compatibility, JAR files can be mounted with {@link #mount(MountedApi)} When
+ * {@link #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is
+ * parsed. If there is a JAR mounted on the path, it is executed in a child process (if it is not already running) using
+ * the given port for HTTP. The request is delegated to the child process' port.
  * </p>
  *
  * @author jonathanl (shibo)
@@ -64,6 +65,7 @@ import java.util.Set;
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyMicroservletFilter extends BaseComponent implements
         Filter,
+        TryTrait,
         RestProblemReportingTrait
 {
     /** Map from path to mounted JAR */
@@ -255,7 +257,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
      * @param path The mount path
      * @return The JAR at the given path, or null if the path does not map to any JAR
      */
-    private MountedApi resolveApi(final RestPath path)
+    private MountedApi resolveApi(RestPath path)
     {
         int removed = 0;
         for (var at = path; at.isNonEmpty(); at = at.withoutLast(), removed++)

@@ -5,6 +5,7 @@ import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.core.thread.KivaKitThread;
@@ -52,7 +53,7 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * @see ACL
  * @see ZookeeperChangeListener
  */
-public class ZookeeperConnection extends BaseComponent implements Watcher
+@SuppressWarnings("resource") public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
     private enum State
@@ -484,7 +485,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      * @return A StringPath for the given event path
      */
     @Nullable
-    private StringPath path(final WatchedEvent event)
+    private StringPath path(WatchedEvent event)
     {
         return StringPath.stringPath(Strip.leading(event.getPath(), "/")).withRoot("/");
     }

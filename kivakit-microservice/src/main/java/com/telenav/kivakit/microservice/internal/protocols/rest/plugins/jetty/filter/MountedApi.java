@@ -3,6 +3,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.io.StringInputStream;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
@@ -35,7 +36,7 @@ import static java.net.http.HttpResponse.BodyHandlers.ofString;
  *
  * @author jonathanl (shibo)
  */
-public class MountedApi extends Mounted
+public class MountedApi extends Mounted implements TryTrait
 {
     /** HTTP client */
     private final HttpClient client;

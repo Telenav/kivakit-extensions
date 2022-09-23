@@ -22,6 +22,7 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.language.object.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
@@ -61,9 +62,10 @@ import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
  * @see Validatable
  * @see BaseComponent
  */
-@SuppressWarnings({ "unused" })
+@SuppressWarnings({ "unused", "SpellCheckingInspection" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyRestRequest extends BaseComponent implements
+        TryTrait,
         RestRequest,
         RestProblemReportingTrait
 {
@@ -95,7 +97,7 @@ public class JettyRestRequest extends BaseComponent implements
      * @return The deserialized object
      */
     @Override
-    public <T> T fromJson(final String json, final Class<T> type)
+    public <T> T fromJson(String json, Class<T> type)
     {
         return cycle.gson().fromJson(json, type);
     }

@@ -8,6 +8,7 @@ import com.telenav.kivakit.resource.serialization.ObjectSerializers;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
 import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
+import com.telenav.kivakit.settings.SettingsTrait;
 import com.telenav.kivakit.settings.stores.ResourceFolderSettingsStore;
 import com.telenav.kivakit.testing.UnitTest;
 import org.junit.Ignore;
@@ -19,10 +20,14 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default
  */
 @Ignore
-public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMixin
+public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMixin, SettingsTrait
 {
+    @SuppressWarnings("unused")
     public static class Settings
     {
+        @KivaKitIncludeProperty
+        int x;
+
         public Settings()
         {
         }
@@ -31,9 +36,6 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         {
             this.x = x;
         }
-
-        @KivaKitIncludeProperty
-        int x;
     }
 
     @Test

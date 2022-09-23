@@ -7,6 +7,7 @@ import com.telenav.kivakit.commandline.SwitchParsers;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.primitive.Ints;
 import com.telenav.kivakit.core.language.reflection.Type;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.project.Project;
 import com.telenav.kivakit.core.string.Paths;
@@ -181,9 +182,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see MicroserviceCluster
  * @see MicroserviceClusterMember
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused", "SpellCheckingInspection" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 public abstract class Microservice<Member> extends Application implements
+        TryTrait,
         Startable,
         Stoppable<Duration>
 {

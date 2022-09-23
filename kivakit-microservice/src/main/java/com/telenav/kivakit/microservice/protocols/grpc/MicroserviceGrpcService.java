@@ -1,6 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
@@ -36,10 +37,11 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
  * @author jonathanl (shibo)
  * @see RestService
  */
-public class MicroserviceGrpcService extends BaseComponent implements
+@SuppressWarnings("SpellCheckingInspection") public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
         Startable,
         Stoppable<Duration>,
+        TryTrait,
         MicroservletMountTarget
 {
     /** True while the {@link #onInitialize()} method is running */
