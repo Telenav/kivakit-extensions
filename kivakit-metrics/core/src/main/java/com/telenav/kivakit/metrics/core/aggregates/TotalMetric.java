@@ -1,9 +1,9 @@
 package com.telenav.kivakit.metrics.core.aggregates;
 
 import com.telenav.kivakit.interfaces.factory.MapFactory;
-import com.telenav.kivakit.interfaces.numeric.Quantizable;
+import com.telenav.kivakit.interfaces.value.DoubleValued;
 
-public class TotalMetric<T extends Quantizable> extends AggregateQuantumMetric<T>
+public class TotalMetric<T extends DoubleValued> extends AggregateQuantumMetric<T>
 {
     public TotalMetric(MapFactory<Double, T> factory)
     {

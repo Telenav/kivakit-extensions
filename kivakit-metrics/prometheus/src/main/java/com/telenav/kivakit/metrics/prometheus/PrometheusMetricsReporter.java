@@ -66,7 +66,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
             collectors.put(metric.name(), counter);
         }
 
-        counter.inc(metric.quantum());
+        counter.inc(metric.longValue());
     }
 
     private void histogram(Metric<?> metric, Histogram histogram)
@@ -98,6 +98,6 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
             collectors.put(metric.name(), gauge);
         }
 
-        gauge.set(metric.quantum());
+        gauge.set(metric.longValue());
     }
 }

@@ -2,17 +2,18 @@ package com.telenav.kivakit.metrics.core.aggregates;
 
 import com.telenav.kivakit.core.value.count.Count;
 import com.telenav.kivakit.interfaces.factory.MapFactory;
-import com.telenav.kivakit.interfaces.numeric.Quantizable;
+import com.telenav.kivakit.interfaces.value.DoubleValued;
+import com.telenav.kivakit.interfaces.value.LongValued;
 import com.telenav.kivakit.metrics.core.AggregateMetric;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
 
 /**
- * A quantum aggregate metric is an {@link AggregateMetric} for arbitrary {@link Quantizable} objects. The {@link
- * Quantizable#quantumDouble()} method yields each object's quantum value (a double precision floating point number)
- * when it is added to the aggregate with {@link #add(Quantizable)}. Aggregation maintains these measurements for the
- * quanta that are added:
+ * A quantum aggregate metric is an {@link AggregateMetric} for arbitrary {@link LongValued} objects. The
+ * {@link DoubleValued#doubleValue()} ()} method yields each object's quantum value (a double precision floating point
+ * number) when it is added to the aggregate with {@link #add(DoubleValued)}. Aggregation maintains these measurements
+ * for the quanta that are added:
  *
  * <p><b>Aggregate Metrics</b></p>
  * <ul>
@@ -76,7 +77,9 @@ import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
  *
  * @author jonathanl (shibo)
  */
-public abstract class AggregateQuantumMetric<T extends Quantizable> extends BaseMetric<T> implements AggregateMetric<T>
+@SuppressWarnings("unused")
+public abstract class AggregateQuantumMetric<T extends DoubleValued> extends BaseMetric<T> implements
+        AggregateMetric<T>
 {
     private double total;
 
@@ -96,18 +99,18 @@ public abstract class AggregateQuantumMetric<T extends Quantizable> extends Base
     @Override
     public boolean add(T metric)
     {
-        double quantum = metric.quantumDouble();
+        double value = metric.doubleValue();
 
-        total += quantum;
-        maximum = Math.max(maximum, quantum);
-        minimum = Math.min(minimum, quantum);
+        total += value;
+        maximum = Math.max(maximum, value);
+        minimum = Math.min(minimum, value);
         count++;
 
         return true;
     }
 
     @Override
-    public double quantumDouble()
+    public double doubleValue()
     {
         return compute();
     }
@@ -118,19 +121,13 @@ public abstract class AggregateQuantumMetric<T extends Quantizable> extends Base
         return factory.newInstance(compute());
     }
 
-    @Override
-    public long quantum()
-    {
-        return (long) compute();
-    }
-
     public boolean subtract(T metric)
     {
-        double quantum = metric.quantumDouble();
+        double value = metric.doubleValue();
 
-        total -= quantum;
-        maximum = Math.max(maximum, quantum);
-        minimum = Math.min(minimum, quantum);
+        total -= value;
+        maximum = Math.max(maximum, value);
+        minimum = Math.min(minimum, value);
         count++;
 
         return true;

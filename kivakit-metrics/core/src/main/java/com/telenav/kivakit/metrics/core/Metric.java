@@ -2,8 +2,9 @@ package com.telenav.kivakit.metrics.core;
 
 import com.telenav.kivakit.core.time.CreatedAt;
 import com.telenav.kivakit.interfaces.naming.Named;
-import com.telenav.kivakit.interfaces.numeric.Quantizable;
-import com.telenav.kivakit.interfaces.numeric.QuantumComparable;
+import com.telenav.kivakit.interfaces.value.DoubleComparable;
+import com.telenav.kivakit.interfaces.value.DoubleValued;
+import com.telenav.kivakit.interfaces.value.LongValued;
 
 /**
  * A named measurement {@link #createdAt()} at some point in time
@@ -13,8 +14,8 @@ import com.telenav.kivakit.interfaces.numeric.QuantumComparable;
 public interface Metric<T> extends
         Named,
         CreatedAt,
-        Quantizable,
-        QuantumComparable<Metric<T>>
+        DoubleValued,
+        DoubleComparable<Metric<T>>
 {
     enum MetricType
     {
