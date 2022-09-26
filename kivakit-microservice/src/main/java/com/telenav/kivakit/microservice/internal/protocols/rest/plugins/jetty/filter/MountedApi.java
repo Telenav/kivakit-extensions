@@ -104,7 +104,7 @@ public class MountedApi extends Mounted implements TryTrait
 
                     case POST:
                     {
-                        var payload = IO.string(cycle.restRequest().httpServletRequest().getInputStream());
+                        var payload = IO.string(this, cycle.restRequest().httpServletRequest().getInputStream());
                         var postRequest = request.POST(HttpRequest.BodyPublishers.ofString(payload)).build();
                         copyResponse(response, tryCatch(() ->
                                         client.send(postRequest, ofString()),
@@ -267,6 +267,6 @@ public class MountedApi extends Mounted implements TryTrait
             httpServletResponse.setLocale(new Locale(array[0], array[1]));
         }
 
-        tryCatch(() -> IO.copy(new StringInputStream(result.body()), httpServletResponse.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
+        tryCatch(() -> IO.copy(this, new StringInputStream(result.body()), httpServletResponse.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
     }
 }
