@@ -86,7 +86,7 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
         var types = new ObjectList<Class<?>>();
         for (var requestType : requestTypes())
         {
-            var request = (MicroservletRequest) Type.forClass(requestType).newInstance();
+            var request = (MicroservletRequest) Type.typeForClass(requestType).newInstance();
             types.add(request.responseType());
         }
         return types;

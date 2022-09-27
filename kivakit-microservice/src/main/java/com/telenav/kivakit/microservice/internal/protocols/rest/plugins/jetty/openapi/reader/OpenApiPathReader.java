@@ -149,8 +149,8 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
         {
             // add them to the set of schema models,
             require(OpenApiSchemaReader.class)
-                    .addModelToRead(Type.forClass(requestType))
-                    .addModelToRead(Type.forClass(responseType));
+                    .addModelToRead(Type.typeForClass(requestType))
+                    .addModelToRead(Type.typeForClass(responseType));
 
             // and add an item based on the HTTP method type
             switch (path.httpMethod())
@@ -182,7 +182,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
     private Content newRequestContent(Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
-        require(OpenApiSchemaReader.class).addModelToRead(Type.forClass(requestType));
+        require(OpenApiSchemaReader.class).addModelToRead(Type.typeForClass(requestType));
 
         // then return an application/json content object that refers to the request type's schema.
         return new Content()
@@ -211,9 +211,9 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
     {
         // Add the response type to the set of models,
         require(OpenApiSchemaReader.class)
-                .addModelToRead(ensureNotNull(Type.forClass(responseType)));
+                .addModelToRead(ensureNotNull(Type.typeForClass(responseType)));
 
         // and return a 200 response with the schema for the response type.
-        return newResponseItem("Success", new Schema<>().$ref(new ReferenceResolver().reference(Type.forClass(responseType))));
+        return newResponseItem("Success", new Schema<>().$ref(new ReferenceResolver().reference(Type.typeForClass(responseType))));
     }
 }

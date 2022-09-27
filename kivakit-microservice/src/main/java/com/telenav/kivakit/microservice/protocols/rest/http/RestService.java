@@ -344,7 +344,7 @@ public abstract class RestService extends BaseComponent implements Initializable
         if (initializing)
         {
             // create a request object, so we can get the response type and HTTP method,
-            var request = listenTo(Type.forClass(requestType).newInstance());
+            var request = listenTo(Type.typeForClass(requestType).newInstance());
             if (request != null)
             {
                 // then mount an anonymous microservlet on the given path,

@@ -117,13 +117,13 @@ public class OpenApiSchemaReader extends BaseComponent
      */
     public Schema<?> schemaError()
     {
-        var schema = readSchema(Type.forClass(MicroservletErrorResponse.class));
+        var schema = readSchema(Type.typeForClass(MicroservletErrorResponse.class));
         return new Schema<>()
                 .name("errors")
                 .type("object")
                 .description(schema.getDescription())
                 .title(schema.getTitle())
-                .$ref(new ReferenceResolver().reference(Type.forClass(MicroservletErrorResponse.class)));
+                .$ref(new ReferenceResolver().reference(Type.typeForClass(MicroservletErrorResponse.class)));
     }
 
     private boolean isArrayType(Member member)
@@ -219,7 +219,7 @@ public class OpenApiSchemaReader extends BaseComponent
                     var superTypeInclude = type.annotation(OpenApiIncludeMemberFromSuperType.class);
                     if (superTypeInclude != null && superTypeInclude.genericType() != null)
                     {
-                        properties.put(property.name(), readArray(member, Type.forClass(superTypeInclude.genericType())));
+                        properties.put(property.name(), readArray(member, Type.typeForClass(superTypeInclude.genericType())));
                     }
                     else
                     {
@@ -242,7 +242,7 @@ public class OpenApiSchemaReader extends BaseComponent
                                 var genericType = includeAnnotation.genericType();
                                 if (genericType != Void.class)
                                 {
-                                    properties.put(property.name(), readArray(member, Type.forClass(genericType)));
+                                    properties.put(property.name(), readArray(member, Type.typeForClass(genericType)));
                                 }
                                 else
                                 {
