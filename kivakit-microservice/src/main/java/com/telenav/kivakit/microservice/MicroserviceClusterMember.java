@@ -102,7 +102,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     @Override
     public int hashCode()
     {
-        return Hash.many(host, processIdentifier);
+        return Hash.hashMany(host, processIdentifier);
     }
 
     /**

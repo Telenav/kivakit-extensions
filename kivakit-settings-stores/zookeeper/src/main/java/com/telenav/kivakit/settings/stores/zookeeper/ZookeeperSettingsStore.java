@@ -597,7 +597,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
         if (path.size() >= 2)
         {
             var typeName = path.get(path.size() - 2);
-            return Classes.forName(typeName);
+            return Classes.classForName(typeName);
         }
 
         return null;
