@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.object.ObjectFormatter;
+import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.Strip;
