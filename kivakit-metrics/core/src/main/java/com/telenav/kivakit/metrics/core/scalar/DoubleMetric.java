@@ -2,24 +2,25 @@ package com.telenav.kivakit.metrics.core.scalar;
 
 import com.telenav.kivakit.metrics.core.BaseMetric;
 
+@SuppressWarnings("unused")
 public class DoubleMetric extends BaseMetric<Double>
 {
-    private double quantum;
+    private double value;
 
     public DoubleMetric()
     {
         this(0.0);
     }
 
-    public DoubleMetric(double quantum)
+    public DoubleMetric(double value)
     {
-        this.quantum = quantum;
+        this.value = value;
     }
 
     public DoubleMetric(BaseMetric<Double> that)
     {
         super(that);
-        quantum = that.quantumDouble();
+        value = that.doubleValue();
     }
 
     @Override
@@ -29,27 +30,21 @@ public class DoubleMetric extends BaseMetric<Double>
     }
 
     @Override
-    public double quantumDouble()
+    public double doubleValue()
     {
-        return quantum;
+        return value;
     }
 
     @Override
     public Double measurement()
     {
-        return quantum;
+        return value;
     }
 
     @Override
     public DoubleMetric name(String name)
     {
         return (DoubleMetric) super.name(name);
-    }
-
-    @Override
-    public long quantum()
-    {
-        return (long) quantum;
     }
 
     @Override
@@ -67,7 +62,7 @@ public class DoubleMetric extends BaseMetric<Double>
     public DoubleMetric withMeasurement(double quantum)
     {
         var copy = new DoubleMetric(this);
-        copy.quantum = quantum;
+        copy.value = quantum;
         return copy;
     }
 }

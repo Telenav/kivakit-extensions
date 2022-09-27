@@ -9,10 +9,12 @@ import com.telenav.kivakit.metrics.core.BaseMetric;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
 
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+
 /**
  * A quantum aggregate metric is an {@link AggregateMetric} for arbitrary {@link LongValued} objects. The
  * {@link DoubleValued#doubleValue()} ()} method yields each object's quantum value (a double precision floating point
- * number) when it is added to the aggregate with {@link #add(DoubleValued)}. Aggregation maintains these measurements
+ * number) when it is added to the aggregate with {@link #onAdd(DoubleValued)}. Aggregation maintains these measurements
  * for the quanta that are added:
  *
  * <p><b>Aggregate Metrics</b></p>
@@ -97,7 +99,19 @@ public abstract class AggregateQuantumMetric<T extends DoubleValued> extends Bas
     }
 
     @Override
-    public boolean add(T metric)
+    public double doubleValue()
+    {
+        return compute();
+    }
+
+    @Override
+    public final T measurement()
+    {
+        return factory.newInstance(compute());
+    }
+
+    @Override
+    public boolean onAdd(T metric)
     {
         double value = metric.doubleValue();
 
@@ -110,15 +124,10 @@ public abstract class AggregateQuantumMetric<T extends DoubleValued> extends Bas
     }
 
     @Override
-    public double doubleValue()
+    public int size()
     {
-        return compute();
-    }
-
-    @Override
-    public final T measurement()
-    {
-        return factory.newInstance(compute());
+        // This Addable is not SpaceLimited
+        return 0;
     }
 
     public boolean subtract(T metric)

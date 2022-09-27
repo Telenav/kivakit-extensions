@@ -65,7 +65,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
             if (requestType != null)
             {
                 // read the JSON for the request,
-                var json = IO.string(in);
+                var json = IO.string(this, in);
 
                 // get a Gson and deserialize the JSON into a request object,
                 var gson = require(GsonFactory.class).gson();

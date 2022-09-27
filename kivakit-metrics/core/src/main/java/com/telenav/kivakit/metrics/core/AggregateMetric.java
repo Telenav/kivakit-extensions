@@ -7,6 +7,8 @@ import com.telenav.kivakit.interfaces.collection.Addable;
  *
  * @author jonathanl (shibo)
  */
-public interface AggregateMetric<T> extends Addable<T>, Metric<T>
+public interface AggregateMetric<T> extends
+        Addable<T>,
+        Metric<T>
 {
 }

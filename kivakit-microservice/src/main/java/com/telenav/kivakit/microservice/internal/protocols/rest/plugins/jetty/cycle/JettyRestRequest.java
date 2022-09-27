@@ -20,9 +20,9 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.io.IO;
-import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
@@ -62,7 +62,7 @@ import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
  * @see Validatable
  * @see BaseComponent
  */
-@SuppressWarnings({ "unused", "SpellCheckingInspection" })
+@SuppressWarnings({ "unused" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
 public class JettyRestRequest extends BaseComponent implements
         TryTrait,
@@ -211,7 +211,7 @@ public class JettyRestRequest extends BaseComponent implements
         {
             // Read JSON object from servlet input
             var in = open();
-            String json = IO.string(in);
+            String json = IO.string(this, in);
             var request = fromJson(json, requestType);
 
             // If the request is invalid (any problems go into the response object),

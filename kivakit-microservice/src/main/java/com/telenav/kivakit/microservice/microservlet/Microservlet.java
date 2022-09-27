@@ -7,8 +7,8 @@ import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.properties.PropertyMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -111,7 +111,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      */
     protected int asInt(String key)
     {
-        return parameters().asInt(key);
+        return parameters().asIntegerObject(key);
     }
 
     /**
