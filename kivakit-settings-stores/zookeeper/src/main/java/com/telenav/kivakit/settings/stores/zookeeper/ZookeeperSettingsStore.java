@@ -649,7 +649,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
                 createMode().name(),
                 "kivakit",
                 String.valueOf(resolveProject(KivaKit.class).kivakitVersion()),
-                Properties.property("user.name"),
+                Properties.systemPropertyOrEnvironmentVariable("user.name"),
                 application.name(),
                 application.version().toString());
     }
