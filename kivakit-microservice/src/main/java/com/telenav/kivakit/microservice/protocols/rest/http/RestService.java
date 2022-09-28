@@ -324,7 +324,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(Version version, String path, HttpMethod method, Class<Request> requestType)
     {
-        mount(Paths.concatenate(versionToPath(version), path), method, requestType);
+        mount(Paths.pathConcatenate(versionToPath(version), path), method, requestType);
     }
 
     /**
@@ -351,7 +351,7 @@ public abstract class RestService extends BaseComponent implements Initializable
                 @SuppressWarnings("unchecked")
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                var restPath = RestPath.parse(this, Paths.concatenate(rootPath(), path), method);
+                var restPath = RestPath.parse(this, Paths.pathConcatenate(rootPath(), path), method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
@@ -391,7 +391,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     {
         for (var path : pathToRequest.keySet())
         {
-            target.mount(Paths.concatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
+            target.mount(Paths.pathConcatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
         }
     }
 

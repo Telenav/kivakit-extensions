@@ -402,7 +402,7 @@ public abstract class Microservice<Member> extends Application implements
      */
     public String resolvePath(String mountPath)
     {
-        return Paths.concatenate(rootPath(), mountPath);
+        return Paths.pathConcatenate(rootPath(), mountPath);
     }
 
     /**

@@ -236,7 +236,7 @@ public class MountedApi extends Mounted implements TryTrait
      */
     public URI uri(String path)
     {
-        return port().path(this, Paths.concatenate(this.path.toString(), path)).asUri();
+        return port().path(this, Paths.pathConcatenate(this.path.toString(), path)).asUri();
     }
 
     /**

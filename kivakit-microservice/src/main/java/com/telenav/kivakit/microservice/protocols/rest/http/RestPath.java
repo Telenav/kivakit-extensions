@@ -101,7 +101,7 @@ public class RestPath implements
             var version = microservice.version();
             var restService = require(RestService.class);
             var apiPath = restService.versionToPath(version);
-            return FilePath.parseFilePath(LOGGER, Paths.concatenate(apiPath, path.asString()));
+            return FilePath.parseFilePath(LOGGER, Paths.pathConcatenate(apiPath, path.asString()));
         }
 
         return path;

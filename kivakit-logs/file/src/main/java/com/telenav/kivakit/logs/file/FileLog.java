@@ -26,7 +26,7 @@ import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.os.Console;
-import com.telenav.kivakit.core.string.StringTo;
+import com.telenav.kivakit.core.string.StringConversions;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
@@ -108,7 +108,7 @@ public class FileLog extends BaseRolloverTextLog
     private File newFile()
     {
         var newFile = File.parseFile(Listener.consoleListener(), file.withoutExtension() + "-" + FileName.dateTime(started().asLocalTime())
-                + StringTo.nonNullString(file.extension())).withoutOverwriting();
+                + StringConversions.nonNullString(file.extension())).withoutOverwriting();
         Console.println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
         Console.println("Pruning files older than $ from: $", maximumLogFileAge, folder);

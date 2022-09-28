@@ -208,7 +208,7 @@ public class JettyServer extends BaseComponent implements
 
     public String resolvePath(String path)
     {
-        return Paths.concatenate(root, path);
+        return Paths.pathConcatenate(root, path);
     }
 
     public boolean start()
