@@ -187,7 +187,7 @@ public class MicroserviceTest extends UnitTest
         serializers.add(Extension.JSON, new GsonObjectSerializer());
         register(serializers);
 
-        Registry.of(this).register(new MicroserviceSettings()
+        Registry.registryFor(this).register(new MicroserviceSettings()
                 .port(8086)
                 .grpcPort(8087)
                 .server(false));

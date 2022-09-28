@@ -496,7 +496,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      */
     private InstanceIdentifier instance(StringPath path)
     {
-        return InstanceIdentifier.of(path.last());
+        return InstanceIdentifier.instanceIdentifier(path.last());
     }
 
     /**
