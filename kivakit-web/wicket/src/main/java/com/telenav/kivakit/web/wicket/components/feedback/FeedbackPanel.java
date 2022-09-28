@@ -27,7 +27,7 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 
-import static com.telenav.kivakit.core.string.Formatter.Format.WITHOUT_EXCEPTION;
+import static com.telenav.kivakit.core.messaging.MessageFormat.WITHOUT_EXCEPTION;
 
 /**
  * A KivaKit feedback panel in the KivaKit style.

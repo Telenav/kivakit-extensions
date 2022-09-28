@@ -6,6 +6,7 @@ import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.core.thread.KivaKitThread;
@@ -27,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.telenav.kivakit.core.time.Duration.minutes;
+import static com.telenav.kivakit.core.time.Frequency.every;
 import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
 
 /**
@@ -400,7 +403,8 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
                         }
                         catch (Exception e)
                         {
-                            warning(Frequency.every(Duration.minutes(1.5)), "Unable to connect to zookeeper: $", settings().ports);
+                            transmit(new Warning("Unable to connect to zookeeper: $", settings().ports)
+                                    .maximumFrequency(every(minutes(1.5))));
                         }
                     }
                 }
@@ -468,7 +472,7 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
     {
         if (state.transition(State.CONNECTED, State.DISCONNECTED))
         {
-            IO.close(zookeeper);
+            IO.close(this, zookeeper);
             zookeeper = null;
             connectingZookeeper = null;
 

@@ -82,7 +82,7 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
             collectors.put(metric.name(), histogram);
         }
 
-        histogram.observe(metric.quantumDouble());
+        histogram.observe(metric.doubleValue());
     }
 
     private void level(Metric<?> metric, Gauge gauge)
