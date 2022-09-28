@@ -60,7 +60,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
      */
     public MicroserviceClusterMember(Data data)
     {
-        this(Host.local(), OperatingSystem.get().processIdentifier(), 0, data);
+        this(Host.local(), OperatingSystem.operatingSystem().processIdentifier(), 0, data);
     }
 
     @Override
@@ -133,7 +133,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     public boolean isThis()
     {
         return host.dnsName().equals(Host.local().dnsName())
-                && processIdentifier == OperatingSystem.get().processIdentifier();
+                && processIdentifier == OperatingSystem.operatingSystem().processIdentifier();
     }
 
     /**

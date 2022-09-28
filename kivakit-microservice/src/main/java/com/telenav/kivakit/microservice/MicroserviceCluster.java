@@ -237,7 +237,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     @NotNull
     private InstanceIdentifier instanceIdentifier()
     {
-        return InstanceIdentifier.of(Host.local().dnsName() + "#" + OperatingSystem.get().processIdentifier() + "#");
+        return InstanceIdentifier.of(Host.local().dnsName() + "#" + OperatingSystem.operatingSystem().processIdentifier() + "#");
     }
 
     private boolean isConnected()
