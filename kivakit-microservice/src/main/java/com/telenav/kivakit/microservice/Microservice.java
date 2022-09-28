@@ -235,11 +235,11 @@ public abstract class Microservice<Member> extends Application implements
 
     private MicroserviceCluster<Member> cluster;
 
-    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
+    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.lazy(this::onNewGrpcService);
 
-    private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.of(this::onNewLambdaService);
+    private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.lazy(this::onNewLambdaService);
 
-    private final Lazy<RestService> restService = Lazy.of(this::onNewRestService);
+    private final Lazy<RestService> restService = Lazy.lazy(this::onNewRestService);
 
     /** True if this microservice is running */
     private boolean running;
@@ -247,7 +247,7 @@ public abstract class Microservice<Member> extends Application implements
     /** Jetty web server */
     private JettyServer server;
 
-    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = Lazy.of(this::onNewWebApplication);
+    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = Lazy.lazy(this::onNewWebApplication);
 
     /**
      * Initializes this microservice and any project(s) it depends on
