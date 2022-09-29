@@ -59,6 +59,6 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     @Override
     public Validator validator(ValidationType type)
     {
-        return Validator.NULL;
+        return Validator.emptyValidator();
     }
 }

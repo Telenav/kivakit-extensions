@@ -86,6 +86,6 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
     @Override
     public Validator validator(ValidationType type)
     {
-        return Validator.NULL;
+        return Validator.emptyValidator();
     }
 }
