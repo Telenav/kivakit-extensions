@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.conversion.core.collections.map.VariableMapConverter;
+import com.telenav.kivakit.conversion.core.collections.map.ConvertingVariableMap;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
 import com.telenav.kivakit.core.collections.map.VariableMap;
@@ -78,7 +78,7 @@ public class FileLog extends BaseRolloverTextLog
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
                 }
 
-                var converter = new VariableMapConverter(Listener.consoleListener(), properties);
+                var converter = new ConvertingVariableMap(Listener.consoleListener(), properties);
                 maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
                 maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
