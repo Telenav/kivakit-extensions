@@ -28,7 +28,7 @@ public class AssetsJettyPlugin extends BaseAssetsJettyPlugin
 
         var holder = new ServletHolder(defaultServlet);
 
-        holder.setName("jetty-assets:" + folder.identifier());
+        holder.setName("jetty-assets:" + folder.resourceFolderIdentifier());
         var base = folder.uri();
         if (base != null)
         {

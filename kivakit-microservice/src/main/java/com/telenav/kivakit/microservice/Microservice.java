@@ -720,7 +720,7 @@ public abstract class Microservice<Member> extends Application implements
             if (matcher.matches())
             {
                 var version = Version.parseVersion(this, matcher.group("version"));
-                var resource = Resource.resolve(this, matcher.group("jar"));
+                var resource = Resource.resolveResource(this, matcher.group("jar"));
                 var commandLine = matcher.group("commandLine");
                 var port = Ints.parseInt(this, matcher.group("port"));
 
