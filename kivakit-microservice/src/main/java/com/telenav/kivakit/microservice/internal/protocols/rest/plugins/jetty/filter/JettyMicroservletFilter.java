@@ -115,7 +115,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
             var httpResponse = (HttpServletResponse) servletResponse;
 
             // parse the HTTP method,
-            var method = HttpMethod.parse(httpRequest.getMethod());
+            var method = HttpMethod.parseHttpMethod(this, httpRequest.getMethod());
             if (method != null && method != HttpMethod.OPTIONS)
             {
                 // create REST request cycle,
