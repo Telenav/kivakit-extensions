@@ -127,7 +127,7 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
     }
 
     /**
-     * @return The names of the child nodes of the node at the given path
+     * Returns the names of the child nodes of the node at the given path
      */
     public StringList children(StringPath path)
     {
@@ -179,7 +179,7 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
     }
 
     /**
-     * @return The default create mode for this connection
+     * Returns the default create mode for this connection
      */
     public CreateMode defaultCreateMode()
     {
