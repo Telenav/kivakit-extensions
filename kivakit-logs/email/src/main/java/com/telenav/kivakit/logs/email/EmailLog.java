@@ -119,8 +119,8 @@ public class EmailLog extends BaseTextLog
         {
             var configuration = new SmtpEmailSender.Configuration();
             configuration.host(Host.parseHost(Listener.consoleListener(), host));
-            configuration.username(UserName.parse(Listener.consoleListener(), username));
-            configuration.password(PlainTextPassword.parse(Listener.consoleListener(), password));
+            configuration.username(UserName.parseUserName(Listener.consoleListener(), username));
+            configuration.password(PlainTextPassword.parsePlainTextPassword(Listener.consoleListener(), password));
             sender = new SmtpEmailSender(configuration);
         }
     }
