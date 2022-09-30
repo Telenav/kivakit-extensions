@@ -17,6 +17,7 @@ import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
 import static com.telenav.kivakit.core.thread.ReentrancyTracker.Reentrancy.ENTERED;
+import static com.telenav.kivakit.network.core.LocalHost.localhost;
 import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
@@ -237,7 +238,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     @NotNull
     private InstanceIdentifier instanceIdentifier()
     {
-        return InstanceIdentifier.instanceIdentifier(Host.local().dnsName() + "#" + OperatingSystem.operatingSystem().processIdentifier() + "#");
+        return InstanceIdentifier.instanceIdentifier(localhost().dnsName() + "#" + OperatingSystem.operatingSystem().processIdentifier() + "#");
     }
 
     private boolean isConnected()

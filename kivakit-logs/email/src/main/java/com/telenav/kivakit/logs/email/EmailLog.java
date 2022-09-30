@@ -92,7 +92,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parseEmail(Listener.consoleListener(), at));
+                this.to.add(EmailAddress.parseEmailAddress(Listener.consoleListener(), at));
             }
         }
         else
@@ -104,7 +104,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parseEmail(Listener.consoleListener(), from);
+            this.from = EmailAddress.parseEmailAddress(Listener.consoleListener(), from);
         }
         else
         {

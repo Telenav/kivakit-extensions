@@ -23,6 +23,8 @@ import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.network.http.HttpNetworkLocation;
 import org.junit.Test;
 
+import static com.telenav.kivakit.network.core.Loopback.loopback;
+
 public class HttpNetworkLocationTest extends WebUnitTest
 {
     @Test
@@ -36,7 +38,7 @@ public class HttpNetworkLocationTest extends WebUnitTest
 
         startWebServer(port, temporary.parent().path());
 
-        var location = new HttpNetworkLocation(Host.loopback().http(port).path(this, filename));
+        var location = new HttpNetworkLocation(loopback().http(port).path(this, filename));
         var text = location.content(this);
         ensureEqual(text, "testing!");
     }

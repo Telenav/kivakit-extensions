@@ -214,7 +214,7 @@ public class MountedApi extends Mounted implements TryTrait
      */
     public Port port()
     {
-        return Host.local().port(port);
+        return Host.localhost().port(port);
     }
 
     @Override

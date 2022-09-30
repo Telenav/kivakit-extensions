@@ -199,7 +199,7 @@ public class MicroserviceTest extends UnitTest
         microservice.waitForReady();
 
         var client = listenTo(new RestClient(
-                new GsonObjectSerializer(), Host.local().http(8086), microservice.version()));
+                new GsonObjectSerializer(), Host.localhost().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
@@ -228,7 +228,7 @@ public class MicroserviceTest extends UnitTest
         var response2 = client.get("test", TestResponse.class);
         ensureEqual(42, response2.result);
 
-        var grpcClient = listenTo(new MicroserviceGrpcClient(Host.local().port(8087), microservice.version()));
+        var grpcClient = listenTo(new MicroserviceGrpcClient(Host.localhost().port(8087), microservice.version()));
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 

@@ -46,7 +46,7 @@ public class MicroserviceGrpcClient extends BaseComponent
         this.port = port;
         this.version = version;
 
-        channel = ManagedChannelBuilder.forAddress(port.host().name(), port.number())
+        channel = ManagedChannelBuilder.forAddress(port.host().name(), port.portNumber())
                 .usePlaintext()
                 .build();
 
@@ -103,7 +103,7 @@ public class MicroserviceGrpcClient extends BaseComponent
         ensureEqual(responseType, request.responseType());
 
         // Create a GRPC channel,
-        var channel = ManagedChannelBuilder.forAddress(port.host().name(), port.number())
+        var channel = ManagedChannelBuilder.forAddress(port.host().name(), port.portNumber())
                 .usePlaintext()
                 .build();
 

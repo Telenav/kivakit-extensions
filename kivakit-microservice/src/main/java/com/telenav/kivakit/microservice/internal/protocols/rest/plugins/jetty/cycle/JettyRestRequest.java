@@ -166,7 +166,7 @@ public class JettyRestRequest extends BaseComponent implements
 
                     // then add any query parameters to the map.
                     var uri = URI.create(httpRequest.getRequestURI());
-                    properties.addAll(QueryParameters.parse(this, uri.getQuery()).asMap());
+                    properties.addAll(QueryParameters.parseQueryParameters(this, uri.getQuery()).asVariableMap());
                 }
             }
             catch (Exception e)
