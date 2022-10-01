@@ -148,7 +148,7 @@ public class JettyRestRequest extends BaseComponent implements
     {
         if (properties == null)
         {
-            properties = PropertyMap.create();
+            properties = PropertyMap.propertyMap();
 
             try
             {
