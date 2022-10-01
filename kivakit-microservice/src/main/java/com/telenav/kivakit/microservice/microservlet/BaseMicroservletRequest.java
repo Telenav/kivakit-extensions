@@ -38,7 +38,7 @@ public abstract class BaseMicroservletRequest extends BaseComponent implements
     @Override
     public Validator validator(ValidationType type)
     {
-        return Validator.emptyValidator();
+        return Validator.nullValidator();
     }
 
     protected Frequency statisticsReportingFrequency()

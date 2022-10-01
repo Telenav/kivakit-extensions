@@ -49,7 +49,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         register(serializers);
 
         // Register zookeeper settings,
-        registerSettingsIn(listenTo(new ResourceFolderSettingsStore(this, thisPackage())));
+        registerSettingsIn(listenTo(new ResourceFolderSettingsStore(this, packageForThis())));
 
         // create zookeeper settings store,
         var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT, new GsonObjectSerializer())));
