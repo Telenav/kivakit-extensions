@@ -193,6 +193,6 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
         var file = folder.mkdirs().file("$.proto", schema.messageName());
         information("Exporting $", file);
         var proto = Generators.newProtoGenerator(schema);
-        file.writer().save(proto.generate());
+        file.writer().saveText(proto.generate());
     }
 }

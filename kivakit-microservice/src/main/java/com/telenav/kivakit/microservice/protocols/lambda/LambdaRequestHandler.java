@@ -55,7 +55,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
     public void handleRequest(InputStream in, OutputStream out, Context context)
     {
         // Create a print writer to write the response to,
-        try (var print = new PrintWriter(IO.buffer(out)))
+        try (var print = new PrintWriter(IO.bufferOutput(out)))
         {
             // then get the requested Lambda function,
             var lambda = new LambdaFunction(context);
