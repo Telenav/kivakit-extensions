@@ -18,19 +18,25 @@
 
 package com.telenav.kivakit.web.wicket.behaviors.status;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.messaging.Message;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.model.IModel;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
- * A Wicket {@link AttributeModifier} that changes the class of the component it is attached to based on {@link
- * Message#status()}. This is used to highlight success, warning and failure conditions visually using the
+ * A Wicket {@link AttributeModifier} that changes the class of the component it is attached to based on
+ * {@link Message#status()}. This is used to highlight success, warning and failure conditions visually using the
  * *kivakit-problem*, *kivakit-warning* and *kivakit-information* CSS classes in KivaKitTheme.css.
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class MessageColor extends AttributeModifier
 {
     public MessageColor(IModel<Message.Status> status)

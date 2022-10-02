@@ -32,9 +32,9 @@ import com.telenav.kivakit.settings.Deployment;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
-import com.telenav.kivakit.web.swagger.SwaggerJettyPlugin;
-import com.telenav.kivakit.web.swagger.SwaggerWebAppJettyPlugin;
-import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerIndexJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebJarAssetJettyPlugin;
 import com.telenav.kivakit.web.wicket.WicketJettyPlugin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -668,7 +668,7 @@ public abstract class Microservice<Member> extends Application implements
      */
     protected ResourceFolder<?> openApiAssetsFolder()
     {
-        var type = ensureNotNull(Type.typeForName("com.telenav.kivakit.web.swagger.SwaggerJettyPlugin"));
+        var type = ensureNotNull(Type.typeForName("com.telenav.kivakit.web.swagger.SwaggerIndexJettyPlugin"));
         return Package.parsePackage(this, type.type(), "assets/openapi");
     }
 
@@ -740,9 +740,9 @@ public abstract class Microservice<Member> extends Application implements
 
     private void mountOpenApiAssets(String path, ResourceFolder<?> openApiAssets)
     {
-        server.mount(path, new SwaggerJettyPlugin(openApiAssets, settings().port()));
+        server.mount(path, new SwaggerIndexJettyPlugin(openApiAssets, settings().port()));
         server.mount(path + "/assets/openapi/*", new AssetsJettyPlugin(openApiAssets));
-        server.mount(path + "/assets/swagger/webapp/*", new SwaggerWebAppJettyPlugin());
-        server.mount(path + "/assets/swagger/webjar/*", new SwaggerWebJarJettyPlugin());
+        server.mount(path + "/assets/swagger/webapp/*", new SwaggerAssetsJettyPlugin());
+        server.mount(path + "/assets/swagger/webjar/*", new SwaggerWebJarAssetJettyPlugin());
     }
 }

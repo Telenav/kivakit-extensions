@@ -18,15 +18,18 @@
 
 package com.telenav.kivakit.web.wicket.components.feedback;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.interfaces.messaging.Transmittable;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
+import com.telenav.kivakit.interfaces.messaging.Transmittable;
 import com.telenav.kivakit.web.wicket.theme.KivaKitTheme;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.markup.head.CssHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.messaging.MessageFormat.WITHOUT_EXCEPTION;
 
 /**
@@ -34,7 +37,9 @@ import static com.telenav.kivakit.core.messaging.MessageFormat.WITHOUT_EXCEPTION
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackPanel implements ComponentMixin
 {
     public FeedbackPanel(String id)
