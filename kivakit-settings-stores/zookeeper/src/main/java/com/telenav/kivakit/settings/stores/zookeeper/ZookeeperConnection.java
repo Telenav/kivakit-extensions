@@ -1,5 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
@@ -12,7 +13,6 @@ import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.core.thread.KivaKitThread;
 import com.telenav.kivakit.core.thread.StateMachine;
 import com.telenav.kivakit.core.time.Duration;
-import com.telenav.kivakit.core.time.Frequency;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
@@ -28,6 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE_API;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.FULLY_DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
+import static com.telenav.kivakit.annotations.code.TestingQuality.UNTESTED;
 import static com.telenav.kivakit.core.time.Duration.minutes;
 import static com.telenav.kivakit.core.time.Frequency.every;
 import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
@@ -56,9 +61,17 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * @see ACL
  * @see ZookeeperChangeListener
  */
-@SuppressWarnings("resource") public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
+@SuppressWarnings("resource")
+@ApiQuality(stability = STABLE_EXTENSIBLE,
+            testing = UNTESTED,
+            documentation = FULLY_DOCUMENTED)
+public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
+    @ApiQuality(stability = STABLE_EXTENSIBLE,
+                testing = TESTING_NOT_NEEDED,
+                documentation = FULLY_DOCUMENTED,
+                type = PRIVATE_API)
     private enum State
     {
         CONNECTED,
@@ -69,7 +82,11 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    interface ListenerMethod
+    @ApiQuality(stability = STABLE_EXTENSIBLE,
+                testing = TESTING_NOT_NEEDED,
+                documentation = FULLY_DOCUMENTED,
+                type = PRIVATE_API)
+    interface ZookeeperListenerMethod
     {
         /**
          * Called with the path when a Zookeeper notification is processed
@@ -418,14 +435,14 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
      * Calls the given listener method of the {@link ZookeeperChangeListener} interface
      *
      * @param event The Zookeeper event
-     * @param method The method to call
+     * @param listener The listener to call
      */
-    private void invokeListenerMethod(WatchedEvent event, ListenerMethod method)
+    private void invokeListenerMethod(WatchedEvent event, ZookeeperListenerMethod listener)
     {
-        if (method != null)
+        if (listener != null)
         {
             var path = path(event);
-            method.on(path);
+            listener.on(path);
             watch(path);
         }
         else
