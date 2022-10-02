@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.conversion.core.collections.map.ConvertingVariableMap;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
@@ -32,11 +33,13 @@ import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.logs.file.internal.lexakai.DiagramLogsFile;
 import com.telenav.kivakit.resource.FileName;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.FULLY_DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.TestingQuality.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 
 /**
@@ -46,20 +49,32 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
  *
  * <ul>
  *     <li><i>file</i> - The output file</li>
- *     <li><i>maximum-size</i> - The maximum size in {@link Bytes}</li>
+ *     <li><i>maximum-age</i> - The maximum age of log files (see {@link Duration} for valid values)</li>
+ *     <li><i>maximum-size</i> - The maximum size (see {@link Bytes} for valid values)</li>
  *     <li><i>rollover</i> -Rollover period (none, daily or hourly)</li>
  * </ul>
+ *
+ * <p><b>Example</b></p>
+ *
+ * <pre>-DKIVAKIT_LOG="File level=Warning file=~/logs/log.txt rollover=daily maximum-age=\"1 month\" maximum-size=100M"</pre>
  *
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramLogsFile.class)
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = STABLE_EXTENSIBLE,
+            testing = UNTESTED,
+            documentation = FULLY_DOCUMENTED)
 public class FileLog extends BaseRolloverTextLog
 {
+    /** The file to write to */
     private File file;
 
+    /** The maximum age for log files in the folder where the log file exists */
     private Duration maximumLogFileAge;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void configure(VariableMap<String> properties)
     {
@@ -93,12 +108,9 @@ public class FileLog extends BaseRolloverTextLog
         }
     }
 
-    @Override
-    public String name()
-    {
-        return "File";
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected OutputStream newOutputStream()
     {

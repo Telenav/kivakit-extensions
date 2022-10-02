@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.io.ByteSizedOutputStream;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
@@ -26,30 +27,40 @@ import com.telenav.kivakit.core.time.LocalTime;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.logs.file.internal.lexakai.DiagramLogsFile;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.STABLE_ENUM_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiStability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.FULLY_DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
+import static com.telenav.kivakit.annotations.code.TestingQuality.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.value.count.Bytes.megabytes;
 
 /**
- * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a {@link
- * #rollover(Rollover)} period and logs messages until either of these limits are reached.
+ * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a
+ * {@link #rollover(Rollover)} period and logs messages until either of these limits are reached.
  *
  * @author jonathanl (shibo)
+ * @see FileLog
  */
-@UmlClassDiagram(diagram = DiagramLogsFile.class)
-@LexakaiJavadoc(complete = true)
+@SuppressWarnings("resource") @UmlClassDiagram(diagram = DiagramLogsFile.class)
+@ApiQuality(stability = STABLE_EXTENSIBLE,
+            testing = UNTESTED,
+            documentation = FULLY_DOCUMENTED)
 public abstract class BaseRolloverTextLog extends BaseTextLog
 {
     /**
      * Rollover period
      */
     @UmlClassDiagram(diagram = DiagramLogsFile.class)
-    @LexakaiJavadoc(complete = true)
+    @ApiQuality(stability = STABLE_ENUM_EXTENSIBLE,
+                testing = TESTING_NOT_NEEDED,
+                documentation = FULLY_DOCUMENTED)
     public enum Rollover
     {
         NONE,
@@ -57,26 +68,31 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         HOURLY
     }
 
+    /** The output stream */
     private ByteSizedOutputStream byteSizedOutputStream;
 
+    /** The maximum size for log files */
     @UmlAggregation(label = "maximum size")
-    private Bytes maximumLogSize;
+    private Bytes maximumLogSize = megabytes(50);
 
+    /** The output */
     private PrintWriter out;
 
+    /** The rollover type */
     @UmlAggregation
     private Rollover rollover = Rollover.NONE;
 
+    /** The next time to roll over */
     @UmlAggregation(label = "rollover time")
     private Time rolloverAt = nextRollover();
 
+    /** The time this log started */
     @UmlAggregation(label = "start time")
     private Time started = Time.now();
 
     protected BaseRolloverTextLog()
     {
-        maximumLogSize(Bytes.megabytes(50));
-
+        // Flush and close this log on VM shutdown
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
         {
             flush(Duration.ONE_MINUTE);
@@ -84,12 +100,15 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         }));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void closeOutput()
     {
         try
         {
-            flush(Duration.seconds(10));
+            flush(Duration.seconds(30));
             out().flush();
             out().close();
         }
@@ -98,6 +117,9 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void flush(Duration maximumWaitTime)
     {
@@ -105,16 +127,23 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         out.flush();
     }
 
+    /**
+     * Sets the maximum log file size before pruning occurs
+     */
     public void maximumLogSize(Bytes maximumSize)
     {
         maximumLogSize = maximumSize;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final synchronized void onLog(LogEntry entry)
     {
         var timeToRollOver = Time.now().isAfter(rolloverAt);
-        var sizeToRollOver = byteSizedOutputStream != null && byteSizedOutputStream.sizeInBytes().isGreaterThan(maximumLogSize);
+        var sizeToRollOver = byteSizedOutputStream != null
+                && byteSizedOutputStream.sizeInBytes().isGreaterThan(maximumLogSize);
         if (timeToRollOver || sizeToRollOver)
         {
             try
@@ -140,6 +169,9 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         out().flush();
     }
 
+    /**
+     * Sets the log rollover type
+     */
     public void rollover(Rollover rollover)
     {
         this.rollover = rollover;
