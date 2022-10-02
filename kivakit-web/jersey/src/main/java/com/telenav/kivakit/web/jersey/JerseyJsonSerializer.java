@@ -84,7 +84,7 @@ public class JerseyJsonSerializer<T> implements
                       MultivaluedMap<String, String> map, InputStream in)
             throws WebApplicationException
     {
-        return serializer.read(new InputResource(in), type).object();
+        return serializer.readObject(new InputResource(in), type).object();
     }
 
     @Override
@@ -93,6 +93,6 @@ public class JerseyJsonSerializer<T> implements
                         MultivaluedMap<String, Object> httpHeaders, OutputStream out)
             throws WebApplicationException
     {
-        serializer.write(new OutputResource(out), new SerializableObject<>(object));
+        serializer.writeObject(new OutputResource(out), new SerializableObject<>(object));
     }
 }

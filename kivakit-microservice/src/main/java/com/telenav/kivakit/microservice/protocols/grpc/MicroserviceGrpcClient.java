@@ -10,7 +10,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.resource.Extension;
-import com.telenav.kivakit.resource.serialization.ObjectSerializers;
+import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
 import io.grpc.ManagedChannel;
@@ -128,7 +128,7 @@ public class MicroserviceGrpcClient extends BaseComponent
 
     protected void onRegisterObjectSerializers()
     {
-        var serializers = new ObjectSerializers();
+        var serializers = new ObjectSerializerRegistry();
         serializers.add(Extension.JSON, new GsonObjectSerializer());
         serializers.add(Extension.PROPERTIES, new PropertiesObjectSerializer());
         register(serializers);

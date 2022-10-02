@@ -106,7 +106,7 @@ public class RestClient extends BaseComponent
                     try
                     {
                         var serialized = new StringOutputResource();
-                        serializer.write(serialized, new SerializableObject<>(request));
+                        serializer.writeObject(serialized, new SerializableObject<>(request));
                         builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
                     }
                     catch (Exception e)
@@ -179,7 +179,7 @@ public class RestClient extends BaseComponent
             var json = resource.reader().asString();
             if (!Strings.isEmpty(json))
             {
-                return serializer.read(new StringResource(json), type).object();
+                return serializer.readObject(new StringResource(json), type).object();
             }
             else
             {

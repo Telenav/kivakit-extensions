@@ -367,7 +367,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     protected <T> T onDeserialize(byte[] data, Class<T> type)
     {
         var input = new InputResource(new ByteArrayInputStream(data));
-        return serializer.read(input, type, ObjectMetadata.TYPE).object();
+        return serializer.readObject(input, type, ObjectMetadata.OBJECT_TYPE).object();
     }
 
     /**
@@ -443,7 +443,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         var bytes = new ByteArrayOutputStream();
         var output = new OutputResource(bytes);
-        serializer.write(output, new SerializableObject<>(object));
+        serializer.writeObject(output, new SerializableObject<>(object));
         return bytes.toByteArray();
     }
 
