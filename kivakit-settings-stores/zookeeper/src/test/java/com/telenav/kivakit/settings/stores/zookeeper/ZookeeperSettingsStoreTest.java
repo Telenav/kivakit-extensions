@@ -6,7 +6,7 @@ import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludePrope
 import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
-import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
 import com.telenav.kivakit.settings.SettingsRegistryTrait;
 import com.telenav.kivakit.settings.stores.ResourceFolderSettingsStore;
@@ -41,7 +41,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     @Test
     public void test()
     {
-        register(new CoreGsonFactory(this));
+        register(new KivaKitCoreGsonFactory(this));
 
         var serializers = new ObjectSerializerRegistry();
         serializers.add(Extension.JSON, new GsonObjectSerializer());
