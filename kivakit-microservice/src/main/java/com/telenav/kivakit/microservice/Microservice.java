@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice;
 
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.commandline.Switch;
+import com.telenav.kivakit.commandline.SwitchValue;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.commandline.SwitchParsers;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
@@ -173,7 +173,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *
  * @author jonathanl (shibo)
  * @see Deployment
- * @see Switch
+ * @see SwitchValue
  * @see ResourceFolder
  * @see MicroserviceMetadata
  * @see MicroserviceSettings
