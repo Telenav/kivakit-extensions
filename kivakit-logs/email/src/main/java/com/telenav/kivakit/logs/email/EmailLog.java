@@ -40,9 +40,9 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.FULLY_DOCUMENTED;
-import static com.telenav.kivakit.annotations.code.TestingQuality.UNTESTED;
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.registry.Registry.registryFor;
 
@@ -63,9 +63,9 @@ import static com.telenav.kivakit.core.registry.Registry.registryFor;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramLogsEmail.class)
-@ApiQuality(stability = STABLE_EXTENSIBLE,
-            testing = UNTESTED,
-            documentation = FULLY_DOCUMENTED)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class EmailLog extends BaseTextLog
 {
     /** The from email address */

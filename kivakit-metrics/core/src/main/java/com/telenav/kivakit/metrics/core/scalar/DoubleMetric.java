@@ -1,7 +1,20 @@
 package com.telenav.kivakit.metrics.core.scalar;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
+/**
+ * A double-valued metric
+ *
+ * @author jonathanl (shibo)
+ */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 @SuppressWarnings("unused")
 public class DoubleMetric extends BaseMetric<Double>
 {

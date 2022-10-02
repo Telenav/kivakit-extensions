@@ -28,11 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE_API;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.FULLY_DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.API_PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
-import static com.telenav.kivakit.annotations.code.TestingQuality.UNTESTED;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.time.Duration.minutes;
 import static com.telenav.kivakit.core.time.Frequency.every;
 import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
@@ -62,16 +62,16 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * @see ZookeeperChangeListener
  */
 @SuppressWarnings("resource")
-@ApiQuality(stability = STABLE_EXTENSIBLE,
-            testing = UNTESTED,
-            documentation = FULLY_DOCUMENTED)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
-    @ApiQuality(stability = STABLE_EXTENSIBLE,
+    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
                 testing = TESTING_NOT_NEEDED,
-                documentation = FULLY_DOCUMENTED,
-                type = PRIVATE_API)
+                documentation = DOCUMENTATION_COMPLETE,
+                type = API_PRIVATE)
     private enum State
     {
         CONNECTED,
@@ -82,10 +82,10 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    @ApiQuality(stability = STABLE_EXTENSIBLE,
+    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
                 testing = TESTING_NOT_NEEDED,
-                documentation = FULLY_DOCUMENTED,
-                type = PRIVATE_API)
+                documentation = DOCUMENTATION_COMPLETE,
+                type = API_PRIVATE)
     interface ZookeeperListenerMethod
     {
         /**

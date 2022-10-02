@@ -1,28 +1,30 @@
 package com.telenav.kivakit.metrics.core.aggregates;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.value.count.Count;
 import com.telenav.kivakit.interfaces.factory.MapFactory;
 import com.telenav.kivakit.interfaces.value.DoubleValued;
 import com.telenav.kivakit.interfaces.value.LongValued;
-import com.telenav.kivakit.metrics.core.AggregateMetric;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
 
-import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
- * A quantum aggregate metric is an {@link AggregateMetric} for arbitrary {@link LongValued} objects. The
- * {@link DoubleValued#doubleValue()} ()} method yields each object's quantum value (a double precision floating point
- * number) when it is added to the aggregate with {@link #onAdd(DoubleValued)}. Aggregation maintains these measurements
- * for the quanta that are added:
+ * A quantum aggregate metric is an {@link com.telenav.kivakit.metrics.core.AggregateMetric} for arbitrary
+ * {@link LongValued} objects. The {@link DoubleValued#doubleValue()} ()} method yields each object's quantum value (a
+ * double precision floating point number) when it is added to the aggregate with {@link #onAdd(DoubleValued)}.
+ * Aggregation maintains these measurements for the quanta that are added:
  *
  * <p><b>Aggregate Metrics</b></p>
  * <ul>
  *     <li>{@link #total()}</li>
- *     <li>{@link #count()}</li>
- *     <li>{@link #maximum()}</li>
- *     <li>{@link #minimum()}</li>
+ *     <li>{@link #sampleCount()}</li>
+ *     <li>{@link #maximumSample()}</li>
+ *     <li>{@link #minimumSample()}</li>
  * </ul>
  *
  * <p>
@@ -45,7 +47,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  * </p>
  *
  * <pre>
- * public class AverageMetric&lt;T extends QuantizableMetric&gt; extends AggregateQuantumMetric&lt;T&gt;
+ * public class AverageMetric&lt;T extends QuantizableMetric&gt; extends AggregateMetric&lt;T&gt;
  * {
  *     public AverageMetric(MapFactory&lt;Long, T&gt; factory)
  *     {
@@ -74,55 +76,77 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  *
  * <p>
  * Here, the {@link Count#count(long)} factory method is passed to the superclass. This factory method converts the average
- * quantum of the {@link Count} objects added to the {@link AggregateQuantumMetric} back into a {@link Count}.
+ * quantum of the {@link Count} objects added to the {@link AggregateMetric} back into a {@link Count}.
  * </p>
  *
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-public abstract class AggregateQuantumMetric<T extends DoubleValued> extends BaseMetric<T> implements
-        AggregateMetric<T>
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+public abstract class AggregateMetric<T extends DoubleValued> extends BaseMetric<T> implements
+        com.telenav.kivakit.metrics.core.AggregateMetric<T>
 {
+    /** The total of all added samples */
     private double total;
 
-    private double maximum;
+    /** The maximum of all added samples */
+    private double maximumSample;
 
-    private double minimum;
+    /** The minimum of all added samples */
+    private double minimumSample;
 
-    private int count;
+    /** The number of samples */
+    private int sampleCount;
 
+    /**
+     * Converts from a double value to the type of aggregated metric
+     */
     private final MapFactory<Double, T> factory;
 
-    public AggregateQuantumMetric(MapFactory<Double, T> factory)
+    public AggregateMetric(MapFactory<Double, T> factory)
     {
         this.factory = factory;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public double doubleValue()
     {
         return compute();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final T measurement()
     {
         return factory.newInstance(compute());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean onAdd(T metric)
     {
         double value = metric.doubleValue();
 
         total += value;
-        maximum = Math.max(maximum, value);
-        minimum = Math.min(minimum, value);
-        count++;
+        maximumSample = Math.max(maximumSample, value);
+        minimumSample = Math.min(minimumSample, value);
+        sampleCount++;
 
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size()
     {
@@ -130,35 +154,52 @@ public abstract class AggregateQuantumMetric<T extends DoubleValued> extends Bas
         return 0;
     }
 
+    /**
+     * Removes the given metric value from this aggregate. The maximum and minimum sample cannot be reversed since it's
+     * not known what the previous maximum or minimum were without the sample to be removed.
+     *
+     * @param metric The metric to remove
+     * @return True if it was removed
+     */
     public boolean subtract(T metric)
     {
-        double value = metric.doubleValue();
-
-        total -= value;
-        maximum = Math.max(maximum, value);
-        minimum = Math.min(minimum, value);
-        count++;
-
+        total -= metric.doubleValue();
+        sampleCount--;
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected abstract double compute();
 
-    protected int count()
+    /**
+     * Returns the maximum of all aggregated samples
+     */
+    protected double maximumSample()
     {
-        return count;
+        return maximumSample;
     }
 
-    protected double maximum()
+    /**
+     * Returns the minimum of all aggregated samples
+     */
+    protected double minimumSample()
     {
-        return maximum;
+        return maximumSample;
     }
 
-    protected double minimum()
+    /**
+     * Returns the sample count for this aggregate
+     */
+    protected int sampleCount()
     {
-        return maximum;
+        return sampleCount;
     }
 
+    /**
+     * Returns the total of all aggregated samples
+     */
     protected double total()
     {
         return total;
