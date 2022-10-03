@@ -1,5 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.core.KivaKit;
 import com.telenav.kivakit.core.collections.list.StringList;
@@ -8,6 +9,7 @@ import com.telenav.kivakit.core.language.Classes;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.registry.Registry;
+import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.vm.Properties;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
@@ -25,12 +27,18 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.project.Project.resolveProject;
+import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.DELETE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.INDEX;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.SAVE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.UNLOAD;
+import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL;
+import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 /**
@@ -41,8 +49,8 @@ import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  *
  * <p>
  * A {@link ZookeeperSettingsStore} can be constructed with or without an explicit Zookeeper {@link CreateMode}. The
- * connection to Zookeeper is maintained by a {@link ZookeeperConnection} that is configured with {@link
- * ZookeeperConnection.Settings}. If no explicit create mode is specified for the store, the default create mode
+ * connection to Zookeeper is maintained by a {@link ZookeeperConnection} that is configured with
+ * {@link ZookeeperConnection.Settings}. If no explicit create mode is specified for the store, the default create mode
  * specified by {@link ZookeeperConnection.Settings} will be used.
  * </p>
  *
@@ -54,10 +62,9 @@ import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * </p>
  *
  * <pre>
- * class   = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
- *
- * ports   = 127.0.0.1:2181,127.0.0.1:2182
- * timeout = 60s
+ * class       = com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection$Settings
+ * ports       = 127.0.0.1:2181,127.0.0.1:2182
+ * timeout     = 60s
  * create-mode = PERSISTENT</pre>
  *
  * <p>
@@ -126,6 +133,9 @@ import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see BaseSettingsStore
  * @see SettingsStore
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class ZookeeperSettingsStore extends BaseSettingsStore implements
         ZookeeperChangeListener,
         ZookeeperConnectionListener
@@ -152,8 +162,8 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     private final ObjectSerializer serializer;
 
     /**
-     * Creates a settings store with the given explicit {@link CreateMode}. This overrides any setting in {@link
-     * ZookeeperConnection.Settings}.
+     * Creates a settings store with the given explicit {@link CreateMode}. This overrides any setting in
+     * {@link ZookeeperConnection.Settings}.
      *
      * @param createMode The explicit create mode to use for nodes in this store
      */
@@ -336,6 +346,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      * @return The given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
      * node path /a::b::c becomes the hierarchical node path /a/b/c.
      */
+    @SuppressWarnings("SpellCheckingInspection")
     @NotNull
     public StringPath unflatten(StringPath path)
     {
@@ -367,7 +378,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     protected <T> T onDeserialize(byte[] data, Class<T> type)
     {
         var input = new InputResource(new ByteArrayInputStream(data));
-        return serializer.read(input, type, ObjectMetadata.TYPE).object();
+        return serializer.readObject(input, type, ObjectMetadata.OBJECT_TYPE).object();
     }
 
     /**
@@ -443,7 +454,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         var bytes = new ByteArrayOutputStream();
         var output = new OutputResource(bytes);
-        serializer.write(output, new SerializableObject<>(object));
+        serializer.writeObject(output, new SerializableObject<>(object));
         return bytes.toByteArray();
     }
 
@@ -496,7 +507,33 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      */
     private InstanceIdentifier instance(StringPath path)
     {
-        return InstanceIdentifier.of(path.last());
+        // Get the last element of the path,
+        var last = path.last();
+
+        // and separate it into the enum type (including package) and the enum value,
+        var enumType = Paths.pathTail(last, ".");
+        var enumName = Paths.pathHead(last, ".");
+
+        // the load the enum type,
+        var type = Classes.classForName(enumType);
+
+        // and if it's indeed and enum and the name is potentially valid,
+        if (type != null && type.isEnum() && enumName != null && !enumName.isEmpty())
+        {
+            // then go through all enum constants for the type,
+            for (var enumConstant : type.getEnumConstants())
+            {
+                // and if the enum's name matches the specified name
+                var value = (Enum<?>) enumConstant;
+                if (value.name().equals(enumName))
+                {
+                    // then return the instance identifier.
+                    return instanceIdentifier(value);
+                }
+            }
+        }
+        problem("Could not load fully-qualified enum value: $", last);
+        return null;
     }
 
     /**
@@ -504,8 +541,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      */
     private boolean isEphemeral()
     {
-        return createMode() == CreateMode.EPHEMERAL
-                || createMode() == CreateMode.EPHEMERAL_SEQUENTIAL;
+        return createMode() == EPHEMERAL || createMode() == EPHEMERAL_SEQUENTIAL;
     }
 
     /**
@@ -570,8 +606,8 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      * For example:
      * </p>
      *
-     * <pre>/PERSISTENT/kivakit/1.0.3/jonathanl/demo/1.0/demo.Demo/SINGLETON</pre>
-     * <pre>/EPHEMERAL/kivakit::1.0.3::jonathanl::demo::1.0::demo.Demo::SINGLETON</pre>
+     * <pre>/PERSISTENT/kivakit/1.0.3/jonathanl/demo/1.0/demo.Demo/com.telenav.kivakit.core.registry.InstanceIdentifier.Singleton.SINGLETON</pre>
+     * <pre>/EPHEMERAL/kivakit::1.0.3::jonathanl::demo::1.0::demo.Demo::com.telenav.kivakit.core.registry.InstanceIdentifier.Singleton.SINGLETON</pre>
      *
      * @return A path to the given settings object
      * @see #storePath()
@@ -580,7 +616,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         return maybeFlatten(storePath()
                 .withChild(object.identifier().type().getName())
-                .withChild(object.identifier().instance().identifier())
+                .withChild(object.identifier().instance().enumIdentifier().name())
                 .withRoot("/"));
     }
 
@@ -649,7 +685,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
                 createMode().name(),
                 "kivakit",
                 String.valueOf(resolveProject(KivaKit.class).kivakitVersion()),
-                Properties.property("user.name"),
+                Properties.systemPropertyOrEnvironmentVariable("user.name"),
                 application.name(),
                 application.version().toString());
     }

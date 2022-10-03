@@ -2,6 +2,7 @@ package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.version.Version;
@@ -13,6 +14,12 @@ import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.core.io.IO.bufferOutput;
 
 /**
  * <p>
@@ -30,9 +37,9 @@ import java.io.PrintWriter;
  * <p><b>Security</b></p>
  *
  * <p>
- * This request handler can handle any {@link MicroservletRequest} once it has been exposed by a call to {@link
- * MicroserviceLambdaService#mount(String, Version, Class)}. Only explicitly exposed Lambda methods can be executed
- * Lambda {@link RequestStreamHandler}.
+ * This request handler can handle any {@link MicroservletRequest} once it has been exposed by a call to
+ * {@link MicroserviceLambdaService#mountLambdaRequestHandler(String, Version, Class)}. Only explicitly exposed Lambda methods can be
+ * executed Lambda {@link RequestStreamHandler}.
  * </p>
  *
  * <p><b>Logging</b></p>
@@ -46,16 +53,24 @@ import java.io.PrintWriter;
  * @see LambdaFunction
  * @see MicroserviceLambdaService
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixin
 {
     /**
-     * {@inheritDoc}
+     * Implementation of Lambda request handler
+     *
+     * @param in The input
+     * @param out The output
+     * @param context Information about the request context
      */
     @Override
     public void handleRequest(InputStream in, OutputStream out, Context context)
     {
         // Create a print writer to write the response to,
-        try (var print = new PrintWriter(IO.buffer(out)))
+        try (var print = new PrintWriter(bufferOutput(out)))
         {
             // then get the requested Lambda function,
             var lambda = new LambdaFunction(context);

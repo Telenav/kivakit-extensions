@@ -18,7 +18,8 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.conversion.core.collections.map.VariableMapConverter;
+import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.conversion.core.collections.map.ConvertingVariableMap;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
 import com.telenav.kivakit.core.collections.map.VariableMap;
@@ -26,17 +27,19 @@ import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.os.Console;
-import com.telenav.kivakit.core.string.StringTo;
+import com.telenav.kivakit.core.string.StringConversions;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.logs.file.internal.lexakai.DiagramLogsFile;
 import com.telenav.kivakit.resource.FileName;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 
 /**
@@ -46,20 +49,32 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
  *
  * <ul>
  *     <li><i>file</i> - The output file</li>
- *     <li><i>maximum-size</i> - The maximum size in {@link Bytes}</li>
+ *     <li><i>maximum-age</i> - The maximum age of log files (see {@link Duration} for valid values)</li>
+ *     <li><i>maximum-size</i> - The maximum size (see {@link Bytes} for valid values)</li>
  *     <li><i>rollover</i> -Rollover period (none, daily or hourly)</li>
  * </ul>
+ *
+ * <p><b>Example</b></p>
+ *
+ * <pre>-DKIVAKIT_LOG="File level=Warning file=~/logs/log.txt rollover=daily maximum-age=\"1 month\" maximum-size=100M"</pre>
  *
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramLogsFile.class)
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class FileLog extends BaseRolloverTextLog
 {
+    /** The file to write to */
     private File file;
 
+    /** The maximum age for log files in the folder where the log file exists */
     private Duration maximumLogFileAge;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void configure(VariableMap<String> properties)
     {
@@ -78,7 +93,7 @@ public class FileLog extends BaseRolloverTextLog
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
                 }
 
-                var converter = new VariableMapConverter(Listener.consoleListener(), properties);
+                var converter = new ConvertingVariableMap(Listener.consoleListener(), properties);
                 maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
                 maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
@@ -93,12 +108,9 @@ public class FileLog extends BaseRolloverTextLog
         }
     }
 
-    @Override
-    public String name()
-    {
-        return "File";
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected OutputStream newOutputStream()
     {
@@ -108,11 +120,11 @@ public class FileLog extends BaseRolloverTextLog
     private File newFile()
     {
         var newFile = File.parseFile(Listener.consoleListener(), file.withoutExtension() + "-" + FileName.dateTime(started().asLocalTime())
-                + StringTo.nonNullString(file.extension())).withoutOverwriting();
+                + StringConversions.nonNullString(file.extension())).withoutOverwriting();
         Console.println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
         Console.println("Pruning files older than $ from: $", maximumLogFileAge, folder);
-        folder.files(resource -> ((File) resource).modifiedAt().isOlderThan(maximumLogFileAge)).forEach(at ->
+        folder.files(resource -> ((File) resource).lastModified().isOlderThan(maximumLogFileAge)).forEach(at ->
         {
             Console.println("Removed $", at);
             at.delete();

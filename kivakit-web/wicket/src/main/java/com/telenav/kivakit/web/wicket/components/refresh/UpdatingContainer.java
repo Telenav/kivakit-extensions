@@ -18,20 +18,26 @@
 
 package com.telenav.kivakit.web.wicket.components.refresh;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.time.Frequency;
-import com.telenav.kivakit.web.wicket.library.Components;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 
 import java.util.function.Consumer;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.web.wicket.library.Components.autoUpdateComponent;
 
 /**
  * A {@link WebMarkupContainer} that refreshes itself at the given {@link Frequency}.
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class UpdatingContainer extends WebMarkupContainer
 {
     public UpdatingContainer(String id, Frequency frequency)
@@ -44,6 +50,7 @@ public class UpdatingContainer extends WebMarkupContainer
     public UpdatingContainer(String id, Frequency frequency, Consumer<AjaxRequestTarget> target)
     {
         super(id);
-        Components.update(this, frequency, target);
+
+        autoUpdateComponent(this, frequency, target);
     }
 }

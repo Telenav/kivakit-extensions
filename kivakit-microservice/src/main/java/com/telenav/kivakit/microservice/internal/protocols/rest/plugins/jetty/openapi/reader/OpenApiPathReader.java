@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.language.reflection.Type;
@@ -23,6 +24,10 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 import java.util.List;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static com.telenav.kivakit.network.http.HttpStatus.FORBIDDEN;
@@ -39,7 +44,11 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("SpellCheckingInspection") public class OpenApiPathReader extends BaseComponent
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
+public class OpenApiPathReader extends BaseComponent
 {
     /**
      * @return Path models for all mounted paths in
@@ -60,7 +69,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
             }
             else
             {
-                problem("Unable to locate microservlet $ $", path.method(), path.path());
+                problem("Unable to locate microservlet $ $", path.httpMethod(), path.path());
             }
         }
 

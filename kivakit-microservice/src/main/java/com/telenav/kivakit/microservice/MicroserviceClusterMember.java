@@ -2,8 +2,11 @@ package com.telenav.kivakit.microservice;
 
 import com.telenav.kivakit.core.language.Hash;
 import com.telenav.kivakit.core.os.OperatingSystem;
+import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.network.core.Host;
 import org.jetbrains.annotations.NotNull;
+
+import static com.telenav.kivakit.network.core.LocalHost.localhost;
 
 /**
  * Represents a member of a {@link MicroserviceCluster} with associated user data.
@@ -11,10 +14,13 @@ import org.jetbrains.annotations.NotNull;
  * <p><b>Properties</b></p>
  *
  * <ul>
- *     <li>{@link #host()} - The host where this member is running</li>
- *     <li>{@link #processIdentifier()} - The process on the {@link #host()} where this member is running</li>
  *     <li>{@link #data()} - The user data for this member</li>
+ *     <li>{@link #host()} - The host where this member is running</li>
+ *     <li>{@link #identifier()} - The unique identifier for this cluster member</li>
+ *     <li>{@link #isLeader()} - True if this member is the cluster leader</li>
  *     <li>{@link #isThis()} - True if this member object is the one running in this process (on this host)</li>
+ *     <li>{@link #localClusterMemberInstanceIdentifier()}</li>
+ *     <li>{@link #processIdentifier()} - The process on the {@link #host()} where this member is running</li>
  * </ul>
  *
  * <p><b>Leader Elections</b></p>
@@ -30,8 +36,18 @@ import org.jetbrains.annotations.NotNull;
  * @see Host
  * @see MicroserviceCluster
  */
+@SuppressWarnings("unused")
 public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceClusterMember<Data>>
 {
+    /**
+     * Returns the instance
+     */
+    @NotNull
+    public static InstanceIdentifier localClusterMemberInstanceIdentifier()
+    {
+        return InstanceIdentifier.instanceIdentifier(localhost().dnsName() + "#" + OperatingSystem.operatingSystem().processIdentifier() + "#");
+    }
+
     /** User-defined data */
     private final Data data;
 
@@ -47,6 +63,14 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     /** The sequence number of this member, designating the order in which it joined the cluster */
     private final int sequenceNumber;
 
+    /**
+     * Create a new cluster member
+     *
+     * @param host The host
+     * @param processIdentifier The process identifier for this member
+     * @param sequenceNumber The sequence number, designating order of joining
+     * @param data The user-defined data for this member
+     */
     public MicroserviceClusterMember(Host host, int processIdentifier, int sequenceNumber, Data data)
     {
         this.host = host;
@@ -58,19 +82,22 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     /**
      * For debugging and testing
      */
-    public MicroserviceClusterMember(Data data)
+    protected MicroserviceClusterMember(Data data)
     {
-        this(Host.local(), OperatingSystem.operatingSystem().processIdentifier(), 0, data);
+        this(localhost(), OperatingSystem.operatingSystem().processIdentifier(), 0, data);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public int compareTo(@NotNull final MicroserviceClusterMember<Data> that)
+    public int compareTo(@NotNull MicroserviceClusterMember<Data> that)
     {
         return identifier().compareTo(that.identifier());
     }
 
     /**
-     * @return The user data associated with this cluster member
+     * Returns the user data associated with this cluster member
      */
     public Data data()
     {
@@ -82,11 +109,14 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
      *
      * @param elected True to elect this member, false otherwise
      */
-    public void elect(final boolean elected)
+    public void elect(boolean elected)
     {
         this.isLeader = elected;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object object)
     {
@@ -99,6 +129,9 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode()
     {
@@ -106,7 +139,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     }
 
     /**
-     * @return The host that this member is running on
+     * Returns the host that this member is running on
      */
     public Host host()
     {
@@ -120,7 +153,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     }
 
     /**
-     * @return True if this member is the elected cluster leader
+     * Returns true if this member is the elected cluster leader
      */
     public boolean isLeader()
     {
@@ -128,16 +161,16 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     }
 
     /**
-     * @return True if this cluster member is running on this host, in this process
+     * Returns true if this cluster member is running on this host, in this process
      */
     public boolean isThis()
     {
-        return host.dnsName().equals(Host.local().dnsName())
+        return host.dnsName().equals(localhost().dnsName())
                 && processIdentifier == OperatingSystem.operatingSystem().processIdentifier();
     }
 
     /**
-     * @return The process identifier on the {@link #host()} for this member
+     * Returns the process identifier on the {@link #host()} for this member
      */
     public int processIdentifier()
     {

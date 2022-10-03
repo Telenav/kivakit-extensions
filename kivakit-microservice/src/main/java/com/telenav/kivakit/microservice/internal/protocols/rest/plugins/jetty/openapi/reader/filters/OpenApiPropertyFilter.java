@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader.filters;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.language.reflection.Field;
 import com.telenav.kivakit.core.language.reflection.Member;
 import com.telenav.kivakit.core.language.reflection.Method;
@@ -8,6 +9,11 @@ import com.telenav.kivakit.core.language.reflection.property.PropertyFilter;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMemberFromSuperType;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * <b>Not public API</b>
@@ -18,6 +24,10 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMem
  *
  * @author jonathanl (shibo)
  */
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class OpenApiPropertyFilter implements PropertyFilter
 {
     private final Type<?> type;

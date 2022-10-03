@@ -18,9 +18,9 @@
 
 package com.telenav.kivakit.web.swagger;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.servlet.http.HttpServlet;
@@ -28,20 +28,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
- * Provides the Swagger JavaScript resources required to show Swagger documentation.
+ * Provides the Swagger <i>index.html</i> resource
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
-public class SwaggerJettyPlugin extends BaseAssetsJettyPlugin
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+public class SwaggerIndexJettyPlugin extends BaseAssetsJettyPlugin
 {
     /**
-     * Servlet that produces the Swagger index
+     * Servlet that produces the Swagger <i>index.html</i> static resource
      *
      * @author jonathanl (shibo)
      */
-    @LexakaiJavadoc(complete = true)
+    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
+                testing = TESTING_NONE,
+                documentation = DOCUMENTATION_COMPLETE)
     class IndexServlet extends HttpServlet
     {
         @Override
@@ -55,20 +63,26 @@ public class SwaggerJettyPlugin extends BaseAssetsJettyPlugin
         }
     }
 
+    /** The folder of OpenAPI resources to serve */
     private final ResourceFolder<?> folder;
 
+    /** The port that swagger should be accessible on */
     private final int port;
 
     /**
+     * @param folder The folder containing Swagger static resources
      * @param port The port where Swagger is running
      */
-    public SwaggerJettyPlugin(ResourceFolder<?> folder, int port)
+    public SwaggerIndexJettyPlugin(ResourceFolder<?> folder, int port)
     {
-        super("[SwaggerJettyPlugin folder = " + folder + "]");
+        super("[SwaggerIndexJettyPlugin folder = " + folder + "]");
         this.folder = folder;
         this.port = port;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServletHolder holder()
     {

@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.io.StringInputStream;
@@ -9,10 +10,9 @@ import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.launcher.JarLauncher;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
-import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.network.http.HttpNetworkLocation;
@@ -25,18 +25,31 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Locale;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.launcher.JarLauncher.RedirectTo.CONSOLE;
+import static com.telenav.kivakit.network.core.LocalHost.localhost;
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
 
 /**
  * A JAR file mounted on a path. The JAR will be run in a child process on the specified port. Requests will be
  * forwarded by {@link #handleRequest(HttpMethod, JettyRestRequestCycle)} to the child process.
  *
+ * <p><b>WARNING</b></p>
+ *
+ * <p>
+ * This API has not been tested and is currently unstable.
+ * </p>
+ *
  * @author jonathanl (shibo)
  */
-public class MountedApi extends Mounted implements TryTrait
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+public class MountedApi extends BaseMounted implements TryTrait
 {
     /** HTTP client */
     private final HttpClient client;
@@ -59,14 +72,14 @@ public class MountedApi extends Mounted implements TryTrait
     /** The API version */
     private Version version;
 
-    public MountedApi(final RestService service)
+    public MountedApi(RestService service)
     {
         super(service);
 
         client = HttpClient.newHttpClient();
     }
 
-    public MountedApi commandLine(final StringList commandLine)
+    public MountedApi commandLine(StringList commandLine)
     {
         this.commandLine = commandLine;
         return this;
@@ -79,7 +92,7 @@ public class MountedApi extends Mounted implements TryTrait
      * @param cycle The request cycle
      */
     @SuppressWarnings("ClassEscapesDefinedScope")
-    public boolean handleRequest(final HttpMethod method, final JettyRestRequestCycle cycle)
+    public boolean handleRequest(HttpMethod method, JettyRestRequestCycle cycle)
     {
         measure(path, () ->
         {
@@ -158,7 +171,7 @@ public class MountedApi extends Mounted implements TryTrait
      *
      * @param jar The JAR
      */
-    public MountedApi jar(final Resource jar)
+    public MountedApi jar(Resource jar)
     {
         this.jar = jar;
         return this;
@@ -184,7 +197,7 @@ public class MountedApi extends Mounted implements TryTrait
      *
      * @param path The path
      */
-    public MountedApi path(final RestPath path)
+    public MountedApi path(RestPath path)
     {
         this.path = path;
         return this;
@@ -203,7 +216,7 @@ public class MountedApi extends Mounted implements TryTrait
      *
      * @param port The port
      */
-    public MountedApi port(final int port)
+    public MountedApi port(int port)
     {
         this.port = port;
         return this;
@@ -214,7 +227,7 @@ public class MountedApi extends Mounted implements TryTrait
      */
     public Port port()
     {
-        return Host.local().port(port);
+        return localhost().port(port);
     }
 
     @Override
@@ -236,7 +249,7 @@ public class MountedApi extends Mounted implements TryTrait
      */
     public URI uri(String path)
     {
-        return port().path(this, Paths.concatenate(this.path.toString(), path)).asUri();
+        return port().path(this, Paths.pathConcatenate(this.path.toString(), path)).asUri();
     }
 
     /**

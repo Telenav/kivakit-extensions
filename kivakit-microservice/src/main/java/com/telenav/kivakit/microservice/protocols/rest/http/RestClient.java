@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
@@ -20,6 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.http.HttpRequest;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
  * A client for easy interaction with KivaKit {@link RestService}s.
  *
@@ -31,9 +36,32 @@ import java.net.http.HttpRequest;
  * the given path as JSON and then reads a JSON object response.
  * </p>
  *
+ * <p><b>Creation</b></p>
+ *
+ * <ul>
+ *     <li>{@link RestClient#RestClient(ObjectSerializer, Port, Version)}</li>
+ * </ul>
+ *
+ * <p><b>Properties</b></p>
+ *
+ * <ul>
+ *     <li>{@link #serverVersion()}</li>
+ * </ul>
+ *
+ * <p><b>HTTP Requests</b></p>
+ *
+ * <ul>
+ *     <li>{@link #get(String, Class)}</li>
+ *     <li>{@link #post(String, Class)}</li>
+ *     <li>{@link #post(String, Class, MicroservletRequest)}</li>
+ * </ul>
+ *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("SpellCheckingInspection")
+@SuppressWarnings("unused")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class RestClient extends BaseComponent
 {
     /** Serializer for JSON request serialization and deserialization */
@@ -43,18 +71,20 @@ public class RestClient extends BaseComponent
     private final Port port;
 
     /** The version of the remote host's REST service */
-    private final Version version;
+    private final Version serverVersion;
 
     /**
      * @param serializer JSON serialization
      * @param port The (host and) port of the remote REST service to communicate with
-     * @param version The version of the remote REST service
+     * @param serverVersion The version of the remote REST service
      */
-    public RestClient(ObjectSerializer serializer, Port port, Version version)
+    public RestClient(@NotNull ObjectSerializer serializer,
+                      @NotNull Port port,
+                      @NotNull Version serverVersion)
     {
         this.serializer = serializer;
         this.port = port;
-        this.version = version;
+        this.serverVersion = serverVersion;
     }
 
     /**
@@ -106,7 +136,7 @@ public class RestClient extends BaseComponent
                     try
                     {
                         var serialized = new StringOutputResource();
-                        serializer.write(serialized, new SerializableObject<>(request));
+                        serializer.writeObject(serialized, new SerializableObject<>(request));
                         builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
                     }
                     catch (Exception e)
@@ -127,9 +157,13 @@ public class RestClient extends BaseComponent
         return fromJson(post, responseType);
     }
 
-    public Version version()
+    /**
+     * Returns the version of the remote server that this client is interacting with. The version is specified during
+     * construction.
+     */
+    public Version serverVersion()
     {
-        return version;
+        return serverVersion;
     }
 
     private <T> T fromJson(BaseHttpResource resource, Class<T> type)
@@ -166,7 +200,7 @@ public class RestClient extends BaseComponent
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Strings.format("/api/$.$/$", version.major(), version.minor(), path);
+            path = Strings.format("/api/$.$/$", serverVersion.major(), serverVersion.minor(), path);
         }
 
         return new NetworkLocation(port.path(this, path));
@@ -179,7 +213,7 @@ public class RestClient extends BaseComponent
             var json = resource.reader().asString();
             if (!Strings.isEmpty(json))
             {
-                return serializer.read(new StringResource(json), type).object();
+                return serializer.readObject(new StringResource(json), type).object();
             }
             else
             {
