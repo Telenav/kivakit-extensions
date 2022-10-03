@@ -1,11 +1,17 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.ApiType;
 import com.telenav.kivakit.core.registry.RegistryTrait;
 import com.telenav.kivakit.core.version.Version;
 
 import java.util.Objects;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.core.version.Version.parseVersion;
 
 /**
  * <b>Not public API</b>
@@ -16,22 +22,39 @@ import java.util.Objects;
  *
  * @author jonathanl (shibo)
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = ApiType.PRIVATE)
 class LambdaFunction implements RegistryTrait
 {
+    /** The Lambda function name */
     private final String name;
 
+    /** The Lambda function version */
     private final Version version;
 
+    /**
+     * Creates an AWS Lambda function
+     *
+     * @param name The name of the function
+     * @param version The function version
+     */
     public LambdaFunction(String name, Version version)
     {
         this.name = name;
         this.version = version;
     }
 
+    /**
+     * Creates an AWS Lambda function from a Lambda context
+     *
+     * @param context Information about a Lambda function
+     */
     public LambdaFunction(Context context)
     {
         this.name = context.getFunctionName();
-        this.version = Version.parseVersion(Listener.throwingListener(), context.getFunctionVersion());
+        this.version = parseVersion(context.getFunctionVersion());
     }
 
     @Override

@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
@@ -43,6 +44,10 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
 
@@ -64,6 +69,10 @@ import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
  */
 @SuppressWarnings({ "unused" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = SERVICE_PROVIDER_IMPLEMENTATION)
 public class JettyRestRequest extends BaseComponent implements
         TryTrait,
         RestRequest,

@@ -18,8 +18,9 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.Component;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.string.KivaKitFormat;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -28,6 +29,10 @@ import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObje
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * Base interface for {@link RestRequest} and {@link RestResponse}, as well as {@link MicroservletRequest} and
@@ -62,6 +67,9 @@ import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
  * @see MicroservletResponse
  */
 @SuppressWarnings({ "unused", "DuplicatedCode" })
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public interface Restful extends Component
 {
     /**
@@ -71,38 +79,47 @@ public interface Restful extends Component
      * @param type The resulting object type
      * @return The deserialized object
      */
-    default <T> T fromJson(final String json, final Class<T> type)
+    default <T> T fromJson(String json, Class<T> type)
     {
         return restRequestCycle().gson().fromJson(json, type);
     }
 
     /**
-     * @return The microservice that is responding to a REST request
+     * Returns the microservice that is responding to a REST request
      */
-    @KivaKitIncludeProperty
+    @KivaKitFormat
     default Microservice<?> microservice()
     {
         return restService().microservice();
     }
 
+    /**
+     * Returns the REST request for the current request cycle
+     */
     default RestRequest restRequest()
     {
         return restRequestCycle().restRequest();
     }
 
     /**
-     * @return The HTTP REST request cycle associated with the calling thread
+     * Returns the HTTP REST request cycle associated with the calling thread
      */
     default RestRequestCycle restRequestCycle()
     {
-        return RestRequestThread.get();
+        return RestRequestThread.requestCycle();
     }
 
+    /**
+     * Returns the REST response for the current request cycle
+     */
     default RestResponse restResponse()
     {
         return restRequestCycle().restResponse();
     }
 
+    /**
+     * Returns the REST service handling requests
+     */
     default RestService restService()
     {
         return restRequestCycle().restService();
@@ -142,7 +159,7 @@ public interface Restful extends Component
     /**
      * @return The version of the microservice that is responding to a request
      */
-    @KivaKitIncludeProperty
+    @KivaKitFormat
     @OpenApiIncludeMember(title = "Version", description = "The microservice version")
     default Version version()
     {

@@ -1,5 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.ApiType;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.reflection.Member;
@@ -22,6 +24,10 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureFalse;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
@@ -43,6 +49,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see OpenApiIncludeMember
  */
 @SuppressWarnings({ "rawtypes", "SpellCheckingInspection" })
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class OpenApiSchemaReader extends BaseComponent
 {
     /** Models for which to make schemas */

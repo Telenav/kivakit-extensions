@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.Converter;
 import com.telenav.kivakit.core.messaging.Listener;
@@ -14,24 +15,55 @@ import com.telenav.kivakit.properties.PropertyMap;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
 /**
- * A microservlet responds to a request by implementing {@link #onRespond(MicroservletRequest)}. The response object
- * must be a subclass of {@link MicroservletResponse}.
+ * A {@link Microservlet} subclass responds to a request by implementing {@link #onRespond(MicroservletRequest)}. The
+ * response object returned must be a subclass of {@link MicroservletResponse}.
  *
  * <p>The request and response type for a microservlet are provided by {@link #requestType()} and a {@link
- * #responseType()}. Parameters to a microservlet can be retrieved in a subclass with {@link #parameters()} and the
- * as*() methods.
+ * #responseType()}. Parameters to a microservlet can be retrieved in a subclass with the methods beginning with
+ * "parameter".
  * </p>
  *
  * <p><b>IMPORTANT NOTE</b></p>
  * <p>
  * For most applications, it isn't necessary (or desirable) to directly subclass {@link Microservlet}. Instead a
- * ({@link MicroservletRequest} request handler should be mounted directly on a {@link RestService} with the
- * {@link RestService#mount(String, HttpMethod, Class)}.
+ * ({@link MicroservletRequest} request handler should be mounted directly on a {@link RestService} with the method
+ * {@link RestService#mount(String, HttpMethod, Class)}. Calling this method will install an anonymous subclass of
+ * {@link Microservlet} that handles the request by dispatching it to the right request handler.
  * </p>
+ *
+ * <p><b>Properties</b></p>
+ *
+ * <ul>
+ *     <li>{@link #description()}</li>
+ *     <li>{@link #name()}</li>
+ *     <li>{@link #requestType()}</li>
+ *     <li>{@link #responseType()}</li>
+ * </ul>
+ *
+ * <p><b>Responding</b></p>
+ *
+ * <ul>
+ *     <li>{@link #respond(MicroservletRequest)}</li>
+ *     <li>{@link #onRespond(MicroservletRequest)}</li>
+ * </ul>
+ *
+ * <p><b>Parameters</b></p>
+ *
+ * <ul>
+ *     <li>{@link #parameterAsInt(String)}</li>
+ *     <li>{@link #parameterAsLong(String)}</li>
+ *     <li>{@link #parameterAsObject(String, Converter)}</li>
+ *     <li>{@link #parameterAsObject(String, Class)}</li>
+ *     <li>{@link #parameter(String)}</li>
+ *     <li>{@link #parameters()}</li>
+ * </ul>
  *
  * @author jonathanl (shibo)
  * @see MicroservletRequest
@@ -42,7 +74,11 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 @UmlRelation(label = "attaches", referent = JettyRestRequestCycle.class)
-public abstract class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent implements Named
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+public abstract class Microservlet<Request extends MicroservletRequest, Response extends MicroservletResponse> extends
+        BaseComponent implements Named
 {
     /** The type of the request object */
     @UmlRelation(label = "references sub-class", referent = MicroservletRequest.class)
@@ -63,13 +99,16 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     }
 
     /**
-     * @return Description of what this microservice does, for OpenAPI
+     * Returns description of what this microservice does, for OpenAPI
      */
     public String description()
     {
         return "No description available";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String name()
     {
@@ -85,13 +124,16 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     }
 
     /**
-     * @return The request object type
+     * Returns the request object type
      */
     public Class<? extends Request> requestType()
     {
         return requestType;
     }
 
+    /**
+     * Responds to the given request with a response
+     */
     @SuppressWarnings("unchecked")
     public Response respond(MicroservletRequest request)
     {
@@ -99,7 +141,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     }
 
     /**
-     * @return The response object type
+     * Returns the response object type
      */
     public Class<? extends Response> responseType()
     {
@@ -107,33 +149,33 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     }
 
     /**
-     * @return The parameter value for the given key as an int
+     * Returns the parameter value for the given key
      */
-    protected int asInt(String key)
+    protected String parameter(String key)
+    {
+        return parameters().get(key);
+    }
+
+    /**
+     * Returns the parameter value for the given key as an int
+     */
+    protected int parameterAsInt(String key)
     {
         return parameters().asIntegerObject(key);
     }
 
     /**
-     * @return The parameter value for the given key as a long
+     * Returns the parameter value for the given key as a long
      */
-    protected long asLong(String key)
+    protected long parameterAsLong(String key)
     {
         return parameters().asLong(key);
     }
 
     /**
-     * @return The parameter value for the given key as an object
+     * Returns the parameter value for the given key as an object
      */
-    protected <T> T asObject(String key, Converter<String, T> converter)
-    {
-        return converter.convert(get(key));
-    }
-
-    /**
-     * @return The parameter value for the given key as an object
-     */
-    protected <T> T asObject(String key, Class<Converter<String, T>> converterType)
+    protected <T> T parameterAsObject(String key, Class<Converter<String, T>> converterType)
     {
         try
         {
@@ -141,7 +183,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
                     .getConstructor(Listener.class)
                     .newInstance(this));
 
-            return asObject(key, converter);
+            return parameterAsObject(key, converter);
         }
         catch (Exception e)
         {
@@ -151,18 +193,18 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
     }
 
     /**
-     * @return The parameter value for the given key
+     * Returns the parameter value for the given key as an object
      */
-    protected String get(String key)
+    protected <T> T parameterAsObject(String key, Converter<String, T> converter)
     {
-        return parameters().get(key);
+        return converter.convert(parameter(key));
     }
 
     /**
-     * @return The parameters for the request
+     * Returns the parameters for the request
      */
     protected PropertyMap parameters()
     {
-        return RestRequestThread.get().restRequest().parameters();
+        return RestRequestThread.requestCycle().restRequest().parameters();
     }
 }

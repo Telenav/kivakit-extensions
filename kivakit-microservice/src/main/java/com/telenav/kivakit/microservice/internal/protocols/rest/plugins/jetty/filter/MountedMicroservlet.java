@@ -1,22 +1,31 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.properties.PropertyMap;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
- * A mounted {@link Microservlet} which can handle requests with
- * {@link #handleRequest(HttpMethod, RestRequestCycle)}
+ * A mounted {@link Microservlet} which can handle requests with {@link #handleRequest(HttpMethod, RestRequestCycle)}
  *
  * @author jonathanl (shibo)
  */
-public class MountedMicroservlet extends Mounted
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
+public class MountedMicroservlet extends BaseMounted
 {
     /** The microservlet */
     Microservlet<?, ?> microservlet;
@@ -27,7 +36,7 @@ public class MountedMicroservlet extends Mounted
     /** Any path parameters */
     RestPath parameters;
 
-    public MountedMicroservlet(final RestService service)
+    public MountedMicroservlet(RestService service)
     {
         super(service);
     }

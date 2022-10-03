@@ -37,8 +37,8 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.microservlet.MicroservletPerformance;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Resource;
@@ -461,7 +461,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      *
      * @param statistics The statistics
      */
-    public void onRequestStatistics(MicroservletRequestHandlingStatistics statistics)
+    public void onRequestStatistics(MicroservletPerformance statistics)
     {
     }
 
@@ -541,7 +541,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      * @param version The API version
      * @return The path to the APi for the given version
      */
-    protected String versionToPath(final Version version)
+    protected String versionToPath(Version version)
     {
         return Strings.format("/api/$.$", version.major(), version.minor());
     }
@@ -552,7 +552,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      * @param commandLine The command line
      * @return The list of arguments
      */
-    private StringList parseCommandLine(final String commandLine)
+    private StringList parseCommandLine(String commandLine)
     {
         return StringList.split(commandLine, ",");
     }

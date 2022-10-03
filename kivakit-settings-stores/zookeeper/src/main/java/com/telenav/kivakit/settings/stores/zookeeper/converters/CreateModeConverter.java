@@ -6,7 +6,7 @@ import com.telenav.kivakit.core.messaging.Listener;
 import kivakit.merged.zookeeper.CreateMode;
 
 import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.API_PRIVATE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
 
@@ -18,7 +18,7 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NE
 @ApiQuality(stability = API_STABLE_EXTENSIBLE,
             testing = TESTING_NOT_NEEDED,
             documentation = DOCUMENTATION_COMPLETE,
-            type = API_PRIVATE)
+            type = PRIVATE)
 public class CreateModeConverter extends EnumConverter<CreateMode>
 {
     /**

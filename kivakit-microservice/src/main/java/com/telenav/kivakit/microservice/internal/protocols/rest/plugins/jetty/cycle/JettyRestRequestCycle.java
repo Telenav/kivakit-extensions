@@ -1,20 +1,26 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
 import com.google.gson.Gson;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * <b>Not public API</b>
@@ -41,7 +47,12 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramJetty.class)
+@SuppressWarnings("unused")
+@UmlClassDiagram(diagram = DiagramJetty.class)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = SERVICE_PROVIDER_IMPLEMENTATION)
 public class JettyRestRequestCycle extends BaseComponent implements
         RestRequestCycle,
         RestProblemReportingTrait

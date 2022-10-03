@@ -1,22 +1,29 @@
 package com.telenav.kivakit.microservice.microservlet;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * Prepares {@link MicroservletResponse} when {@link #onRespond()} is called.
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public interface MicroservletRequestHandler extends Listener
 {
     /**
      * Called with request statistics for each request
      */
-    void onRequestHandlingStatistics(MicroservletRequestHandlingStatistics statistics);
+    void onMicroservletPerformance(MicroservletPerformance statistics);
 
     /**
      * Handles this request, producing a {@link MicroservletResponse}
@@ -34,7 +41,7 @@ public interface MicroservletRequestHandler extends Listener
     default MicroservletResponse respond(String path)
     {
         // Create request handling statistics object for our request,
-        var statistics = new MicroservletRequestHandlingStatistics();
+        var statistics = new MicroservletPerformance();
         statistics.path(path);
         statistics.start();
 
@@ -62,7 +69,7 @@ public interface MicroservletRequestHandler extends Listener
         {
             // Finish collecting request handling statistics.
             statistics.end();
-            onRequestHandlingStatistics(statistics);
+            onMicroservletPerformance(statistics);
         }
     }
 }

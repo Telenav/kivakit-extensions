@@ -3,6 +3,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.o
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
@@ -16,9 +17,9 @@ import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
@@ -29,6 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
  * <b>Not public API</b>
  * <p>
@@ -37,6 +42,9 @@ import java.util.Set;
  */
 @SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramJetty.class)
 @OpenApiExcludeMember({ "exampleSetFlag" })
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class OpenApiJsonRequest extends BaseMicroservletRequest
 {
     /**
@@ -58,7 +66,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
         @Override
         public GsonFactory gsonFactory()
         {
-            var factory = RestRequestThread.get()
+            var factory = RestRequestThread.requestCycle()
                     .restService()
                     .microservice()
                     .gsonFactory();

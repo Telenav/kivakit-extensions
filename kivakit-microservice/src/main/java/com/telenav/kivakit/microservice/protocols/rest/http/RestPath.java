@@ -1,10 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.telenav.kivakit.core.logging.Logger;
-import com.telenav.kivakit.core.logging.LoggerFactory;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.registry.RegistryTrait;
-import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.Microservice;
@@ -15,38 +13,84 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.messaging.Listener.throwingListener;
+import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
 
 /**
- * A request path and method for a {@link Microservlet}.
+ * A request path and method for a {@link Microservlet}
+ *
+ * <p><b>Creation</b></p>
+ *
+ * <ul>
+ *     <li>{@link RestPath#RestPath(FilePath, HttpMethod)}</li>
+ *     <li>{@link #parse(Listener, String, HttpMethod)}</li>
+ * </ul>
+ *
+ * <p><b>Properties</b></p>
+ *
+ * <ul>
+ *     <li>{@link #httpMethod()}</li>
+ *     <li>{@link #key()}</li>
+ *     <li>{@link #path()}</li>
+ *     <li>{@link #resolvedPath()}</li>
+ *     <li>{@link #version()}</li>
+ * </ul>
  *
  * @author jonathanl (shibo)
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class RestPath implements
         RegistryTrait,
         Comparable<RestPath>
 {
-    private static final Logger LOGGER = LoggerFactory.newLogger();
+    /** Pattern for REST paths */
+    public static final Pattern API_ROOT_PATTERN = Pattern.compile("/api/(?<version>\\d+\\.\\d+)/");
 
-    public static final Pattern VERSION_PATTERN = Pattern.compile("/api/(?<version>\\d+\\.\\d+)/");
-
-    public static RestPath parse(Listener listener, String path, HttpMethod httpMethod)
+    /**
+     * Returns the given path and HTTP method parsed into a rest path
+     *
+     * @param listener The listener to notify of problems
+     * @param path The path
+     * @param httpMethod The HTTP method
+     * @return The {@link RestPath}
+     */
+    public static RestPath parse(@NotNull Listener listener,
+                                 @NotNull String path,
+                                 @NotNull HttpMethod httpMethod)
     {
-        return new RestPath(FilePath.parseFilePath(listener, path), httpMethod);
+        return new RestPath(parseFilePath(listener, path), httpMethod);
     }
 
-    private final HttpMethod httpMethod;
-
+    /** The path */
     private final FilePath path;
 
-    public RestPath(FilePath path, HttpMethod httpMethod)
+    /** The HTTP method */
+    private final HttpMethod httpMethod;
+
+    /**
+     * Creates a REST path
+     *
+     * @param path The path
+     * @param httpMethod The HTTP method for accessing the path
+     */
+    public RestPath(@NotNull FilePath path,
+                    @NotNull HttpMethod httpMethod)
     {
         this.path = path;
         this.httpMethod = ensureNotNull(httpMethod);
     }
 
     @Override
-    public int compareTo(@NotNull final RestPath that)
+    public int compareTo(@NotNull RestPath that)
     {
         return key().compareTo(that.key());
     }
@@ -68,40 +112,51 @@ public class RestPath implements
         return Objects.hash(key());
     }
 
+    /**
+     * Returns the HTTP method for this rest path
+     */
     public HttpMethod httpMethod()
     {
         return httpMethod;
     }
 
+    /**
+     * Returns true if this path is not empty
+     */
     public boolean isNonEmpty()
     {
         return path.isNonEmpty();
     }
 
+    /**
+     * Returns this path as a unique key
+     */
     public String key()
     {
         return resolvedPath() + httpMethod.name();
     }
 
-    public HttpMethod method()
-    {
-        return httpMethod;
-    }
-
+    /**
+     * Returns the path portion of this rest path
+     */
     public FilePath path()
     {
         return path;
     }
 
+    /**
+     * Resolves this path by prefixing it with "/api/[version]/"
+     *
+     * @return The full path
+     */
     public FilePath resolvedPath()
     {
         if (!path.startsWith("/"))
         {
-            var microservice = require(Microservice.class);
-            var version = microservice.version();
-            var restService = require(RestService.class);
-            var apiPath = restService.versionToPath(version);
-            return FilePath.parseFilePath(LOGGER, Paths.pathConcatenate(apiPath, path.asString()));
+            var apiPath = require(RestService.class)
+                    .versionToPath(require(Microservice.class).version());
+
+            return parseFilePath(throwingListener(), pathConcatenate(apiPath, path.asString()));
         }
 
         return path;
@@ -113,9 +168,12 @@ public class RestPath implements
         return path.isEmpty() ? "" : resolvedPath().toString();
     }
 
+    /**
+     * Returns the version for this path
+     */
     public Version version()
     {
-        var matcher = VERSION_PATTERN.matcher(path().asString());
+        var matcher = API_ROOT_PATTERN.matcher(path().asString());
         if (matcher.find())
         {
             return Version.version(matcher.group("version"));
@@ -123,6 +181,9 @@ public class RestPath implements
         return null;
     }
 
+    /**
+     * Returns this rest path without the last component of the path portion
+     */
     public RestPath withoutLast()
     {
         return new RestPath(path.withoutLast(), httpMethod);

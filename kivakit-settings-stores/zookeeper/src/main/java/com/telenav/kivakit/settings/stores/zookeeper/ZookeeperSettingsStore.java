@@ -616,7 +616,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         return maybeFlatten(storePath()
                 .withChild(object.identifier().type().getName())
-                .withChild(object.identifier().instance().identifier().name())
+                .withChild(object.identifier().instance().enumIdentifier().name())
                 .withRoot("/"));
     }
 
