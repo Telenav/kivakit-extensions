@@ -10,7 +10,6 @@ import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.string.Strip;
-import com.telenav.kivakit.core.thread.KivaKitThread;
 import com.telenav.kivakit.core.thread.StateMachine;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.value.count.Bytes;
@@ -31,8 +30,8 @@ import java.util.Map;
 import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.core.time.Duration.minutes;
 import static com.telenav.kivakit.core.time.Frequency.every;
 import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
@@ -404,31 +403,27 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     @SuppressWarnings("InfiniteLoopStatement")
     private void connect()
     {
-        // Start a background thread to keep re-connecting to Zookeeper
-        KivaKitThread.run("Zookeeper Connector", () ->
+        while (true)
         {
-            while (true)
+            synchronized (ZookeeperConnection.this)
             {
-                synchronized (ZookeeperConnection.this)
+                if (connectingZookeeper == null)
                 {
-                    if (connectingZookeeper == null)
+                    try
                     {
-                        try
-                        {
-                            // Start Zookeeper with this object as the watcher,
-                            this.connectingZookeeper = new ZooKeeper(settings().ports, (int) settings().timeout.asMilliseconds(), this);
-                        }
-                        catch (Exception e)
-                        {
-                            transmit(new Warning("Unable to connect to zookeeper: $", settings().ports)
-                                    .maximumFrequency(every(minutes(1.5))));
-                        }
+                        // Start Zookeeper with this object as the watcher,
+                        this.connectingZookeeper = new ZooKeeper(settings().ports, (int) settings().timeout.asMilliseconds(), this);
+                    }
+                    catch (Exception e)
+                    {
+                        transmit(new Warning("Unable to connect to zookeeper: $", settings().ports)
+                                .maximumFrequency(every(minutes(1.5))));
                     }
                 }
-
-                Duration.seconds(15).sleep();
             }
-        });
+
+            Duration.seconds(15).sleep();
+        }
     }
 
     /**

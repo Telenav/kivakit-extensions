@@ -49,7 +49,7 @@ import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPL
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
-import static com.telenav.kivakit.core.messaging.Listener.emptyListener;
+import static com.telenav.kivakit.core.messaging.Listener.nullListener;
 
 /**
  * <b>Not public API</b>
@@ -146,7 +146,7 @@ public class JettyRestRequest extends BaseComponent implements
     @Override
     public PropertyMap parameters()
     {
-        return parameters(FilePath.parseFilePath(emptyListener(), ""));
+        return parameters(FilePath.parseFilePath(nullListener(), ""));
     }
 
     /**

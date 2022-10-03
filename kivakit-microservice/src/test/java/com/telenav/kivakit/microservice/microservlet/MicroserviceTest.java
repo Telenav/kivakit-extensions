@@ -13,6 +13,7 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.network.core.LocalHost;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
@@ -24,6 +25,8 @@ import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static com.telenav.kivakit.network.core.LocalHost.localhost;
 
 @Ignore
 public class MicroserviceTest extends UnitTest
@@ -199,7 +202,7 @@ public class MicroserviceTest extends UnitTest
         microservice.waitForReady();
 
         var client = listenTo(new RestClient(
-                new GsonObjectSerializer(), Host.localhost().http(8086), microservice.version()));
+                new GsonObjectSerializer(), localhost().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
@@ -228,7 +231,7 @@ public class MicroserviceTest extends UnitTest
         var response2 = client.get("test", TestResponse.class);
         ensureEqual(42, response2.result);
 
-        var grpcClient = listenTo(new MicroserviceGrpcClient(Host.localhost().port(8087), microservice.version()));
+        var grpcClient = listenTo(new MicroserviceGrpcClient(localhost().port(8087), microservice.version()));
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 
