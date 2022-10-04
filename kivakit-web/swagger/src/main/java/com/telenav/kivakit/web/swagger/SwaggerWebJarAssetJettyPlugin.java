@@ -18,23 +18,30 @@
 
 package com.telenav.kivakit.web.swagger;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.language.Classes;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
- * Provides the Swagger JavaScript resources required to show Swagger documentation for the given REST application.
+ * Provides the Swagger <a href="https://www.webjars.org">WebJar</a> static resource required to show Swagger
+ * documentation
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
-public class SwaggerWebJarJettyPlugin extends BaseAssetsJettyPlugin
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+public class SwaggerWebJarAssetJettyPlugin extends BaseAssetsJettyPlugin
 {
-    public SwaggerWebJarJettyPlugin()
+    public SwaggerWebJarAssetJettyPlugin()
     {
-        super("[SwaggerWebJarJettyPlugin]");
+        super("[SwaggerWebJarAssetJettyPlugin]");
     }
 
     @Override
@@ -50,6 +57,6 @@ public class SwaggerWebJarJettyPlugin extends BaseAssetsJettyPlugin
     private String resourceBase()
     {
         var path = "META-INF/resources/webjars/swagger-ui/3.51.2";
-        return Classes.resourceUri(SwaggerJettyPlugin.class, path).toString();
+        return Classes.resourceUri(SwaggerIndexJettyPlugin.class, path).toString();
     }
 }

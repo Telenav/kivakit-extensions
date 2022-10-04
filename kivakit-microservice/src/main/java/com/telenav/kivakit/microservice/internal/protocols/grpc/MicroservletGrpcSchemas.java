@@ -1,6 +1,5 @@
 package com.telenav.kivakit.microservice.internal.protocols.grpc;
 
-import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtobufIOUtil;
 import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
@@ -11,7 +10,18 @@ import com.telenav.kivakit.core.messaging.Listener;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@SuppressWarnings("unchecked") public class MicroservletGrpcSchemas extends BaseComponent
+import static com.dyuproject.protostuff.LinkedBuffer.allocate;
+import static com.dyuproject.protostuff.ProtobufIOUtil.toByteArray;
+import static com.google.protobuf.ByteString.copyFrom;
+
+/**
+ * Allows serialization and deserialization of objects using cached gRPC schemas created at runtime by
+ * {@link RuntimeSchema#getSchema(Class)}
+ *
+ * @author jonathanl (shibo)
+ */
+@SuppressWarnings("unchecked")
+public class MicroservletGrpcSchemas extends BaseComponent
 {
     /** Cache of schemas */
     private static final Map<Class<?>, Schema<?>> typeToSchema = new ConcurrentHashMap<>();
@@ -52,6 +62,6 @@ import java.util.concurrent.ConcurrentHashMap;
      */
     public ByteString serialize(Class<?> type, Object object)
     {
-        return ByteString.copyFrom(ProtobufIOUtil.toByteArray(object, (Schema<Object>) schemaFor(type), LinkedBuffer.allocate(4096)));
+        return copyFrom(toByteArray(object, (Schema<Object>) schemaFor(type), allocate(4096)));
     }
 }

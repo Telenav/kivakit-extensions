@@ -18,11 +18,17 @@
 
 package com.telenav.kivakit.web.jetty.resources;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
 
 /**
  * Base class for request handlers that filter requests and then pass them on to other request handlers and finally
@@ -30,6 +36,9 @@ import java.util.EnumSet;
  *
  * @author jonathanl (shibo)
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NOT_NEEDED,
+            documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseFilterJettyPlugin extends BaseJettyRequestHandler
 {
     public BaseFilterJettyPlugin(String name)

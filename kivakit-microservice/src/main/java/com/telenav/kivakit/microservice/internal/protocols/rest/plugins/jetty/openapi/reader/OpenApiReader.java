@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
@@ -8,6 +9,11 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeTyp
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * Reads simplified OpenApi annotations from a {@link RestService}.
@@ -26,6 +32,10 @@ import io.swagger.v3.oas.models.OpenAPI;
  * @see OpenApiRequestHandler
  * @see OpenApiIncludeType
  */
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class OpenApiReader extends BaseComponent
 {
     public OpenAPI read()

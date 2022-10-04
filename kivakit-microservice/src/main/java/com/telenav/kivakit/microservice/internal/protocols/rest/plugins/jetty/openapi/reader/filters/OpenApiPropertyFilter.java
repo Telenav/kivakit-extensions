@@ -1,15 +1,19 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader.filters;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.core.language.reflection.Field;
+import com.telenav.kivakit.core.language.reflection.Member;
+import com.telenav.kivakit.core.language.reflection.Method;
 import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.language.reflection.property.PropertyFilter;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMemberFromSuperType;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * <b>Not public API</b>
@@ -20,6 +24,10 @@ import java.lang.reflect.Method;
  *
  * @author jonathanl (shibo)
  */
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class OpenApiPropertyFilter implements PropertyFilter
 {
     private final Type<?> type;
@@ -50,13 +58,13 @@ public class OpenApiPropertyFilter implements PropertyFilter
     @Override
     public String nameForField(Field field)
     {
-        return field.getName();
+        return field.name();
     }
 
     @Override
     public String nameForMethod(Method method)
     {
-        return method.getName();
+        return method.name();
     }
 
     /**
@@ -64,7 +72,7 @@ public class OpenApiPropertyFilter implements PropertyFilter
      * @param member The member to check
      * @return True if the member is excluded from the type
      */
-    private boolean exclude(Type<?> type, AnnotatedElement member)
+    private boolean exclude(Type<?> type, Member member)
     {
         // Get any exclude annotation
         var exclude = type.annotation(OpenApiExcludeMember.class);
@@ -75,7 +83,7 @@ public class OpenApiPropertyFilter implements PropertyFilter
             for (var excludedMemberName : exclude.value())
             {
                 // exclude the member if its excludedMemberName matches.
-                if (excludedMemberName.equals(((Member) member).getName()))
+                if (excludedMemberName.equals(member.name()))
                 {
                     return true;
                 }
@@ -87,10 +95,10 @@ public class OpenApiPropertyFilter implements PropertyFilter
 
     /**
      * @param member The member to check
-     * @return True if the member is included by @{@link OpenApiIncludeMember} and not excluded by {@link
-     * OpenApiExcludeMember}.
+     * @return True if the member is included by @{@link OpenApiIncludeMember} and not excluded by
+     * {@link OpenApiExcludeMember}.
      */
-    private boolean include(AnnotatedElement member)
+    private boolean include(Member member)
     {
         // For all super types of this type,
         for (var at : type.superTypes().with(type))
@@ -105,7 +113,7 @@ public class OpenApiPropertyFilter implements PropertyFilter
             for (var annotation : at.annotations(OpenApiIncludeMemberFromSuperType.class))
             {
                 // if the name matches this member,
-                if (annotation.member().equals(((Member) member).getName()))
+                if (annotation.member().equals(member.name()))
                 {
                     // then include it.
                     return true;
@@ -114,6 +122,6 @@ public class OpenApiPropertyFilter implements PropertyFilter
         }
 
         // The member is included if it has an @OpenApiIncludeMember annotation.
-        return member.getAnnotation(OpenApiIncludeMember.class) != null;
+        return member.annotation(OpenApiIncludeMember.class) != null;
     }
 }

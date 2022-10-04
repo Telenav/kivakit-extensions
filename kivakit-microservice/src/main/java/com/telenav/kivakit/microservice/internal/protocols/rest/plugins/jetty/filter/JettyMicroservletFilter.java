@@ -1,15 +1,17 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
 import com.google.gson.Gson;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
+import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -27,6 +29,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
  * <b>Not public API</b>
  *
@@ -37,9 +44,9 @@ import java.util.Set;
  * <p><b>Microservlet Mounts</b></p>
  *
  * <p>
- * {@link Microservlet}s are mounted on paths with {@link #mount(RestPath, Microservlet)}. When {@link
- * #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is parsed
- * and the associated microservlet (if any) is invoked.
+ * {@link Microservlet}s are mounted on paths with {@link #mount(RestPath, Microservlet)}. When
+ * {@link #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is
+ * parsed and the associated microservlet (if any) is invoked.
  * </p>
  *
  * <p>
@@ -52,18 +59,23 @@ import java.util.Set;
  * <p><b>JAR Mounts</b></p>
  *
  * <p>
- * To permit robust backwards compatibility, JAR files can be mounted with {@link #mount(MountedApi)} When {@link
- * #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is parsed.
- * If there is a JAR mounted on the path, it is executed in a child process (if it is not already running) using the
- * given port for HTTP. The request is delegated to the child process' port.
+ * To permit robust backwards compatibility, JAR files can be mounted with {@link #mount(MountedApi)} When
+ * {@link #doFilter(ServletRequest, ServletResponse, FilterChain)} is called by the servlet implementation, the path is
+ * parsed. If there is a JAR mounted on the path, it is executed in a child process (if it is not already running) using
+ * the given port for HTTP. The request is delegated to the child process' port.
  * </p>
  *
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramJetty.class)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = SERVICE_PROVIDER_IMPLEMENTATION)
 public class JettyMicroservletFilter extends BaseComponent implements
         Filter,
+        TryTrait,
         RestProblemReportingTrait
 {
     /** Map from path to mounted JAR */
@@ -113,7 +125,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
             var httpResponse = (HttpServletResponse) servletResponse;
 
             // parse the HTTP method,
-            var method = HttpMethod.parse(httpRequest.getMethod());
+            var method = HttpMethod.parseHttpMethod(this, httpRequest.getMethod());
             if (method != null && method != HttpMethod.OPTIONS)
             {
                 // create REST request cycle,
@@ -203,7 +215,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         if (existing != null)
         {
             problem("$: There is already a $ microservlet mounted on $: ${class}",
-                    microservice.name(), path.method(), path.path(), existing.getClass()).throwAsIllegalStateException();
+                    microservice.name(), path.httpMethod(), path.path(), existing.getClass()).throwAsIllegalStateException();
         }
 
         var mounted = listenTo(new MountedMicroservlet(service));
@@ -211,7 +223,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         mounted.path = path;
 
         mountedMicroservlets.put(path, mounted);
-        information("Mounted microservlet $ $ => $", path.method().name(), path, microservlet.name());
+        information("Mounted microservlet $ $ => $", path.httpMethod().name(), path, microservlet.name());
     }
 
     /**
@@ -255,7 +267,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
      * @param path The mount path
      * @return The JAR at the given path, or null if the path does not map to any JAR
      */
-    private MountedApi resolveApi(final RestPath path)
+    private MountedApi resolveApi(RestPath path)
     {
         int removed = 0;
         for (var at = path; at.isNonEmpty(); at = at.withoutLast(), removed++)
@@ -285,7 +297,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
             var mounted = microservlet(at);
             if (mounted != null)
             {
-                mounted.parameters = new RestPath(path.path().last(removed), path.method());
+                mounted.parameters = new RestPath(path.path().last(removed), path.httpMethod());
                 return mounted;
             }
         }

@@ -18,16 +18,22 @@
 
 package com.telenav.kivakit.web.jersey;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.messaging.repeaters.RepeaterMixin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
 
 /**
  * Base class for Rest applications that clarifies the Jersey API.
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NOT_NEEDED,
+            documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseRestApplication extends ResourceConfig implements RepeaterMixin
 {
 }

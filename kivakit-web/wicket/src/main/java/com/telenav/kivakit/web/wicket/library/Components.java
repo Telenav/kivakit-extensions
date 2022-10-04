@@ -18,25 +18,41 @@
 
 package com.telenav.kivakit.web.wicket.library;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.time.Frequency;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 
 import java.util.function.Consumer;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
  * Utility methods useful for Apache Wicket {@link Component}s.
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class Components
 {
-    public static void update(Component component,
-                              Frequency frequency,
-                              Consumer<AjaxRequestTarget> afterUpdate)
+    /**
+     * Updates the given Wicket component at the given frequency, calling the given consumer with
+     * {@link AjaxRequestTarget} after updating
+     *
+     * @param component The component
+     * @param frequency The update frequency
+     * @param afterUpdate The code to call after updating
+     */
+    public static void autoUpdateComponent(Component component,
+                                           Frequency frequency,
+                                           Consumer<AjaxRequestTarget> afterUpdate)
     {
         component.setOutputMarkupId(true);
         component.setOutputMarkupPlaceholderTag(true);

@@ -37,8 +37,8 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
+import com.telenav.kivakit.microservice.microservlet.MicroservletPerformance;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandlingStatistics;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Resource;
@@ -324,7 +324,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(Version version, String path, HttpMethod method, Class<Request> requestType)
     {
-        mount(Paths.concatenate(versionToPath(version), path), method, requestType);
+        mount(Paths.pathConcatenate(versionToPath(version), path), method, requestType);
     }
 
     /**
@@ -344,14 +344,14 @@ public abstract class RestService extends BaseComponent implements Initializable
         if (initializing)
         {
             // create a request object, so we can get the response type and HTTP method,
-            var request = listenTo(Type.forClass(requestType).newInstance());
+            var request = listenTo(Type.typeForClass(requestType).newInstance());
             if (request != null)
             {
                 // then mount an anonymous microservlet on the given path,
                 @SuppressWarnings("unchecked")
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                var restPath = RestPath.parse(this, Paths.concatenate(rootPath(), path), method);
+                var restPath = RestPath.parse(this, Paths.pathConcatenate(rootPath(), path), method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
@@ -391,7 +391,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     {
         for (var path : pathToRequest.keySet())
         {
-            target.mount(Paths.concatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
+            target.mount(Paths.pathConcatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
         }
     }
 
@@ -461,7 +461,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      *
      * @param statistics The statistics
      */
-    public void onRequestStatistics(MicroservletRequestHandlingStatistics statistics)
+    public void onRequestStatistics(MicroservletPerformance statistics)
     {
     }
 
@@ -541,7 +541,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      * @param version The API version
      * @return The path to the APi for the given version
      */
-    protected String versionToPath(final Version version)
+    protected String versionToPath(Version version)
     {
         return Strings.format("/api/$.$", version.major(), version.minor());
     }
@@ -552,7 +552,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      * @param commandLine The command line
      * @return The list of arguments
      */
-    private StringList parseCommandLine(final String commandLine)
+    private StringList parseCommandLine(String commandLine)
     {
         return StringList.split(commandLine, ",");
     }

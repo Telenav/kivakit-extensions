@@ -18,14 +18,33 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.ApiType;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.http.HttpStatus;
 
 import javax.servlet.http.HttpServletResponse;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
+/**
+ * Interface for abstracting HTTP REST requests
+ *
+ * @author jonathanl (shibo)
+ * @see JettyRestResponse
+ * @see JettyRestRequestCycle
+ */
 @SuppressWarnings("unused")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = ApiType.PRIVATE)
 public interface RestResponse extends RestProblemReportingTrait
 {
     /**
