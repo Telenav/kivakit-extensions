@@ -18,20 +18,26 @@
 
 package com.telenav.kivakit.web.jersey;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
  * {@link BaseServletJettyPlugin} plugin that can be added to {@link JettyServer} to serve REST resources from the
- * {@link ResourceConfig} application passed to the constructor.
+ * {@link BaseRestApplication} application passed to the constructor.
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class JerseyJettyPlugin extends BaseServletJettyPlugin
 {
     private final ResourceConfig application;

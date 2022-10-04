@@ -18,6 +18,7 @@
 
 package com.telenav.kivakit.web.jetty;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.string.Paths;
@@ -28,7 +29,6 @@ import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.session.SessionHandler;
@@ -42,6 +42,9 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 
@@ -94,9 +97,43 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
  * }
  * </pre>
  *
+ * <p><b>Mounting Plugins</b></p>
+ *
+ * <ul>
+ *     <li>{@link #mount(String, BaseAssetsJettyPlugin)}</li>
+ *     <li>{@link #mount(String, BaseFilterJettyPlugin)}</li>
+ *     <li>{@link #mount(String, BaseServletJettyPlugin)}</li>
+ * </ul>
+ *
+ * <p><b>Configuration</b></p>
+ *
+ * <ul>
+ *     <li>{@link #configureLogging()}</li>
+ *     <li>{@link #port(int)}</li>
+ * </ul>
+ *
+ * <p><b>CORS</b></p>
+ *
+ * <ul>
+ *     <li>{@link #addCrossOriginFilter(ObjectSet, ObjectSet, ObjectSet, Duration)}</li>
+ * </ul>
+ *
+ * <p><b>Starting and Stopping</b></p>
+ *
+ * <ul>
+ *     <li>{@link #isRunning()}</li>
+ *     <li>{@link #maximumStopTime()}</li>
+ *     <li>{@link #start()}</li>
+ *     <li>{@link #stop(Duration)}</li>
+ *     <li>{@link #waitForTermination()}</li>
+ * </ul>
+ *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("unused") @LexakaiJavadoc(complete = true)
+@SuppressWarnings("unused")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class JettyServer extends BaseComponent implements
         Startable,
         Stoppable<Duration>
@@ -173,7 +210,7 @@ public class JettyServer extends BaseComponent implements
     }
 
     @Override
-    public Duration maximumWaitTime()
+    public Duration maximumStopTime()
     {
         return Duration.MAXIMUM;
     }
@@ -208,9 +245,10 @@ public class JettyServer extends BaseComponent implements
 
     public String resolvePath(String path)
     {
-        return Paths.concatenate(root, path);
+        return Paths.pathConcatenate(root, path);
     }
 
+    @Override
     public boolean start()
     {
         try

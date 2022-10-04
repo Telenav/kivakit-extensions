@@ -1,6 +1,11 @@
 package com.telenav.kivakit.metrics.core;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.time.Time;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * Base class for metrics. All metrics have a {@link #createdAt()} time, which is the time at which the metric started
@@ -8,6 +13,9 @@ import com.telenav.kivakit.core.time.Time;
  *
  * @author jonathanl (shibo)
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseMetric<T> implements Metric<T>
 {
     /** The time at which this metric was created */

@@ -1,6 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
@@ -21,6 +23,9 @@ import io.grpc.ServerBuilder;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 
 /**
@@ -33,13 +38,34 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
  * initialized and started by the microservice mini-framework on startup.
  * </p>
  *
+ * <p><b>Lifecycle</b></p>
+ *
+ * <ul>
+ *     <li>{@link #isRunning()}</li>
+ *     <li>{@link #maximumStopTime()}</li>
+ *     <li>{@link #start()}</li>
+ *     <li>{@link #stop()}</li>
+ *     <li>{@link #stop(Duration)}</li>
+ * </ul>
+ *
+ * <p><b>Mounting Request Handlers</b></p>
+ *
+ * <ul>
+ *     <li>{@link #mount(String, Class)}</li>
+ * </ul>
+ *
  * @author jonathanl (shibo)
  * @see RestService
  */
+@SuppressWarnings("SpellCheckingInspection")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
         Startable,
         Stoppable<Duration>,
+        TryTrait,
         MicroservletMountTarget
 {
     /** True while the {@link #onInitialize()} method is running */
@@ -57,12 +83,20 @@ public class MicroserviceGrpcService extends BaseComponent implements
     /** The GRPC server */
     private Server server;
 
+    /**
+     * Creates a gRPC service
+     *
+     * @param microservice The parent microservice
+     */
     public MicroserviceGrpcService(Microservice<?> microservice)
     {
         this.microservice = microservice;
         responder = listenTo(new MicroservletGrpcResponder());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void initialize()
     {
@@ -96,8 +130,11 @@ public class MicroserviceGrpcService extends BaseComponent implements
         return running;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Duration maximumWaitTime()
+    public Duration maximumStopTime()
     {
         return Duration.MAXIMUM;
     }
@@ -191,6 +228,6 @@ public class MicroserviceGrpcService extends BaseComponent implements
         var file = folder.mkdirs().file("$.proto", schema.messageName());
         information("Exporting $", file);
         var proto = Generators.newProtoGenerator(schema);
-        file.writer().save(proto.generate());
+        file.writer().saveText(proto.generate());
     }
 }

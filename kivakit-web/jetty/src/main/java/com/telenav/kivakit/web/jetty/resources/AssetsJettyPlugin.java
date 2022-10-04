@@ -1,11 +1,24 @@
 package com.telenav.kivakit.web.jetty.resources;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.resource.ResourceFolder;
+import com.telenav.kivakit.web.jetty.JettyServer;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.language.Classes.simpleName;
 
+/**
+ * A {@link JettyServer} plugin that serves static resources
+ *
+ * @author jonathanl (shibo)
+ */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class AssetsJettyPlugin extends BaseAssetsJettyPlugin
 {
     private final ResourceFolder<?> folder;
@@ -28,7 +41,7 @@ public class AssetsJettyPlugin extends BaseAssetsJettyPlugin
 
         var holder = new ServletHolder(defaultServlet);
 
-        holder.setName("jetty-assets:" + folder.identifier());
+        holder.setName("jetty-assets:" + folder.resourceFolderIdentifier());
         var base = folder.uri();
         if (base != null)
         {

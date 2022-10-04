@@ -1,12 +1,14 @@
 package com.telenav.kivakit.microservice;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.application.Application;
-import com.telenav.kivakit.commandline.Switch;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.commandline.SwitchParsers;
+import com.telenav.kivakit.commandline.SwitchValue;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.primitive.Ints;
 import com.telenav.kivakit.core.language.reflection.Type;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.project.Project;
 import com.telenav.kivakit.core.string.Paths;
@@ -25,15 +27,15 @@ import com.telenav.kivakit.microservice.web.WicketWebApplication;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.packages.Package;
-import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.settings.Deployment;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
-import com.telenav.kivakit.web.swagger.SwaggerJettyPlugin;
-import com.telenav.kivakit.web.swagger.SwaggerWebAppJettyPlugin;
-import com.telenav.kivakit.web.swagger.SwaggerWebJarJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerIndexJettyPlugin;
+import com.telenav.kivakit.web.swagger.SwaggerWebJarAssetJettyPlugin;
 import com.telenav.kivakit.web.wicket.WicketJettyPlugin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -43,6 +45,9 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.commandline.SwitchParsers.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParsers.integerSwitchParser;
 import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
@@ -170,9 +175,69 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * this microservice is the elected leader of the cluster, the {@link #isLeader()} method will return true.
  * </p>
  *
+ * <p><b>Lifecycle</b></p>
+ *
+ * <ul>
+ *     <li>{@link #isRunning()}</li>
+ *     <li>{@link #onInitialize()}</li>
+ *     <li>{@link #onMountJettyPlugins(JettyServer)}</li>
+ *     <li>{@link #onRunning()}</li>
+ *     <li>{@link #onRunning()}</li>
+ *     <li>{@link #onSerializationInitialize()}</li>
+ *     <li>{@link #start()}</li>
+ *     <li>{@link #stop()}</li>
+ *     <li>{@link #stop(Duration)}</li>
+ *     <li>{@link #switchParsers()}</li>
+ * </ul>
+ *
+ * <p><b>Properties</b></p>
+ *
+ * <ul>
+ *     <li>{@link #description()}</li>
+ *     <li>{@link #maximumStopTime()}</li>
+ *     <li>{@link #metadata()}</li>
+ *     <li>{@link #openApiAssetsFolder()}</li>
+ *     <li>{@link #rootPath()}</li>
+ *     <li>{@link #settings()}</li>
+ *     <li>{@link #staticAssetsFolder()}</li>
+ * </ul>
+ *
+ * <p><b>Paths</b></p>
+ *
+ * <ul>
+ *     <li>{@link #resolvePath(String)}</li>
+ *     <li>{@link #rootPath()}</li>
+ * </ul>
+ *
+ * <p><b>Clustering</b></p>
+ *
+ * <ul>
+ *     <li>{@link #cluster()}</li>
+ *     <li>{@link #isClustered()}</li>
+ *     <li>{@link #isLeader()}</li>
+ *     <li>{@link #leader()}</li>
+ *     <li>{@link #onJoin(MicroserviceClusterMember)}</li>
+ *     <li>{@link #onLeave(MicroserviceClusterMember)}</li>
+ *     <li>{@link #onNewMember()}</li>
+ * </ul>
+ *
+ * <p><b>Services</b></p>
+ *
+ * <ul>
+ *     <li>{@link #grpcService()}</li>
+ *     <li>{@link #gsonFactory()}</li>
+ *     <li>{@link #lambdaService()}</li>
+ *     <li>{@link #onNewGrpcService()}</li>
+ *     <li>{@link #onNewLambdaService()}</li>
+ *     <li>{@link #onNewRestService()}</li>
+ *     <li>{@link #onNewWebApplication()}</li>
+ *     <li>{@link #restService()}</li>
+ *     <li>{@link #wicketWebApplication()}</li>
+ * </ul>
+ *
  * @author jonathanl (shibo)
  * @see Deployment
- * @see Switch
+ * @see SwitchValue
  * @see ResourceFolder
  * @see MicroserviceMetadata
  * @see MicroserviceSettings
@@ -181,9 +246,13 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see MicroserviceCluster
  * @see MicroserviceClusterMember
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({ "unused" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public abstract class Microservice<Member> extends Application implements
+        TryTrait,
         Startable,
         Stoppable<Duration>
 {
@@ -233,11 +302,14 @@ public abstract class Microservice<Member> extends Application implements
 
     private MicroserviceCluster<Member> cluster;
 
-    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.of(this::onNewGrpcService);
+    /** Lazy-initialized gRPC service */
+    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.lazy(this::onNewGrpcService);
 
-    private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.of(this::onNewLambdaService);
+    /** Lazy-initialized AWS Lambda service */
+    private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.lazy(this::onNewLambdaService);
 
-    private final Lazy<RestService> restService = Lazy.of(this::onNewRestService);
+    /** Lazy-initialized REST service */
+    private final Lazy<RestService> restService = Lazy.lazy(this::onNewRestService);
 
     /** True if this microservice is running */
     private boolean running;
@@ -245,7 +317,8 @@ public abstract class Microservice<Member> extends Application implements
     /** Jetty web server */
     private JettyServer server;
 
-    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = Lazy.of(this::onNewWebApplication);
+    /** Lazy-initialized Wicket Web Application */
+    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = Lazy.lazy(this::onNewWebApplication);
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -266,7 +339,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return A description of this microservice
+     * Returns a description of this microservice
      */
     @Override
     public String description()
@@ -274,21 +347,24 @@ public abstract class Microservice<Member> extends Application implements
         return metadata().description();
     }
 
+    /**
+     * Returns any gRPC service
+     */
     public MicroserviceGrpcService grpcService()
     {
         return grpcService.get();
     }
 
     /**
-     * @return The {@link GsonFactory} factory for this microservice
+     * Returns the {@link GsonFactory} factory for this microservice
      */
     public GsonFactory gsonFactory()
     {
-        return new CoreGsonFactory(this);
+        return new KivaKitCoreGsonFactory(this);
     }
 
     /**
-     * @return True if this microservice is clustered. To be clustered, two things are required:
+     * Returns true if this microservice is clustered. To be clustered, two things are required:
      * <ol>
      *     <li>{@link #onNewMember()} must be overridden to return a value</li>
      *     <li>A configuration for {@link ZookeeperConnection} must be available (normally in the <i>deployments</i>
@@ -301,7 +377,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return True if this microservice is the leader of the cluster
+     * Returns true if this microservice is the leader of the cluster
      */
     public boolean isLeader()
     {
@@ -324,13 +400,16 @@ public abstract class Microservice<Member> extends Application implements
         return running;
     }
 
+    /**
+     * Returns any AWS Lambda service
+     */
     public MicroserviceLambdaService lambdaService()
     {
         return lambdaService.get();
     }
 
     /**
-     * @return The leader of this cluster
+     * Returns the leader of this cluster
      */
     public MicroserviceClusterMember<Member> leader()
     {
@@ -339,14 +418,17 @@ public abstract class Microservice<Member> extends Application implements
         return cluster.leader();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Duration maximumWaitTime()
+    public Duration maximumStopTime()
     {
         return Duration.MAXIMUM;
     }
 
     /**
-     * @return Metadata about this microservice
+     * Returns metadata about this microservice
      */
     @UmlRelation(label = "has")
     public abstract MicroserviceMetadata metadata();
@@ -362,7 +444,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return Any GRPC service for this microservice
+     * Returns any GRPC service for this microservice
      */
     public MicroserviceGrpcService onNewGrpcService()
     {
@@ -370,7 +452,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return Any AWS Lambda service for this microservice
+     * Returns any AWS Lambda service for this microservice
      */
     public MicroserviceLambdaService onNewLambdaService()
     {
@@ -378,7 +460,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return Any REST service for this microservice
+     * Returns any REST service for this microservice
      */
     public RestService onNewRestService()
     {
@@ -386,7 +468,7 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return The Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
+     * Returns the Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
      */
     public WebApplication onNewWebApplication()
     {
@@ -400,7 +482,7 @@ public abstract class Microservice<Member> extends Application implements
      */
     public String resolvePath(String mountPath)
     {
-        return Paths.concatenate(rootPath(), mountPath);
+        return Paths.pathConcatenate(rootPath(), mountPath);
     }
 
     /**
@@ -419,6 +501,9 @@ public abstract class Microservice<Member> extends Application implements
         return "/";
     }
 
+    /**
+     * Returns settings for this microservice
+     */
     @UmlRelation(label = "has")
     public MicroserviceSettings settings()
     {
@@ -455,7 +540,7 @@ public abstract class Microservice<Member> extends Application implements
             server = listenTo(new JettyServer(rootPath()).port(settings().port()));
 
             // If there's an Apache Wicket web application,
-            var webApplication = webApplication();
+            var webApplication = wicketWebApplication();
             if (webApplication != null)
             {
                 // mount them on the server.
@@ -552,6 +637,9 @@ public abstract class Microservice<Member> extends Application implements
         return true;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop(Duration wait)
     {
@@ -563,25 +651,37 @@ public abstract class Microservice<Member> extends Application implements
         }
     }
 
-    public org.apache.wicket.protocol.http.WebApplication webApplication()
+    /**
+     * Returns any Wicket web application
+     */
+    public org.apache.wicket.protocol.http.WebApplication wicketWebApplication()
     {
         return webApplication.get();
     }
 
+    /**
+     * Calls when a member joins the cluster
+     */
     protected void onJoin(MicroserviceClusterMember<Member> member)
     {
     }
 
+    /**
+     * Calls when a member leaves the cluster
+     */
     protected void onLeave(MicroserviceClusterMember<Member> member)
     {
     }
 
+    /**
+     * Calls when Jetty plugins are mounted
+     */
     protected void onMountJettyPlugins(JettyServer server)
     {
     }
 
     /**
-     * @return The ClusterMember object for this microservice. The ClusterMember object holds information about cluster
+     * Returns the ClusterMember object for this microservice. The ClusterMember object holds information about cluster
      * members. When a member joins the cluster, the {@link #onJoin(MicroserviceClusterMember)} method is called with
      * the ClusterMember object for the member. When a member leaves the cluster, the
      * {@link #onLeave(MicroserviceClusterMember)} is called with the same object.
@@ -642,6 +742,9 @@ public abstract class Microservice<Member> extends Application implements
         tryCatch(this::start, "Microservice startup failed");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @MustBeInvokedByOverriders
     protected void onRunning()
@@ -649,6 +752,9 @@ public abstract class Microservice<Member> extends Application implements
         register(gsonFactory());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onSerializationInitialize()
     {
@@ -660,18 +766,18 @@ public abstract class Microservice<Member> extends Application implements
     }
 
     /**
-     * @return The resource folder containing static assets for reference by OpenAPI .yaml files and KivaKit OpenApi
+     * Returns the resource folder containing static assets for reference by OpenAPI .yaml files and KivaKit OpenApi
      * annotations. For example, a microservice might want to include an OAS .yaml file. If this method is not
      * overridden, the default folder will be the "assets" sub-package of the rest application's package.
      */
     protected ResourceFolder<?> openApiAssetsFolder()
     {
-        var type = ensureNotNull(Type.forName("com.telenav.kivakit.web.swagger.SwaggerJettyPlugin"));
+        var type = ensureNotNull(Type.typeForName("com.telenav.kivakit.web.swagger.SwaggerIndexJettyPlugin"));
         return Package.parsePackage(this, type.type(), "assets/openapi");
     }
 
     /**
-     * @return The resource folder containing static assets. The resources will be mounted on <i>/assets</i>. If this
+     * Returns the resource folder containing static assets. The resources will be mounted on <i>/assets</i>. If this
      * method is not overridden, the default folder will be the "assets" sub-package of the rest application's package.
      */
     protected ResourceFolder<?> staticAssetsFolder()
@@ -718,7 +824,7 @@ public abstract class Microservice<Member> extends Application implements
             if (matcher.matches())
             {
                 var version = Version.parseVersion(this, matcher.group("version"));
-                var resource = Resource.resolve(this, matcher.group("jar"));
+                var resource = Resource.resolveResource(this, matcher.group("jar"));
                 var commandLine = matcher.group("commandLine");
                 var port = Ints.parseInt(this, matcher.group("port"));
 
@@ -738,9 +844,9 @@ public abstract class Microservice<Member> extends Application implements
 
     private void mountOpenApiAssets(String path, ResourceFolder<?> openApiAssets)
     {
-        server.mount(path, new SwaggerJettyPlugin(openApiAssets, settings().port()));
+        server.mount(path, new SwaggerIndexJettyPlugin(openApiAssets, settings().port()));
         server.mount(path + "/assets/openapi/*", new AssetsJettyPlugin(openApiAssets));
-        server.mount(path + "/assets/swagger/webapp/*", new SwaggerWebAppJettyPlugin());
-        server.mount(path + "/assets/swagger/webjar/*", new SwaggerWebJarJettyPlugin());
+        server.mount(path + "/assets/swagger/webapp/*", new SwaggerAssetsJettyPlugin());
+        server.mount(path + "/assets/swagger/webjar/*", new SwaggerWebJarAssetJettyPlugin());
     }
 }

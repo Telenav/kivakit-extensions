@@ -18,26 +18,32 @@
 
 package com.telenav.kivakit.web.swagger;
 
-import com.telenav.kivakit.core.messaging.Listener;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.resource.packages.Package;
 import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 
 /**
- * Provides the Swagger JavaScript resources required to show Swagger documentation.
+ * Provides the Swagger static resources required to show Swagger documentation
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
-public class SwaggerWebAppJettyPlugin extends AssetsJettyPlugin
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+public class SwaggerAssetsJettyPlugin extends AssetsJettyPlugin
 {
-    public SwaggerWebAppJettyPlugin()
+    public SwaggerAssetsJettyPlugin()
     {
-        super("[SwaggerWebAppJettyPlugin folder = " + folder() + "]", folder());
+        super("[SwaggerAssetsJettyPlugin folder = " + folder() + "]", folder());
     }
 
     private static Package folder()
     {
-        return Package.parsePackage(Listener.consoleListener(), SwaggerWebAppJettyPlugin.class, "assets");
+        return Package.parsePackage(consoleListener(), SwaggerAssetsJettyPlugin.class, "assets");
     }
 }

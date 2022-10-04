@@ -18,7 +18,10 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.properties.PropertyMap;
 import org.jetbrains.annotations.NotNull;
@@ -26,10 +29,23 @@ import org.jetbrains.annotations.NotNull;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
+ * Interface for abstracting HTTP REST requests
+ *
  * @author jonathanl (shibo)
+ * @see JettyRestRequest
+ * @see JettyRestRequestCycle
  */
 @SuppressWarnings("unused")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public interface RestRequest extends Restful
 {
     /**

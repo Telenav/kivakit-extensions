@@ -1,13 +1,12 @@
 package com.telenav.kivakit.microservice;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.collections.set.IdentitySet;
 import com.telenav.kivakit.core.language.primitive.Ints;
-import com.telenav.kivakit.core.os.OperatingSystem;
 import com.telenav.kivakit.core.path.StringPath;
-import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.core.thread.ReentrancyTracker;
 import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
@@ -16,7 +15,11 @@ import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.thread.ReentrancyTracker.Reentrancy.ENTERED;
+import static com.telenav.kivakit.microservice.MicroserviceClusterMember.localClusterMemberInstanceIdentifier;
 import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
@@ -30,24 +33,24 @@ import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
  *
  * <p>
  * To join this cluster, call {@link #join(MicroserviceClusterMember)}, passing in the user-defined data you wish to
- * associate with your {@link MicroserviceClusterMember}. A member should call this method to join the cluster in {@link
- * Microservice#onRun()}.
+ * associate with your {@link MicroserviceClusterMember}. A member should call this method to join the cluster in
+ * {@link Microservice#onRun()}.
  * </p>
  *
  * <p><b>As Members Join and Leave</b></p>
  *
  * <p>
- * When member objects are added to Zookeeper, this indicates that a new member is joining the cluster, and {@link
- * #onJoin(MicroserviceClusterMember)} will be called. When member objects are removed from Zookeeper, a member is
- * leaving the cluster and {@link #onLeave(MicroserviceClusterMember)} will be called. The {@link #members()} method
+ * When member objects are added to Zookeeper, this indicates that a new member is joining the cluster, and
+ * {@link #onJoin(MicroserviceClusterMember)} will be called. When member objects are removed from Zookeeper, a member
+ * is leaving the cluster and {@link #onLeave(MicroserviceClusterMember)} will be called. The {@link #members()} method
  * yields the members of this cluster.
  * </p>
  *
  * <p><b>Leader Elections</b></p>
  *
  * <p>
- * At any given time, this cluster has an elected leader. The leader is determined by the sort order of {@link
- * MicroserviceClusterMember}s according to the {@link Comparable} interface implementation. The comparison is
+ * At any given time, this cluster has an elected leader. The leader is determined by the sort order of
+ * {@link MicroserviceClusterMember}s according to the {@link Comparable} interface implementation. The comparison is
  * implemented by comparing the identifiers returned by {@link MicroserviceClusterMember#identifier()}. Each identifier
  * is composed of the DNS name of the member and the process identifier of the member (multiple members can run on a
  * single host). For example:
@@ -55,10 +58,27 @@ import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
  *
  * <pre>Jonathan-iMac.local#83874</pre>
  *
+ * <p><b>Membership</b></p>
+ *
+ * <ul>
+ *     <li>{@link #join(MicroserviceClusterMember)}</li>
+ *     <li>{@link #leader()}</li>
+ *     <li>{@link #leave()}</li>
+ *     <li>{@link #loadMembers()}</li>
+ *     <li>{@link #members()}</li>
+ *     <li>{@link #onJoin(MicroserviceClusterMember)}</li>
+ *     <li>{@link #onLeave(MicroserviceClusterMember)}</li>
+ *     <li>{@link #thisMember()}</li>
+ * </ul>
+ *
  * @param <Member> The type of member information to store for each cluster member
  * @author jonathanl (shibo)
  * @see MicroserviceClusterMember
  */
+@SuppressWarnings("unused")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceCluster<Member> extends BaseComponent
 {
     /** The current cluster leader as of the last election by {@link #electLeader()} */
@@ -91,7 +111,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                 loadMembers();
 
                 // then add ourselves as a member.
-                store().save(new SettingsObject(member.data(), instanceIdentifier()));
+                store().save(new SettingsObject(member.data(), localClusterMemberInstanceIdentifier()));
             });
 
             return true;
@@ -101,7 +121,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     }
 
     /**
-     * @return The leader of this cluster
+     * Returns the leader of this cluster
      */
     public MicroserviceClusterMember<Member> leader()
     {
@@ -115,7 +135,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     {
         if (isConnected())
         {
-            store().delete(new SettingsObject(thisMember().data(), instanceIdentifier()));
+            store().delete(new SettingsObject(thisMember().data(), localClusterMemberInstanceIdentifier()));
         }
         else
         {
@@ -124,7 +144,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     }
 
     /**
-     * @return The members of this cluster at the time this method is called
+     * Returns the members of this cluster at the time this method is called
      */
     public boolean loadMembers()
     {
@@ -143,8 +163,8 @@ public class MicroserviceCluster<Member> extends BaseComponent
                     for (var settingsObject : store().indexed())
                     {
                         // and add each one as a cluster member
-                        var child = settingsObject.identifier().instance().identifier();
-                        var flat = store().root().withChild(child);
+                        var child = settingsObject.identifier().instance().enumIdentifier();
+                        var flat = store().root().withChild(child.name());
                         var path = store().unflatten(flat);
                         loaded.add(member(path, settingsObject));
                     }
@@ -169,7 +189,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     }
 
     /**
-     * @return The members of this cluster as of the last call to {@link #loadMembers()}
+     * Returns the members of this cluster as of the last call to {@link #loadMembers()}
      */
     public ObjectList<MicroserviceClusterMember<Member>> members()
     {
@@ -177,7 +197,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
     }
 
     /**
-     * @return The cluster member for this process and host
+     * Returns the cluster member for this process and host
      */
     public MicroserviceClusterMember<Member> thisMember()
     {
@@ -232,12 +252,6 @@ public class MicroserviceCluster<Member> extends BaseComponent
                 showMembers(members);
             }
         }
-    }
-
-    @NotNull
-    private InstanceIdentifier instanceIdentifier()
-    {
-        return InstanceIdentifier.of(Host.local().dnsName() + "#" + OperatingSystem.get().processIdentifier() + "#");
     }
 
     private boolean isConnected()

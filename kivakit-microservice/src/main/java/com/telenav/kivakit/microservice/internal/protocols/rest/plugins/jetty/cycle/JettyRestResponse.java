@@ -1,10 +1,11 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
 import com.google.gson.annotations.Expose;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.object.ObjectFormatter;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
@@ -22,6 +23,11 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.http.HttpServletResponse;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 /**
  * <b>Not public API</b>
@@ -51,6 +57,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = SERVICE_PROVIDER_IMPLEMENTATION)
 public final class JettyRestResponse extends BaseComponent
         implements RestResponse
 {
@@ -242,7 +252,7 @@ public final class JettyRestResponse extends BaseComponent
      *
      * @param json The JSON to write
      */
-    private void writeResponse(final String json)
+    private void writeResponse(String json)
     {
         try
         {

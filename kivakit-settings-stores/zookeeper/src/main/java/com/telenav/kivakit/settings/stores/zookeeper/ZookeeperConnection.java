@@ -1,16 +1,17 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
+import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.string.Strip;
-import com.telenav.kivakit.core.thread.KivaKitThread;
 import com.telenav.kivakit.core.thread.StateMachine;
 import com.telenav.kivakit.core.time.Duration;
-import com.telenav.kivakit.core.time.Frequency;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
@@ -26,6 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
+import static com.telenav.kivakit.core.time.Duration.minutes;
+import static com.telenav.kivakit.core.time.Frequency.every;
 import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
 
 /**
@@ -52,9 +60,17 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * @see ACL
  * @see ZookeeperChangeListener
  */
-public class ZookeeperConnection extends BaseComponent implements Watcher
+@SuppressWarnings("resource")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
+    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
+                testing = TESTING_NOT_NEEDED,
+                documentation = DOCUMENTATION_COMPLETE,
+                type = PRIVATE)
     private enum State
     {
         CONNECTED,
@@ -65,7 +81,11 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    interface ListenerMethod
+    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
+                testing = TESTING_NOT_NEEDED,
+                documentation = DOCUMENTATION_COMPLETE,
+                type = PRIVATE)
+    interface ZookeeperListenerMethod
     {
         /**
          * Called with the path when a Zookeeper notification is processed
@@ -123,7 +143,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * @return The names of the child nodes of the node at the given path
+     * Returns the names of the child nodes of the node at the given path
      */
     public StringList children(StringPath path)
     {
@@ -175,7 +195,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     }
 
     /**
-     * @return The default create mode for this connection
+     * Returns the default create mode for this connection
      */
     public CreateMode defaultCreateMode()
     {
@@ -383,44 +403,41 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     @SuppressWarnings("InfiniteLoopStatement")
     private void connect()
     {
-        // Start a background thread to keep re-connecting to Zookeeper
-        KivaKitThread.run("Zookeeper Connector", () ->
+        while (true)
         {
-            while (true)
+            synchronized (ZookeeperConnection.this)
             {
-                synchronized (ZookeeperConnection.this)
+                if (connectingZookeeper == null)
                 {
-                    if (connectingZookeeper == null)
+                    try
                     {
-                        try
-                        {
-                            // Start Zookeeper with this object as the watcher,
-                            this.connectingZookeeper = new ZooKeeper(settings().ports, (int) settings().timeout.asMilliseconds(), this);
-                        }
-                        catch (Exception e)
-                        {
-                            warning(Frequency.every(Duration.minutes(1.5)), "Unable to connect to zookeeper: $", settings().ports);
-                        }
+                        // Start Zookeeper with this object as the watcher,
+                        this.connectingZookeeper = new ZooKeeper(settings().ports, (int) settings().timeout.asMilliseconds(), this);
+                    }
+                    catch (Exception e)
+                    {
+                        transmit(new Warning("Unable to connect to zookeeper: $", settings().ports)
+                                .maximumFrequency(every(minutes(1.5))));
                     }
                 }
-
-                Duration.seconds(15).sleep();
             }
-        });
+
+            Duration.seconds(15).sleep();
+        }
     }
 
     /**
      * Calls the given listener method of the {@link ZookeeperChangeListener} interface
      *
      * @param event The Zookeeper event
-     * @param method The method to call
+     * @param listener The listener to call
      */
-    private void invokeListenerMethod(WatchedEvent event, ListenerMethod method)
+    private void invokeListenerMethod(WatchedEvent event, ZookeeperListenerMethod listener)
     {
-        if (method != null)
+        if (listener != null)
         {
             var path = path(event);
-            method.on(path);
+            listener.on(path);
             watch(path);
         }
         else
@@ -467,7 +484,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
     {
         if (state.transition(State.CONNECTED, State.DISCONNECTED))
         {
-            IO.close(zookeeper);
+            IO.close(this, zookeeper);
             zookeeper = null;
             connectingZookeeper = null;
 
@@ -484,7 +501,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher
      * @return A StringPath for the given event path
      */
     @Nullable
-    private StringPath path(final WatchedEvent event)
+    private StringPath path(WatchedEvent event)
     {
         return StringPath.stringPath(Strip.leading(event.getPath(), "/")).withRoot("/");
     }

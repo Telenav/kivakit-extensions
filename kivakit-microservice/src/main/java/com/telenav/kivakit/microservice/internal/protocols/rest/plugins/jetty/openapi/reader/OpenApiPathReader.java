@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.language.reflection.Type;
@@ -23,6 +24,10 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 import java.util.List;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static com.telenav.kivakit.network.http.HttpStatus.FORBIDDEN;
@@ -39,7 +44,11 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
  *
  * @author jonathanl (shibo)
  */
-@SuppressWarnings("SpellCheckingInspection") public class OpenApiPathReader extends BaseComponent
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
+public class OpenApiPathReader extends BaseComponent
 {
     /**
      * @return Path models for all mounted paths in
@@ -60,7 +69,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
             }
             else
             {
-                problem("Unable to locate microservlet $ $", path.method(), path.path());
+                problem("Unable to locate microservlet $ $", path.httpMethod(), path.path());
             }
         }
 
@@ -149,8 +158,8 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
         {
             // add them to the set of schema models,
             require(OpenApiSchemaReader.class)
-                    .addModelToRead(Type.forClass(requestType))
-                    .addModelToRead(Type.forClass(responseType));
+                    .addModelToRead(Type.typeForClass(requestType))
+                    .addModelToRead(Type.typeForClass(responseType));
 
             // and add an item based on the HTTP method type
             switch (path.httpMethod())
@@ -182,7 +191,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
     private Content newRequestContent(Class<? extends MicroservletRequest> requestType)
     {
         // Add the request type to the set of models,
-        require(OpenApiSchemaReader.class).addModelToRead(Type.forClass(requestType));
+        require(OpenApiSchemaReader.class).addModelToRead(Type.typeForClass(requestType));
 
         // then return an application/json content object that refers to the request type's schema.
         return new Content()
@@ -211,9 +220,9 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
     {
         // Add the response type to the set of models,
         require(OpenApiSchemaReader.class)
-                .addModelToRead(ensureNotNull(Type.forClass(responseType)));
+                .addModelToRead(ensureNotNull(Type.typeForClass(responseType)));
 
         // and return a 200 response with the schema for the response type.
-        return newResponseItem("Success", new Schema<>().$ref(new ReferenceResolver().reference(Type.forClass(responseType))));
+        return newResponseItem("Success", new Schema<>().$ref(new ReferenceResolver().reference(Type.typeForClass(responseType))));
     }
 }

@@ -18,20 +18,23 @@
 
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilterHolder;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
-import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.ERROR;
 import static javax.servlet.DispatcherType.FORWARD;
@@ -58,8 +61,10 @@ import static javax.servlet.DispatcherType.REQUEST;
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
 @UmlClassDiagram(diagram = DiagramJetty.class)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class MicroservletJettyPlugin extends BaseFilterJettyPlugin
 {
     /** The Jetty holder for an instance of {@link JettyMicroservletFilter} */
