@@ -13,17 +13,20 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.core.Host;
+import com.telenav.kivakit.network.core.LocalHost;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Extension;
-import com.telenav.kivakit.resource.serialization.ObjectSerializers;
+import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
-import com.telenav.kivakit.serialization.gson.factory.CoreGsonFactory;
+import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.validation.BaseValidator;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static com.telenav.kivakit.network.core.LocalHost.localhost;
 
 @Ignore
 public class MicroserviceTest extends UnitTest
@@ -181,13 +184,13 @@ public class MicroserviceTest extends UnitTest
     @Test
     public void test()
     {
-        register(new CoreGsonFactory(this));
+        register(new KivaKitCoreGsonFactory(this));
 
-        var serializers = new ObjectSerializers();
+        var serializers = new ObjectSerializerRegistry();
         serializers.add(Extension.JSON, new GsonObjectSerializer());
         register(serializers);
 
-        Registry.of(this).register(new MicroserviceSettings()
+        Registry.registryFor(this).register(new MicroserviceSettings()
                 .port(8086)
                 .grpcPort(8087)
                 .server(false));
@@ -199,7 +202,7 @@ public class MicroserviceTest extends UnitTest
         microservice.waitForReady();
 
         var client = listenTo(new RestClient(
-                new GsonObjectSerializer(), Host.local().http(8086), microservice.version()));
+                new GsonObjectSerializer(), localhost().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
@@ -228,7 +231,7 @@ public class MicroserviceTest extends UnitTest
         var response2 = client.get("test", TestResponse.class);
         ensureEqual(42, response2.result);
 
-        var grpcClient = listenTo(new MicroserviceGrpcClient(Host.local().port(8087), microservice.version()));
+        var grpcClient = listenTo(new MicroserviceGrpcClient(localhost().port(8087), microservice.version()));
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 

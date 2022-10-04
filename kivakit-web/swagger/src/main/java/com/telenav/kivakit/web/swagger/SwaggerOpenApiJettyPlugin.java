@@ -18,8 +18,8 @@
 
 package com.telenav.kivakit.web.swagger;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.OpenApiServlet;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
@@ -29,16 +29,26 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import javax.ws.rs.core.Application;
 import java.util.Set;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
  * Produces the swagger.json OpenAPI interface description for the given application.
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class SwaggerOpenApiJettyPlugin extends BaseServletJettyPlugin
 {
+    /** The underlying REST application */
     private final Application application;
 
+    /**
+     * @param application The REST application
+     */
     public SwaggerOpenApiJettyPlugin(Application application)
     {
         super("[SwaggerOpenApiJettyPlugin application = " + application.getClass().getSimpleName() + "]");
@@ -46,6 +56,9 @@ public class SwaggerOpenApiJettyPlugin extends BaseServletJettyPlugin
         this.application = application;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServletHolder holder()
     {

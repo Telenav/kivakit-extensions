@@ -1,25 +1,39 @@
 package com.telenav.kivakit.metrics.core.scalar;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
+/**
+ * A double-valued metric
+ *
+ * @author jonathanl (shibo)
+ */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
+@SuppressWarnings("unused")
 public class DoubleMetric extends BaseMetric<Double>
 {
-    private double quantum;
+    private double value;
 
     public DoubleMetric()
     {
         this(0.0);
     }
 
-    public DoubleMetric(double quantum)
+    public DoubleMetric(double value)
     {
-        this.quantum = quantum;
+        this.value = value;
     }
 
     public DoubleMetric(BaseMetric<Double> that)
     {
         super(that);
-        quantum = that.quantumDouble();
+        value = that.doubleValue();
     }
 
     @Override
@@ -29,27 +43,21 @@ public class DoubleMetric extends BaseMetric<Double>
     }
 
     @Override
-    public double quantumDouble()
+    public double doubleValue()
     {
-        return quantum;
+        return value;
     }
 
     @Override
     public Double measurement()
     {
-        return quantum;
+        return value;
     }
 
     @Override
     public DoubleMetric name(String name)
     {
         return (DoubleMetric) super.name(name);
-    }
-
-    @Override
-    public long quantum()
-    {
-        return (long) quantum;
     }
 
     @Override
@@ -67,7 +75,7 @@ public class DoubleMetric extends BaseMetric<Double>
     public DoubleMetric withMeasurement(double quantum)
     {
         var copy = new DoubleMetric(this);
-        copy.quantum = quantum;
+        copy.value = quantum;
         return copy;
     }
 }

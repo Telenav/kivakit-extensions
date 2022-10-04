@@ -18,13 +18,13 @@
 
 package com.telenav.kivakit.logs.email;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
 import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.registry.Registry;
 import com.telenav.kivakit.logs.email.internal.lexakai.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
 import com.telenav.kivakit.network.core.Host;
@@ -34,18 +34,21 @@ import com.telenav.kivakit.network.email.Email;
 import com.telenav.kivakit.network.email.EmailBody;
 import com.telenav.kivakit.network.email.EmailSender;
 import com.telenav.kivakit.network.email.senders.SmtpEmailSender;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.registry.Registry.registryFor;
 
 /**
- * A {@link Log} service provider that sends emails. Configuration occurs via the command line. See {@link
- * LogServiceLogger} for details. Further details are available in the markdown help. The options available for
+ * A {@link Log} service provider that sends emails. Configuration occurs via the command line. See
+ * {@link LogServiceLogger} for details. Further details are available in the markdown help. The options available for
  * configuration with this logger are:
  *
  * <ul>
@@ -60,20 +63,28 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramLogsEmail.class)
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class EmailLog extends BaseTextLog
 {
+    /** The from email address */
     @UmlAggregation(label = "from")
     private EmailAddress from;
 
+    /** The email sender */
     @UmlAggregation
     private EmailSender sender;
 
+    /** The subject for the email */
     private String subject;
 
     @UmlAggregation(label = "to")
     private final Set<EmailAddress> to = new HashSet<>();
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void configure(VariableMap<String> properties)
     {
@@ -92,7 +103,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parseEmail(Listener.consoleListener(), at));
+                this.to.add(EmailAddress.parseEmailAddress(Listener.consoleListener(), at));
             }
         }
         else
@@ -104,7 +115,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parseEmail(Listener.consoleListener(), from);
+            this.from = EmailAddress.parseEmailAddress(Listener.consoleListener(), from);
         }
         else
         {
@@ -119,18 +130,15 @@ public class EmailLog extends BaseTextLog
         {
             var configuration = new SmtpEmailSender.Configuration();
             configuration.host(Host.parseHost(Listener.consoleListener(), host));
-            configuration.username(UserName.parse(Listener.consoleListener(), username));
-            configuration.password(PlainTextPassword.parse(Listener.consoleListener(), password));
+            configuration.username(UserName.parseUserName(Listener.consoleListener(), username));
+            configuration.password(PlainTextPassword.parsePlainTextPassword(Listener.consoleListener(), password));
             sender = new SmtpEmailSender(configuration);
         }
     }
 
-    @Override
-    public String name()
-    {
-        return "Email";
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onLog(LogEntry entry)
     {
@@ -141,7 +149,7 @@ public class EmailLog extends BaseTextLog
         email.subject(subject);
         if (sender == null)
         {
-            sender = Registry.of(this).lookup(EmailSender.class);
+            sender = registryFor(this).lookup(EmailSender.class);
         }
         sender.enqueue(email);
     }

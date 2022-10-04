@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.grpc;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.language.reflection.Type;
@@ -16,16 +17,24 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
 /**
  * <b>Not public API</b>
  * <p>
- * Class that dispatches GRPC requests to a MicroservletRequest based on the path contained in the {@link
- * MicroservletGrpcRequestProtobuf}.
+ * Class that dispatches GRPC requests to a MicroservletRequest based on the path contained in the
+ * {@link MicroservletGrpcRequestProtobuf}.
  *
  * @author jonathanl (shibo)
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class MicroservletGrpcResponder extends MicroservletResponderGrpc.MicroservletResponderImplBase implements ComponentMixin
 {
     /** Map from path to request type */
@@ -86,7 +95,7 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
         var types = new ObjectList<Class<?>>();
         for (var requestType : requestTypes())
         {
-            var request = (MicroservletRequest) Type.forClass(requestType).newInstance();
+            var request = (MicroservletRequest) Type.typeForClass(requestType).newInstance();
             types.add(request.responseType());
         }
         return types;

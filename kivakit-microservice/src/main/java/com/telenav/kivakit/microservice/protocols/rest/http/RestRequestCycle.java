@@ -19,11 +19,32 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.google.gson.Gson;
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
  * A Jetty HTTP request/response cycle.
+ *
+ * <p><b>Properties</b></p>
+ *
+ * <ul>
+ *     <li>{@link #microservlet()}</li>
+ *     <li>{@link #restRequest()}</li>
+ *     <li>{@link #restResponse()}</li>
+ *     <li>{@link #restService()}</li>
+ * </ul>
+ *
+ * <p><b>Gson Serialization</b></p>
+ *
+ * <ul>
+ *     <li>{@link #gson()}</li>
+ * </ul>
  *
  * @author jonathanl (shibo)
  * @see JettyRestRequestCycle
@@ -32,6 +53,10 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
  * @see RestRequest
  * @see RestResponse
  */
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public interface RestRequestCycle
 {
     /**

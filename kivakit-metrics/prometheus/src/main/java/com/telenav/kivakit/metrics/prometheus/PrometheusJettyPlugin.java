@@ -18,17 +18,23 @@
 
 package com.telenav.kivakit.metrics.prometheus;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import kivakit.merged.prometheus.client.exporter.MetricsServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
- * Produces the swagger.json OpenAPI interface description for the given application.
+ * A plugin for Jetty that adds the Prometheus metrics servlet
  *
  * @author jonathanl (shibo)
  */
-@LexakaiJavadoc(complete = true)
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE)
 public class PrometheusJettyPlugin extends BaseServletJettyPlugin
 {
     public PrometheusJettyPlugin()

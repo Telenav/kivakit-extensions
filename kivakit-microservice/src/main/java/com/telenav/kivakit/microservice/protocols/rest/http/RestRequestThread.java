@@ -18,12 +18,26 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
+
+import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+
 /**
- * Maintains a thread-local {@link RestRequestCycle}.
+ * Maintains a thread-local {@link RestRequestCycle}. When a request is handled, the request cycle is attached to the
+ * curren thread with {@link #attach(RestRequestCycle)}. When the response finished, the request cycle is detached again
+ * with {@link #detach()}. During request handling, the method {@link #requestCycle()} returns the request cycle for the
+ * current thread.
  *
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
+@ApiQuality(stability = API_STABLE_EXTENSIBLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class RestRequestThread
 {
     /** A thread local variable holding the request cycle for a given thread using this servlet */
@@ -48,7 +62,7 @@ public class RestRequestThread
     /**
      * @return The request cycle associated with the calling thread
      */
-    public static RestRequestCycle get()
+    public static RestRequestCycle requestCycle()
     {
         return threadToRequestCycle.get();
     }

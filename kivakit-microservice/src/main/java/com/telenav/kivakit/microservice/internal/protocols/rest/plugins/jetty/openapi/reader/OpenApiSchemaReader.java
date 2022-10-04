@@ -1,5 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
+import com.telenav.kivakit.annotations.code.ApiQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.reflection.Member;
@@ -22,6 +23,10 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureFalse;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
@@ -43,6 +48,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see OpenApiIncludeMember
  */
 @SuppressWarnings({ "rawtypes", "SpellCheckingInspection" })
+@ApiQuality(stability = API_UNSTABLE,
+            testing = TESTING_NONE,
+            documentation = DOCUMENTATION_COMPLETE,
+            type = PRIVATE)
 public class OpenApiSchemaReader extends BaseComponent
 {
     /** Models for which to make schemas */
@@ -117,18 +126,18 @@ public class OpenApiSchemaReader extends BaseComponent
      */
     public Schema<?> schemaError()
     {
-        var schema = readSchema(Type.forClass(MicroservletErrorResponse.class));
+        var schema = readSchema(Type.typeForClass(MicroservletErrorResponse.class));
         return new Schema<>()
                 .name("errors")
                 .type("object")
                 .description(schema.getDescription())
                 .title(schema.getTitle())
-                .$ref(new ReferenceResolver().reference(Type.forClass(MicroservletErrorResponse.class)));
+                .$ref(new ReferenceResolver().reference(Type.typeForClass(MicroservletErrorResponse.class)));
     }
 
     private boolean isArrayType(Member member)
     {
-        return member.type().isDescendantOf(Collection.class) || member.type().isArray();
+        return member.parentType().isDescendantOf(Collection.class) || member.parentType().isArray();
     }
 
     /**
@@ -141,7 +150,7 @@ public class OpenApiSchemaReader extends BaseComponent
         ensureNotNull(member);
 
         Schema elementTypeSchema = null;
-        Type<?> type = member.type();
+        Type<?> type = member.parentType();
         if (type.is(Array.class))
         {
             elementTypeSchema = readSchema(type.arrayElementType());
@@ -219,7 +228,7 @@ public class OpenApiSchemaReader extends BaseComponent
                     var superTypeInclude = type.annotation(OpenApiIncludeMemberFromSuperType.class);
                     if (superTypeInclude != null && superTypeInclude.genericType() != null)
                     {
-                        properties.put(property.name(), readArray(member, Type.forClass(superTypeInclude.genericType())));
+                        properties.put(property.name(), readArray(member, Type.typeForClass(superTypeInclude.genericType())));
                     }
                     else
                     {
@@ -242,7 +251,7 @@ public class OpenApiSchemaReader extends BaseComponent
                                 var genericType = includeAnnotation.genericType();
                                 if (genericType != Void.class)
                                 {
-                                    properties.put(property.name(), readArray(member, Type.forClass(genericType)));
+                                    properties.put(property.name(), readArray(member, Type.typeForClass(genericType)));
                                 }
                                 else
                                 {
