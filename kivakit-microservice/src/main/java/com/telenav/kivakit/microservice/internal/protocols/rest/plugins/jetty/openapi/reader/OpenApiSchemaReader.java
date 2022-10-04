@@ -1,7 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
 import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.annotations.code.ApiType;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.reflection.Member;
@@ -138,7 +137,7 @@ public class OpenApiSchemaReader extends BaseComponent
 
     private boolean isArrayType(Member member)
     {
-        return member.type().isDescendantOf(Collection.class) || member.type().isArray();
+        return member.parentType().isDescendantOf(Collection.class) || member.parentType().isArray();
     }
 
     /**
@@ -151,7 +150,7 @@ public class OpenApiSchemaReader extends BaseComponent
         ensureNotNull(member);
 
         Schema elementTypeSchema = null;
-        Type<?> type = member.type();
+        Type<?> type = member.parentType();
         if (type.is(Array.class))
         {
             elementTypeSchema = readSchema(type.arrayElementType());
