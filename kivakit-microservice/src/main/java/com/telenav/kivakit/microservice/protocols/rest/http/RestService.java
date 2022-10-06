@@ -459,9 +459,9 @@ public abstract class RestService extends BaseComponent implements Initializable
     /**
      * Called to give statistics for each request
      *
-     * @param statistics The statistics
+     * @param performance The statistics
      */
-    public void onRequestStatistics(MicroservletPerformance statistics)
+    public void onRequestPerformance(MicroservletPerformance performance)
     {
     }
 

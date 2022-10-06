@@ -82,7 +82,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     /**
      * For debugging and testing
      */
-    protected MicroserviceClusterMember(Data data)
+    public MicroserviceClusterMember(Data data)
     {
         this(localhost(), OperatingSystem.operatingSystem().processIdentifier(), 0, data);
     }

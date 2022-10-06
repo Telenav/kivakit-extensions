@@ -53,7 +53,7 @@ public abstract class BaseMounted extends BaseComponent implements RestProblemRe
         finally
         {
             statistics.end();
-            restService.onRequestStatistics(statistics);
+            restService.onRequestPerformance(statistics);
         }
     }
 }
