@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.io.StringInputStream;
@@ -25,7 +25,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Locale;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_UNSTABLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
@@ -46,9 +46,9 @@ import static java.net.http.HttpResponse.BodyHandlers.ofString;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_UNSTABLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_UNSTABLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MountedApi extends BaseMounted implements TryTrait
 {
     /** HTTP client */

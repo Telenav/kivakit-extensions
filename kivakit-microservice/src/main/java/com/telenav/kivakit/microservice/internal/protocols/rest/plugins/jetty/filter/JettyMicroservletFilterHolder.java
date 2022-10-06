@@ -18,8 +18,7 @@
 
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.annotations.code.ApiType;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
@@ -27,8 +26,8 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import org.eclipse.jetty.servlet.FilterHolder;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_SERVICE_PROVIDER_IMPLEMENTATION;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
@@ -42,10 +41,10 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramJetty.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = SERVICE_PROVIDER_IMPLEMENTATION)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE,
+             type = CODE_SERVICE_PROVIDER_IMPLEMENTATION)
 public class JettyMicroservletFilterHolder extends FilterHolder implements ComponentMixin
 {
     @UmlAggregation

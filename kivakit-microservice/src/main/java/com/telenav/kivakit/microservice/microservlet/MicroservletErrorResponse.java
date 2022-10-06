@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
@@ -16,7 +16,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.microservice.microservlet.MicroservletError.microservletError;
@@ -46,9 +46,9 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 @OpenApiIncludeType(
         description = "List of problems, warnings and other error messages in the event of a client or server problem")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroservletErrorResponse extends BaseMicroservletResponse
 {
     /** List of microservlet errors to include in this reponse */

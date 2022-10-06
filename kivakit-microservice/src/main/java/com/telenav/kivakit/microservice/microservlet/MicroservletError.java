@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.OperationMessage;
@@ -14,7 +14,7 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMem
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.network.http.HttpStatus;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
@@ -48,9 +48,9 @@ import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @SuppressWarnings({ "unused" })
 @OpenApiIncludeType(
         description = "An error description, including a hierarchical error code, an error type and a message")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroservletError
 {
     /**

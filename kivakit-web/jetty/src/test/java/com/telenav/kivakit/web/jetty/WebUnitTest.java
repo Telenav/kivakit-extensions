@@ -18,19 +18,17 @@
 
 package com.telenav.kivakit.web.jetty;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.testing.UnitTest;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_UNSTABLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
@@ -40,9 +38,9 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_UNSTABLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_UNSTABLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class WebUnitTest extends UnitTest
 {
     /**

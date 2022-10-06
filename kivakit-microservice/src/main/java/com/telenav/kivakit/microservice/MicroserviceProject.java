@@ -1,12 +1,12 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.project.Project;
 import com.telenav.kivakit.core.project.ProjectTrait;
 import com.telenav.kivakit.settings.SettingsProject;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
@@ -18,9 +18,9 @@ import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceProject extends Project
 {
     @Override

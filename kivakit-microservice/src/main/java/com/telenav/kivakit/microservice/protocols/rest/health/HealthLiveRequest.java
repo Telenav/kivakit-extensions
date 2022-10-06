@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.rest.health;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
@@ -13,8 +13,8 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeTyp
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
 import com.telenav.kivakit.network.http.HttpStatus;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
@@ -25,10 +25,10 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  */
 @SuppressWarnings("unused")
 @OpenApiIncludeType(description = "Request for server live-ness")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE,
+             type = CODE_PRIVATE)
 public class HealthLiveRequest extends BaseMicroservletRequest
 {
     /**
