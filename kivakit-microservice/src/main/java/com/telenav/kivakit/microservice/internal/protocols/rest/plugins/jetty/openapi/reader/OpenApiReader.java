@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
@@ -10,8 +10,8 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHan
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
@@ -32,10 +32,10 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  * @see OpenApiRequestHandler
  * @see OpenApiIncludeType
  */
-@ApiQuality(stability = API_UNSTABLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = CODE_UNSTABLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE,
+             type = CODE_PRIVATE)
 public class OpenApiReader extends BaseComponent
 {
     public OpenAPI read()

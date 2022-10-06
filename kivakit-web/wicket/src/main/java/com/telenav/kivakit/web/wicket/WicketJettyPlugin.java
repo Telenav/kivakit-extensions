@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.wicket;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -26,7 +26,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
@@ -41,9 +41,9 @@ import static javax.servlet.DispatcherType.REQUEST;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class WicketJettyPlugin extends BaseFilterJettyPlugin
 {
     /** Wicket web application */

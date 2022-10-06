@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.version.Version;
@@ -15,8 +15,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.io.IO.bufferOutput;
@@ -53,10 +53,10 @@ import static com.telenav.kivakit.core.io.IO.bufferOutput;
  * @see LambdaFunction
  * @see MicroserviceLambdaService
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE,
+             type = CODE_PRIVATE)
 public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixin
 {
     /**

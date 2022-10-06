@@ -1,6 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
@@ -27,8 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
@@ -61,16 +61,16 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * @see ZookeeperChangeListener
  */
 @SuppressWarnings("resource")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
-    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
-                testing = TESTING_NOT_NEEDED,
-                documentation = DOCUMENTATION_COMPLETE,
-                type = PRIVATE)
+    @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+                 testing = TESTING_NOT_NEEDED,
+                 documentation = DOCUMENTATION_COMPLETE,
+                 type = CODE_PRIVATE)
     private enum State
     {
         CONNECTED,
@@ -81,10 +81,10 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
-                testing = TESTING_NOT_NEEDED,
-                documentation = DOCUMENTATION_COMPLETE,
-                type = PRIVATE)
+    @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+                 testing = TESTING_NOT_NEEDED,
+                 documentation = DOCUMENTATION_COMPLETE,
+                 type = CODE_PRIVATE)
     interface ZookeeperListenerMethod
     {
         /**

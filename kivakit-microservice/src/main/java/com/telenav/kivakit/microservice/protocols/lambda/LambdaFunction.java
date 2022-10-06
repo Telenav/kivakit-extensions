@@ -1,14 +1,14 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.annotations.code.ApiType;
+import com.telenav.kivakit.annotations.code.CodeQuality;
+import com.telenav.kivakit.annotations.code.CodeType;
 import com.telenav.kivakit.core.registry.RegistryTrait;
 import com.telenav.kivakit.core.version.Version;
 
 import java.util.Objects;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.version.Version.parseVersion;
@@ -22,10 +22,10 @@ import static com.telenav.kivakit.core.version.Version.parseVersion;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = ApiType.PRIVATE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE,
+             type = CodeType.CODE_PRIVATE)
 class LambdaFunction implements RegistryTrait
 {
     /** The Lambda function name */

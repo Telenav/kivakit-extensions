@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.swagger;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
@@ -37,9 +37,9 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public class SwaggerIndexJettyPlugin extends BaseAssetsJettyPlugin
 {
     /**
@@ -47,9 +47,9 @@ public class SwaggerIndexJettyPlugin extends BaseAssetsJettyPlugin
      *
      * @author jonathanl (shibo)
      */
-    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
-                testing = TESTING_NONE,
-                documentation = DOCUMENTATION_COMPLETE)
+    @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+                 testing = TESTING_NONE,
+                 documentation = DOCUMENTATION_COMPLETE)
     class IndexServlet extends HttpServlet
     {
         @Override

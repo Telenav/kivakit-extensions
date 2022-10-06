@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.microservice.web;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.CodeQuality;
 import com.telenav.kivakit.microservice.Microservice;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.settings.ExceptionSettings;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static org.apache.wicket.RuntimeConfigurationType.DEVELOPMENT;
@@ -33,9 +33,9 @@ import static org.apache.wicket.RuntimeConfigurationType.DEVELOPMENT;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
+             testing = TESTING_NONE,
+             documentation = DOCUMENTATION_COMPLETE)
 public abstract class WicketWebApplication extends WebApplication
 {
     /**
