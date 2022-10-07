@@ -21,7 +21,7 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 import com.telenav.kivakit.annotations.code.CodeQuality;
 
 import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
@@ -37,7 +37,7 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
              testing = TESTING_NONE,
              documentation = DOCUMENTATION_COMPLETE,
-             type = CODE_PRIVATE)
+             type = CODE_INTERNAL)
 public class RestRequestThread
 {
     /** A thread local variable holding the request cycle for a given thread using this servlet */

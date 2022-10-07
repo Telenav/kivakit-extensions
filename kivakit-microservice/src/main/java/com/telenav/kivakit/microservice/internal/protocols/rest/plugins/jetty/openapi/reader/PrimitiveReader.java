@@ -5,14 +5,14 @@ import com.telenav.kivakit.core.language.reflection.Type;
 import io.swagger.v3.oas.models.media.Schema;
 
 import static com.telenav.kivakit.annotations.code.CodeStability.CODE_UNSTABLE;
-import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
 @CodeQuality(stability = CODE_UNSTABLE,
              testing = TESTING_NONE,
              documentation = DOCUMENTATION_COMPLETE,
-             type = CODE_PRIVATE)
+             type = CODE_INTERNAL)
 public class PrimitiveReader
 {
     /**

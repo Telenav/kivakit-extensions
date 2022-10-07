@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
@@ -34,7 +34,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
              testing = TESTING_NONE,
              documentation = DOCUMENTATION_COMPLETE,
-             type = CODE_PRIVATE)
+             type = CODE_INTERNAL)
 public class MicroservletGrpcResponder extends MicroservletResponderGrpc.MicroservletResponderImplBase implements ComponentMixin
 {
     /** Map from path to request type */

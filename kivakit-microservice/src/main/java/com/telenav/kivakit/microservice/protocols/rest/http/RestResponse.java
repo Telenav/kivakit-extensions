@@ -44,7 +44,7 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
              testing = TESTING_NONE,
              documentation = DOCUMENTATION_COMPLETE,
-             type = CodeType.CODE_PRIVATE)
+             type = CodeType.CODE_INTERNAL)
 public interface RestResponse extends RestProblemReportingTrait
 {
     /**

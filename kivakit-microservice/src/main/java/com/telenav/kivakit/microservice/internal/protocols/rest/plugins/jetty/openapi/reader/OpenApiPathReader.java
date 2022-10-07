@@ -25,7 +25,7 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 import java.util.List;
 
 import static com.telenav.kivakit.annotations.code.CodeStability.CODE_UNSTABLE;
-import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
@@ -47,7 +47,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
 @CodeQuality(stability = CODE_UNSTABLE,
              testing = TESTING_NONE,
              documentation = DOCUMENTATION_COMPLETE,
-             type = CODE_PRIVATE)
+             type = CODE_INTERNAL)
 public class OpenApiPathReader extends BaseComponent
 {
     /**

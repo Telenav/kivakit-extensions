@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
@@ -70,7 +70,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
                  documentation = DOCUMENTATION_COMPLETE,
-                 type = CODE_PRIVATE)
+                 type = CODE_INTERNAL)
     private enum State
     {
         CONNECTED,
@@ -84,7 +84,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
                  documentation = DOCUMENTATION_COMPLETE,
-                 type = CODE_PRIVATE)
+                 type = CODE_INTERNAL)
     interface ZookeeperListenerMethod
     {
         /**

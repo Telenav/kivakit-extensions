@@ -25,7 +25,7 @@ import org.apache.wicket.protocol.http.WicketFilter;
 import org.eclipse.jetty.servlet.FilterHolder;
 
 import static com.telenav.kivakit.annotations.code.CodeStability.CODE_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.CodeType.CODE_PRIVATE;
+import static com.telenav.kivakit.annotations.code.CodeType.CODE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 
@@ -41,7 +41,7 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
 @CodeQuality(stability = CODE_STABLE_EXTENSIBLE,
              testing = TESTING_NONE,
              documentation = DOCUMENTATION_COMPLETE,
-             type = CODE_PRIVATE)
+             type = CODE_INTERNAL)
 class JettyWicketFilterHolder extends FilterHolder
 {
     public JettyWicketFilterHolder(Class<? extends WebApplication> applicationClass)
