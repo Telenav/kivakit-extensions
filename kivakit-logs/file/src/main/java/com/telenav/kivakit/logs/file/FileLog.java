@@ -126,7 +126,7 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        var newFile = File.parseFile(Listener.consoleListener(), file.withoutExtension() + "-" + FileName.dateTime(started().asLocalTime())
+        var newFile = File.parseFile(Listener.consoleListener(), file.withoutExtension() + "-" + FileName.fileNameForDateTime(started().asLocalTime())
                 + StringConversions.nonNullString(file.extension())).withoutOverwriting();
         console().println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
