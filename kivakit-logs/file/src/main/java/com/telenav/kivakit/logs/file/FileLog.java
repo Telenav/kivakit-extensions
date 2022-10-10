@@ -24,7 +24,6 @@ import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
 import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
-import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.string.StringConversions;
 import com.telenav.kivakit.core.time.Duration;
@@ -43,9 +42,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.os.Console.console;
 
 /**
- * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line. See
- * {@link LogServiceLogger} for details. Further details are available in the markdown help. The options available for
- * configuration with this logger are:
+ * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line with
+ * key/value pairs stored in the KIVAKIT_LOG environment variable.
+ *
+ * <p><b>Configuration</b></p>
  *
  * <ul>
  *     <li><i>file</i> - The output file</li>
@@ -101,7 +101,7 @@ public class FileLog extends BaseRolloverTextLog
                 }
 
                 var converter = new ConvertingVariableMap(Listener.consoleListener(), properties);
-                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.MAXIMUM);
+                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.FOREVER);
                 maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
             catch (Exception e)

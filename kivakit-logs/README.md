@@ -16,7 +16,7 @@
 
 # kivakit-logs &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/log-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/log-32-2x.png 2x"/>
 
-This project provides log services that satisfy the kivakit-core logging service provider interface.
+This project provides log services that satisfy the kivakit-core logging service provider interface (SPI).
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
 
@@ -26,7 +26,7 @@ This project provides log services that satisfy the kivakit-core logging service
 
 To use the [file](file/README.md) or [email](email/README.md) log providers with the KivaKit logging mini-framework, all that is required is to add the appropriate dependency to *pom.xml* and add an *import* statement to module-info.java.
 
-See [kivakit-core logging](../kivakit/kernel/documentation/logging.md) for details on how to use the logging mini-framework and the [Log](https://telenav.github.io/kivakit/javadoc/kivakit.kernel/com/telenav/kivakit/kernel/logging/Log.html) service provider interface (SPI) to implement a new log service.
+See [kivakit-core logging](../../kivakit/kivakit-core/documentation/logging.md) for details on how to use the logging mini-framework and the [Log](https://telenav.github.io/kivakit/javadoc/kivakit.kernel/com/telenav/kivakit/kernel/logging/Log.html) service provider interface (SPI) to implement a new log service.
 
 [//]: # (end-user-text)
 

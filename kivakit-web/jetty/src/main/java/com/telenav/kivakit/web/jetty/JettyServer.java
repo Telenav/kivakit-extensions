@@ -42,11 +42,12 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.time.Duration.FOREVER;
 
 /**
  * A convenient way to use Jetty for simple web applications.
@@ -65,14 +66,14 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
  * <p><b>Example:</b></p>
  *
  * <pre>
- * // Create the Jersey REST application with Swagger OpenAPI and documentation,
- * var application = new ServiceRegistryRestApplication();
- * var jersey = new JettyJersey(application);
- * var swaggerOpenApi = new JettySwaggerOpenApi(swaggerConfiguration(application));
- * var swaggerWebJar = new JettySwaggerWebJar(application);
+ * // Create the Jersey REST application with Swagger documentation,
+ * var application = new MyRestApplication();
+ * var jersey = new JerseyJettyPlugin(application);
+ * var swaggerOpenApi = new SwaggerOpenApiJettyPlugin(application);
+ * var swaggerWebJar = new SwaggerWebJarAssetJettyPlugin();
  *
  * // create the Wicket WebApplication,
- * var wicket = new JettyWicket(ServiceRegistryWebApplication.class);
+ * var wicket = new WicketJettyPlugin(ServiceRegistryWebApplication.class);
  *
  * // and start up Jetty.
  * listenTo(new JettyServer())
@@ -80,21 +81,9 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
  *     .add("/*", wicket)
  *     .add("/api/*", jersey)
  *     .add("/open-api/*", swaggerOpenApi)
- *     .add("/docs/*", new JettySwaggerDocs(port))
+ *     .add("/docs/*", new SwaggerIndexJettyPlugin(assets(), port))
  *     .add("/webjar/*", swaggerWebJar)
  *     .start();
- *
- * JettySwaggerConfiguration swagger(ServiceRegistryRestApplication application)
- * {
- *     var api = new OpenAPI().info(new Info()
- *         .title("KivaKit Service Registry")
- *         .description("Registry of KivaKit services.")
- *         .contact(new Contact().email("jonathanl@telenav.com"))
- *         .license(new License().name("Copyright 2011-2021 Telenav, Inc.")));
- *
- *     var resources = Set.of(application.getClass());
- *     return new JettySwaggerConfiguration(api, application, resources);
- * }
  * </pre>
  *
  * <p><b>Mounting Plugins</b></p>
@@ -108,7 +97,6 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
  * <p><b>Configuration</b></p>
  *
  * <ul>
- *     <li>{@link #configureLogging()}</li>
  *     <li>{@link #port(int)}</li>
  * </ul>
  *
@@ -138,12 +126,6 @@ public class JettyServer extends BaseComponent implements
         Startable,
         Stoppable<Duration>
 {
-    public static void configureLogging()
-    {
-        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
-        org.eclipse.jetty.util.log.Log.setLog(new StdErrLog());
-    }
-
     /** The static assets to install when Jetty starts */
     private final List<BaseAssetsJettyPlugin> assets = new ArrayList<>();
 
@@ -168,11 +150,14 @@ public class JettyServer extends BaseComponent implements
     /** The servlets to install when Jetty starts */
     private final List<BaseServletJettyPlugin> servlets = new ArrayList<>();
 
+    /**
+     * @param root The root path relative to this server
+     */
     public JettyServer(String root)
     {
         this.root = root;
 
-        configureLogging();
+        configureJettyLogging();
     }
 
     /**
@@ -203,18 +188,31 @@ public class JettyServer extends BaseComponent implements
         crossOriginFilter.setFilter(new CrossOriginFilter());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isRunning()
     {
         return server != null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Duration maximumStopTime()
     {
-        return Duration.MAXIMUM;
+        return FOREVER;
     }
 
+    /**
+     * Mounts the given filter plugin on this Jetty server
+     *
+     * @param path The path to mount on
+     * @param filter The filter to mount
+     * @return This object, for method chaining
+     */
     public JettyServer mount(String path, BaseFilterJettyPlugin filter)
     {
         filter.path(resolvePath(path));
@@ -222,6 +220,13 @@ public class JettyServer extends BaseComponent implements
         return this;
     }
 
+    /**
+     * Mounts the given servlet plugin on this Jetty server
+     *
+     * @param path The path to mount on
+     * @param servlet The servlet to mount
+     * @return This object, for method chaining
+     */
     public JettyServer mount(String path, BaseServletJettyPlugin servlet)
     {
         servlet.path(resolvePath(path));
@@ -229,6 +234,13 @@ public class JettyServer extends BaseComponent implements
         return this;
     }
 
+    /**
+     * Mounts the given assets plugin on this Jetty server
+     *
+     * @param path The path to mount on
+     * @param assets The assets to mount
+     * @return This object, for method chaining
+     */
     public JettyServer mount(String path, BaseAssetsJettyPlugin assets)
     {
         assets.path(resolvePath(path));
@@ -236,6 +248,12 @@ public class JettyServer extends BaseComponent implements
         return this;
     }
 
+    /**
+     * Sets the server port for Jetty to use
+     *
+     * @param port The port
+     * @return This object, for method chaining
+     */
     public JettyServer port(int port)
     {
         ensure(port > 0);
@@ -243,11 +261,9 @@ public class JettyServer extends BaseComponent implements
         return this;
     }
 
-    public String resolvePath(String path)
-    {
-        return Paths.pathConcatenate(root, path);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean start()
     {
@@ -264,6 +280,9 @@ public class JettyServer extends BaseComponent implements
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void stop(Duration wait)
     {
@@ -280,6 +299,9 @@ public class JettyServer extends BaseComponent implements
         }
     }
 
+    /**
+     * Waits forever for this server to terminate
+     */
     public void waitForTermination()
     {
         try
@@ -292,6 +314,12 @@ public class JettyServer extends BaseComponent implements
         }
     }
 
+    private void configureJettyLogging()
+    {
+        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+        org.eclipse.jetty.util.log.Log.setLog(new StdErrLog());
+    }
+
     private ServerConnector httpConnector(Server server)
     {
         // Return an HTTP Jetty server connector for the port that was specified
@@ -299,6 +327,17 @@ public class JettyServer extends BaseComponent implements
         http.setPort(port);
         http.setIdleTimeout(Duration.hours(1).milliseconds());
         return http;
+    }
+
+    /**
+     * Returns the given path, prefixed by the root path
+     *
+     * @param path The path
+     * @return The path from the root
+     */
+    private String resolvePath(String path)
+    {
+        return Paths.pathConcatenate(root, path);
     }
 
     private Server server()

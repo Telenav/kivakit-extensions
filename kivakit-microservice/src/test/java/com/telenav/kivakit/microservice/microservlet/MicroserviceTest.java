@@ -12,8 +12,6 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.network.core.LocalHost;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
@@ -97,7 +95,7 @@ public class MicroserviceTest extends UnitTest
         @Override
         public Duration maximumStopTime()
         {
-            return Duration.MAXIMUM;
+            return Duration.FOREVER;
         }
 
         @Override
@@ -235,6 +233,6 @@ public class MicroserviceTest extends UnitTest
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 
-        microservice.stop(Duration.MAXIMUM);
+        microservice.stop(Duration.FOREVER);
     }
 }

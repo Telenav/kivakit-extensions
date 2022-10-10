@@ -136,7 +136,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     @Override
     public Duration maximumStopTime()
     {
-        return Duration.MAXIMUM;
+        return Duration.FOREVER;
     }
 
     /**
@@ -184,7 +184,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.register("GrpcServiceShutdown", LAST, () -> stop(Duration.MAXIMUM));
+            ShutdownHook.register("GrpcServiceShutdown", LAST, () -> stop(Duration.FOREVER));
             running = true;
             return true;
         }
