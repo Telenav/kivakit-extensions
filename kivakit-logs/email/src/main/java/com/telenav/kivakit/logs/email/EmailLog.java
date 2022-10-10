@@ -22,7 +22,6 @@ import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.LogEntry;
-import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.logs.email.internal.lexakai.DiagramLogsEmail;
@@ -40,16 +39,21 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.registry.Registry.registryFor;
 
 /**
- * A {@link Log} service provider that sends emails. Configuration occurs via the command line. See
- * {@link LogServiceLogger} for details. Further details are available in the markdown help. The options available for
- * configuration with this logger are:
+ * A {@link Log} service provider that sends emails. Configuration occurs via {@link #configure(VariableMap)}, which
+ * receives the key value pairs parsed from the KIVAKIT_LOG environment variable.
+ *
+ * <p><b>Options</b></p>
+ *
+ * <p>
+ * The options available for configuration with this logger are:
+ * </p>
  *
  * <ul>
  *     <li><i>to</i> - The set of email addresses to send to</li>
@@ -59,6 +63,19 @@ import static com.telenav.kivakit.core.registry.Registry.registryFor;
  *     <li><i>username</i> - The SMTP username</li>
  *     <li><i>password</i> - The SMTP password</li>
  * </ul>
+ *
+ * <p><b>Example</b></p>
+ *
+ * <pre>
+ * -DKIVAKIT_LOG="from=noreply@telenav.com to=jonathanl@telenav.com subject=\"Hello\" host=\"smtp.telenav.com\" username=jonathanl@telenav.com password=snarky-purple-ducky-4127"
+ * </pre>
+ *
+ * <p><b>Logging</b></p>
+ *
+ * <p>
+ * More details about logging are available in <a
+ * href="../../../../../../../../../kivakit-core/documentation/logging.md">kivakit-core</a>.
+ * </p>
  *
  * @author jonathanl (shibo)
  */

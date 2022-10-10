@@ -58,6 +58,13 @@ import static com.telenav.kivakit.core.os.Console.console;
  *
  * <pre>-DKIVAKIT_LOG="File level=Warning file=~/logs/log.txt rollover=daily maximum-age=\"1 month\" maximum-size=100M"</pre>
  *
+ * <p><b>Logging</b></p>
+ *
+ * <p>
+ * More details about logging are available in <a
+ * href="../../../../../../../../../kivakit-core/documentation/logging.md">kivakit-core</a>.
+ * </p>
+ *
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramLogsFile.class)
