@@ -29,10 +29,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * Interface for abstracting HTTP REST requests
@@ -42,14 +42,14 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
  * @see JettyRestRequestCycle
  */
 @SuppressWarnings("unused")
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE,
              audience = AUDIENCE_INTERNAL)
 public interface RestRequest extends Restful
 {
     /**
-     * @return True if this request has a body that can be read with {@link #readRequest(Class)}
+     * Returns true if this request has a body that can be read with {@link #readRequest(Class)}
      */
     boolean hasBody();
 
@@ -66,17 +66,17 @@ public interface RestRequest extends Restful
     ServletInputStream open();
 
     /**
-     * @return Parameters to this request
+     * Returns parameters to this request
      */
     PropertyMap parameters();
 
     /**
-     * @return Parameters to this request
+     * Returns parameters to this request
      */
     PropertyMap parameters(FilePath path);
 
     /**
-     * @return The "context" path of the servlet from the root of the REST application
+     * Returns the "context" path of the servlet from the root of the REST application
      */
     @NotNull
     FilePath path();

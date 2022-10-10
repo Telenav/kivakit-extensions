@@ -2,16 +2,16 @@ package com.telenav.kivakit.metrics.core.aggregates;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.value.count.Count;
-import com.telenav.kivakit.interfaces.factory.MapFactory;
+import com.telenav.kivakit.interfaces.function.Mapper;
 import com.telenav.kivakit.interfaces.value.DoubleValued;
 import com.telenav.kivakit.interfaces.value.LongValued;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 import com.telenav.kivakit.metrics.core.Metric;
 import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * A quantum aggregate metric is an {@link com.telenav.kivakit.metrics.core.AggregateMetric} for arbitrary
@@ -41,7 +41,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
  *
  * <p>
  * As expected, the average of the quanta is the total quanta divided by the number of quanta. The {@link #measurement()}
- * method then uses the {@link MapFactory} passed to the constructor to turn the computed quanta (the average value in this case)
+ * method then uses the {@link Mapper} passed to the constructor to turn the computed quanta (the average value in this case)
  * back into an object of type T. The result of this design is that aggregate metrics are very easy to implement. The
  * full implementation of {@link AverageMetric} is just:
  * </p>
@@ -49,7 +49,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
  * <pre>
  * public class AverageMetric&lt;T extends QuantizableMetric&gt; extends AggregateMetric&lt;T&gt;
  * {
- *     public AverageMetric(MapFactory&lt;Long, T&gt; factory)
+ *     public AverageMetric(Mapper&lt;Long, T&gt; factory)
  *     {
  *         super(factory);
  *     }
@@ -82,8 +82,8 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public abstract class AggregateMetric<T extends DoubleValued> extends BaseMetric<T> implements
         com.telenav.kivakit.metrics.core.AggregateMetric<T>
@@ -103,9 +103,9 @@ public abstract class AggregateMetric<T extends DoubleValued> extends BaseMetric
     /**
      * Converts from a double value to the type of aggregated metric
      */
-    private final MapFactory<Double, T> factory;
+    private final Mapper<Double, T> factory;
 
-    public AggregateMetric(MapFactory<Double, T> factory)
+    public AggregateMetric(Mapper<Double, T> factory)
     {
         this.factory = factory;
     }
@@ -125,7 +125,7 @@ public abstract class AggregateMetric<T extends DoubleValued> extends BaseMetric
     @Override
     public final T measurement()
     {
-        return factory.newInstance(compute());
+        return factory.map(compute());
     }
 
     /**

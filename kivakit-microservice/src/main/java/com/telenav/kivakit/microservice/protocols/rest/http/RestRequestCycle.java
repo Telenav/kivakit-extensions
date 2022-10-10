@@ -23,10 +23,10 @@ import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * A Jetty HTTP request/response cycle.
@@ -53,14 +53,14 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
  * @see RestRequest
  * @see RestResponse
  */
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE,
              audience = AUDIENCE_INTERNAL)
 public interface RestRequestCycle
 {
     /**
-     * @return A Gson instance provided by the REST application
+     * Returns a Gson instance provided by the REST application
      */
     default Gson gson()
     {
@@ -73,22 +73,22 @@ public interface RestRequestCycle
     }
 
     /**
-     * @return The {@link Microservlet} handling this request cycle
+     * Returns the {@link Microservlet} handling this request cycle
      */
     Microservlet<?, ?> microservlet();
 
     /**
-     * @return The REST request
+     * Returns the REST request
      */
     RestRequest restRequest();
 
     /**
-     * @return The REST response
+     * Returns the REST response
      */
     RestResponse restResponse();
 
     /**
-     * @return The REST application that owns this request cycle
+     * Returns the REST application that owns this request cycle
      */
     RestService restService();
 }

@@ -24,10 +24,10 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 import java.util.List;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static com.telenav.kivakit.network.http.HttpStatus.FORBIDDEN;
@@ -44,14 +44,14 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
  *
  * @author jonathanl (shibo)
  */
-@CodeQuality(stability = STABILITY_UNSTABLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE,
              audience = AUDIENCE_INTERNAL)
 public class OpenApiPathReader extends BaseComponent
 {
     /**
-     * @return Path models for all mounted paths in
+     * Returns path models for all mounted paths in
      */
     public Paths read()
     {
@@ -82,7 +82,7 @@ public class OpenApiPathReader extends BaseComponent
     }
 
     /**
-     * @return True if the request type should be ignored
+     * Returns true if the request type should be ignored
      */
     private boolean ignoreRequestType(Class<? extends MicroservletRequest> requestType)
     {
@@ -186,7 +186,7 @@ public class OpenApiPathReader extends BaseComponent
     }
 
     /**
-     * @return A {@link Content} object for the given request type
+     * Returns a {@link Content} object for the given request type
      */
     private Content newRequestContent(Class<? extends MicroservletRequest> requestType)
     {
@@ -201,7 +201,7 @@ public class OpenApiPathReader extends BaseComponent
     }
 
     /**
-     * @return A new {@link ApiResponse} for the given description and schema.
+     * Returns a new {@link ApiResponse} for the given description and schema.
      */
     private ApiResponse newResponseItem(String description, Schema<?> schema)
     {
@@ -214,7 +214,7 @@ public class OpenApiPathReader extends BaseComponent
     }
 
     /**
-     * @return An {@link ApiResponse} description for the given response type.
+     * Returns an {@link ApiResponse} description for the given response type.
      */
     private ApiResponse newResponseSuccess(Class<? extends MicroservletResponse> responseType)
     {

@@ -44,10 +44,10 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
 
@@ -69,8 +69,8 @@ import static com.telenav.kivakit.core.messaging.Listener.nullListener;
  */
 @SuppressWarnings({ "unused" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE,
              audience = AUDIENCE_SERVICE_PROVIDER)
 public class JettyRestRequest extends BaseComponent implements
@@ -112,7 +112,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return True if this request has a body that can be read with {@link #readRequest(Class)}
+     * Returns true if this request has a body that can be read with {@link #readRequest(Class)}
      */
     @Override
     public boolean hasBody()
@@ -141,7 +141,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return Parameters to this request
+     * Returns parameters to this request
      */
     @Override
     public PropertyMap parameters()
@@ -150,7 +150,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return Parameters to this request
+     * Returns parameters to this request
      */
     @Override
     public PropertyMap parameters(FilePath path)
@@ -187,7 +187,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return The "context" path of the servlet from the root of the REST application
+     * Returns the "context" path of the servlet from the root of the REST application
      */
     @Override
     @NotNull
@@ -247,7 +247,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return The version of the microservice for this request
+     * Returns the version of the microservice for this request
      */
     @Override
     @KivaKitIncludeProperty

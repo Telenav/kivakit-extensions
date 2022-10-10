@@ -25,9 +25,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Locale;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.launcher.JarLauncher.RedirectTo.CONSOLE;
@@ -46,8 +46,8 @@ import static java.net.http.HttpResponse.BodyHandlers.ofString;
  *
  * @author jonathanl (shibo)
  */
-@CodeQuality(stability = STABILITY_UNSTABLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public class MountedApi extends BaseMounted implements TryTrait
 {

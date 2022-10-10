@@ -30,9 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * <b>Not public API</b>
@@ -42,8 +42,8 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
  */
 @SuppressWarnings("unused") @UmlClassDiagram(diagram = DiagramJetty.class)
 @OpenApiExcludeMember({ "exampleSetFlag" })
-@CodeQuality(stability = STABILITY_UNSTABLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public class OpenApiJsonRequest extends BaseMicroservletRequest
 {
@@ -106,7 +106,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
     private String ignored = "IGNORED";
 
     /**
-     * @return Responds to a GET request with the OpenAPI definition for the {@link RestService}.
+     * Returns responds to a GET request with the OpenAPI definition for the {@link RestService}.
      */
     @Override
     public MicroservletResponse onRespond()

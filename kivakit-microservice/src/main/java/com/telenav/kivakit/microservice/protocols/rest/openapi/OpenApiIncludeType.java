@@ -17,17 +17,17 @@ import java.lang.annotation.Target;
 public @interface OpenApiIncludeType
 {
     /**
-     * @return True if this schema is deprecated
+     * Returns true if this schema is deprecated
      */
     boolean deprecated() default false;
 
     /**
-     * @return Description of this schema
+     * Returns description of this schema
      */
     String description();
 
     /**
-     * @return Title of this schema
+     * Returns title of this schema
      */
     String title() default "";
 }

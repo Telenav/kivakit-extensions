@@ -16,9 +16,9 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.microservice.microservlet.MicroservletError.microservletError;
 import static com.telenav.kivakit.validation.Validator.nullValidator;
 
@@ -46,8 +46,8 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
 @OpenApiIncludeType(
         description = "List of problems, warnings and other error messages in the event of a client or server problem")
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public class MicroservletErrorResponse extends BaseMicroservletResponse
 {

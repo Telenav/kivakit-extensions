@@ -282,7 +282,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     }
 
     /**
-     * @return The microservice to which this rest service belongs
+     * Returns the microservice to which this rest service belongs
      */
     public Microservice<?> microservice()
     {
@@ -497,7 +497,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     }
 
     /**
-     * @return The {@link ObjectSerializer} to use for serializing and deserializing requests.
+     * Returns the {@link ObjectSerializer} to use for serializing and deserializing requests.
      */
     public ObjectSerializer serializer()
     {

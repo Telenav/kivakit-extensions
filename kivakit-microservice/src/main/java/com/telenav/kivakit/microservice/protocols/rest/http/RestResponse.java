@@ -29,9 +29,9 @@ import com.telenav.kivakit.network.http.HttpStatus;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * Interface for abstracting HTTP REST requests
@@ -41,8 +41,8 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
  * @see JettyRestRequestCycle
  */
 @SuppressWarnings("unused")
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE,
              audience = Audience.AUDIENCE_INTERNAL)
 public interface RestResponse extends RestProblemReportingTrait
@@ -64,12 +64,12 @@ public interface RestResponse extends RestProblemReportingTrait
     MicroservletErrorResponse errors();
 
     /**
-     * @return The underlying {@link HttpServletResponse}
+     * Returns the underlying {@link HttpServletResponse}
      */
     HttpServletResponse httpServletResponse();
 
     /**
-     * @return The HTTP status for this response
+     * Returns the HTTP status for this response
      */
     HttpStatus httpStatus();
 

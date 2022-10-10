@@ -33,7 +33,7 @@ public class MicroservletGrpcSchemas extends BaseComponent
     }
 
     /**
-     * @return The given bytes deserialized into the given request type
+     * Returns the given bytes deserialized into the given request type
      */
     public Object deserialize(Class<?> type, ByteString bytes)
     {
@@ -44,7 +44,7 @@ public class MicroservletGrpcSchemas extends BaseComponent
     }
 
     /**
-     * @return The Protostuff {@link Schema} for the given type
+     * Returns the Protostuff {@link Schema} for the given type
      */
     public Schema<?> schemaFor(Class<?> type)
     {
@@ -58,7 +58,7 @@ public class MicroservletGrpcSchemas extends BaseComponent
     }
 
     /**
-     * @return The bytes from serializing the given response object
+     * Returns the bytes from serializing the given response object
      */
     public ByteString serialize(Class<?> type, Object object)
     {

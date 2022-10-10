@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 public @interface OpenApiExcludeMember
 {
     /**
-     * @return The names of the methods or fields in any supertype that are to be excluded from the OpenAPI
+     * Returns the names of the methods or fields in any supertype that are to be excluded from the OpenAPI
      * specification produced by the {@link OpenApiJsonRequest} request handler.
      */
     String[] value() default {};

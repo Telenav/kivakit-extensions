@@ -14,9 +14,9 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMem
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.network.http.HttpStatus;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.messaging.Message.parseMessageName;
 import static com.telenav.kivakit.core.messaging.messages.OperationMessage.newMessage;
@@ -48,8 +48,8 @@ import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @SuppressWarnings({ "unused" })
 @OpenApiIncludeType(
         description = "An error description, including a hierarchical error code, an error type and a message")
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public class MicroservletError
 {

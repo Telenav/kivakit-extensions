@@ -27,9 +27,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.project.Project.resolveProject;
 import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.DELETE;
@@ -133,8 +133,8 @@ import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see BaseSettingsStore
  * @see SettingsStore
  */
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public class ZookeeperSettingsStore extends BaseSettingsStore implements
         ZookeeperChangeListener,
@@ -335,7 +335,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The root path of this settings store
+     * Returns the root path of this settings store
      */
     public StringPath root()
     {
@@ -343,7 +343,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
+     * Returns the given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
      * node path /a::b::c becomes the hierarchical node path /a/b/c.
      */
     @SuppressWarnings("SpellCheckingInspection")
@@ -479,7 +479,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return Create mode for paths in this store
+     * Returns create mode for paths in this store
      * @see CreateMode
      */
     private CreateMode createMode()
@@ -492,7 +492,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The given path flattened using the separator for ephemeral nodes. For example, the hierarchical node path
+     * Returns the given path flattened using the separator for ephemeral nodes. For example, the hierarchical node path
      * /a/b/c becomes the flattened node path /a::b::c.
      */
     @NotNull
@@ -502,7 +502,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The {@link InstanceIdentifier} from the last element of the given node path
+     * Returns the {@link InstanceIdentifier} from the last element of the given node path
      * @see #path(SettingsObject)
      */
     private InstanceIdentifier instance(StringPath path)
@@ -537,7 +537,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return True if this is an ephemeral settings store
+     * Returns true if this is an ephemeral settings store
      */
     private boolean isEphemeral()
     {
@@ -574,7 +574,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The given path flattened or not based on whether this is an ephemeral store
+     * Returns the given path flattened or not based on whether this is an ephemeral store
      */
     private StringPath maybeFlatten(StringPath path)
     {
@@ -621,7 +621,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The settings type for the given node path
+     * Returns the settings type for the given node path
      */
     private Class<?> settingsType(StringPath path)
     {

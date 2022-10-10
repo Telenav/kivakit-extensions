@@ -19,17 +19,17 @@ import java.lang.annotation.Target;
 public @interface OpenApiRequestHandler
 {
     /**
-     * @return A full description of this request
+     * Returns a full description of this request
      */
     String description() default "";
 
     /**
-     * @return A short summary of this request
+     * Returns a short summary of this request
      */
     String summary() default "";
 
     /**
-     * @return Any tags for this request handler
+     * Returns any tags for this request handler
      */
     String[] tags() default {};
 }

@@ -23,10 +23,10 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureFalse;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
@@ -48,8 +48,8 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see OpenApiIncludeMember
  */
 @SuppressWarnings({ "rawtypes", "SpellCheckingInspection" })
-@CodeQuality(stability = STABILITY_UNSTABLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE,
              audience = AUDIENCE_INTERNAL)
 public class OpenApiSchemaReader extends BaseComponent
@@ -76,7 +76,7 @@ public class OpenApiSchemaReader extends BaseComponent
     }
 
     /**
-     * @return A map from schema name to {@link Schema} for all schemas found recursively in all models added to this
+     * Returns a map from schema name to {@link Schema} for all schemas found recursively in all models added to this
      * reader via {@link #addModelToRead(Type)}.
      */
     public Map<String, Schema> read()
@@ -122,7 +122,7 @@ public class OpenApiSchemaReader extends BaseComponent
     }
 
     /**
-     * @return The {@link Schema} for {@link MicroservletErrorResponse}s.
+     * Returns the {@link Schema} for {@link MicroservletErrorResponse}s.
      */
     public Schema<?> schemaError()
     {

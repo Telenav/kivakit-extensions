@@ -5,7 +5,7 @@ import com.telenav.kivakit.core.time.CreatedAt;
 import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.interfaces.value.DoubleValued;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 
@@ -14,7 +14,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_N
  *
  * @author jonathanl (shibo)
  */
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
              testing = TESTING_NOT_NEEDED,
              documentation = DOCUMENTATION_COMPLETE)
 public interface Metric<T> extends
@@ -22,7 +22,7 @@ public interface Metric<T> extends
         CreatedAt,
         DoubleValued
 {
-    @CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
+    @CodeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
                  documentation = DOCUMENTATION_COMPLETE)
     enum MetricType
@@ -43,17 +43,17 @@ public interface Metric<T> extends
     String description();
 
     /**
-     * @return The measurement
+     * Returns the measurement
      */
     T measurement();
 
     /**
-     * @return The type of measurement
+     * Returns the type of measurement
      */
     MetricType type();
 
     /**
-     * @return The metric unit
+     * Returns the metric unit
      */
     String unit();
 }

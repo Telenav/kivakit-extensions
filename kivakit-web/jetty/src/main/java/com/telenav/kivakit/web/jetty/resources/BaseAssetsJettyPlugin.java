@@ -23,7 +23,7 @@ import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 
@@ -32,7 +32,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_N
  *
  * @author jonathanl (shibo)
  */
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
              testing = TESTING_NOT_NEEDED,
              documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseAssetsJettyPlugin extends BaseJettyRequestHandler
@@ -43,7 +43,7 @@ public abstract class BaseAssetsJettyPlugin extends BaseJettyRequestHandler
     }
 
     /**
-     * @return The Jetty-specific holder of a static resource servlet, normally {@link DefaultServlet}.
+     * Returns the Jetty-specific holder of a static resource servlet, normally {@link DefaultServlet}.
      */
     public abstract ServletHolder holder();
 }

@@ -27,10 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.core.time.Duration.minutes;
 import static com.telenav.kivakit.core.time.Frequency.every;
@@ -61,13 +61,13 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * @see ZookeeperChangeListener
  */
 @SuppressWarnings("resource")
-@CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
-    @CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
+    @CodeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
                  documentation = DOCUMENTATION_COMPLETE,
                  audience = AUDIENCE_INTERNAL)
@@ -81,7 +81,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    @CodeQuality(stability = STABILITY_STABLE_EXTENSIBLE,
+    @CodeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
                  documentation = DOCUMENTATION_COMPLETE,
                  audience = AUDIENCE_INTERNAL)
@@ -203,7 +203,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return True if the given node path was deleted
+     * Returns true if the given node path was deleted
      */
     public boolean delete(StringPath path)
     {
@@ -221,7 +221,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return True if the given node path exists
+     * Returns true if the given node path exists
      */
     public boolean exists(StringPath path)
     {
@@ -239,7 +239,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return True if this Zookeeper connection is connected and ready
+     * Returns true if this Zookeeper connection is connected and ready
      */
     public boolean isConnected()
     {
@@ -302,7 +302,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The data at the given node path
+     * Returns the data at the given node path
      */
     public byte[] read(StringPath path)
     {
@@ -321,7 +321,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The Zookeeper root path
+     * Returns the Zookeeper root path
      */
     public StringPath root()
     {
@@ -357,7 +357,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The active watchers for this connection
+     * Returns the active watchers for this connection
      */
     public Map<StringPath, Watcher> watchers()
     {
@@ -386,7 +386,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The Zookeeper instance for this connection
+     * Returns the Zookeeper instance for this connection
      */
     public synchronized ZooKeeper zookeeper()
     {
@@ -498,7 +498,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return A StringPath for the given event path
+     * Returns a StringPath for the given event path
      */
     @Nullable
     private StringPath path(WatchedEvent event)
@@ -507,7 +507,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The settings for this connection
+     * Returns the settings for this connection
      */
     private Settings settings()
     {

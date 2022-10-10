@@ -9,13 +9,13 @@ import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABILITY_UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
-@CodeQuality(stability = STABILITY_UNSTABLE,
-             testing = TESTING_NONE,
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE,
              audience = AUDIENCE_INTERNAL)
 public class ListSerializer<T> implements JsonSerializer<List<T>>
