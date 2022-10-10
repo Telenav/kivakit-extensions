@@ -19,7 +19,7 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.messaging.Message.parseMessageName;
-import static com.telenav.kivakit.core.messaging.messages.OperationMessage.newMessage;
+import static com.telenav.kivakit.core.messaging.Messages.newMessage;
 import static com.telenav.kivakit.core.string.Formatter.format;
 import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 

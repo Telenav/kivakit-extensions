@@ -117,7 +117,7 @@ public class MountedApi extends BaseMounted implements TryTrait
 
                     case POST:
                     {
-                        var payload = IO.string(this, cycle.restRequest().httpServletRequest().getInputStream());
+                        var payload = IO.readString(this, cycle.restRequest().httpServletRequest().getInputStream());
                         var postRequest = request.POST(HttpRequest.BodyPublishers.ofString(payload)).build();
                         copyResponse(response, tryCatch(() ->
                                         client.send(postRequest, ofString()),

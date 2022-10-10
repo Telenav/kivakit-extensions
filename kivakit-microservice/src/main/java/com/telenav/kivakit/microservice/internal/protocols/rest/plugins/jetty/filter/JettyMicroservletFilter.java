@@ -10,7 +10,6 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -29,10 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestThreadAttach;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestThreadDetach;
 
 /**
  * <b>Not public API</b>
@@ -132,7 +133,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                 var cycle = listenTo(new JettyRestRequestCycle(service, httpRequest, httpResponse));
 
                 // attach it to the current thread,
-                RestRequestThread.attach(cycle);
+                requestThreadAttach(cycle);
 
                 // resolve any microservlet at the requested path,
                 var mounted = resolveMicroservlet(new RestPath(cycle.restRequest().path(), method));
@@ -166,7 +167,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         }
         finally
         {
-            RestRequestThread.detach();
+            requestThreadDetach();
         }
 
         if (!handled)

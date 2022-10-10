@@ -32,7 +32,7 @@ public class HttpNetworkLocationTest extends WebUnitTest
         var port = 8910;
 
         var filename = "test.txt";
-        var temporary = Folders.kivakitTemporary().file(filename);
+        var temporary = Folders.kivakitTemporaryFolder().file(filename);
         temporary.writer().saveText("testing!");
 
         startWebServer(port, temporary.parent().path());

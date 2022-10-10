@@ -220,7 +220,7 @@ public class JettyRestRequest extends BaseComponent implements
         {
             // Read JSON object from servlet input
             var in = open();
-            String json = IO.string(this, in);
+            String json = IO.readString(this, in);
             var request = fromJson(json, requestType);
 
             // If the request is invalid (any problems go into the response object),

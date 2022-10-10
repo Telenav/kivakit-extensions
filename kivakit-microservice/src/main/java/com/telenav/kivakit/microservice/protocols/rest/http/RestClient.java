@@ -7,7 +7,6 @@ import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.BaseHttpResource;
@@ -21,9 +20,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.http.HttpRequest;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultNetworkAccessConstraints;
 
 /**
  * A client for easy interaction with KivaKit {@link RestService}s.
@@ -98,7 +98,7 @@ public class RestClient extends BaseComponent
      */
     public <Response extends MicroservletResponse> Response get(String path, Class<Response> responseType)
     {
-        return fromJson(new HttpGetResource(networkLocation(path), NetworkAccessConstraints.DEFAULT), responseType);
+        return fromJson(new HttpGetResource(networkLocation(path), defaultNetworkAccessConstraints()), responseType);
     }
 
     /**
@@ -126,7 +126,7 @@ public class RestClient extends BaseComponent
     Response post(String path, Class<Response> responseType, Request request)
     {
         var outer = this;
-        var post = listenTo(new HttpPostResource(networkLocation(path), NetworkAccessConstraints.DEFAULT)
+        var post = listenTo(new HttpPostResource(networkLocation(path), defaultNetworkAccessConstraints())
         {
             @Override
             public void onInitialize(HttpRequest.Builder builder)

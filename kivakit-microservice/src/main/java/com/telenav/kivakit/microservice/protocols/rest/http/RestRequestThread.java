@@ -20,15 +20,15 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * Maintains a thread-local {@link RestRequestCycle}. When a request is handled, the request cycle is attached to the
- * curren thread with {@link #attach(RestRequestCycle)}. When the response finished, the request cycle is detached again
- * with {@link #detach()}. During request handling, the method {@link #requestCycle()} returns the request cycle for the
+ * curren thread with {@link #requestThreadAttach(RestRequestCycle)}. When the response finished, the request cycle is detached again
+ * with {@link #requestThreadDetach()}. During request handling, the method {@link #requestCycle()} returns the request cycle for the
  * current thread.
  *
  * @author jonathanl (shibo)
@@ -44,19 +44,27 @@ public class RestRequestThread
     private static final ThreadLocal<RestRequestCycle> threadToRequestCycle = new ThreadLocal<>();
 
     /**
+     * <b>Not public API</b>
+     *
+     * <p>
      * Associates the given request cycle with the calling thread
+     * </p>
      */
-    public static void attach(RestRequestCycle cycle)
+    public static void requestThreadAttach(RestRequestCycle cycle)
     {
         threadToRequestCycle.set(cycle);
     }
 
     /**
+     * <b>Not public API</b>
+     *
+     * <p>
      * Disassociates any request cycle from the calling thread
+     * </p>
      */
-    public static void detach()
+    public static void requestThreadDetach()
     {
-        attach(null);
+        requestThreadAttach(null);
     }
 
     /**
