@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.jetty;
 
-import com.telenav.kivakit.filesystem.Folder;
+import com.telenav.kivakit.filesystem.Folders;
 import com.telenav.kivakit.network.http.HttpNetworkLocation;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class HttpNetworkLocationTest extends WebUnitTest
         var port = 8910;
 
         var filename = "test.txt";
-        var temporary = Folder.kivakitTemporary().file(filename);
+        var temporary = Folders.kivakitTemporary().file(filename);
         temporary.writer().saveText("testing!");
 
         startWebServer(port, temporary.parent().path());

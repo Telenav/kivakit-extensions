@@ -15,6 +15,7 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.Folder;
+import com.telenav.kivakit.filesystem.Folders;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
@@ -287,7 +288,7 @@ public abstract class Microservice<Member> extends Application implements
      * Command line switch to output .proto files to the given folder
      */
     private final SwitchParser<Folder> PROTO_EXPORT_FOLDER =
-            Folder.folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
+            Folders.folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
                     .optional()
                     .build();
 
