@@ -26,7 +26,6 @@ import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.os.Console;
 import com.telenav.kivakit.core.string.StringConversions;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.value.count.Bytes;
@@ -37,10 +36,11 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.os.Console.console;
 
 /**
  * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line. See
@@ -121,12 +121,12 @@ public class FileLog extends BaseRolloverTextLog
     {
         var newFile = File.parseFile(Listener.consoleListener(), file.withoutExtension() + "-" + FileName.dateTime(started().asLocalTime())
                 + StringConversions.nonNullString(file.extension())).withoutOverwriting();
-        Console.println("Creating new FileLog output file: " + newFile);
+        console().println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
-        Console.println("Pruning files older than $ from: $", maximumLogFileAge, folder);
+        console().println("Pruning files older than $ from: $", maximumLogFileAge, folder);
         folder.files(resource -> ((File) resource).lastModified().isOlderThan(maximumLogFileAge)).forEach(at ->
         {
-            Console.println("Removed $", at);
+            console().println("Removed $", at);
             at.delete();
         });
         return newFile;
