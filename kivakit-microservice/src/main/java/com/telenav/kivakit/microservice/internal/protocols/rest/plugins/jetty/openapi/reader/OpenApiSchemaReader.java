@@ -97,7 +97,7 @@ public class OpenApiSchemaReader extends BaseComponent
     public Schema<?> readSchema(Type<?> type)
     {
         // If we haven't already resolved the schema,
-        String name = type.type().getSimpleName();
+        String name = type.asJavaType().getSimpleName();
         var resolved = resolvedSchemas.get(name);
         if (resolved == null)
         {
@@ -200,7 +200,7 @@ public class OpenApiSchemaReader extends BaseComponent
 
             // Add object attributes,
             schema.type("object");
-            schema.name(type.type().getSimpleName());
+            schema.name(type.asJavaType().getSimpleName());
             schema.description(annotation.description());
             schema.deprecated(annotation.deprecated() ? true : null);
             schema.title(annotation.title());

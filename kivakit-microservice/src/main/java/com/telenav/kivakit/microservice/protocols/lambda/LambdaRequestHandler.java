@@ -19,7 +19,7 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
-import static com.telenav.kivakit.core.io.IO.bufferOutput;
+import static com.telenav.kivakit.core.io.IO.buffer;
 
 /**
  * <p>
@@ -70,7 +70,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
     public void handleRequest(InputStream in, OutputStream out, Context context)
     {
         // Create a print writer to write the response to,
-        try (var print = new PrintWriter(bufferOutput(out)))
+        try (var print = new PrintWriter(buffer(out)))
         {
             // then get the requested Lambda function,
             var lambda = new LambdaFunction(context);

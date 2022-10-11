@@ -20,7 +20,7 @@ public class ReferenceResolver
         {
             return null;
         }
-        return reference(typeParameter.type().getSimpleName());
+        return reference(typeParameter.asJavaType().getSimpleName());
     }
 
     public String reference(String typeName)

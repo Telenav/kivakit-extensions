@@ -68,8 +68,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
 /**
  * Base class for KivaKit microservice REST applications.
  *
- * <hr>
- *
  * <p><b>Mounting Request Handlers</b></p>
  *
  * <p>
@@ -119,8 +117,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * <i>/my-microservice/api/1.0/users/update</i>.
  * </p>
  *
- * <hr>
- *
  * <p><b>API Forwarding - Backwards Compatibility</b></p>
  *
  * <p>
@@ -152,16 +148,12 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * JAR for a previous version of the API on the given port number on the local host.
  * </p>
  *
- * <hr>
- *
  * <p><b>OpenAPI</b></p>
  *
  * <p>
  * The {@link #openApiInfo()} class can optionally be overridden to provide OpenAPI details beyond those provided by the
  * {@link Microservice} via {@link MicroserviceMetadata}.
  * </p>
- *
- * <hr>
  *
  * <p><b>API Paths and Versions</b></p>
  *
@@ -170,8 +162,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * {@link #pathToVersion(String)} (both must be overridden). By default this format used by both methods is
  * <i>/api/[major-version].[minor-version]</i>. For example, <i>/api/1.0</i>.
  * </p>
- *
- * <hr>
  *
  * <p><b>Internal Details - Flow of Control</b></p>
  *
@@ -222,8 +212,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  *     </ol>
  *     </li>
  * </ol>
- *
- * <hr>
  *
  * @author jonathanl (shibo)
  * @see Microservice
