@@ -2,7 +2,7 @@ package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
@@ -25,7 +25,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
     @SuppressWarnings("unused")
     public static class Settings
     {
-        @KivaKitIncludeProperty
+        @IncludeProperty
         int x;
 
         public Settings()

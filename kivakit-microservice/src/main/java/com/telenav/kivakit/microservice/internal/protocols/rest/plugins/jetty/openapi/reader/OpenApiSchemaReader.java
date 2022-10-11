@@ -264,7 +264,7 @@ public class OpenApiSchemaReader extends BaseComponent
                 else
                 {
                     // otherwise, read the property's schema,
-                    var propertyTypeSchema = readSchema(property.type());
+                    var propertyTypeSchema = readSchema(property.parentType());
                     var propertySchema = new Schema();
                     propertySchema.name(property.name());
 
@@ -274,7 +274,7 @@ public class OpenApiSchemaReader extends BaseComponent
                         if (propertyTypeSchema.getType().equals("object")
                                 || (propertyTypeSchema.getEnum() != null && !propertyTypeSchema.getEnum().isEmpty()))
                         {
-                            propertySchema.$ref(new ReferenceResolver().reference(property.type()));
+                            propertySchema.$ref(new ReferenceResolver().reference(property.parentType()));
                             new SchemaCopier().copy(propertyTypeSchema, propertySchema);
                         }
                         propertySchema.format(propertyTypeSchema.getFormat());

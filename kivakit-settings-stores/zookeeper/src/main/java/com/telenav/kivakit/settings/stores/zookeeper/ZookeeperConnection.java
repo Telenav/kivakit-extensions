@@ -2,7 +2,7 @@ package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
+import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
@@ -101,15 +101,15 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     public static class Settings
     {
         /** Comma separated list of ports to use when connecting to Zookeeper */
-        @KivaKitConverted(Port.Converter.class)
+        @ConvertedProperty(Port.Converter.class)
         String ports;
 
         /** The maximum timeout when connecting to Zookeeper */
-        @KivaKitConverted(DurationConverter.class)
+        @ConvertedProperty(DurationConverter.class)
         Duration timeout;
 
         /** The default kind of data accessed by this Zookeeper connection (see {@link CreateMode}) */
-        @KivaKitConverted(CreateModeConverter.class)
+        @ConvertedProperty(CreateModeConverter.class)
         CreateMode createMode = PERSISTENT;
     }
 

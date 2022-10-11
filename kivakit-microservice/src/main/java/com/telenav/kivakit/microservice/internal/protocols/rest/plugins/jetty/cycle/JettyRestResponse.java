@@ -3,7 +3,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.string.Strip;
@@ -166,7 +166,7 @@ public final class JettyRestResponse extends BaseComponent
      * Returns the version of the microservice that is responding to a request
      */
     @Override
-    @KivaKitIncludeProperty
+    @IncludeProperty
     @OpenApiIncludeMember(title = "Version", description = "The microservice version from metadata")
     public Version version()
     {

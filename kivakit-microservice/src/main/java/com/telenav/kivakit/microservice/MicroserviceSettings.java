@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
-import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
+import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
 import com.telenav.kivakit.conversion.core.language.primitive.BooleanConverter;
 import com.telenav.kivakit.conversion.core.language.primitive.IntegerConverter;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
@@ -33,13 +33,13 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
              documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceSettings
 {
-    @KivaKitConverted(IntegerConverter.class)
+    @ConvertedProperty(IntegerConverter.class)
     private int port;
 
-    @KivaKitConverted(IntegerConverter.class)
+    @ConvertedProperty(IntegerConverter.class)
     private int grpcPort;
 
-    @KivaKitConverted(BooleanConverter.class)
+    @ConvertedProperty(BooleanConverter.class)
     private boolean server;
 
     public MicroserviceSettings grpcPort(int grpcPort)

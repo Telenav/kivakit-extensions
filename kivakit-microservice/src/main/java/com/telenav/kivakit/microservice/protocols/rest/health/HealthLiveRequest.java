@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.protocols.rest.health;
 
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
@@ -38,7 +38,7 @@ public class HealthLiveRequest extends BaseMicroservletRequest
     public static class HealthLiveResponse extends BaseMicroservletResponse
     {
         @Expose
-        @KivaKitIncludeProperty
+        @IncludeProperty
         @OpenApiIncludeMember(description = "The server live-ness status")
         private final String status;
 

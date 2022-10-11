@@ -20,7 +20,7 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.Component;
-import com.telenav.kivakit.core.string.KivaKitFormat;
+import com.telenav.kivakit.core.string.FormatProperty;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -87,7 +87,7 @@ public interface Restful extends Component
     /**
      * Returns the microservice that is responding to a REST request
      */
-    @KivaKitFormat
+    @FormatProperty
     default Microservice<?> microservice()
     {
         return restService().microservice();
@@ -159,7 +159,7 @@ public interface Restful extends Component
     /**
      * Returns the version of the microservice that is responding to a request
      */
-    @KivaKitFormat
+    @FormatProperty
     @OpenApiIncludeMember(title = "Version", description = "The microservice version")
     default Version version()
     {

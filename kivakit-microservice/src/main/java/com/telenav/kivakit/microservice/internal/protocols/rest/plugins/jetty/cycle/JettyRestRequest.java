@@ -21,7 +21,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.io.IO;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.version.Version;
@@ -250,7 +250,7 @@ public class JettyRestRequest extends BaseComponent implements
      * Returns the version of the microservice for this request
      */
     @Override
-    @KivaKitIncludeProperty
+    @IncludeProperty
     public Version version()
     {
         return cycle.version();

@@ -1,7 +1,7 @@
 package com.telenav.kivakit.metrics.core.scalar;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.interfaces.value.DoubleValued;
 import com.telenav.kivakit.metrics.core.AggregateMetric;
@@ -49,7 +49,7 @@ public class DoubleValuedMetric<T extends DoubleValued> extends BaseMetric<T>
     }
 
     @Override
-    @KivaKitIncludeProperty
+    @IncludeProperty
     public T measurement()
     {
         return measurement;
