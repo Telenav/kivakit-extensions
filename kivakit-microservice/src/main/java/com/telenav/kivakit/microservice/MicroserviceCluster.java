@@ -174,7 +174,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                     warning("Cannot load cluster members: Zookeeper is not connected");
                 }
 
-                var newMembers = ObjectList.objectList(loaded);
+                var newMembers = ObjectList.list(loaded);
                 var updated = !newMembers.equals(members);
                 members = newMembers;
                 return updated;

@@ -51,7 +51,7 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.commandline.SwitchParsers.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParsers.integerSwitchParser;
-import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
+import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
@@ -804,7 +804,7 @@ public abstract class Microservice<Member> extends Application implements
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return objectSet(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_FORWARDING);
+        return ObjectSet.set(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_FORWARDING);
     }
 
     /**

@@ -9,7 +9,7 @@ import com.telenav.kivakit.settings.SettingsProject;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
-import static com.telenav.kivakit.core.collections.set.ObjectSet.objectSet;
+import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
 
 /**
  * This class defines a KivaKit {@link Project}. It cannot be constructed with the new operator since it has a private
@@ -26,6 +26,6 @@ public class MicroserviceProject extends Project
     @Override
     public ObjectSet<Class<? extends Project>> dependencies()
     {
-        return objectSet(SettingsProject.class);
+        return ObjectSet.set(SettingsProject.class);
     }
 }
