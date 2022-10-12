@@ -57,11 +57,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.telenav.kivakit.core.collections.list.StringList.split;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.language.reflection.Type.typeForClass;
 import static com.telenav.kivakit.core.string.Formatter.format;
 import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
+import static com.telenav.kivakit.core.version.Version.parseVersion;
 import static com.telenav.kivakit.microservice.protocols.rest.http.RestPath.parseRestPath;
 import static com.telenav.kivakit.network.http.HttpMethod.GET;
 import static com.telenav.kivakit.network.http.HttpMethod.POST;
@@ -505,7 +507,7 @@ public abstract class RestService extends BaseComponent implements Initializable
         var matcher = Pattern.compile("/api/(<?version>[^/]+)").matcher(path);
         if (matcher.find())
         {
-            return Version.parseVersion(this, matcher.group("version"));
+            return parseVersion(this, matcher.group("version"));
         }
         return fail("Unable to extract version from: $", path);
     }
@@ -543,6 +545,6 @@ public abstract class RestService extends BaseComponent implements Initializable
      */
     private StringList parseCommandLine(String commandLine)
     {
-        return StringList.split(commandLine, ",");
+        return split(commandLine, ",");
     }
 }
