@@ -16,7 +16,6 @@ import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.network.http.HttpNetworkLocation;
-import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.resource.Resource;
 
 import java.net.URI;
@@ -25,13 +24,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Locale;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.io.IO.CopyStyle.BUFFERED;
+import static com.telenav.kivakit.core.io.IO.copy;
 import static com.telenav.kivakit.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.launcher.JarLauncher.RedirectTo.CONSOLE;
 import static com.telenav.kivakit.network.core.LocalHost.localhost;
+import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
 
 /**
@@ -139,7 +141,7 @@ public class MountedApi extends BaseMounted implements TryTrait
             }
             catch (Exception e)
             {
-                problem(HttpStatus.BAD_REQUEST, "Bad URI: $", uri);
+                problem(BAD_REQUEST, "Bad URI: $", uri);
             }
         });
 
@@ -280,6 +282,6 @@ public class MountedApi extends BaseMounted implements TryTrait
             httpServletResponse.setLocale(new Locale(array[0], array[1]));
         }
 
-        tryCatch(() -> IO.copy(this, new StringInputStream(result.body()), httpServletResponse.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
+        tryCatch(() -> copy(this, new StringInputStream(result.body()), httpServletResponse.getOutputStream(), BUFFERED), "Unable to copy response");
     }
 }

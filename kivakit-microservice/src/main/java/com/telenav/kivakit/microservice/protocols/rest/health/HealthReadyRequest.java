@@ -11,12 +11,12 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
-import com.telenav.kivakit.network.http.HttpStatus;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
  * Request handler that provides server readiness.
@@ -67,7 +67,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
             {
                 // then this server is not alive,
                 var response = new HealthReadyResponse("Forwarded API is failing: " + api.uri());
-                response.restResponse().httpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                response.restResponse().httpStatus(INTERNAL_SERVER_ERROR);
                 return response;
             }
         }

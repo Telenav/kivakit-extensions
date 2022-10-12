@@ -13,7 +13,6 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.vm.Properties;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
-import com.telenav.kivakit.resource.serialization.ObjectMetadata;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.resource.serialization.SerializableObject;
 import com.telenav.kivakit.settings.BaseSettingsStore;
@@ -27,14 +26,15 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.collections.list.StringList.split;
 import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
-import static com.telenav.kivakit.core.path.StringPath.*;
+import static com.telenav.kivakit.core.path.StringPath.stringPath;
 import static com.telenav.kivakit.core.project.Project.resolveProject;
 import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
+import static com.telenav.kivakit.resource.serialization.ObjectMetadata.METADATA_OBJECT_TYPE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.DELETE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.INDEX;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.LOAD;
@@ -381,7 +381,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     protected <T> T onDeserialize(byte[] data, Class<T> type)
     {
         var input = new InputResource(new ByteArrayInputStream(data));
-        return serializer.readObject(input, type, ObjectMetadata.OBJECT_TYPE).object();
+        return serializer.readObject(input, type, METADATA_OBJECT_TYPE).object();
     }
 
     /**

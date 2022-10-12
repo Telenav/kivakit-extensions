@@ -40,7 +40,7 @@ public class OpenApiAnnotationReader extends BaseComponent
             if (annotation != null)
             {
                 var value = function.apply(annotation);
-                if (!Strings.isNullOrEmpty(value))
+                if (!Strings.isNullOrBlank(value))
                 {
                     return value;
                 }

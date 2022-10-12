@@ -3,10 +3,11 @@ package com.telenav.kivakit.microservice.protocols.rest.openapi;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Indicates that a supertype (class or interface) member (field or method) should be excluded from the OpenAPI
@@ -15,8 +16,8 @@ import java.lang.annotation.Target;
  *
  * @author jonathanl (shibo)
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Retention(RUNTIME)
+@Target(TYPE)
 public @interface OpenApiExcludeMember
 {
     /**

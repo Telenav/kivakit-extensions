@@ -54,6 +54,7 @@ import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.object.Lazy.*;
+import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
 
 /**
@@ -426,7 +427,7 @@ public abstract class Microservice<Member> extends Application implements
     @Override
     public Duration maximumStopTime()
     {
-        return Duration.FOREVER;
+        return FOREVER;
     }
 
     /**

@@ -40,8 +40,10 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.core.time.Duration.ONE_MINUTE;
 import static com.telenav.kivakit.core.time.Duration.seconds;
+import static com.telenav.kivakit.core.time.Time.END_OF_UNIX_TIME;
 import static com.telenav.kivakit.core.time.Time.now;
 import static com.telenav.kivakit.core.value.count.Bytes.megabytes;
+import static com.telenav.kivakit.logs.file.BaseRolloverTextLog.Rollover.NO_ROLLOVER;
 
 /**
  * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a
@@ -72,7 +74,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
                  documentation = DOCUMENTATION_COMPLETE)
     public enum Rollover
     {
-        NONE,
+        NO_ROLLOVER,
         DAILY,
         HOURLY
     }
@@ -89,7 +91,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     /** The rollover type */
     @UmlAggregation
-    private Rollover rollover = Rollover.NONE;
+    private Rollover rollover = NO_ROLLOVER;
 
     /** The next time to roll over */
     @UmlAggregation(label = "rollover time")
@@ -192,8 +194,8 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     {
         switch (rollover)
         {
-            case NONE:
-                return now().plus(ONE_MINUTE); // Time.MAXIMUM;
+            case NO_ROLLOVER:
+                return END_OF_UNIX_TIME;
 
             case DAILY:
                 return LocalTime.now().startOfTomorrow();

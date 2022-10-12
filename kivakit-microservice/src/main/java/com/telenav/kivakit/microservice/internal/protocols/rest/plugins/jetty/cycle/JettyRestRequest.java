@@ -32,7 +32,6 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequest;
 import com.telenav.kivakit.network.core.QueryParameters;
-import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.properties.PropertyMap;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
@@ -44,12 +43,13 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
+import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 
 /**
  * <b>Not public API</b>
@@ -164,7 +164,7 @@ public class JettyRestRequest extends BaseComponent implements
                 // Parse the path in pairs, adding each to the properties map,
                 if (path.size() % 2 != 0)
                 {
-                    problem(HttpStatus.BAD_REQUEST, "Path parameters must be paired");
+                    problem(BAD_REQUEST, "Path parameters must be paired");
                 }
                 else
                 {
@@ -180,7 +180,7 @@ public class JettyRestRequest extends BaseComponent implements
             }
             catch (Exception e)
             {
-                problem(HttpStatus.BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
+                problem(BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
             }
         }
         return properties;
@@ -227,7 +227,7 @@ public class JettyRestRequest extends BaseComponent implements
             if (!request.isValid(response))
             {
                 // then we have an invalid response
-                problem(HttpStatus.BAD_REQUEST, "Invalid request");
+                problem(BAD_REQUEST, "Invalid request");
                 return null;
             }
 
@@ -235,7 +235,7 @@ public class JettyRestRequest extends BaseComponent implements
         }
         catch (Exception e)
         {
-            problem(HttpStatus.BAD_REQUEST, e, "Malformed request");
+            problem(BAD_REQUEST, e, "Malformed request");
             return null;
         }
     }

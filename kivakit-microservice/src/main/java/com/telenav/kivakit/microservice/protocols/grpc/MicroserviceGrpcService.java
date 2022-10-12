@@ -25,6 +25,7 @@ import io.netty.util.internal.logging.JdkLoggerFactory;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
 import static com.telenav.kivakit.core.vm.ShutdownHook.registerShutdownHook;
 
@@ -136,7 +137,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     @Override
     public Duration maximumStopTime()
     {
-        return Duration.FOREVER;
+        return FOREVER;
     }
 
     /**
@@ -184,7 +185,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            registerShutdownHook("GrpcServiceShutdown", LAST, () -> stop(Duration.FOREVER));
+            registerShutdownHook("GrpcServiceShutdown", LAST, () -> stop(FOREVER));
             running = true;
             return true;
         }

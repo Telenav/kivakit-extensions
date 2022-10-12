@@ -34,6 +34,8 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestThreadAttach;
 import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestThreadDetach;
+import static com.telenav.kivakit.network.http.HttpMethod.NULL_HTTP_METHOD;
+import static com.telenav.kivakit.network.http.HttpMethod.OPTIONS;
 
 /**
  * <b>Not public API</b>
@@ -127,7 +129,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
 
             // parse the HTTP method,
             var method = HttpMethod.parseHttpMethod(this, httpRequest.getMethod());
-            if (method != null && method != HttpMethod.OPTIONS)
+            if (method != null && method != OPTIONS)
             {
                 // create REST request cycle,
                 var cycle = listenTo(new JettyRestRequestCycle(service, httpRequest, httpResponse));
@@ -150,7 +152,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                 else
                 {
                     // and if no microservlet was resolved, try resolving the path to a JAR mount,
-                    var mountedJar = resolveApi(new RestPath(cycle.restRequest().path(), HttpMethod.NONE));
+                    var mountedJar = resolveApi(new RestPath(cycle.restRequest().path(), NULL_HTTP_METHOD));
                     if (mountedJar != null)
                     {
                         // and handle the request that way.

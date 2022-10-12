@@ -28,6 +28,7 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.network.http.HttpStatus.*;
 
 /**
  * <b>Not public API</b>
@@ -85,7 +86,7 @@ public final class JettyRestResponse extends BaseComponent
 
         errors.listenTo(this);
 
-        httpStatus(HttpStatus.OK);
+        httpStatus(OK);
     }
 
     @Override
@@ -215,24 +216,24 @@ public final class JettyRestResponse extends BaseComponent
                         }
                         writeResponse(stripBrackets(toJson(errors)));
                         writeResponse("}");
-                        httpStatus(HttpStatus.OK);
+                        httpStatus(OK);
                         responseWritten = true;
                         break;
 
                     default:
-                        problem(HttpStatus.BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
+                        problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
                         break;
                 }
             }
             else
             {
                 // then transmit a problem message.
-                problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
+                problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
             }
         }
         else
         {
-            problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
+            problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
         }
 
         if (!responseWritten)

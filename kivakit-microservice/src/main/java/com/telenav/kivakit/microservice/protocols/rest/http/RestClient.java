@@ -23,7 +23,7 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.string.Formatter.format;
-import static com.telenav.kivakit.core.string.Strings.isNullOrEmpty;
+import static com.telenav.kivakit.core.string.Strings.isNullOrBlank;
 import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultNetworkAccessConstraints;
 
 /**
@@ -212,7 +212,7 @@ public class RestClient extends BaseComponent
         if ("application/json".equals(resource.contentType()))
         {
             var json = resource.reader().asString();
-            if (!isNullOrEmpty(json))
+            if (!isNullOrBlank(json))
             {
                 return serializer.readObject(new StringResource(json), type).object();
             }

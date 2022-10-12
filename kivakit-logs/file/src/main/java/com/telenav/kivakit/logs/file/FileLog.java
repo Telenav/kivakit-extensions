@@ -39,6 +39,8 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.os.Console.console;
 import static com.telenav.kivakit.core.string.StringConversions.toNonNullString;
+import static com.telenav.kivakit.core.time.Duration.*;
+import static com.telenav.kivakit.core.value.count.Bytes.*;
 import static com.telenav.kivakit.filesystem.File.parseFile;
 import static com.telenav.kivakit.resource.FileName.fileNameForDateTime;
 
@@ -102,8 +104,8 @@ public class FileLog extends BaseRolloverTextLog
                 }
 
                 var converter = new ConvertingVariableMap(consoleListener(), properties);
-                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.FOREVER);
-                maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
+                maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, FOREVER);
+                maximumLogSize(converter.get("maximum-size", BytesConverter.class, MAXIMUM_BYTES));
             }
             catch (Exception e)
             {

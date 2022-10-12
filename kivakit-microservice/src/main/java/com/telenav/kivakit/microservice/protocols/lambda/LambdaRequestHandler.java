@@ -7,7 +7,6 @@ import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 
 import java.io.InputStream;
@@ -20,6 +19,7 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.io.IO.buffer;
 import static com.telenav.kivakit.core.io.IO.readString;
+import static com.telenav.kivakit.network.http.HttpStatus.OK;
 
 /**
  * <p>
@@ -94,7 +94,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
 
                 // and return the JSON response.
                 json = gson.toJson(request.responseType());
-                response.restResponse().httpStatus(HttpStatus.OK);
+                response.restResponse().httpStatus(OK);
                 print.println(json);
             }
             else

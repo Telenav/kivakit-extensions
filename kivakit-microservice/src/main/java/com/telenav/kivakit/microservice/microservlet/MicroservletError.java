@@ -21,6 +21,7 @@ import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.messaging.Message.parseMessageName;
 import static com.telenav.kivakit.core.messaging.Messages.newMessage;
 import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.network.http.HttpStatus.*;
 import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
@@ -66,7 +67,7 @@ public class MicroservletError
         {
             // then add a MicroservletError to the errors list.
             var statusMessage = (OperationStatusMessage) message;
-            var httpStatus = HttpStatus.OK;
+            var httpStatus = OK;
             if (message instanceof HttpProblem)
             {
                 httpStatus = ((HttpProblem) message).httpStatus();

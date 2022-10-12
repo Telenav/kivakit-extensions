@@ -26,6 +26,7 @@ import com.telenav.kivakit.network.http.HttpStatus;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.network.http.HttpStatus.*;
 
 /**
  * Allows reporting of problems and status through the {@link RestResponse}.
@@ -46,7 +47,7 @@ public interface RestProblemReportingTrait extends Restful
      */
     default void okay(String text, Object... arguments)
     {
-        restResponse().httpStatus(HttpStatus.OK);
+        restResponse().httpStatus(OK);
         restResponse().information(text, arguments);
     }
 

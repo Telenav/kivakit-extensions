@@ -36,7 +36,6 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.eclipse.jetty.util.log.StdErrLog;
 
-import javax.servlet.DispatcherType;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -49,6 +48,8 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.core.time.Duration.hours;
+import static javax.servlet.DispatcherType.REQUEST;
+import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
 
 /**
  * A convenient way to use Jetty for simple web applications.
@@ -353,7 +354,7 @@ public class JettyServer extends BaseComponent implements
             // create a "ServletContextHandler", which is a really confusing name that really means
             // something like "the place where you can register all kinds of stuff that the server
             // will use when handling requests, including but not limited to servlets"
-            var servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
+            var servletContext = new ServletContextHandler(SESSIONS);
             servletContext.setContextPath("/");
             servletContext.setServer(server);
             servletContext.setSessionHandler(new SessionHandler());
@@ -362,7 +363,7 @@ public class JettyServer extends BaseComponent implements
             // Add any cross-origin filter
             if (crossOriginFilter != null)
             {
-                servletContext.addFilter(crossOriginFilter, "/*", EnumSet.of(DispatcherType.REQUEST));
+                servletContext.addFilter(crossOriginFilter, "/*", EnumSet.of(REQUEST));
             }
 
             // then for each JettyResource,
