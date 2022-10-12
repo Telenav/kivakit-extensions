@@ -23,7 +23,7 @@ public abstract class BaseMounted extends BaseComponent implements RestProblemRe
 {
     private final RestService restService;
 
-    public BaseMounted(RestService restService)
+    protected BaseMounted(RestService restService)
     {
         this.restService = restService;
     }

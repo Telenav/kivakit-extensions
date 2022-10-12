@@ -12,6 +12,7 @@ import com.telenav.kivakit.metrics.core.aggregates.count.AverageCountMetric;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static java.lang.Math.*;
 
 /**
  * A quantum aggregate metric is an {@link com.telenav.kivakit.metrics.core.AggregateMetric} for arbitrary
@@ -105,7 +106,7 @@ public abstract class AggregateMetric<T extends DoubleValued> extends BaseMetric
      */
     private final Mapper<Double, T> factory;
 
-    public AggregateMetric(Mapper<Double, T> factory)
+    protected AggregateMetric(Mapper<Double, T> factory)
     {
         this.factory = factory;
     }
@@ -137,8 +138,8 @@ public abstract class AggregateMetric<T extends DoubleValued> extends BaseMetric
         double value = metric.doubleValue();
 
         total += value;
-        maximumSample = Math.max(maximumSample, value);
-        minimumSample = Math.min(minimumSample, value);
+        maximumSample = max(maximumSample, value);
+        minimumSample = min(minimumSample, value);
         sampleCount++;
 
         return true;

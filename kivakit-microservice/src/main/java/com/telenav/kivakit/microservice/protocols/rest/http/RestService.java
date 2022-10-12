@@ -20,10 +20,7 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.StringList;
-import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.string.Paths;
-import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
@@ -62,6 +59,10 @@ import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.language.reflection.Type.typeForClass;
+import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestPath.parseRestPath;
 import static com.telenav.kivakit.network.http.HttpMethod.GET;
 import static com.telenav.kivakit.network.http.HttpMethod.POST;
 
@@ -240,7 +241,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     /**
      * @param microservice The microservice that is creating this REST service
      */
-    public RestService(Microservice<?> microservice)
+    protected RestService(Microservice<?> microservice)
     {
         this.microservice = microservice;
         microservice.listenTo(this);
@@ -312,7 +313,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(Version version, String path, HttpMethod method, Class<Request> requestType)
     {
-        mount(Paths.pathConcatenate(versionToPath(version), path), method, requestType);
+        mount(pathConcatenate(versionToPath(version), path), method, requestType);
     }
 
     /**
@@ -332,20 +333,20 @@ public abstract class RestService extends BaseComponent implements Initializable
         if (initializing)
         {
             // create a request object, so we can get the response type and HTTP method,
-            var request = listenTo(Type.typeForClass(requestType).newInstance());
+            var request = listenTo(typeForClass(requestType).newInstance());
             if (request != null)
             {
                 // then mount an anonymous microservlet on the given path,
                 @SuppressWarnings("unchecked")
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                var restPath = RestPath.parse(this, Paths.pathConcatenate(rootPath(), path), method);
+                var restPath = parseRestPath(this, pathConcatenate(rootPath(), path), method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
                     public String description()
                     {
-                        return Strings.format("KivaKit microservlet request handler for ${class}", requestType());
+                        return format("KivaKit microservlet request handler for ${class}", requestType());
                     }
 
                     @Override
@@ -379,7 +380,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     {
         for (var path : pathToRequest.keySet())
         {
-            target.mount(Paths.pathConcatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
+            target.mount(pathConcatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
         }
     }
 
@@ -420,7 +421,7 @@ public abstract class RestService extends BaseComponent implements Initializable
         if (initializing)
         {
             // get the path to this API,
-            var restPath = RestPath.parse(this, path, POST);
+            var restPath = parseRestPath(this, path, POST);
 
             // then populate the API descriptor,
             var api = new MountedApi(this);
@@ -531,7 +532,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      */
     protected String versionToPath(Version version)
     {
-        return Strings.format("/api/$.$", version.major(), version.minor());
+        return format("/api/$.$", version.major(), version.minor());
     }
 
     /**

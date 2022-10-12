@@ -26,6 +26,6 @@ public class MicroserviceProject extends Project
     @Override
     public ObjectSet<Class<? extends Project>> dependencies()
     {
-        return ObjectSet.set(SettingsProject.class);
+        return set(SettingsProject.class);
     }
 }

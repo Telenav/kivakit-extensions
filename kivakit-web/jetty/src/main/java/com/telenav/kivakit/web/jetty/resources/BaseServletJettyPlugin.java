@@ -36,7 +36,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
              documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseServletJettyPlugin extends BaseJettyRequestHandler
 {
-    public BaseServletJettyPlugin(String name)
+    protected BaseServletJettyPlugin(String name)
     {
         super(name);
     }

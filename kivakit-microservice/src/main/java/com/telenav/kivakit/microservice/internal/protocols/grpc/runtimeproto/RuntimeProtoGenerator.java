@@ -58,11 +58,11 @@ public class RuntimeProtoGenerator implements ProtoGenerator
 
     private String outerClassName = null;
 
-    private Set<String> generatedMessages = new HashSet<String>();
+    private final Set<String> generatedMessages = new HashSet<String>();
 
     private Map<String, Object> generateAdditionalMessages = null;
 
-    private StringBuilder output = new StringBuilder();
+    private final StringBuilder output = new StringBuilder();
 
     public RuntimeProtoGenerator(Schema<?> schema)
     {

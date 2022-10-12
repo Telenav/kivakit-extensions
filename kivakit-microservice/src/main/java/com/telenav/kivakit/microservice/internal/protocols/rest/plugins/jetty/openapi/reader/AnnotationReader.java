@@ -22,23 +22,23 @@ public class AnnotationReader
         var annotation = member.annotation(OpenApiIncludeMember.class);
         if (annotation != null)
         {
-            if (!Strings.isEmpty(annotation.title()))
+            if (!Strings.isNullOrEmpty(annotation.title()))
             {
                 schema.title(annotation.title());
             }
-            if (!Strings.isEmpty(annotation.description()))
+            if (!Strings.isNullOrEmpty(annotation.description()))
             {
                 schema.description(annotation.description());
             }
-            if (!Strings.isEmpty(annotation.example()))
+            if (!Strings.isNullOrEmpty(annotation.example()))
             {
                 schema.example(annotation.example());
             }
-            if (!Strings.isEmpty(annotation.type()))
+            if (!Strings.isNullOrEmpty(annotation.type()))
             {
                 schema.type(annotation.type());
             }
-            if (!Strings.isEmpty(annotation.format()))
+            if (!Strings.isNullOrEmpty(annotation.format()))
             {
                 schema.format(annotation.format());
             }
@@ -46,7 +46,7 @@ public class AnnotationReader
             {
                 schema.deprecated(true);
             }
-            if (!Strings.isEmpty(annotation.defaultValue()))
+            if (!Strings.isNullOrEmpty(annotation.defaultValue()))
             {
                 schema.setDefault(annotation.defaultValue());
             }
@@ -54,7 +54,7 @@ public class AnnotationReader
             {
                 schema.nullable(true);
             }
-            if (!Strings.isEmpty(annotation.reference()))
+            if (!Strings.isNullOrEmpty(annotation.reference()))
             {
                 schema.$ref(annotation.reference());
             }

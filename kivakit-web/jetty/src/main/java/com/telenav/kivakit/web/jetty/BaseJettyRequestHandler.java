@@ -46,7 +46,7 @@ public abstract class BaseJettyRequestHandler extends BaseComponent implements N
 
     private String path;
 
-    public BaseJettyRequestHandler(String name)
+    protected BaseJettyRequestHandler(String name)
     {
         this.name = name;
     }

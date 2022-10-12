@@ -4,7 +4,6 @@ import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.time.Duration;
-import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
@@ -23,10 +22,11 @@ import io.grpc.ServerBuilder;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
+import static com.telenav.kivakit.core.vm.ShutdownHook.registerShutdownHook;
 
 /**
  * GRPC protocol service that simply copies mounted request handlers from {@link RestService}.
@@ -184,7 +184,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.registerShutdownHook("GrpcServiceShutdown", LAST, () -> stop(Duration.FOREVER));
+            registerShutdownHook("GrpcServiceShutdown", LAST, () -> stop(Duration.FOREVER));
             running = true;
             return true;
         }

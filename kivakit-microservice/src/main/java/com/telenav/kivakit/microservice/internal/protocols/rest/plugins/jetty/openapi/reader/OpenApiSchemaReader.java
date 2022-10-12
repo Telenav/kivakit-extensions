@@ -271,7 +271,7 @@ public class OpenApiSchemaReader extends BaseComponent
                     if (propertyTypeSchema != null)
                     {
                         propertySchema.type(propertyTypeSchema.getType());
-                        if (propertyTypeSchema.getType().equals("object")
+                        if ("object".equals(propertyTypeSchema.getType())
                                 || (propertyTypeSchema.getEnum() != null && !propertyTypeSchema.getEnum().isEmpty()))
                         {
                             propertySchema.$ref(new ReferenceResolver().reference(property.parentType()));

@@ -34,7 +34,7 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     /**
      * This constructor can be called in simple cases where the {@link Result} class is not being used.
      */
-    public BaseMicroservletResponse()
+    protected BaseMicroservletResponse()
     {
     }
 
@@ -44,7 +44,7 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
      *
      * @param result The result
      */
-    public BaseMicroservletResponse(Result<?> result)
+    protected BaseMicroservletResponse(Result<?> result)
     {
         this.result = result;
 

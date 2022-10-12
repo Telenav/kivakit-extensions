@@ -41,7 +41,7 @@ public abstract class WicketWebApplication extends WebApplication
     /**
      * The microservice parameter to this class is ignored for now
      */
-    public WicketWebApplication(Microservice<?> ignored)
+    protected WicketWebApplication(Microservice<?> ignored)
     {
     }
 

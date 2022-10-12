@@ -5,21 +5,22 @@ import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.collections.set.IdentitySet;
-import com.telenav.kivakit.core.language.primitive.Ints;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.thread.ReentrancyTracker;
-import com.telenav.kivakit.network.core.Host;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.settings.SettingsObject;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.collections.list.ObjectList.list;
+import static com.telenav.kivakit.core.language.primitive.Ints.parseInt;
 import static com.telenav.kivakit.core.thread.ReentrancyTracker.Reentrancy.ENTERED;
 import static com.telenav.kivakit.microservice.MicroserviceClusterMember.localClusterMemberInstanceIdentifier;
+import static com.telenav.kivakit.network.core.Host.parseHost;
 import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
@@ -174,7 +175,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                     warning("Cannot load cluster members: Zookeeper is not connected");
                 }
 
-                var newMembers = ObjectList.list(loaded);
+                var newMembers = list(loaded);
                 var updated = !newMembers.equals(members);
                 members = newMembers;
                 return updated;
@@ -266,9 +267,9 @@ public class MicroserviceCluster<Member> extends BaseComponent
         var parts = path.last().split("#");
 
         return new MicroserviceClusterMember<>(
-                Host.parseHost(this, parts[0]),
-                Ints.parseInt(this, parts[1]),
-                Ints.parseInt(this, parts[2]),
+                parseHost(this, parts[0]),
+                parseInt(this, parts[1]),
+                parseInt(this, parts[2]),
                 settings.object());
     }
 

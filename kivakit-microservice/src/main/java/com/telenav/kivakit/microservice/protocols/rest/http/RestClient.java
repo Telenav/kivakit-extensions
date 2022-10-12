@@ -2,7 +2,6 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -23,6 +22,8 @@ import java.net.http.HttpRequest;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.core.string.Strings.isNullOrEmpty;
 import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultNetworkAccessConstraints;
 
 /**
@@ -200,7 +201,7 @@ public class RestClient extends BaseComponent
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Strings.format("/api/$.$/$", serverVersion.major(), serverVersion.minor(), path);
+            path = format("/api/$.$/$", serverVersion.major(), serverVersion.minor(), path);
         }
 
         return new NetworkLocation(port.path(this, path));
@@ -211,7 +212,7 @@ public class RestClient extends BaseComponent
         if ("application/json".equals(resource.contentType()))
         {
             var json = resource.reader().asString();
-            if (!Strings.isEmpty(json))
+            if (!isNullOrEmpty(json))
             {
                 return serializer.readObject(new StringResource(json), type).object();
             }

@@ -26,6 +26,7 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
+import static com.telenav.kivakit.resource.packages.Package.parsePackage;
 
 /**
  * Provides the Swagger static resources required to show Swagger documentation
@@ -44,6 +45,6 @@ public class SwaggerAssetsJettyPlugin extends AssetsJettyPlugin
 
     private static Package folder()
     {
-        return Package.parsePackage(consoleListener(), SwaggerAssetsJettyPlugin.class, "assets");
+        return parsePackage(consoleListener(), SwaggerAssetsJettyPlugin.class, "assets");
     }
 }

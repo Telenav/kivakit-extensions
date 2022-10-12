@@ -24,13 +24,10 @@ import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
 import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
-import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.string.StringConversions;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.File;
 import com.telenav.kivakit.logs.file.internal.lexakai.DiagramLogsFile;
-import com.telenav.kivakit.resource.FileName;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
@@ -39,7 +36,11 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.os.Console.console;
+import static com.telenav.kivakit.core.string.StringConversions.toNonNullString;
+import static com.telenav.kivakit.filesystem.File.parseFile;
+import static com.telenav.kivakit.resource.FileName.fileNameForDateTime;
 
 /**
  * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line with
@@ -92,7 +93,7 @@ public class FileLog extends BaseRolloverTextLog
         {
             try
             {
-                file = File.parseFile(Listener.consoleListener(), path);
+                file = parseFile(consoleListener(), path);
 
                 var rollover = properties.get("rollover");
                 if (rollover != null)
@@ -100,7 +101,7 @@ public class FileLog extends BaseRolloverTextLog
                     rollover(Rollover.valueOf(rollover.toUpperCase()));
                 }
 
-                var converter = new ConvertingVariableMap(Listener.consoleListener(), properties);
+                var converter = new ConvertingVariableMap(consoleListener(), properties);
                 maximumLogFileAge = converter.get("maximum-age", DurationConverter.class, Duration.FOREVER);
                 maximumLogSize(converter.get("maximum-size", BytesConverter.class, Bytes.MAXIMUM));
             }
@@ -126,8 +127,8 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        var newFile = File.parseFile(Listener.consoleListener(), file.withoutExtension() + "-" + FileName.fileNameForDateTime(started().asLocalTime())
-                + StringConversions.toNonNullString(file.extension())).withoutOverwriting();
+        var newFile = parseFile(consoleListener(), file.withoutExtension() + "-" + fileNameForDateTime(started().asLocalTime())
+                + toNonNullString(file.extension())).withoutOverwriting();
         console().println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
         console().println("Pruning files older than $ from: $", maximumLogFileAge, folder);

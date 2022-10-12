@@ -10,17 +10,17 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.network.http.HttpMethod;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.messaging.Listener.throwingListener;
 import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
 import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
+import static java.util.Objects.hash;
 
 /**
  * A request path and method for a {@link Microservlet}
@@ -29,7 +29,7 @@ import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
  *
  * <ul>
  *     <li>{@link RestPath#RestPath(FilePath, HttpMethod)}</li>
- *     <li>{@link #parse(Listener, String, HttpMethod)}</li>
+ *     <li>{@link #parseRestPath(Listener, String, HttpMethod)}</li>
  * </ul>
  *
  * <p><b>Properties</b></p>
@@ -63,9 +63,9 @@ public class RestPath implements
      * @param httpMethod The HTTP method
      * @return The {@link RestPath}
      */
-    public static RestPath parse(@NotNull Listener listener,
-                                 @NotNull String path,
-                                 @NotNull HttpMethod httpMethod)
+    public static RestPath parseRestPath(@NotNull Listener listener,
+                                         @NotNull String path,
+                                         @NotNull HttpMethod httpMethod)
     {
         return new RestPath(parseFilePath(listener, path), httpMethod);
     }
@@ -109,7 +109,7 @@ public class RestPath implements
     @Override
     public int hashCode()
     {
-        return Objects.hash(key());
+        return hash(key());
     }
 
     /**

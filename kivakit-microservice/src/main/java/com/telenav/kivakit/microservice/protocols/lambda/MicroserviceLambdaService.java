@@ -15,6 +15,7 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.version.Version.parseVersion;
 
 /**
  * AWS Lambda protocol service that allows {@link MicroservletRequest}s to be exposed with
@@ -109,7 +110,7 @@ public class MicroserviceLambdaService extends BaseComponent implements Initiali
     public void mountLambdaRequestHandler(String lambdaName, String lambdaVersion,
                                           Class<? extends MicroservletRequest> requestType)
     {
-        mountLambdaRequestHandler(lambdaName, Version.parseVersion(Listener.throwingListener(), lambdaVersion), requestType);
+        mountLambdaRequestHandler(lambdaName, parseVersion(Listener.throwingListener(), lambdaVersion), requestType);
     }
 
     /**

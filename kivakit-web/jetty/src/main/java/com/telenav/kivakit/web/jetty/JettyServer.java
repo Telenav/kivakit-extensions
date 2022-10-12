@@ -21,7 +21,6 @@ package com.telenav.kivakit.web.jetty;
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
-import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
@@ -47,7 +46,9 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
+import static com.telenav.kivakit.core.time.Duration.hours;
 
 /**
  * A convenient way to use Jetty for simple web applications.
@@ -325,7 +326,7 @@ public class JettyServer extends BaseComponent implements
         // Return an HTTP Jetty server connector for the port that was specified
         ServerConnector http = new ServerConnector(server);
         http.setPort(port);
-        http.setIdleTimeout(Duration.hours(1).milliseconds());
+        http.setIdleTimeout(hours(1).milliseconds());
         return http;
     }
 
@@ -337,7 +338,7 @@ public class JettyServer extends BaseComponent implements
      */
     private String resolvePath(String path)
     {
-        return Paths.pathConcatenate(root, path);
+        return pathConcatenate(root, path);
     }
 
     private Server server()

@@ -20,11 +20,9 @@ package com.telenav.kivakit.web.jersey;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.logging.Logger;
-import com.telenav.kivakit.core.logging.LoggerFactory;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 
 /**
@@ -37,10 +35,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_N
              documentation = DOCUMENTATION_COMPLETE)
 public class BaseRestResource extends BaseComponent
 {
-    private static final Logger LOGGER = LoggerFactory.newLogger();
-
     public BaseRestResource()
     {
-        LOGGER.listenTo(this);
     }
 }

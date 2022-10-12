@@ -243,8 +243,8 @@ public final class JettyRestResponse extends BaseComponent
 
     private String stripBrackets(String json)
     {
-        json = Strip.leading(json, "{");
-        return Strip.trailing(json, "}");
+        json = Strip.stripLeading(json, "{");
+        return Strip.stripTrailing(json, "}");
     }
 
     /**

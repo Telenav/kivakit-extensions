@@ -90,7 +90,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
                         @Override
                         public boolean shouldSkipField(FieldAttributes field)
                         {
-                            return field.getName().equals("exampleSetFlag");
+                            return "exampleSetFlag".equals(field.getName());
                         }
                     });
         }

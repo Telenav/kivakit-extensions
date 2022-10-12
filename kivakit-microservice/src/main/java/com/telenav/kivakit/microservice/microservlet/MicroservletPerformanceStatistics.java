@@ -13,6 +13,7 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.collections.list.StringList.stringList;
+import static com.telenav.kivakit.core.time.Time.now;
 
 /**
  * Listens to performance messages and prints the average request duration at the specified frequency
@@ -30,7 +31,7 @@ public class MicroservletPerformanceStatistics
     private final Frequency every;
 
     /** The last time a message performance message was head */
-    private Time last = Time.now();
+    private Time last = now();
 
     /**
      * Creates a performance statistics aggregator
@@ -64,7 +65,7 @@ public class MicroservletPerformanceStatistics
                     paths.add("$ => $", key, duration.get(key));
                 }
                 listener.announce(paths.titledBox("Average Request Duration"));
-                last = Time.now();
+                last = now();
                 duration.clear();
             }
         }

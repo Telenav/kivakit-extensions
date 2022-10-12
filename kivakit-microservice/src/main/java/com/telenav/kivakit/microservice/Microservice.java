@@ -3,7 +3,6 @@ package com.telenav.kivakit.microservice;
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.SwitchParser;
-import com.telenav.kivakit.commandline.SwitchParsers;
 import com.telenav.kivakit.commandline.SwitchValue;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.primitive.Ints;
@@ -15,7 +14,6 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.Folder;
-import com.telenav.kivakit.filesystem.Folders;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
 import com.telenav.kivakit.interfaces.lifecycle.Stoppable;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
@@ -46,14 +44,17 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.commandline.SwitchParsers.booleanSwitchParser;
 import static com.telenav.kivakit.commandline.SwitchParsers.integerSwitchParser;
+import static com.telenav.kivakit.commandline.SwitchParsers.stringSwitchParser;
 import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.object.Lazy.*;
+import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
 
 /**
  * <p>
@@ -262,7 +263,7 @@ public abstract class Microservice<Member> extends Application implements
      * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<String> API_FORWARDING =
-            SwitchParsers.stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
+            stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
                     .optional()
                     .build();
 
@@ -288,7 +289,7 @@ public abstract class Microservice<Member> extends Application implements
      * Command line switch to output .proto files to the given folder
      */
     private final SwitchParser<Folder> PROTO_EXPORT_FOLDER =
-            Folders.folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
+            folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
                     .optional()
                     .build();
 
@@ -304,13 +305,13 @@ public abstract class Microservice<Member> extends Application implements
     private MicroserviceCluster<Member> cluster;
 
     /** Lazy-initialized gRPC service */
-    private final Lazy<MicroserviceGrpcService> grpcService = Lazy.lazy(this::onNewGrpcService);
+    private final Lazy<MicroserviceGrpcService> grpcService = lazy(this::onNewGrpcService);
 
     /** Lazy-initialized AWS Lambda service */
-    private final Lazy<MicroserviceLambdaService> lambdaService = Lazy.lazy(this::onNewLambdaService);
+    private final Lazy<MicroserviceLambdaService> lambdaService = lazy(this::onNewLambdaService);
 
     /** Lazy-initialized REST service */
-    private final Lazy<RestService> restService = Lazy.lazy(this::onNewRestService);
+    private final Lazy<RestService> restService = lazy(this::onNewRestService);
 
     /** True if this microservice is running */
     private boolean running;
@@ -319,12 +320,12 @@ public abstract class Microservice<Member> extends Application implements
     private JettyServer server;
 
     /** Lazy-initialized Wicket Web Application */
-    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = Lazy.lazy(this::onNewWebApplication);
+    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = lazy(this::onNewWebApplication);
 
     /**
      * Initializes this microservice and any project(s) it depends on
      */
-    public Microservice()
+    protected Microservice()
     {
         register(gsonFactory());
 
@@ -804,7 +805,7 @@ public abstract class Microservice<Member> extends Application implements
     @MustBeInvokedByOverriders
     protected ObjectSet<SwitchParser<?>> switchParsers()
     {
-        return ObjectSet.set(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_FORWARDING);
+        return set(PORT, GRPC_PORT, PROTO_EXPORT_FOLDER, SERVER, API_FORWARDING);
     }
 
     /**

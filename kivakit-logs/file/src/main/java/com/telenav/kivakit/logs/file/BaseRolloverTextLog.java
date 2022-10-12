@@ -38,6 +38,9 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.time.Duration.ONE_MINUTE;
+import static com.telenav.kivakit.core.time.Duration.seconds;
+import static com.telenav.kivakit.core.time.Time.now;
 import static com.telenav.kivakit.core.value.count.Bytes.megabytes;
 
 /**
@@ -94,14 +97,14 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     /** The time this log started */
     @UmlAggregation(label = "start time")
-    private Time started = Time.now();
+    private Time started = now();
 
     protected BaseRolloverTextLog()
     {
         // Flush and close this log on VM shutdown
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
         {
-            flush(Duration.ONE_MINUTE);
+            flush(ONE_MINUTE);
             out.close();
         }));
     }
@@ -114,7 +117,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     {
         try
         {
-            flush(Duration.seconds(30));
+            flush(seconds(30));
             out().flush();
             out().close();
         }
@@ -147,7 +150,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     @Override
     public final synchronized void onLog(LogEntry entry)
     {
-        var timeToRollOver = Time.now().isAfter(rolloverAt);
+        var timeToRollOver = now().isAfter(rolloverAt);
         var sizeToRollOver = byteSizedOutputStream != null
                 && byteSizedOutputStream.sizeInBytes().isGreaterThan(maximumLogSize);
         if (timeToRollOver || sizeToRollOver)
@@ -165,7 +168,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
                 }
                 else
                 {
-                    started = Time.now();
+                    started = now();
                 }
                 out = null;
             }
@@ -190,7 +193,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
         switch (rollover)
         {
             case NONE:
-                return Time.now().plus(Duration.ONE_MINUTE); // Time.MAXIMUM;
+                return now().plus(ONE_MINUTE); // Time.MAXIMUM;
 
             case DAILY:
                 return LocalTime.now().startOfTomorrow();

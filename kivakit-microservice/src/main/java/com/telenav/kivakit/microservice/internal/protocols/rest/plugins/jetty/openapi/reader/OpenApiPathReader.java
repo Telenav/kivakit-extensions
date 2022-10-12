@@ -104,7 +104,7 @@ public class OpenApiPathReader extends BaseComponent
         // Create operation,
         var operation = new Operation();
         var annotationReader = new OpenApiAnnotationReader();
-        var operationId = Strip.leading(path.key().replaceAll("/", "-"), "-");
+        var operationId = Strip.stripLeading(path.key().replaceAll("/", "-"), "-");
 
         operation.operationId(operationId);
         operation.summary(annotationReader.readAnnotationString(requestType, "onRespond", OpenApiRequestHandler.class, OpenApiRequestHandler::summary));

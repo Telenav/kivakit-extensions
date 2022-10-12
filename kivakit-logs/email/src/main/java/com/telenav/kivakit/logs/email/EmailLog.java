@@ -23,12 +23,8 @@ import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
-import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.logs.email.internal.lexakai.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
-import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.network.core.authentication.UserName;
-import com.telenav.kivakit.network.core.authentication.passwords.PlainTextPassword;
 import com.telenav.kivakit.network.email.Email;
 import com.telenav.kivakit.network.email.EmailBody;
 import com.telenav.kivakit.network.email.EmailSender;
@@ -43,7 +39,12 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.registry.Registry.registryFor;
+import static com.telenav.kivakit.network.core.EmailAddress.parseEmailAddress;
+import static com.telenav.kivakit.network.core.Host.parseHost;
+import static com.telenav.kivakit.network.core.authentication.UserName.parseUserName;
+import static com.telenav.kivakit.network.core.authentication.passwords.PlainTextPassword.parsePlainTextPassword;
 
 /**
  * A {@link Log} service provider that sends emails. Configuration occurs via {@link #configure(VariableMap)}, which
@@ -120,7 +121,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parseEmailAddress(Listener.consoleListener(), at));
+                this.to.add(parseEmailAddress(consoleListener(), at));
             }
         }
         else
@@ -132,7 +133,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parseEmailAddress(Listener.consoleListener(), from);
+            this.from = parseEmailAddress(consoleListener(), from);
         }
         else
         {
@@ -146,9 +147,9 @@ public class EmailLog extends BaseTextLog
         if (host != null && username != null && password != null)
         {
             var configuration = new SmtpEmailSender.Configuration();
-            configuration.host(Host.parseHost(Listener.consoleListener(), host));
-            configuration.username(UserName.parseUserName(Listener.consoleListener(), username));
-            configuration.password(PlainTextPassword.parsePlainTextPassword(Listener.consoleListener(), password));
+            configuration.host(parseHost(consoleListener(), host));
+            configuration.username(parseUserName(consoleListener(), username));
+            configuration.password(parsePlainTextPassword(consoleListener(), password));
             sender = new SmtpEmailSender(configuration);
         }
     }

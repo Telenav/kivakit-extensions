@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -15,11 +14,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.io.IO.buffer;
+import static com.telenav.kivakit.core.io.IO.readString;
 
 /**
  * <p>
@@ -80,7 +80,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
             if (requestType != null)
             {
                 // read the JSON for the request,
-                var json = IO.readString(this, in);
+                var json = readString(this, in);
 
                 // get a Gson and deserialize the JSON into a request object,
                 var gson = require(GsonFactory.class).gson();

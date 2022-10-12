@@ -9,7 +9,6 @@ import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
 import com.telenav.kivakit.settings.SettingsTrait;
-import com.telenav.kivakit.settings.stores.ResourceFolderSettingsStore;
 import com.telenav.kivakit.testing.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,7 +48,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         register(serializers);
 
         // Register zookeeper settings,
-        registerSettingsIn(listenTo(new ResourceFolderSettingsStore(this, packageForThis())));
+        registerSettingsIn(packageForThis());
 
         // create zookeeper settings store,
         var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT, new GsonObjectSerializer())));

@@ -19,14 +19,14 @@
 package com.telenav.kivakit.web.swagger;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
-import com.telenav.kivakit.core.language.Classes;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.language.Classes.resourceUri;
 
 /**
  * Provides the Swagger <a href="https://www.webjars.org">WebJar</a> static resource required to show Swagger
@@ -57,6 +57,6 @@ public class SwaggerWebJarAssetJettyPlugin extends BaseAssetsJettyPlugin
     private String resourceBase()
     {
         var path = "META-INF/resources/webjars/swagger-ui/3.51.2";
-        return Classes.resourceUri(SwaggerIndexJettyPlugin.class, path).toString();
+        return resourceUri(SwaggerIndexJettyPlugin.class, path).toString();
     }
 }

@@ -5,8 +5,8 @@ import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.io.StringInputStream;
 import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.core.string.Formatter;
 import com.telenav.kivakit.core.string.Paths;
-import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.launcher.JarLauncher;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
@@ -233,7 +233,7 @@ public class MountedApi extends BaseMounted implements TryTrait
     @Override
     public String toString()
     {
-        return Strings.format("$ ==> $ ($) on port $", path, version, jar, port);
+        return Formatter.format("$ ==> $ ($) on port $", path, version, jar, port);
     }
 
     /**

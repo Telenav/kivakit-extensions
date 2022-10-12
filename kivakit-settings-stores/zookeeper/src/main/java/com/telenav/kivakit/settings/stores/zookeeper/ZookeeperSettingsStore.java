@@ -30,6 +30,9 @@ import java.util.Set;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.collections.list.StringList.split;
+import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
+import static com.telenav.kivakit.core.path.StringPath.*;
 import static com.telenav.kivakit.core.project.Project.resolveProject;
 import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.DELETE;
@@ -185,9 +188,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      * This store supports all access modes
      */
     @Override
-    public Set<AccessMode> accessModes()
+    public ObjectSet<AccessMode> accessModes()
     {
-        return Set.of(INDEX, DELETE, UNLOAD, LOAD, SAVE);
+        return set(INDEX, DELETE, UNLOAD, LOAD, SAVE);
     }
 
     /**
@@ -352,7 +355,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         if (path.size() == 1)
         {
-            return StringPath.stringPath(StringPath.stringPath(StringList.split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath()).withRoot("/");
+            return stringPath(stringPath(split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath()).withRoot("/");
         }
 
         return path;
@@ -399,7 +402,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
                 if (child.startsWith(storePrefix))
                 {
                     // then read and add the settings,
-                    var path = StringPath.stringPath(child).withRoot("/");
+                    var path = stringPath(child).withRoot("/");
                     settings.addIfNotNull(loadSettings(path));
 
                     // and watch the path for changes
@@ -409,7 +412,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
         }
         else
         {
-            settings.addAll(loadRecursively(StringPath.stringPath("PERSISTENT").withRoot("/")));
+            settings.addAll(loadRecursively(stringPath("PERSISTENT").withRoot("/")));
         }
 
         connection.watchRoot();
@@ -498,7 +501,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     @NotNull
     private StringPath flatten(StringPath path)
     {
-        return StringPath.stringPath(path.join(EPHEMERAL_NODE_SEPARATOR));
+        return stringPath(path.join(EPHEMERAL_NODE_SEPARATOR));
     }
 
     /**
@@ -681,7 +684,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         var application = require(Application.class);
 
-        return StringPath.stringPath(
+        return stringPath(
                 createMode().name(),
                 "kivakit",
                 String.valueOf(resolveProject(KivaKit.class).kivakitVersion()),

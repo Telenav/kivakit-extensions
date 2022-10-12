@@ -92,7 +92,7 @@ public abstract class Microservlet<Request extends MicroservletRequest, Response
      * @param requestType The request type
      * @param responseType The response type
      */
-    public Microservlet(Class<? extends Request> requestType, Class<? extends Response> responseType)
+    protected Microservlet(Class<? extends Request> requestType, Class<? extends Response> responseType)
     {
         this.requestType = ensureNotNull(requestType);
         this.responseType = ensureNotNull(responseType);

@@ -40,7 +40,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_N
              documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseFilterJettyPlugin extends BaseJettyRequestHandler
 {
-    public BaseFilterJettyPlugin(String name)
+    protected BaseFilterJettyPlugin(String name)
     {
         super(name);
     }
