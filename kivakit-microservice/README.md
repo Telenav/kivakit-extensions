@@ -148,9 +148,9 @@ The *MicroserviceGrpcService* class copies its request handler mounts from *Micr
    request is passed to the next filter in the filter chain.
 5. The MountedMicroservlet.handleRequest(HttpMethod, RestRequestCycle) method is called
 6. The Microservlet is retrieved, and Microservlet.respond(Request) is method called
-7. If the microservlet was added with RestService.mount*(), an anonymous subclass of Microservlet was created 
-   when mount was originally called. 
-   - An instance of this subclass keeps the user's MicroservletRequest subtype and instantiates it
+7. If the microservlet was added with RestService.mount*(), an anonymous subclass of Microservlet was used
+   to make a note of the user's MicroservletRequest subclass.
+   - When the anonymous microservlet is called, it instantiates the user's MicroservletRequest subclass
    - The MicroservletRequest.respond() method is called
    - The user's code in MicroservletRequest.onRespond() method is called
 
