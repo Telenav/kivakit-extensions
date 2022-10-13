@@ -126,6 +126,41 @@ The *MicroserviceGrpcService* class copies its request handler mounts from *Micr
             mount("get-robot", "1.0", GetRobotRequest.class);
         }
     }
+    
+### Flow of Control
+
+#### Initialization
+
+1. Microservice application subclass creates a RestService subclass in Microservice.onNewRestService()
+2. Microservice installs MicroservletJettyPlugin, which installs JettyMicroservletFilter
+3. In the RestService.onInitialize() method, mount*() methods are used to bind MicroservletRequest handlers to mount paths.
+4. Jetty Server starts up
+
+####  Request
+    
+1. An HTTP request is made to the rest server
+2. The Servlet API JettyMicroservletFilter.doFilter(ServletRequest, ServletResponse, FilterChain) method is called
+3. Request parameters are processed
+   - If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted
+   - If the HTTP request method is POST, then the posted JSON object is read by JettyRestRequest.readRequest(Class)
+   - If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted
+4. The request path is examined as a possible mount point for a MountedMicroservlet. If no mounted microservlet is found, the
+   request is passed to the next filter in the filter chain.
+5. The MountedMicroservlet.handleRequest(HttpMethod, RestRequestCycle) method is called
+6. The Microservlet is retrieved, and Microservlet.respond(Request) is method called
+7. If the microservlet was added with RestService.mount*(), an anonymous subclass of Microservlet was created 
+   when mount was originally called. 
+   - An instance of this subclass keeps the user's MicroservletRequest subtype and instantiates it
+   - The MicroservletRequest.respond() method is called
+   - The user's code in MicroservletRequest.onRespond() method is called
+
+#### Response
+    
+1. The Microservlet.onRespond(MicroservletRequest) method is called
+2. The request handler's return value is passed to JettyRestResponse.writeResponse(MicroservletResponse), which: 
+   - Validates the response object by calling Validatable.validator() and Validator.validate(Listener)
+   - Converts the object to output (normally JSON) using the ObjectSerializer object provided by RestService.serializer
+   - Writes the JSON object to the servlet response output stream
 
 [//]: # (end-user-text)
 

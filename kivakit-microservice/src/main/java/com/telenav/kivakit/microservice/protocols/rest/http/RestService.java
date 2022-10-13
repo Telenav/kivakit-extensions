@@ -20,16 +20,12 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.StringList;
-import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequest;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
@@ -41,18 +37,12 @@ import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
-import com.telenav.kivakit.validation.Validatable;
-import com.telenav.kivakit.validation.Validator;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.swagger.v3.oas.models.info.Info;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -165,56 +155,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * {@link #pathToVersion(String)} (both must be overridden). By default this format used by both methods is
  * <i>/api/[major-version].[minor-version]</i>. For example, <i>/api/1.0</i>.
  * </p>
- *
- * <p><b>Internal Details - Flow of Control</b></p>
- *
- * <ol>
- *     <li>Initializing</li>
- *     <li>
- *         <ol>
- *             <li>{@link RestService} creates a {@link MicroservletJettyPlugin}</li>
- *             <li>In the {@link RestService#onInitialize()} method, <i>mount*()</i> methods are used to bind
- *             {@link MicroservletRequest} handlers to paths</li>
- *         </ol>
- *     </li>
- *     <li>Receiving requests</li>
- *     <li>
- *         <ol>
- *             <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyPlugin}</li>
- *             <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} resolves any
- *             {@link Microservlet} mounted on the request path. If no microservlet is found, the request is passed to the next
- *             {@link Filter} in the filter chain</li>
- *             <li>Request parameters are processed</li>
- *             <li>
- *               <ol>
- *                 <li>If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
- *                 <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyRestRequest#readRequest(Class)}</li>
- *                 <li>If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
- *               </ol>
- *             </li>
- *         </ol>
- *     </li>
- *
- *     <li>Handling requests</li>
- *     <li>
- *       <ol>
- *         <li>The {@link Microservlet#onRespond(MicroservletRequest)} method is called</li>
- *       </ol>
- *     </li>
- *     <li>Producing a response</li>
- *     <li>
- *     <ol>
- *         <li>The request handler's return value is passed to {@link JettyRestResponse#writeResponse(MicroservletResponse)}, which:</li>
- *         <li>
- *           <ol>
- *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
- *             <li>Converts the object to output (normally JSON) using the {@link ObjectSerializer} object provided by {@link RestService#serializer()}</li>
- *             <li>Writes the JSON object to the servlet response output stream</li>
- *           </ol>
- *         </li>
- *     </ol>
- *     </li>
- * </ol>
  *
  * @author jonathanl (shibo)
  * @see Microservice
