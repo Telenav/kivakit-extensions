@@ -23,7 +23,7 @@ This module provides an abstraction for developing microservices.
 ### Index
 
 [**Summary**](#summary)  
-[**Articles**](#articles)
+[**Articles**](#articles)  
 [**Microservice API**](#api)  
 [**A Microservice from Beginning to End**](#details)  
 [**GRPC and AWS Lambda Protocols**](#protocols)
@@ -94,6 +94,7 @@ The public API classes in this mini-framework are:
 | MicroserviceLambdaService  | Base class for AWS Lambda service interfaces                         |
 | MicroserviceGsonFactory    | Factory that produces configured Gson objects for JSON serialization |
 
+<br/>
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 #### Microservlet Mini-framework
