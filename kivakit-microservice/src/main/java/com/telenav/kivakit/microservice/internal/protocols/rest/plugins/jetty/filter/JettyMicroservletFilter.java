@@ -218,7 +218,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         if (existing != null)
         {
             problem("$: There is already a $ microservlet mounted on $: ${class}",
-                    microservice.name(), path.httpMethod(), path.path(), existing.getClass()).throwAsIllegalStateException();
+                    microservice.name(), path.httpMethod(), path.path(), existing.getClass()).throwMessage();
         }
 
         var mounted = listenTo(new MountedMicroservlet(service));
@@ -240,14 +240,14 @@ public class JettyMicroservletFilter extends BaseComponent implements
         {
             // then throw an exception,
             problem("There is already an API mounted on $: $",
-                    api.path(), existing).throwAsIllegalStateException();
+                    api.path(), existing).throwMessage();
         }
 
         // otherwise, launch the API,
         if (!api.maybeLaunch())
         {
             // or fail trying,
-            problem("Unable to launch API JAR: $", api).throwAsIllegalStateException();
+            problem("Unable to launch API JAR: $", api).throwMessage();
         }
 
         // and finally, put our API in the map of mounted APIs.
