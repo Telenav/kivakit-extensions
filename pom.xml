@@ -45,6 +45,7 @@
     
     <modules>
         
+        <module>kivakit-filesystems</module>
         <module>kivakit-web</module>
         <module>kivakit-metrics</module>
         <module>kivakit-settings-stores</module>
