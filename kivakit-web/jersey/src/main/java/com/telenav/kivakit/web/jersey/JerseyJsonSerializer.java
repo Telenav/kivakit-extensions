@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.jersey;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.resource.serialization.SerializableObject;
@@ -37,9 +37,10 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static javax.ws.rs.core.MediaType.*;
 
 /**
  * Performs JSON serialization compatible with the Jersey REST API via <i>javax.ws.rs</i> interfaces.
@@ -47,11 +48,11 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  * @author jonathanl (shibo)
  */
 @Provider
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@Consumes(APPLICATION_JSON)
+@Produces(APPLICATION_JSON)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class JerseyJsonSerializer<T> implements
         MessageBodyReader<T>,
         MessageBodyWriter<T>

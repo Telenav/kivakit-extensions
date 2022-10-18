@@ -18,30 +18,31 @@
 
 package com.telenav.kivakit.microservice.web;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.microservice.Microservice;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.settings.ExceptionSettings;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static org.apache.wicket.RuntimeConfigurationType.DEVELOPMENT;
+import static org.apache.wicket.settings.ExceptionSettings.SHOW_EXCEPTION_PAGE;
+import static org.apache.wicket.settings.ExceptionSettings.SHOW_INTERNAL_ERROR_PAGE;
 
 /**
  * Base class for Apache Wicket web applications used in microservices.
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public abstract class WicketWebApplication extends WebApplication
 {
     /**
      * The microservice parameter to this class is ignored for now
      */
-    public WicketWebApplication(Microservice<?> ignored)
+    protected WicketWebApplication(Microservice<?> ignored)
     {
     }
 
@@ -54,14 +55,14 @@ public abstract class WicketWebApplication extends WebApplication
             getDebugSettings().setDevelopmentUtilitiesEnabled(true);
             getDebugSettings().setAjaxDebugModeEnabled(true);
             getDebugSettings().setComponentUseCheck(true);
-            getExceptionSettings().setUnexpectedExceptionDisplay(ExceptionSettings.SHOW_EXCEPTION_PAGE);
+            getExceptionSettings().setUnexpectedExceptionDisplay(SHOW_EXCEPTION_PAGE);
         }
         else
         {
             getMarkupSettings().setStripWicketTags(false);
             getMarkupSettings().setStripComments(false);
             getMarkupSettings().setCompressWhitespace(false);
-            getExceptionSettings().setUnexpectedExceptionDisplay(ExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
+            getExceptionSettings().setUnexpectedExceptionDisplay(SHOW_INTERNAL_ERROR_PAGE);
         }
     }
 }

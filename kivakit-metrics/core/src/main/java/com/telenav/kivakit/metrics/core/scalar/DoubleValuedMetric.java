@@ -1,15 +1,15 @@
 package com.telenav.kivakit.metrics.core.scalar;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.interfaces.value.DoubleValued;
 import com.telenav.kivakit.metrics.core.AggregateMetric;
 import com.telenav.kivakit.metrics.core.BaseMetric;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * A quantum metric is a single measurement (as opposed to an {@link AggregateMetric}) with a {@link #name()},
@@ -18,9 +18,9 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class DoubleValuedMetric<T extends DoubleValued> extends BaseMetric<T>
 {
     /** The measurement value */
@@ -49,7 +49,7 @@ public class DoubleValuedMetric<T extends DoubleValued> extends BaseMetric<T>
     }
 
     @Override
-    @KivaKitIncludeProperty
+    @IncludeProperty
     public T measurement()
     {
         return measurement;

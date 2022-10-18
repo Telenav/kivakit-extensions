@@ -1,11 +1,10 @@
 package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMemberFromSuperType;
-
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * <b>Not public API</b>
@@ -16,8 +15,8 @@ import java.lang.annotation.Target;
  *
  * @author jonathanl (shibo)
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Retention(RUNTIME)
+@Target(TYPE)
 public @interface OpenApiIncludeMemberFromSuperTypeRepeater
 {
     OpenApiIncludeMemberFromSuperType[] value();

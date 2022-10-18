@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.version.Version;
@@ -11,10 +11,11 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.version.Version.parseVersion;
 
 /**
  * AWS Lambda protocol service that allows {@link MicroservletRequest}s to be exposed with
@@ -46,9 +47,9 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see LambdaRequestHandler
  */
 @SuppressWarnings("unused")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceLambdaService extends BaseComponent implements Initializable
 {
     /** True while the {@link #onInitialize()} method is running */
@@ -109,11 +110,11 @@ public class MicroserviceLambdaService extends BaseComponent implements Initiali
     public void mountLambdaRequestHandler(String lambdaName, String lambdaVersion,
                                           Class<? extends MicroservletRequest> requestType)
     {
-        mountLambdaRequestHandler(lambdaName, Version.parseVersion(Listener.throwingListener(), lambdaVersion), requestType);
+        mountLambdaRequestHandler(lambdaName, parseVersion(Listener.throwingListener(), lambdaVersion), requestType);
     }
 
     /**
-     * @return The request handler for the given lambda function, or null if there is none
+     * Returns the request handler for the given lambda function, or null if there is none
      */
     Class<? extends MicroservletRequest> requestType(LambdaFunction lambda)
     {

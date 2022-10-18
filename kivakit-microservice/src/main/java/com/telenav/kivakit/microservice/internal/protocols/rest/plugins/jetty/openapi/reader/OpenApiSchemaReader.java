@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
 import com.telenav.kivakit.core.language.reflection.Member;
@@ -23,10 +23,10 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureFalse;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
@@ -48,10 +48,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see OpenApiIncludeMember
  */
 @SuppressWarnings({ "rawtypes", "SpellCheckingInspection" })
-@ApiQuality(stability = API_UNSTABLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_INTERNAL)
 public class OpenApiSchemaReader extends BaseComponent
 {
     /** Models for which to make schemas */
@@ -76,7 +76,7 @@ public class OpenApiSchemaReader extends BaseComponent
     }
 
     /**
-     * @return A map from schema name to {@link Schema} for all schemas found recursively in all models added to this
+     * Returns a map from schema name to {@link Schema} for all schemas found recursively in all models added to this
      * reader via {@link #addModelToRead(Type)}.
      */
     public Map<String, Schema> read()
@@ -97,7 +97,7 @@ public class OpenApiSchemaReader extends BaseComponent
     public Schema<?> readSchema(Type<?> type)
     {
         // If we haven't already resolved the schema,
-        String name = type.type().getSimpleName();
+        String name = type.asJavaType().getSimpleName();
         var resolved = resolvedSchemas.get(name);
         if (resolved == null)
         {
@@ -122,7 +122,7 @@ public class OpenApiSchemaReader extends BaseComponent
     }
 
     /**
-     * @return The {@link Schema} for {@link MicroservletErrorResponse}s.
+     * Returns the {@link Schema} for {@link MicroservletErrorResponse}s.
      */
     public Schema<?> schemaError()
     {
@@ -200,7 +200,7 @@ public class OpenApiSchemaReader extends BaseComponent
 
             // Add object attributes,
             schema.type("object");
-            schema.name(type.type().getSimpleName());
+            schema.name(type.asJavaType().getSimpleName());
             schema.description(annotation.description());
             schema.deprecated(annotation.deprecated() ? true : null);
             schema.title(annotation.title());
@@ -264,17 +264,17 @@ public class OpenApiSchemaReader extends BaseComponent
                 else
                 {
                     // otherwise, read the property's schema,
-                    var propertyTypeSchema = readSchema(property.type());
+                    var propertyTypeSchema = readSchema(property.parentType());
                     var propertySchema = new Schema();
                     propertySchema.name(property.name());
 
                     if (propertyTypeSchema != null)
                     {
                         propertySchema.type(propertyTypeSchema.getType());
-                        if (propertyTypeSchema.getType().equals("object")
+                        if ("object".equals(propertyTypeSchema.getType())
                                 || (propertyTypeSchema.getEnum() != null && !propertyTypeSchema.getEnum().isEmpty()))
                         {
-                            propertySchema.$ref(new ReferenceResolver().reference(property.type()));
+                            propertySchema.$ref(new ReferenceResolver().reference(property.parentType()));
                             new SchemaCopier().copy(propertyTypeSchema, propertySchema);
                         }
                         propertySchema.format(propertyTypeSchema.getFormat());

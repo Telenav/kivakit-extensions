@@ -1,13 +1,11 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.network.core.NetworkAccessConstraints;
 import com.telenav.kivakit.network.core.NetworkLocation;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.BaseHttpResource;
@@ -21,9 +19,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.http.HttpRequest;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.core.string.Strings.isNullOrBlank;
+import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultNetworkAccessConstraints;
 
 /**
  * A client for easy interaction with KivaKit {@link RestService}s.
@@ -59,9 +60,9 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class RestClient extends BaseComponent
 {
     /** Serializer for JSON request serialization and deserialization */
@@ -98,7 +99,7 @@ public class RestClient extends BaseComponent
      */
     public <Response extends MicroservletResponse> Response get(String path, Class<Response> responseType)
     {
-        return fromJson(new HttpGetResource(networkLocation(path), NetworkAccessConstraints.DEFAULT), responseType);
+        return fromJson(new HttpGetResource(networkLocation(path), defaultNetworkAccessConstraints()), responseType);
     }
 
     /**
@@ -126,7 +127,7 @@ public class RestClient extends BaseComponent
     Response post(String path, Class<Response> responseType, Request request)
     {
         var outer = this;
-        var post = listenTo(new HttpPostResource(networkLocation(path), NetworkAccessConstraints.DEFAULT)
+        var post = listenTo(new HttpPostResource(networkLocation(path), defaultNetworkAccessConstraints())
         {
             @Override
             public void onInitialize(HttpRequest.Builder builder)
@@ -200,7 +201,7 @@ public class RestClient extends BaseComponent
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Strings.format("/api/$.$/$", serverVersion.major(), serverVersion.minor(), path);
+            path = format("/api/$.$/$", serverVersion.major(), serverVersion.minor(), path);
         }
 
         return new NetworkLocation(port.path(this, path));
@@ -211,7 +212,7 @@ public class RestClient extends BaseComponent
         if ("application/json".equals(resource.contentType()))
         {
             var json = resource.reader().asString();
-            if (!Strings.isEmpty(json))
+            if (!isNullOrBlank(json))
             {
                 return serializer.readObject(new StringResource(json), type).object();
             }

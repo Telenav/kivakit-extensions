@@ -2,24 +2,24 @@ package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
-import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
-import static com.telenav.kivakit.core.io.IO.bufferOutput;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.io.IO.buffer;
+import static com.telenav.kivakit.core.io.IO.readString;
+import static com.telenav.kivakit.network.http.HttpStatus.OK;
 
 /**
  * <p>
@@ -53,10 +53,10 @@ import static com.telenav.kivakit.core.io.IO.bufferOutput;
  * @see LambdaFunction
  * @see MicroserviceLambdaService
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_INTERNAL)
 public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixin
 {
     /**
@@ -70,7 +70,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
     public void handleRequest(InputStream in, OutputStream out, Context context)
     {
         // Create a print writer to write the response to,
-        try (var print = new PrintWriter(bufferOutput(out)))
+        try (var print = new PrintWriter(buffer(out)))
         {
             // then get the requested Lambda function,
             var lambda = new LambdaFunction(context);
@@ -80,7 +80,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
             if (requestType != null)
             {
                 // read the JSON for the request,
-                var json = IO.string(this, in);
+                var json = readString(this, in);
 
                 // get a Gson and deserialize the JSON into a request object,
                 var gson = require(GsonFactory.class).gson();
@@ -94,7 +94,7 @@ public class LambdaRequestHandler implements RequestStreamHandler, ComponentMixi
 
                 // and return the JSON response.
                 json = gson.toJson(request.responseType());
-                response.restResponse().httpStatus(HttpStatus.OK);
+                response.restResponse().httpStatus(OK);
                 print.println(json);
             }
             else

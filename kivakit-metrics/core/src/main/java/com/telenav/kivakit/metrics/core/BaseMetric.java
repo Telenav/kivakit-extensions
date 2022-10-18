@@ -1,11 +1,12 @@
 package com.telenav.kivakit.metrics.core;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.time.Time;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.time.Time.now;
 
 /**
  * Base class for metrics. All metrics have a {@link #createdAt()} time, which is the time at which the metric started
@@ -13,13 +14,13 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseMetric<T> implements Metric<T>
 {
     /** The time at which this metric was created */
-    private final Time created = Time.now();
+    private final Time created = now();
 
     /** The logical name of the metric */
     private String name;
@@ -33,11 +34,11 @@ public abstract class BaseMetric<T> implements Metric<T>
     /** The kind of metric */
     private MetricType type;
 
-    public BaseMetric()
+    protected BaseMetric()
     {
     }
 
-    public BaseMetric(BaseMetric<T> that)
+    protected BaseMetric(BaseMetric<T> that)
     {
         name = that.name;
         description = that.description;

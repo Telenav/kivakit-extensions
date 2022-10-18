@@ -1,8 +1,7 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
@@ -17,10 +16,11 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureEqual;
+import static com.telenav.kivakit.core.string.Formatter.format;
 import static com.telenav.kivakit.resource.Extension.JSON;
 import static com.telenav.kivakit.resource.Extension.PROPERTIES;
 
@@ -49,9 +49,9 @@ import static com.telenav.kivakit.resource.Extension.PROPERTIES;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings({ "unchecked", "unused" })
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceGrpcClient extends BaseComponent
 {
     /** The GRPC channel for this client */
@@ -175,7 +175,7 @@ public class MicroserviceGrpcClient extends BaseComponent
         if (!path.startsWith("/"))
         {
             // then turn it into /api/[major].[minor]/path
-            path = Strings.format("/api/$.$/$", version.major(), version.minor(), path);
+            path = format("/api/$.$/$", version.major(), version.minor(), path);
         }
 
         return path;

@@ -18,10 +18,10 @@
 
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.io.IO;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.version.Version;
@@ -32,7 +32,6 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequest;
 import com.telenav.kivakit.network.core.QueryParameters;
-import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.properties.PropertyMap;
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.kivakit.validation.Validator;
@@ -44,12 +43,13 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
+import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 
 /**
  * <b>Not public API</b>
@@ -69,10 +69,10 @@ import static com.telenav.kivakit.core.messaging.Listener.nullListener;
  */
 @SuppressWarnings({ "unused" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = SERVICE_PROVIDER_IMPLEMENTATION)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_SERVICE_PROVIDER)
 public class JettyRestRequest extends BaseComponent implements
         TryTrait,
         RestRequest,
@@ -112,7 +112,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return True if this request has a body that can be read with {@link #readRequest(Class)}
+     * Returns true if this request has a body that can be read with {@link #readRequest(Class)}
      */
     @Override
     public boolean hasBody()
@@ -141,7 +141,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return Parameters to this request
+     * Returns parameters to this request
      */
     @Override
     public PropertyMap parameters()
@@ -150,7 +150,7 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return Parameters to this request
+     * Returns parameters to this request
      */
     @Override
     public PropertyMap parameters(FilePath path)
@@ -164,7 +164,7 @@ public class JettyRestRequest extends BaseComponent implements
                 // Parse the path in pairs, adding each to the properties map,
                 if (path.size() % 2 != 0)
                 {
-                    problem(HttpStatus.BAD_REQUEST, "Path parameters must be paired");
+                    problem(BAD_REQUEST, "Path parameters must be paired");
                 }
                 else
                 {
@@ -180,14 +180,14 @@ public class JettyRestRequest extends BaseComponent implements
             }
             catch (Exception e)
             {
-                problem(HttpStatus.BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
+                problem(BAD_REQUEST, e, "Invalid parameters: $", httpRequest.getRequestURI());
             }
         }
         return properties;
     }
 
     /**
-     * @return The "context" path of the servlet from the root of the REST application
+     * Returns the "context" path of the servlet from the root of the REST application
      */
     @Override
     @NotNull
@@ -220,14 +220,14 @@ public class JettyRestRequest extends BaseComponent implements
         {
             // Read JSON object from servlet input
             var in = open();
-            String json = IO.string(this, in);
+            String json = IO.readString(this, in);
             var request = fromJson(json, requestType);
 
             // If the request is invalid (any problems go into the response object),
             if (!request.isValid(response))
             {
                 // then we have an invalid response
-                problem(HttpStatus.BAD_REQUEST, "Invalid request");
+                problem(BAD_REQUEST, "Invalid request");
                 return null;
             }
 
@@ -235,7 +235,7 @@ public class JettyRestRequest extends BaseComponent implements
         }
         catch (Exception e)
         {
-            problem(HttpStatus.BAD_REQUEST, e, "Malformed request");
+            problem(BAD_REQUEST, e, "Malformed request");
             return null;
         }
     }
@@ -247,10 +247,10 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * @return The version of the microservice for this request
+     * Returns the version of the microservice for this request
      */
     @Override
-    @KivaKitIncludeProperty
+    @IncludeProperty
     public Version version()
     {
         return cycle.version();

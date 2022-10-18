@@ -1,15 +1,15 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
 import com.telenav.kivakit.conversion.core.language.primitive.BooleanConverter;
 import com.telenav.kivakit.conversion.core.language.primitive.IntegerConverter;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * Base microservice settings
@@ -28,18 +28,18 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceSettings
 {
-    @KivaKitConverted(IntegerConverter.class)
+    @ConvertedProperty(IntegerConverter.class)
     private int port;
 
-    @KivaKitConverted(IntegerConverter.class)
+    @ConvertedProperty(IntegerConverter.class)
     private int grpcPort;
 
-    @KivaKitConverted(BooleanConverter.class)
+    @ConvertedProperty(BooleanConverter.class)
     private boolean server;
 
     public MicroserviceSettings grpcPort(int grpcPort)

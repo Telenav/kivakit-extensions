@@ -1,8 +1,8 @@
 package com.telenav.kivakit.microservice.protocols.rest.health;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
@@ -11,12 +11,12 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
-import com.telenav.kivakit.network.http.HttpStatus;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
  * Request handler that provides server readiness.
@@ -25,10 +25,10 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  */
 @SuppressWarnings("unused")
 @OpenApiIncludeType(description = "Request for server readiness")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_INTERNAL)
 public class HealthReadyRequest extends BaseMicroservletRequest
 {
     /**
@@ -39,7 +39,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
     public static class HealthReadyResponse extends BaseMicroservletResponse
     {
         @Expose
-        @KivaKitIncludeProperty
+        @IncludeProperty
         @OpenApiIncludeMember(description = "The server status")
         private final String status;
 
@@ -67,7 +67,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
             {
                 // then this server is not alive,
                 var response = new HealthReadyResponse("Forwarded API is failing: " + api.uri());
-                response.restResponse().httpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                response.restResponse().httpStatus(INTERNAL_SERVER_ERROR);
                 return response;
             }
         }

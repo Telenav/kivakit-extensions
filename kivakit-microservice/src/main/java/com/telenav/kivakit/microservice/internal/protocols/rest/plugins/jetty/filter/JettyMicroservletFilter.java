@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
 import com.google.gson.Gson;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
@@ -10,7 +10,6 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -29,10 +28,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestThreadAttach;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestThreadDetach;
+import static com.telenav.kivakit.network.http.HttpMethod.NULL_HTTP_METHOD;
+import static com.telenav.kivakit.network.http.HttpMethod.OPTIONS;
 
 /**
  * <b>Not public API</b>
@@ -69,10 +72,10 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  */
 @SuppressWarnings("SpellCheckingInspection")
 @UmlClassDiagram(diagram = DiagramJetty.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = SERVICE_PROVIDER_IMPLEMENTATION)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_SERVICE_PROVIDER)
 public class JettyMicroservletFilter extends BaseComponent implements
         Filter,
         TryTrait,
@@ -126,13 +129,13 @@ public class JettyMicroservletFilter extends BaseComponent implements
 
             // parse the HTTP method,
             var method = HttpMethod.parseHttpMethod(this, httpRequest.getMethod());
-            if (method != null && method != HttpMethod.OPTIONS)
+            if (method != null && method != OPTIONS)
             {
                 // create REST request cycle,
                 var cycle = listenTo(new JettyRestRequestCycle(service, httpRequest, httpResponse));
 
                 // attach it to the current thread,
-                RestRequestThread.attach(cycle);
+                requestThreadAttach(cycle);
 
                 // resolve any microservlet at the requested path,
                 var mounted = resolveMicroservlet(new RestPath(cycle.restRequest().path(), method));
@@ -149,7 +152,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                 else
                 {
                     // and if no microservlet was resolved, try resolving the path to a JAR mount,
-                    var mountedJar = resolveApi(new RestPath(cycle.restRequest().path(), HttpMethod.NONE));
+                    var mountedJar = resolveApi(new RestPath(cycle.restRequest().path(), NULL_HTTP_METHOD));
                     if (mountedJar != null)
                     {
                         // and handle the request that way.
@@ -166,7 +169,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         }
         finally
         {
-            RestRequestThread.detach();
+            requestThreadDetach();
         }
 
         if (!handled)
@@ -198,7 +201,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
     }
 
     /**
-     * @return The set of all microservlet paths. This includes an automatically appended HTTP method name.
+     * Returns the set of all microservlet paths. This includes an automatically appended HTTP method name.
      */
     public Set<RestPath> microservletPaths()
     {
@@ -215,7 +218,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         if (existing != null)
         {
             problem("$: There is already a $ microservlet mounted on $: ${class}",
-                    microservice.name(), path.httpMethod(), path.path(), existing.getClass()).throwAsIllegalStateException();
+                    microservice.name(), path.httpMethod(), path.path(), existing.getClass()).throwMessage();
         }
 
         var mounted = listenTo(new MountedMicroservlet(service));
@@ -237,14 +240,14 @@ public class JettyMicroservletFilter extends BaseComponent implements
         {
             // then throw an exception,
             problem("There is already an API mounted on $: $",
-                    api.path(), existing).throwAsIllegalStateException();
+                    api.path(), existing).throwMessage();
         }
 
         // otherwise, launch the API,
         if (!api.maybeLaunch())
         {
             // or fail trying,
-            problem("Unable to launch API JAR: $", api).throwAsIllegalStateException();
+            problem("Unable to launch API JAR: $", api).throwMessage();
         }
 
         // and finally, put our API in the map of mounted APIs.

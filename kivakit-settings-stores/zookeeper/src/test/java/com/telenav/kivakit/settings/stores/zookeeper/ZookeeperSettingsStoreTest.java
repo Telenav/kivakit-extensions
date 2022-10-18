@@ -2,30 +2,30 @@ package com.telenav.kivakit.settings.stores.zookeeper;
 
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.component.ComponentMixin;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
-import com.telenav.kivakit.resource.Extension;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.serialization.properties.PropertiesObjectSerializer;
-import com.telenav.kivakit.settings.SettingsRegistryTrait;
-import com.telenav.kivakit.settings.stores.ResourceFolderSettingsStore;
+import com.telenav.kivakit.settings.SettingsTrait;
 import com.telenav.kivakit.testing.UnitTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static com.telenav.kivakit.resource.Extension.JSON;
+import static com.telenav.kivakit.resource.Extension.PROPERTIES;
 import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
 
 /**
  * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default
  */
 @Ignore
-public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMixin, SettingsRegistryTrait
+public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMixin, SettingsTrait
 {
     @SuppressWarnings("unused")
     public static class Settings
     {
-        @KivaKitIncludeProperty
+        @IncludeProperty
         int x;
 
         public Settings()
@@ -44,12 +44,12 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         register(new KivaKitCoreGsonFactory(this));
 
         var serializers = new ObjectSerializerRegistry();
-        serializers.add(Extension.JSON, new GsonObjectSerializer());
-        serializers.add(Extension.PROPERTIES, new PropertiesObjectSerializer());
+        serializers.add(JSON, new GsonObjectSerializer());
+        serializers.add(PROPERTIES, new PropertiesObjectSerializer());
         register(serializers);
 
         // Register zookeeper settings,
-        registerSettingsIn(listenTo(new ResourceFolderSettingsStore(this, packageForThis())));
+        registerSettingsIn(packageForThis());
 
         // create zookeeper settings store,
         var store = listenTo(register(new ZookeeperSettingsStore(PERSISTENT, new GsonObjectSerializer())));

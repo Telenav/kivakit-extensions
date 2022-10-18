@@ -18,49 +18,57 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * Maintains a thread-local {@link RestRequestCycle}. When a request is handled, the request cycle is attached to the
- * curren thread with {@link #attach(RestRequestCycle)}. When the response finished, the request cycle is detached again
- * with {@link #detach()}. During request handling, the method {@link #requestCycle()} returns the request cycle for the
+ * curren thread with {@link #requestThreadAttach(RestRequestCycle)}. When the response finished, the request cycle is detached again
+ * with {@link #requestThreadDetach()}. During request handling, the method {@link #requestCycle()} returns the request cycle for the
  * current thread.
  *
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_INTERNAL)
 public class RestRequestThread
 {
     /** A thread local variable holding the request cycle for a given thread using this servlet */
     private static final ThreadLocal<RestRequestCycle> threadToRequestCycle = new ThreadLocal<>();
 
     /**
+     * <b>Not public API</b>
+     *
+     * <p>
      * Associates the given request cycle with the calling thread
+     * </p>
      */
-    public static void attach(RestRequestCycle cycle)
+    public static void requestThreadAttach(RestRequestCycle cycle)
     {
         threadToRequestCycle.set(cycle);
     }
 
     /**
+     * <b>Not public API</b>
+     *
+     * <p>
      * Disassociates any request cycle from the calling thread
+     * </p>
      */
-    public static void detach()
+    public static void requestThreadDetach()
     {
-        attach(null);
+        requestThreadAttach(null);
     }
 
     /**
-     * @return The request cycle associated with the calling thread
+     * Returns the request cycle associated with the calling thread
      */
     public static RestRequestCycle requestCycle()
     {

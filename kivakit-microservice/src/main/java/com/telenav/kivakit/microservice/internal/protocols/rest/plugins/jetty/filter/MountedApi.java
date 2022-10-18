@@ -1,12 +1,12 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.io.StringInputStream;
 import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.core.string.Formatter;
 import com.telenav.kivakit.core.string.Paths;
-import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.launcher.JarLauncher;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
@@ -16,7 +16,6 @@ import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.network.http.HttpNetworkLocation;
-import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.resource.Resource;
 
 import java.net.URI;
@@ -25,13 +24,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Locale;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.io.IO.CopyStyle.BUFFERED;
+import static com.telenav.kivakit.core.io.IO.copy;
 import static com.telenav.kivakit.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.launcher.JarLauncher.RedirectTo.CONSOLE;
 import static com.telenav.kivakit.network.core.LocalHost.localhost;
+import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
 
 /**
@@ -46,9 +48,9 @@ import static java.net.http.HttpResponse.BodyHandlers.ofString;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_UNSTABLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MountedApi extends BaseMounted implements TryTrait
 {
     /** HTTP client */
@@ -117,7 +119,7 @@ public class MountedApi extends BaseMounted implements TryTrait
 
                     case POST:
                     {
-                        var payload = IO.string(this, cycle.restRequest().httpServletRequest().getInputStream());
+                        var payload = IO.readString(this, cycle.restRequest().httpServletRequest().getInputStream());
                         var postRequest = request.POST(HttpRequest.BodyPublishers.ofString(payload)).build();
                         copyResponse(response, tryCatch(() ->
                                         client.send(postRequest, ofString()),
@@ -139,7 +141,7 @@ public class MountedApi extends BaseMounted implements TryTrait
             }
             catch (Exception e)
             {
-                problem(HttpStatus.BAD_REQUEST, "Bad URI: $", uri);
+                problem(BAD_REQUEST, "Bad URI: $", uri);
             }
         });
 
@@ -233,7 +235,7 @@ public class MountedApi extends BaseMounted implements TryTrait
     @Override
     public String toString()
     {
-        return Strings.format("$ ==> $ ($) on port $", path, version, jar, port);
+        return Formatter.format("$ ==> $ ($) on port $", path, version, jar, port);
     }
 
     /**
@@ -280,6 +282,6 @@ public class MountedApi extends BaseMounted implements TryTrait
             httpServletResponse.setLocale(new Locale(array[0], array[1]));
         }
 
-        tryCatch(() -> IO.copy(this, new StringInputStream(result.body()), httpServletResponse.getOutputStream(), IO.CopyStyle.BUFFERED), "Unable to copy response");
+        tryCatch(() -> copy(this, new StringInputStream(result.body()), httpServletResponse.getOutputStream(), BUFFERED), "Unable to copy response");
     }
 }

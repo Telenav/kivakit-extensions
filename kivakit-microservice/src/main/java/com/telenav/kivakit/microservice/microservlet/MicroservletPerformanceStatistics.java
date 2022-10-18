@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.time.AverageDuration;
 import com.telenav.kivakit.core.time.Frequency;
@@ -9,19 +9,20 @@ import com.telenav.kivakit.core.time.Time;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.collections.list.StringList.stringList;
+import static com.telenav.kivakit.core.time.Time.now;
 
 /**
  * Listens to performance messages and prints the average request duration at the specified frequency
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroservletPerformanceStatistics
 {
     /** Map from mount path to average duration */
@@ -30,7 +31,7 @@ public class MicroservletPerformanceStatistics
     private final Frequency every;
 
     /** The last time a message performance message was head */
-    private Time last = Time.now();
+    private Time last = now();
 
     /**
      * Creates a performance statistics aggregator
@@ -64,7 +65,7 @@ public class MicroservletPerformanceStatistics
                     paths.add("$ => $", key, duration.get(key));
                 }
                 listener.announce(paths.titledBox("Average Request Duration"));
-                last = Time.now();
+                last = now();
                 duration.clear();
             }
         }

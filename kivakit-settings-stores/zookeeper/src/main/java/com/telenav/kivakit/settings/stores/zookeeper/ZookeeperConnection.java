@@ -1,18 +1,15 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.conversion.core.language.object.KivaKitConverted;
+import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.core.collections.list.StringList;
-import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.core.path.StringPath;
-import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.core.thread.StateMachine;
 import com.telenav.kivakit.core.time.Duration;
-import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
 import kivakit.merged.zookeeper.CreateMode;
@@ -27,13 +24,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.io.IO.close;
+import static com.telenav.kivakit.core.path.StringPath.parseStringPath;
+import static com.telenav.kivakit.core.path.StringPath.stringPath;
+import static com.telenav.kivakit.core.string.Strip.stripLeading;
 import static com.telenav.kivakit.core.time.Duration.minutes;
+import static com.telenav.kivakit.core.time.Duration.seconds;
 import static com.telenav.kivakit.core.time.Frequency.every;
+import static com.telenav.kivakit.core.value.count.Bytes.bytes;
 import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
 
 /**
@@ -61,16 +64,16 @@ import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
  * @see ZookeeperChangeListener
  */
 @SuppressWarnings("resource")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
-    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
-                testing = TESTING_NOT_NEEDED,
-                documentation = DOCUMENTATION_COMPLETE,
-                type = PRIVATE)
+    @CodeQuality(stability = STABLE_EXTENSIBLE,
+                 testing = TESTING_NOT_NEEDED,
+                 documentation = DOCUMENTATION_COMPLETE,
+                 audience = AUDIENCE_INTERNAL)
     private enum State
     {
         CONNECTED,
@@ -81,10 +84,10 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    @ApiQuality(stability = API_STABLE_EXTENSIBLE,
-                testing = TESTING_NOT_NEEDED,
-                documentation = DOCUMENTATION_COMPLETE,
-                type = PRIVATE)
+    @CodeQuality(stability = STABLE_EXTENSIBLE,
+                 testing = TESTING_NOT_NEEDED,
+                 documentation = DOCUMENTATION_COMPLETE,
+                 audience = AUDIENCE_INTERNAL)
     interface ZookeeperListenerMethod
     {
         /**
@@ -101,15 +104,15 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     public static class Settings
     {
         /** Comma separated list of ports to use when connecting to Zookeeper */
-        @KivaKitConverted(Port.Converter.class)
+        @ConvertedProperty(Port.Converter.class)
         String ports;
 
         /** The maximum timeout when connecting to Zookeeper */
-        @KivaKitConverted(DurationConverter.class)
+        @ConvertedProperty(DurationConverter.class)
         Duration timeout;
 
         /** The default kind of data accessed by this Zookeeper connection (see {@link CreateMode}) */
-        @KivaKitConverted(CreateModeConverter.class)
+        @ConvertedProperty(CreateModeConverter.class)
         CreateMode createMode = PERSISTENT;
     }
 
@@ -177,7 +180,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
             if (newPath != null)
             {
                 trace("Created: $", newPath);
-                return StringPath.parseStringPath(this, newPath, "/", "/");
+                return parseStringPath(this, newPath, "/", "/");
             }
         }
         catch (KeeperException.NodeExistsException ignored)
@@ -203,7 +206,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return True if the given node path was deleted
+     * Returns true if the given node path was deleted
      */
     public boolean delete(StringPath path)
     {
@@ -221,7 +224,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return True if the given node path exists
+     * Returns true if the given node path exists
      */
     public boolean exists(StringPath path)
     {
@@ -239,7 +242,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return True if this Zookeeper connection is connected and ready
+     * Returns true if this Zookeeper connection is connected and ready
      */
     public boolean isConnected()
     {
@@ -302,7 +305,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The data at the given node path
+     * Returns the data at the given node path
      */
     public byte[] read(StringPath path)
     {
@@ -310,7 +313,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
         {
             // read and serialize the altered settings object,
             var data = zookeeper().getData(path.join(), false, null);
-            trace("Read $: $", Bytes.bytes(data), path);
+            trace("Read $: $", bytes(data), path);
             return data;
         }
         catch (Exception e)
@@ -321,11 +324,11 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The Zookeeper root path
+     * Returns the Zookeeper root path
      */
     public StringPath root()
     {
-        return StringPath.stringPath(List.of()).withRoot("/");
+        return stringPath(List.of()).withRoot("/");
     }
 
     /**
@@ -357,7 +360,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return The active watchers for this connection
+     * Returns the active watchers for this connection
      */
     public Map<StringPath, Watcher> watchers()
     {
@@ -374,19 +377,19 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
             var success = zookeeper().setData(path.join(), data, -1) != null;
             if (success)
             {
-                trace("Wrote $: $", Bytes.bytes(data), path);
+                trace("Wrote $: $", bytes(data), path);
             }
             return success;
         }
         catch (Exception e)
         {
-            problem(e, "Could not write $ to: $", Bytes.bytes(data), path);
+            problem(e, "Could not write $ to: $", bytes(data), path);
             return false;
         }
     }
 
     /**
-     * @return The Zookeeper instance for this connection
+     * Returns the Zookeeper instance for this connection
      */
     public synchronized ZooKeeper zookeeper()
     {
@@ -405,7 +408,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     {
         while (true)
         {
-            synchronized (ZookeeperConnection.this)
+            synchronized (this)
             {
                 if (connectingZookeeper == null)
                 {
@@ -422,7 +425,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
                 }
             }
 
-            Duration.seconds(15).sleep();
+            seconds(15).sleep();
         }
     }
 
@@ -484,7 +487,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     {
         if (state.transition(State.CONNECTED, State.DISCONNECTED))
         {
-            IO.close(this, zookeeper);
+            close(this, zookeeper);
             zookeeper = null;
             connectingZookeeper = null;
 
@@ -498,16 +501,16 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     }
 
     /**
-     * @return A StringPath for the given event path
+     * Returns a StringPath for the given event path
      */
     @Nullable
     private StringPath path(WatchedEvent event)
     {
-        return StringPath.stringPath(Strip.leading(event.getPath(), "/")).withRoot("/");
+        return stringPath(stripLeading(event.getPath(), "/")).withRoot("/");
     }
 
     /**
-     * @return The settings for this connection
+     * Returns the settings for this connection
      */
     private Settings settings()
     {

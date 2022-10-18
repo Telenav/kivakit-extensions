@@ -1,17 +1,16 @@
 package com.telenav.kivakit.microservice.protocols.lambda;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.annotations.code.ApiType;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.registry.RegistryTrait;
 import com.telenav.kivakit.core.version.Version;
 
-import java.util.Objects;
-
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.version.Version.parseVersion;
+import static java.util.Objects.hash;
 
 /**
  * <b>Not public API</b>
@@ -22,10 +21,10 @@ import static com.telenav.kivakit.core.version.Version.parseVersion;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = ApiType.PRIVATE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_INTERNAL)
 class LambdaFunction implements RegistryTrait
 {
     /** The Lambda function name */
@@ -72,7 +71,7 @@ class LambdaFunction implements RegistryTrait
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, version);
+        return hash(name, version);
     }
 
     @Override

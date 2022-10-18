@@ -20,19 +20,12 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.StringList;
-import com.telenav.kivakit.core.language.reflection.Type;
-import com.telenav.kivakit.core.messaging.Listener;
-import com.telenav.kivakit.core.string.Paths;
-import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.MicroservletJettyPlugin;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequest;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestResponse;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
@@ -44,31 +37,29 @@ import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
-import com.telenav.kivakit.validation.Validatable;
-import com.telenav.kivakit.validation.Validator;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import io.swagger.v3.oas.models.info.Info;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.telenav.kivakit.core.collections.list.StringList.split;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.language.reflection.Type.typeForClass;
+import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
+import static com.telenav.kivakit.core.version.Version.parseVersion;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestPath.parseRestPath;
 import static com.telenav.kivakit.network.http.HttpMethod.GET;
 import static com.telenav.kivakit.network.http.HttpMethod.POST;
 
 /**
  * Base class for KivaKit microservice REST applications.
- *
- * <hr>
  *
  * <p><b>Mounting Request Handlers</b></p>
  *
@@ -119,8 +110,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * <i>/my-microservice/api/1.0/users/update</i>.
  * </p>
  *
- * <hr>
- *
  * <p><b>API Forwarding - Backwards Compatibility</b></p>
  *
  * <p>
@@ -152,16 +141,12 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * JAR for a previous version of the API on the given port number on the local host.
  * </p>
  *
- * <hr>
- *
  * <p><b>OpenAPI</b></p>
  *
  * <p>
  * The {@link #openApiInfo()} class can optionally be overridden to provide OpenAPI details beyond those provided by the
  * {@link Microservice} via {@link MicroserviceMetadata}.
  * </p>
- *
- * <hr>
  *
  * <p><b>API Paths and Versions</b></p>
  *
@@ -170,60 +155,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * {@link #pathToVersion(String)} (both must be overridden). By default this format used by both methods is
  * <i>/api/[major-version].[minor-version]</i>. For example, <i>/api/1.0</i>.
  * </p>
- *
- * <hr>
- *
- * <p><b>Internal Details - Flow of Control</b></p>
- *
- * <ol>
- *     <li>Initializing</li>
- *     <li>
- *         <ol>
- *             <li>{@link RestService} creates a {@link MicroservletJettyPlugin}</li>
- *             <li>In the {@link RestService#onInitialize()} method, <i>mount*()</i> methods are used to bind
- *             {@link MicroservletRequest} handlers to paths</li>
- *         </ol>
- *     </li>
- *     <li>Receiving requests</li>
- *     <li>
- *         <ol>
- *             <li>An HTTP request is made to the {@link JettyMicroservletFilter} installed by {@link MicroservletJettyPlugin}</li>
- *             <li>The {@link JettyMicroservletFilter#doFilter(ServletRequest, ServletResponse, FilterChain)} resolves any
- *             {@link Microservlet} mounted on the request path. If no microservlet is found, the request is passed to the next
- *             {@link Filter} in the filter chain</li>
- *             <li>Request parameters are processed</li>
- *             <li>
- *               <ol>
- *                 <li>If the HTTP request method is GET, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
- *                 <li>If the HTTP request method is POST, then the posted JSON object is read by {@link JettyRestRequest#readRequest(Class)}</li>
- *                 <li>If the HTTP request method is DELETE, any path or query parameters are turned into a JSON object, which is processed as if it were posted</li>
- *               </ol>
- *             </li>
- *         </ol>
- *     </li>
- *
- *     <li>Handling requests</li>
- *     <li>
- *       <ol>
- *         <li>The {@link Microservlet#onRespond(MicroservletRequest)} method is called</li>
- *       </ol>
- *     </li>
- *     <li>Producing a response</li>
- *     <li>
- *     <ol>
- *         <li>The request handler's return value is passed to {@link JettyRestResponse#writeResponse(MicroservletResponse)}, which:</li>
- *         <li>
- *           <ol>
- *             <li>Validates the response object by calling {@link Validatable#validator()} and {@link Validator#validate(Listener)}</li>
- *             <li>Converts the object to output (normally JSON) using the {@link ObjectSerializer} object provided by {@link RestService#serializer()}</li>
- *             <li>Writes the JSON object to the servlet response output stream</li>
- *           </ol>
- *         </li>
- *     </ol>
- *     </li>
- * </ol>
- *
- * <hr>
  *
  * @author jonathanl (shibo)
  * @see Microservice
@@ -252,7 +183,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     /**
      * @param microservice The microservice that is creating this REST service
      */
-    public RestService(Microservice<?> microservice)
+    protected RestService(Microservice<?> microservice)
     {
         this.microservice = microservice;
         microservice.listenTo(this);
@@ -282,7 +213,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     }
 
     /**
-     * @return The microservice to which this rest service belongs
+     * Returns the microservice to which this rest service belongs
      */
     public Microservice<?> microservice()
     {
@@ -324,7 +255,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     void mount(Version version, String path, HttpMethod method, Class<Request> requestType)
     {
-        mount(Paths.pathConcatenate(versionToPath(version), path), method, requestType);
+        mount(pathConcatenate(versionToPath(version), path), method, requestType);
     }
 
     /**
@@ -344,20 +275,20 @@ public abstract class RestService extends BaseComponent implements Initializable
         if (initializing)
         {
             // create a request object, so we can get the response type and HTTP method,
-            var request = listenTo(Type.typeForClass(requestType).newInstance());
+            var request = listenTo(typeForClass(requestType).newInstance());
             if (request != null)
             {
                 // then mount an anonymous microservlet on the given path,
                 @SuppressWarnings("unchecked")
                 var responseType = (Class<Response>) request.responseType();
                 ensureNotNull(responseType, "Request type ${class} has no response type", requestType);
-                var restPath = RestPath.parse(this, Paths.pathConcatenate(rootPath(), path), method);
+                var restPath = parseRestPath(this, pathConcatenate(rootPath(), path), method);
                 mount(restPath, listenTo(new Microservlet<Request, Response>(requestType, responseType)
                 {
                     @Override
                     public String description()
                     {
-                        return Strings.format("KivaKit microservlet request handler for ${class}", requestType());
+                        return format("KivaKit microservlet request handler for ${class}", requestType());
                     }
 
                     @Override
@@ -391,7 +322,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     {
         for (var path : pathToRequest.keySet())
         {
-            target.mount(Paths.pathConcatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
+            target.mount(pathConcatenate(rootPath(), path.resolvedPath().asString()), pathToRequest.get(path));
         }
     }
 
@@ -432,7 +363,7 @@ public abstract class RestService extends BaseComponent implements Initializable
         if (initializing)
         {
             // get the path to this API,
-            var restPath = RestPath.parse(this, path, POST);
+            var restPath = parseRestPath(this, path, POST);
 
             // then populate the API descriptor,
             var api = new MountedApi(this);
@@ -497,7 +428,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     }
 
     /**
-     * @return The {@link ObjectSerializer} to use for serializing and deserializing requests.
+     * Returns the {@link ObjectSerializer} to use for serializing and deserializing requests.
      */
     public ObjectSerializer serializer()
     {
@@ -516,7 +447,7 @@ public abstract class RestService extends BaseComponent implements Initializable
         var matcher = Pattern.compile("/api/(<?version>[^/]+)").matcher(path);
         if (matcher.find())
         {
-            return Version.parseVersion(this, matcher.group("version"));
+            return parseVersion(this, matcher.group("version"));
         }
         return fail("Unable to extract version from: $", path);
     }
@@ -543,7 +474,7 @@ public abstract class RestService extends BaseComponent implements Initializable
      */
     protected String versionToPath(Version version)
     {
-        return Strings.format("/api/$.$", version.major(), version.minor());
+        return format("/api/$.$", version.major(), version.minor());
     }
 
     /**
@@ -554,6 +485,6 @@ public abstract class RestService extends BaseComponent implements Initializable
      */
     private StringList parseCommandLine(String commandLine)
     {
-        return StringList.split(commandLine, ",");
+        return split(commandLine, ",");
     }
 }

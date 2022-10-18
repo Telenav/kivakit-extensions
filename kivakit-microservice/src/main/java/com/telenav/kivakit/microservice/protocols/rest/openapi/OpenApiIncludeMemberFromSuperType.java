@@ -2,11 +2,12 @@ package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Indicates that a supertype (class or interface) member (method or field) should be included in the OpenAPI
@@ -14,48 +15,49 @@ import java.lang.annotation.Target;
  *
  * @author jonathanl (shibo)
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@SuppressWarnings("unused")
+@Retention(RUNTIME)
+@Target(TYPE)
 @Repeatable(OpenApiIncludeMemberFromSuperTypeRepeater.class)
 public @interface OpenApiIncludeMemberFromSuperType
 {
     /**
-     * @return The allowable values for the annotated member
+     * Returns the allowable values for the annotated member
      */
     String[] allowableValues() default {};
 
     /**
-     * @return The default value for the annotated member
+     * Returns the default value for the annotated member
      */
     String defaultValue() default "";
 
     /**
-     * @return Description of the annotated member
+     * Returns description of the annotated member
      */
     String description();
 
     /**
-     * @return An example of the annotated member
+     * Returns an example of the annotated member
      */
     String example() default "";
 
     /**
-     * @return The type of the member if it is an array
+     * Returns the type of the member if it is an array
      */
     Class<?> genericType() default Void.class;
 
     /**
-     * @return The name of a superclass member to annotate (omitted when annotating fields and methods)
+     * Returns the name of a superclass member to annotate (omitted when annotating fields and methods)
      */
     String member();
 
     /**
-     * @return Reference to a schema for this member
+     * Returns reference to a schema for this member
      */
     String reference() default "";
 
     /**
-     * @return True if the annotated member is required
+     * Returns true if the annotated member is required
      */
     boolean required() default true;
 }

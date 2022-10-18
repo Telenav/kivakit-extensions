@@ -1,11 +1,12 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.core.language.Hash;
-import com.telenav.kivakit.core.os.OperatingSystem;
 import com.telenav.kivakit.core.registry.InstanceIdentifier;
 import com.telenav.kivakit.network.core.Host;
 import org.jetbrains.annotations.NotNull;
 
+import static com.telenav.kivakit.core.language.Hash.hashMany;
+import static com.telenav.kivakit.core.os.OperatingSystem.operatingSystem;
+import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
 import static com.telenav.kivakit.network.core.LocalHost.localhost;
 
 /**
@@ -45,7 +46,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     @NotNull
     public static InstanceIdentifier localClusterMemberInstanceIdentifier()
     {
-        return InstanceIdentifier.instanceIdentifier(localhost().dnsName() + "#" + OperatingSystem.operatingSystem().processIdentifier() + "#");
+        return instanceIdentifier(localhost().dnsName() + "#" + operatingSystem().processIdentifier() + "#");
     }
 
     /** User-defined data */
@@ -84,7 +85,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
      */
     protected MicroserviceClusterMember(Data data)
     {
-        this(localhost(), OperatingSystem.operatingSystem().processIdentifier(), 0, data);
+        this(localhost(), operatingSystem().processIdentifier(), 0, data);
     }
 
     /**
@@ -135,7 +136,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     @Override
     public int hashCode()
     {
-        return Hash.hashMany(host, processIdentifier);
+        return hashMany(host, processIdentifier);
     }
 
     /**
@@ -166,7 +167,7 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     public boolean isThis()
     {
         return host.dnsName().equals(localhost().dnsName())
-                && processIdentifier == OperatingSystem.operatingSystem().processIdentifier();
+                && processIdentifier == operatingSystem().processIdentifier();
     }
 
     /**

@@ -64,7 +64,7 @@ To include the *EmailLog* service provider, all that is required is to:
            from=jonathanl@telenav.com to=jonathanl@telenav.com \
            host=smtp.telenav.com username=jonathanl@telenav.com password=shibo"
 
-More details about logging are available at [*kivakit-core logging*](../../kivakit/kernel/documentation/logging.md).
+More details about logging are available at [*kivakit-core logging*](../../../kivakit/kivakit-core/documentation/logging.md).
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 

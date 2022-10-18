@@ -18,18 +18,13 @@
 
 package com.telenav.kivakit.logs.email;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
 import com.telenav.kivakit.core.logging.LogEntry;
-import com.telenav.kivakit.core.logging.loggers.LogServiceLogger;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
-import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.logs.email.internal.lexakai.DiagramLogsEmail;
 import com.telenav.kivakit.network.core.EmailAddress;
-import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.network.core.authentication.UserName;
-import com.telenav.kivakit.network.core.authentication.passwords.PlainTextPassword;
 import com.telenav.kivakit.network.email.Email;
 import com.telenav.kivakit.network.email.EmailBody;
 import com.telenav.kivakit.network.email.EmailSender;
@@ -40,16 +35,26 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.registry.Registry.registryFor;
+import static com.telenav.kivakit.network.core.EmailAddress.parseEmailAddress;
+import static com.telenav.kivakit.network.core.Host.parseHost;
+import static com.telenav.kivakit.network.core.authentication.UserName.parseUserName;
+import static com.telenav.kivakit.network.core.authentication.passwords.PlainTextPassword.parsePlainTextPassword;
 
 /**
- * A {@link Log} service provider that sends emails. Configuration occurs via the command line. See
- * {@link LogServiceLogger} for details. Further details are available in the markdown help. The options available for
- * configuration with this logger are:
+ * A {@link Log} service provider that sends emails. Configuration occurs via {@link #configure(VariableMap)}, which
+ * receives the key value pairs parsed from the KIVAKIT_LOG environment variable.
+ *
+ * <p><b>Options</b></p>
+ *
+ * <p>
+ * The options available for configuration with this logger are:
+ * </p>
  *
  * <ul>
  *     <li><i>to</i> - The set of email addresses to send to</li>
@@ -60,12 +65,25 @@ import static com.telenav.kivakit.core.registry.Registry.registryFor;
  *     <li><i>password</i> - The SMTP password</li>
  * </ul>
  *
+ * <p><b>Example</b></p>
+ *
+ * <pre>
+ * -DKIVAKIT_LOG="from=noreply@telenav.com to=jonathanl@telenav.com subject=\"Hello\" host=\"smtp.telenav.com\" username=jonathanl@telenav.com password=snarky-purple-ducky-4127"
+ * </pre>
+ *
+ * <p><b>Logging</b></p>
+ *
+ * <p>
+ * More details about logging are available in <a
+ * href="../../../../../../../../../kivakit-core/documentation/logging.md">kivakit-core</a>.
+ * </p>
+ *
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramLogsEmail.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class EmailLog extends BaseTextLog
 {
     /** The from email address */
@@ -103,7 +121,7 @@ public class EmailLog extends BaseTextLog
         {
             for (var at : to.split(","))
             {
-                this.to.add(EmailAddress.parseEmailAddress(Listener.consoleListener(), at));
+                this.to.add(parseEmailAddress(consoleListener(), at));
             }
         }
         else
@@ -115,7 +133,7 @@ public class EmailLog extends BaseTextLog
         var from = properties.get("from");
         if (from != null)
         {
-            this.from = EmailAddress.parseEmailAddress(Listener.consoleListener(), from);
+            this.from = parseEmailAddress(consoleListener(), from);
         }
         else
         {
@@ -129,9 +147,9 @@ public class EmailLog extends BaseTextLog
         if (host != null && username != null && password != null)
         {
             var configuration = new SmtpEmailSender.Configuration();
-            configuration.host(Host.parseHost(Listener.consoleListener(), host));
-            configuration.username(UserName.parseUserName(Listener.consoleListener(), username));
-            configuration.password(PlainTextPassword.parsePlainTextPassword(Listener.consoleListener(), password));
+            configuration.host(parseHost(consoleListener(), host));
+            configuration.username(parseUserName(consoleListener(), username));
+            configuration.password(parsePlainTextPassword(consoleListener(), password));
             sender = new SmtpEmailSender(configuration);
         }
     }

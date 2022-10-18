@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
 import com.google.gson.Gson;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
@@ -17,10 +17,10 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
  * <b>Not public API</b>
@@ -49,10 +49,10 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  */
 @SuppressWarnings("unused")
 @UmlClassDiagram(diagram = DiagramJetty.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = SERVICE_PROVIDER_IMPLEMENTATION)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_SERVICE_PROVIDER)
 public class JettyRestRequestCycle extends BaseComponent implements
         RestRequestCycle,
         RestProblemReportingTrait
@@ -97,7 +97,7 @@ public class JettyRestRequestCycle extends BaseComponent implements
     }
 
     /**
-     * @return A Gson instance provided by the REST application
+     * Returns a Gson instance provided by the REST application
      */
     @Override
     public Gson gson()
@@ -112,7 +112,7 @@ public class JettyRestRequestCycle extends BaseComponent implements
     }
 
     /**
-     * @return The {@link Microservlet} handling this request cycle
+     * Returns the {@link Microservlet} handling this request cycle
      */
     @Override
     public Microservlet<?, ?> microservlet()
@@ -121,7 +121,7 @@ public class JettyRestRequestCycle extends BaseComponent implements
     }
 
     /**
-     * @return The request
+     * Returns the request
      */
     @Override
     public RestRequest restRequest()
@@ -130,7 +130,7 @@ public class JettyRestRequestCycle extends BaseComponent implements
     }
 
     /**
-     * @return The response
+     * Returns the response
      */
     @Override
     public RestResponse restResponse()
@@ -139,7 +139,7 @@ public class JettyRestRequestCycle extends BaseComponent implements
     }
 
     /**
-     * @return The REST application that owns this request cycle
+     * Returns the REST application that owns this request cycle
      */
     @Override
     public RestService restService()

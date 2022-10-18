@@ -2,32 +2,33 @@ package com.telenav.kivakit.microservice.protocols.rest.openapi;
 
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Indicates that a type should be included in the OpenAPI specification for a {@link RestService}
  *
  * @author jonathanl (shibo)
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Retention(RUNTIME)
+@Target(TYPE)
 public @interface OpenApiIncludeType
 {
     /**
-     * @return True if this schema is deprecated
+     * Returns true if this schema is deprecated
      */
     boolean deprecated() default false;
 
     /**
-     * @return Description of this schema
+     * Returns description of this schema
      */
     String description();
 
     /**
-     * @return Title of this schema
+     * Returns title of this schema
      */
     String title() default "";
 }

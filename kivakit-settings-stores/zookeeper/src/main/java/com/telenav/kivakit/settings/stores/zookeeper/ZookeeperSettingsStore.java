@@ -1,6 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.core.KivaKit;
 import com.telenav.kivakit.core.collections.list.StringList;
@@ -13,7 +13,6 @@ import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.vm.Properties;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
-import com.telenav.kivakit.resource.serialization.ObjectMetadata;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.resource.serialization.SerializableObject;
 import com.telenav.kivakit.settings.BaseSettingsStore;
@@ -27,11 +26,15 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.collections.list.StringList.split;
+import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
+import static com.telenav.kivakit.core.path.StringPath.stringPath;
 import static com.telenav.kivakit.core.project.Project.resolveProject;
 import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
+import static com.telenav.kivakit.resource.serialization.ObjectMetadata.METADATA_OBJECT_TYPE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.DELETE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.INDEX;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.LOAD;
@@ -133,9 +136,9 @@ import static kivakit.merged.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see BaseSettingsStore
  * @see SettingsStore
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class ZookeeperSettingsStore extends BaseSettingsStore implements
         ZookeeperChangeListener,
         ZookeeperConnectionListener
@@ -185,9 +188,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      * This store supports all access modes
      */
     @Override
-    public Set<AccessMode> accessModes()
+    public ObjectSet<AccessMode> accessModes()
     {
-        return Set.of(INDEX, DELETE, UNLOAD, LOAD, SAVE);
+        return set(INDEX, DELETE, UNLOAD, LOAD, SAVE);
     }
 
     /**
@@ -335,7 +338,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The root path of this settings store
+     * Returns the root path of this settings store
      */
     public StringPath root()
     {
@@ -343,7 +346,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
+     * Returns the given ephemeral path un-flattened using the separator for ephemeral nodes. For example, the ephemeral
      * node path /a::b::c becomes the hierarchical node path /a/b/c.
      */
     @SuppressWarnings("SpellCheckingInspection")
@@ -352,7 +355,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         if (path.size() == 1)
         {
-            return StringPath.stringPath(StringPath.stringPath(StringList.split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath()).withRoot("/");
+            return stringPath(stringPath(split(path.get(0), EPHEMERAL_NODE_SEPARATOR)).asJavaPath()).withRoot("/");
         }
 
         return path;
@@ -378,7 +381,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     protected <T> T onDeserialize(byte[] data, Class<T> type)
     {
         var input = new InputResource(new ByteArrayInputStream(data));
-        return serializer.readObject(input, type, ObjectMetadata.OBJECT_TYPE).object();
+        return serializer.readObject(input, type, METADATA_OBJECT_TYPE).object();
     }
 
     /**
@@ -399,7 +402,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
                 if (child.startsWith(storePrefix))
                 {
                     // then read and add the settings,
-                    var path = StringPath.stringPath(child).withRoot("/");
+                    var path = stringPath(child).withRoot("/");
                     settings.addIfNotNull(loadSettings(path));
 
                     // and watch the path for changes
@@ -409,7 +412,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
         }
         else
         {
-            settings.addAll(loadRecursively(StringPath.stringPath("PERSISTENT").withRoot("/")));
+            settings.addAll(loadRecursively(stringPath("PERSISTENT").withRoot("/")));
         }
 
         connection.watchRoot();
@@ -479,7 +482,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return Create mode for paths in this store
+     * Returns create mode for paths in this store
      * @see CreateMode
      */
     private CreateMode createMode()
@@ -492,17 +495,17 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The given path flattened using the separator for ephemeral nodes. For example, the hierarchical node path
+     * Returns the given path flattened using the separator for ephemeral nodes. For example, the hierarchical node path
      * /a/b/c becomes the flattened node path /a::b::c.
      */
     @NotNull
     private StringPath flatten(StringPath path)
     {
-        return StringPath.stringPath(path.join(EPHEMERAL_NODE_SEPARATOR));
+        return stringPath(path.join(EPHEMERAL_NODE_SEPARATOR));
     }
 
     /**
-     * @return The {@link InstanceIdentifier} from the last element of the given node path
+     * Returns the {@link InstanceIdentifier} from the last element of the given node path
      * @see #path(SettingsObject)
      */
     private InstanceIdentifier instance(StringPath path)
@@ -537,7 +540,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return True if this is an ephemeral settings store
+     * Returns true if this is an ephemeral settings store
      */
     private boolean isEphemeral()
     {
@@ -574,7 +577,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The given path flattened or not based on whether this is an ephemeral store
+     * Returns the given path flattened or not based on whether this is an ephemeral store
      */
     private StringPath maybeFlatten(StringPath path)
     {
@@ -621,7 +624,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     }
 
     /**
-     * @return The settings type for the given node path
+     * Returns the settings type for the given node path
      */
     private Class<?> settingsType(StringPath path)
     {
@@ -681,7 +684,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     {
         var application = require(Application.class);
 
-        return StringPath.stringPath(
+        return stringPath(
                 createMode().name(),
                 "kivakit",
                 String.valueOf(resolveProject(KivaKit.class).kivakitVersion()),

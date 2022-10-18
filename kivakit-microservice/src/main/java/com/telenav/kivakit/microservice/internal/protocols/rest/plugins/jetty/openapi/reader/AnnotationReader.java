@@ -1,20 +1,20 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.reader;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.language.reflection.Member;
 import com.telenav.kivakit.core.string.Strings;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import io.swagger.v3.oas.models.media.Schema;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_UNSTABLE;
-import static com.telenav.kivakit.annotations.code.ApiType.PRIVATE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
-@ApiQuality(stability = API_UNSTABLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = PRIVATE)
+@CodeQuality(stability = UNSTABLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_INTERNAL)
 public class AnnotationReader
 {
     public void copyToSchema(Member member, Schema<?> schema)
@@ -22,23 +22,23 @@ public class AnnotationReader
         var annotation = member.annotation(OpenApiIncludeMember.class);
         if (annotation != null)
         {
-            if (!Strings.isEmpty(annotation.title()))
+            if (!Strings.isNullOrBlank(annotation.title()))
             {
                 schema.title(annotation.title());
             }
-            if (!Strings.isEmpty(annotation.description()))
+            if (!Strings.isNullOrBlank(annotation.description()))
             {
                 schema.description(annotation.description());
             }
-            if (!Strings.isEmpty(annotation.example()))
+            if (!Strings.isNullOrBlank(annotation.example()))
             {
                 schema.example(annotation.example());
             }
-            if (!Strings.isEmpty(annotation.type()))
+            if (!Strings.isNullOrBlank(annotation.type()))
             {
                 schema.type(annotation.type());
             }
-            if (!Strings.isEmpty(annotation.format()))
+            if (!Strings.isNullOrBlank(annotation.format()))
             {
                 schema.format(annotation.format());
             }
@@ -46,7 +46,7 @@ public class AnnotationReader
             {
                 schema.deprecated(true);
             }
-            if (!Strings.isEmpty(annotation.defaultValue()))
+            if (!Strings.isNullOrBlank(annotation.defaultValue()))
             {
                 schema.setDefault(annotation.defaultValue());
             }
@@ -54,7 +54,7 @@ public class AnnotationReader
             {
                 schema.nullable(true);
             }
-            if (!Strings.isEmpty(annotation.reference()))
+            if (!Strings.isNullOrBlank(annotation.reference()))
             {
                 schema.$ref(annotation.reference());
             }

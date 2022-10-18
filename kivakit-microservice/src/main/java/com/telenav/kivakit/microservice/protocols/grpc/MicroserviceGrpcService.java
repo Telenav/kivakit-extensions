@@ -1,10 +1,9 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.time.Duration;
-import com.telenav.kivakit.core.vm.ShutdownHook;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.interfaces.lifecycle.Startable;
@@ -23,10 +22,12 @@ import io.grpc.ServerBuilder;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
+import static com.telenav.kivakit.core.vm.ShutdownHook.registerShutdownHook;
 
 /**
  * GRPC protocol service that simply copies mounted request handlers from {@link RestService}.
@@ -58,9 +59,9 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.Order.LAST;
  * @see RestService
  */
 @SuppressWarnings("SpellCheckingInspection")
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
         Startable,
@@ -136,7 +137,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
     @Override
     public Duration maximumStopTime()
     {
-        return Duration.MAXIMUM;
+        return FOREVER;
     }
 
     /**
@@ -184,7 +185,7 @@ public class MicroserviceGrpcService extends BaseComponent implements
         if (tryCatch(server::start, "Unable to start server") != null)
         {
             information("Listening on port " + port);
-            ShutdownHook.register("GrpcServiceShutdown", LAST, () -> stop(Duration.MAXIMUM));
+            registerShutdownHook("GrpcServiceShutdown", LAST, () -> stop(FOREVER));
             running = true;
             return true;
         }

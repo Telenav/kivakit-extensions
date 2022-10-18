@@ -12,10 +12,6 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.network.core.Host;
-import com.telenav.kivakit.network.core.LocalHost;
-import com.telenav.kivakit.network.http.HttpMethod;
-import com.telenav.kivakit.resource.Extension;
 import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
 import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
@@ -26,7 +22,11 @@ import com.telenav.kivakit.validation.Validator;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.network.core.LocalHost.localhost;
+import static com.telenav.kivakit.network.http.HttpMethod.GET;
+import static com.telenav.kivakit.network.http.HttpMethod.POST;
+import static com.telenav.kivakit.resource.Extension.JSON;
 
 @Ignore
 public class MicroserviceTest extends UnitTest
@@ -97,7 +97,7 @@ public class MicroserviceTest extends UnitTest
         @Override
         public Duration maximumStopTime()
         {
-            return Duration.MAXIMUM;
+            return FOREVER;
         }
 
         @Override
@@ -175,9 +175,9 @@ public class MicroserviceTest extends UnitTest
         @Override
         public void onInitialize()
         {
-            mount("test", HttpMethod.POST, TestPostRequest.class);
-            mount("test", HttpMethod.GET, TestGetRequest.class);
-            mount("garbage", HttpMethod.POST, TestGarbageRequest.class);
+            mount("test", POST, TestPostRequest.class);
+            mount("test", GET, TestGetRequest.class);
+            mount("garbage", POST, TestGarbageRequest.class);
         }
     }
 
@@ -187,7 +187,7 @@ public class MicroserviceTest extends UnitTest
         register(new KivaKitCoreGsonFactory(this));
 
         var serializers = new ObjectSerializerRegistry();
-        serializers.add(Extension.JSON, new GsonObjectSerializer());
+        serializers.add(JSON, new GsonObjectSerializer());
         register(serializers);
 
         Registry.registryFor(this).register(new MicroserviceSettings()
@@ -235,6 +235,6 @@ public class MicroserviceTest extends UnitTest
         var response5 = grpcClient.request("test", request, TestResponse.class);
         ensureEqual(56, response5.result);
 
-        microservice.stop(Duration.MAXIMUM);
+        microservice.stop(FOREVER);
     }
 }

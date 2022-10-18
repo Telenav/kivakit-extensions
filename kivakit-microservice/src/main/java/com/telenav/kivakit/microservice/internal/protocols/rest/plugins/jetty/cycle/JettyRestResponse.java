@@ -1,9 +1,9 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.reflection.property.KivaKitIncludeProperty;
+import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.core.string.Strip;
@@ -24,10 +24,11 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiType.SERVICE_PROVIDER_IMPLEMENTATION;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.network.http.HttpStatus.*;
 
 /**
  * <b>Not public API</b>
@@ -57,10 +58,10 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE,
-            type = SERVICE_PROVIDER_IMPLEMENTATION)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE,
+             audience = AUDIENCE_SERVICE_PROVIDER)
 public final class JettyRestResponse extends BaseComponent
         implements RestResponse
 {
@@ -85,7 +86,7 @@ public final class JettyRestResponse extends BaseComponent
 
         errors.listenTo(this);
 
-        httpStatus(HttpStatus.OK);
+        httpStatus(OK);
     }
 
     @Override
@@ -163,10 +164,10 @@ public final class JettyRestResponse extends BaseComponent
     }
 
     /**
-     * @return The version of the microservice that is responding to a request
+     * Returns the version of the microservice that is responding to a request
      */
     @Override
-    @KivaKitIncludeProperty
+    @IncludeProperty
     @OpenApiIncludeMember(title = "Version", description = "The microservice version from metadata")
     public Version version()
     {
@@ -215,24 +216,24 @@ public final class JettyRestResponse extends BaseComponent
                         }
                         writeResponse(stripBrackets(toJson(errors)));
                         writeResponse("}");
-                        httpStatus(HttpStatus.OK);
+                        httpStatus(OK);
                         responseWritten = true;
                         break;
 
                     default:
-                        problem(HttpStatus.BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
+                        problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
                         break;
                 }
             }
             else
             {
                 // then transmit a problem message.
-                problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
+                problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
             }
         }
         else
         {
-            problem(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
+            problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
         }
 
         if (!responseWritten)
@@ -243,8 +244,8 @@ public final class JettyRestResponse extends BaseComponent
 
     private String stripBrackets(String json)
     {
-        json = Strip.leading(json, "{");
-        return Strip.trailing(json, "}");
+        json = Strip.stripLeading(json, "{");
+        return Strip.stripTrailing(json, "}");
     }
 
     /**

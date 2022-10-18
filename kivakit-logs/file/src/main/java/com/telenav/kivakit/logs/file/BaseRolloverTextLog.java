@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.io.ByteSizedOutputStream;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
@@ -33,37 +33,48 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_ENUM_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.time.Duration.ONE_MINUTE;
+import static com.telenav.kivakit.core.time.Duration.seconds;
+import static com.telenav.kivakit.core.time.Time.END_OF_UNIX_TIME;
+import static com.telenav.kivakit.core.time.Time.now;
 import static com.telenav.kivakit.core.value.count.Bytes.megabytes;
+import static com.telenav.kivakit.logs.file.BaseRolloverTextLog.Rollover.NO_ROLLOVER;
 
 /**
  * Base class for rollover text logs such as {@link FileLog}. Accepts a {@link #maximumLogSize(Bytes)} and a
  * {@link #rollover(Rollover)} period and logs messages until either of these limits are reached.
  *
+ * <p><b>Logging</b></p>
+ *
+ * <p>
+ * More details about logging are available in <a
+ * href="../../../../../../../../../kivakit-core/documentation/logging.md">kivakit-core</a>.
+ * </p>
+ *
  * @author jonathanl (shibo)
  * @see FileLog
  */
 @SuppressWarnings("resource") @UmlClassDiagram(diagram = DiagramLogsFile.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseRolloverTextLog extends BaseTextLog
 {
     /**
      * Rollover period
      */
     @UmlClassDiagram(diagram = DiagramLogsFile.class)
-    @ApiQuality(stability = API_STABLE_ENUM_EXTENSIBLE,
-                testing = TESTING_NOT_NEEDED,
-                documentation = DOCUMENTATION_COMPLETE)
+    @CodeQuality(stability = STABLE_EXTENSIBLE,
+                 testing = TESTING_NOT_NEEDED,
+                 documentation = DOCUMENTATION_COMPLETE)
     public enum Rollover
     {
-        NONE,
+        NO_ROLLOVER,
         DAILY,
         HOURLY
     }
@@ -80,7 +91,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     /** The rollover type */
     @UmlAggregation
-    private Rollover rollover = Rollover.NONE;
+    private Rollover rollover = NO_ROLLOVER;
 
     /** The next time to roll over */
     @UmlAggregation(label = "rollover time")
@@ -88,14 +99,14 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     /** The time this log started */
     @UmlAggregation(label = "start time")
-    private Time started = Time.now();
+    private Time started = now();
 
     protected BaseRolloverTextLog()
     {
         // Flush and close this log on VM shutdown
         Runtime.getRuntime().addShutdownHook(new Thread(() ->
         {
-            flush(Duration.ONE_MINUTE);
+            flush(ONE_MINUTE);
             out.close();
         }));
     }
@@ -108,7 +119,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     {
         try
         {
-            flush(Duration.seconds(30));
+            flush(seconds(30));
             out().flush();
             out().close();
         }
@@ -141,7 +152,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     @Override
     public final synchronized void onLog(LogEntry entry)
     {
-        var timeToRollOver = Time.now().isAfter(rolloverAt);
+        var timeToRollOver = now().isAfter(rolloverAt);
         var sizeToRollOver = byteSizedOutputStream != null
                 && byteSizedOutputStream.sizeInBytes().isGreaterThan(maximumLogSize);
         if (timeToRollOver || sizeToRollOver)
@@ -159,7 +170,7 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
                 }
                 else
                 {
-                    started = Time.now();
+                    started = now();
                 }
                 out = null;
             }
@@ -183,8 +194,8 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
     {
         switch (rollover)
         {
-            case NONE:
-                return Time.now().plus(Duration.ONE_MINUTE); // Time.MAXIMUM;
+            case NO_ROLLOVER:
+                return END_OF_UNIX_TIME;
 
             case DAILY:
                 return LocalTime.now().startOfTomorrow();

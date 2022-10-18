@@ -1,13 +1,14 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
-import com.telenav.kivakit.core.string.Strings;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.time.Time;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.string.Formatter.format;
+import static com.telenav.kivakit.core.time.Time.now;
 
 /**
  * Statistics about a given request:
@@ -29,9 +30,9 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
  *
  * @author jonathanl (shibo)
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public class MicroservletPerformance
 {
     /** The mount path of the request */
@@ -56,7 +57,7 @@ public class MicroservletPerformance
      */
     public void end()
     {
-        end = Time.now();
+        end = now();
     }
 
     /**
@@ -82,12 +83,12 @@ public class MicroservletPerformance
      */
     public void start()
     {
-        start = Time.now();
+        start = now();
     }
 
     @Override
     public String toString()
     {
-        return Strings.format("$ => $", path, elapsed());
+        return format("$ => $", path, elapsed());
     }
 }

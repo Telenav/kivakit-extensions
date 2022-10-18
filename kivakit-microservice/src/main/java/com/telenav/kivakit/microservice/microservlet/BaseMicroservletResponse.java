@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.function.Result;
 import com.telenav.kivakit.interfaces.messaging.Transmittable;
@@ -10,9 +10,9 @@ import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.validation.Validator.nullValidator;
 
 /**
@@ -23,9 +23,9 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NONE,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = UNTESTED,
+             documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseMicroservletResponse extends BaseComponent implements MicroservletResponse
 {
     /** The result object listening to this request */
@@ -34,7 +34,7 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     /**
      * This constructor can be called in simple cases where the {@link Result} class is not being used.
      */
-    public BaseMicroservletResponse()
+    protected BaseMicroservletResponse()
     {
     }
 
@@ -44,7 +44,7 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
      *
      * @param result The result
      */
-    public BaseMicroservletResponse(Result<?> result)
+    protected BaseMicroservletResponse(Result<?> result)
     {
         this.result = result;
 

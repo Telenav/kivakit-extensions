@@ -18,18 +18,16 @@
 
 package com.telenav.kivakit.web.jetty;
 
-import com.telenav.kivakit.annotations.code.ApiQuality;
+import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 
-import static com.telenav.kivakit.annotations.code.ApiStability.API_STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.DocumentationQuality.DOCUMENTATION_COMPLETE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NONE;
-import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NEEDED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 
 /**
  * Base class for all types of Jetty request handlers. Has a {@link #name()} and {@link #path()}.
@@ -39,16 +37,16 @@ import static com.telenav.kivakit.annotations.code.TestingQuality.TESTING_NOT_NE
  * @see BaseAssetsJettyPlugin
  * @see BaseServletJettyPlugin
  */
-@ApiQuality(stability = API_STABLE_EXTENSIBLE,
-            testing = TESTING_NOT_NEEDED,
-            documentation = DOCUMENTATION_COMPLETE)
+@CodeQuality(stability = STABLE_EXTENSIBLE,
+             testing = TESTING_NOT_NEEDED,
+             documentation = DOCUMENTATION_COMPLETE)
 public abstract class BaseJettyRequestHandler extends BaseComponent implements Named
 {
     private final String name;
 
     private String path;
 
-    public BaseJettyRequestHandler(String name)
+    protected BaseJettyRequestHandler(String name)
     {
         this.name = name;
     }
