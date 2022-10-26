@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- //
- // © 2011-2022 Telenav, Inc.
- // Licensed under Apache License, Version 2.0
- //
- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- -->
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// © 2011-2022 Telenav, Inc.
+// Licensed under Apache License, Version 2.0
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
 
 <project
     xmlns="http://maven.apache.org/POM/4.0.0"
@@ -17,13 +17,16 @@
     
     <parent>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>telenav-superpom-kivakit</artifactId>
-        <version>2.2.1</version>
-        <relativePath/>
+        <artifactId>kivakit-extensions-parent</artifactId>
+        <version>1.8.2</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     
     <artifactId>kivakit-microservice</artifactId>
-    <version>1.8.1</version>
+    <properties>
+        <!-- Trivial conflict over log4j-api and jaxb-annotations -->
+        <enforcer.skip>true</enforcer.skip>
+    </properties>
 
     <dependencies>
         
@@ -31,15 +34,7 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-application</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-settings-stores-zookeeper</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-web-jetty</artifactId>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -49,11 +44,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-web-wicket</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.wicket</groupId>
-            <artifactId>wicket-core</artifactId>
-        </dependency>
-        
         <!-- Utilities -->
         
         <dependency>
@@ -89,7 +79,6 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-core</artifactId>
-            <version>1.2.1</version>
         </dependency>
         
         <!-- These merged JAR files are built by the kivakit-merged project -->
@@ -142,6 +131,16 @@
             </exclusions>
         </dependency>
         
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
     <build>
@@ -182,13 +181,13 @@
             <id>protoc-apple-silicon</id>
             
             <!-- There currently is no Apple silicon build of protoc
-             available from Maven Central, but an M1 mac will run
-             x86_64 binaries.
-             
-             While forcing the maven-os-plugin to misdetect the
-             platform is awful, it _is_ slightly less awful than
-             putting this in `~/.m2/settings.xml` for all maven
-             builds system-wide, or not being able to build at all. -->
+            available from Maven Central, but an M1 mac will run
+            x86_64 binaries.
+            
+            While forcing the maven-os-plugin to misdetect the
+            platform is awful, it _is_ slightly less awful than
+            putting this in `~/.m2/settings.xml` for all maven
+            builds system-wide, or not being able to build at all. -->
             <properties>
                 <os.detected.classifier>osx-x86_64</os.detected.classifier>
             </properties>
