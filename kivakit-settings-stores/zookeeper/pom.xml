@@ -31,10 +31,6 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-settings</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-application</artifactId>
         </dependency>
         <dependency>
@@ -43,34 +39,13 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-component</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-merged-zookeeper</artifactId>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-serialization-gson</artifactId>
-        </dependency>
-        
         <!-- Netty for Apache Zookeeper -->
         
         <dependency>
             <groupId>io.netty</groupId>
-            <artifactId>netty-buffer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
             <artifactId>netty-codec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-transport</artifactId>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>

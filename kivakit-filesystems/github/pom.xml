@@ -46,7 +46,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-testing</artifactId>
-        </dependency><dependency><groupId>com.telenav.kivakit</groupId><artifactId>kivakit-resource</artifactId></dependency>
-    </dependencies>
+        </dependency></dependencies>
     
 </project>
