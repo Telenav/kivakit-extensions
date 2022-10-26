@@ -50,17 +50,9 @@ public class PrometheusMetricsReporter extends BaseComponent implements MetricsR
 
         switch (metric.type())
         {
-            case COUNT:
-                count(metric, (Counter) collector);
-                break;
-
-            case LEVEL:
-                level(metric, (Gauge) collector);
-                break;
-
-            case OBSERVATION:
-                histogram(metric, (Histogram) collector);
-                break;
+            case COUNT -> count(metric, (Counter) collector);
+            case LEVEL -> level(metric, (Gauge) collector);
+            case OBSERVATION -> histogram(metric, (Histogram) collector);
         }
     }
 

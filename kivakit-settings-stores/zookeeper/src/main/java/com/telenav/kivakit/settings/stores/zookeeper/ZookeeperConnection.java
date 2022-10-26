@@ -293,13 +293,8 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
             case None:
                 switch (event.getState())
                 {
-                    case SyncConnected:
-                        onConnected();
-                        break;
-
-                    case Disconnected:
-                        onDisconnected();
-                        break;
+                    case SyncConnected -> onConnected();
+                    case Disconnected -> onDisconnected();
                 }
         }
     }

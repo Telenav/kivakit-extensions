@@ -171,9 +171,8 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     @Override
     public boolean equals(Object o)
     {
-        if (o instanceof S3FileSystemObject)
+        if (o instanceof S3FileSystemObject that)
         {
-            var that = (S3FileSystemObject) o;
             return inSameBucket(that) && withIdenticalKey(that);
         }
         return false;

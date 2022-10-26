@@ -121,9 +121,8 @@ public class MicroserviceClusterMember<Data> implements Comparable<MicroserviceC
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof MicroserviceClusterMember)
+        if (object instanceof MicroserviceClusterMember<?> that)
         {
-            var that = (MicroserviceClusterMember<?>) object;
             return host.dnsName().equals(that.host.dnsName())
                     && processIdentifier == that.processIdentifier;
         }

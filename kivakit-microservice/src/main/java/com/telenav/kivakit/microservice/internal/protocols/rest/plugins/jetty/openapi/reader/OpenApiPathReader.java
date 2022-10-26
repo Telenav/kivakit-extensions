@@ -164,17 +164,9 @@ public class OpenApiPathReader extends BaseComponent
             // and add an item based on the HTTP method type
             switch (path.httpMethod())
             {
-                case GET:
-                    item.get(newOperation(requestType, responseType, path));
-                    break;
-
-                case POST:
-                    item.post(newOperation(requestType, responseType, path));
-                    break;
-
-                case DELETE:
-                    item.delete(newOperation(requestType, responseType, path));
-                    break;
+                case GET -> item.get(newOperation(requestType, responseType, path));
+                case POST -> item.post(newOperation(requestType, responseType, path));
+                case DELETE -> item.delete(newOperation(requestType, responseType, path));
             }
 
             return item;

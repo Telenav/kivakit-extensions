@@ -165,12 +165,10 @@ public class RuntimeProtoGenerator implements ProtoGenerator
     protected void doGenerateMessage(Schema<?> schema)
     {
 
-        if (!(schema instanceof RuntimeSchema))
+        if (!(schema instanceof RuntimeSchema<?> runtimeSchema))
         {
             throw new IllegalStateException("invalid schema type " + schema.getClass());
         }
-
-        RuntimeSchema<?> runtimeSchema = (RuntimeSchema<?>) schema;
 
         output.append("message ").append(runtimeSchema.messageName()).append(" {").append("\n");
 
@@ -257,26 +255,17 @@ public class RuntimeProtoGenerator implements ProtoGenerator
 
                         switch (normSchema.getFirst())
                         {
-                            case ArraySchema:
-                                fieldType = "ArrayObject";
-                                break;
-                            case ObjectSchema:
-                                fieldType = "DynamicObject";
-                                break;
-                            case MapSchema:
-
+                            case ArraySchema -> fieldType = "ArrayObject";
+                            case ObjectSchema -> fieldType = "DynamicObject";
+                            case MapSchema ->
+                            {
                                 Field reflectionField = field.getClass().getDeclaredField("val$f");
                                 reflectionField.setAccessible(true);
                                 Field pojoField = (Field) reflectionField.get(field);
-
                                 Pair<Type, Type> keyValue = ReflectionUtil.getMapGenericTypes(pojoField.getGenericType());
-
                                 fieldType = getMapFieldType(keyValue);
-                                break;
-
-                            case PolymorphicEnumSchema:
-                                fieldType = "EnumObject";
-                                break;
+                            }
+                            case PolymorphicEnumSchema -> fieldType = "EnumObject";
                         }
 
                         //System.out.println(getClassHierarchy(normSchema.getSecond()));

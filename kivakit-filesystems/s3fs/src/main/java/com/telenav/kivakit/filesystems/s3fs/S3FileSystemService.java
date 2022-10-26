@@ -27,7 +27,6 @@ import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.internal.lexakai.DiagramS3;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.filesystem.FilePath;
-import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
 import org.jetbrains.annotations.NotNull;

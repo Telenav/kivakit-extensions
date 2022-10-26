@@ -50,15 +50,13 @@ public class FeedbackPanel extends org.apache.wicket.markup.html.panel.FeedbackP
     @Override
     public void onTransmitting(Transmittable message)
     {
-        if (message instanceof Problem)
+        if (message instanceof Problem problem)
         {
-            var problem = (Problem) message;
             error(problem.formatted(WITHOUT_EXCEPTION));
         }
 
-        if (message instanceof Warning)
+        if (message instanceof Warning problem)
         {
-            var problem = (Warning) message;
             warning(problem.formatted(WITHOUT_EXCEPTION));
         }
     }
