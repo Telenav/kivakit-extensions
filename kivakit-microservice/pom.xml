@@ -23,8 +23,6 @@
     </parent>
     
     <artifactId>kivakit-microservice</artifactId>
-    <version>1.8.2</version>
-
     <properties>
         <!-- Trivial conflict over log4j-api and jaxb-annotations -->
         <enforcer.skip>true</enforcer.skip>
