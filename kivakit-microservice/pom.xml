@@ -17,13 +17,18 @@
     
     <parent>
         <groupId>com.telenav.kivakit</groupId>
-        <artifactId>telenav-superpom-kivakit</artifactId>
-        <version>2.2.2</version>
-        <relativePath/>
+        <artifactId>kivakit-extensions-parent</artifactId>
+        <version>1.8.2</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     
     <artifactId>kivakit-microservice</artifactId>
     <version>1.8.2</version>
+
+    <properties>
+        <!-- Trivial conflict over log4j-api and jaxb-annotations -->
+        <enforcer.skip>true</enforcer.skip>
+    </properties>
 
     <dependencies>
         
@@ -76,7 +81,6 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-lambda-java-core</artifactId>
-            <version>1.2.1</version>
         </dependency>
         
         <!-- These merged JAR files are built by the kivakit-merged project -->
@@ -132,9 +136,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.2</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
     <build>

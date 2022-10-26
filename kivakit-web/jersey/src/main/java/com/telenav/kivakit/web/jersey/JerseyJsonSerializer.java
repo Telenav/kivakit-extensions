@@ -58,7 +58,7 @@ public class JerseyJsonSerializer<T> implements
         MessageBodyWriter<T>
 {
     private final GsonObjectSerializer serializer;
-
+    
     public JerseyJsonSerializer(GsonObjectSerializer serializer)
     {
         this.serializer = serializer;
