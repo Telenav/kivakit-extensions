@@ -62,6 +62,7 @@
         <protobuf.version>3.11.4</protobuf.version>
         <snakeyaml.version>1.33</snakeyaml.version>
         <swagger.version>2.2.4</swagger.version>
+        <telenav-thirdparty.version>1.5.3</telenav-thirdparty.version>
         <webjars.version>3.51.2</webjars.version>
         <wicket.version>9.11.0</wicket.version>
     </properties>
@@ -164,24 +165,24 @@
 
             <!-- Kivakit -->
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-grpc</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>grpc</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-prometheus</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>prometheus</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-protostuff</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>protostuff</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-zookeeper</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
 
             <!-- Classgraph -->
