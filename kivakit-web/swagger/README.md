@@ -24,20 +24,20 @@ This project contains support for using Swagger with Jersey and Jetty.
 
 [**Summary**](#summary)  
 
-[**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
+[**Dependencies**](#dependencies) | [**Code Quality**](#code-quality) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web-swagger</artifactId>
-        <version>1.7.0</version>
+        <version>1.8.2</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -64,6 +64,20 @@ Other servlets and filters, for example [Jersey](../jersey/README.md) and [Wicke
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
+### Code Quality <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-32-2x.png 2x"/>
+
+Code quality for this project is 66.7%.  
+  
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-70-96-2x.png 2x"/>
+
+| Measurement   | Value                    |
+|---------------|--------------------------|
+| Stability     | 100.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-100-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-100-96-2x.png 2x"/>     |
+| Testing       | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>       |
+| Documentation | 100.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-100-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-100-96-2x.png 2x"/> |
+
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-40-2x.png 2x"/>
 
 None
@@ -72,26 +86,17 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.web.swagger*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/com.telenav.kivakit.web.swagger.svg)
+[*com.telenav.kivakit.web.swagger*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-web/swagger/documentation/diagrams/com.telenav.kivakit.web.swagger.svg)
 
-<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
-
-Javadoc coverage for this project is 66.7%.  
-  
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-70-96-2x.png 2x"/>
-
-
-
-
-| Class | Documentation Sections |
-|---|---|
-| [*SwaggerJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.swagger///////////////////////////////////////////////////.html) |  |  
-| [*SwaggerJettyPlugin.IndexServlet*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.swagger////////////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerOpenApiJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.swagger//////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerWebAppJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerWebJarJettyPlugin*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
+| Class | Documentation Sections  |
+|-------|-------------------------|
+| [*SwaggerAssetsJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerIndexJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerIndexJettyPlugin.IndexServlet*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerOpenApiJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger//////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerWebJarAssetJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger//////////////////////////////////////////////////////////////.html) |  |  
 
 [//]: # (start-user-text)
 

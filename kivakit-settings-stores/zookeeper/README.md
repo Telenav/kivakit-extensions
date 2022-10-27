@@ -14,20 +14,20 @@ Apache Zookeeper clustered settings store
 
 
 
-[**Dependencies**](#dependencies) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams) | [**Javadoc**](#javadoc)
+[**Dependencies**](#dependencies) | [**Code Quality**](#code-quality) | [**Class Diagrams**](#class-diagrams) | [**Package Diagrams**](#package-diagrams)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-512-2x.png 2x"/>
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-settings-stores/zookeeper/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-settings-stores/zookeeper/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-settings-stores-zookeeper</artifactId>
-        <version>1.7.0</version>
+        <version>1.8.2</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -40,6 +40,20 @@ Apache Zookeeper clustered settings store
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
+### Code Quality <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-32-2x.png 2x"/>
+
+Code quality for this project is 66.7%.  
+  
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-70-96-2x.png 2x"/>
+
+| Measurement   | Value                    |
+|---------------|--------------------------|
+| Stability     | 83.3%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-80-96-2x.png 2x"/>     |
+| Testing       | 33.3%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-30-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-30-96-2x.png 2x"/>       |
+| Documentation | 83.3%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-80-96-2x.png 2x"/> |
+
+<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-40-2x.png 2x"/>
 
 None
@@ -48,31 +62,22 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.settings.stores.zookeeper*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-settings-stores/zookeeper/documentation/diagrams/com.telenav.kivakit.settings.stores.zookeeper.svg)  
-[*com.telenav.kivakit.settings.stores.zookeeper.converters*](https://www.kivakit.org/1.7.0/lexakai/kivakit-extensions/kivakit-settings-stores/zookeeper/documentation/diagrams/com.telenav.kivakit.settings.stores.zookeeper.converters.svg)
+[*com.telenav.kivakit.settings.stores.zookeeper*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-settings-stores/zookeeper/documentation/diagrams/com.telenav.kivakit.settings.stores.zookeeper.svg)  
+[*com.telenav.kivakit.settings.stores.zookeeper.converters*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-settings-stores/zookeeper/documentation/diagrams/com.telenav.kivakit.settings.stores.zookeeper.converters.svg)
 
-<img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
+### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
-### Javadoc <a name="javadoc"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
-
-Javadoc coverage for this project is 51.7%.  
-  
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-50-96-2x.png 2x"/>
-
-
-
-
-| Class | Documentation Sections |
-|---|---|
-| [*CreateModeConverter*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/////////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperChangeListener*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnection*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////.html) | Watching for Changes |  
+| Class | Documentation Sections  |
+|-------|-------------------------|
+| [*CreateModeConverter*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ZookeeperChangeListener*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ZookeeperConnection*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////.html) | Watching for Changes |  
 | | Reading and Writing |  
-| [*ZookeeperConnection.ListenerMethod*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/////////////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnection.Settings*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper///////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnection.State*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnectionListener*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperSettingsStore*](https://www.kivakit.org/1.7.0/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/////////////////////////////////////////////////////////////////////.html) | Configuration |  
+| [*ZookeeperConnection.Settings*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper///////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ZookeeperConnection.State*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ZookeeperConnection.ZookeeperListenerMethod*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ZookeeperConnectionListener*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////////.html) |  |  
+| [*ZookeeperSettingsStore*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/////////////////////////////////////////////////////////////////////.html) | Configuration |  
 | | Loading Settings |  
 | | Creating a Zookeeper Settings Store |  
 | | Initializing Settings |  
