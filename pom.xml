@@ -28,12 +28,20 @@
 
     <modules>
         <module>kivakit-extensions</module>
-        <module>kivakit-filesystems</module>
-        <module>kivakit-logs</module>
-        <module>kivakit-metrics</module>
         <module>kivakit-microservice</module>
-        <module>kivakit-settings-stores</module>
-        <module>kivakit-web</module>
+        
+        <module>kivakit-filesystems/github</module>
+        <module>kivakit-filesystems/java</module>
+        <module>kivakit-filesystems/s3fs</module>
+        <module>kivakit-logs/email</module>
+        <module>kivakit-logs/file</module>
+        <module>kivakit-metrics/core</module>
+        <module>kivakit-metrics/prometheus</module>
+        <module>kivakit-settings-stores/zookeeper</module>
+        <module>kivakit-web/jersey</module>
+        <module>kivakit-web/jetty</module>
+        <module>kivakit-web/swagger</module>
+        <module>kivakit-web/wicket</module>
     </modules>
 
     <properties>
