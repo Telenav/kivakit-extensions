@@ -36,8 +36,8 @@
             <artifactId>kivakit-web-jetty</artifactId>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-merged-prometheus</artifactId>
+            <groupId>com.telenav.thirdparty</groupId>
+            <artifactId>prometheus</artifactId>
         </dependency>
     </dependencies>
     

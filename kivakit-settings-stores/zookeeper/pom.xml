@@ -36,8 +36,8 @@
             <artifactId>kivakit-network-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-merged-zookeeper</artifactId>
+            <groupId>com.telenav.thirdparty</groupId>
+            <artifactId>zookeeper</artifactId>
         </dependency>
         <!-- Netty for Apache Zookeeper -->
         
