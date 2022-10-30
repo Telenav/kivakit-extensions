@@ -59,9 +59,8 @@ class LambdaFunction implements RegistryTrait
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof LambdaFunction)
+        if (object instanceof LambdaFunction that)
         {
-            LambdaFunction that = (LambdaFunction) object;
             return this.name.equals(that.name)
                     && version.equals(that.version);
         }

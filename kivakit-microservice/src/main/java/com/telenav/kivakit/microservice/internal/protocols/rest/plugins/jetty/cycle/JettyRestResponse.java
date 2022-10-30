@@ -198,16 +198,17 @@ public final class JettyRestResponse extends BaseComponent
 
                 switch (responseType)
                 {
-                    case "http-status":
+                    case "http-status" ->
+                    {
                         var json = errors.isEmpty()
                                 ? toJson(response)
                                 : toJson(errors);
                         writeResponse(json);
                         httpStatus(errors.httpStatus());
                         responseWritten = true;
-                        break;
-
-                    case "always-okay":
+                    }
+                    case "always-okay" ->
+                    {
                         writeResponse("{");
                         var payload = stripBrackets(toJson(response));
                         if (!payload.isEmpty())
@@ -218,11 +219,9 @@ public final class JettyRestResponse extends BaseComponent
                         writeResponse("}");
                         httpStatus(OK);
                         responseWritten = true;
-                        break;
-
-                    default:
-                        problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
-                        break;
+                    }
+                    default ->
+                            problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
                 }
             }
             else

@@ -109,15 +109,13 @@ public class MountedApi extends BaseMounted implements TryTrait
 
                 switch (method)
                 {
-                    case GET:
+                    case GET ->
                     {
                         copyResponse(response, tryCatch(() ->
                                         client.send(request.GET().build(), ofString()),
                                 "GET request forwarding failed: $", cycle.restRequest().path()));
                     }
-                    break;
-
-                    case POST:
+                    case POST ->
                     {
                         var payload = IO.readString(this, cycle.restRequest().httpServletRequest().getInputStream());
                         var postRequest = request.POST(HttpRequest.BodyPublishers.ofString(payload)).build();
@@ -125,18 +123,13 @@ public class MountedApi extends BaseMounted implements TryTrait
                                         client.send(postRequest, ofString()),
                                 "POST request forwarding failed: $", cycle.restRequest().path()));
                     }
-                    break;
-
-                    case DELETE:
+                    case DELETE ->
                     {
                         copyResponse(response, tryCatch(() ->
                                         client.send(request.DELETE().build(), ofString()),
                                 "DELETE request forwarding failed: $", cycle.restRequest().path()));
                     }
-                    break;
-
-                    default:
-                        unsupported();
+                    default -> unsupported();
                 }
             }
             catch (Exception e)

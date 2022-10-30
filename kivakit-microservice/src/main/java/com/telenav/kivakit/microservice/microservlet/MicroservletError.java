@@ -22,7 +22,6 @@ import static com.telenav.kivakit.core.messaging.Message.parseMessageName;
 import static com.telenav.kivakit.core.messaging.Messages.newMessage;
 import static com.telenav.kivakit.core.string.Formatter.format;
 import static com.telenav.kivakit.network.http.HttpStatus.*;
-import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 /**
  * Describes an error. Any hierarchical error code (per IETF RFC 7807) in an {@link OperationStatusMessage} subclass,
@@ -63,10 +62,9 @@ public class MicroservletError
     public static MicroservletError microservletError(Message message)
     {
         // If we get a status message like a Glitch, Warning or Problem,
-        if (message instanceof OperationStatusMessage && message.isWorseThanOrEqualTo(Glitch.class))
+        if (message instanceof OperationStatusMessage statusMessage && message.isWorseThanOrEqualTo(Glitch.class))
         {
             // then add a MicroservletError to the errors list.
-            var statusMessage = (OperationStatusMessage) message;
             var httpStatus = OK;
             if (message instanceof HttpProblem)
             {

@@ -13,7 +13,7 @@
     <parent>
         <groupId>com.telenav</groupId>
         <artifactId>telenav-root-superpom</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.7</version>
         <relativePath/>
     </parent>
 
@@ -28,12 +28,20 @@
 
     <modules>
         <module>kivakit-extensions</module>
-        <module>kivakit-filesystems</module>
-        <module>kivakit-logs</module>
-        <module>kivakit-metrics</module>
+        <module>kivakit-logs/file</module>
+        
+        <module>kivakit-filesystems/java</module>
+        <module>kivakit-logs/email</module>
+        <module>kivakit-settings-stores/zookeeper</module>
+        <module>kivakit-metrics/core</module>
+        <module>kivakit-filesystems/github</module>
+        <module>kivakit-filesystems/s3fs</module>
+        <module>kivakit-web/jetty</module>
+        <module>kivakit-metrics/prometheus</module>
+        <module>kivakit-web/wicket</module>
+        <module>kivakit-web/jersey</module>
+        <module>kivakit-web/swagger</module>
         <module>kivakit-microservice</module>
-        <module>kivakit-settings-stores</module>
-        <module>kivakit-web</module>
     </modules>
 
     <properties>
@@ -56,12 +64,13 @@
         <jetty.version>9.4.46.v20220331</jetty.version>
         <junit-platform.version>1.9.0</junit-platform.version>
         <junit.version>4.13.2</junit.version>
-        <junit5.version>5.9.0</junit5.version>
+        <junit5.version>5.9.1</junit5.version>
         <log4j.version>2.19.0</log4j.version>
         <netty.version>4.1.82.Final</netty.version>
         <protobuf.version>3.11.4</protobuf.version>
         <snakeyaml.version>1.33</snakeyaml.version>
         <swagger.version>2.2.4</swagger.version>
+        <telenav-thirdparty.version>1.5.3</telenav-thirdparty.version>
         <webjars.version>3.51.2</webjars.version>
         <wicket.version>9.11.0</wicket.version>
     </properties>
@@ -164,24 +173,24 @@
 
             <!-- Kivakit -->
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-grpc</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>grpc</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-prometheus</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>prometheus</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-protostuff</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>protostuff</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
             <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-merged-zookeeper</artifactId>
-                <version>1.5.2</version>
+                <groupId>com.telenav.thirdparty</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${telenav-thirdparty.version}</version>
             </dependency>
 
             <!-- Classgraph -->

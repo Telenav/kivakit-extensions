@@ -16,12 +16,10 @@ public final class ReflectionUtil
 
     public static Pair<Type, Type> getMapGenericTypes(Type type)
     {
-        if (!(type instanceof ParameterizedType))
+        if (!(type instanceof ParameterizedType parameterized))
         {
             return new Pair<Type, Type>(Object.class, Object.class);
         }
-
-        ParameterizedType parameterized = (ParameterizedType) type;
 
         Type keyType = parameterized.getActualTypeArguments()[0];
         Type valueType = parameterized.getActualTypeArguments()[1];

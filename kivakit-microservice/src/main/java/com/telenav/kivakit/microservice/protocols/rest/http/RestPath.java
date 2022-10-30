@@ -98,9 +98,8 @@ public class RestPath implements
     @Override
     public boolean equals(Object object)
     {
-        if (object instanceof RestPath)
+        if (object instanceof RestPath that)
         {
-            var that = (RestPath) object;
             return key().equals(that.key());
         }
         return false;

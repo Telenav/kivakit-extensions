@@ -81,19 +81,19 @@
             <artifactId>aws-lambda-java-core</artifactId>
         </dependency>
         
-        <!-- These merged JAR files are built by the kivakit-merged project -->
+        <!-- These merged JAR files are built by the telenav-thirdparty project -->
         <!-- Protostuff -->
         
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-merged-protostuff</artifactId>
+            <groupId>com.telenav.thirdparty</groupId>
+            <artifactId>protostuff</artifactId>
         </dependency>
         
         <!-- GRPC -->
         
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-merged-grpc</artifactId>
+            <groupId>com.telenav.thirdparty</groupId>
+            <artifactId>grpc</artifactId>
         </dependency>
         
         <!-- Required by org.apache.wicket.core -->

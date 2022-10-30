@@ -123,9 +123,8 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     @Override
     public boolean equals(Object o)
     {
-        if (o instanceof GitHubFileSystemObject)
+        if (o instanceof GitHubFileSystemObject that)
         {
-            var that = (GitHubFileSystemObject) o;
             return areEqualPairs
                     (
                             scheme, that.scheme,

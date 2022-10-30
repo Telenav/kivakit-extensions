@@ -44,6 +44,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
 import static com.telenav.kivakit.core.string.Paths.pathHead;
 import static com.telenav.kivakit.core.string.Paths.pathTail;
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
 
 /**
  * Base functionality common to both {@link JavaFile} and {@link JavaFolder}.
@@ -180,7 +181,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     @Override
     public FilePath path()
     {
-        return FilePath.parseFilePath(this, super.path().toString());
+        return parseFilePath(this, super.path().toString());
     }
 
     @Override
