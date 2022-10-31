@@ -23,7 +23,6 @@
 
     <packaging>pom</packaging>
 
-    <name>Kivakit Extensions Parent</name>
     <description>A collection of modules that extend KivaKit</description>
 
     <modules>
