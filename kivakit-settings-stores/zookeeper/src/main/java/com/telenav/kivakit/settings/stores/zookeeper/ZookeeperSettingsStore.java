@@ -31,6 +31,7 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.collections.list.StringList.split;
 import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
+import static com.telenav.kivakit.core.os.Console.console;
 import static com.telenav.kivakit.core.path.StringPath.stringPath;
 import static com.telenav.kivakit.core.project.Project.resolveProject;
 import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
@@ -652,7 +653,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
             var list = new StringList();
             for (var at : connection.watchers().keySet())
             {
-                list.add(unflatten(at).asContraction(100));
+                list.add(unflatten(at).asContraction(console().width()));
             }
 
             trace(list.titledBox("Watches"));
