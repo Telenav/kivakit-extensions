@@ -69,15 +69,15 @@ None
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*CreateModeConverter*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/////////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperChangeListener*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnection*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////.html) | Watching for Changes |  
+| [*CreateModeConverter*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/converters/CreateModeConverter.html) |  |  
+| [*ZookeeperChangeListener*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperChangeListener.html) |  |  
+| [*ZookeeperConnection*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnection.html) | Watching for Changes |  
 | | Reading and Writing |  
-| [*ZookeeperConnection.Settings*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper///////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnection.State*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnection.ZookeeperListenerMethod*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperConnectionListener*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper//////////////////////////////////////////////////////////////////////////.html) |  |  
-| [*ZookeeperSettingsStore*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/////////////////////////////////////////////////////////////////////.html) | Configuration |  
+| [*ZookeeperConnection.Settings*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnection.Settings.html) |  |  
+| [*ZookeeperConnection.State*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnection.State.html) |  |  
+| [*ZookeeperConnection.ZookeeperListenerMethod*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnection.ZookeeperListenerMethod.html) |  |  
+| [*ZookeeperConnectionListener*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperConnectionListener.html) |  |  
+| [*ZookeeperSettingsStore*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.settings.stores.zookeeper/com/telenav/kivakit/settings/stores/zookeeper/ZookeeperSettingsStore.html) | Configuration |  
 | | Loading Settings |  
 | | Creating a Zookeeper Settings Store |  
 | | Initializing Settings |  

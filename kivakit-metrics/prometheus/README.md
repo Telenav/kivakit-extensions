@@ -68,8 +68,8 @@ None
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*PrometheusJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////.html) |  |  
-| [*PrometheusMetricsReporter*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.metrics.prometheus/////////////////////////////////////////////////////////////////.html) |  |  
+| [*PrometheusJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.metrics.prometheus/com/telenav/kivakit/metrics/prometheus/PrometheusJettyPlugin.html) |  |  
+| [*PrometheusMetricsReporter*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.metrics.prometheus/com/telenav/kivakit/metrics/prometheus/PrometheusMetricsReporter.html) |  |  
 
 [//]: # (start-user-text)
 

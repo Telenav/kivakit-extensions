@@ -110,8 +110,8 @@ Code quality for this project is 83.3%.
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*DiagramLogsEmail*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.email/////////////////////////////////////////////////////////////////.html) |  |  
-| [*EmailLog*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.email////////////////////////////////////////.html) | Logging |  
+| [*DiagramLogsEmail*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/internal/lexakai/DiagramLogsEmail.html) |  |  
+| [*EmailLog*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/EmailLog.html) | Logging |  
 | | Options |  
 | | Example |  
 

@@ -97,12 +97,12 @@ Code quality for this project is 5.6%.
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*DiagramS3*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs////////////////////////////////////////////////////////////////.html) |  |  
-| [*S3File*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs////////////////////////////////////////////.html) |  |  
-| [*S3FileSystemObject*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs////////////////////////////////////////////////////////.html) |  |  
-| [*S3FileSystemService*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/////////////////////////////////////////////////////////.html) |  |  
-| [*S3Folder*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs//////////////////////////////////////////////.html) |  |  
-| [*S3Output*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs//////////////////////////////////////////////.html) |  |  
+| [*DiagramS3*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/internal/lexakai/DiagramS3.html) |  |  
+| [*S3File*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3File.html) |  |  
+| [*S3FileSystemObject*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemObject.html) |  |  
+| [*S3FileSystemService*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemService.html) |  |  
+| [*S3Folder*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Folder.html) |  |  
+| [*S3Output*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Output.html) |  |  
 
 [//]: # (start-user-text)
 

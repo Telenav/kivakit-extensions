@@ -87,10 +87,10 @@ None
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*BaseRestApplication*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey///////////////////////////////////////////////////.html) |  |  
-| [*BaseRestResource*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey////////////////////////////////////////////////.html) |  |  
-| [*JerseyJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey/////////////////////////////////////////////////.html) |  |  
-| [*JerseyJsonSerializer*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey////////////////////////////////////////////////////.html) |  |  
+| [*BaseRestApplication*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/BaseRestApplication.html) |  |  
+| [*BaseRestResource*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/BaseRestResource.html) |  |  
+| [*JerseyJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyJettyPlugin.html) |  |  
+| [*JerseyJsonSerializer*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jersey/com/telenav/kivakit/web/jersey/JerseyJsonSerializer.html) |  |  
 
 [//]: # (start-user-text)
 

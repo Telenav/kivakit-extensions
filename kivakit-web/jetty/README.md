@@ -81,12 +81,12 @@ None
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*AssetsJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////.html) |  |  
-| [*BaseAssetsJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////////.html) |  |  
-| [*BaseFilterJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////////////.html) |  |  
-| [*BaseJettyRequestHandler*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////////////////.html) |  |  
-| [*BaseServletJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty///////////////////////////////////////////////////////////////.html) |  |  
-| [*JettyServer*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty//////////////////////////////////////////.html) | CORS |  
+| [*AssetsJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/AssetsJettyPlugin.html) |  |  
+| [*BaseAssetsJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseAssetsJettyPlugin.html) |  |  
+| [*BaseFilterJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseFilterJettyPlugin.html) |  |  
+| [*BaseJettyRequestHandler*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/BaseJettyRequestHandler.html) |  |  
+| [*BaseServletJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/resources/BaseServletJettyPlugin.html) |  |  
+| [*JettyServer*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.jetty/com/telenav/kivakit/web/jetty/JettyServer.html) | CORS |  
 | | Configuration |  
 | | Example: |  
 | | Mounting Plugins |  
