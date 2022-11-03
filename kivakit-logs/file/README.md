@@ -105,10 +105,10 @@ Code quality for this project is 83.3%.
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*BaseRolloverTextLog*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file//////////////////////////////////////////////////.html) | Logging |  
-| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file///////////////////////////////////////////////////////////.html) |  |  
-| [*DiagramLogsFile*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file///////////////////////////////////////////////////////////////.html) |  |  
-| [*FileLog*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file//////////////////////////////////////.html) | Logging |  
+| [*BaseRolloverTextLog*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.html) | Logging |  
+| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.Rollover.html) |  |  
+| [*DiagramLogsFile*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/internal/lexakai/DiagramLogsFile.html) |  |  
+| [*FileLog*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.file/com/telenav/kivakit/logs/file/FileLog.html) | Logging |  
 | | Configuration |  
 | | Example |  
 

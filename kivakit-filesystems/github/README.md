@@ -99,12 +99,12 @@ None
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*GitHubFile*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github//////////////////////////////////////////////////.html) |  |  
-| [*GitHubFileSystemObject*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github//////////////////////////////////////////////////////////////.html) |  |  
-| [*GitHubFileSystemService*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github///////////////////////////////////////////////////////////////.html) |  |  
-| [*GitHubFolder*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github////////////////////////////////////////////////////.html) |  |  
-| [*GitHubTree*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github//////////////////////////////////////////////////.html) |  |  
-| [*GitHubTree.EntryType*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github////////////////////////////////////////////////////////////.html) |  |  
+| [*GitHubFile*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFile.html) |  |  
+| [*GitHubFileSystemObject*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemObject.html) |  |  
+| [*GitHubFileSystemService*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFileSystemService.html) |  |  
+| [*GitHubFolder*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubFolder.html) |  |  
+| [*GitHubTree*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubTree.html) |  |  
+| [*GitHubTree.EntryType*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.github/com/telenav/kivakit/filesystems/github/GitHubTree.EntryType.html) |  |  
 
 [//]: # (start-user-text)
 

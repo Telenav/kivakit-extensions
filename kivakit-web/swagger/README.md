@@ -92,11 +92,11 @@ None
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*SwaggerAssetsJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerIndexJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerIndexJettyPlugin.IndexServlet*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/////////////////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerOpenApiJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger//////////////////////////////////////////////////////////.html) |  |  
-| [*SwaggerWebJarAssetJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger//////////////////////////////////////////////////////////////.html) |  |  
+| [*SwaggerAssetsJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerAssetsJettyPlugin.html) |  |  
+| [*SwaggerIndexJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerIndexJettyPlugin.html) |  |  
+| [*SwaggerIndexJettyPlugin.IndexServlet*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerIndexJettyPlugin.IndexServlet.html) |  |  
+| [*SwaggerOpenApiJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerOpenApiJettyPlugin.html) |  |  
+| [*SwaggerWebJarAssetJettyPlugin*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.web.swagger/com/telenav/kivakit/web/swagger/SwaggerWebJarAssetJettyPlugin.html) |  |  
 
 [//]: # (start-user-text)
 

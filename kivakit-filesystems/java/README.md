@@ -68,10 +68,10 @@ None
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*JavaFile*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java/////////////////////////////////////////////.html) |  |  
-| [*JavaFileSystemObject*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java/////////////////////////////////////////////////////////.html) |  |  
-| [*JavaFileSystemService*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java//////////////////////////////////////////////////////////.html) |  |  
-| [*JavaFolder*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java///////////////////////////////////////////////.html) |  |  
+| [*JavaFile*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java/com/telenav/kivakit/filesystem/java/JavaFile.html) |  |  
+| [*JavaFileSystemObject*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java/com/telenav/kivakit/filesystem/java/JavaFileSystemObject.html) |  |  
+| [*JavaFileSystemService*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java/com/telenav/kivakit/filesystem/java/JavaFileSystemService.html) |  |  
+| [*JavaFolder*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.java/com/telenav/kivakit/filesystem/java/JavaFolder.html) |  |  
 
 [//]: # (start-user-text)
 
