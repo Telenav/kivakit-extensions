@@ -36,9 +36,11 @@
             <artifactId>kivakit-network-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.telenav.thirdparty</groupId>
-            <artifactId>zookeeper</artifactId>
+            <groupId>com.telenav.third.party</groupId>
+            <artifactId>telenav-third-party-zookeeper</artifactId>
+            <version>1.5.6</version>
         </dependency>
+
         <!-- Netty for Apache Zookeeper -->
         
         <dependency>

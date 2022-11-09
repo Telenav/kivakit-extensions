@@ -1,10 +1,10 @@
-@SuppressWarnings("JavaRequiresAutoModule")
+@SuppressWarnings("requires-transitive-automatic")
 open module kivakit.metrics.prometheus
 {
     // KivaKit
     requires transitive kivakit.metrics.core;
     requires transitive kivakit.web.jetty;
-    requires telenav.third.party.prometheus;
+    requires transitive telenav.third.party.zookeeper;
 
     // Web
     requires org.eclipse.jetty.servlet;

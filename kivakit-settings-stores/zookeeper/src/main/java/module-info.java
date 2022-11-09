@@ -1,3 +1,4 @@
+@SuppressWarnings("requires-transitive-automatic")
 open module kivakit.settings.stores.zookeeper
 {
     // KivaKit

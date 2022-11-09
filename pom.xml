@@ -28,7 +28,6 @@
     <modules>
         <module>kivakit-extensions</module>
         <module>kivakit-logs/file</module>
-        
         <module>kivakit-filesystems/java</module>
         <module>kivakit-logs/email</module>
         <module>kivakit-settings-stores/zookeeper</module>
@@ -69,7 +68,7 @@
         <protobuf.version>3.11.4</protobuf.version>
         <snakeyaml.version>1.33</snakeyaml.version>
         <swagger.version>2.2.4</swagger.version>
-        <telenav-thirdparty.version>1.5.3</telenav-thirdparty.version>
+        <telenav.third.party.version>1.5.6</telenav.third.party.version>
         <webjars.version>3.51.2</webjars.version>
         <wicket.version>9.11.0</wicket.version>
     </properties>
@@ -170,26 +169,27 @@
                 <version>${protobuf.version}</version>
             </dependency>
 
-            <!-- Kivakit -->
+            <!-- KivaKit -->
+
             <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>grpc</artifactId>
-                <version>${telenav-thirdparty.version}</version>
+                <groupId>com.telenav.third.party</groupId>
+                <artifactId>telenav-third-party-grpc</artifactId>
+                <version>${telenav.third.party.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>prometheus</artifactId>
-                <version>${telenav-thirdparty.version}</version>
+                <groupId>com.telenav.third.party</groupId>
+                <artifactId>telenav-third-party-prometheus</artifactId>
+                <version>${telenav.third.party.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>protostuff</artifactId>
-                <version>${telenav-thirdparty.version}</version>
+                <groupId>com.telenav.third.party</groupId>
+                <artifactId>telenav-third-party-protostuff</artifactId>
+                <version>${telenav.third.party.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>zookeeper</artifactId>
-                <version>${telenav-thirdparty.version}</version>
+                <groupId>com.telenav.third.party</groupId>
+                <artifactId>telenav-third-party-zookeeper</artifactId>
+                <version>${telenav.third.party.version}</version>
             </dependency>
 
             <!-- Classgraph -->

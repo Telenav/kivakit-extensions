@@ -26,7 +26,6 @@
     <properties>
         <!-- Trivial conflict over log4j-api and jaxb-annotations -->
         <enforcer.skip>true</enforcer.skip>
-        <telenav.thirdparty.version>1.5.5</telenav.thirdparty.version>
     </properties>
 
     <dependencies>
@@ -48,12 +47,12 @@
         <dependency>
             <groupId>com.telenav.third.party</groupId>
             <artifactId>telenav-third-party-grpc</artifactId>
-            <version>${telenav.thirdparty.version}</version>
+            <version>${telenav.third.party.version}</version>
         </dependency>
         <dependency>
             <groupId>com.telenav.third.party</groupId>
             <artifactId>telenav-third-party-protostuff</artifactId>
-            <version>${telenav.thirdparty.version}</version>
+            <version>${telenav.third.party.version}</version>
         </dependency>
 
         <!-- Utilities -->
@@ -93,19 +92,19 @@
             <artifactId>aws-lambda-java-core</artifactId>
         </dependency>
         
-        <!-- These merged JAR files are built by the telenav-thirdparty project -->
+        <!-- These merged JAR files are built by the telenav-third-party project -->
         <!-- Protostuff -->
-        
+
         <dependency>
-            <groupId>com.telenav.thirdparty</groupId>
-            <artifactId>protostuff</artifactId>
+            <groupId>com.telenav.third.party</groupId>
+            <artifactId>telenav-third-party-protostuff</artifactId>
         </dependency>
         
         <!-- GRPC -->
-        
+
         <dependency>
-            <groupId>com.telenav.thirdparty</groupId>
-            <artifactId>grpc</artifactId>
+            <groupId>com.telenav.third.party</groupId>
+            <artifactId>telenav-third-party-grpc</artifactId>
         </dependency>
         
         <!-- Required by org.apache.wicket.core -->

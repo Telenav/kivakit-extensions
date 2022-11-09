@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import static com.telenav.kivakit.resource.Extension.JSON;
 import static com.telenav.kivakit.resource.Extension.PROPERTIES;
-import static telenav.third.party.zookeeper.CreateMode.PERSISTENT;
+import static com.telenav.third.party.zookeeper.CreateMode.PERSISTENT;
 
 /**
  * This test can only be used if zookeeper is running on the local host on port 2181, so it is ignored by default

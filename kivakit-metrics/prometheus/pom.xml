@@ -9,8 +9,8 @@
  -->
 
 <project
-    xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://maven.apache.org/POM/4.0.0"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     
     <modelVersion>4.0.0</modelVersion>
@@ -36,8 +36,8 @@
             <artifactId>kivakit-web-jetty</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.telenav.thirdparty</groupId>
-            <artifactId>prometheus</artifactId>
+            <groupId>com.telenav.third.party</groupId>
+            <artifactId>telenav-third-party-prometheus</artifactId>
         </dependency>
     </dependencies>
     
