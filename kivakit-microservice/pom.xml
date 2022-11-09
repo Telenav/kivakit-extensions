@@ -26,6 +26,7 @@
     <properties>
         <!-- Trivial conflict over log4j-api and jaxb-annotations -->
         <enforcer.skip>true</enforcer.skip>
+        <telenav.thirdparty.version>1.5.3</telenav.thirdparty.version>
     </properties>
 
     <dependencies>
@@ -44,6 +45,18 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-web-wicket</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.telenav.thirdparty</groupId>
+            <artifactId>grpc</artifactId>
+            <version>${telenav.thirdparty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.thirdparty</groupId>
+            <artifactId>protostuff</artifactId>
+            <version>${telenav.thirdparty.version}</version>
+        </dependency>
+
+
         <!-- Utilities -->
         
         <dependency>

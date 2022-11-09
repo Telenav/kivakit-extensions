@@ -11,8 +11,8 @@ open module kivakit.microservice
 
     requires transitive org.apache.wicket.core;
 
-    requires transitive kivakit.merged.protostuff;
     requires transitive kivakit.merged.grpc;
+    requires transitive kivakit.merged.protostuff;
 
     // Java
     requires java.sql;
