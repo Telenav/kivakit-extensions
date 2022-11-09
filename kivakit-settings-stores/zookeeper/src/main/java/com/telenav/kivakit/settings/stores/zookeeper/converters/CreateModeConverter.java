@@ -3,7 +3,7 @@ package com.telenav.kivakit.settings.stores.zookeeper.converters;
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.conversion.core.language.EnumConverter;
 import com.telenav.kivakit.core.messaging.Listener;
-import kivakit.merged.zookeeper.CreateMode;
+import telenav.third.party.zookeeper.CreateMode;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;

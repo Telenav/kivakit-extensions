@@ -4,7 +4,7 @@ open module kivakit.metrics.prometheus
     // KivaKit
     requires transitive kivakit.metrics.core;
     requires transitive kivakit.web.jetty;
-    requires kivakit.merged.prometheus;
+    requires telenav.third.party.prometheus;
 
     // Web
     requires org.eclipse.jetty.servlet;

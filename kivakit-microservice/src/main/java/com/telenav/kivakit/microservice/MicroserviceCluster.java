@@ -21,7 +21,7 @@ import static com.telenav.kivakit.core.language.primitive.Ints.parseInt;
 import static com.telenav.kivakit.core.thread.ReentrancyTracker.Reentrancy.ENTERED;
 import static com.telenav.kivakit.microservice.MicroserviceClusterMember.localClusterMemberInstanceIdentifier;
 import static com.telenav.kivakit.network.core.Host.parseHost;
-import static kivakit.merged.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
+import static telenav.third.party.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 
 /**
  * <p>

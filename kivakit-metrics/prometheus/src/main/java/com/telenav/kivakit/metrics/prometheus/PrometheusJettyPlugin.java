@@ -20,7 +20,7 @@ package com.telenav.kivakit.metrics.prometheus;
 
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
-import kivakit.merged.prometheus.client.exporter.MetricsServlet;
+import telenav.third.party.prometheus.client.exporter.MetricsServlet;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
