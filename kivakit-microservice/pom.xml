@@ -26,7 +26,7 @@
     <properties>
         <!-- Trivial conflict over log4j-api and jaxb-annotations -->
         <enforcer.skip>true</enforcer.skip>
-        <telenav.thirdparty.version>1.5.3</telenav.thirdparty.version>
+        <telenav.thirdparty.version>1.5.5</telenav.thirdparty.version>
     </properties>
 
     <dependencies>
@@ -47,15 +47,14 @@
         </dependency>
         <dependency>
             <groupId>com.telenav.thirdparty</groupId>
-            <artifactId>grpc</artifactId>
+            <artifactId>telenav-third-party-grpc</artifactId>
             <version>${telenav.thirdparty.version}</version>
         </dependency>
         <dependency>
             <groupId>com.telenav.thirdparty</groupId>
-            <artifactId>protostuff</artifactId>
+            <artifactId>telenav-third-party-protostuff</artifactId>
             <version>${telenav.thirdparty.version}</version>
         </dependency>
-
 
         <!-- Utilities -->
         
