@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -8,21 +9,29 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
 
-<project
-    xmlns = "http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns = "http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions-parent</artifactId>
-        <version>1.8.4</version>
+        <version>1.8.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     
     <artifactId>kivakit-filesystems-s3fs</artifactId>
+
+    <properties>
+
+        <web.netty.version>4.1.84.Final</web.netty.version>
+        <network.httpclient.version>4.5.13</network.httpclient.version>
+        <cloud.aws.sdk.version>2.18.11</cloud.aws.sdk.version>
+
+    </properties>
+
     <dependencies>
         
         <!-- KivaKit -->
@@ -30,19 +39,29 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-settings</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
-        <!-- S3 -->
-        
+        <!-- Testing -->
+
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <scope>runtime</scope>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-testing</artifactId>
+            <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-internal-testing</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Cloud -->
 
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
+            <version>${cloud.aws.sdk.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.netty</groupId>
@@ -62,66 +81,73 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- Replacement dependencies for s3 client -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${network.httpclient.version}</version>
+            <scope>runtime</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-buffer</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-codec-http2</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-common</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-handler</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-resolver</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-epoll</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-transport-native-unix-common</artifactId>
+            <version>${web.netty.version}</version>
             <scope>runtime</scope>
         </dependency>
-        
 
-        <!-- Testing -->
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-testing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>kivakit-internal-testing</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     
 </project>

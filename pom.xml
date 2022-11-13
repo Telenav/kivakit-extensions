@@ -1,504 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-<!--  -->
-<!-- © 2011-2022 Telenav, Inc. -->
-<!-- Licensed under Apache License, Version 2.0 -->
-<!--  -->
-<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<!--
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //
+ // © 2011-2022 Telenav, Inc.
+ // Licensed under Apache License, Version 2.0
+ //
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ -->
+
+<!--suppress CheckTagEmptyBody -->
+
 <project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.telenav</groupId>
-        <artifactId>telenav-root-superpom</artifactId>
-        <version>1.0.16</version>
-        <relativePath/>
-    </parent>
-
     <groupId>com.telenav.kivakit</groupId>
     <artifactId>kivakit-extensions-parent</artifactId>
-    <version>1.8.4</version>
+    <version>1.8.5</version>
 
     <packaging>pom</packaging>
 
+    <!-- Project -->
+
+    <name>kivakit-extensions-parent</name>
     <description>A collection of modules that extend KivaKit</description>
+    <url>https://www.kivakit.org</url>
+    <inceptionYear>2011</inceptionYear>
+    <organization>
+        <name>Telenav</name>
+        <url>https://www.telenav.com</url>
+    </organization>
+
+    <!-- Licensing -->
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <!-- Modules -->
 
     <modules>
+
         <module>kivakit-extensions</module>
         <module>kivakit-logs/file</module>
-        
         <module>kivakit-filesystems/java</module>
         <module>kivakit-logs/email</module>
         <module>kivakit-settings-stores/zookeeper</module>
-        <module>kivakit-metrics/core</module>
         <module>kivakit-filesystems/github</module>
         <module>kivakit-filesystems/s3fs</module>
         <module>kivakit-web/jetty</module>
-        <module>kivakit-metrics/prometheus</module>
-        <module>kivakit-web/wicket</module>
         <module>kivakit-web/jersey</module>
         <module>kivakit-web/swagger</module>
         <module>kivakit-microservice</module>
+
     </modules>
 
+    <!-- Versioning -->
+
     <properties>
-        <amazonaws.version>1.2.1</amazonaws.version>
-        <awssdk.version>2.17.31</awssdk.version>
-        <classgraph.version>4.8.149</classgraph.version>
-        <github-api.version>1.132</github-api.version>
-        <guava.version>31.1-jre</guava.version>
-        <httpclient.version>4.5.13</httpclient.version>
-        <jackson.version>2.13.4</jackson.version>
-        <jackson-databind.version>2.13.4.2</jackson-databind.version>
-        <jakarta-activation.version>2.0.0</jakarta-activation.version>
-        <jakarta-servlet.version>5.0.0</jakarta-servlet.version>
-        <jakarta-xml.version>2.3.3</jakarta-xml.version>
-        <javax-servlet.version>3.1.0</javax-servlet.version>
-        <jax-rs.version>2.1.1</jax-rs.version>
-        <jersey-containers.version>2.33</jersey-containers.version>
-        <jersey-inject.version>2.33</jersey-inject.version>
-        <jersey-media.version>2.33</jersey-media.version>
-        <jetty.version>9.4.46.v20220331</jetty.version>
-        <junit-platform.version>1.9.0</junit-platform.version>
-        <junit.version>4.13.2</junit.version>
-        <junit5.version>5.9.1</junit5.version>
-        <log4j.version>2.19.0</log4j.version>
-        <netty.version>4.1.82.Final</netty.version>
-        <protobuf.version>3.11.4</protobuf.version>
-        <snakeyaml.version>1.33</snakeyaml.version>
-        <swagger.version>2.2.4</swagger.version>
-        <telenav-thirdparty.version>1.5.3</telenav-thirdparty.version>
-        <webjars.version>3.51.2</webjars.version>
-        <wicket.version>9.11.0</wicket.version>
+
+        <!-- Project -->
+
+        <repository.group.name>kivakit</repository.group.name>
+        <repository.name>kivakit-extensions</repository.name>
+
+        <!-- Tools -->
+
+        <java.version>17</java.version>
+        <maven.version>3.8.5</maven.version>
+        <lexakai.version>1.0.20</lexakai.version>
+
+        <!-- Plugins -->
+
+        <maven.compiler.plugin.version>3.10.1</maven.compiler.plugin.version>
+        <maven.enforcer.plugin.version>3.1.0</maven.enforcer.plugin.version>
+        <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
+        <maven.shade.plugin.version>3.3.0</maven.shade.plugin.version>
+        <maven.resources.plugin.version>3.3.0</maven.resources.plugin.version>
+        <maven.source.plugin.version>3.2.1</maven.source.plugin.version>
+        <maven.cactus.plugin.version>1.5.49</maven.cactus.plugin.version>
+        <maven.cactus.metadata.plugin.version>1.0.2</maven.cactus.metadata.plugin.version>
+        <maven.moditect.plugin.version>1.0.0.RC1</maven.moditect.plugin.version>
+        <maven.plugin.plugin.version>3.7.0</maven.plugin.plugin.version>
+        <maven.surefire.plugin.version>3.0.0-M7</maven.surefire.plugin.version>
+        <maven.javadoc.plugin.version>3.4.1</maven.javadoc.plugin.version>
+        <maven.nexus.staging.plugin.version>1.6.13</maven.nexus.staging.plugin.version>
+        <maven.deploy.plugin.version>3.0.0</maven.deploy.plugin.version>
+        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+        <maven.os.plugin.version>1.6.1</maven.os.plugin.version>
+        <maven.protobuf.plugin.version>0.6.1</maven.protobuf.plugin.version>
+
+        <!-- Documentation -->
+
+        <!--suppress UnresolvedMavenProperty -->
+        <documentation.assets.folder>${env.TELENAV_WORKSPACE}/${repository.group.name}-assets/docs/${project.version}</documentation.assets.folder>
+        <documentation.lexakai.folder>${documentation.assets.folder}/lexakai</documentation.lexakai.folder>
+        <documentation.javadoc.folder>${documentation.assets.folder}/javadoc/${repository.name}</documentation.javadoc.folder>
+        <documentation.javadoc.source.version>17</documentation.javadoc.source.version>
+
+        <!-- Publishing -->
+
+        <publishing.nexus.deploy.skip>false</publishing.nexus.deploy.skip>
+        <publishing.nexus.release>true</publishing.nexus.release>
+
+        <!-- Annotations -->
+
+        <annotations.lexakai.annotations.version>1.0.9</annotations.lexakai.annotations.version>
+        <annotations.jetbrains.annotations.version>23.0.0</annotations.jetbrains.annotations.version>
+
+        <!-- Serialization -->
+
+        <serialization.kryo.version>5.3.0</serialization.kryo.version>
+        <serialization.kryo.serializers.version>0.45</serialization.kryo.serializers.version>
+        <serialization.gson.version>2.10</serialization.gson.version>
+        <serialization.protobuf.version>3.21.9</serialization.protobuf.version>
+        <serialization.jackson.version>2.14.0</serialization.jackson.version>
+        <serialization.snake.yaml.version>1.33</serialization.snake.yaml.version>
+
+        <!-- Cloud -->
+
+        <cloud.aws.s3.version>2.17.31</cloud.aws.s3.version>
+        <cloud.aws.lambda.version>1.2.1</cloud.aws.lambda.version>
+        <cloud.zookeeper.version>1.5.8</cloud.zookeeper.version>
+
+        <!-- Networking -->
+
+        <networking.httpclient.version>4.5.13</networking.httpclient.version>
+
+        <!-- Web -->
+
+        <web.netty.version>4.1.84.Final</web.netty.version>
+
+        <!-- Utility -->
+
+        <utilities.guava.version>31.1-jre</utilities.guava.version>
+        <utilities.classgraph.version>4.8.149</utilities.classgraph.version>
+        <utilities.log4j.version>2.19.0</utilities.log4j.version>
+        <utilities.cactus.metadata.version>1.0.2</utilities.cactus.metadata.version>
+
+        <!-- Testing -->
+
+        <testing.junit.version>4.13.2</testing.junit.version>
+        <testing.junit5.version>5.9.1</testing.junit5.version>
+        <testing.junit.platform.version>1.9.1</testing.junit.platform.version>
+        <testing.surefire.excluded/>
+        <testing.surefire.quick>false</testing.surefire.quick>
+
     </properties>
 
-    <dependencyManagement>
-        <dependencies>
-
-            <!-- Pull in libraries defined in Kivakit -->
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Dependencies on modules defined in this aggregator project,
-            Kivakit Extensions-->
-
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>kivakit-extensions</artifactId>
-                <version>${project.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- Amazonaws -->
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-lambda-java-core</artifactId>
-                <version>${amazonaws.version}</version>
-            </dependency>
-
-            <!-- Jackson -->
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson-databind.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.jaxrs</groupId>
-                <artifactId>jackson-jaxrs-json-provider</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>${jackson.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.yaml</groupId>
-                        <artifactId>snakeyaml</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.module</groupId>
-                <artifactId>jackson-module-jaxb-annotations</artifactId>
-                <version>${jackson.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-databind</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-annotations</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.activation</groupId>
-                        <artifactId>jakarta.activation-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <!-- Guava -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-
-            <!-- Protobuf -->
-            <dependency>
-                <groupId>com.google.protobuf</groupId>
-                <artifactId>protobuf-java</artifactId>
-                <version>${protobuf.version}</version>
-            </dependency>
-
-            <!-- Kivakit -->
-            <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>grpc</artifactId>
-                <version>${telenav-thirdparty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>prometheus</artifactId>
-                <version>${telenav-thirdparty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>protostuff</artifactId>
-                <version>${telenav-thirdparty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.telenav.thirdparty</groupId>
-                <artifactId>zookeeper</artifactId>
-                <version>${telenav-thirdparty.version}</version>
-            </dependency>
-
-            <!-- Classgraph -->
-            <dependency>
-                <groupId>io.github.classgraph</groupId>
-                <artifactId>classgraph</artifactId>
-                <version>${classgraph.version}</version>
-            </dependency>
-
-            <!-- Netty -->
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-buffer</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec-http2</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-common</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-handler</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-resolver</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-transport</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-transport-native-epoll</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-transport-native-unix-common</artifactId>
-                <version>${netty.version}</version>
-            </dependency>
-
-            <!-- Swagger -->
-            <dependency>
-                <groupId>io.swagger.core.v3</groupId>
-                <artifactId>swagger-jaxrs2</artifactId>
-                <version>${swagger.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jakarta.activation</groupId>
-                        <artifactId>jakarta.activation-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.servlet</groupId>
-                        <artifactId>jakarta.servlet-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.javassist</groupId>
-                        <artifactId>javassist</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-core</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.github.classgraph</groupId>
-                        <artifactId>classgraph</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-annotations</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-databind</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.dataformat</groupId>
-                        <artifactId>jackson-dataformat-yaml</artifactId>
-                    </exclusion>
-                </exclusions>
-                
-            </dependency>
-
-            <!-- Jakarta Activation -->
-            <dependency>
-                <groupId>jakarta.activation</groupId>
-                <artifactId>jakarta.activation-api</artifactId>
-                <version>${jakarta-activation.version}</version>
-            </dependency>
-
-            <!-- Jakarta Servlet -->
-            <dependency>
-                <groupId>jakarta.servlet</groupId>
-                <artifactId>jakarta.servlet-api</artifactId>
-                <version>${jakarta-servlet.version}</version>
-            </dependency>
-
-            <!-- Jakarta Xml -->
-            <dependency>
-                <groupId>jakarta.xml.bind</groupId>
-                <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>${jakarta-xml.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jakarta.activation</groupId>
-                        <artifactId>jakarta.activation-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <!-- Javax Servlet -->
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>${javax-servlet.version}</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>${jax-rs.version}</version>
-            </dependency>
-            
-
-            <!-- HttpClient -->
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>
-
-            <!-- Log4j -->
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-1.2-api</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-
-            <!-- Wicket -->
-            <dependency>
-                <groupId>org.apache.wicket</groupId>
-                <artifactId>wicket-extensions</artifactId>
-                <version>${wicket.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.slf4j</groupId>
-                        <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <!-- Jetty -->
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-servlets</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-webapp</artifactId>
-                <version>${jetty.version}</version>
-            </dependency>
-
-            <!-- Jersey Containers -->
-            <dependency>
-                <groupId>org.glassfish.jersey.containers</groupId>
-                <artifactId>jersey-container-servlet</artifactId>
-                <version>${jersey-containers.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jakarta.servlet</groupId>
-                        <artifactId>jakarta.servlet-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-
-            <!-- Jersey Inject -->
-            <dependency>
-                <groupId>org.glassfish.jersey.inject</groupId>
-                <artifactId>jersey-hk2</artifactId>
-                <version>${jersey-inject.version}</version>
-            </dependency>
-
-            <!-- Jersey Media -->
-            <dependency>
-                <groupId>org.glassfish.jersey.media</groupId>
-                <artifactId>jersey-media-json-jackson</artifactId>
-                <version>${jersey-media.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.module</groupId>
-                        <artifactId>jackson-module-jaxb-annotations</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jakarta.ws.rs</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-databind</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>-com.fasterxml.jackson.core</groupId>
-                        <artifactId>jackson-annotations</artifactId>
-                    </exclusion>                                                                                
-                </exclusions>
-            </dependency>
-            
-            <!-- Snakeyaml - we exclude it, so provide *a* version -->
-            
-            <dependency>
-                <groupId>org.yaml</groupId>
-                <artifactId>snakeyaml</artifactId>
-                <version>${snakeyaml.version}</version>
-            </dependency>
-            
-            <!-- JUnit 5 -->
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit5.version}</version>
-            </dependency>
-
-            <!-- Github Api -->
-            <dependency>
-                <groupId>org.kohsuke</groupId>
-                <artifactId>github-api</artifactId>
-                <version>${github-api.version}</version>
-            </dependency>
-
-            <!-- Webjars -->
-            <dependency>
-                <groupId>org.webjars</groupId>
-                <artifactId>swagger-ui</artifactId>
-                <version>${webjars.version}</version>
-            </dependency>
-
-            <!-- Awssdk -->
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>s3</artifactId>
-                <version>${awssdk.version}</version>
-            </dependency>
-
-            <!-- Junit -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <!-- Junit5 -->
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter</artifactId>
-                <version>${junit5.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit5.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <!-- Junit Platform -->
-            <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-commons</artifactId>
-                <version>${junit-platform.version}</version>
-                <scope>test</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <!-- Contributors -->
 
     <developers>
+
         <developer>
             <id>jonathanl</id>
             <name>Jonathan Locke (Luo Shibo)</name>
@@ -510,7 +169,9 @@
                 <role>administrator</role>
             </roles>
         </developer>
+
         <developer>
+
             <id>haifeng</id>
             <name>Haifeng Zhu</name>
             <email>hfzhu@telenav.com</email>
@@ -520,41 +181,375 @@
                 <role>developer</role>
                 <role>administrator</role>
             </roles>
+
         </developer>
+
         <developer>
             <id>timboudreau</id>
-            <name>Tim Boudreau</name>
+            <name>Tim Boudreau (Luo Shibo)</name>
             <email>tim@timboudreau.com</email>
             <organization>Telenav</organization>
             <organizationUrl>https://www.telenav.com/</organizationUrl>
             <roles>
-                <role>developer</role>
+                <role>lead</role>
                 <role>administrator</role>
             </roles>
         </developer>
+
     </developers>
 
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+    <!-- Maven central staging-->
 
+    <distributionManagement>
 
-    <url>https://kivakit.org</url>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
 
-    <inceptionYear>2011</inceptionYear>
+    </distributionManagement>
+
+    <!-- Repositories -->
+
+    <repositories>
+
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+
+    </repositories>
+
+    <!-- Source Code -->
 
     <scm>
-        <connection>scm:git:https://github.com/Telenav/kivakit-extensions.git</connection>
-        <developerConnection>scm:git:https://github.com/Telenav/kivakit-extensions.git</developerConnection>
-        <url>https://github.com/Telenav/kivakit-extensions</url>
+
+        <connection>scm:git:https://github.com/Telenav/${repository.name}.git</connection>
+        <developerConnection>scm:git:https://github.com/Telenav/${repository.name}.git</developerConnection>
+        <url>https://github.com/Telenav/${repository.name}.git</url>
+
     </scm>
 
+    <!-- Issue Tracking -->
+
     <issueManagement>
+
         <system>GitHub</system>
-        <url>https://github.com/Telenav/kivakit-extensions/issues</url>
+        <url>https://github.com/Telenav/${repository.group.name}/issues</url>
+
     </issueManagement>
+
+    <build>
+
+        <!-- Resource Copying -->
+
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/java</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/java</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </testResource>
+        </testResources>
+
+        <!-- Plugins -->
+
+        <plugins>
+
+            <!-- Building -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <release>${java.version}</release>
+                    <compilerArgs>
+                        <compilerArg>-Xlint:unchecked</compilerArg>
+                        <compilerArg>-Xlint:-requires-transitive-automatic</compilerArg>
+                        <compilerArg>-Xlint:deprecation</compilerArg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- Enforce Maven version -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven.enforcer.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <phase>verify</phase>
+                        <configuration>
+                            <rules>
+                                <dependencyConvergence/>
+                                <requireMavenVersion>
+                                    <version>[${maven.version},)</version>
+                                    <message>Build requires Maven version ${maven.version}.</message>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Generate build.properties and project.properties files -->
+
+            <plugin>
+                <groupId>com.telenav.cactus.metadata</groupId>
+                <artifactId>cactus-metadata-maven-plugin</artifactId>
+                <version>${maven.cactus.metadata.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>project-metadata</id>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <verb>Updating project and build metadata</verb>
+                        </configuration>
+                        <goals>
+                            <goal>project-information</goal>
+                            <goal>build-metadata</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+
+        <pluginManagement>
+
+            <plugins>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-plugin-plugin</artifactId>
+                    <version>${maven.plugin.plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven.resources.plugin.version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <unit.test>true</unit.test>
+                        </systemPropertyVariables>
+                        <argLine>-Xmx2g</argLine>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+
+        </pluginManagement>
+
+    </build>
+
+    <profiles>
+
+        <profile>
+
+            <id>release</id>
+
+            <build>
+                <plugins>
+
+                    <!-- Create source JAR -->
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven.source.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-source-jar</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Documentation -->
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven.javadoc.plugin.version}</version>
+                        <configuration>
+                            <show>protected</show>
+                            <quiet>true</quiet>
+                            <source>${documentation.javadoc.source.version}</source>
+                            <encoding>utf-8</encoding>
+                            <sourcepath>src/main/java</sourcepath>
+                            <failOnError>true</failOnError>
+                            <detectJavaApiLink>false</detectJavaApiLink>
+                            <doclint>none</doclint>
+                            <nohelp>true</nohelp>
+                            <additionalOptions>-notimestamp</additionalOptions>
+                            <destDir>target/javadoc</destDir>
+                            <sourceFileIncludes>
+                                <sourceFileInclude>**/*.java</sourceFileInclude>
+                            </sourceFileIncludes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate-javadoc</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>javadoc-no-fork</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>generate-aggregate-javadoc</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>aggregate-no-fork</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>attach-javadoc-jar</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${maven.resources.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>copy-javadoc</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${documentation.javadoc.folder}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>target/javadoc</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.telenav.cactus</groupId>
+                        <artifactId>cactus-maven-plugin</artifactId>
+                        <version>${maven.cactus.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>build-lexakai-documentation</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>lexakai</goal>
+                                </goals>
+                                <configuration>
+                                    <lexakaiVersion>${lexakai.version}</lexakaiVersion>
+                                    <updateReadme>true</updateReadme>
+                                    <outputFolder>${documentation.lexakai.folder}</outputFolder>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Signing -->
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <configuration>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!-- Publishing -->
+
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${maven.nexus.staging.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <skipLocalStaging>true</skipLocalStaging>
+                            <skipNexusStagingDeployMojo>${publishing.nexus.deploy.skip}</skipNexusStagingDeployMojo>
+                            <autoReleaseAfterClose>${publishing.nexus.release}</autoReleaseAfterClose>
+                            <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-deploy</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>${maven.deploy.plugin.version}</version>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
 </project>

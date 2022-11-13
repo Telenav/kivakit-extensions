@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Archiver-Version: Plexus Archiver
-Created-By: Apache Maven 3.8.3
-Built-By: jonathan
-Build-Jdk: 16.0.2
-Automatic-Module-Name: kivakit.merged.grpc
-

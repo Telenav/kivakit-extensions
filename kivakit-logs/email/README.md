@@ -32,14 +32,14 @@ This module is an email log service provider.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-logs-email</artifactId>
-        <version>1.8.2</version>
+        <version>1.8.4</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -83,35 +83,35 @@ More details about logging are available at [*kivakit-core logging*](../../../ki
 
 ### Code Quality <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-32-2x.png 2x"/>
 
-Code quality for this project is 83.3%.  
+Code quality for this project is 66.7%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-80-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-70-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-70-96-2x.png 2x"/>
 
 | Measurement   | Value                    |
 |---------------|--------------------------|
 | Stability     | 100.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-100-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-100-96-2x.png 2x"/>     |
-| Testing       | 50.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-50-96-2x.png 2x"/>       |
+| Testing       | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>       |
 | Documentation | 100.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-100-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-100-96-2x.png 2x"/> |
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-40-2x.png 2x"/>
 
-[*Email Log*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/diagram-logs-email.svg)
+[*Email Log*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/diagram-logs-email.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.logs.email*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.svg)  
-[*com.telenav.kivakit.logs.email.internal.lexakai*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.internal.lexakai.svg)
+[*com.telenav.kivakit.logs.email*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.svg)  
+[*com.telenav.kivakit.logs.email.internal.lexakai*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-logs/email/documentation/diagrams/com.telenav.kivakit.logs.email.internal.lexakai.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*DiagramLogsEmail*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/internal/lexakai/DiagramLogsEmail.html) |  |  
-| [*EmailLog*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.logs.email/com/telenav/kivakit/logs/email/EmailLog.html) | Logging |  
+| [*DiagramLogsEmail*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-logs-email/com/telenav/kivakit/logs/email/internal/lexakai/DiagramLogsEmail.html) |  |  
+| [*EmailLog*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-logs-email/com/telenav/kivakit/logs/email/EmailLog.html) | Logging |  
 | | Options |  
 | | Example |  
 

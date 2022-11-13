@@ -25,8 +25,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cy
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.http.HttpStatus;
-
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;

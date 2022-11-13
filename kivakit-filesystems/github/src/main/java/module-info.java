@@ -9,7 +9,7 @@ open module kivakit.filesystems.github
     requires kivakit.component;
 
     // GitHub API
-    requires github.api;
+    requires org.kohsuke.github.api;
 
     // Module exports
     exports com.telenav.kivakit.filesystems.github;

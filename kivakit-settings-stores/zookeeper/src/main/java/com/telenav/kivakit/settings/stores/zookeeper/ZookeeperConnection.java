@@ -12,12 +12,12 @@ import com.telenav.kivakit.core.thread.StateMachine;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
-import kivakit.merged.zookeeper.CreateMode;
-import kivakit.merged.zookeeper.KeeperException;
-import kivakit.merged.zookeeper.WatchedEvent;
-import kivakit.merged.zookeeper.Watcher;
-import kivakit.merged.zookeeper.ZooKeeper;
-import kivakit.merged.zookeeper.data.ACL;
+import com.telenav.third.party.zookeeper.CreateMode;
+import com.telenav.third.party.zookeeper.KeeperException;
+import com.telenav.third.party.zookeeper.WatchedEvent;
+import com.telenav.third.party.zookeeper.Watcher;
+import com.telenav.third.party.zookeeper.ZooKeeper;
+import com.telenav.third.party.zookeeper.data.ACL;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -37,7 +37,7 @@ import static com.telenav.kivakit.core.time.Duration.minutes;
 import static com.telenav.kivakit.core.time.Duration.seconds;
 import static com.telenav.kivakit.core.time.Frequency.every;
 import static com.telenav.kivakit.core.value.count.Bytes.bytes;
-import static kivakit.merged.zookeeper.CreateMode.PERSISTENT;
+import static com.telenav.third.party.zookeeper.CreateMode.PERSISTENT;
 
 /**
  * Maintains a connection to zookeeper and performs operations using that connection

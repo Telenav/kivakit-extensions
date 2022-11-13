@@ -24,9 +24,9 @@ import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder;
 import io.swagger.v3.jaxrs2.integration.OpenApiServlet;
 import io.swagger.v3.oas.integration.OpenApiConfigurationException;
 import io.swagger.v3.oas.integration.SwaggerConfiguration;
+import jakarta.ws.rs.core.Application;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import javax.ws.rs.core.Application;
 import java.util.Set;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;

@@ -23,24 +23,24 @@ import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.resource.serialization.SerializableObject;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.ext.MessageBodyReader;
+import jakarta.ws.rs.ext.MessageBodyWriter;
+import jakarta.ws.rs.ext.Provider;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.ext.MessageBodyReader;
-import javax.ws.rs.ext.MessageBodyWriter;
-import javax.ws.rs.ext.Provider;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
-import static javax.ws.rs.core.MediaType.*;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 /**
  * Performs JSON serialization compatible with the Jersey REST API via <i>javax.ws.rs</i> interfaces.
@@ -58,7 +58,7 @@ public class JerseyJsonSerializer<T> implements
         MessageBodyWriter<T>
 {
     private final GsonObjectSerializer serializer;
-    
+
     public JerseyJsonSerializer(GsonObjectSerializer serializer)
     {
         this.serializer = serializer;

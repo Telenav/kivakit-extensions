@@ -163,8 +163,8 @@ public class MicroserviceGrpcClient extends BaseComponent
     protected void onRegisterObjectSerializers()
     {
         var serializers = new ObjectSerializerRegistry();
-        serializers.add(JSON, new GsonObjectSerializer());
-        serializers.add(PROPERTIES, new PropertiesObjectSerializer());
+        serializers.add(JSON, listenTo(new GsonObjectSerializer()));
+        serializers.add(PROPERTIES, listenTo(new PropertiesObjectSerializer()));
         register(serializers);
     }
 

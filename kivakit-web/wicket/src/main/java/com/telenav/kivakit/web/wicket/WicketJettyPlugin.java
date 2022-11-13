@@ -21,20 +21,21 @@ package com.telenav.kivakit.web.wicket;
 import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import org.apache.wicket.protocol.http.WebApplication;
+
+import jakarta.servlet.DispatcherType;
 import org.eclipse.jetty.servlet.FilterHolder;
 
-import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
-import static javax.servlet.DispatcherType.ASYNC;
-import static javax.servlet.DispatcherType.ERROR;
-import static javax.servlet.DispatcherType.FORWARD;
-import static javax.servlet.DispatcherType.INCLUDE;
-import static javax.servlet.DispatcherType.REQUEST;
+import static jakarta.servlet.DispatcherType.ASYNC;
+import static jakarta.servlet.DispatcherType.ERROR;
+import static jakarta.servlet.DispatcherType.FORWARD;
+import static jakarta.servlet.DispatcherType.INCLUDE;
+import static jakarta.servlet.DispatcherType.REQUEST;
 
 /**
  * A Jetty filter for Apache Wicket applications. The Wicket {@link WebApplication} class is passed to the constructor.

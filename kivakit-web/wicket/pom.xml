@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  //
@@ -8,21 +9,49 @@
  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  -->
 
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xmlns = "http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions-parent</artifactId>
-        <version>1.8.4</version>
+        <version>1.8.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>kivakit-web-wicket</artifactId>
+
+    <!-- Versioning -->
+
+    <properties>
+
+        <web.wicket.version>10.0.0-M1-SNAPSHOT</web.wicket.version>
+
+    </properties>
+
+    <!-- Wicket Snapshot Repository -->
+
+    <repositories>
+
+        <repository>
+            <id>apache.snapshots</id>
+            <name>Apache Development Snapshot Repository</name>
+            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+    </repositories>
+
+    <!-- Dependencies -->
+
     <dependencies>
 
         <!-- KivaKit -->
@@ -30,6 +59,7 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-web-jetty</artifactId>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>junit</groupId>
@@ -38,37 +68,37 @@
             </exclusions>
         </dependency>
 
-        <!-- Servlet API -->
-
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-        </dependency>
-
         <!-- Apache Wicket -->
 
         <dependency>
             <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-extensions</artifactId>
+            <version>${web.wicket.version}</version>
         </dependency>
+
+        <!-- Testing -->
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
+            <version>${testing.junit5.version}</version>
         </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
-            <plugin>
 
+            <!-- Testing -->
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <excludedGroups>${exclude.test.groups}</excludedGroups>
+                    <excludedGroups>${testing.surefire.excluded}</excludedGroups>
                     <useModulePath>false</useModulePath>
                     <systemPropertyVariables>
-                        <testQuick>${testQuick}</testQuick>
+                        <testQuick>${testing.surefire.quick}</testQuick>
                     </systemPropertyVariables>
                     <argLine>
                         --add-opens org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
@@ -76,7 +106,6 @@
                         -Xmx2g
                     </argLine>
                 </configuration>
-
             </plugin>
 
         </plugins>

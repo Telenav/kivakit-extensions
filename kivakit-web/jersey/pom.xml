@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -8,21 +9,36 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 -->
 
-<project
-    xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xmlns = "http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions-parent</artifactId>
-        <version>1.8.4</version>
+        <version>1.8.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>kivakit-web-jersey</artifactId>
+
+    <properties>
+
+        <!-- REST -->
+
+        <web.rest.jersey.version>3.1.0</web.rest.jersey.version>
+        <web.rest.jakarta.ws.rs>3.1.0</web.rest.jakarta.ws.rs>
+        <web.rest.jakarta.servlet.version>5.0.0</web.rest.jakarta.servlet.version>
+
+        <!-- Serialization -->
+
+        <serialization.jakarta.activation.version>2.0.0</serialization.jakarta.activation.version>
+        <serialization.jaxb>2.3.1</serialization.jaxb>
+
+    </properties>
+
     <dependencies>
 
         <!-- KivaKit -->
@@ -30,13 +46,29 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>kivakit-web-jetty</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
-        <!-- Jersey -->
+        <!-- Web -->
 
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>${web.rest.jakarta.servlet.version}</version>
+            <scope>provided</scope> <!-- changed -->
+        </dependency>
+
+        <!-- REST -->
+
+        <dependency>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <version>${web.rest.jakarta.ws.rs}</version>
+        </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
+            <version>${web.rest.jersey.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>jakarta.servlet</groupId>
@@ -45,80 +77,39 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${web.rest.jersey.version}</version>
+        </dependency>
+
+        <!-- Serialization -->
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${serialization.jaxb}</version>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-json-jackson</artifactId>
+            <groupId>com.fasterxml.jackson.jaxrs</groupId>
+            <artifactId>jackson-jaxrs-json-provider</artifactId>
+            <version>${serialization.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+            <version>${serialization.jackson.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-annotations</artifactId>
-                </exclusion>                                                                                
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.module</groupId>
-                    <artifactId>jackson-module-jaxb-annotations</artifactId>
+                    <groupId>jakarta.activation</groupId>
+                    <artifactId>jakarta.activation-api</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>jakarta.xml.bind</groupId>
                     <artifactId>jakarta.xml.bind-api</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.module</groupId>
-                    <artifactId>jackson-module-jaxb-annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>jakarta.ws.rs</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.glassfish.jersey.inject</groupId>
-            <artifactId>jersey-hk2</artifactId>
-        </dependency>
-
-        <!-- XML -->
-
-        <dependency>
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-core</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>jakarta.activation</groupId>
-                    <artifactId>jakarta.activation-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Apply our versions of excluded dependencies: -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

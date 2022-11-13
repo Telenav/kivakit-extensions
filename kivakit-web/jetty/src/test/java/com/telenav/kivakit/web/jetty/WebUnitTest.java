@@ -50,7 +50,6 @@ public class WebUnitTest extends UnitTest
     @SuppressWarnings("SameParameterValue")
     protected void startWebServer(int portNumber, FilePath war)
     {
-        org.eclipse.jetty.util.log.Log.setLog(new NullLogger());
         var http = new HttpConfiguration();
         var server = new Server();
         var connector = new ServerConnector(server, new HttpConnectionFactory(http));
