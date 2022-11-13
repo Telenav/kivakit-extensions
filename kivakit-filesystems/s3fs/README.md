@@ -31,14 +31,14 @@ Service provider for AWS S3 filesystems.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-filesystems-s3fs</artifactId>
-        <version>1.8.2</version>
+        <version>1.8.4</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -70,39 +70,39 @@ would access the file *my-file.txt* in the bucket *my-bucket* in the *us-west-1*
 
 ### Code Quality <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-32-2x.png 2x"/>
 
-Code quality for this project is 5.6%.  
+Code quality for this project is 0.0%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-10-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-10-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>
 
 | Measurement   | Value                    |
 |---------------|--------------------------|
 | Stability     | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>     |
 | Testing       | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>       |
-| Documentation | 16.7%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-20-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-20-96-2x.png 2x"/> |
+| Documentation | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/> |
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-40-2x.png 2x"/>
 
-[*S3 Service Provider*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/diagram-s3.svg)
+[*S3 Service Provider*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/diagram-s3.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystems.s3fs*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.svg)  
-[*com.telenav.kivakit.filesystems.s3fs.internal.lexakai*](https://www.kivakit.org/1.8.2/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.internal.lexakai.svg)
+[*com.telenav.kivakit.filesystems.s3fs*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.svg)  
+[*com.telenav.kivakit.filesystems.s3fs.internal.lexakai*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-filesystems/s3fs/documentation/diagrams/com.telenav.kivakit.filesystems.s3fs.internal.lexakai.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*DiagramS3*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/internal/lexakai/DiagramS3.html) |  |  
-| [*S3File*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3File.html) |  |  
-| [*S3FileSystemObject*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemObject.html) |  |  
-| [*S3FileSystemService*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemService.html) |  |  
-| [*S3Folder*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Folder.html) |  |  
-| [*S3Output*](https://www.kivakit.org/1.8.2/javadoc/kivakit-extensions/kivakit.filesystems.s3fs/com/telenav/kivakit/filesystems/s3fs/S3Output.html) |  |  
+| [*DiagramS3*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-filesystems-s3fs/com/telenav/kivakit/filesystems/s3fs/internal/lexakai/DiagramS3.html) |  |  
+| [*S3File*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-filesystems-s3fs/com/telenav/kivakit/filesystems/s3fs/S3File.html) |  |  
+| [*S3FileSystemObject*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-filesystems-s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemObject.html) |  |  
+| [*S3FileSystemService*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-filesystems-s3fs/com/telenav/kivakit/filesystems/s3fs/S3FileSystemService.html) |  |  
+| [*S3Folder*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-filesystems-s3fs/com/telenav/kivakit/filesystems/s3fs/S3Folder.html) |  |  
+| [*S3Output*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-filesystems-s3fs/com/telenav/kivakit/filesystems/s3fs/S3Output.html) |  |  
 
 [//]: # (start-user-text)
 
