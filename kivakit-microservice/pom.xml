@@ -28,8 +28,8 @@
 
         <!-- Networking -->
 
-        <networking.telenav.grpc.version>1.5.7</networking.telenav.grpc.version>
-        <networking.telenav.protostuff.version>1.5.7</networking.telenav.protostuff.version>
+        <networking.telenav.grpc.version>1.5.8</networking.telenav.grpc.version>
+        <networking.telenav.protostuff.version>1.5.8</networking.telenav.protostuff.version>
 
         <!-- Serialization -->
 
