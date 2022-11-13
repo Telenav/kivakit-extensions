@@ -4,8 +4,8 @@ open module kivakit.web.swagger
     requires transitive kivakit.web.jetty;
     requires transitive kivakit.resource;
 
-    // Java
-    requires javax.servlet.api;
+    // REST
+    requires jakarta.ws.rs;
 
     // Jetty
     requires org.eclipse.jetty.servlet;
@@ -13,7 +13,6 @@ open module kivakit.web.swagger
     // Swagger
     requires io.swagger.v3.jaxrs2;
     requires io.swagger.v3.oas.integration;
-    requires java.ws.rs;
 
     // Module exports
     exports com.telenav.kivakit.web.swagger;

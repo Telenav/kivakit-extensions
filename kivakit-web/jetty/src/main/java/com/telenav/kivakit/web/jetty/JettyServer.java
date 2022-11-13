@@ -34,7 +34,6 @@ import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.eclipse.jetty.util.log.StdErrLog;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -48,7 +47,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.core.time.Duration.hours;
-import static javax.servlet.DispatcherType.REQUEST;
+import static jakarta.servlet.DispatcherType.REQUEST;
 import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
 
 /**
@@ -158,8 +157,6 @@ public class JettyServer extends BaseComponent implements
     public JettyServer(String root)
     {
         this.root = root;
-
-        configureJettyLogging();
     }
 
     /**
@@ -314,12 +311,6 @@ public class JettyServer extends BaseComponent implements
         {
             e.printStackTrace();
         }
-    }
-
-    private void configureJettyLogging()
-    {
-        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
-        org.eclipse.jetty.util.log.Log.setLog(new StdErrLog());
     }
 
     private ServerConnector httpConnector(Server server)

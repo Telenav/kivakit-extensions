@@ -24,10 +24,9 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cy
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.properties.PropertyMap;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
 import org.jetbrains.annotations.NotNull;
-
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;

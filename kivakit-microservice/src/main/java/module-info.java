@@ -6,19 +6,15 @@ open module kivakit.microservice
     requires transitive kivakit.application;
     requires transitive kivakit.settings.stores.zookeeper;
     requires transitive kivakit.web.swagger;
-    requires transitive kivakit.web.wicket;
     requires transitive kivakit.network.http;
-
-    requires transitive org.apache.wicket.core;
 
     requires transitive telenav.third.party.grpc;
     requires transitive telenav.third.party.protostuff;
 
     // Java
     requires java.sql;
-    requires java.annotation;
-    requires javax.servlet.api;
     requires java.net.http;
+    requires javax.annotation.api;
 
     // Utilities
     requires com.google.common;
@@ -40,10 +36,10 @@ open module kivakit.microservice
 
     // Jetty
     requires org.eclipse.jetty.servlet;
+    requires jetty.servlet.api;
 
     // Module exports
     exports com.telenav.kivakit.microservice;
-    exports com.telenav.kivakit.microservice.web;
     exports com.telenav.kivakit.microservice.microservlet;
     exports com.telenav.kivakit.microservice.protocols.grpc;
     exports com.telenav.kivakit.microservice.protocols.lambda;

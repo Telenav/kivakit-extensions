@@ -5,10 +5,9 @@ open module kivakit.web.wicket
 
     // Wicket
     requires org.apache.wicket.core;
-
-    // Jetty
+    requires org.apache.wicket.extensions;
     requires org.eclipse.jetty.servlet;
-    requires javax.servlet.api;
+    requires jetty.servlet.api;
 
     // Module exports
     exports com.telenav.kivakit.web.wicket.behaviors.status;
