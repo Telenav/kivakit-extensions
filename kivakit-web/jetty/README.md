@@ -30,14 +30,14 @@ This project contains support for using the Jetty web server.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.8.5/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web-jetty</artifactId>
-        <version>1.8.4</version>
+        <version>1.8.5</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -74,19 +74,19 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.web.jetty*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.svg)  
-[*com.telenav.kivakit.web.jetty.resources*](https://www.kivakit.org/1.8.4/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.resources.svg)
+[*com.telenav.kivakit.web.jetty*](https://www.kivakit.org/1.8.5/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.svg)  
+[*com.telenav.kivakit.web.jetty.resources*](https://www.kivakit.org/1.8.5/lexakai/kivakit-extensions/kivakit-web/jetty/documentation/diagrams/com.telenav.kivakit.web.jetty.resources.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*AssetsJettyPlugin*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/AssetsJettyPlugin.html) |  |  
-| [*BaseAssetsJettyPlugin*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/BaseAssetsJettyPlugin.html) |  |  
-| [*BaseFilterJettyPlugin*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/BaseFilterJettyPlugin.html) |  |  
-| [*BaseJettyRequestHandler*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/BaseJettyRequestHandler.html) |  |  
-| [*BaseServletJettyPlugin*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/BaseServletJettyPlugin.html) |  |  
-| [*JettyServer*](https://www.kivakit.org/1.8.4/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/JettyServer.html) | CORS |  
+| [*AssetsJettyPlugin*](https://www.kivakit.org/1.8.5/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/AssetsJettyPlugin.html) |  |  
+| [*BaseAssetsJettyPlugin*](https://www.kivakit.org/1.8.5/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/BaseAssetsJettyPlugin.html) |  |  
+| [*BaseFilterJettyPlugin*](https://www.kivakit.org/1.8.5/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/BaseFilterJettyPlugin.html) |  |  
+| [*BaseJettyRequestHandler*](https://www.kivakit.org/1.8.5/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/BaseJettyRequestHandler.html) |  |  
+| [*BaseServletJettyPlugin*](https://www.kivakit.org/1.8.5/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/resources/BaseServletJettyPlugin.html) |  |  
+| [*JettyServer*](https://www.kivakit.org/1.8.5/javadoc/kivakit-extensions/kivakit-web-jetty/com/telenav/kivakit/web/jetty/JettyServer.html) | CORS |  
 | | Configuration |  
 | | Example: |  
 | | Mounting Plugins |  
