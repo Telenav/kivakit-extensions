@@ -18,7 +18,7 @@
 
 [//]: # (end-user-text)
 
-# kivakit-extensions 1.8.2 &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64.png" srcset="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64-2x.png 2x"/>
+# kivakit-extensions 1.8.5 &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64.png" srcset="https://telenav.github.io/telenav-assets/images/logos/kivakit/kivakit-64-2x.png 2x"/>
 
 KivaKit is a new vision for Java coding that makes development faster and easier.
 
@@ -31,7 +31,7 @@ KivaKit is a new vision for Java coding that makes development faster and easier
 [**Tutorial Articles**](https://state-of-the-art.org/)  
 [**Example Code**](https://github.com/Telenav/kivakit-examples)  
 [**KivaKit Blog Articles**](https://state-of-the-art.org/)  
-[**How to Build This Project**](https://github.com/Telenav/telenav-build/blob/release/1.8.2/documentation/building.md) <!-- [cactus.replacement-branch-name] -->   
+[**How to Build This Project**](https://github.com/Telenav/telenav-build/blob/releases/1.8.2/documentation/building.md) <!-- [cactus.replacement-branch-name] -->   
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
@@ -60,7 +60,7 @@ KivaKit is a new vision for Java coding that makes development faster and easier
 
 ### Code Quality <a name = "code-quality"></a> &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-32-2x.png 2x"/>
 
-&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-40-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-40-96-2x.png 2x"/> &nbsp; &nbsp; [**kivakit-microservice**](kivakit-microservice/README.md)
+&nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-50-96-2x.png 2x"/> &nbsp; &nbsp; [**kivakit-microservice**](kivakit-microservice/README.md)
 
 [//]: # (start-user-text)
 

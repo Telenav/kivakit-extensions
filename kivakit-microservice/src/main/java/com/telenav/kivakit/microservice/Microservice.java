@@ -22,7 +22,6 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.Mi
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.microservice.web.WicketWebApplication;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.packages.Package;
@@ -35,10 +34,8 @@ import com.telenav.kivakit.web.jetty.resources.AssetsJettyPlugin;
 import com.telenav.kivakit.web.swagger.SwaggerAssetsJettyPlugin;
 import com.telenav.kivakit.web.swagger.SwaggerIndexJettyPlugin;
 import com.telenav.kivakit.web.swagger.SwaggerWebJarAssetJettyPlugin;
-import com.telenav.kivakit.web.wicket.WicketJettyPlugin;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.Collection;
@@ -53,7 +50,7 @@ import static com.telenav.kivakit.commandline.SwitchParsers.stringSwitchParser;
 import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.core.object.Lazy.*;
+import static com.telenav.kivakit.core.object.Lazy.lazy;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
 
@@ -74,7 +71,6 @@ import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
  *     <li>Optionally, pass any {@link Project} class to the constructor to ensure dependent projects are initialized</li>
  *     <li>Override {@link #onNewRestService()} to provide the microservice's {@link RestService} subclass</li>
  *     <li>Override {@link #metadata()} to provide {@link MicroserviceMetadata} used in the REST OpenAPI specification at /open-api/swagger.json</li>
- *     <li>Optionally, override {@link #onNewWebApplication()} to provide an Apache Wicket {@link WicketWebApplication} subclass</li>
  * </ol>
  *
  * <p><b>Example:</b></p>
@@ -233,9 +229,7 @@ import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
  *     <li>{@link #onNewGrpcService()}</li>
  *     <li>{@link #onNewLambdaService()}</li>
  *     <li>{@link #onNewRestService()}</li>
- *     <li>{@link #onNewWebApplication()}</li>
  *     <li>{@link #restService()}</li>
- *     <li>{@link #wicketWebApplication()}</li>
  * </ul>
  *
  * @author jonathanl (shibo)
@@ -319,9 +313,6 @@ public abstract class Microservice<Member> extends Application implements
 
     /** Jetty web server */
     private JettyServer server;
-
-    /** Lazy-initialized Wicket Web Application */
-    private final Lazy<org.apache.wicket.protocol.http.WebApplication> webApplication = lazy(this::onNewWebApplication);
 
     /**
      * Initializes this microservice and any project(s) it depends on
@@ -442,6 +433,7 @@ public abstract class Microservice<Member> extends Application implements
      * for most microservices, it will make more sense to use the more automatic method provided by
      * {@link Deployment}s.
      */
+    @Override
     public void onInitialize()
     {
     }
@@ -466,14 +458,6 @@ public abstract class Microservice<Member> extends Application implements
      * Returns any REST service for this microservice
      */
     public RestService onNewRestService()
-    {
-        return null;
-    }
-
-    /**
-     * Returns the Apache Wicket web application, if any, for configuring or viewing the status of this microservice.
-     */
-    public WebApplication onNewWebApplication()
     {
         return null;
     }
@@ -541,14 +525,6 @@ public abstract class Microservice<Member> extends Application implements
 
             // create the Jetty server.
             server = listenTo(new JettyServer(rootPath()).port(settings().port()));
-
-            // If there's an Apache Wicket web application,
-            var webApplication = wicketWebApplication();
-            if (webApplication != null)
-            {
-                // mount them on the server.
-                server.mount("/*", new WicketJettyPlugin(webApplication));
-            }
 
             // If there are static resources,
             var staticAssets = staticAssetsFolder();
@@ -652,14 +628,6 @@ public abstract class Microservice<Member> extends Application implements
         {
             grpcService().stop(wait);
         }
-    }
-
-    /**
-     * Returns any Wicket web application
-     */
-    public org.apache.wicket.protocol.http.WebApplication wicketWebApplication()
-    {
-        return webApplication.get();
     }
 
     /**

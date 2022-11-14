@@ -22,7 +22,8 @@ import com.telenav.kivakit.annotations.code.quality.CodeQuality;
 import com.telenav.kivakit.web.jetty.BaseJettyRequestHandler;
 import org.eclipse.jetty.servlet.FilterHolder;
 
-import javax.servlet.DispatcherType;
+import jakarta.servlet.DispatcherType;
+
 import java.util.EnumSet;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;

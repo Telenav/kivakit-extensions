@@ -1,3 +1,4 @@
+@SuppressWarnings("requires-transitive-automatic")
 open module kivakit.settings.stores.zookeeper
 {
     // KivaKit
@@ -8,7 +9,7 @@ open module kivakit.settings.stores.zookeeper
     requires transitive kivakit.conversion;
 
     // Zookeeper
-    requires transitive kivakit.merged.zookeeper;
+    requires transitive telenav.third.party.zookeeper;
 
     // Module exports
     exports com.telenav.kivakit.settings.stores.zookeeper;

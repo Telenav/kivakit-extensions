@@ -2,15 +2,13 @@ open module kivakit.web.jetty
 {
     // KivaKit
     requires transitive kivakit.component;
+    requires transitive kivakit.network.http;
 
     // Jetty
-    requires org.eclipse.jetty.server;
+    requires transitive org.eclipse.jetty.util;
+    requires transitive org.eclipse.jetty.server;
+    requires transitive org.eclipse.jetty.servlets;
     requires org.eclipse.jetty.servlet;
-    requires org.eclipse.jetty.util;
-    requires org.eclipse.jetty.webapp;
-    requires org.eclipse.jetty.servlets;
-    requires transitive javax.servlet.api;
-    requires kivakit.network.http;
 
     // Module exports
     exports com.telenav.kivakit.web.jetty;
