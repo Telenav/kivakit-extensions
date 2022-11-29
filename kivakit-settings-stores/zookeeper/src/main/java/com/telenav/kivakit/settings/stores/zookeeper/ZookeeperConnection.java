@@ -63,7 +63,7 @@ import static com.telenav.third.party.zookeeper.CreateMode.PERSISTENT;
  * @see ACL
  * @see ZookeeperChangeListener
  */
-@SuppressWarnings("resource")
+@SuppressWarnings({ "resource", "unused" })
 @CodeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
@@ -104,15 +104,15 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     public static class Settings
     {
         /** Comma separated list of ports to use when connecting to Zookeeper */
-        @ConvertedProperty(Port.Converter.class)
+        @ConvertedProperty(converter = Port.Converter.class)
         String ports;
 
         /** The maximum timeout when connecting to Zookeeper */
-        @ConvertedProperty(DurationConverter.class)
+        @ConvertedProperty(converter = DurationConverter.class)
         Duration timeout;
 
         /** The default kind of data accessed by this Zookeeper connection (see {@link CreateMode}) */
-        @ConvertedProperty(CreateModeConverter.class)
+        @ConvertedProperty(converter = CreateModeConverter.class)
         CreateMode createMode = PERSISTENT;
     }
 

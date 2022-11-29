@@ -44,8 +44,8 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         register(new KivaKitCoreGsonFactory(this));
 
         var serializers = new ObjectSerializerRegistry();
-        serializers.add(JSON, new GsonObjectSerializer());
-        serializers.add(PROPERTIES, new PropertiesObjectSerializer());
+        serializers.add(JSON, listenTo(new GsonObjectSerializer()));
+        serializers.add(PROPERTIES, listenTo(new PropertiesObjectSerializer()));
         register(serializers);
 
         // Register zookeeper settings,
