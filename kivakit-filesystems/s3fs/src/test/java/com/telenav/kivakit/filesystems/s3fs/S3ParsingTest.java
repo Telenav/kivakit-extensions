@@ -26,6 +26,10 @@ import com.telenav.kivakit.testing.UnitTest;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
+import static com.telenav.kivakit.filesystem.Folder.parseFolder;
+import static com.telenav.kivakit.resource.FileName.parseFileName;
+
 public class S3ParsingTest extends UnitTest
 {
     final S3File file = new S3File("s3://default-region/kivakit/" + apidocs());
@@ -33,16 +37,16 @@ public class S3ParsingTest extends UnitTest
     @Test
     public void testFile()
     {
-        var folder = Folder.parseFolder(this, "s3://default-region/my-bucket/my-sub-bucket");
+        var folder = parseFolder(this, "s3://default-region/my-bucket/my-sub-bucket");
         assert folder != null;
-        var file = folder.file(FileName.parseFileName(this, "name1"));
+        var file = folder.file(parseFileName(this, "name1"));
         ensure(file.fileName().toString().equals("name1"));
     }
 
     @Test
     public void testFileBucketName()
     {
-        ensure(file.fileName().equals(FileName.parseFileName(this, "index.html")));
+        ensure(file.fileName().equals(parseFileName(this, "index.html")));
     }
 
     @Test
@@ -68,7 +72,7 @@ public class S3ParsingTest extends UnitTest
     @Test
     public void testFilePath()
     {
-        ensure(new S3File("s3://default-region/kivakit/s3-test.gz").path().equals(FilePath.parseFilePath(this, "s3://default-region/kivakit/s3-test.gz")));
+        ensure(new S3File("s3://default-region/kivakit/s3-test.gz").path().equals(parseFilePath(this, "s3://default-region/kivakit/s3-test.gz")));
     }
 
     @Test
@@ -81,9 +85,9 @@ public class S3ParsingTest extends UnitTest
     public void testFolder()
     {
         var path = "s3://default-region/kivakit/test-data/folder";
-        var folder = Folder.parseFolder(this, path);
+        var folder = parseFolder(this, path);
         assert folder != null;
-        ensure(folder.folder("child").name().equals(FileName.parseFileName(this, "child")));
+        ensure(folder.folder("child").name().equals(parseFileName(this, "child")));
     }
 
     @Test
@@ -97,9 +101,9 @@ public class S3ParsingTest extends UnitTest
     public void testFolderGetName()
     {
         var path = "s3://default-region/kivakit/test-data/folder";
-        var folder = Folder.parseFolder(this, path);
+        var folder = parseFolder(this, path);
         assert folder != null;
-        ensure(folder.name().equals(FileName.parseFileName(this, "folder")));
+        ensure(folder.name().equals(parseFileName(this, "folder")));
     }
 
     @Test
@@ -113,26 +117,26 @@ public class S3ParsingTest extends UnitTest
     public void testFolderParent()
     {
         var path = "s3://default-region/kivakit/test-data/folder";
-        var folder = Folder.parseFolder(this, path);
+        var folder = parseFolder(this, path);
         assert folder != null;
-        ensure(folder.parent().equals(Folder.parseFolder(this, "s3://default-region/kivakit/test-data")));
-        ensure(folder.parent().name().equals(FileName.parseFileName(this, "test-data")));
+        ensure(folder.parent().equals(parseFolder(this, "s3://default-region/kivakit/test-data")));
+        ensure(folder.parent().name().equals(parseFileName(this, "test-data")));
     }
 
     @Test
     public void testFolderPath()
     {
         var path = "s3://default-region/kivakit/test-data/folder";
-        var folder = Folder.parseFolder(this, path);
+        var folder = parseFolder(this, path);
         assert folder != null;
-        ensure(folder.path().equals(FilePath.parseFilePath(this, path)));
+        ensure(folder.path().equals(parseFilePath(this, path)));
     }
 
     @Test
     public void testFolderPathString()
     {
         var path = "s3://default-region/kivakit/test-data/folder";
-        var folder = Folder.parseFolder(this, path);
+        var folder = parseFolder(this, path);
         assert folder != null;
         ensure(folder.path().toString().equals(path));
     }

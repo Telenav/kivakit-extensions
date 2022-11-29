@@ -254,6 +254,9 @@
                     <exclude>**/*.java</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+            </resource>
         </resources>
 
         <testResources>
@@ -279,6 +282,7 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <release>${java.version}</release>
+                    <encoding>UTF-8</encoding>
                     <compilerArgs>
                         <compilerArg>-Xlint:unchecked</compilerArg>
                         <compilerArg>-Xlint:-requires-transitive-automatic</compilerArg>
