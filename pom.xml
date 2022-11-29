@@ -349,7 +349,7 @@
                     <quiet>true</quiet>
                     <source>${documentation.javadoc.source.version}</source>
                     <encoding>utf-8</encoding>
-                    <sourcepath>src/main/java</sourcepath>
+                    <sourcepath>src/main/java:${project.basedir}/target/generated-sources/protobuf/grpc-java:${project.basedir}/target/generated-sources/protobuf/java</sourcepath>
                     <failOnError>true</failOnError>
                     <detectJavaApiLink>false</detectJavaApiLink>
                     <doclint>none</doclint>
@@ -359,6 +359,8 @@
                     <destDir/>
                     <sourceFileIncludes>
                         <sourceFileInclude>**/*.java</sourceFileInclude>
+                        <sourceFileInclude>${project.basedir}/target/generated-sources/protobuf/grpc-java/**/*.java</sourceFileInclude>
+                        <sourceFileInclude>${project.basedir}/target/generated-sources/protobuf/java/**/*.java</sourceFileInclude>
                     </sourceFileIncludes>
                 </configuration>
                 <executions>
