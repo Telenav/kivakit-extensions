@@ -31,7 +31,6 @@ public class MicroservletFutureResponse<T extends MicroservletResponse> extends 
 
     private final Class<T> responseType;
 
-    @SuppressWarnings("ClassEscapesDefinedScope")
     public MicroservletFutureResponse(MicroservletResponderFutureStub stub,
                                       MicroservletGrpcRequestProtobuf request,
                                       Class<T> responseType)

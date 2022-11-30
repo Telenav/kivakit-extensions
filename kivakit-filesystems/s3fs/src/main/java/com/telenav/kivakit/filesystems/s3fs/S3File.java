@@ -33,6 +33,9 @@ import java.io.OutputStream;
 import java.nio.file.attribute.PosixFilePermission;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
+import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
+import static com.telenav.kivakit.core.messaging.Listener.throwingListener;
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
 
 /**
  * <b>Not public API</b>
@@ -52,7 +55,7 @@ public class S3File extends S3FileSystemObject implements FileService
 
     public S3File(String path)
     {
-        super(FilePath.parseFilePath(Listener.consoleListener(), path), false);
+        super(parseFilePath(throwingListener(), path), false);
     }
 
     @Override
