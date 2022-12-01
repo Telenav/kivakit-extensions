@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.filesystem.java;
+package com.telenav.kivakit.filesystems.java;
 
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.filesystem.File;
@@ -58,7 +58,7 @@ public class JavaFileSystemService implements
      * {@inheritDoc}
      */
     @Override
-    public boolean accepts(FilePath path)
+    public boolean accepts(@NotNull FilePath path)
     {
         // If the path starts with "java:" then it's a JavaFileSystem path,
         if (path.startsWith(SCHEME))
@@ -86,13 +86,13 @@ public class JavaFileSystemService implements
     }
 
     @Override
-    public @NotNull FileService fileService(FilePath path)
+    public @NotNull FileService fileService(@NotNull FilePath path)
     {
         return new JavaFile(path.withoutPrefix(SCHEME));
     }
 
     @Override
-    public @NotNull FolderService folderService(FilePath path)
+    public @NotNull FolderService folderService(@NotNull FilePath path)
     {
         return new JavaFolder(path.withoutPrefix(SCHEME));
     }

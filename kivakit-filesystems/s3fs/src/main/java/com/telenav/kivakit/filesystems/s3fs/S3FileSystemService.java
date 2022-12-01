@@ -53,7 +53,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 public class S3FileSystemService implements FileSystemService
 {
     @Override
-    public boolean accepts(FilePath path)
+    public boolean accepts(@NotNull FilePath path)
     {
         return S3FileSystemObject.accepts(path.toString());
     }

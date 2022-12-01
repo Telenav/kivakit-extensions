@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.filesystem.java;
+package com.telenav.kivakit.filesystems.java;
 
 import com.telenav.kivakit.core.io.Nio;
 import com.telenav.kivakit.core.progress.ProgressReporter;

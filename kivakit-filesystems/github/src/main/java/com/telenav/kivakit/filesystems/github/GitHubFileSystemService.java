@@ -49,7 +49,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 public class GitHubFileSystemService implements FileSystemService
 {
     @Override
-    public boolean accepts(FilePath path)
+    public boolean accepts(@NotNull FilePath path)
     {
         return GitHubFileSystemObject.accepts(path.toString());
     }
