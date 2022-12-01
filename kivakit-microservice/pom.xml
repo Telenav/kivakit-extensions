@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// © 2011-2022 Telenav, Inc.
+// Licensed under Apache License, Version 2.0
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+
+<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xmlns = "http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit-extensions-parent</artifactId>
+        <version>1.8.8</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>kivakit-microservice</artifactId>
+
+    <properties>
+
+        <!-- Networking -->
+
+        <networking.telenav.grpc.version>1.5.8</networking.telenav.grpc.version>
+        <networking.telenav.protostuff.version>1.5.8</networking.telenav.protostuff.version>
+
+        <!-- Serialization -->
+
+        <serialization.javax.annotation.api>1.2</serialization.javax.annotation.api>
+
+        <!-- Trivial conflict over log4j-api and jaxb-annotations -->
+
+        <enforcer.skip>true</enforcer.skip>
+
+    </properties>
+
+    <dependencies>
+        
+        <!-- KivaKit -->
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-settings-stores-zookeeper</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-web-swagger</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Telenav -->
+
+        <dependency>
+            <groupId>com.telenav.third.party</groupId>
+            <artifactId>telenav-third-party-grpc</artifactId>
+            <version>${networking.telenav.grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.telenav.third.party</groupId>
+            <artifactId>telenav-third-party-protostuff</artifactId>
+            <version>${networking.telenav.protostuff.version}</version>
+        </dependency>
+
+        <!-- Utilities -->
+
+        <dependency>
+            
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <!--suppress MavenPackageUpdate -->
+            <version>${utilities.guava.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
+            
+        </dependency>
+
+        <!-- Annotations -->
+
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>${serialization.javax.annotation.api}</version>
+        </dependency>
+
+        <!-- Protocols -->
+
+        <dependency>
+            
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${serialization.protobuf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                </exclusion>
+            </exclusions>
+            
+        </dependency>
+
+        <!-- Cloud -->
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-core</artifactId>
+            <version>${cloud.aws.lambda.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+
+        <dependency>
+            <groupId>com.telenav.kivakit</groupId>
+            <artifactId>kivakit-testing</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testing.junit5.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apiguardian</groupId>
+                    <artifactId>apiguardian-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${testing.junit5.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apiguardian</groupId>
+                    <artifactId>apiguardian-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <version>${testing.junit.platform.version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apiguardian</groupId>
+                    <artifactId>apiguardian-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${testing.junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+    
+    <build>
+
+        <!-- OS Detection -->
+
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>${maven.os.plugin.version}</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+
+            <!-- Testing -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludedGroups>${testing.surefire.excluded}</excludedGroups>
+                    <useModulePath>false</useModulePath>
+                    <systemPropertyVariables>
+                        <testQuick>${testing.surefire.quick}</testQuick>
+                    </systemPropertyVariables>
+                    <argLine>-Xmx2g</argLine>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+        
+    </build>
+    
+    <profiles>
+
+        <!-- Testing -->
+
+        <profile>
+            <id>test-quick</id>
+            <properties>
+                <testing.surefire.excluded>com.telenav.kivakit.core.test.annotations.SlowTests</testing.surefire.excluded>
+                <testing.surefire.quick>true</testing.surefire.quick>
+            </properties>
+        </profile>
+
+        <!-- Protobuf -->
+
+        <profile>
+            
+            <id>protoc-apple-silicon</id>
+
+            <!-- There currently is no Apple Silicon build of protoc
+            available from Maven Central, but an M1 mac will run
+            x86_64 binaries.
+            
+            While forcing the maven-os-plugin to mis-detect the
+            platform is awful, it _is_ slightly less awful than
+            putting this in `~/.m2/settings.xml` for all maven
+            builds system-wide, or not being able to build at all. -->
+
+            <properties>
+                <os.detected.classifier>osx-x86_64</os.detected.classifier>
+            </properties>
+
+            <activation>
+                <os>
+                    <name>mac os x</name>
+                    <arch>aarch64</arch>
+                    <family>mac</family>
+                </os>
+            </activation>
+            
+        </profile>
+        
+        <profile>
+            
+            <id>protoc-docker</id>
+
+            <activation>
+                <property>
+                    <name>docker</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+
+                    <!-- Protobuf -->
+
+                    <plugin>
+                        <groupId>org.xolstice.maven.plugins</groupId>
+                        <artifactId>protobuf-maven-plugin</artifactId>
+                        <version>${maven.protobuf.plugin.version}</version>
+                        <configuration>
+                            <protocExecutable>/usr/bin/protoc</protocExecutable>
+                            <pluginId>grpc-java</pluginId>
+
+                            <!-- suppress MavenModelInspection -->
+
+                            <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}</pluginArtifact>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                    <goal>compile-custom</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                </plugins>
+                
+            </build>
+            
+        </profile>
+        
+        <profile>
+            
+            <id>protoc-not-docker</id>
+            <activation>
+                <property>
+                    <name>!docker</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    
+                    <plugin>
+                        <groupId>org.xolstice.maven.plugins</groupId>
+                        <artifactId>protobuf-maven-plugin</artifactId>
+                        <version>${maven.protobuf.plugin.version}</version>
+                        <configuration>
+                            
+                            <!-- suppress MavenModelInspection -->
+
+                            <protocArtifact>com.google.protobuf:protoc:3.4.0:exe:${os.detected.classifier}</protocArtifact>
+                            <pluginId>grpc-java</pluginId>
+
+                            <!-- suppress MavenModelInspection -->
+
+                            <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}</pluginArtifact>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>compile</goal>
+                                    <goal>compile-custom</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                </plugins>
+                
+            </build>
+            
+        </profile>
+        
+    </profiles>
+    
+</project>

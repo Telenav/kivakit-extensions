@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ //
+ // © 2011-2022 Telenav, Inc.
+ // Licensed under Apache License, Version 2.0
+ //
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ -->
+
+<project xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xmlns = "http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    
+    <parent>
+        <groupId>com.telenav.kivakit</groupId>
+        <artifactId>kivakit-extensions-parent</artifactId>
+        <version>1.8.8</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    
+    <artifactId>kivakit-web-jetty</artifactId>
+
+    <properties>
+
+        <web.jetty.version>11.0.12</web.jetty.version>
+        <web.jakarta.activation.version>2.1.0</web.jakarta.activation.version>
+        <web.jakarta.servlet.version>5.0.2</web.jakarta.servlet.version>
+
+        <serialization.jackson.version>2.14.0</serialization.jackson.version>
+
+    </properties>
+
+    <dependencies>
+        
+        <!-- KivaKit -->
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-component</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-network-http</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Web -->
+
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${web.jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlets</artifactId>
+            <version>${web.jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${web.jetty.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>2.0.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-testing</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+    </dependencies>
+    
+</project>
