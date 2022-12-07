@@ -32,14 +32,14 @@ This module is a text file log service provider.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.8.8/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.8.9/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-logs-file</artifactId>
-        <version>1.8.8</version>
+        <version>1.8.9</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -92,23 +92,23 @@ Code quality for this project is 77.8%.
 
 ### Class Diagrams <a name="class-diagrams"></a> &nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/diagram-40.png" srcset="https://telenav.github.io/telenav-assets/images/icons/diagram-40-2x.png 2x"/>
 
-[*File Logs*](https://www.kivakit.org/1.8.8/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/diagram-logs-file.svg)
+[*File Logs*](https://www.kivakit.org/1.8.9/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/diagram-logs-file.svg)
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.8.8/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)  
-[*com.telenav.kivakit.logs.file.internal.lexakai*](https://www.kivakit.org/1.8.8/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.internal.lexakai.svg)
+[*com.telenav.kivakit.logs.file*](https://www.kivakit.org/1.8.9/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.svg)  
+[*com.telenav.kivakit.logs.file.internal.lexakai*](https://www.kivakit.org/1.8.9/lexakai/kivakit-extensions/kivakit-logs/file/documentation/diagrams/com.telenav.kivakit.logs.file.internal.lexakai.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*BaseRolloverTextLog*](https://www.kivakit.org/1.8.8/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.html) | Logging |  
-| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.8.8/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.Rollover.html) |  |  
-| [*DiagramLogsFile*](https://www.kivakit.org/1.8.8/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/internal/lexakai/DiagramLogsFile.html) |  |  
-| [*FileLog*](https://www.kivakit.org/1.8.8/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/FileLog.html) | Logging |  
+| [*BaseRolloverTextLog*](https://www.kivakit.org/1.8.9/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.html) | Logging |  
+| [*BaseRolloverTextLog.Rollover*](https://www.kivakit.org/1.8.9/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/BaseRolloverTextLog.Rollover.html) |  |  
+| [*DiagramLogsFile*](https://www.kivakit.org/1.8.9/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/internal/lexakai/DiagramLogsFile.html) |  |  
+| [*FileLog*](https://www.kivakit.org/1.8.9/javadoc/kivakit-extensions/kivakit-logs-file/com/telenav/kivakit/logs/file/FileLog.html) | Logging |  
 | | Configuration |  
 | | Example |  
 
