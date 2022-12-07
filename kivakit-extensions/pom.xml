@@ -22,7 +22,7 @@
     </parent>
 
     <artifactId>kivakit-extensions</artifactId>
-    <version>1.8.9</version>
+    <version>1.8.10</version>
 
     <packaging>pom</packaging>
 
