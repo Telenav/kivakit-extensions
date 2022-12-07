@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-package com.telenav.kivakit.filesystem.java;
+package com.telenav.kivakit.filesystems.java;
 
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.value.count.Bytes;

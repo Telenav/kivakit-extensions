@@ -1,4 +1,4 @@
-package com.telenav.kivakit.filesystem.java;
+package com.telenav.kivakit.filesystems.java;
 
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
