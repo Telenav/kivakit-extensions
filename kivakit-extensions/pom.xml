@@ -17,12 +17,12 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions-parent</artifactId>
-        <version>1.8.9</version>
+        <version>1.9.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>kivakit-extensions</artifactId>
-    <version>1.8.9</version>
+    <version>1.9.0</version>
 
     <packaging>pom</packaging>
 
