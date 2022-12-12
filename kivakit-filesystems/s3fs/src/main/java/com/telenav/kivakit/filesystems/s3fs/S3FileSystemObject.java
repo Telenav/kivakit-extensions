@@ -311,16 +311,25 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         return clientFor(this.region);
     }
 
-    void copyTo(S3FileSystemObject that)
+    boolean copyTo(S3FileSystemObject that)
     {
         var request = CopyObjectRequest.builder()
                 .sourceBucket(bucket())
                 .sourceKey(key())
+
                 .destinationBucket(that.bucket())
                 .destinationKey(key())
                 .build();
 
-        client().copyObject(request);
+        try (var client = client())
+        {
+            client .copyObject(request);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     boolean inSameBucket(S3FileSystemObject that)
