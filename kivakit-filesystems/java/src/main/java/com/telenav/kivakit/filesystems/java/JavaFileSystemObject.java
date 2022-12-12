@@ -103,15 +103,19 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public void copyTo(@NotNull WritableResource destination, @NotNull CopyMode mode, @NotNull ProgressReporter reporter)
+    public boolean copyTo(@NotNull WritableResource destination,
+                          @NotNull CopyMode mode,
+                          @NotNull ProgressReporter reporter)
     {
         try
         {
             Files.copy(javaPath(), destination.path().asJavaPath());
+            return true;
         }
         catch (Exception e)
         {
             problem(e, "Unable to copy $ to $ ($)", path(), destination.path(), mode);
+            return false;
         }
     }
 

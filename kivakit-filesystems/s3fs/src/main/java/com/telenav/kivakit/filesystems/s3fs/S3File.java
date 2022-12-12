@@ -104,9 +104,7 @@ public class S3File extends S3FileSystemObject implements FileService
     {
         if (canRenameTo(that))
         {
-            copyTo(that);
-            delete();
-            return true;
+            return copyTo(that) && delete();
         }
         return false;
     }

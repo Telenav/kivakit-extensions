@@ -50,13 +50,6 @@ public class JavaFolder extends JavaFileSystemObject implements FolderService
     }
 
     @Override
-    public void copyTo(@NotNull WritableResource destination, @NotNull CopyMode mode,
-                       @NotNull ProgressReporter reporter)
-    {
-        super.copyTo(destination, mode, reporter);
-    }
-
-    @Override
     public FileService file(FileName name)
     {
         return new JavaFile(path().withChild(name.name()));
