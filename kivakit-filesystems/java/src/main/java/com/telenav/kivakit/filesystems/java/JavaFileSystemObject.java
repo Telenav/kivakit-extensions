@@ -104,7 +104,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
 
     @Override
     public boolean copyTo(@NotNull WritableResource destination,
-                          @NotNull CopyMode mode,
+                          @NotNull CopyMode copyMode,
                           @NotNull ProgressReporter reporter)
     {
         try
@@ -114,7 +114,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
         }
         catch (Exception e)
         {
-            problem(e, "Unable to copy $ to $ ($)", path(), destination.path(), mode);
+            problem(e, "Unable to copy $ to $ ($)", path(), destination.path(), copyMode);
             return false;
         }
     }
