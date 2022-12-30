@@ -28,7 +28,7 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
-import static com.telenav.kivakit.core.io.IO.CopyStyle.BUFFERED;
+import static com.telenav.kivakit.core.io.IO.Buffering.BUFFERED;
 import static com.telenav.kivakit.core.io.IO.copy;
 import static com.telenav.kivakit.launcher.JarLauncher.ProcessType.CHILD;
 import static com.telenav.kivakit.launcher.JarLauncher.RedirectTo.CONSOLE;

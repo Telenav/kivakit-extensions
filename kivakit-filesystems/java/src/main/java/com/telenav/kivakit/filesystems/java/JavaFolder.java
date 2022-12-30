@@ -19,15 +19,12 @@
 package com.telenav.kivakit.filesystems.java;
 
 import com.telenav.kivakit.core.io.Nio;
-import com.telenav.kivakit.core.progress.ProgressReporter;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.Folder;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.interfaces.comparison.Matcher;
-import com.telenav.kivakit.resource.CopyMode;
 import com.telenav.kivakit.resource.FileName;
-import com.telenav.kivakit.resource.writing.WritableResource;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Files;

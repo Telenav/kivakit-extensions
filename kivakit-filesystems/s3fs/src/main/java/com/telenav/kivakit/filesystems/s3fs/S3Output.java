@@ -34,7 +34,7 @@ import static com.telenav.kivakit.core.progress.ProgressReporter.nullProgressRep
 import static com.telenav.kivakit.filesystem.File.parseFile;
 import static com.telenav.kivakit.filesystem.Folder.FolderType.CLEAN_UP_ON_EXIT;
 import static com.telenav.kivakit.filesystem.Folder.temporaryFolderForProcess;
-import static com.telenav.kivakit.resource.CopyMode.OVERWRITE;
+import static com.telenav.kivakit.resource.WriteMode.OVERWRITE;
 
 /**
  * OutputStream that appends to an existing S3 object
@@ -66,7 +66,7 @@ public class S3Output extends OutputStream
     {
         this.object = object;
         cacheFile = cacheFile(object.path());
-        outputStream = cacheFile.onOpenForWriting();
+        outputStream = cacheFile.onOpenForWriting(OVERWRITE);
     }
 
     /** Close this stream and release the lease */
