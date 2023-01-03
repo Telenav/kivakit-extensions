@@ -30,14 +30,14 @@ This project contains support for running Jersey on Jetty.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.9.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.10.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web-jersey</artifactId>
-        <version>1.9.0</version>
+        <version>1.10.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -81,16 +81,16 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.web.jersey*](https://www.kivakit.org/1.9.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/com.telenav.kivakit.web.jersey.svg)
+[*com.telenav.kivakit.web.jersey*](https://www.kivakit.org/1.10.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/com.telenav.kivakit.web.jersey.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*BaseRestApplication*](https://www.kivakit.org/1.9.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestApplication.html) |  |  
-| [*BaseRestResource*](https://www.kivakit.org/1.9.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestResource.html) |  |  
-| [*JerseyJettyPlugin*](https://www.kivakit.org/1.9.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJettyPlugin.html) |  |  
-| [*JerseyJsonSerializer*](https://www.kivakit.org/1.9.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJsonSerializer.html) |  |  
+| [*BaseRestApplication*](https://www.kivakit.org/1.10.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestApplication.html) |  |  
+| [*BaseRestResource*](https://www.kivakit.org/1.10.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestResource.html) |  |  
+| [*JerseyJettyPlugin*](https://www.kivakit.org/1.10.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJettyPlugin.html) |  |  
+| [*JerseyJsonSerializer*](https://www.kivakit.org/1.10.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJsonSerializer.html) |  |  
 
 [//]: # (start-user-text)
 
