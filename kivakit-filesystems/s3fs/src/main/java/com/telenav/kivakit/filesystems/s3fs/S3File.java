@@ -18,12 +18,12 @@
 
 package com.telenav.kivakit.filesystems.s3fs;
 
-import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystems.s3fs.internal.lexakai.DiagramS3;
+import com.telenav.kivakit.resource.WriteMode;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import org.jetbrains.annotations.NotNull;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
@@ -32,10 +32,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.attribute.PosixFilePermission;
 
+import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
-import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.messaging.Listener.throwingListener;
 import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
+import static com.telenav.kivakit.resource.WriteMode.OVERWRITE;
 
 /**
  * <b>Not public API</b>
@@ -95,8 +96,9 @@ public class S3File extends S3FileSystemObject implements FileService
     }
 
     @Override
-    public OutputStream onOpenForWriting()
+    public OutputStream onOpenForWriting(WriteMode mode)
     {
+        ensure(mode == OVERWRITE);
         return new S3Output(this);
     }
 
@@ -104,9 +106,7 @@ public class S3File extends S3FileSystemObject implements FileService
     {
         if (canRenameTo(that))
         {
-            copyTo(that);
-            delete();
-            return true;
+            return copyTo(that) && delete();
         }
         return false;
     }

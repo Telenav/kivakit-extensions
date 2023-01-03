@@ -20,8 +20,10 @@ package com.telenav.kivakit.filesystems.java;
 
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.value.count.Bytes;
-import com.telenav.kivakit.filesystem.spi.FileService;
 import com.telenav.kivakit.filesystem.FilePath;
+import com.telenav.kivakit.filesystem.spi.FileService;
+import com.telenav.kivakit.resource.WriteMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,13 +52,14 @@ public class JavaFile extends JavaFileSystemObject implements
     }
 
     @Override
-    public OutputStream onOpenForWriting()
+    public OutputStream onOpenForWriting(WriteMode mode)
     {
+        mode.ensureAllowed(javaPath());
         return tryCatch(() -> Files.newOutputStream(javaPath()), "Could not open for writing: $", path());
     }
 
     @Override
-    public boolean renameTo(FileService that)
+    public boolean renameTo(@NotNull FileService that)
     {
         return tryCatch(() ->
         {

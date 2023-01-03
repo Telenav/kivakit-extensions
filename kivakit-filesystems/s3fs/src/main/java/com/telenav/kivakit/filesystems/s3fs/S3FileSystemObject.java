@@ -26,7 +26,7 @@ import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
 import com.telenav.kivakit.filesystems.s3fs.internal.lexakai.DiagramS3;
-import com.telenav.kivakit.resource.CopyMode;
+import com.telenav.kivakit.resource.WriteMode;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -144,7 +144,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public void copyFrom(Resource resource, @NotNull CopyMode mode, @NotNull ProgressReporter reporter)
+    public void copyFrom(@NotNull Resource resource, @NotNull WriteMode mode, @NotNull ProgressReporter reporter)
     {
         var in = resource.openForReading();
 
@@ -211,7 +211,7 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
     }
 
     @Override
-    public OutputStream onOpenForWriting()
+    public OutputStream onOpenForWriting(WriteMode mode)
     {
         return unsupported();
     }
@@ -311,16 +311,25 @@ public abstract class S3FileSystemObject extends BaseWritableResource implements
         return clientFor(this.region);
     }
 
-    void copyTo(S3FileSystemObject that)
+    boolean copyTo(S3FileSystemObject that)
     {
         var request = CopyObjectRequest.builder()
                 .sourceBucket(bucket())
                 .sourceKey(key())
+
                 .destinationBucket(that.bucket())
                 .destinationKey(key())
                 .build();
 
-        client().copyObject(request);
+        try (var client = client())
+        {
+            client .copyObject(request);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     boolean inSameBucket(S3FileSystemObject that)

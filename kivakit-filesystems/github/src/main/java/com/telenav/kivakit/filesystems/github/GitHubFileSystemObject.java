@@ -25,7 +25,7 @@ import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.resource.CopyMode;
+import com.telenav.kivakit.resource.WriteMode;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import org.jetbrains.annotations.NotNull;
@@ -110,7 +110,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     }
 
     @Override
-    public void copyFrom(@NotNull Resource resource, @NotNull CopyMode mode, @NotNull ProgressReporter reporter)
+    public void copyFrom(@NotNull Resource resource, @NotNull WriteMode mode, @NotNull ProgressReporter reporter)
     {
     }
 
@@ -176,7 +176,7 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     }
 
     @Override
-    public OutputStream onOpenForWriting()
+    public OutputStream onOpenForWriting(WriteMode mode)
     {
         return unsupported();
     }

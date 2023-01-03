@@ -24,7 +24,7 @@ import com.telenav.kivakit.core.time.Time;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.filesystem.spi.FileSystemObjectService;
 import com.telenav.kivakit.filesystem.spi.FolderService;
-import com.telenav.kivakit.resource.CopyMode;
+import com.telenav.kivakit.resource.WriteMode;
 import com.telenav.kivakit.resource.writing.BaseWritableResource;
 import com.telenav.kivakit.resource.writing.WritableResource;
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +40,7 @@ import java.nio.file.attribute.FileTime;
 import java.nio.file.attribute.PosixFilePermission;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
 import static com.telenav.kivakit.core.string.Paths.pathHead;
@@ -103,15 +104,17 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public void copyTo(@NotNull WritableResource destination, @NotNull CopyMode mode, @NotNull ProgressReporter reporter)
+    public void copyTo(@NotNull WritableResource target,
+                       @NotNull WriteMode writeMode,
+                       @NotNull ProgressReporter reporter)
     {
         try
         {
-            Files.copy(javaPath(), destination.path().asJavaPath());
+            Files.copy(javaPath(), target.path().asJavaPath());
         }
         catch (Exception e)
         {
-            problem(e, "Unable to copy $ to $ ($)", path(), destination.path(), mode);
+            fail(e, "Unable to copy $ to $ ($)", path(), target.path(), writeMode);
         }
     }
 
@@ -167,7 +170,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
     }
 
     @Override
-    public OutputStream onOpenForWriting()
+    public OutputStream onOpenForWriting(WriteMode mode)
     {
         return unsupported();
     }
