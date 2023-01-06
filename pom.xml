@@ -55,6 +55,7 @@
         <module>kivakit-web/jetty</module>
         <module>kivakit-web/jersey</module>
         <module>kivakit-web/swagger</module>
+        <module>kivakit-web/wicket</module>
         <module>kivakit-microservice</module>
 
     </modules>

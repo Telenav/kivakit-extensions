@@ -28,7 +28,7 @@
 
     <properties>
 
-        <web.wicket.version>10.0.0-M1-SNAPSHOT</web.wicket.version>
+        <web.wicket.version>9.12.0</web.wicket.version>
 
     </properties>
 
@@ -72,8 +72,30 @@
 
         <dependency>
             <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-core</artifactId>
+            <version>${web.wicket.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>jakarta.servlet</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.wicket</groupId>
             <artifactId>wicket-extensions</artifactId>
             <version>${web.wicket.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>jakarta.servlet</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
         </dependency>
 
         <!-- Testing -->
