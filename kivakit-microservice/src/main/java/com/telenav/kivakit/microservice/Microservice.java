@@ -766,7 +766,7 @@ public abstract class Microservice<Member> extends Application implements
      * {@literal @}Override
      *  protected ObjectSet&lt;SwitchParser&lt;?&gt;&gt; switchParsers()
      *  {
-     *      return ObjectSet.of(...).with(super.switchParsers);
+     *      return super.switchParsers().with(...);
      *  }
      * </pre>
      */
