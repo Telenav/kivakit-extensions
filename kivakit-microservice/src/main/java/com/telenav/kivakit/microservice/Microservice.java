@@ -249,53 +249,53 @@ import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
              testing = UNTESTED,
              documentation = DOCUMENTATION_COMPLETE)
 public abstract class Microservice<Member> extends Application implements
-        TryTrait,
-        Startable,
-        Stoppable<Duration>
+    TryTrait,
+    Startable,
+    Stoppable<Duration>
 {
     /**
      * Command line switch for what port to run any REST service on. This will override any value from
      * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<String> API_FORWARDING =
-            stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
-                    .optional()
-                    .build();
+        stringSwitchParser(this, "api-forwarding", "A semicolon-separated list of APIs to forward to, each of the form:\n                                      version=[version],jar=[resource],port=[port-number],(command-line=[command-line])?\n\n    For example:\n\n        -api-forwarding=version=0.9,jar=classpath:/apis/my-microservice-0.9.jar,port=8082,command-line=-deployment=development\n")
+            .optional()
+            .build();
 
     /**
      * Command line switch for what port to run any GRPC service on. This will override any value from
      * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> GRPC_PORT =
-            integerSwitchParser(this, "grpc-port", "The port to use for gRPC")
-                    .optional()
-                    .build();
+        integerSwitchParser(this, "grpc-port", "The port to use for gRPC")
+            .optional()
+            .build();
 
     /**
      * Command line switch for what port to run any REST service on. This will override any value from
      * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Integer> PORT =
-            integerSwitchParser(this, "port", "The port to use for REST")
-                    .optional()
-                    .build();
+        integerSwitchParser(this, "port", "The port to use for REST")
+            .optional()
+            .build();
 
     /**
      * Command line switch to output .proto files to the given folder
      */
     private final SwitchParser<Folder> PROTO_EXPORT_FOLDER =
-            folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
-                    .optional()
-                    .build();
+        folderSwitchParser(this, "proto-export-folder", "The folder to which .proto files for request and response objects should be exported")
+            .optional()
+            .build();
 
     /**
      * Command line switch to run this microservice as a blocking server. This will override any value from
      * {@link MicroserviceSettings} that is loaded from a {@link Deployment}.
      */
     private final SwitchParser<Boolean> SERVER =
-            booleanSwitchParser(this, "server", "True to run this microservice as a server")
-                    .optional()
-                    .build();
+        booleanSwitchParser(this, "server", "True to run this microservice as a server")
+            .optional()
+            .build();
 
     private MicroserviceCluster<Member> cluster;
 
@@ -673,6 +673,8 @@ public abstract class Microservice<Member> extends Application implements
     @Override
     protected final void onRun()
     {
+        showStartupInformation();
+
         // Get the Member object for this microservice's cluster,
         var member = onNewMember();
 
