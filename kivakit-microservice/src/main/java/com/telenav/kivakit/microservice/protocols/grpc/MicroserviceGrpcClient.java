@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
@@ -16,7 +16,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureEqual;
@@ -49,9 +49,9 @@ import static com.telenav.kivakit.resource.Extension.PROPERTIES;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings({ "unchecked", "unused" })
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class MicroserviceGrpcClient extends BaseComponent
 {
     /** The GRPC channel for this client */
