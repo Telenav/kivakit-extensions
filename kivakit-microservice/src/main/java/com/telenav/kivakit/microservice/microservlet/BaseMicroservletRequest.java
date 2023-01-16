@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.time.Frequency;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
@@ -11,7 +11,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.time.Duration.minutes;
 import static com.telenav.kivakit.core.time.Frequency.every;
@@ -24,9 +24,9 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public abstract class BaseMicroservletRequest extends BaseComponent implements
         MicroservletRequest,
         MicroservletRequestHandler

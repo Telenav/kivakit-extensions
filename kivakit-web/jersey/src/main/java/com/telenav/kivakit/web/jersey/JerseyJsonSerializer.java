@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.jersey;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.resource.resources.InputResource;
 import com.telenav.kivakit.resource.resources.OutputResource;
 import com.telenav.kivakit.resource.serialization.SerializableObject;
@@ -37,7 +37,7 @@ import java.io.OutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -50,9 +50,9 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 @Provider
 @Consumes(APPLICATION_JSON)
 @Produces(APPLICATION_JSON)
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class JerseyJsonSerializer<T> implements
         MessageBodyReader<T>,
         MessageBodyWriter<T>

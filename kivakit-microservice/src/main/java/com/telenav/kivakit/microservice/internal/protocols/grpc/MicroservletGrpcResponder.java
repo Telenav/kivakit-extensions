@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.grpc;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.ComponentMixin;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.language.reflection.Type;
@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 
@@ -31,9 +31,9 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  *
  * @author jonathanl (shibo)
  */
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE,
+             documentation = DOCUMENTED,
              audience = AUDIENCE_INTERNAL)
 public class MicroservletGrpcResponder extends MicroservletResponderGrpc.MicroservletResponderImplBase implements ComponentMixin
 {

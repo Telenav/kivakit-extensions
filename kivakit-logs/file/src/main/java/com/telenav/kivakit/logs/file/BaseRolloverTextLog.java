@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.core.io.ByteSizedOutputStream;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
@@ -33,7 +33,7 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
@@ -60,18 +60,18 @@ import static com.telenav.kivakit.logs.file.BaseRolloverTextLog.Rollover.NO_ROLL
  * @see FileLog
  */
 @SuppressWarnings("resource") @UmlClassDiagram(diagram = DiagramLogsFile.class)
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public abstract class BaseRolloverTextLog extends BaseTextLog
 {
     /**
      * Rollover period
      */
     @UmlClassDiagram(diagram = DiagramLogsFile.class)
-    @CodeQuality(stability = STABLE_EXTENSIBLE,
+    @TypeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
-                 documentation = DOCUMENTATION_COMPLETE)
+                 documentation = DOCUMENTED)
     public enum Rollover
     {
         NO_ROLLOVER,

@@ -1,6 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
@@ -64,15 +64,15 @@ import static com.telenav.third.party.zookeeper.CreateMode.PERSISTENT;
  * @see ZookeeperChangeListener
  */
 @SuppressWarnings({ "resource", "unused" })
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
-    @CodeQuality(stability = STABLE_EXTENSIBLE,
+    @TypeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
-                 documentation = DOCUMENTATION_COMPLETE,
+                 documentation = DOCUMENTED,
                  audience = AUDIENCE_INTERNAL)
     private enum State
     {
@@ -84,9 +84,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    @CodeQuality(stability = STABLE_EXTENSIBLE,
+    @TypeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
-                 documentation = DOCUMENTATION_COMPLETE,
+                 documentation = DOCUMENTED,
                  audience = AUDIENCE_INTERNAL)
     interface ZookeeperListenerMethod
     {

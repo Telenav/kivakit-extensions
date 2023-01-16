@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.web.jetty;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.interfaces.naming.Named;
 import com.telenav.kivakit.web.jetty.resources.BaseAssetsJettyPlugin;
@@ -26,7 +26,7 @@ import com.telenav.kivakit.web.jetty.resources.BaseFilterJettyPlugin;
 import com.telenav.kivakit.web.jetty.resources.BaseServletJettyPlugin;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 
 /**
@@ -37,9 +37,9 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_N
  * @see BaseAssetsJettyPlugin
  * @see BaseServletJettyPlugin
  */
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = TESTING_NOT_NEEDED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public abstract class BaseJettyRequestHandler extends BaseComponent implements Named
 {
     private final String name;

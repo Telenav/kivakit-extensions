@@ -1,6 +1,6 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.core.KivaKit;
 import com.telenav.kivakit.core.collections.list.StringList;
@@ -26,7 +26,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.collections.list.StringList.split;
@@ -137,9 +137,9 @@ import static com.telenav.third.party.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
  * @see BaseSettingsStore
  * @see SettingsStore
  */
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class ZookeeperSettingsStore extends BaseSettingsStore implements
         ZookeeperChangeListener,
         ZookeeperConnectionListener

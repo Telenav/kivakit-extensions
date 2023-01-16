@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.conversion.core.collections.ConvertingVariableMap;
 import com.telenav.kivakit.conversion.core.time.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
@@ -32,7 +32,7 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.io.OutputStream;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
@@ -71,9 +71,9 @@ import static com.telenav.kivakit.resource.FileName.fileNameForDateTime;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramLogsFile.class)
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class FileLog extends BaseRolloverTextLog
 {
     /** The file to write to */
