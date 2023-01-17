@@ -63,7 +63,7 @@ import static com.telenav.third.party.zookeeper.CreateMode.PERSISTENT;
  * @see ACL
  * @see ZookeeperChangeListener
  */
-@SuppressWarnings({ "resource", "unused" })
+@SuppressWarnings({ "unused" })
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
@@ -274,28 +274,18 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
 
         switch (event.getType())
         {
-            case NodeCreated:
-                invokeListenerMethod(event, changeListener::onNodeCreated);
-                break;
-
-            case NodeDeleted:
-                invokeListenerMethod(event, changeListener::onNodeDeleted);
-                break;
-
-            case NodeDataChanged:
-                invokeListenerMethod(event, changeListener::onNodeDataChanged);
-                break;
-
-            case NodeChildrenChanged:
-                invokeListenerMethod(event, changeListener::onNodeChildrenChanged);
-                break;
-
-            case None:
+            case NodeCreated -> invokeListenerMethod(event, changeListener::onNodeCreated);
+            case NodeDeleted -> invokeListenerMethod(event, changeListener::onNodeDeleted);
+            case NodeDataChanged -> invokeListenerMethod(event, changeListener::onNodeDataChanged);
+            case NodeChildrenChanged -> invokeListenerMethod(event, changeListener::onNodeChildrenChanged);
+            case None ->
+            {
                 switch (event.getState())
                 {
                     case SyncConnected -> onConnected();
                     case Disconnected -> onDisconnected();
                 }
+            }
         }
     }
 

@@ -34,7 +34,6 @@ public class MicroserviceTest extends UnitTest
     @SuppressWarnings("unused")
     public static class TestGarbageRequest extends BaseMicroservletRequest
     {
-        @SuppressWarnings("FieldCanBeLocal")
         @Expose
         private String trash;
 

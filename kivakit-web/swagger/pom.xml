@@ -28,7 +28,7 @@
 
         <!-- Web -->
 
-        <web.swagger.version>2.2.6</web.swagger.version>
+        <web.swagger.version>2.2.8</web.swagger.version>
         <web.swagger.webjars.version>4.15.5</web.swagger.webjars.version>
 
         <!-- Suppress trivial log4j and jaxb errors -->

@@ -26,7 +26,7 @@
 
     <properties>
 
-        <web.jetty.version>11.0.12</web.jetty.version>
+        <web.jetty.version>11.0.13</web.jetty.version>
         <web.jakarta.activation.version>2.1.0</web.jakarta.activation.version>
         <web.jakarta.servlet.version>5.0.2</web.jakarta.servlet.version>
 

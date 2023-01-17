@@ -10,7 +10,7 @@ import com.dyuproject.protostuff.Tag;
 public class JavaObject
 {
     @Tag(1)
-    public boolean unknown = false;
+    public final boolean unknown = false;
 
     @Override
     public int hashCode()

@@ -47,7 +47,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
  * @see OpenApiExcludeMember
  * @see OpenApiIncludeMember
  */
-@SuppressWarnings({ "rawtypes", "SpellCheckingInspection" })
+@SuppressWarnings({ "rawtypes" })
 @TypeQuality(stability = UNSTABLE,
              testing = UNTESTED,
              documentation = DOCUMENTED,

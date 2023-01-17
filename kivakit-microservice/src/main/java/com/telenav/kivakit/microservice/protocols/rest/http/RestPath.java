@@ -44,13 +44,14 @@ import static java.util.Objects.hash;
  *
  * @author jonathanl (shibo)
  */
+@SuppressWarnings("ClassCanBeRecord")
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED,
              audience = AUDIENCE_INTERNAL)
 public class RestPath implements
-        RegistryTrait,
-        Comparable<RestPath>
+    RegistryTrait,
+    Comparable<RestPath>
 {
     /** Pattern for REST paths */
     public static final Pattern API_ROOT_PATTERN = Pattern.compile("/api/(?<version>\\d+\\.\\d+)/");
@@ -153,7 +154,7 @@ public class RestPath implements
         if (!path.startsWith("/"))
         {
             var apiPath = require(RestService.class)
-                    .versionToPath(require(Microservice.class).version());
+                .versionToPath(require(Microservice.class).version());
 
             return parseFilePath(throwingListener(), pathConcatenate(apiPath, path.asString()));
         }

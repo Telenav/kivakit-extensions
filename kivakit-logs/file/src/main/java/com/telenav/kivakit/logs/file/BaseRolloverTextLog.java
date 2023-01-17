@@ -59,7 +59,7 @@ import static com.telenav.kivakit.logs.file.BaseRolloverTextLog.Rollover.NO_ROLL
  * @author jonathanl (shibo)
  * @see FileLog
  */
-@SuppressWarnings("resource") @UmlClassDiagram(diagram = DiagramLogsFile.class)
+@UmlClassDiagram(diagram = DiagramLogsFile.class)
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
@@ -190,22 +190,16 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     protected abstract OutputStream newOutputStream();
 
+    @SuppressWarnings("UnnecessaryDefault")
     protected Time nextRollover()
     {
-        switch (rollover)
-        {
-            case NO_ROLLOVER:
-                return END_OF_UNIX_TIME;
-
-            case DAILY:
-                return LocalTime.now().startOfTomorrow();
-
-            case HOURLY:
-                return LocalTime.now().startOfNextHour();
-
-            default:
-                return unsupported();
-        }
+        return switch (rollover)
+            {
+                case NO_ROLLOVER -> END_OF_UNIX_TIME;
+                case DAILY -> LocalTime.now().startOfTomorrow();
+                case HOURLY -> LocalTime.now().startOfNextHour();
+                default -> unsupported();
+            };
     }
 
     protected Time started()

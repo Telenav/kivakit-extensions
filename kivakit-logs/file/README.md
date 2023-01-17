@@ -62,14 +62,14 @@ To include the *EmailLog* service provider, all that is required is to:
 
        java -DKIVAKIT_LOG="Console,File level=Warning file=~/log.txt rollover=daily maximum-size=100M
 
-More details about logging are available at [*kivakit-core logging*](../../kivakit/kernel/documentation/logging.md).
+More details about logging are available at [*kivakit-core logging*](../../../kivakit/kivakit-core/documentation/logging.md).
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
 ### Log Configuration Parameters <a name = "log-configuration-parameters"></a>
 
 * *file* - path to file
-* *rollover* - when to rollover to a new file (none, hourly or daily, default is none)
+* *rollover* - when to roll over to a new file (none, hourly or daily, default is none)
 * *maximum-size* - maximum size of log before it rolls over (default is "50M")
 
 [//]: # (end-user-text)

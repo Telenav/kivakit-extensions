@@ -28,7 +28,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import static com.telenav.kivakit.resource.FileName.kivakitFileName;
 import static org.junit.Assume.assumeTrue;
 
 @Category({ SlowTest.class })

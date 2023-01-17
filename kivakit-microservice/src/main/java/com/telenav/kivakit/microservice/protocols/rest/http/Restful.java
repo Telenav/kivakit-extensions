@@ -66,7 +66,7 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
  * @see MicroservletRequest
  * @see MicroservletResponse
  */
-@SuppressWarnings({ "unused", "DuplicatedCode" })
+@SuppressWarnings({ "unused" })
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)

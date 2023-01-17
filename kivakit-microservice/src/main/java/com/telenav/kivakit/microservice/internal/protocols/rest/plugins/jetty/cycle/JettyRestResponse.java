@@ -44,7 +44,6 @@ import static com.telenav.kivakit.network.http.HttpStatus.*;
  *     <li>{@link #problem(HttpStatus, Throwable, String, Object...)}</li>
  * </ul>
  * where the first parameter of each method is an HTTP status code.
- * </p>
  *
  * <p>
  * The {@link #writeResponse(MicroservletResponse)} method validates the given {@link MicroservletResponse}
