@@ -3,14 +3,14 @@ package com.telenav.kivakit.settings.stores.zookeeper;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
-import com.telenav.kivakit.conversion.core.time.DurationConverter;
+import com.telenav.kivakit.conversion.core.time.duration.DurationConverter;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.thread.StateMachine;
 import com.telenav.kivakit.core.time.Duration;
-import com.telenav.kivakit.network.core.Port;
+import com.telenav.kivakit.network.core.PortConverter;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
 import com.telenav.third.party.zookeeper.CreateMode;
 import com.telenav.third.party.zookeeper.KeeperException;
@@ -104,7 +104,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     public static class Settings
     {
         /** Comma separated list of ports to use when connecting to Zookeeper */
-        @ConvertedProperty(converter = Port.Converter.class)
+        @ConvertedProperty(converter = PortConverter.class)
         String ports;
 
         /** The maximum timeout when connecting to Zookeeper */

@@ -20,7 +20,7 @@ package com.telenav.kivakit.logs.file;
 
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.conversion.core.collections.ConvertingVariableMap;
-import com.telenav.kivakit.conversion.core.time.DurationConverter;
+import com.telenav.kivakit.conversion.core.time.duration.DurationConverter;
 import com.telenav.kivakit.conversion.core.value.BytesConverter;
 import com.telenav.kivakit.core.collections.map.VariableMap;
 import com.telenav.kivakit.core.logging.Log;
