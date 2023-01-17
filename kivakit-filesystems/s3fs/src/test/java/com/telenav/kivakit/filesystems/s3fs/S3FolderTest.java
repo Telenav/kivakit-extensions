@@ -28,7 +28,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import static com.telenav.kivakit.resource.FileName.fileNameForDateTime;
+import static com.telenav.kivakit.resource.FileName.kivakitFileName;
 import static org.junit.Assume.assumeTrue;
 
 @Category({ SlowTest.class })
@@ -74,7 +74,7 @@ public class S3FolderTest extends UnitTest
     @Test
     public void testRename()
     {
-        var folder = Folder.parseFolder(this, "s3://default-region/kivakit/test-data/old-" + FileName.fileNameForDateTime());
+        var folder = Folder.parseFolder(this, "s3://default-region/kivakit/test-data/old-" + FileName.kivakitFileNameForNow());
         assert folder != null;
         folder.mkdirs();
         var file = folder.file(FileName.parseFileName(this, "tmp.txt"));
@@ -82,7 +82,7 @@ public class S3FolderTest extends UnitTest
         printWriter.println("for test");
         printWriter.close();
 
-        var that = folder.parent().folder(fileNameForDateTime());
+        var that = folder.parent().folder(FileName.kivakitFileNameForNow());
         folder.renameTo(that);
         ensure(that.exists());
         ensure(!folder.exists());

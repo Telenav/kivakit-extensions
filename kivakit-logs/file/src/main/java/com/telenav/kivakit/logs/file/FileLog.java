@@ -42,7 +42,7 @@ import static com.telenav.kivakit.core.string.StringConversions.toNonNullString;
 import static com.telenav.kivakit.core.time.Duration.*;
 import static com.telenav.kivakit.core.value.count.Bytes.*;
 import static com.telenav.kivakit.filesystem.File.parseFile;
-import static com.telenav.kivakit.resource.FileName.fileNameForDateTime;
+import static com.telenav.kivakit.resource.FileName.kivakitFileName;
 
 /**
  * A {@link Log} service provider that logs messages to text file(s). Configuration occurs via the command line with
@@ -129,7 +129,7 @@ public class FileLog extends BaseRolloverTextLog
 
     private File newFile()
     {
-        var newFile = parseFile(consoleListener(), file.withoutExtension() + "-" + fileNameForDateTime(started().asLocalTime())
+        var newFile = parseFile(consoleListener(), file.withoutExtension() + "-" + kivakitFileName(started().asLocalTime())
                 + toNonNullString(file.extension())).withoutOverwriting();
         console().println("Creating new FileLog output file: " + newFile);
         var folder = newFile.parent();
