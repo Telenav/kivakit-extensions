@@ -47,7 +47,7 @@ Read only filesystem service provider for GitHub.
 
 ### Summary <a name = "summary"></a>
 
-This module is a filesystem service provider, giving read-only access to GitHub files and folders under the [*kivakit-resource*](../../kivakit/resource/README.md) mini-framework. This service provider will be discovered using the Java service loader mechanism. All that is required to make use of GitHub paths with *File* and *Folder* objects is to:
+This module is a filesystem service provider, giving read-only access to GitHub files and folders under the [*kivakit-resource*](../../../kivakit/kivakit-resource/README.md) mini-framework. This service provider will be discovered using the Java service loader mechanism. All that is required to make use of GitHub paths with *File* and *Folder* objects is to:
 
 1. Include the dependency above in *pom.xml*
 2. Import *kivakit-filesystems-github* in *module-info.java*

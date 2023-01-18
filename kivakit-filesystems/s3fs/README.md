@@ -47,7 +47,7 @@ Service provider for AWS S3 filesystems.
 
 ### Summary <a name = "summary"></a>
 
-This module is a filesystem service provider, giving access to S3 filesystem data under the [*kivakit-resource*](../../kivakit/resource/README.md) mini-framework. This service provider will be discovered using the Java service loader mechanism. All that is required to make use of S3 paths with *File* and *Folder* objects is to:
+This module is a filesystem service provider, giving access to S3 filesystem data under the [*kivakit-resource*](../../../kivakit/kivakit-resource/README.md) mini-framework. This service provider will be discovered using the Java service loader mechanism. All that is required to make use of S3 paths with *File* and *Folder* objects is to:
 
 1. Include the dependency above in *pom.xml*
 2. Import *kivakit-filesystems-s3fs* in *module-info.java*

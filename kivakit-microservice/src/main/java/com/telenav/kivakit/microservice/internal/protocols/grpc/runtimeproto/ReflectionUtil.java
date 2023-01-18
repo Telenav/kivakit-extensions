@@ -49,7 +49,7 @@ public final class ReflectionUtil
             RuntimeSchemaType type = RuntimeSchemaType.findByName(schemaClass.getSimpleName());
             if (type != null)
             {
-                return new Pair<RuntimeSchemaType, Class<?>>(type, schemaClass);
+                return new Pair<>(type, schemaClass);
             }
             schemaClass = schemaClass.getSuperclass();
         }

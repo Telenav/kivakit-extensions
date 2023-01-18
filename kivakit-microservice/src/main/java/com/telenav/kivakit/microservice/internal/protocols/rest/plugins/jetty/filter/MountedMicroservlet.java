@@ -61,14 +61,8 @@ public class MountedMicroservlet extends BaseMounted
             // and if the request method is
             switch (method)
             {
-                case POST ->
-                {
-                    handlePost(method, cycle, response, requestType, parameters);
-                }
-                case GET, DELETE ->
-                {
-                    handleGetDelete(method, cycle, response, requestType, parameters);
-                }
+                case POST -> handlePost(method, cycle, response, requestType, parameters);
+                case GET, DELETE -> handleGetDelete(method, cycle, response, requestType, parameters);
                 default -> response.problem(METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
             }
         });

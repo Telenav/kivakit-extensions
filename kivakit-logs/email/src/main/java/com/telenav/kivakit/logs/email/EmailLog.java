@@ -86,7 +86,7 @@ import static com.telenav.kivakit.network.core.authentication.passwords.PlainTex
              documentation = DOCUMENTED)
 public class EmailLog extends BaseTextLog
 {
-    /** The from email address */
+    /** The 'from' email address */
     @UmlAggregation(label = "from")
     private EmailAddress from;
 

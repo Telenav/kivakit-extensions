@@ -248,7 +248,6 @@ public class S3Folder extends S3FileSystemObject implements FolderService
         return false;
     }
 
-    @SuppressWarnings("SpellCheckingInspection")
     @Override
     public S3Folder mkdirs()
     {

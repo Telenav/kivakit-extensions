@@ -91,7 +91,6 @@ public class S3File extends S3FileSystemObject implements FileService
                 .key(key())
                 .build();
 
-        //noinspection resource
         return client().getObject(request);
     }
 

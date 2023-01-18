@@ -200,7 +200,7 @@ public class RuntimeProtoGenerator implements ProtoGenerator
                     {
                         if (generateAdditionalMessages == null)
                         {
-                            generateAdditionalMessages = new HashMap<String, Object>();
+                            generateAdditionalMessages = new HashMap<>();
                         }
                         generateAdditionalMessages.put(fieldType, new EnumObj(enumIO.enumClass));
                     }
@@ -215,8 +215,8 @@ public class RuntimeProtoGenerator implements ProtoGenerator
                                 "unknown fieldClass " + field.getClass());
                     }
 
-                    Class<?> fieldClass = normField.getSecond();
-                    if (normField.getFirst() == RuntimeFieldType.RuntimeMessageField)
+                    Class<?> fieldClass = normField.second();
+                    if (normField.first() == RuntimeFieldType.RuntimeMessageField)
                     {
 
                         Field typeClassField = fieldClass.getDeclaredField("typeClass");
@@ -239,8 +239,8 @@ public class RuntimeProtoGenerator implements ProtoGenerator
                             generateAdditionalMessages.put(fieldType, new Message(typeClass, fieldSchema));
                         }
                     }
-                    else if (normField.getFirst() == RuntimeFieldType.RuntimeMapField ||
-                            normField.getFirst() == RuntimeFieldType.RuntimeObjectField)
+                    else if (normField.first() == RuntimeFieldType.RuntimeMapField ||
+                            normField.first() == RuntimeFieldType.RuntimeObjectField)
                     {
 
                         Field schemaField = fieldClass.getDeclaredField("schema");
@@ -253,7 +253,7 @@ public class RuntimeProtoGenerator implements ProtoGenerator
                             throw new IllegalStateException("unknown schema type " + fieldSchema.getClass());
                         }
 
-                        switch (normSchema.getFirst())
+                        switch (normSchema.first())
                         {
                             case ArraySchema -> fieldType = "ArrayObject";
                             case ObjectSchema -> fieldType = "DynamicObject";
@@ -330,9 +330,9 @@ public class RuntimeProtoGenerator implements ProtoGenerator
 
     private static String getMapFieldType(Pair<Type, Type> keyValue)
     {
-        if (keyValue.getFirst() == String.class)
+        if (keyValue.first() == String.class)
         {
-            if (keyValue.getSecond() == String.class)
+            if (keyValue.second() == String.class)
             {
                 return "MapStringString";
             }

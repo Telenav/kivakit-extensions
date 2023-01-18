@@ -93,7 +93,6 @@ public class MountedApi extends BaseMounted implements TryTrait
      * @param method The HTTP method
      * @param cycle The request cycle
      */
-    @SuppressWarnings("ClassEscapesDefinedScope")
     public boolean handleRequest(HttpMethod method, JettyRestRequestCycle cycle)
     {
         measure(path, () ->
@@ -109,12 +108,9 @@ public class MountedApi extends BaseMounted implements TryTrait
 
                 switch (method)
                 {
-                    case GET ->
-                    {
-                        copyResponse(response, tryCatch(() ->
-                                        client.send(request.GET().build(), ofString()),
-                                "GET request forwarding failed: $", cycle.restRequest().path()));
-                    }
+                    case GET -> copyResponse(response, tryCatch(() ->
+                                    client.send(request.GET().build(), ofString()),
+                            "GET request forwarding failed: $", cycle.restRequest().path()));
                     case POST ->
                     {
                         var payload = IO.readString(this, cycle.restRequest().httpServletRequest().getInputStream());
@@ -123,12 +119,9 @@ public class MountedApi extends BaseMounted implements TryTrait
                                         client.send(postRequest, ofString()),
                                 "POST request forwarding failed: $", cycle.restRequest().path()));
                     }
-                    case DELETE ->
-                    {
-                        copyResponse(response, tryCatch(() ->
-                                        client.send(request.DELETE().build(), ofString()),
-                                "DELETE request forwarding failed: $", cycle.restRequest().path()));
-                    }
+                    case DELETE -> copyResponse(response, tryCatch(() ->
+                                    client.send(request.DELETE().build(), ofString()),
+                            "DELETE request forwarding failed: $", cycle.restRequest().path()));
                     default -> unsupported();
                 }
             }

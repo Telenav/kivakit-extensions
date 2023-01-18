@@ -16,15 +16,7 @@ public final class ProtostuffThreadLocal
 
     private static final int linkedBufferSize = Integer.getInteger("protostuff.threadbuffer.size", 4096);
 
-    private static final ThreadLocal<LinkedBuffer> localLinkedBuffer = new ThreadLocal<LinkedBuffer>()
-    {
-
-        @Override
-        protected LinkedBuffer initialValue()
-        {
-            return LinkedBuffer.allocate(linkedBufferSize);
-        }
-    };
+    private static final ThreadLocal<LinkedBuffer> localLinkedBuffer = ThreadLocal.withInitial(() -> LinkedBuffer.allocate(linkedBufferSize));
 
     public interface Instantiator<T>
     {

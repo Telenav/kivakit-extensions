@@ -201,7 +201,6 @@ public abstract class GitHubFileSystemObject extends BaseWritableResource implem
     /**
      * @return The path to this object without the leading root folder (github://username/repository/branch)
      */
-    @SuppressWarnings("GrazieInspection")
     public FilePath relativePath()
     {
         return FilePath.parseFilePath(this, path);
