@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.Set;
 
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
@@ -141,8 +140,8 @@ import static com.telenav.third.party.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
              testing = UNTESTED,
              documentation = DOCUMENTED)
 public class ZookeeperSettingsStore extends BaseSettingsStore implements
-        ZookeeperChangeListener,
-        ZookeeperConnectionListener
+    ZookeeperChangeListener,
+    ZookeeperConnectionListener
 {
     /**
      * Path separator used when storing ephemeral nodes in Zookeeper.
@@ -227,13 +226,13 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
                     {
                         // then index it,
                         var settings = new SettingsObject(object, type, instance);
-                        index(settings);
+                        add(settings);
 
                         // propagate the change,
                         var update = propagateChangesTo();
                         if (update != null)
                         {
-                            update.index(settings);
+                            update.add(settings);
                         }
 
                         // and tell the subclass we updated.
@@ -319,13 +318,13 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
         {
             // un-index it in the local store,
             var settings = new SettingsObject(object, type, instance);
-            unindex(settings);
+            remove(settings);
 
             // propagate the change,
             var update = propagateChangesTo();
             if (update != null)
             {
-                update.unindex(settings);
+                update.remove(settings);
             }
 
             // and notify the subclass of the deletion.
@@ -389,7 +388,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
      * {@inheritDoc}
      */
     @Override
-    protected Set<SettingsObject> onLoad()
+    protected ObjectSet<SettingsObject> onLoad()
     {
         var settings = new ObjectSet<SettingsObject>();
 
@@ -484,6 +483,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
 
     /**
      * Returns create mode for paths in this store
+     *
      * @see CreateMode
      */
     private CreateMode createMode()
@@ -507,6 +507,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
 
     /**
      * Returns the {@link InstanceIdentifier} from the last element of the given node path
+     *
      * @see #path(SettingsObject)
      */
     private InstanceIdentifier instance(StringPath path)
@@ -619,9 +620,9 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     private StringPath path(SettingsObject object)
     {
         return maybeFlatten(storePath()
-                .withChild(object.identifier().type().getName())
-                .withChild(object.identifier().instance().enumIdentifier().name())
-                .withRoot("/"));
+            .withChild(object.identifier().type().getName())
+            .withChild(object.identifier().instance().enumIdentifier().name())
+            .withRoot("/"));
     }
 
     /**
@@ -686,11 +687,11 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
         var application = require(Application.class);
 
         return stringPath(
-                createMode().name(),
-                "kivakit",
-                String.valueOf(resolveProject(KivaKit.class).kivakitVersion()),
-                Properties.systemPropertyOrEnvironmentVariable("user.name"),
-                application.name(),
-                application.version().toString());
+            createMode().name(),
+            "kivakit",
+            String.valueOf(resolveProject(KivaKit.class).kivakitVersion()),
+            Properties.systemPropertyOrEnvironmentVariable("user.name"),
+            application.name(),
+            application.version().toString());
     }
 }

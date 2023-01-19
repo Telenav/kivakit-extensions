@@ -161,7 +161,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                     store().reload();
 
                     // then go through the indexed objects
-                    for (var settingsObject : store().indexed())
+                    for (var settingsObject : store().objects())
                     {
                         // and add each one as a cluster member
                         var child = settingsObject.identifier().instance().enumIdentifier();
@@ -302,7 +302,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                 var member = member(path, settings);
                 announce("Leaving cluster: $", member.identifier());
                 onLeave(member);
-                unindex(settings);
+                remove(settings);
                 electLeader();
             }
         }
@@ -313,7 +313,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
             if (loadMembers())
             {
                 var member = member(path, settings);
-                index(settings);
+                add(settings);
                 register(settings.object(), settings.identifier().instance());
                 announce("Joining cluster: $", member.identifier());
                 onJoin(member);
