@@ -30,14 +30,14 @@ This project contains support for running Jersey on Jetty.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.12.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.13.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-web-jersey</artifactId>
-        <version>1.12.0</version>
+        <version>1.13.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -61,15 +61,15 @@ Other servlets and filters, for example [Swagger](../swagger/README.md) and [Wic
 
 ### Code Quality <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/ruler-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/ruler-32-2x.png 2x"/>
 
-Code quality for this project is 83.3%.  
+Code quality for this project is 0.0%.  
   
-&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-80-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-80-96-2x.png 2x"/>
+&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>
 
 | Measurement   | Value                    |
 |---------------|--------------------------|
-| Stability     | 100.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-100-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-100-96-2x.png 2x"/>     |
-| Testing       | 50.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-50-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-50-96-2x.png 2x"/>       |
-| Documentation | 100.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-100-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-100-96-2x.png 2x"/> |
+| Stability     | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>     |
+| Testing       | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/>       |
+| Documentation | 0.0%&nbsp; &nbsp; <img src="https://telenav.github.io/telenav-assets/images/meters/meter-0-96.png" srcset="https://telenav.github.io/telenav-assets/images/meters/meter-0-96-2x.png 2x"/> |
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
 
@@ -81,16 +81,16 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.web.jersey*](https://www.kivakit.org/1.12.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/com.telenav.kivakit.web.jersey.svg)
+[*com.telenav.kivakit.web.jersey*](https://www.kivakit.org/1.13.0/lexakai/kivakit-extensions/kivakit-web/jersey/documentation/diagrams/com.telenav.kivakit.web.jersey.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*BaseRestApplication*](https://www.kivakit.org/1.12.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestApplication.html) |  |  
-| [*BaseRestResource*](https://www.kivakit.org/1.12.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestResource.html) |  |  
-| [*JerseyJettyPlugin*](https://www.kivakit.org/1.12.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJettyPlugin.html) |  |  
-| [*JerseyJsonSerializer*](https://www.kivakit.org/1.12.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJsonSerializer.html) |  |  
+| [*BaseRestApplication*](https://www.kivakit.org/1.13.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestApplication.html) |  |  
+| [*BaseRestResource*](https://www.kivakit.org/1.13.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/BaseRestResource.html) |  |  
+| [*JerseyJettyPlugin*](https://www.kivakit.org/1.13.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJettyPlugin.html) |  |  
+| [*JerseyJsonSerializer*](https://www.kivakit.org/1.13.0/javadoc/kivakit-extensions/kivakit-web-jersey/com/telenav/kivakit/web/jersey/JerseyJsonSerializer.html) |  |  
 
 [//]: # (start-user-text)
 
