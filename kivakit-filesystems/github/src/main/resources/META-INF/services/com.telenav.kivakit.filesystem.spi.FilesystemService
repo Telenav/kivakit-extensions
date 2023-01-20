@@ -1,1 +1,1 @@
-com.telenav.kivakit.filesystem.github.GitHubFileSystemService
+com.telenav.kivakit.filesystems.github.GitHubFileSystemService

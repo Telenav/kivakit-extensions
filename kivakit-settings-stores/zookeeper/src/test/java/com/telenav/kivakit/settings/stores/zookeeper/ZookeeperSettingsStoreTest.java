@@ -73,7 +73,7 @@ public class ZookeeperSettingsStoreTest extends UnitTest implements ComponentMix
         saveSettings(store, new Settings(7));
 
         // clear in-memory settings index,
-        store.unload();
+        store.clear();
 
         // then reload them from zookeeper,
         registerSettingsIn(store);

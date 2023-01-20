@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.grpc;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.time.Duration;
@@ -22,7 +22,7 @@ import io.grpc.ServerBuilder;
 import io.netty.util.internal.logging.InternalLoggerFactory;
 import io.netty.util.internal.logging.JdkLoggerFactory;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
@@ -59,9 +59,9 @@ import static com.telenav.kivakit.core.vm.ShutdownHook.registerShutdownHook;
  * @see RestService
  */
 @SuppressWarnings("SpellCheckingInspection")
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class MicroserviceGrpcService extends BaseComponent implements
         Initializable,
         Startable,

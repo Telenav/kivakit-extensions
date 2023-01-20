@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.list.StringList;
@@ -13,7 +13,7 @@ import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperSettingsStore;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
@@ -77,9 +77,9 @@ import static com.telenav.third.party.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
  * @see MicroserviceClusterMember
  */
 @SuppressWarnings("unused")
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class MicroserviceCluster<Member> extends BaseComponent
 {
     /** The current cluster leader as of the last election by {@link #electLeader()} */
@@ -161,7 +161,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                     store().reload();
 
                     // then go through the indexed objects
-                    for (var settingsObject : store().indexed())
+                    for (var settingsObject : store().objects())
                     {
                         // and add each one as a cluster member
                         var child = settingsObject.identifier().instance().enumIdentifier();
@@ -302,7 +302,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
                 var member = member(path, settings);
                 announce("Leaving cluster: $", member.identifier());
                 onLeave(member);
-                unindex(settings);
+                remove(settings);
                 electLeader();
             }
         }
@@ -313,7 +313,7 @@ public class MicroserviceCluster<Member> extends BaseComponent
             if (loadMembers())
             {
                 var member = member(path, settings);
-                index(settings);
+                add(settings);
                 register(settings.object(), settings.identifier().instance());
                 announce("Joining cluster: $", member.identifier());
                 onJoin(member);

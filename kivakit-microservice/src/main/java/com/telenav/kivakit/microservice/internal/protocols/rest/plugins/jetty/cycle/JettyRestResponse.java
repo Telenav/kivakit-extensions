@@ -1,7 +1,7 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
@@ -25,7 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.network.http.HttpStatus.*;
 
@@ -44,7 +44,6 @@ import static com.telenav.kivakit.network.http.HttpStatus.*;
  *     <li>{@link #problem(HttpStatus, Throwable, String, Object...)}</li>
  * </ul>
  * where the first parameter of each method is an HTTP status code.
- * </p>
  *
  * <p>
  * The {@link #writeResponse(MicroservletResponse)} method validates the given {@link MicroservletResponse}
@@ -57,9 +56,9 @@ import static com.telenav.kivakit.network.http.HttpStatus.*;
  */
 @SuppressWarnings({ "unused", "UnusedReturnValue" })
 @UmlClassDiagram(diagram = DiagramJetty.class)
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE,
+             documentation = DOCUMENTED,
              audience = AUDIENCE_SERVICE_PROVIDER)
 public final class JettyRestResponse extends BaseComponent
         implements RestResponse

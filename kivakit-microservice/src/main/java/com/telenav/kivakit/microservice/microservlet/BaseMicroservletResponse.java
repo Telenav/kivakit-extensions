@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.function.Result;
 import com.telenav.kivakit.interfaces.messaging.Transmittable;
@@ -11,7 +11,7 @@ import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.validation.Validator.nullValidator;
 
@@ -23,9 +23,9 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
  * @author jonathanl (shibo)
  */
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public abstract class BaseMicroservletResponse extends BaseComponent implements MicroservletResponse
 {
     /** The result object listening to this request */

@@ -1,16 +1,16 @@
 package com.telenav.kivakit.settings.stores.zookeeper;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
-import com.telenav.kivakit.conversion.core.time.DurationConverter;
+import com.telenav.kivakit.conversion.core.time.duration.DurationConverter;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.core.path.StringPath;
 import com.telenav.kivakit.core.thread.StateMachine;
 import com.telenav.kivakit.core.time.Duration;
-import com.telenav.kivakit.network.core.Port;
+import com.telenav.kivakit.network.core.PortConverter;
 import com.telenav.kivakit.settings.stores.zookeeper.converters.CreateModeConverter;
 import com.telenav.third.party.zookeeper.CreateMode;
 import com.telenav.third.party.zookeeper.KeeperException;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
@@ -63,16 +63,16 @@ import static com.telenav.third.party.zookeeper.CreateMode.PERSISTENT;
  * @see ACL
  * @see ZookeeperChangeListener
  */
-@SuppressWarnings({ "resource", "unused" })
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@SuppressWarnings({ "unused" })
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class ZookeeperConnection extends BaseComponent implements Watcher, TryTrait
 {
     /** State of this settings store */
-    @CodeQuality(stability = STABLE_EXTENSIBLE,
+    @TypeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
-                 documentation = DOCUMENTATION_COMPLETE,
+                 documentation = DOCUMENTED,
                  audience = AUDIENCE_INTERNAL)
     private enum State
     {
@@ -84,9 +84,9 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
      * Functional interface to {@link ZookeeperChangeListener} methods
      */
     @FunctionalInterface
-    @CodeQuality(stability = STABLE_EXTENSIBLE,
+    @TypeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
-                 documentation = DOCUMENTATION_COMPLETE,
+                 documentation = DOCUMENTED,
                  audience = AUDIENCE_INTERNAL)
     interface ZookeeperListenerMethod
     {
@@ -104,7 +104,7 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
     public static class Settings
     {
         /** Comma separated list of ports to use when connecting to Zookeeper */
-        @ConvertedProperty(converter = Port.Converter.class)
+        @ConvertedProperty(converter = PortConverter.class)
         String ports;
 
         /** The maximum timeout when connecting to Zookeeper */
@@ -274,28 +274,18 @@ public class ZookeeperConnection extends BaseComponent implements Watcher, TryTr
 
         switch (event.getType())
         {
-            case NodeCreated:
-                invokeListenerMethod(event, changeListener::onNodeCreated);
-                break;
-
-            case NodeDeleted:
-                invokeListenerMethod(event, changeListener::onNodeDeleted);
-                break;
-
-            case NodeDataChanged:
-                invokeListenerMethod(event, changeListener::onNodeDataChanged);
-                break;
-
-            case NodeChildrenChanged:
-                invokeListenerMethod(event, changeListener::onNodeChildrenChanged);
-                break;
-
-            case None:
+            case NodeCreated -> invokeListenerMethod(event, changeListener::onNodeCreated);
+            case NodeDeleted -> invokeListenerMethod(event, changeListener::onNodeDeleted);
+            case NodeDataChanged -> invokeListenerMethod(event, changeListener::onNodeDataChanged);
+            case NodeChildrenChanged -> invokeListenerMethod(event, changeListener::onNodeChildrenChanged);
+            case None ->
+            {
                 switch (event.getState())
                 {
                     case SyncConnected -> onConnected();
                     case Disconnected -> onDisconnected();
                 }
+            }
         }
     }
 

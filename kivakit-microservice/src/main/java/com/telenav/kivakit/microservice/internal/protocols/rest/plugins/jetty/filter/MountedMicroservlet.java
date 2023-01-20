@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
@@ -11,7 +11,7 @@ import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.properties.PropertyMap;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
@@ -22,9 +22,9 @@ import static com.telenav.kivakit.network.http.HttpStatus.METHOD_NOT_ALLOWED;
  *
  * @author jonathanl (shibo)
  */
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE,
+             documentation = DOCUMENTED,
              audience = AUDIENCE_INTERNAL)
 public class MountedMicroservlet extends BaseMounted
 {
@@ -61,14 +61,8 @@ public class MountedMicroservlet extends BaseMounted
             // and if the request method is
             switch (method)
             {
-                case POST ->
-                {
-                    handlePost(method, cycle, response, requestType, parameters);
-                }
-                case GET, DELETE ->
-                {
-                    handleGetDelete(method, cycle, response, requestType, parameters);
-                }
+                case POST -> handlePost(method, cycle, response, requestType, parameters);
+                case GET, DELETE -> handleGetDelete(method, cycle, response, requestType, parameters);
                 default -> response.problem(METHOD_NOT_ALLOWED, "Method $ not supported", method.name());
             }
         });

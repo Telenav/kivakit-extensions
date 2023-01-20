@@ -48,7 +48,7 @@ mounted
 on */open-api*, */docs*, */webapp* and */webjar*, and any requests that are not handled
 by Wicket *or* Swagger are then handled by Jersey. The final call to *start()* causes the
 Jetty web server to start running. The *listenTo()* call directs operational messages
-to the listener, in this case, probably a *BaseRepeater*. See [core-kernel messaging](../kivakit/kernel/documentation/messaging.md)
+to the listener, in this case, probably a *BaseRepeater*. See [core-kernel messaging](../../kivakit/kivakit-core/documentation/messaging.md)
 for more details.
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>

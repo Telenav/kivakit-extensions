@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.http.HttpRequest;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.string.Formatter.format;
@@ -60,9 +60,9 @@ import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultN
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public class RestClient extends BaseComponent
 {
     /** Serializer for JSON request serialization and deserialization */

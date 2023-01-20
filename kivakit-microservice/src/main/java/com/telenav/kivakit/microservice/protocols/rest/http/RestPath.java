@@ -1,6 +1,6 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.registry.RegistryTrait;
 import com.telenav.kivakit.core.version.Version;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
@@ -44,13 +44,14 @@ import static java.util.Objects.hash;
  *
  * @author jonathanl (shibo)
  */
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@SuppressWarnings("ClassCanBeRecord")
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE,
+             documentation = DOCUMENTED,
              audience = AUDIENCE_INTERNAL)
 public class RestPath implements
-        RegistryTrait,
-        Comparable<RestPath>
+    RegistryTrait,
+    Comparable<RestPath>
 {
     /** Pattern for REST paths */
     public static final Pattern API_ROOT_PATTERN = Pattern.compile("/api/(?<version>\\d+\\.\\d+)/");
@@ -153,7 +154,7 @@ public class RestPath implements
         if (!path.startsWith("/"))
         {
             var apiPath = require(RestService.class)
-                    .versionToPath(require(Microservice.class).version());
+                .versionToPath(require(Microservice.class).version());
 
             return parseFilePath(throwingListener(), pathConcatenate(apiPath, path.asString()));
         }

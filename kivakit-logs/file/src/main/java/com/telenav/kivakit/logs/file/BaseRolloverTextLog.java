@@ -18,7 +18,7 @@
 
 package com.telenav.kivakit.logs.file;
 
-import com.telenav.kivakit.annotations.code.quality.CodeQuality;
+import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.core.io.ByteSizedOutputStream;
 import com.telenav.kivakit.core.logging.LogEntry;
 import com.telenav.kivakit.core.logging.logs.text.BaseTextLog;
@@ -33,7 +33,7 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTATION_COMPLETE;
+import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.TESTING_NOT_NEEDED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
@@ -59,19 +59,19 @@ import static com.telenav.kivakit.logs.file.BaseRolloverTextLog.Rollover.NO_ROLL
  * @author jonathanl (shibo)
  * @see FileLog
  */
-@SuppressWarnings("resource") @UmlClassDiagram(diagram = DiagramLogsFile.class)
-@CodeQuality(stability = STABLE_EXTENSIBLE,
+@UmlClassDiagram(diagram = DiagramLogsFile.class)
+@TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
-             documentation = DOCUMENTATION_COMPLETE)
+             documentation = DOCUMENTED)
 public abstract class BaseRolloverTextLog extends BaseTextLog
 {
     /**
      * Rollover period
      */
     @UmlClassDiagram(diagram = DiagramLogsFile.class)
-    @CodeQuality(stability = STABLE_EXTENSIBLE,
+    @TypeQuality(stability = STABLE_EXTENSIBLE,
                  testing = TESTING_NOT_NEEDED,
-                 documentation = DOCUMENTATION_COMPLETE)
+                 documentation = DOCUMENTED)
     public enum Rollover
     {
         NO_ROLLOVER,
@@ -190,22 +190,16 @@ public abstract class BaseRolloverTextLog extends BaseTextLog
 
     protected abstract OutputStream newOutputStream();
 
+    @SuppressWarnings("UnnecessaryDefault")
     protected Time nextRollover()
     {
-        switch (rollover)
-        {
-            case NO_ROLLOVER:
-                return END_OF_UNIX_TIME;
-
-            case DAILY:
-                return LocalTime.now().startOfTomorrow();
-
-            case HOURLY:
-                return LocalTime.now().startOfNextHour();
-
-            default:
-                return unsupported();
-        }
+        return switch (rollover)
+            {
+                case NO_ROLLOVER -> END_OF_UNIX_TIME;
+                case DAILY -> LocalTime.now().startOfTomorrow();
+                case HOURLY -> LocalTime.now().startOfNextHour();
+                default -> unsupported();
+            };
     }
 
     protected Time started()

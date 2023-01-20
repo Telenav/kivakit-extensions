@@ -122,17 +122,12 @@ public class GitHubTree extends BaseComponent
 
     private EntryType entryType(GHTreeEntry entry)
     {
-        switch (entry.getType())
-        {
-            case "blob":
-                return EntryType.FILE;
-
-            case "tree":
-                return EntryType.FOLDER;
-
-            default:
-                return unsupported();
-        }
+        return switch (entry.getType())
+            {
+                case "blob" -> EntryType.FILE;
+                case "tree" -> EntryType.FOLDER;
+                default -> unsupported();
+            };
     }
 
     private GHTree tree()

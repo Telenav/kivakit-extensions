@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions-parent</artifactId>
-        <version>1.12.0</version>
+        <version>1.13.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     
@@ -26,9 +26,9 @@
 
     <properties>
 
-        <web.netty.version>4.1.84.Final</web.netty.version>
-        <network.httpclient.version>4.5.13</network.httpclient.version>
-        <cloud.aws.sdk.version>2.18.11</cloud.aws.sdk.version>
+        <web.netty.version>4.1.86.Final</web.netty.version>
+        <network.httpclient.version>4.5.14</network.httpclient.version>
+        <cloud.aws.sdk.version>2.19.13</cloud.aws.sdk.version>
 
     </properties>
 
