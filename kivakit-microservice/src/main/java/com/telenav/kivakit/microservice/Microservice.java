@@ -671,7 +671,7 @@ public abstract class Microservice<Member> extends Application implements
      * </p>
      */
     @Override
-    protected final void onRun()
+    protected void onRun()
     {
         showStartupInformation();
 
