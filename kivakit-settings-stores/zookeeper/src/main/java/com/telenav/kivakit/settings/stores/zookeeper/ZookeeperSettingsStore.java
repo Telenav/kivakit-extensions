@@ -36,10 +36,10 @@ import static com.telenav.kivakit.core.project.Project.resolveProject;
 import static com.telenav.kivakit.core.registry.InstanceIdentifier.instanceIdentifier;
 import static com.telenav.kivakit.resource.serialization.ObjectMetadata.METADATA_OBJECT_TYPE;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.DELETE;
-import static com.telenav.kivakit.settings.SettingsStore.AccessMode.INDEX;
+import static com.telenav.kivakit.settings.SettingsStore.AccessMode.ADD;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.LOAD;
 import static com.telenav.kivakit.settings.SettingsStore.AccessMode.SAVE;
-import static com.telenav.kivakit.settings.SettingsStore.AccessMode.UNLOAD;
+import static com.telenav.kivakit.settings.SettingsStore.AccessMode.CLEAR;
 import static com.telenav.third.party.zookeeper.CreateMode.EPHEMERAL;
 import static com.telenav.third.party.zookeeper.CreateMode.EPHEMERAL_SEQUENTIAL;
 import static com.telenav.third.party.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
@@ -190,7 +190,7 @@ public class ZookeeperSettingsStore extends BaseSettingsStore implements
     @Override
     public ObjectSet<AccessMode> accessModes()
     {
-        return set(INDEX, DELETE, UNLOAD, LOAD, SAVE);
+        return set(ADD, DELETE, CLEAR, LOAD, SAVE);
     }
 
     /**
