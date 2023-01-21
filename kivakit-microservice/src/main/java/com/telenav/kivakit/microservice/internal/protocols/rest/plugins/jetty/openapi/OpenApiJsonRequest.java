@@ -21,8 +21,8 @@ import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObje
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
-import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
-import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
+import com.telenav.kivakit.serialization.gson.GsonFactory;
+import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import io.swagger.v3.oas.models.OpenAPI;
 
@@ -74,12 +74,12 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
             return factory.prettyPrinting(true)
                     .requireExposeAnnotation(false)
                     .serializeNulls(false)
-                    .addJsonSerializer(List.class, new ListSerializer())
-                    .addJsonSerializer(Set.class, new SetSerializer())
-                    .addJsonSerializer(Map.class, new MapSerializer())
-                    .addJsonSerializer(Object[].class, new ArraySerializer<>())
-                    .addJsonSerializer(String.class, new StringSerializer())
-                    .exclusionStrategy(new ExclusionStrategy()
+                    .addSerializer(List.class, new ListSerializer())
+                    .addSerializer(Set.class, new SetSerializer())
+                    .addSerializer(Map.class, new MapSerializer())
+                    .addSerializer(Object[].class, new ArraySerializer<>())
+                    .addSerializer(String.class, new StringSerializer())
+                    .addGsonExclusionStrategy(new ExclusionStrategy()
                     {
                         @Override
                         public boolean shouldSkipClass(Class<?> clazz)
