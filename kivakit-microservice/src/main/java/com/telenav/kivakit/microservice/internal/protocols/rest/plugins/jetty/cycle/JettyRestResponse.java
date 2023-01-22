@@ -1,33 +1,31 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.ObjectFormatter;
-import com.telenav.kivakit.core.string.Strip;
-import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.network.http.HttpStatus;
-import com.telenav.kivakit.serialization.gson.GsonFactory;
-import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import jakarta.servlet.http.HttpServletResponse;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
-import static com.telenav.kivakit.network.http.HttpStatus.*;
+import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
+import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static com.telenav.kivakit.network.http.HttpStatus.OK;
 
 /**
  * <b>Not public API</b>
@@ -61,7 +59,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.*;
              documentation = DOCUMENTED,
              audience = AUDIENCE_SERVICE_PROVIDER)
 public final class JettyRestResponse extends BaseComponent
-        implements RestResponse
+    implements RestResponse
 {
     /** The request cycle to which this response belongs */
     @UmlAggregation
@@ -123,56 +121,10 @@ public final class JettyRestResponse extends BaseComponent
         return transmit(new HttpProblem(httpStatus, exception, text, arguments));
     }
 
-    /**
-     * @param response The response object to be serialized
-     * @return The object serialized into JSON format, using the application {@link GsonFactory}. This behavior can be
-     * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
-     * object.
-     */
-    @Override
-    public String toJson(Object response)
-    {
-        // We will serialize the response object itself by default.
-        var objectToSerialize = response;
-
-        // If the response object provides another object to serialize,
-        if (response instanceof MicroserviceGsonObjectSource)
-        {
-            // then make that the object to serialize.
-            objectToSerialize = ((MicroserviceGsonObjectSource) response).gsonObject();
-        }
-
-        // If the response object has a custom GsonFactory,
-        if (response instanceof GsonFactorySource)
-        {
-            // use that to convert the response to JSON,
-            return listenTo(((GsonFactorySource) response).gsonFactory()).gson().toJson(objectToSerialize);
-        }
-        else
-        {
-            // otherwise, use the GsonFactory, provided by the application through the request cycle.
-            return cycle.gson().toJson(objectToSerialize);
-        }
-    }
-
     @Override
     public String toString()
     {
         return new ObjectFormatter(this).toString();
-    }
-
-    /**
-     * Returns the version of the microservice that is responding to a request
-     */
-    @Override
-    @IncludeProperty
-    @OpenApiIncludeMember(title = "Version", description = "The microservice version from metadata")
-    public Version version()
-    {
-        return cycle.restService()
-                .microservice()
-                .metadata()
-                .version();
     }
 
     /**
@@ -184,43 +136,32 @@ public final class JettyRestResponse extends BaseComponent
     @Override
     public void writeResponse(MicroservletResponse response)
     {
-        var responseWritten = false;
-
         // Validate the response
         if (response != null)
         {
             // and if the response is invalid (any problems go into the response object),
             if (response.isValid(response))
             {
-                var responseType = cycle.restRequest().parameters().getOrDefault("response-type", "always-okay");
+                var responseType = cycle.restRequest()
+                    .parameters()
+                    .getOrDefault("response-type", "always-okay");
+
+                var json = new JsonArray();
+                json.add(toJson(response));
+                if (errors.isEmpty())
+                {
+                    json.add(toJson(errors));
+                }
 
                 switch (responseType)
                 {
-                    case "http-status" ->
-                    {
-                        var json = errors.isEmpty()
-                                ? toJson(response)
-                                : toJson(errors);
-                        writeResponse(json);
-                        httpStatus(errors.httpStatus());
-                        responseWritten = true;
-                    }
-                    case "always-okay" ->
-                    {
-                        writeResponse("{");
-                        var payload = stripBrackets(toJson(response));
-                        if (!payload.isEmpty())
-                        {
-                            writeResponse(payload + ",");
-                        }
-                        writeResponse(stripBrackets(toJson(errors)));
-                        writeResponse("}");
-                        httpStatus(OK);
-                        responseWritten = true;
-                    }
+                    case "http-status" -> httpStatus(errors.httpStatus());
+                    case "always-okay" -> httpStatus(OK);
                     default ->
-                            problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
+                        problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
                 }
+
+                writeJson(response, json);
             }
             else
             {
@@ -232,35 +173,25 @@ public final class JettyRestResponse extends BaseComponent
         {
             problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
         }
-
-        if (!responseWritten)
-        {
-            writeResponse(toJson(response));
-        }
     }
 
-    private String stripBrackets(String json)
+    private void writeJson(MicroservletResponse response, JsonElement json)
     {
-        json = Strip.stripLeading(json, "{");
-        return Strip.stripTrailing(json, "}");
-    }
+        if (json != null)
+        {
+            try
+            {
+                // Set the header to signal JSON content,
+                httpResponse.setContentType("application/json");
 
-    /**
-     * Writes the given string to the response as application/json
-     *
-     * @param json The JSON to write
-     */
-    private void writeResponse(String json)
-    {
-        try
-        {
-            // then send the JSON to the servlet output stream.
-            httpResponse.setContentType("application/json");
-            httpResponse.getOutputStream().println(json);
-        }
-        catch (Exception e)
-        {
-            problem(e, "Unable to write response to servlet output stream");
+                // then send the JSON to the servlet output stream.
+                var out = httpResponse.getOutputStream();
+                out.println(gson(response).toJson(json));
+            }
+            catch (Exception e)
+            {
+                problem(e, "Unable to write response to servlet output stream");
+            }
         }
     }
 }

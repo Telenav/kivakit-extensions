@@ -33,6 +33,7 @@ import java.util.Set;
 import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestCycle;
 
 /**
  * <b>Not public API</b>
@@ -66,7 +67,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
         @Override
         public GsonFactory gsonFactory()
         {
-            var factory = RestRequestThread.requestCycle()
+            var factory = requestCycle()
                     .restService()
                     .microservice()
                     .gsonFactory();

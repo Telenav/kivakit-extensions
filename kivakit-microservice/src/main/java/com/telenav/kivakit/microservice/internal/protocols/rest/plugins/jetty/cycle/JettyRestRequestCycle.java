@@ -101,7 +101,8 @@ public class JettyRestRequestCycle extends BaseComponent implements
     @Override
     public Gson gson()
     {
-        var pretty = listenTo(restRequest().parameters()).asBoolean("pretty", false);
+        var pretty = listenTo(restRequest().parameters())
+            .asBoolean("pretty", false);
 
         return restService()
                 .microservice()
