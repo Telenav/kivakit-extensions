@@ -10,6 +10,7 @@ import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.project.Project;
+import com.telenav.kivakit.core.registry.Register;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
@@ -248,6 +249,7 @@ import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
+@Register
 public abstract class Microservice<Member> extends Application implements
     TryTrait,
     Startable,
@@ -673,8 +675,6 @@ public abstract class Microservice<Member> extends Application implements
     @Override
     protected void onRun()
     {
-        showStartupInformation();
-
         // Get the Member object for this microservice's cluster,
         var member = onNewMember();
 
