@@ -48,6 +48,7 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
+import static com.telenav.kivakit.core.io.IO.readString;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
 import static com.telenav.kivakit.filesystem.FilePath.filePath;
 import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
@@ -218,11 +219,12 @@ public class JettyRestRequest extends BaseComponent implements
     {
         var response = cycle.restResponse();
 
+        var in = open();
+        var json = readString(this, in);
+
         try
         {
             // Read JSON object from servlet input
-            var in = open();
-            String json = IO.readString(this, in);
             var request = fromJson(json, requestType);
 
             // If the request is invalid (any problems go into the response object),
@@ -237,7 +239,7 @@ public class JettyRestRequest extends BaseComponent implements
         }
         catch (Exception e)
         {
-            problem(BAD_REQUEST, e, "Malformed request");
+            problem(BAD_REQUEST, e, "Malformed request: $", json);
             return null;
         }
     }
