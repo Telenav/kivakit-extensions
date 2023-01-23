@@ -1,12 +1,11 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.ObjectFormatter;
+import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
@@ -146,13 +145,6 @@ public final class JettyRestResponse extends BaseComponent
                     .parameters()
                     .getOrDefault("response-type", "always-okay");
 
-                var json = new JsonArray();
-                json.add(toJson(response));
-                if (errors.isEmpty())
-                {
-                    json.add(toJson(errors));
-                }
-
                 switch (responseType)
                 {
                     case "http-status" -> httpStatus(errors.httpStatus());
@@ -161,7 +153,7 @@ public final class JettyRestResponse extends BaseComponent
                         problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
                 }
 
-                writeJson(response, json);
+                writeJson(response);
             }
             else
             {
@@ -175,23 +167,33 @@ public final class JettyRestResponse extends BaseComponent
         }
     }
 
-    private void writeJson(MicroservletResponse response, JsonElement json)
+    private String stripBrackets(String json)
     {
-        if (json != null)
-        {
-            try
-            {
-                // Set the header to signal JSON content,
-                httpResponse.setContentType("application/json");
+        json = Strip.stripLeading(json, "{");
+        return Strip.stripTrailing(json, "}");
+    }
 
-                // then send the JSON to the servlet output stream.
-                var out = httpResponse.getOutputStream();
-                out.println(gson(response).toJson(json));
-            }
-            catch (Exception e)
-            {
-                problem(e, "Unable to write response to servlet output stream");
-            }
+    private void writeJson(MicroservletResponse response)
+    {
+        var gson = gson(response);
+
+        var responseJson = toJson(response);
+        var errorsJson = toJson(errors);
+
+        try
+        {
+            // Set the header to signal JSON content,
+            httpResponse.setContentType("application/json");
+
+            // then send the JSON to the servlet output stream.
+            var out = httpResponse.getOutputStream();
+            out.println(stripBrackets(gson.toJson(responseJson)));
+            out.println(",");
+            out.println(stripBrackets(gson.toJson(errors)));
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to write response to servlet output stream");
         }
     }
 }

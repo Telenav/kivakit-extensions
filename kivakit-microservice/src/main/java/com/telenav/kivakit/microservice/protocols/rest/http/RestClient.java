@@ -130,7 +130,7 @@ public class RestClient extends BaseComponent
         var post = listenTo(new HttpPostResource(networkLocation(path), defaultNetworkAccessConstraints())
         {
             @Override
-            public void onInitialize(HttpRequest.Builder builder)
+            public HttpRequest.Builder onInitialize(HttpRequest.Builder builder)
             {
                 if (request != null)
                 {
@@ -138,20 +138,16 @@ public class RestClient extends BaseComponent
                     {
                         var serialized = new StringOutputResource();
                         serializer.writeObject(serialized, new SerializableObject<>(request));
-                        builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
+                        builder = builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
                     }
                     catch (Exception e)
                     {
                         outer.problem("Could not post request: $", request);
                     }
                 }
-            }
 
-            @Override
-            public void onInitialize(HttpRequest post)
-            {
-                header(post, "Accept", "application/json");
-                header(post, "Content-Type", "application/json");
+                return builder.header("Accept", "application/json")
+                    .header("Content-Type", "application/json");
             }
         });
 
@@ -209,7 +205,7 @@ public class RestClient extends BaseComponent
 
     private <T> T readResponse(BaseHttpResource resource, Class<T> type)
     {
-        if ("application/json".equals(resource.contentType()))
+        if ("application/json".equals(resource.responseHeader().get("content-type")))
         {
             var json = resource.reader().asString();
             if (!isNullOrBlank(json))
