@@ -23,8 +23,6 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.resource.ResourceFolder;
-import com.telenav.kivakit.serialization.gson.GsonFactory;
-import com.telenav.kivakit.serialization.gson.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.settings.Deployment;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
@@ -225,7 +223,6 @@ import static com.telenav.kivakit.resource.packages.Package.parsePackage;
  *
  * <ul>
  *     <li>{@link #grpcService()}</li>
- *     <li>{@link #gsonFactory()}</li>
  *     <li>{@link #lambdaService()}</li>
  *     <li>{@link #onNewGrpcService()}</li>
  *     <li>{@link #onNewLambdaService()}</li>
@@ -321,8 +318,6 @@ public abstract class Microservice<Member> extends Application implements
      */
     protected Microservice()
     {
-        register(gsonFactory());
-
         addProject(MicroserviceProject.class);
     }
 
@@ -349,14 +344,6 @@ public abstract class Microservice<Member> extends Application implements
     public MicroserviceGrpcService grpcService()
     {
         return grpcService.get();
-    }
-
-    /**
-     * Returns the {@link GsonFactory} factory for this microservice
-     */
-    public GsonFactory gsonFactory()
-    {
-        return new KivaKitCoreGsonFactory();
     }
 
     /**
@@ -722,7 +709,6 @@ public abstract class Microservice<Member> extends Application implements
     @MustBeInvokedByOverriders
     protected void onRunning()
     {
-        register(gsonFactory());
     }
 
     /**

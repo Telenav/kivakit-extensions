@@ -84,7 +84,12 @@ public interface Restful extends Component
      */
     default <T> T fromJson(String json, Class<T> type)
     {
-        return restRequestCycle().gson().fromJson(json, type);
+        return gson().fromJson(json, type);
+    }
+
+    default Gson gson()
+    {
+        return gson(null);
     }
 
     /**
@@ -105,7 +110,7 @@ public interface Restful extends Component
         else
         {
             // otherwise, use the GsonFactory, provided by the application through the request cycle.
-            return restRequestCycle().gson();
+            return require(GsonFactory.class).gson();
         }
     }
 

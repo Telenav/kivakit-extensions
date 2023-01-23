@@ -53,8 +53,8 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
              documentation = DOCUMENTED,
              audience = AUDIENCE_SERVICE_PROVIDER)
 public class JettyRestRequestCycle extends BaseComponent implements
-        RestRequestCycle,
-        RestProblemReportingTrait
+    RestRequestCycle,
+    RestProblemReportingTrait
 {
     /** The REST application that owns this request cycle */
     private final RestService restService;
@@ -93,22 +93,6 @@ public class JettyRestRequestCycle extends BaseComponent implements
     public void attach(Microservlet<?, ?> servlet)
     {
         this.servlet = servlet;
-    }
-
-    /**
-     * Returns a Gson instance provided by the REST application
-     */
-    @Override
-    public Gson gson()
-    {
-        var pretty = listenTo(restRequest().parameters())
-            .asBoolean("pretty", false);
-
-        return restService()
-                .microservice()
-                .gsonFactory()
-                .prettyPrinting(pretty)
-                .gson();
     }
 
     /**

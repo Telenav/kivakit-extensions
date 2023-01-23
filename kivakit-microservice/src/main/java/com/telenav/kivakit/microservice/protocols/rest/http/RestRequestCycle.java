@@ -18,14 +18,13 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.google.gson.Gson;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
@@ -38,12 +37,6 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
  *     <li>{@link #restRequest()}</li>
  *     <li>{@link #restResponse()}</li>
  *     <li>{@link #restService()}</li>
- * </ul>
- *
- * <p><b>Gson Serialization</b></p>
- *
- * <ul>
- *     <li>{@link #gson()}</li>
  * </ul>
  *
  * @author jonathanl (shibo)
@@ -59,19 +52,6 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
              audience = AUDIENCE_INTERNAL)
 public interface RestRequestCycle
 {
-    /**
-     * Returns a Gson instance provided by the REST application
-     */
-    default Gson gson()
-    {
-        var pretty = restRequest().parameters().asBoolean("pretty", false);
-        return restService()
-                .microservice()
-                .gsonFactory()
-                .prettyPrinting(pretty)
-                .gson();
-    }
-
     /**
      * Returns the {@link Microservlet} handling this request cycle
      */

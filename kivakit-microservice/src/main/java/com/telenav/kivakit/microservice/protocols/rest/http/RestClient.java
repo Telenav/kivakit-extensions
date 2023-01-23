@@ -207,7 +207,7 @@ public class RestClient extends BaseComponent
     {
         if ("application/json".equals(resource.responseHeader().get("content-type")))
         {
-            var json = resource.reader().asString();
+            var json = "{" + resource.reader().asString() + "}";
             if (!isNullOrBlank(json))
             {
                 return serializer.readObject(new StringResource(json), type).object();
