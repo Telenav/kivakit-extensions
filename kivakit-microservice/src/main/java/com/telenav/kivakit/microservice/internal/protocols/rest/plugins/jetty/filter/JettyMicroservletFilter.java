@@ -11,7 +11,6 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
@@ -36,6 +35,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestTh
 import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestThreadDetach;
 import static com.telenav.kivakit.network.http.HttpMethod.NULL_HTTP_METHOD;
 import static com.telenav.kivakit.network.http.HttpMethod.OPTIONS;
+import static com.telenav.kivakit.network.http.HttpMethod.parseHttpMethod;
 
 /**
  * <b>Not public API</b>
@@ -77,9 +77,9 @@ import static com.telenav.kivakit.network.http.HttpMethod.OPTIONS;
              documentation = DOCUMENTED,
              audience = AUDIENCE_SERVICE_PROVIDER)
 public class JettyMicroservletFilter extends BaseComponent implements
-        Filter,
-        TryTrait,
-        RestProblemReportingTrait
+    Filter,
+    TryTrait,
+    RestProblemReportingTrait
 {
     /** Map from path to mounted JAR */
     private final Map<RestPath, MountedApi> mountedApis = new HashMap<>();
@@ -128,7 +128,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
             var httpResponse = (HttpServletResponse) servletResponse;
 
             // parse the HTTP method,
-            var method = HttpMethod.parseHttpMethod(this, httpRequest.getMethod());
+            var method = parseHttpMethod(this, httpRequest.getMethod());
             if (method != null && method != OPTIONS)
             {
                 // create REST request cycle,
@@ -146,7 +146,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
 
                     // and handle the request.
                     tryCatch(() -> mounted.handleRequest(method, cycle),
-                            "Unable to handle $ to $", method.name(), mounted.microservlet.name());
+                        "Unable to handle $ to $", method.name(), mounted.microservlet.name());
                     handled = true;
                 }
                 else
@@ -157,7 +157,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
                     {
                         // and handle the request that way.
                         tryCatch(() -> mountedJar.handleRequest(method, cycle),
-                                "Unable to forward $ to $", method.name(), mountedJar);
+                            "Unable to forward $ to $", method.name(), mountedJar);
                         handled = true;
                     }
                 }
@@ -218,7 +218,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         if (existing != null)
         {
             problem("$: There is already a $ microservlet mounted on $: ${class}",
-                    microservice.name(), path.httpMethod(), path.path(), existing.getClass()).throwMessage();
+                microservice.name(), path.httpMethod(), path.path(), existing.getClass()).throwMessage();
         }
 
         var mounted = listenTo(new MountedMicroservlet(service));
@@ -240,7 +240,7 @@ public class JettyMicroservletFilter extends BaseComponent implements
         {
             // then throw an exception,
             problem("There is already an API mounted on $: $",
-                    api.path(), existing).throwMessage();
+                api.path(), existing).throwMessage();
         }
 
         // otherwise, launch the API,

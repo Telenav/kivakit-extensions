@@ -18,11 +18,10 @@ import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiExcludeMember;
-import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
-import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
+import com.telenav.kivakit.serialization.gson.GsonFactory;
+import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import io.swagger.v3.oas.models.OpenAPI;
 
@@ -30,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.UNSTABLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
@@ -51,8 +50,8 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
      * Response to OpenAPI request
      */
     public static class JettyOpenApiResponse extends BaseMicroservletResponse implements
-            GsonFactorySource,
-            MicroserviceGsonObjectSource
+        GsonFactorySource,
+        MicroserviceGsonObjectSource
     {
         @Expose
         private final OpenAPI api;
@@ -66,33 +65,30 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
         @Override
         public GsonFactory gsonFactory()
         {
-            var factory = RestRequestThread.requestCycle()
-                    .restService()
-                    .microservice()
-                    .gsonFactory();
+            var factory = require(GsonFactory.class);
 
             return factory.prettyPrinting(true)
-                    .requireExposeAnnotation(false)
-                    .serializeNulls(false)
-                    .addJsonSerializer(List.class, new ListSerializer())
-                    .addJsonSerializer(Set.class, new SetSerializer())
-                    .addJsonSerializer(Map.class, new MapSerializer())
-                    .addJsonSerializer(Object[].class, new ArraySerializer<>())
-                    .addJsonSerializer(String.class, new StringSerializer())
-                    .exclusionStrategy(new ExclusionStrategy()
+                .requireExposeAnnotation(false)
+                .serializeNulls(false)
+                .addSerializer(List.class, new ListSerializer())
+                .addSerializer(Set.class, new SetSerializer())
+                .addSerializer(Map.class, new MapSerializer())
+                .addSerializer(Object[].class, new ArraySerializer<>())
+                .addSerializer(String.class, new StringSerializer())
+                .addGsonExclusionStrategy(new ExclusionStrategy()
+                {
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz)
                     {
-                        @Override
-                        public boolean shouldSkipClass(Class<?> clazz)
-                        {
-                            return false;
-                        }
+                        return false;
+                    }
 
-                        @Override
-                        public boolean shouldSkipField(FieldAttributes field)
-                        {
-                            return "exampleSetFlag".equals(field.getName());
-                        }
-                    });
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes field)
+                    {
+                        return "exampleSetFlag".equals(field.getName());
+                    }
+                });
         }
 
         @Override
