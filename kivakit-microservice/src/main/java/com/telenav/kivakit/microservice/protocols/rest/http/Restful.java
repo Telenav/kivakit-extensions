@@ -18,6 +18,8 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.Component;
 import com.telenav.kivakit.core.string.FormatProperty;
@@ -27,12 +29,13 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
-import com.telenav.kivakit.serialization.gson.factory.GsonFactorySource;
+import com.telenav.kivakit.serialization.gson.GsonFactory;
+import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestThread.requestCycle;
 
 /**
  * Base interface for {@link RestRequest} and {@link RestResponse}, as well as {@link MicroservletRequest} and
@@ -81,7 +84,34 @@ public interface Restful extends Component
      */
     default <T> T fromJson(String json, Class<T> type)
     {
-        return restRequestCycle().gson().fromJson(json, type);
+        return gson().fromJson(json, type);
+    }
+
+    default Gson gson()
+    {
+        return gson(null);
+    }
+
+    /**
+     * Provides a {@link Gson} serializer for the given object. If the object implements {@link GsonFactorySource}, that
+     * interface provides the serializer, otherwise, the {@link Gson} instance is provided by the request cycle
+     *
+     * @param object The object
+     * @return The {@link Gson} serializer for the object
+     */
+    default Gson gson(Object object)
+    {
+        // If the response object has a custom GsonFactory,
+        if (object instanceof GsonFactorySource)
+        {
+            // use that to convert the response to JSON,
+            return ((GsonFactorySource) object).gsonFactory().gson();
+        }
+        else
+        {
+            // otherwise, use the GsonFactory, provided by the application through the request cycle.
+            return require(GsonFactory.class).gson();
+        }
     }
 
     /**
@@ -106,7 +136,7 @@ public interface Restful extends Component
      */
     default RestRequestCycle restRequestCycle()
     {
-        return RestRequestThread.requestCycle();
+        return requestCycle();
     }
 
     /**
@@ -131,7 +161,7 @@ public interface Restful extends Component
      * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
      * object.
      */
-    default String toJson(Object response)
+    default JsonElement toJson(Object response)
     {
         // We will serialize the response object itself by default.
         var objectToSerialize = response;
@@ -143,17 +173,7 @@ public interface Restful extends Component
             objectToSerialize = ((MicroserviceGsonObjectSource) response).gsonObject();
         }
 
-        // If the response object has a custom GsonFactory,
-        if (response instanceof GsonFactorySource)
-        {
-            // use that to convert the response to JSON,
-            return listenTo(((GsonFactorySource) response).gsonFactory()).gson().toJson(objectToSerialize);
-        }
-        else
-        {
-            // otherwise, use the GsonFactory, provided by the application through the request cycle.
-            return restRequestCycle().gson().toJson(objectToSerialize);
-        }
+        return gson(response).toJsonTree(objectToSerialize);
     }
 
     /**

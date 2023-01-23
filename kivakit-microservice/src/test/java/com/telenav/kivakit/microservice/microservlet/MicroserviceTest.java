@@ -14,7 +14,7 @@ import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
 import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
-import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
+import com.telenav.kivakit.serialization.gson.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.validation.BaseValidator;
 import com.telenav.kivakit.validation.ValidationType;
@@ -103,9 +103,9 @@ public class MicroserviceTest extends UnitTest
         public MicroserviceMetadata metadata()
         {
             return new MicroserviceMetadata()
-                    .withName("Test")
-                    .withDescription("This is a test REST application")
-                    .withVersion(Version.parseVersion(this, "0.9"));
+                .withName("Test")
+                .withDescription("This is a test REST application")
+                .withVersion(Version.parseVersion(this, "0.9"));
         }
 
         @Override
@@ -123,6 +123,12 @@ public class MicroserviceTest extends UnitTest
 
     public static class TestPostRequest extends BaseMicroservletRequest
     {
+        @Expose
+        int a;
+
+        @Expose
+        int b;
+
         public TestPostRequest(int a, int b)
         {
             this.a = a;
@@ -145,23 +151,17 @@ public class MicroserviceTest extends UnitTest
         {
             return TestResponse.class;
         }
-
-        @Expose
-        int a;
-
-        @Expose
-        int b;
     }
 
     public static class TestResponse extends BaseMicroservletResponse
     {
+        @Expose
+        int result;
+
         public TestResponse(int result)
         {
             this.result = result;
         }
-
-        @Expose
-        int result;
     }
 
     public static class TestRest extends RestService
@@ -183,25 +183,25 @@ public class MicroserviceTest extends UnitTest
     @Test
     public void test()
     {
-        register(new KivaKitCoreGsonFactory(this));
+        register(new KivaKitCoreGsonFactory());
 
         var serializers = new ObjectSerializerRegistry();
         serializers.add(JSON, new GsonObjectSerializer());
         register(serializers);
 
         Registry.registryFor(this).register(new MicroserviceSettings()
-                .port(8086)
-                .grpcPort(8087)
-                .server(false));
+            .port(8086)
+            .grpcPort(8087)
+            .server(false));
 
         var microservice = listenTo(new TestMicroservice());
 
         KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087",
-                "-server=false" }));
+            "-server=false" }));
         microservice.waitForReady();
 
         var client = listenTo(new RestClient(
-                new GsonObjectSerializer(), localhost().http(8086), microservice.version()));
+            new GsonObjectSerializer(), localhost().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);

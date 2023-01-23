@@ -76,6 +76,7 @@ public class MountedMicroservlet extends BaseMounted
         return microservlet;
     }
 
+    @SuppressWarnings("unused")
     private void handleGetDelete(HttpMethod method,
                                  RestRequestCycle cycle,
                                  RestResponse response,
@@ -83,7 +84,7 @@ public class MountedMicroservlet extends BaseMounted
                                  PropertyMap parameters)
     {
         // then turn parameters into a JSON object and then treat that like it was POSTed.
-        var request = cycle.gson().fromJson(parameters.asJson(), requestType);
+        var request = gson().fromJson(parameters.asJson(), requestType);
 
         // Respond with the object returned from onGet.
         if (request != null)
@@ -115,7 +116,7 @@ public class MountedMicroservlet extends BaseMounted
         else
         {
             // otherwise, convert any parameters to a JSON request object,
-            request = cycle.gson().fromJson(parameters.asJson(), requestType);
+            request = gson().fromJson(parameters.asJson(), requestType);
         }
 
         // Respond with the object returned from respond(request).

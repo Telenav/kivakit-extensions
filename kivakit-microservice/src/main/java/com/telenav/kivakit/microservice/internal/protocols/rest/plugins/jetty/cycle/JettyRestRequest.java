@@ -48,7 +48,10 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
+import static com.telenav.kivakit.core.io.IO.readString;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
+import static com.telenav.kivakit.filesystem.FilePath.filePath;
+import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 
 /**
@@ -74,9 +77,9 @@ import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
              documentation = DOCUMENTED,
              audience = AUDIENCE_SERVICE_PROVIDER)
 public class JettyRestRequest extends BaseComponent implements
-        TryTrait,
-        RestRequest,
-        RestProblemReportingTrait
+    TryTrait,
+    RestRequest,
+    RestProblemReportingTrait
 {
     /** The request cycle to which this request belongs */
     @UmlAggregation
@@ -146,7 +149,7 @@ public class JettyRestRequest extends BaseComponent implements
     @Override
     public PropertyMap parameters()
     {
-        return parameters(FilePath.parseFilePath(nullListener(), ""));
+        return parameters(parseFilePath(nullListener(), ""));
     }
 
     /**
@@ -201,7 +204,7 @@ public class JettyRestRequest extends BaseComponent implements
         ensure(uri.startsWith(contextPath));
 
         // then return the URI without the context path
-        return FilePath.parseFilePath(this, uri.substring(contextPath.length()));
+        return filePath(uri.substring(contextPath.length()));
     }
 
     /**
@@ -216,11 +219,12 @@ public class JettyRestRequest extends BaseComponent implements
     {
         var response = cycle.restResponse();
 
+        var in = open();
+        var json = readString(this, in);
+
         try
         {
             // Read JSON object from servlet input
-            var in = open();
-            String json = IO.readString(this, in);
             var request = fromJson(json, requestType);
 
             // If the request is invalid (any problems go into the response object),
@@ -235,7 +239,7 @@ public class JettyRestRequest extends BaseComponent implements
         }
         catch (Exception e)
         {
-            problem(BAD_REQUEST, e, "Malformed request");
+            problem(BAD_REQUEST, e, "Malformed request: $", json);
             return null;
         }
     }

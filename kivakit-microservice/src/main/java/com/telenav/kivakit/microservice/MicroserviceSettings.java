@@ -4,11 +4,13 @@ import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.conversion.core.language.object.ConvertedProperty;
 import com.telenav.kivakit.conversion.core.language.primitive.BooleanConverter;
 import com.telenav.kivakit.conversion.core.language.primitive.IntegerConverter;
+import com.telenav.kivakit.core.registry.Register;
+import com.telenav.kivakit.core.string.FormatProperty;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
@@ -31,15 +33,19 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
+@Register
 public class MicroserviceSettings
 {
     @ConvertedProperty(IntegerConverter.class)
+    @FormatProperty
     private int port;
 
     @ConvertedProperty(IntegerConverter.class)
+    @FormatProperty
     private int grpcPort;
 
     @ConvertedProperty(BooleanConverter.class)
+    @FormatProperty
     private boolean server;
 
     public MicroserviceSettings grpcPort(int grpcPort)

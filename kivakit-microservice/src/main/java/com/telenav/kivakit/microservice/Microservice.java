@@ -5,11 +5,11 @@ import com.telenav.kivakit.application.Application;
 import com.telenav.kivakit.commandline.SwitchParser;
 import com.telenav.kivakit.commandline.SwitchValue;
 import com.telenav.kivakit.core.collections.set.ObjectSet;
-import com.telenav.kivakit.core.language.primitive.Ints;
 import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.project.Project;
+import com.telenav.kivakit.core.registry.Register;
 import com.telenav.kivakit.core.string.Paths;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
@@ -22,11 +22,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.Mi
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.lambda.MicroserviceLambdaService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceFolder;
-import com.telenav.kivakit.resource.packages.Package;
-import com.telenav.kivakit.serialization.gson.factory.GsonFactory;
-import com.telenav.kivakit.serialization.gson.factory.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.settings.Deployment;
 import com.telenav.kivakit.settings.stores.zookeeper.ZookeeperConnection;
 import com.telenav.kivakit.web.jetty.JettyServer;
@@ -50,9 +46,12 @@ import static com.telenav.kivakit.commandline.SwitchParsers.stringSwitchParser;
 import static com.telenav.kivakit.core.collections.set.ObjectSet.set;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.language.primitive.Ints.parseInt;
 import static com.telenav.kivakit.core.object.Lazy.lazy;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
+import static com.telenav.kivakit.resource.Resource.resolveResource;
+import static com.telenav.kivakit.resource.packages.Package.parsePackage;
 
 /**
  * <p>
@@ -224,7 +223,6 @@ import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
  *
  * <ul>
  *     <li>{@link #grpcService()}</li>
- *     <li>{@link #gsonFactory()}</li>
  *     <li>{@link #lambdaService()}</li>
  *     <li>{@link #onNewGrpcService()}</li>
  *     <li>{@link #onNewLambdaService()}</li>
@@ -248,6 +246,7 @@ import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
+@Register
 public abstract class Microservice<Member> extends Application implements
     TryTrait,
     Startable,
@@ -319,8 +318,6 @@ public abstract class Microservice<Member> extends Application implements
      */
     protected Microservice()
     {
-        register(gsonFactory());
-
         addProject(MicroserviceProject.class);
     }
 
@@ -347,14 +344,6 @@ public abstract class Microservice<Member> extends Application implements
     public MicroserviceGrpcService grpcService()
     {
         return grpcService.get();
-    }
-
-    /**
-     * Returns the {@link GsonFactory} factory for this microservice
-     */
-    public GsonFactory gsonFactory()
-    {
-        return new KivaKitCoreGsonFactory(this);
     }
 
     /**
@@ -673,8 +662,6 @@ public abstract class Microservice<Member> extends Application implements
     @Override
     protected void onRun()
     {
-        showStartupInformation();
-
         // Get the Member object for this microservice's cluster,
         var member = onNewMember();
 
@@ -722,7 +709,6 @@ public abstract class Microservice<Member> extends Application implements
     @MustBeInvokedByOverriders
     protected void onRunning()
     {
-        register(gsonFactory());
     }
 
     /**
@@ -746,7 +732,7 @@ public abstract class Microservice<Member> extends Application implements
     protected ResourceFolder<?> openApiAssetsFolder()
     {
         var type = ensureNotNull(Type.typeForName("com.telenav.kivakit.web.swagger.SwaggerIndexJettyPlugin"));
-        return Package.parsePackage(this, type.asJavaType(), "assets/openapi");
+        return parsePackage(this, type.asJavaType(), "assets/openapi");
     }
 
     /**
@@ -755,7 +741,7 @@ public abstract class Microservice<Member> extends Application implements
      */
     protected ResourceFolder<?> staticAssetsFolder()
     {
-        return Package.parsePackage(this, restService().getClass(), "assets");
+        return parsePackage(this, restService().getClass(), "assets");
     }
 
     /**
@@ -796,10 +782,10 @@ public abstract class Microservice<Member> extends Application implements
             var matcher = apiSpecifier.matcher(api);
             if (matcher.matches())
             {
-                var version = Version.parseVersion(this, matcher.group("version"));
-                var resource = Resource.resolveResource(this, matcher.group("jar"));
+                var version = Version.version(matcher.group("version"));
+                var resource = resolveResource(this, matcher.group("jar"));
                 var commandLine = matcher.group("commandLine");
-                var port = Ints.parseInt(this, matcher.group("port"));
+                var port = parseInt(this, matcher.group("port"));
 
                 restService.mountApi(version, resource, commandLine, port);
             }

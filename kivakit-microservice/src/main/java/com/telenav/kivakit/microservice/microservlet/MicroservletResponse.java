@@ -7,8 +7,8 @@ import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReporting
 import com.telenav.kivakit.validation.Validatable;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
@@ -22,9 +22,9 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
              testing = UNTESTED,
              documentation = DOCUMENTED)
 public interface MicroservletResponse extends
-        Validatable,
-        Component,
-        RestProblemReportingTrait
+    Validatable,
+    Component,
+    RestProblemReportingTrait
 {
     /**
      * Called when the response is complete, but before it is sent back
