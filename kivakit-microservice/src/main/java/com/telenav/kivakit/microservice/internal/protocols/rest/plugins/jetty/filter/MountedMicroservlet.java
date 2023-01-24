@@ -76,6 +76,11 @@ public class MountedMicroservlet extends BaseMounted
         return microservlet;
     }
 
+    public RestPath path()
+    {
+        return path;
+    }
+
     @SuppressWarnings("unused")
     private void handleGetDelete(HttpMethod method,
                                  RestRequestCycle cycle,
