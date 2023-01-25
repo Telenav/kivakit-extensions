@@ -52,6 +52,30 @@ public class YamlScalar extends YamlNode
         this.truth = value;
     }
 
+    @Override
+    public YamlScalar arrayElement(boolean arrayElement)
+    {
+        return (YamlScalar) super.arrayElement(arrayElement);
+    }
+
+    @Override
+    public Yaml asYaml()
+    {
+        if (isNumber())
+        {
+            return yaml().withScalar(name(), number);
+        }
+        if (isBoolean())
+        {
+            return yaml().withScalar(name(), truth);
+        }
+        if (isString())
+        {
+            return yaml().withScalar(name(), string);
+        }
+        return fail("Internal error");
+    }
+
     public boolean isBoolean()
     {
         return truth != null;
@@ -86,23 +110,5 @@ public class YamlScalar extends YamlNode
     public boolean truth()
     {
         return truth;
-    }
-
-    @Override
-    protected Yaml asYaml()
-    {
-        if (isNumber())
-        {
-            return yaml().withScalar(name(), number);
-        }
-        if (isBoolean())
-        {
-            return yaml().withScalar(name(), truth);
-        }
-        if (isString())
-        {
-            return yaml().withScalar(name(), string);
-        }
-        return fail("Internal error");
     }
 }

@@ -7,13 +7,41 @@ public abstract class YamlNode implements Named
 {
     private final String name;
 
+    private boolean arrayElement;
+
     public YamlNode(String name)
     {
         this.name = name;
     }
 
+    @SuppressWarnings("CopyConstructorMissesField")
+    protected YamlNode(YamlNode that)
+    {
+        this.name = that.name;
+    }
+
+    public YamlNode arrayElement(boolean arrayElement)
+    {
+        this.arrayElement = arrayElement;
+        return this;
+    }
+
+    public abstract Yaml asYaml();
+
+    public boolean isArrayElement()
+    {
+        return arrayElement;
+    }
+
+    public final String label()
+    {
+        return arrayElement
+            ? "- " + name
+            : name;
+    }
+
     @Override
-    public String name()
+    public final String name()
     {
         return name;
     }
@@ -23,6 +51,4 @@ public abstract class YamlNode implements Named
     {
         return asYaml().toString();
     }
-
-    protected abstract Yaml asYaml();
 }

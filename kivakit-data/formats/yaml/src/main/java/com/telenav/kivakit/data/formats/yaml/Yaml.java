@@ -60,6 +60,11 @@ public class Yaml
         return copy;
     }
 
+    public Yaml withBlock(Yaml yaml)
+    {
+        return withBlock("", yaml);
+    }
+
     public Yaml withBlock(String label, Yaml yaml)
     {
         var copy = copy();
@@ -87,16 +92,6 @@ public class Yaml
     public Yaml withLiteral(String key, String value)
     {
         return with(key + ": " + value);
-    }
-
-    public Yaml withPrefixed(String prefix, Yaml yaml)
-    {
-        var copy = copy();
-        for (var line : yaml.lines)
-        {
-            copy = copy.with(prefix + line);
-        }
-        return copy;
     }
 
     public Yaml withScalar(String key, String value)

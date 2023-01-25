@@ -55,7 +55,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
             description: "Error information, including a message, hierarchical error code, error type and HTTP status code"
             properties:
               httpStatus:
-                type: number
+                type: integer
                 format: int32
                 description: "HTTP status code"
               hierarchicalErrorCode:

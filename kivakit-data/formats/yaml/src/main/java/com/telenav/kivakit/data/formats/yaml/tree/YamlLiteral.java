@@ -20,6 +20,18 @@ public class YamlLiteral extends YamlNode
     }
 
     @Override
+    public YamlLiteral arrayElement(boolean arrayElement)
+    {
+        return (YamlLiteral) super.arrayElement(arrayElement);
+    }
+
+    @Override
+    public Yaml asYaml()
+    {
+        return yaml().withLiteral(name(), value);
+    }
+
+    @Override
     public String toString()
     {
         return value;
@@ -28,11 +40,5 @@ public class YamlLiteral extends YamlNode
     public String value()
     {
         return value;
-    }
-
-    @Override
-    protected Yaml asYaml()
-    {
-        return yaml().withLiteral(name(), value);
     }
 }

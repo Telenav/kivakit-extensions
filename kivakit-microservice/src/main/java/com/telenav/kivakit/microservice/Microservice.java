@@ -305,7 +305,7 @@ public abstract class Microservice<Member> extends Application implements
     private final Lazy<MicroserviceLambdaService> lambdaService = lazy(this::onNewLambdaService);
 
     /** Lazy-initialized REST service */
-    private final Lazy<RestService> restService = lazy(this::onNewRestService);
+    private final Lazy<RestService> restService = lazy(() -> register(onNewRestService()));
 
     /** True if this microservice is running */
     private boolean running;

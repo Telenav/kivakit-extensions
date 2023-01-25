@@ -34,19 +34,27 @@ public class YamlBlock extends YamlNode
 
     private YamlBlock(YamlBlock that)
     {
-        super(that.name());
+        super(that);
         children = that.children.copy();
+    }
+
+    @Override
+    public YamlBlock arrayElement(boolean arrayElement)
+    {
+        return (YamlBlock) super.arrayElement(arrayElement);
     }
 
     @Override
     public Yaml asYaml()
     {
-        var yaml = name().isBlank() ? yaml() : yaml().withLabel(name()).indented();
+        var yaml = name().isBlank()
+            ? yaml()
+            : yaml().withLabel(label()).indented();
 
         for (var key : list(children.keySet()))
         {
             var child = children.get(key);
-            yaml = yaml.withBlock("", child.asYaml());
+            yaml = yaml.withBlock(child.asYaml());
         }
 
         return yaml.outdented();

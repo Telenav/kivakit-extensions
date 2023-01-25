@@ -30,26 +30,6 @@ public class YamlTest extends UnitTest
     }
 
     @Test
-    public void testWithPrefixed()
-    {
-        var yaml = Yaml.yaml()
-            .with("x")
-            .indented()
-            .withPrefixed("- ", abcde())
-            .outdented()
-            .with("y");
-
-        ensureEqual(yaml.toString(), """
-            x
-              - a
-              -   b
-              -     c
-              -   d
-              - e
-            y""");
-    }
-
-    @Test
     public void testWithScalar()
     {
         var yaml = Yaml.yaml()

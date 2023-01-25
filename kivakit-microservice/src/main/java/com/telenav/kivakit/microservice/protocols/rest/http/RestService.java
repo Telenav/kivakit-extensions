@@ -20,6 +20,7 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.registry.Register;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
@@ -168,6 +169,7 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  */
 @SuppressWarnings({ "RedundantSuppression", "unused", "unchecked", "SpellCheckingInspection" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
+@Register
 public abstract class RestService extends BaseComponent implements Initializable
 {
     /** True while initializing */
@@ -422,9 +424,9 @@ public abstract class RestService extends BaseComponent implements Initializable
 
         // and add it to the OpenAPI object.
         return new Info()
-                .version(metadata.version().toString())
-                .description(metadata.description())
-                .title(metadata.name());
+            .version(metadata.version().toString())
+            .description(metadata.description())
+            .title(metadata.name());
     }
 
     /**

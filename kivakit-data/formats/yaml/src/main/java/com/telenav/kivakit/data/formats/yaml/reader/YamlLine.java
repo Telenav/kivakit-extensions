@@ -84,7 +84,7 @@ public class YamlLine
         return type == LABEL;
     }
 
-    public boolean isListElement()
+    public boolean isArrayElement()
     {
         return isListElement;
     }
@@ -248,7 +248,7 @@ public class YamlLine
             if (type == null)
             {
                 // then the
-                fail("Could not parse: $", line);
+                fail("Could not parse YAML: $", line);
             }
         }
     }

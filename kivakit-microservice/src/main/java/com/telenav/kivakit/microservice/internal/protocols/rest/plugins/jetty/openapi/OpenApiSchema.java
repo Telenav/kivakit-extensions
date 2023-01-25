@@ -1,14 +1,14 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
-import com.telenav.kivakit.data.formats.yaml.tree.YamlBlock;
+import com.telenav.kivakit.data.formats.yaml.tree.YamlNode;
 
 public class OpenApiSchema
 {
-    private final YamlBlock root;
+    private final YamlNode root;
 
     private final String name;
 
-    public OpenApiSchema(String name, YamlBlock root)
+    public OpenApiSchema(String name, YamlNode root)
     {
         this.name = name;
         this.root = root;
@@ -19,7 +19,7 @@ public class OpenApiSchema
         return name;
     }
 
-    public YamlBlock yaml()
+    public YamlNode yaml()
     {
         return root;
     }

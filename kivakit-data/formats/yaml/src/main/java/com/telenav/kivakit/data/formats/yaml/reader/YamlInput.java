@@ -62,8 +62,10 @@ public class YamlInput
 
                 return () ->
                 {
+                    // If our indent level is at least what it was when we started,
                     if (current != null && current.indentLevel() >= blockIndent)
                     {
+                        // then we are still in the block, so return the next line.
                         var at = current();
                         next();
                         return at;
@@ -96,6 +98,14 @@ public class YamlInput
     public int indentLevel()
     {
         return current().indentLevel();
+    }
+
+    /**
+     * Returns the next line in the input, without advancing to it
+     */
+    public YamlLine lookahead()
+    {
+        return lookahead;
     }
 
     /**

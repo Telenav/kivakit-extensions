@@ -11,6 +11,7 @@ public class YamlReaderTest extends UnitTest
         testRead("Distance.yml");
         testRead("Location.yml");
         testRead("Rectangle.yml");
+        testRead("LocationArray.yml");
     }
 
     private void testRead(String name)
