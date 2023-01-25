@@ -12,7 +12,6 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -67,8 +66,6 @@ public final class JettyRestResponse extends BaseComponent
     /** Error messages that were reported to this response via {@link #problem(HttpStatus, String, Object...)} */
     @Expose
     @UmlAggregation
-    @OpenApiIncludeMember(title = "Errors messages",
-                          description = "A list of formatted error messages")
     private final MicroservletErrorResponse errors = new MicroservletErrorResponse();
 
     /** Servlet response */

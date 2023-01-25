@@ -8,9 +8,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
@@ -24,22 +22,37 @@ import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-@OpenApiIncludeType(description = "Request for server live-ness")
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED,
              audience = AUDIENCE_INTERNAL)
+@OpenApiType
+    (
+        """
+            type: object
+            description: "Request for server health"
+                """
+    )
 public class HealthLiveRequest extends BaseMicroservletRequest
 {
     /**
      * Response object for this request
      */
-    @OpenApiIncludeType(description = "Response to a live-ness request")
+    @OpenApiType
+        (
+            """
+                type: object
+                description: "Response to a health liveness request"
+                properties:
+                  status:
+                    type: string
+                    description: "Description of status where ALIVE indicates the server is alive"
+                    """
+        )
     public static class HealthLiveResponse extends BaseMicroservletResponse
     {
         @Expose
         @IncludeProperty
-        @OpenApiIncludeMember(description = "The server live-ness status")
         private final String status;
 
         private HealthLiveResponse(String status)
@@ -55,7 +68,6 @@ public class HealthLiveRequest extends BaseMicroservletRequest
      * {@inheritDoc}
      */
     @Override
-    @OpenApiRequestHandler(tags = { "server live-ness" })
     public MicroservletResponse onRespond()
     {
         // Go through each MountedApi,

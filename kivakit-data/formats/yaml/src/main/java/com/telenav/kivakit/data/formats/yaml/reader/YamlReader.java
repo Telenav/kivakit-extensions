@@ -1,11 +1,11 @@
 package com.telenav.kivakit.data.formats.yaml.reader;
 
-import com.telenav.kivakit.data.formats.yaml.YamlBlock;
+import com.telenav.kivakit.data.formats.yaml.tree.YamlBlock;
 import com.telenav.kivakit.resource.Resource;
 
-import static com.telenav.kivakit.data.formats.yaml.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.YamlLiteral.literal;
-import static com.telenav.kivakit.data.formats.yaml.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlBlock.block;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlLiteral.literal;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
 
 public class YamlReader
 {

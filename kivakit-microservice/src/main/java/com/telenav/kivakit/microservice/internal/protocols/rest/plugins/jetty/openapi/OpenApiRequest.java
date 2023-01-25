@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.v2;
+package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;

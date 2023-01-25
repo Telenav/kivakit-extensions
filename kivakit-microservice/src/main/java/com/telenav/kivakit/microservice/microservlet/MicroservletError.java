@@ -10,18 +10,18 @@ import com.telenav.kivakit.core.messaging.messages.status.Glitch;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
 import com.telenav.kivakit.network.http.HttpStatus;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.messaging.Listener.consoleListener;
 import static com.telenav.kivakit.core.messaging.Message.parseMessageName;
 import static com.telenav.kivakit.core.messaging.Messages.newMessage;
 import static com.telenav.kivakit.core.string.Formatter.format;
-import static com.telenav.kivakit.network.http.HttpStatus.*;
+import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static com.telenav.kivakit.network.http.HttpStatus.OK;
 
 /**
  * Describes an error. Any hierarchical error code (per IETF RFC 7807) in an {@link OperationStatusMessage} subclass,
@@ -46,11 +46,34 @@ import static com.telenav.kivakit.network.http.HttpStatus.*;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings({ "unused" })
-@OpenApiIncludeType(
-        description = "An error description, including a hierarchical error code, an error type and a message")
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
+@OpenApiType
+    (
+        """
+            description: "Error information, including a message, hierarchical error code, error type and HTTP status code"
+            properties:
+              httpStatus:
+                type: number
+                format: int32
+                description: "HTTP status code"
+              hierarchicalErrorCode:
+                type: string
+                description: "A hierarchical error code per IETF RFC 7807"
+              message:
+                type: string
+                desription: "A formatted description of the error"
+              type:
+                type: string
+                description: "The message type such as Problem or Warning"
+            example:
+              httpStatus: 401
+              hierarchicalErrorCode: "errors/authentication/incorrect-password"
+              message: "Invalid password"
+              type: "Problem"
+            """
+    )
 public class MicroservletError
 {
     /**
@@ -76,9 +99,9 @@ public class MicroservletError
             }
 
             return new MicroservletError(httpStatus,
-                    statusMessage.code(),
-                    statusMessage.getClass().getSimpleName(),
-                    statusMessage.formatted());
+                statusMessage.code(),
+                statusMessage.getClass().getSimpleName(),
+                statusMessage.formatted());
         }
 
         return null;
@@ -87,27 +110,17 @@ public class MicroservletError
     /** HTTP status code for this error */
     private final transient HttpStatus httpStatus;
 
-    /** Hierarchical error code per IETF RFC 7807. For example, "errors/authentication/incorrect-password". */
-    @OpenApiIncludeMember(description = "A hierarchical error code per IETF RFC 7807",
-                          example = "errors/authentication/my-error",
-                          required = false)
+    /** Hierarchical error code per IETF RFC 7807 */
     @Expose
     private final String hierarchicalErrorCode;
 
-    /**
-     * Details of the problem
-     */
-    @OpenApiIncludeMember(description = "A formatted description of the error",
-                          example = "This is a description of the problem that occurred")
+    /** Details of the problem */
     @Expose
     private final String message;
 
     /**
      * The type of error, such as Problem, Warning or Alert.
      */
-    @OpenApiIncludeMember(
-            description = "The message type such as Problem or Warning. Used by the microservice REST client and can be ignored",
-            example = "Problem")
     @Expose
     private final String type;
 
@@ -120,7 +133,9 @@ public class MicroservletError
      * @param message The message
      * @param arguments Any arguments to use when formatting the message
      */
-    protected MicroservletError(HttpStatus httpStatus, String hierarchicalErrorCode, String type, String message,
+    protected MicroservletError(HttpStatus httpStatus,
+                                String hierarchicalErrorCode,
+                                String type, String message,
                                 Object... arguments)
     {
         this.httpStatus = httpStatus;

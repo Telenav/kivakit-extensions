@@ -1,4 +1,4 @@
-package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.v2;
+package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.messaging.Listener;

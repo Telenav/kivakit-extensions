@@ -1,12 +1,14 @@
-package com.telenav.kivakit.data.formats.yaml;
+package com.telenav.kivakit.data.formats.yaml.tree;
 
+import com.telenav.kivakit.data.formats.yaml.tree.YamlBlock;
+import com.telenav.kivakit.data.formats.yaml.tree.YamlScalar;
 import com.telenav.kivakit.testing.UnitTest;
 import org.junit.Test;
 
 import static com.telenav.kivakit.data.formats.yaml.Yaml.yaml;
-import static com.telenav.kivakit.data.formats.yaml.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.YamlLiteral.literal;
-import static com.telenav.kivakit.data.formats.yaml.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlBlock.block;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlLiteral.literal;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
 
 public class YamlBlockTest extends UnitTest
 {

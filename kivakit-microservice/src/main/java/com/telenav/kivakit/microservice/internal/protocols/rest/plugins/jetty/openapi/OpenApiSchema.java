@@ -1,6 +1,6 @@
-package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.v2;
+package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
-import com.telenav.kivakit.data.formats.yaml.YamlBlock;
+import com.telenav.kivakit.data.formats.yaml.tree.YamlBlock;
 
 public class OpenApiSchema
 {

@@ -1,4 +1,6 @@
-package com.telenav.kivakit.data.formats.yaml;
+package com.telenav.kivakit.data.formats.yaml.tree;
+
+import com.telenav.kivakit.data.formats.yaml.Yaml;
 
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.data.formats.yaml.Yaml.yaml;

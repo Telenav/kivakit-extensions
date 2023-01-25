@@ -28,7 +28,6 @@ import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
 import com.telenav.kivakit.serialization.gson.GsonFactory;
 import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 
@@ -180,7 +179,6 @@ public interface Restful extends Component
      * Returns the version of the microservice that is responding to a request
      */
     @FormatProperty
-    @OpenApiIncludeMember(title = "Version", description = "The microservice version")
     default Version version()
     {
         return microservice().version();

@@ -1,15 +1,15 @@
-package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.v2;
+package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.map.StringMap;
 import com.telenav.kivakit.data.formats.yaml.reader.YamlReader;
+import com.telenav.kivakit.microservice.microservlet.MicroservletError;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
 import com.telenav.kivakit.resource.ResourceFolder;
 import com.telenav.kivakit.resource.resources.StringResource;
 
-import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.resource.Extension.YAML;
 import static com.telenav.kivakit.resource.Extension.YML;
 
@@ -20,6 +20,7 @@ public class OpenApiSchemas extends BaseComponent
     public OpenApiSchemas()
     {
         add("servers", require(RestService.class).getClass());
+        add("error", MicroservletError.class);
     }
 
     public OpenApiSchemas add(Class<?> type)
@@ -64,7 +65,7 @@ public class OpenApiSchemas extends BaseComponent
 
     public ObjectList<OpenApiSchema> schemas()
     {
-        return list(schemas.values());
+        return ObjectList.list(schemas.values());
     }
 
     private OpenApiSchemas add(String name, Class<?> type)

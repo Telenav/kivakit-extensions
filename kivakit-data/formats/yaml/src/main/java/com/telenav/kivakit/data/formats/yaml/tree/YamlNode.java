@@ -1,5 +1,6 @@
-package com.telenav.kivakit.data.formats.yaml;
+package com.telenav.kivakit.data.formats.yaml.tree;
 
+import com.telenav.kivakit.data.formats.yaml.Yaml;
 import com.telenav.kivakit.interfaces.naming.Named;
 
 public abstract class YamlNode implements Named

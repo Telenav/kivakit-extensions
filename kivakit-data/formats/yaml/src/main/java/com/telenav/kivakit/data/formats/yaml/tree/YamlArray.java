@@ -1,6 +1,7 @@
-package com.telenav.kivakit.data.formats.yaml;
+package com.telenav.kivakit.data.formats.yaml.tree;
 
 import com.telenav.kivakit.core.collections.list.ObjectList;
+import com.telenav.kivakit.data.formats.yaml.Yaml;
 
 public class YamlArray extends YamlNode
 {

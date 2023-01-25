@@ -1,41 +1,17 @@
-package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.v2.sections;
+package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections;
 
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.messaging.listeners.MessageList;
-import com.telenav.kivakit.data.formats.yaml.YamlBlock;
-import com.telenav.kivakit.data.formats.yaml.YamlNode;
+import com.telenav.kivakit.data.formats.yaml.tree.YamlBlock;
+import com.telenav.kivakit.data.formats.yaml.tree.YamlNode;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedMicroservlet;
+import com.telenav.kivakit.microservice.microservlet.MicroservletError;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
-import static com.telenav.kivakit.data.formats.yaml.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlBlock.block;
+import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
 
-/**
- * <pre>
- *
- *     post:
- *       summary: Creates a user.
- *       requestBody:
- *         required: true
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 username:
- *                   type: string
- *
- *       responses:
- *         '200':
- *           description: OK
- *           content:
- *             application/json:
- *               schema:
- *                 $ref: '#/components/schemas/User'
- * </pre>
- */
-public class Paths extends BaseComponent
+public class OpenApiPaths extends BaseComponent
 {
     public YamlNode yaml()
     {
@@ -99,6 +75,6 @@ public class Paths extends BaseComponent
             .with(block("'200'")
                 .with(content(responseType)))
             .with(block("'500'")
-                .with(content(MessageList.class)));
+                .with(content(MicroservletError.class)));
     }
 }
