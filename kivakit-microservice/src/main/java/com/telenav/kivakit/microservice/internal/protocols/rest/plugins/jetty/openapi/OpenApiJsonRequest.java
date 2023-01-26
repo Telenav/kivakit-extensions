@@ -40,7 +40,7 @@ public class OpenApiJsonRequest extends BaseMicroservletRequest
 
         public JettyOpenApiResponse(Listener listener)
         {
-            api = new OpenApiBuilder().build().asYaml().toString();
+            api = new OpenApiBuilder().buildYaml().toString();
         }
 
         @Override

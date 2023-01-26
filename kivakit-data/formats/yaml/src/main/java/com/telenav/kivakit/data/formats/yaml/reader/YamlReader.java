@@ -1,19 +1,19 @@
 package com.telenav.kivakit.data.formats.yaml.reader;
 
-import com.telenav.kivakit.data.formats.yaml.tree.YamlArray;
-import com.telenav.kivakit.data.formats.yaml.tree.YamlBlock;
-import com.telenav.kivakit.data.formats.yaml.tree.YamlLiteral;
-import com.telenav.kivakit.data.formats.yaml.tree.YamlNode;
-import com.telenav.kivakit.data.formats.yaml.tree.YamlScalar;
+import com.telenav.kivakit.data.formats.yaml.model.YamlArray;
+import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
+import com.telenav.kivakit.data.formats.yaml.model.YamlLiteral;
+import com.telenav.kivakit.data.formats.yaml.model.YamlNode;
+import com.telenav.kivakit.data.formats.yaml.model.YamlScalar;
 import com.telenav.kivakit.resource.Resource;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.array;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlLiteral.literal;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
-import static com.telenav.kivakit.data.formats.yaml.tree.YamlArray.array;
-import static com.telenav.kivakit.data.formats.yaml.tree.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.tree.YamlLiteral.literal;
-import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
 
 /**
  * A limited structured YAML reader, supporting blocks, literals, scalars and arrays.
@@ -111,16 +111,25 @@ import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
         // ensure it has more input,
         ensure(in.hasMore());
 
-        // and that the input is either labeled or we're at the document level (which can be an unlabeled array),
+        // and that the input is either labeled or we're at the document level (which can be an unlabeled array).
         ensure(labeled || in.isAtStartOfInput());
 
-        // then create the array,
+        // Save the indent level of the block.
+        var blockIndent = in.indentLevel();
+
+        // Create an array,
         var array = labeled
             ? array(in.read().label())
             : array();
 
+        // and if it's labeled,
+        if (labeled)
+        {
+            // increase the block indent level, because the block is indented one.
+            blockIndent++;
+        }
+
         // and loop as long as we have input at the same indent level.
-        var blockIndent = in.indentLevel();
         while (in.hasMore() && in.indentLevel() == blockIndent)
         {
             // If the next node is an array element,
@@ -132,7 +141,7 @@ import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
             else
             {
                 // otherwise, we are looking at an (unlabeled) block element.
-                array = array.with(readArrayElementBlock(in));
+                array = array.with(readArrayBlock(in));
             }
         }
 
@@ -145,7 +154,7 @@ import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
      * @param in The input
      * @return The {@link YamlBlock}
      */
-    private YamlBlock readArrayElementBlock(YamlInput in)
+    private YamlBlock readArrayBlock(YamlInput in)
     {
         // Make sure that there's more input,
         ensure(in.hasMore());
@@ -156,15 +165,24 @@ import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
         // and we're looking at an array element.
         ensure(in.current().isArrayElement());
 
+        // Save the indent level of the block.
+        var blockIndent = in.indentLevel();
+
         // Create the unlabeled block,
         var block = block();
 
-        // then loop through elements at the same indent level,
-        var blockIndent = in.indentLevel();
+        // then loop through elements at the same indent level or higher,
         while (in.hasMore() && in.indentLevel() == blockIndent)
         {
             // adding each element to the array element block.
             block = block.with(read(in));
+
+            // If we are not at the end of input, and we are looking at the next array element,
+            if (!in.hasMore() || in.current().isArrayElement())
+            {
+                // then return the finished block.
+                return block;
+            }
         }
 
         return block;
@@ -185,30 +203,25 @@ import static com.telenav.kivakit.data.formats.yaml.tree.YamlScalar.scalar;
         // ensure we have more input,
         ensure(in.hasMore());
 
-        // and that we are either a labeled block or we are the document top-level block.
+        // and that we are either at a labeled block or the document block.
         ensure(labeled || in.isAtStartOfInput());
+
+        // Save the indent level of the block.
+        var blockIndent = in.indentLevel();
 
         // Create a block,
         var block = labeled
-            ? block(in.current().label())
+            ? block(in.read().label())
             : block();
 
         // and if it's labeled,
         if (labeled)
         {
-            // skip the label,
-            in.read();
-
-            // and if the content is another label,
-            if (in.current().isLabel())
-            {
-                // then simply read that block or array.
-                return block.with(read(in));
-            }
+            // increase the block indent level, because the block is indented one.
+            blockIndent++;
         }
 
         // While we have more input at the same indent level,
-        var blockIndent = in.indentLevel();
         while (in.hasMore() && in.indentLevel() == blockIndent)
         {
             // add the next element to the block.

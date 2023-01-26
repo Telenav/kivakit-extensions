@@ -1,9 +1,4 @@
-package com.telenav.kivakit.data.formats.yaml.tree;
-
-import com.telenav.kivakit.data.formats.yaml.Yaml;
-
-import static com.telenav.kivakit.core.ensure.Ensure.fail;
-import static com.telenav.kivakit.data.formats.yaml.Yaml.yaml;
+package com.telenav.kivakit.data.formats.yaml.model;
 
 public class YamlScalar extends YamlNode
 {
@@ -50,30 +45,6 @@ public class YamlScalar extends YamlNode
         this.string = null;
         this.number = null;
         this.truth = value;
-    }
-
-    @Override
-    public YamlScalar arrayElement(boolean arrayElement)
-    {
-        return (YamlScalar) super.arrayElement(arrayElement);
-    }
-
-    @Override
-    public Yaml asYaml()
-    {
-        if (isNumber())
-        {
-            return yaml().withScalar(label(), number);
-        }
-        if (isBoolean())
-        {
-            return yaml().withScalar(label(), truth);
-        }
-        if (isString())
-        {
-            return yaml().withScalar(label(), string);
-        }
-        return fail("Internal error");
     }
 
     public boolean isBoolean()

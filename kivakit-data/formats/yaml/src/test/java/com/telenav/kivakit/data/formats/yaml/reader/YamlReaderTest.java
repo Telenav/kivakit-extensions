@@ -1,24 +1,24 @@
 package com.telenav.kivakit.data.formats.yaml.reader;
 
-import com.telenav.kivakit.testing.UnitTest;
+import com.telenav.kivakit.data.formats.yaml.BaseYamlTest;
 import org.junit.Test;
 
-public class YamlReaderTest extends UnitTest
+public class YamlReaderTest extends BaseYamlTest
 {
     @Test
     public void testRead()
     {
+        testRead("Servers.yml");
+        testRead("LocationArray.yml");
         testRead("Location.yml");
         testRead("Distance.yml");
-        testRead("Servers.yml");
         testRead("Rectangle.yml");
-        testRead("LocationArray.yml");
     }
 
     private void testRead(String name)
     {
-        var yaml = packageResource(name);
+        var yaml = packageResource("resources/" + name);
         var node = new YamlReader().read(yaml);
-        ensureEqual(node.asYaml().toString().trim(), yaml.readText().trim());
+        ensureEqual(node.toString().trim(), yaml.readText().trim());
     }
 }

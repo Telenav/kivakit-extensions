@@ -1,10 +1,10 @@
 package com.telenav.kivakit.data.formats.yaml.reader;
 
-import com.telenav.kivakit.testing.UnitTest;
+import com.telenav.kivakit.data.formats.yaml.BaseYamlTest;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
 
-public class YamlInputTest extends UnitTest
+public class YamlInputTest extends BaseYamlTest
 {
     /**
      * <pre>
@@ -31,25 +31,37 @@ public class YamlInputTest extends UnitTest
     @Test
     public void testArrayIndentLevels()
     {
-        var indents = new int[]
+        checkIndents("ArrayIndentTest.yml", new int[]
             {
                 0, 0, 0, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 3, 3, 3
-            };
-        var in = new YamlInput(packageResource("ArrayIndentTest.yml"));
-        while (in.hasMore())
-        {
-            var next = in.read();
-            var indentLevel = next.indentLevel();
-            var lineNumber = next.lineNumber();
-            ensure(indentLevel == indents[lineNumber - 1],
-                "Indentation level $ wrong at line $: $: $", indentLevel, lineNumber, next.label(), next.text());
-        }
+            });
+    }
+
+    /**
+     * <pre>
+     * 00 0 type: object
+     * 01 0 description: "A location on the surface of the Earth"
+     * 02 0 properties:
+     * 03 1   latitude:
+     * 04 2     type: double
+     * 05 2     description: "Latitude in degrees"
+     * 06 1   longitude:
+     * 07 2     type: double
+     * 08 2     description: "Longitude in degrees" </pre>
+     */
+    @Test
+    public void testLocationIndentLevels()
+    {
+        checkIndents("Location.yml", new int[]
+            {
+                0, 0, 0, 1, 2, 2, 1, 2, 2
+            });
     }
 
     @Test
     public void testNext()
     {
-        var in = input();
+        var in = distanceInput();
         {
             ensure(in.current().isLiteral());
             ensure(in.lookahead().isString());
@@ -116,8 +128,21 @@ public class YamlInputTest extends UnitTest
     @Test
     public void testSize()
     {
-        var input = input();
+        var input = distanceInput();
         ensure(input.size() == 6);
+    }
+
+    private void checkIndents(String path, int[] indents)
+    {
+        var in = new YamlInput(packageResource("resources/" + path));
+        while (in.hasMore())
+        {
+            var next = in.read();
+            var indentLevel = next.indentLevel();
+            var lineNumber = next.lineNumber();
+            ensure(indentLevel == indents[lineNumber - 1],
+                "Indentation level $ wrong at line $: $: $", indentLevel, lineNumber, next.label(), next.text());
+        }
     }
 
     /**
@@ -131,8 +156,8 @@ public class YamlInputTest extends UnitTest
      * </pre>
      */
     @NotNull
-    private YamlInput input()
+    private YamlInput distanceInput()
     {
-        return new YamlInput(packageResource("Distance.yml"));
+        return new YamlInput(packageResource("resources/Distance.yml"));
     }
 }

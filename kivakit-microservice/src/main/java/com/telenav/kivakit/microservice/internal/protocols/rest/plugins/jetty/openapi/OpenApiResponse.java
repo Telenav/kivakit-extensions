@@ -15,7 +15,7 @@ public class OpenApiResponse extends BaseMicroservletResponse implements Microse
 
     public OpenApiResponse(Listener listener)
     {
-        api = listener.listenTo(new OpenApiBuilder()).build().toString();
+        api = listener.listenTo(new OpenApiBuilder()).buildYaml().toString();
     }
 
     @Override
