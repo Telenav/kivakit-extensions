@@ -47,7 +47,7 @@ public class YamlArray extends YamlNode
 
         for (var node : nodes)
         {
-            yaml = yaml.withBlock(node.asYaml().asArray());
+            yaml = yaml.withBlock(node.asYaml());
         }
 
         return yaml.outdented();
