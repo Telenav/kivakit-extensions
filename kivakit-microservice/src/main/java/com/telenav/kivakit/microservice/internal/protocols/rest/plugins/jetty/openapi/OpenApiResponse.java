@@ -3,12 +3,12 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.o
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceYamlSource;
 
 /**
  * Response to OpenAPI request
  */
-public class OpenApiResponse extends BaseMicroservletResponse implements MicroserviceGsonObjectSource
+public class OpenApiResponse extends BaseMicroservletResponse implements MicroserviceYamlSource
 {
     @Expose
     private final String api;
@@ -19,7 +19,7 @@ public class OpenApiResponse extends BaseMicroservletResponse implements Microse
     }
 
     @Override
-    public Object gsonObject()
+    public String yaml()
     {
         return api;
     }

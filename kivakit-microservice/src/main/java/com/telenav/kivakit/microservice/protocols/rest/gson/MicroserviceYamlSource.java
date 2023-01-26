@@ -3,8 +3,8 @@ package com.telenav.kivakit.microservice.protocols.rest.gson;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
@@ -16,10 +16,10 @@ import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
-public interface MicroserviceGsonObjectSource
+public interface MicroserviceYamlSource
 {
     /**
      * Returns a gson object
      */
-    Object gsonObject();
+    String yaml();
 }

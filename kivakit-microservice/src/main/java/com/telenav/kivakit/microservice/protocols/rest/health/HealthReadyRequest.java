@@ -29,7 +29,6 @@ import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @OpenApiType
     (
         """
-            type: object
             description: "Request for server readiness"
                 """
     )
@@ -41,7 +40,6 @@ public class HealthReadyRequest extends BaseMicroservletRequest
     @OpenApiType
         (
             """
-                type: object
                 description: "Response to a health readiness request"
                 properties:
                   status:

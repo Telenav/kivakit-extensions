@@ -49,6 +49,13 @@ public class YamlArray extends YamlNode
         return elements.get(index);
     }
 
+    public YamlArray prepending(YamlNode element)
+    {
+        var copy = copy();
+        copy.elements.add(0, element);
+        return copy;
+    }
+
     public int size()
     {
         return elements.size();

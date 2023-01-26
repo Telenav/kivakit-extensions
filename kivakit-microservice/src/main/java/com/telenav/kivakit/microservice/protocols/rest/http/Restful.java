@@ -27,7 +27,7 @@ import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceGsonObjectSource;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceYamlSource;
 import com.telenav.kivakit.serialization.gson.GsonFactory;
 import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 
@@ -162,17 +162,7 @@ public interface Restful extends Component
      */
     default JsonElement toJson(Object response)
     {
-        // We will serialize the response object itself by default.
-        var objectToSerialize = response;
-
-        // If the response object provides another object to serialize,
-        if (response instanceof MicroserviceGsonObjectSource)
-        {
-            // then make that the object to serialize.
-            objectToSerialize = ((MicroserviceGsonObjectSource) response).gsonObject();
-        }
-
-        return gson(response).toJsonTree(objectToSerialize);
+        return gson(response).toJsonTree(response);
     }
 
     /**

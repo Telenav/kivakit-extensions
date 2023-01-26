@@ -3,12 +3,13 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 import com.google.gson.annotations.Expose;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.ObjectFormatter;
-import com.telenav.kivakit.core.string.Strip;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceYamlSource;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
@@ -21,6 +22,8 @@ import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SER
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.string.Strip.stripLeading;
+import static com.telenav.kivakit.core.string.Strip.stripTrailing;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static com.telenav.kivakit.network.http.HttpStatus.OK;
@@ -56,8 +59,9 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
              testing = UNTESTED,
              documentation = DOCUMENTED,
              audience = AUDIENCE_SERVICE_PROVIDER)
-public final class JettyRestResponse extends BaseComponent
-    implements RestResponse
+public final class JettyRestResponse extends BaseComponent implements
+    RestResponse,
+    TryTrait
 {
     /** The request cycle to which this response belongs */
     @UmlAggregation
@@ -132,16 +136,18 @@ public final class JettyRestResponse extends BaseComponent
     @Override
     public void writeResponse(MicroservletResponse response)
     {
-        // Validate the response
+        // If there is a response,
         if (response != null)
         {
-            // and if the response is invalid (any problems go into the response object),
+            // and it is valid (any problems go into the response object),
             if (response.isValid(response))
             {
+                // get the response type,
                 var responseType = cycle.restRequest()
                     .parameters()
                     .getOrDefault("response-type", "always-okay");
 
+                // set the status accordingly,
                 switch (responseType)
                 {
                     case "http-status" -> httpStatus(errors.httpStatus());
@@ -150,47 +156,56 @@ public final class JettyRestResponse extends BaseComponent
                         problem(BAD_REQUEST, "Response-type must be 'http-status', or 'always-okay', if not omitted");
                 }
 
-                writeJson(response);
+                // and return the response content.
+                writeContent(response);
             }
             else
             {
-                // then transmit a problem message.
+                // otherwise, the response is invalid.
                 problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
             }
         }
         else
         {
-            problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is invalid");
+            problem(INTERNAL_SERVER_ERROR, "Internal error: Response object is missing");
         }
     }
 
     private String stripBrackets(String json)
     {
-        json = Strip.stripLeading(json, "{");
-        return Strip.stripTrailing(json, "}");
+        return stripTrailing(stripLeading(json, "{"), "}");
     }
 
-    private void writeJson(MicroservletResponse response)
+    private void writeContent(MicroservletResponse response)
     {
-        var gson = gson(response);
-
-        var responseJson = toJson(response);
-        var errorsJson = toJson(errors);
-
-        try
+        tryCatch(() ->
         {
-            // Set the header to signal JSON content,
-            httpResponse.setContentType("application/json");
+            // If the response object provides YAML,
+            if (response instanceof MicroserviceYamlSource yamlSource)
+            {
+                // set the content type,
+                httpResponse.setContentType("text/yaml");
 
-            // then send the JSON to the servlet output stream.
-            var out = httpResponse.getOutputStream();
-            out.println(stripBrackets(gson.toJson(responseJson)));
-            out.println(",");
-            out.println(stripBrackets(gson.toJson(errors)));
-        }
-        catch (Exception e)
-        {
-            problem(e, "Unable to write response to servlet output stream");
-        }
+                // and send the YAML.
+                var out = httpResponse.getOutputStream();
+                out.println(yamlSource.yaml());
+            }
+            else
+            {
+                // otherwise, turn the response into JSON,
+                var gson = gson(response);
+                var responseJson = toJson(response);
+                var errorsJson = toJson(errors);
+
+                // set the content type,
+                httpResponse.setContentType("application/json");
+
+                // and send the JSON to the servlet output stream.
+                var out = httpResponse.getOutputStream();
+                out.println(stripBrackets(gson.toJson(responseJson)));
+                out.println(",");
+                out.println(stripBrackets(gson.toJson(errors)));
+            }
+        }, "Unable to write content response");
     }
 }

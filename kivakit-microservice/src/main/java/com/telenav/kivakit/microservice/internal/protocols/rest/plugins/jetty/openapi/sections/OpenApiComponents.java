@@ -22,11 +22,11 @@ public class OpenApiComponents
 
     private YamlBlock schemas()
     {
-        var result = block("schemas");
-        for (var schema : schemas.schemas())
+        var block = block("schemas");
+        for (var schema : schemas.schemas().sorted())
         {
-            result = result.with(schema.yaml());
+            block = block.with(schema.yaml());
         }
-        return result;
+        return block;
     }
 }

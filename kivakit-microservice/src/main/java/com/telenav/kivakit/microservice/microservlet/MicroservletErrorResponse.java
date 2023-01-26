@@ -50,7 +50,6 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
 @OpenApiType
     (
         """
-            type: object
             description: "Error portion of response"
             properties:
               errors:

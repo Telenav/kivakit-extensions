@@ -5,11 +5,12 @@ import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.map.StringMap;
 import com.telenav.kivakit.data.formats.yaml.reader.YamlReader;
 import com.telenav.kivakit.microservice.microservlet.MicroservletError;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
 import com.telenav.kivakit.resource.ResourceFolder;
-import com.telenav.kivakit.resource.resources.StringResource;
 
+import java.util.Collection;
+
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.resource.Extension.YAML;
 import static com.telenav.kivakit.resource.Extension.YML;
 
@@ -19,13 +20,12 @@ public class OpenApiSchemas extends BaseComponent
 
     public OpenApiSchemas()
     {
-        add("servers", require(RestService.class).getClass());
-        add("error", MicroservletError.class);
+        add(OpenApiSchema.schema(MicroservletError.class));
     }
 
     public OpenApiSchemas add(Class<?> type)
     {
-        return add(type.getSimpleName(), type);
+        return add(OpenApiSchema.schema(type));
     }
 
     public OpenApiSchemas add(ResourceFolder<?> folder)
@@ -36,14 +36,30 @@ public class OpenApiSchemas extends BaseComponent
             // parse it as a YAML block
             var block = new YamlReader().read(resource);
             var name = resource.fileName().name();
-            add(new OpenApiSchema(name, block));
+            add(OpenApiSchema.schema(name, block));
         }
         return this;
     }
 
     public OpenApiSchemas add(OpenApiSchema schema)
     {
-        schemas.put(schema.name(), schema);
+        ensureNotNull(schema, "Null schema");
+        ensureNotNull(schema.yaml(), "Schema $ has no yaml", schema.name());
+
+        if (schema.yaml().isNamed())
+        {
+            schemas.put(schema.name(), schema);
+        }
+        else
+        {
+            fail("Unnamed schema: $", schema.yaml());
+        }
+        return this;
+    }
+
+    public OpenApiSchemas addAll(Collection<OpenApiSchema> schemas)
+    {
+        schemas.forEach(this::add);
         return this;
     }
 
@@ -53,7 +69,7 @@ public class OpenApiSchemas extends BaseComponent
         var schema = schema(name);
         if (schema == null)
         {
-            add(name, type);
+            add(type);
         }
         return schema(name);
     }
@@ -66,17 +82,5 @@ public class OpenApiSchemas extends BaseComponent
     public ObjectList<OpenApiSchema> schemas()
     {
         return ObjectList.list(schemas.values());
-    }
-
-    private OpenApiSchemas add(String name, Class<?> type)
-    {
-        var annotation = type.getAnnotation(OpenApiType.class);
-        if (annotation != null)
-        {
-            var text = annotation.value();
-            var block = new YamlReader().read(new StringResource(text));
-            add(new OpenApiSchema(name, block));
-        }
-        return this;
     }
 }

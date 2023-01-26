@@ -6,8 +6,13 @@ import com.telenav.kivakit.data.formats.yaml.model.YamlLiteral;
 import com.telenav.kivakit.data.formats.yaml.model.YamlNode;
 import com.telenav.kivakit.data.formats.yaml.model.YamlScalar;
 import com.telenav.kivakit.resource.Resource;
+import com.telenav.kivakit.resource.resources.StringResource;
+
+import java.lang.annotation.Annotation;
+import java.util.function.Function;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.array;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
@@ -36,6 +41,27 @@ import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
  */
 @SuppressWarnings("DuplicatedCode") public class YamlReader
 {
+    /**
+     * Reads a {@link YamlNode} from the given annotation on the given type
+     *
+     * @param type The type
+     * @param annotationType The annotation
+     * @param toText A callback to convert the annotation to text
+     * @return The {@link YamlNode} from the annotated type
+     */
+    public static <T extends Annotation> YamlNode readYamlAnnotation(Class<?> type,
+                                                                     Class<T> annotationType,
+                                                                     Function<T, String> toText)
+    {
+        var annotation = ensureNotNull(type).getAnnotation(annotationType);
+        if (annotation != null)
+        {
+            var text = toText.apply(annotation);
+            return new YamlReader().read(new YamlInput(new StringResource(text)));
+        }
+        return null;
+    }
+
     /**
      * Reads the given resource, returning the root node of a YAML tree.
      *

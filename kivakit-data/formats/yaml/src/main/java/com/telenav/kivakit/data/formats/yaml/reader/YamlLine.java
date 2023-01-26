@@ -8,12 +8,14 @@ import java.util.regex.Pattern;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.string.AsciiArt.repeat;
+import static com.telenav.kivakit.core.string.Strings.isNaturalNumber;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLANK;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.COMMENT;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_NUMBER;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_STRING;
 import static java.lang.Double.parseDouble;
+import static java.lang.Long.parseLong;
 import static java.util.regex.Pattern.compile;
 
 public class YamlLine implements TryCatchTrait
@@ -26,7 +28,7 @@ public class YamlLine implements TryCatchTrait
 
     private static final Pattern SCALAR_STRING_PATTERN = compile(LABEL + "\\s+\"(?<string>.*)\"");
 
-    private static final Pattern SCALAR_NUMBER_PATTERN = compile(LABEL + "\\s+(?<number>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+))");
+    private static final Pattern SCALAR_NUMBER_PATTERN = compile(LABEL + "\\s+(?<number>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)");
 
     private static final Pattern LITERAL_PATTERN = compile(LABEL + "\\s+(?<literal>[a-zA-Z0-9_]+)");
 
@@ -251,7 +253,15 @@ public class YamlLine implements TryCatchTrait
                     {
                         type = SCALAR_NUMBER;
                         extractLabel(matcher);
-                        number = parseDouble(matcher.group("number"));
+                        var numberString = matcher.group("number");
+                        if (isNaturalNumber(numberString))
+                        {
+                            number = parseLong(numberString);
+                        }
+                        else
+                        {
+                            number = parseDouble(numberString);
+                        }
                     }
                 }
 

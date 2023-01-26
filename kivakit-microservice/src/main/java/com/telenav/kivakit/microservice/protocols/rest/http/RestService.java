@@ -290,7 +290,7 @@ public abstract class RestService extends BaseComponent implements Initializable
                     @Override
                     public String description()
                     {
-                        return format("KivaKit microservlet request handler for ${class}", requestType());
+                        return format("Handles ${class} requests", requestType());
                     }
 
                     @Override
