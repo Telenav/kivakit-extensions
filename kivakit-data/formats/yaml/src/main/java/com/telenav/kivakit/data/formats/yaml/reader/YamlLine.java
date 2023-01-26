@@ -1,35 +1,40 @@
 package com.telenav.kivakit.data.formats.yaml.reader;
 
-import com.telenav.kivakit.core.string.AsciiArt;
+import com.telenav.kivakit.core.language.trait.TryCatchTrait;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.string.AsciiArt.repeat;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLANK;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.COMMENT;
-import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LABEL;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_NUMBER;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_STRING;
 import static java.lang.Double.parseDouble;
 import static java.util.regex.Pattern.compile;
 
-public class YamlLine
+public class YamlLine implements TryCatchTrait
 {
-    private static final Pattern LABEL_PATTERN = compile("(?<label>[a-zA-Z]+):\\s*");
+    private static final String ARRAY_ELEMENT = "(?<isArrayElement>\\s*-\\s+)?";
 
-    private static final Pattern SCALAR_STRING_PATTERN = compile("(?<label>[a-zA-Z]+):\\s+\"(?<string>.*)\"");
+    private static final String LABEL = ARRAY_ELEMENT + "(?<label>[a-zA-Z0-9_]+):";
 
-    private static final Pattern SCALAR_NUMBER_PATTERN = compile("(?<label>[a-zA-Z]+):\\s+(?<number>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+))");
+    private static final Pattern LABEL_PATTERN = compile(LABEL + "\\s*");
 
-    private static final Pattern LITERAL_PATTERN = compile("(?<label>[a-zA-Z]+):\\s+(?<literal>[a-zA-Z]+)");
+    private static final Pattern SCALAR_STRING_PATTERN = compile(LABEL + "\\s+\"(?<string>.*)\"");
+
+    private static final Pattern SCALAR_NUMBER_PATTERN = compile(LABEL + "\\s+(?<number>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+))");
+
+    private static final Pattern LITERAL_PATTERN = compile(LABEL + "\\s+(?<literal>[a-zA-Z0-9_]+)");
 
     /** The line */
     private final String line;
 
     /** The indent level of the line */
-    private final int indentLevel;
+    private final int rawIndentLevel;
 
     /** The ordinal of the line, not including comments */
     private int ordinal;
@@ -50,12 +55,15 @@ public class YamlLine
     private YamlLineType type;
 
     /** True if this line is a list element */
-    private boolean isListElement;
+    private boolean isArrayElement;
+
+    /** Any outdent adjustment to the indent level */
+    private int indentLevel;
 
     public YamlLine(String line)
     {
         // Get the indent level of the line,
-        this.indentLevel = indentLevel(line);
+        this.rawIndentLevel = indentLevel = indentLevel(line);
 
         // then trim it.
         line = line.trim();
@@ -67,6 +75,11 @@ public class YamlLine
     public int indentLevel()
     {
         return indentLevel;
+    }
+
+    public boolean isArrayElement()
+    {
+        return isArrayElement;
     }
 
     public boolean isBlank()
@@ -81,12 +94,7 @@ public class YamlLine
 
     public boolean isLabel()
     {
-        return type == LABEL;
-    }
-
-    public boolean isArrayElement()
-    {
-        return isListElement;
+        return type == YamlLineType.LABEL;
     }
 
     public boolean isLiteral()
@@ -134,23 +142,37 @@ public class YamlLine
         return ordinal;
     }
 
+    public void outdent(int levels)
+    {
+        indentLevel -= levels;
+    }
+
+    public int rawIndentLevel()
+    {
+        return rawIndentLevel;
+    }
+
     public String string()
     {
         return string;
     }
 
-    @Override
-    public String toString()
+    public String text()
     {
-        var text = switch (type)
+        return switch (type)
             {
                 case SCALAR_STRING -> "\"" + string() + "\"";
                 case SCALAR_NUMBER -> number.toString();
                 case LITERAL -> string();
                 default -> "";
             };
-        var indent = AsciiArt.repeat(indentLevel, "  ");
-        return String.format("%d%16s %s%s: %s", lineNumber, type, indent, label(), text);
+    }
+
+    @Override
+    public String toString()
+    {
+        var indent = repeat(rawIndentLevel, "  ");
+        return String.format("%d%16s %s%s: %s", lineNumber, type, indent, label(), text());
     }
 
     public YamlLineType type()
@@ -170,6 +192,13 @@ public class YamlLine
         return this;
     }
 
+    private void extractLabel(Matcher matcher)
+    {
+        var isArrayElement = matcher.group("isArrayElement");
+        this.isArrayElement = isArrayElement != null && isArrayElement.trim().equals("-");
+        label = matcher.group("label");
+    }
+
     private int indentLevel(String line)
     {
         var spaces = line.length() - line.stripLeading().length();
@@ -179,77 +208,72 @@ public class YamlLine
 
     private void parseLine(String line)
     {
-        // If the line starts with '#',
-        if (line.isBlank())
+        tryCatchRethrow(() ->
         {
-            type = BLANK;
-        }
-        else if (line.startsWith("#"))
-        {
-            // it is a comment.
-            type = COMMENT;
-        }
-        else
-        {
-            // If the line starts with a '-',
-            if (line.startsWith("-"))
+            // If the line starts with '#',
+            if (line.isBlank())
             {
-                // the line is a list element.
-                line = line.substring(1).trim();
-                isListElement = true;
+                type = BLANK;
             }
-
-            // If the line is a stand-alone label,
-            var matcher = LABEL_PATTERN.matcher(line);
-            if (matcher.matches())
+            else if (line.startsWith("#"))
             {
-                // make a note of that,
-                type = LABEL;
-                label = matcher.group("label");
+                // it is a comment.
+                type = COMMENT;
             }
-
-            // then check for a scalar string,
-            if (type == null)
+            else
             {
-                matcher = SCALAR_STRING_PATTERN.matcher(line);
+                // If the line is a stand-alone label,
+                var matcher = LABEL_PATTERN.matcher(line);
                 if (matcher.matches())
                 {
-                    type = SCALAR_STRING;
-                    label = matcher.group("label");
-                    string = matcher.group("string");
+                    // make a note of that,
+                    type = YamlLineType.LABEL;
+                    extractLabel(matcher);
                 }
-            }
 
-            // a scalar number,
-            if (type == null)
-            {
-                matcher = SCALAR_NUMBER_PATTERN.matcher(line);
-                if (matcher.matches())
+                // then check for a scalar string,
+                if (type == null)
                 {
-                    type = SCALAR_NUMBER;
-                    label = matcher.group("label");
-                    number = parseDouble(matcher.group("number"));
+                    matcher = SCALAR_STRING_PATTERN.matcher(line);
+                    if (matcher.matches())
+                    {
+                        type = SCALAR_STRING;
+                        extractLabel(matcher);
+                        string = matcher.group("string");
+                    }
                 }
-            }
 
-            // or a literal,
-            if (type == null)
-            {
-                matcher = LITERAL_PATTERN.matcher(line);
-                if (matcher.matches())
+                // a scalar number,
+                if (type == null)
                 {
-                    type = LITERAL;
-                    label = matcher.group("label");
-                    string = matcher.group("literal");
+                    matcher = SCALAR_NUMBER_PATTERN.matcher(line);
+                    if (matcher.matches())
+                    {
+                        type = SCALAR_NUMBER;
+                        extractLabel(matcher);
+                        number = parseDouble(matcher.group("number"));
+                    }
+                }
+
+                // or a literal,
+                if (type == null)
+                {
+                    matcher = LITERAL_PATTERN.matcher(line);
+                    if (matcher.matches())
+                    {
+                        type = LITERAL;
+                        extractLabel(matcher);
+                        string = matcher.group("literal");
+                    }
+                }
+
+                // If we failed to determine the type,
+                if (type == null)
+                {
+                    // then the
+                    fail("Unrecognized YAML line syntax: $", line);
                 }
             }
-
-            // If we failed to determine the type,
-            if (type == null)
-            {
-                // then the
-                fail("Could not parse YAML: $", line);
-            }
-        }
+        }, "Unable to parse line: \"$\"", line);
     }
 }

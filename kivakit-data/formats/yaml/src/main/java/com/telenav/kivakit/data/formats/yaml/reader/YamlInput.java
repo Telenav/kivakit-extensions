@@ -1,8 +1,7 @@
 package com.telenav.kivakit.data.formats.yaml.reader;
 
-import com.telenav.kivakit.core.collections.iteration.BaseIterable;
 import com.telenav.kivakit.core.collections.list.ObjectList;
-import com.telenav.kivakit.interfaces.collection.NextIterator;
+import com.telenav.kivakit.core.collections.list.Stack;
 import com.telenav.kivakit.resource.Resource;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
@@ -15,11 +14,17 @@ public class YamlInput
     /** The index of the current line */
     private int at;
 
-    /** The current line */
+    /** The line most recently read */
     private YamlLine current;
 
-    /** The next line */
+    /** The last line read */
+    private YamlLine previous;
+
+    /** The next line that has not yet been read */
     private YamlLine lookahead;
+
+    /** True if read() has not been called yet */
+    private boolean atStartOfInput = true;
 
     /**
      * Creates YAML input from the lines in the given resource
@@ -29,51 +34,26 @@ public class YamlInput
      */
     public YamlInput(Resource resource)
     {
+        // Read all lines from the input resource,
         readLines(resource);
 
-        next();
+        // prime the lookahead value,
+        advance();
+
+        // and if there is more,
+        if (lookahead != null)
+        {
+            // then read the current value.
+            advance();
+        }
     }
 
     /**
-     * Returns the current index
+     * Returns the current index in the input
      */
     public int at()
     {
         return at;
-    }
-
-    /**
-     * Returns the sequence of lines at the current indent level or greater
-     *
-     * @return The sequence of lines in the block
-     */
-    public Iterable<YamlLine> block()
-    {
-        if (current == null && hasNext())
-        {
-            next();
-        }
-        return new BaseIterable<>()
-        {
-            @Override
-            protected NextIterator<YamlLine> newNextIterator()
-            {
-                int blockIndent = indentLevel();
-
-                return () ->
-                {
-                    // If our indent level is at least what it was when we started,
-                    if (current != null && current.indentLevel() >= blockIndent)
-                    {
-                        // then we are still in the block, so return the next line.
-                        var at = current();
-                        next();
-                        return at;
-                    }
-                    return null;
-                };
-            }
-        };
     }
 
     /**
@@ -87,13 +67,21 @@ public class YamlInput
     /**
      * Returns true if there is a next line in the input
      */
-    public boolean hasNext()
+    public boolean hasMore()
     {
-        return lookahead != null;
+        return current != null;
     }
 
     /**
-     * Returns the indent level of the current line
+     * Returns the array-adjusted indent level of the current line. Array adjustment involves reducing the indent level
+     * for array elements after the first. For example, all these array elements are at level 0 even though the second
+     * and third elements are indented by two spaces:
+     *
+     * <pre>
+     * - first
+     *   second
+     *   third
+     * </pre>
      */
     public int indentLevel()
     {
@@ -101,55 +89,150 @@ public class YamlInput
     }
 
     /**
-     * Returns the next line in the input, without advancing to it
+     * Returns true if {@link #read()} has not yet been called.
+     */
+    public boolean isAtStartOfInput()
+    {
+        return atStartOfInput;
+    }
+
+    /**
+     * Returns the next line in the input, without advancing the stream
      */
     public YamlLine lookahead()
     {
         return lookahead;
     }
 
-    /**
-     * Returns the next (non-comment) line in the input, or null if there is none
-     */
-    public YamlLine next()
+    public YamlLine previous()
     {
-        current = lookahead;
-
-        lookahead = at < size()
-            ? lines.get(at++)
-            : null;
-
-        return current;
+        return previous;
     }
 
     /**
-     * Returns the number of lines (including comments)
+     * Reads the next line from input
+     *
+     * @return The next line
+     */
+    public YamlLine read()
+    {
+        // If we have a current line,
+        if (current != null)
+        {
+            // save it,
+            var read = current;
+
+            // advance to the next line,
+            advance();
+
+            // make a note that we are not at start of input,
+            atStartOfInput = false;
+
+            // and return the original current line.
+            return read;
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the number of lines (not including comments or blank lines)
      */
     public int size()
     {
         return lines.size();
     }
 
+    /**
+     * Advances to the next (non-comment, non-blank) line. The current line becomes the previous line, the current line
+     * becomes the lookahead line, and the lookahead is set to the next line in the array of lines (if there is one).
+     */
+    private void advance()
+    {
+        // Keep the current value for posterity,
+        previous = current;
+
+        // advance the current line to the lookahead line,
+        current = lookahead;
+
+        // then read a new lookahead line,
+        lookahead = at < size()
+            ? lines.get(at++)
+            : null;
+    }
+
+    /**
+     * Reads all lines from the given resource into the lines field
+     *
+     * @param resource The resource to read
+     */
     private void readLines(Resource resource)
     {
+        // We are at line number 1.
         var lineNumber = 1;
+
+        // We will track the previous line, so we can ensure that indentation never increases or
+        // decreases by more than one level.
         YamlLine previous = null;
 
+        // We will track the indentation of arrays because the spaces for array elements
+        // increases the indentation one level beyond the true indentation level. For example,
+        // element-1 below has indentation of 0, but so does element-2:
+        //
+        // - element-1
+        //   element-2
+        //
+        var arrayIndentLevel = new Stack<Integer>();
+
+        // Go through each line in the resource,
         for (var line : resource.reader().readLines())
         {
+            // Parse the line into a YamlLine model with the current line number and ordinal.
             var current = new YamlLine(line)
                 .lineNumber(lineNumber++)
                 .ordinal(lines.size());
 
+            // If we aren't looking at a comment or a blank line,
             if (!current.isComment() && !current.isBlank())
             {
+                // and the current line is an array element,
+                if (current.isArrayElement())
+                {
+                    // and our indent level increased (we aren't at another list element at the same level),
+                    if (current.rawIndentLevel() > previous.rawIndentLevel())
+                    {
+                        // then we push the current indent level,
+                        arrayIndentLevel.push(current.rawIndentLevel());
+                    }
+                }
+                else
+                {
+                    // otherwise, we aren't at the start of an array, so we look
+                    // at the top of the stack, and if we are below that indentation level,
+                    var top = arrayIndentLevel.top();
+                    if (top != null && current.rawIndentLevel() < top)
+                    {
+                        // we have left the array, so we pop the top indent level off of the stack.
+                        arrayIndentLevel.pop();
+                    }
+                }
+
+                // Unindent the current line by the number of levels of array nesting, but if it's
+                // the first element in a list, indent by one less.
+                var offset = current.isArrayElement() ? 1 : 0;
+                current.outdent(arrayIndentLevel.size() - offset);
+
+                // Add the current line.
                 lines.add(current);
+
+                // Make sure that the indent level has not increased by more than one level.
+                if (previous != null)
+                {
+                    var delta = current.indentLevel() - previous.indentLevel();
+                    ensure(delta <= 1, "Invalid indentation at line $", lines.size());
+                }
+                previous = current;
             }
-
-            ensure(previous == null || Math.abs(current.indentLevel() - previous.indentLevel()) <= 2,
-                "Invalid indentation at line $", lines.size());
-
-            previous = current;
         }
     }
 }

@@ -9,6 +9,8 @@ import com.telenav.kivakit.core.messaging.messages.OperationStatusMessage;
 import com.telenav.kivakit.core.messaging.messages.status.Glitch;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.messaging.messages.status.Warning;
+import com.telenav.kivakit.core.string.FormatProperty;
+import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
 import com.telenav.kivakit.network.http.HttpStatus;
@@ -108,20 +110,24 @@ public class MicroservletError
     }
 
     /** HTTP status code for this error */
+    @FormatProperty
     private final transient HttpStatus httpStatus;
 
     /** Hierarchical error code per IETF RFC 7807 */
     @Expose
+    @FormatProperty
     private final String hierarchicalErrorCode;
 
     /** Details of the problem */
     @Expose
+    @FormatProperty
     private final String message;
 
     /**
      * The type of error, such as Problem, Warning or Alert.
      */
     @Expose
+    @FormatProperty
     private final String type;
 
     /**
@@ -181,6 +187,12 @@ public class MicroservletError
             statusMessage.code(hierarchicalErrorCode);
             listener.receive(message);
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return new ObjectFormatter(this).toString();
     }
 
     /**

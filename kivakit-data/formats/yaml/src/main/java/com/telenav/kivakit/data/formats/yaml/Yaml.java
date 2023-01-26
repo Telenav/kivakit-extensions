@@ -28,6 +28,25 @@ public class Yaml
         this.lines = stringList();
     }
 
+    public Yaml asArray()
+    {
+        var array = yaml();
+        int index = 0;
+        for (var line : lines)
+        {
+            if (index == 0)
+            {
+                array = array.with("- " + line);
+            }
+            else
+            {
+                array = array.with("  " + line);
+            }
+            index++;
+        }
+        return array;
+    }
+
     public Yaml copy()
     {
         return new Yaml(this);

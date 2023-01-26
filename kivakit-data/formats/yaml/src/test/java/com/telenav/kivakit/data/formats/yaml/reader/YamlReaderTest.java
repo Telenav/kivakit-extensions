@@ -8,8 +8,9 @@ public class YamlReaderTest extends UnitTest
     @Test
     public void testRead()
     {
-        testRead("Distance.yml");
         testRead("Location.yml");
+        testRead("Distance.yml");
+        testRead("Servers.yml");
         testRead("Rectangle.yml");
         testRead("LocationArray.yml");
     }
@@ -17,7 +18,7 @@ public class YamlReaderTest extends UnitTest
     private void testRead(String name)
     {
         var yaml = packageResource(name);
-        var block = new YamlReader().read(yaml);
-        ensureEqual(block.asYaml().toString().trim(), yaml.readText().trim());
+        var node = new YamlReader().read(yaml);
+        ensureEqual(node.asYaml().toString().trim(), yaml.readText().trim());
     }
 }

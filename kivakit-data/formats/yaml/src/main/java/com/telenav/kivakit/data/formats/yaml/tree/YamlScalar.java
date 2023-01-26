@@ -63,15 +63,15 @@ public class YamlScalar extends YamlNode
     {
         if (isNumber())
         {
-            return yaml().withScalar(name(), number);
+            return yaml().withScalar(label(), number);
         }
         if (isBoolean())
         {
-            return yaml().withScalar(name(), truth);
+            return yaml().withScalar(label(), truth);
         }
         if (isString())
         {
-            return yaml().withScalar(name(), string);
+            return yaml().withScalar(label(), string);
         }
         return fail("Internal error");
     }

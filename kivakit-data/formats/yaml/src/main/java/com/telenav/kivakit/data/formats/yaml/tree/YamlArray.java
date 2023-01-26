@@ -13,6 +13,11 @@ public class YamlArray extends YamlNode
         return new YamlArray(name);
     }
 
+    public static YamlArray array()
+    {
+        return new YamlArray("");
+    }
+
     private ObjectList<YamlNode> nodes;
 
     private YamlArray(String name)
@@ -42,7 +47,7 @@ public class YamlArray extends YamlNode
 
         for (var node : nodes)
         {
-            yaml = yaml.withBlock(node.asYaml());
+            yaml = yaml.withBlock(node.asYaml().asArray());
         }
 
         return yaml.outdented();
