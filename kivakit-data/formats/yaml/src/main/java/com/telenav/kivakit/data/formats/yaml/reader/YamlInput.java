@@ -80,8 +80,7 @@ public class YamlInput
      * <pre>
      * - first
      *   second
-     *   third
-     * </pre>
+     *   third </pre>
      */
     public int indentLevel()
     {
@@ -205,16 +204,14 @@ public class YamlInput
                         arrayIndentLevel.push(current.rawIndentLevel());
                     }
                 }
-                else
+
+                // otherwise, we aren't at the start of an array, so we look
+                // at the top of the stack, and if we are below that indentation level,
+                var top = arrayIndentLevel.top();
+                if (top != null && current.rawIndentLevel() < top)
                 {
-                    // otherwise, we aren't at the start of an array, so we look
-                    // at the top of the stack, and if we are below that indentation level,
-                    var top = arrayIndentLevel.top();
-                    if (top != null && current.rawIndentLevel() < top)
-                    {
-                        // we have left the array, so we pop the top indent level off of the stack.
-                        arrayIndentLevel.pop();
-                    }
+                    // we have left the array, so we pop the top indent level off of the stack.
+                    arrayIndentLevel.pop();
                 }
 
                 // Unindent the current line by the number of levels of array nesting, but if it's
