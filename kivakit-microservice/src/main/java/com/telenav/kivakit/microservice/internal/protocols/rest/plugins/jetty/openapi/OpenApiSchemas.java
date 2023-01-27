@@ -16,16 +16,16 @@ import static com.telenav.kivakit.resource.Extension.YML;
 
 public class OpenApiSchemas extends BaseComponent
 {
-    private final StringMap<OpenApiSchema> schemas = new StringMap<>();
+    private final StringMap<OpenApiSchema> nameToSchema = new StringMap<>();
 
     public OpenApiSchemas()
     {
-        add(OpenApiSchema.schema(MicroservletError.class));
+        addAll(OpenApiSchema.schemas(this, MicroservletError.class));
     }
 
     public OpenApiSchemas add(Class<?> type)
     {
-        return add(OpenApiSchema.schema(type));
+        return addAll(OpenApiSchema.schemas(this, type));
     }
 
     public OpenApiSchemas add(ResourceFolder<?> folder)
@@ -36,7 +36,7 @@ public class OpenApiSchemas extends BaseComponent
             // parse it as a YAML block
             var block = new YamlReader().read(resource);
             var name = resource.fileName().name();
-            add(OpenApiSchema.schema(name, block));
+            add(OpenApiSchema.schema(this, name, block));
         }
         return this;
     }
@@ -48,7 +48,7 @@ public class OpenApiSchemas extends BaseComponent
 
         if (schema.yaml().isNamed())
         {
-            schemas.put(schema.name(), schema);
+            nameToSchema.put(schema.name(), schema);
         }
         else
         {
@@ -76,11 +76,11 @@ public class OpenApiSchemas extends BaseComponent
 
     public OpenApiSchema schema(String name)
     {
-        return schemas.get(name);
+        return nameToSchema.get(name);
     }
 
     public ObjectList<OpenApiSchema> schemas()
     {
-        return ObjectList.list(schemas.values());
+        return ObjectList.list(nameToSchema.values());
     }
 }

@@ -9,13 +9,16 @@ public enum YamlLineType
     COMMENT,
 
     /** label: */
-    LABEL,
+    BLOCK_LABEL,
 
     /** x: 7 */
     SCALAR_NUMBER,
 
     /** cow: "moo" */
     SCALAR_STRING,
+
+    /** - BLUE */
+    SCALAR_ENUM_VALUE,
 
     /** type: object */
     LITERAL

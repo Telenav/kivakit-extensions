@@ -1,49 +1,39 @@
 package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi;
 
-import com.telenav.kivakit.data.formats.yaml.model.YamlArray;
-import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
+import com.telenav.kivakit.core.collections.list.ObjectList;
+import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.data.formats.yaml.model.YamlNode;
+import com.telenav.kivakit.data.formats.yaml.model.YamlNodeContainer;
 import com.telenav.kivakit.data.formats.yaml.reader.YamlReader;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
 import com.telenav.kivakit.resource.resources.StringResource;
 import org.jetbrains.annotations.NotNull;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.core.language.reflection.Type.typeForClass;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlLiteral.literal;
 
 public class OpenApiSchema implements Comparable<OpenApiSchema>
 {
-    public static OpenApiSchema schema(Class<?> type)
-    {
-        return schema(type.getSimpleName(), type);
-    }
-
-    public static OpenApiSchema schema(String name, Class<?> type)
-    {
-        ensureNotNull(name);
-        var annotation = ensureNotNull(type).getAnnotation(OpenApiType.class);
-        if (annotation != null)
-        {
-            var text = annotation.value();
-            var node = new YamlReader().read(new StringResource(text));
-            if (node instanceof YamlBlock block)
-            {
-                node = block.prepending(literal("type", "object"));
-            }
-            if (node instanceof YamlArray array)
-            {
-                node = array.prepending(literal("type", "object"));
-            }
-
-            return new OpenApiSchema(name, node);
-        }
-        return null;
-    }
-
-    public static OpenApiSchema schema(String name, YamlNode node)
+    public static OpenApiSchema schema(Listener listener, String name, YamlNode node)
     {
         return new OpenApiSchema(name, node);
+    }
+
+    public static ObjectList<OpenApiSchema> schemas(Listener listener, Class<?> type)
+    {
+        var schemas = new ObjectList<OpenApiSchema>();
+        schemas.addIfNotNull(schema(listener, type.getSimpleName(), type));
+        for (var field : typeForClass(type).allFields())
+        {
+            var fieldType = field.type();
+            if (fieldType.hasAnnotation(OpenApiType.class))
+            {
+                schemas.add(schema(listener, fieldType.simpleName(), fieldType.asJavaType()));
+            }
+        }
+        return schemas;
     }
 
     private final YamlNode root;
@@ -87,5 +77,29 @@ public class OpenApiSchema implements Comparable<OpenApiSchema>
     public YamlNode yaml()
     {
         return root;
+    }
+
+    private static OpenApiSchema schema(Listener listener, String name, Class<?> type)
+    {
+        listener.information("Reading schema $", type.getSimpleName());
+        ensureNotNull(name);
+        var annotation = ensureNotNull(type).getAnnotation(OpenApiType.class);
+        if (annotation != null)
+        {
+            var text = annotation.value();
+            var node = new YamlReader().read(new StringResource(text));
+            if (node instanceof YamlNodeContainer elements)
+            {
+                var object = literal("type", "object");
+                if (!elements.elements().contains(object))
+                {
+                    node = elements.prepending(object);
+                }
+            }
+
+            return new OpenApiSchema(name, node);
+        }
+
+        return null;
     }
 }

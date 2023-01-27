@@ -91,6 +91,7 @@ public class Yamlizer
         {
             return stringList(scalar.name() + ": " + doubleQuoted(scalar.string()));
         }
+
         return fail("Internal error");
     }
 

@@ -10,8 +10,10 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.string.AsciiArt.repeat;
 import static com.telenav.kivakit.core.string.Strings.isNaturalNumber;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLANK;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLOCK_LABEL;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.COMMENT;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_ENUM_VALUE;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_NUMBER;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_STRING;
 import static java.lang.Double.parseDouble;
@@ -31,6 +33,8 @@ public class YamlLine implements TryCatchTrait
     private static final Pattern SCALAR_NUMBER_PATTERN = compile(LABEL + "\\s+(?<number>[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?)");
 
     private static final Pattern LITERAL_PATTERN = compile(LABEL + "\\s+(?<literal>[a-zA-Z0-9_]+)");
+
+    private static final Pattern ENUM_PATTERN = compile("- (?<name>[a-zA-Z0-9_]+)");
 
     /** The line */
     private final String line;
@@ -94,9 +98,14 @@ public class YamlLine implements TryCatchTrait
         return type == COMMENT;
     }
 
+    public boolean isEnumValue()
+    {
+        return type == SCALAR_ENUM_VALUE;
+    }
+
     public boolean isLabel()
     {
-        return type == YamlLineType.LABEL;
+        return type == BLOCK_LABEL;
     }
 
     public boolean isLiteral()
@@ -111,7 +120,7 @@ public class YamlLine implements TryCatchTrait
 
     public boolean isScalar()
     {
-        return isNumber() || isString();
+        return isNumber() || isString() || isEnumValue();
     }
 
     public boolean isString()
@@ -229,7 +238,7 @@ public class YamlLine implements TryCatchTrait
                 if (matcher.matches())
                 {
                     // make a note of that,
-                    type = YamlLineType.LABEL;
+                    type = BLOCK_LABEL;
                     extractLabel(matcher);
                 }
 
@@ -265,7 +274,7 @@ public class YamlLine implements TryCatchTrait
                     }
                 }
 
-                // or a literal,
+                // a literal,
                 if (type == null)
                 {
                     matcher = LITERAL_PATTERN.matcher(line);
@@ -274,6 +283,18 @@ public class YamlLine implements TryCatchTrait
                         type = LITERAL;
                         extractLabel(matcher);
                         string = matcher.group("literal");
+                    }
+                }
+
+                // or an enum value,
+                if (type == null)
+                {
+                    matcher = ENUM_PATTERN.matcher(line);
+                    if (matcher.matches())
+                    {
+                        type = SCALAR_ENUM_VALUE;
+                        string = matcher.group("name");
+                        isArrayElement = true;
                     }
                 }
 

@@ -16,18 +16,20 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlReader.readYamlAnnotation;
-import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiSchema.schema;
+import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiSchema.schemas;
 import static com.telenav.kivakit.resource.packages.Package.parsePackage;
 
 public class OpenApiBuilder extends BaseComponent
 {
     private final OpenApiSchemas schemas;
 
+    YamlBlock yaml;
+
     public OpenApiBuilder()
     {
         var microserviceType = require(Microservice.class).getClass();
 
-        schemas = new OpenApiSchemas()
+        schemas = listenTo(new OpenApiSchemas())
             .add(parsePackage(this, microserviceType, "schemas"))
             .add(parsePackage(this, microserviceType, "api/schemas"))
             .addAll(restServiceSchemas());
@@ -35,15 +37,19 @@ public class OpenApiBuilder extends BaseComponent
 
     public YamlBlock buildYaml()
     {
-        var restServiceClass = require(RestService.class).getClass();
-        var servers = readYamlAnnotation(restServiceClass, OpenApiType.class, OpenApiType::value);
+        if (yaml == null)
+        {
+            var restServiceClass = require(RestService.class).getClass();
+            var servers = readYamlAnnotation(restServiceClass, OpenApiType.class, OpenApiType::value);
 
-        return block()
-            .with(scalar("openapi", "3.0.0"))
-            .with(new OpenApiInfo().yaml())
-            .with(servers)
-            .with(new OpenApiPaths().yaml())
-            .with(new OpenApiComponents(schemas).yaml());
+            yaml = block()
+                .with(scalar("openapi", "3.0.0"))
+                .with(new OpenApiInfo().yaml())
+                .with(servers)
+                .with(new OpenApiPaths().yaml())
+                .with(new OpenApiComponents(schemas).yaml());
+        }
+        return yaml;
     }
 
     private ObjectList<OpenApiSchema> restServiceSchemas()
@@ -64,14 +70,14 @@ public class OpenApiBuilder extends BaseComponent
                 if (!requestType.isAssignableFrom(OpenApiJsonRequest.class))
                 {
                     information("Adding schema for $", requestType.getSimpleName());
-                    var requestSchema = schema(requestType);
-                    ensureNotNull(requestSchema, "Could not extract YAML schema from: $", requestType.getSimpleName());
-                    schemas.add(requestSchema);
+                    var requestSchemas = schemas(this, requestType);
+                    ensureNotNull(requestSchemas, "Could not extract YAML schemas from: $", requestType.getSimpleName());
+                    schemas.addAll(requestSchemas);
 
                     information("Adding schema for $", responseType.getSimpleName());
-                    var responseSchema = schema(responseType);
-                    ensureNotNull(responseSchema, "Could not extract YAML schema from: $", responseType.getSimpleName());
-                    schemas.add(schema(responseType));
+                    var responseSchemas = schemas(this, responseType);
+                    ensureNotNull(responseSchemas, "Could not extract YAML schemas from: $", responseType.getSimpleName());
+                    schemas.addAll(responseSchemas);
                 }
             }
         }

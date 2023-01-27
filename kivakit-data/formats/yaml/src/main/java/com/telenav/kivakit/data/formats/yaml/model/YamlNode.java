@@ -19,6 +19,22 @@ public abstract class YamlNode implements Named
         this.name = that.name;
     }
 
+    @Override
+    public boolean equals(Object object)
+    {
+        if (object instanceof YamlNode that)
+        {
+            return this.name.equals(that.name);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return name.hashCode();
+    }
+
     public boolean isNamed()
     {
         return !isUnnamed();

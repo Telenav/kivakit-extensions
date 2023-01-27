@@ -3,7 +3,7 @@ package com.telenav.kivakit.data.formats.yaml.model;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.value.count.Count;
 
-public class YamlArray extends YamlNode
+public class YamlArray extends YamlNode implements YamlNodeContainer
 {
     public static YamlArray array(String name)
     {
@@ -39,6 +39,7 @@ public class YamlArray extends YamlNode
         return elements.count();
     }
 
+    @Override
     public ObjectList<YamlNode> elements()
     {
         return elements;

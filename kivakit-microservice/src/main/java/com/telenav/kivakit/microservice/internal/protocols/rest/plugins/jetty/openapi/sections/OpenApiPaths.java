@@ -40,7 +40,7 @@ public class OpenApiPaths extends BaseComponent
 
     private YamlBlock content(Class<?> type)
     {
-        var reference = scalar("$ref", "'#/components/schemas/" + type.getSimpleName() + "'");
+        var reference = scalar("$ref", "#/components/schemas/" + type.getSimpleName());
 
         var applicationJson = block("application/json")
             .with(reference);
@@ -53,7 +53,7 @@ public class OpenApiPaths extends BaseComponent
     {
         var microservlet = mounted.microservlet();
         var path = mounted.path();
-        var method = path.httpMethod().name();
+        var method = path.httpMethod().name().toLowerCase();
 
         return block(path.path().toString())
             .with(block(method)
@@ -65,7 +65,6 @@ public class OpenApiPaths extends BaseComponent
     private YamlNode requestBody(Class<?> requestType)
     {
         return block("requestBody")
-            .with(scalar("required", true))
             .with(content(requestType));
     }
 

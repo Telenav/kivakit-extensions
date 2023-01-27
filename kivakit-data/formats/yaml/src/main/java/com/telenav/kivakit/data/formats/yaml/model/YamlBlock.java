@@ -5,7 +5,7 @@ import com.telenav.kivakit.core.collections.map.StringMap;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 
-public class YamlBlock extends YamlNode
+public class YamlBlock extends YamlNode implements YamlNodeContainer
 {
     public static YamlBlock block(String name)
     {
@@ -47,6 +47,7 @@ public class YamlBlock extends YamlNode
         return new YamlBlock(this);
     }
 
+    @Override
     public ObjectList<YamlNode> elements()
     {
         return elements;
@@ -62,6 +63,7 @@ public class YamlBlock extends YamlNode
         return nameToElement.containsKey(name);
     }
 
+    @Override
     public YamlBlock prepending(YamlNode element)
     {
         var copy = copy();
@@ -73,6 +75,7 @@ public class YamlBlock extends YamlNode
         return copy;
     }
 
+    @Override
     public int size()
     {
         return nameToElement.size();

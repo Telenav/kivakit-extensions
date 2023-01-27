@@ -17,6 +17,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.array;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlLiteral.literal;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.enumValue;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
 
@@ -39,7 +40,8 @@ import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
  * @see YamlLiteral
  * @see YamlScalar
  */
-@SuppressWarnings("DuplicatedCode") public class YamlReader
+@SuppressWarnings("DuplicatedCode")
+public class YamlReader
 {
     /**
      * Reads a {@link YamlNode} from the given annotation on the given type
@@ -99,7 +101,7 @@ import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
         return switch (in.current().type())
             {
                 // is a scalar, read that,
-                case SCALAR_STRING, SCALAR_NUMBER -> readScalar(in);
+                case SCALAR_STRING, SCALAR_NUMBER, SCALAR_ENUM_VALUE -> readScalar(in);
 
                 // and if it's a literal then read that,
                 case LITERAL -> readLiteral(in);
@@ -159,7 +161,7 @@ import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
         while (in.hasMore() && in.indentLevel() == blockIndent)
         {
             // If the next node is an array element,
-            if (in.lookahead().isArrayElement())
+            if (in.lookahead() != null && in.lookahead().isArrayElement())
             {
                 // then we are looking at a lone scalar,
                 array = array.with(readScalar(in));
@@ -300,8 +302,11 @@ import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
                 // a string scalar,
                 case SCALAR_STRING -> scalar(next.label(), next.string());
 
-                // or a numeric scalar.
+                // a numeric scalar,
                 case SCALAR_NUMBER -> scalar(next.label(), next.number());
+
+                // or an enum value.
+                case SCALAR_ENUM_VALUE -> enumValue(next.string());
 
                 default -> fail();
             };

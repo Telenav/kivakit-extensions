@@ -2,9 +2,9 @@ package com.telenav.kivakit.data.formats.yaml.model;
 
 public class YamlScalar extends YamlNode
 {
-    public static YamlScalar scalar(String name, String value)
+    public static YamlScalar enumValue(String name)
     {
-        return new YamlScalar(name, value);
+        return new YamlScalar(name);
     }
 
     public static YamlScalar scalar(String name, Number value)
@@ -17,16 +17,32 @@ public class YamlScalar extends YamlNode
         return new YamlScalar(name, value);
     }
 
+    public static YamlScalar scalar(String name, String value)
+    {
+        return new YamlScalar(name, value);
+    }
+
     private final Boolean truth;
 
     private final String string;
 
     private final Number number;
 
+    private boolean isEnum;
+
     private YamlScalar(String name, String value)
     {
         super(name);
         this.string = value;
+        this.number = null;
+        this.truth = null;
+    }
+
+    private YamlScalar(String name)
+    {
+        super(name);
+        this.isEnum = true;
+        this.string = name;
         this.number = null;
         this.truth = null;
     }
@@ -50,6 +66,11 @@ public class YamlScalar extends YamlNode
     public boolean isBoolean()
     {
         return truth != null;
+    }
+
+    public boolean isEnum()
+    {
+        return isEnum;
     }
 
     public boolean isNumber()
