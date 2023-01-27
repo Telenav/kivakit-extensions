@@ -9,7 +9,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.op
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiInfo;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiPaths;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
@@ -40,7 +40,7 @@ public class OpenApiBuilder extends BaseComponent
         if (yaml == null)
         {
             var restServiceClass = require(RestService.class).getClass();
-            var servers = readYamlAnnotation(restServiceClass, OpenApiType.class, OpenApiType::value);
+            var servers = readYamlAnnotation(restServiceClass, OpenApi.class, OpenApi::value);
 
             yaml = block()
                 .with(scalar("openapi", "3.0.0"))

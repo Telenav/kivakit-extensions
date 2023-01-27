@@ -8,7 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface OpenApiType
+public @interface OpenApi
 {
     /**
      * Returns YAML describing the type

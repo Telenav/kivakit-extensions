@@ -6,7 +6,7 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
@@ -47,7 +47,7 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
-@OpenApiType
+@OpenApi
     (
         """
             description: "Error portion of response"
@@ -57,6 +57,12 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
                 description: "List of errors"
                 items:
                   type: MicroservletError
+            example:
+              errors:
+                - httpStatus: 401
+                  hierarchicalErrorCode: "errors/authentication/incorrect-password"
+                  message: "Invalid password"
+                  type: "Problem"
                 """
     )
 public class MicroservletErrorResponse extends BaseMicroservletResponse

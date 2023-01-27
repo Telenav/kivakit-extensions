@@ -2,11 +2,13 @@ package com.telenav.kivakit.data.formats.yaml.reader;
 
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.list.Stack;
+import com.telenav.kivakit.core.language.trait.TryCatchTrait;
+import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.resource.Resource;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 
-public class YamlInput
+public class YamlInput implements TryCatchTrait
 {
     /** The list of lines */
     private final ObjectList<YamlLine> lines = new ObjectList<>();
@@ -184,51 +186,59 @@ public class YamlInput
         var arrayIndentLevel = new Stack<Integer>();
 
         // Go through each line in the resource,
+        var parser = new YamlLineParser();
         for (var line : resource.reader().readLines())
         {
-            // Parse the line into a YamlLine model with the current line number and ordinal.
-            var current = new YamlLine(line)
-                .lineNumber(lineNumber++)
-                .ordinal(lines.size());
-
-            // If we aren't looking at a comment or a blank line,
-            if (!current.isComment() && !current.isBlank())
+            try
             {
-                // and the current line is an array element,
-                if (current.isArrayElement())
+                // Parse the line into a YamlLine model.
+                var yaml = parser.parse(line)
+                    .lineNumber(lineNumber++)
+                    .ordinal(lines.size());
+
+                // If we aren't looking at a comment or a blank line,
+                if (!yaml.isComment() && !yaml.isBlank())
                 {
-                    // and our indent level increased (we aren't at another list element at the same level),
-                    if (current.rawIndentLevel() > previous.rawIndentLevel())
+                    // and the current line is an array element,
+                    if (yaml.isArrayElement())
                     {
-                        // then we push the current indent level,
-                        arrayIndentLevel.push(current.rawIndentLevel());
+                        // and our indent level increased (we aren't at another list element at the same level),
+                        if (yaml.rawIndentLevel() > previous.rawIndentLevel())
+                        {
+                            // then we push the current indent level,
+                            arrayIndentLevel.push(yaml.rawIndentLevel());
+                        }
                     }
+
+                    // otherwise, we aren't at the start of an array, so we look
+                    // at the top of the stack, and if we are below that indentation level,
+                    var top = arrayIndentLevel.top();
+                    if (top != null && yaml.rawIndentLevel() < top)
+                    {
+                        // we have left the array, so we pop the top indent level off of the stack.
+                        arrayIndentLevel.pop();
+                    }
+
+                    // Unindent the current line by the number of levels of array nesting, but if it's
+                    // the first element in a list, indent by one less.
+                    var offset = yaml.isArrayElement() ? 1 : 0;
+                    yaml.outdent(arrayIndentLevel.size() - offset);
+
+                    // Add the current line.
+                    lines.add(yaml);
+
+                    // Make sure that the indent level has not increased by more than one level.
+                    if (previous != null)
+                    {
+                        var delta = yaml.indentLevel() - previous.indentLevel();
+                        ensure(delta <= 1, "Invalid indentation at line $", lines.size());
+                    }
+                    previous = yaml;
                 }
-
-                // otherwise, we aren't at the start of an array, so we look
-                // at the top of the stack, and if we are below that indentation level,
-                var top = arrayIndentLevel.top();
-                if (top != null && current.rawIndentLevel() < top)
-                {
-                    // we have left the array, so we pop the top indent level off of the stack.
-                    arrayIndentLevel.pop();
-                }
-
-                // Unindent the current line by the number of levels of array nesting, but if it's
-                // the first element in a list, indent by one less.
-                var offset = current.isArrayElement() ? 1 : 0;
-                current.outdent(arrayIndentLevel.size() - offset);
-
-                // Add the current line.
-                lines.add(current);
-
-                // Make sure that the indent level has not increased by more than one level.
-                if (previous != null)
-                {
-                    var delta = current.indentLevel() - previous.indentLevel();
-                    ensure(delta <= 1, "Invalid indentation at line $", lines.size());
-                }
-                previous = current;
+            }
+            catch (Exception e)
+            {
+                throw new Problem(e, "Unable to parse: $", resource).asException();
             }
         }
     }

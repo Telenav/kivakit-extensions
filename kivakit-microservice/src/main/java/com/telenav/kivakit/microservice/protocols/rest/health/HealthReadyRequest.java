@@ -8,7 +8,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
@@ -26,7 +26,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
              testing = UNTESTED,
              documentation = DOCUMENTED,
              audience = AUDIENCE_INTERNAL)
-@OpenApiType
+@OpenApi
     (
         """
             description: "Request for server readiness"
@@ -37,7 +37,7 @@ public class HealthReadyRequest extends BaseMicroservletRequest
     /**
      * Response object for this request
      */
-    @OpenApiType
+    @OpenApi
         (
             """
                 description: "Response to a health readiness request"

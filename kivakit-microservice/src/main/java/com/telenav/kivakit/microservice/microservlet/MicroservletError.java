@@ -12,7 +12,7 @@ import com.telenav.kivakit.core.messaging.messages.status.Warning;
 import com.telenav.kivakit.core.string.FormatProperty;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 import com.telenav.kivakit.network.http.HttpStatus;
 
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
@@ -51,7 +51,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
-@OpenApiType
+@OpenApi
     (
         """
             description: "Error information, including a message, hierarchical error code, error type and HTTP status code"

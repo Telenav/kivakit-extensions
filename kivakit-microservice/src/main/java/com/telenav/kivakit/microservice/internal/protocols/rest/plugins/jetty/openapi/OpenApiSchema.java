@@ -5,7 +5,7 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.data.formats.yaml.model.YamlNode;
 import com.telenav.kivakit.data.formats.yaml.model.YamlNodeContainer;
 import com.telenav.kivakit.data.formats.yaml.reader.YamlReader;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 import com.telenav.kivakit.resource.resources.StringResource;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +28,7 @@ public class OpenApiSchema implements Comparable<OpenApiSchema>
         for (var field : typeForClass(type).allFields())
         {
             var fieldType = field.type();
-            if (fieldType.hasAnnotation(OpenApiType.class))
+            if (fieldType.hasAnnotation(OpenApi.class))
             {
                 schemas.add(schema(listener, fieldType.simpleName(), fieldType.asJavaType()));
             }
@@ -83,7 +83,7 @@ public class OpenApiSchema implements Comparable<OpenApiSchema>
     {
         listener.information("Reading schema $", type.getSimpleName());
         ensureNotNull(name);
-        var annotation = ensureNotNull(type).getAnnotation(OpenApiType.class);
+        var annotation = ensureNotNull(type).getAnnotation(OpenApi.class);
         if (annotation != null)
         {
             var text = annotation.value();
