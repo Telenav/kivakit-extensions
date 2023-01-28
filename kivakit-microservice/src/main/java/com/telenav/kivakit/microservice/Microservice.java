@@ -318,7 +318,6 @@ public abstract class Microservice<Member> extends Application implements
      */
     protected Microservice()
     {
-        addProject(MicroserviceProject.class);
     }
 
     /**
@@ -425,6 +424,7 @@ public abstract class Microservice<Member> extends Application implements
     @Override
     public void onInitialize()
     {
+        addProject(MicroserviceProject.class);
     }
 
     /**
@@ -694,9 +694,6 @@ public abstract class Microservice<Member> extends Application implements
                 warning("Unable to join microservice cluster");
             }
         }
-
-        // Next, initialize this microservice,
-        tryCatch(this::onInitialize, "Initialization failed");
 
         // then start our microservice running.
         tryCatch(this::start, "Microservice startup failed");
