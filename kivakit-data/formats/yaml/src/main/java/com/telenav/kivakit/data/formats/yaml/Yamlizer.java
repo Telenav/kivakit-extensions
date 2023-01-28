@@ -79,20 +79,28 @@ public class Yamlizer
      */
     public StringList asStringList(YamlScalar scalar)
     {
+        var label = scalar.name() == null
+            ? ""
+            : scalar.name() + ": ";
+
         if (scalar.isNumber())
         {
-            return stringList(scalar.name() + ": " + scalar.number());
+            return stringList(label + scalar.number());
         }
         if (scalar.isBoolean())
         {
-            return stringList(scalar.name() + ": " + scalar.truth());
+            return stringList(label + scalar.truth());
         }
         if (scalar.isString())
         {
-            return stringList(scalar.name() + ": " + doubleQuoted(scalar.string()));
+            return stringList(label + doubleQuoted(scalar.string()));
+        }
+        if (scalar.isEnum())
+        {
+            return stringList(scalar.string());
         }
 
-        return fail("Internal error");
+        return fail("Unsupported scalar: $", scalar.toString());
     }
 
     /**

@@ -28,6 +28,9 @@ public class YamlInput implements TryCatchTrait
     /** True if read() has not been called yet */
     private boolean atStartOfInput = true;
 
+    /** The resourc being read */
+    private final Resource resource;
+
     /**
      * Creates YAML input from the lines in the given resource
      *
@@ -36,6 +39,7 @@ public class YamlInput implements TryCatchTrait
      */
     public YamlInput(Resource resource)
     {
+        this.resource = resource;
         // Read all lines from the input resource,
         readLines(resource);
 
@@ -134,6 +138,11 @@ public class YamlInput implements TryCatchTrait
         }
 
         return null;
+    }
+
+    public Resource resource()
+    {
+        return resource;
     }
 
     /**

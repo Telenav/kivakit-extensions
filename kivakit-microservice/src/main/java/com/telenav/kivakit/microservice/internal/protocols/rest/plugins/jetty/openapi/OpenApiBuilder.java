@@ -33,6 +33,8 @@ public class OpenApiBuilder extends BaseComponent
             .add(parsePackage(this, microserviceType, "schemas"))
             .add(parsePackage(this, microserviceType, "api/schemas"))
             .addAll(restServiceSchemas());
+
+        schemas.resolveReferences();
     }
 
     public YamlBlock buildYaml()
@@ -48,6 +50,7 @@ public class OpenApiBuilder extends BaseComponent
                 .with(servers)
                 .with(new OpenApiPaths().yaml())
                 .with(new OpenApiComponents(schemas).yaml());
+
         }
         return yaml;
     }

@@ -9,6 +9,8 @@ public abstract class YamlNode implements Named
 
     private final String name;
 
+    private YamlNode parent;
+
     public YamlNode(String name)
     {
         this.name = name;
@@ -17,6 +19,7 @@ public abstract class YamlNode implements Named
     protected YamlNode(YamlNode that)
     {
         this.name = that.name;
+        this.parent = that.parent;
     }
 
     @Override
@@ -42,13 +45,23 @@ public abstract class YamlNode implements Named
 
     public boolean isUnnamed()
     {
-        return name.isBlank();
+        return name == null || name.isBlank();
     }
 
     @Override
     public final String name()
     {
         return name;
+    }
+
+    public void parent(YamlNode parent)
+    {
+        this.parent = parent;
+    }
+
+    public YamlNode parent()
+    {
+        return parent;
     }
 
     @Override

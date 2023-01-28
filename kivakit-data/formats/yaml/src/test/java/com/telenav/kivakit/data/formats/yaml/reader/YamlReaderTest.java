@@ -8,6 +8,7 @@ public class YamlReaderTest extends BaseYamlTest
     @Test
     public void testRead()
     {
+        testRead("ArrayOfNumbers.yml");
         testRead("Servers.yml");
         testRead("LocationArray.yml");
         testRead("Location.yml");

@@ -12,13 +12,13 @@ public enum YamlLineType
     BLOCK_LABEL,
 
     /** x: 7 */
-    SCALAR_NUMBER,
+    NUMBER,
 
     /** cow: "moo" */
-    SCALAR_STRING,
+    STRING,
 
     /** - BLUE */
-    SCALAR_ENUM_VALUE,
+    ENUM_VALUE,
 
     /** type: object */
     LITERAL

@@ -5,6 +5,7 @@ import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
 import com.telenav.kivakit.data.formats.yaml.model.YamlNode;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedMicroservlet;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletError;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
@@ -27,7 +28,10 @@ public class OpenApiPaths extends BaseComponent
             var mounted = filter.microservlet(mountPath);
             if (mounted != null)
             {
-                paths = paths.with(path(mounted));
+                if (mounted.microservlet().requestType() != OpenApiJsonRequest.class)
+                {
+                    paths = paths.with(path(mounted));
+                }
             }
             else
             {

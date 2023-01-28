@@ -4,6 +4,8 @@ import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.map.StringMap;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
 
 public class YamlBlock extends YamlNode implements YamlNodeContainer
 {
@@ -42,6 +44,13 @@ public class YamlBlock extends YamlNode implements YamlNodeContainer
         nameToElement = that.nameToElement.copy();
     }
 
+    public void addReference(String type)
+    {
+        var reference = scalar("$ref", "#/components/schemas/" + type);
+        elements.add(reference);
+        nameToElement.put(reference.name(), reference);
+    }
+
     public YamlBlock copy()
     {
         return new YamlBlock(this);
@@ -64,13 +73,17 @@ public class YamlBlock extends YamlNode implements YamlNodeContainer
     }
 
     @Override
-    public YamlBlock prepending(YamlNode element)
+    public YamlBlock prepending(YamlNode node)
     {
+        ensureNotNull(node);
+
+        node.parent(this);
+
         var copy = copy();
-        copy.elements.add(0, element);
-        if (element.isNamed())
+        copy.elements.add(0, node);
+        if (node.isNamed())
         {
-            copy.nameToElement.put(element.name(), element);
+            copy.nameToElement.put(node.name(), node);
         }
         return copy;
     }
@@ -81,14 +94,18 @@ public class YamlBlock extends YamlNode implements YamlNodeContainer
         return nameToElement.size();
     }
 
-    public YamlBlock with(YamlNode element)
+    public YamlBlock with(YamlNode node)
     {
+        ensureNotNull(node);
+
+        node.parent(this);
+
         var copy = copy();
-        if (element.isNamed())
+        copy.elements.add(node);
+        if (node.isNamed())
         {
-            copy.nameToElement.put(element.name(), element);
+            copy.nameToElement.put(node.name(), node);
         }
-        copy.elements.add(element);
         return copy;
     }
 }

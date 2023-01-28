@@ -3,6 +3,9 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.o
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.map.StringMap;
+import com.telenav.kivakit.data.formats.yaml.YamlTreeWalker;
+import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
+import com.telenav.kivakit.data.formats.yaml.model.YamlLiteral;
 import com.telenav.kivakit.data.formats.yaml.reader.YamlReader;
 import com.telenav.kivakit.microservice.microservlet.MicroservletError;
 import com.telenav.kivakit.resource.ResourceFolder;
@@ -11,6 +14,7 @@ import java.util.Collection;
 
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.string.CaseFormat.isCapitalized;
 import static com.telenav.kivakit.resource.Extension.YAML;
 import static com.telenav.kivakit.resource.Extension.YML;
 
@@ -35,7 +39,7 @@ public class OpenApiSchemas extends BaseComponent
         {
             // parse it as a YAML block
             var block = new YamlReader().read(resource);
-            var name = resource.fileName().name();
+            var name = resource.fileName().withoutExtension().name();
             add(OpenApiSchema.schema(this, name, block));
         }
         return this;
@@ -63,6 +67,12 @@ public class OpenApiSchemas extends BaseComponent
         return this;
     }
 
+    public OpenApiSchemas resolveReferences()
+    {
+        schemas().forEach(this::resolveSchema);
+        return this;
+    }
+
     public OpenApiSchema schema(Class<?> type)
     {
         var name = type.getSimpleName();
@@ -82,5 +92,26 @@ public class OpenApiSchemas extends BaseComponent
     public ObjectList<OpenApiSchema> schemas()
     {
         return ObjectList.list(nameToSchema.values());
+    }
+
+    private void resolveSchema(OpenApiSchema schema)
+    {
+        // Walk the YAML tree,
+        new YamlTreeWalker(schema.yaml()).walk(node ->
+        {
+            // and if we find a literal,
+            if (node instanceof YamlBlock block)
+            {
+                // that's declaring a type,
+                var type = block.get("type");
+                if (type instanceof YamlLiteral literal)
+                {
+                    if (isCapitalized(literal.value()))
+                    {
+                        block.addReference(literal.value());
+                    }
+                }
+            }
+        });
     }
 }

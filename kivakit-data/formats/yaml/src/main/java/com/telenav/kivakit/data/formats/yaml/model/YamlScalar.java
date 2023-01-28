@@ -1,5 +1,9 @@
 package com.telenav.kivakit.data.formats.yaml.model;
 
+import com.telenav.kivakit.core.string.FormatProperty;
+
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
+
 public class YamlScalar extends YamlNode
 {
     public static YamlScalar enumValue(String name)
@@ -9,31 +13,35 @@ public class YamlScalar extends YamlNode
 
     public static YamlScalar scalar(String name, Number value)
     {
-        return new YamlScalar(name, value);
+        return new YamlScalar(name, ensureNotNull(value));
     }
 
     public static YamlScalar scalar(String name, Boolean value)
     {
-        return new YamlScalar(name, value);
+        return new YamlScalar(name, ensureNotNull(value));
     }
 
     public static YamlScalar scalar(String name, String value)
     {
-        return new YamlScalar(name, value);
+        return new YamlScalar(name, ensureNotNull(value));
     }
 
+    @FormatProperty
     private final Boolean truth;
 
+    @FormatProperty
     private final String string;
 
+    @FormatProperty
     private final Number number;
 
+    @FormatProperty
     private boolean isEnum;
 
     private YamlScalar(String name, String value)
     {
         super(name);
-        this.string = value;
+        this.string = ensureNotNull(value);
         this.number = null;
         this.truth = null;
     }
@@ -42,7 +50,7 @@ public class YamlScalar extends YamlNode
     {
         super(name);
         this.isEnum = true;
-        this.string = name;
+        this.string = ensureNotNull(name);
         this.number = null;
         this.truth = null;
     }
@@ -51,7 +59,7 @@ public class YamlScalar extends YamlNode
     {
         super(name);
         this.string = null;
-        this.number = value;
+        this.number = ensureNotNull(value);
         this.truth = null;
     }
 
@@ -60,7 +68,7 @@ public class YamlScalar extends YamlNode
         super(name);
         this.string = null;
         this.number = null;
-        this.truth = value;
+        this.truth = ensureNotNull(value);
     }
 
     public boolean isBoolean()
@@ -96,7 +104,19 @@ public class YamlScalar extends YamlNode
     @Override
     public String toString()
     {
-        return isNumber() ? number.toString() : string;
+        if (isNamed())
+        {
+            return number.toString();
+        }
+        if (isString() || isEnum())
+        {
+            return string;
+        }
+        if (isBoolean())
+        {
+            return truth.toString();
+        }
+        return "???";
     }
 
     public boolean truth()

@@ -2,14 +2,15 @@ package com.telenav.kivakit.data.formats.yaml.reader;
 
 import com.telenav.kivakit.core.language.trait.TryCatchTrait;
 
+import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.string.AsciiArt.repeat;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLANK;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLOCK_LABEL;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.COMMENT;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.ENUM_VALUE;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
-import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_ENUM_VALUE;
-import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_NUMBER;
-import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_STRING;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.NUMBER;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.STRING;
 
 public class YamlLine implements TryCatchTrait
 {
@@ -77,7 +78,7 @@ public class YamlLine implements TryCatchTrait
 
     public boolean isEnumValue()
     {
-        return type == SCALAR_ENUM_VALUE;
+        return type == ENUM_VALUE;
     }
 
     public boolean isLabel()
@@ -92,7 +93,7 @@ public class YamlLine implements TryCatchTrait
 
     public boolean isNumber()
     {
-        return type == SCALAR_NUMBER;
+        return type == NUMBER;
     }
 
     public boolean isScalar()
@@ -102,7 +103,7 @@ public class YamlLine implements TryCatchTrait
 
     public boolean isString()
     {
-        return type == SCALAR_STRING;
+        return type == STRING;
     }
 
     public String label()
@@ -112,7 +113,7 @@ public class YamlLine implements TryCatchTrait
 
     public YamlLine label(String label)
     {
-        this.label = label;
+        this.label = ensureNotNull(label);
         return this;
     }
 
@@ -123,7 +124,7 @@ public class YamlLine implements TryCatchTrait
 
     public YamlLine line(String line)
     {
-        this.line = line;
+        this.line = ensureNotNull(line);
         return this;
     }
 
@@ -145,7 +146,7 @@ public class YamlLine implements TryCatchTrait
 
     public YamlLine number(Number number)
     {
-        this.number = number;
+        this.number = ensureNotNull(number);
         return this;
     }
 
@@ -184,7 +185,7 @@ public class YamlLine implements TryCatchTrait
 
     public YamlLine string(String string)
     {
-        this.string = string;
+        this.string = ensureNotNull(string);
         return this;
     }
 
@@ -192,8 +193,8 @@ public class YamlLine implements TryCatchTrait
     {
         return switch (type)
             {
-                case SCALAR_STRING -> "\"" + string() + "\"";
-                case SCALAR_NUMBER -> number.toString();
+                case STRING -> "\"" + string() + "\"";
+                case NUMBER -> number.toString();
                 case LITERAL -> string();
                 default -> "";
             };
@@ -203,7 +204,9 @@ public class YamlLine implements TryCatchTrait
     public String toString()
     {
         var indent = repeat(rawIndentLevel, "  ");
-        return String.format("%d%16s %s%s: %s", lineNumber, type, indent, label(), text());
+        return String.format("%d%16s %s%s%s: %s", lineNumber, type, indent,
+            isArrayElement ? "- " : "",
+            label() == null ? "" : label(), text());
     }
 
     public YamlLineType type()

@@ -8,14 +8,14 @@ import java.util.regex.Pattern;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.function.Functions.firstSuccessfulFunction;
-import static com.telenav.kivakit.core.string.Strings.isNaturalNumber;
+import static com.telenav.kivakit.core.string.Strings.isInteger;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLANK;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.BLOCK_LABEL;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.COMMENT;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
-import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_ENUM_VALUE;
-import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_NUMBER;
-import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.SCALAR_STRING;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.ENUM_VALUE;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.NUMBER;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.STRING;
 import static java.lang.Double.parseDouble;
 import static java.lang.Long.parseLong;
 import static java.util.regex.Pattern.compile;
@@ -89,13 +89,13 @@ public class YamlLineParser implements TryCatchTrait
             }
 
             yaml = firstSuccessfulFunction(yaml,
+                this::numericArrayElement,
+                this::enumArrayElement,
+                this::stringArrayElement,
                 this::label,
                 this::string,
                 this::number,
-                this::literal,
-                this::enumArrayElement,
-                this::numericArrayElement,
-                this::stringArrayElement);
+                this::literal);
 
             // If we failed to determine the type,
             if (yaml == null)
@@ -108,13 +108,25 @@ public class YamlLineParser implements TryCatchTrait
         }, "Unable to parse line: \"$\"", line);
     }
 
+    private static Number parseNumber(String text)
+    {
+        if (isInteger(text))
+        {
+            return parseLong(text);
+        }
+        else
+        {
+            return parseDouble(text);
+        }
+    }
+
     private YamlLine enumArrayElement(YamlLine yaml)
     {
         var matcher = ENUM_ARRAY_ELEMENT.matcher(yaml.line());
         if (matcher.matches())
         {
             return yaml
-                .type(SCALAR_ENUM_VALUE)
+                .type(ENUM_VALUE)
                 .string(matcher.group("identifier"))
                 .arrayElement(true);
         }
@@ -165,17 +177,9 @@ public class YamlLineParser implements TryCatchTrait
         var matcher = SCALAR_NUMBER_PATTERN.matcher(yaml.line());
         if (matcher.matches())
         {
-            var numberString = matcher.group("number");
-            if (isNaturalNumber(numberString))
-            {
-                yaml.number(parseLong(numberString));
-            }
-            else
-            {
-                yaml.number(parseDouble(numberString));
-            }
             return extractLabel(yaml, matcher)
-                .type(SCALAR_NUMBER);
+                .type(NUMBER)
+                .number(parseNumber(matcher.group("number")));
         }
         return null;
     }
@@ -186,8 +190,8 @@ public class YamlLineParser implements TryCatchTrait
         if (matcher.matches())
         {
             return yaml
-                .type(SCALAR_NUMBER)
-                .string(matcher.group("identifier"))
+                .type(NUMBER)
+                .number(parseNumber(matcher.group("number")))
                 .arrayElement(true);
         }
         return null;
@@ -199,7 +203,7 @@ public class YamlLineParser implements TryCatchTrait
         if (matcher.matches())
         {
             return extractLabel(yaml, matcher)
-                .type(SCALAR_STRING)
+                .type(STRING)
                 .string(matcher.group("string"));
         }
         return null;
@@ -211,7 +215,7 @@ public class YamlLineParser implements TryCatchTrait
         if (matcher.matches())
         {
             return yaml
-                .type(SCALAR_STRING)
+                .type(STRING)
                 .string(matcher.group("identifier"))
                 .arrayElement(true);
         }

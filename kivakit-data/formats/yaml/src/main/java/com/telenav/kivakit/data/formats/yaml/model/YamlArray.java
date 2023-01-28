@@ -50,13 +50,17 @@ public class YamlArray extends YamlNode implements YamlNodeContainer
         return elements.get(index);
     }
 
-    public YamlArray prepending(YamlNode element)
+    @Override
+    public YamlArray prepending(YamlNode node)
     {
+        node.parent(this);
+
         var copy = copy();
-        copy.elements.add(0, element);
+        copy.elements.add(0, node);
         return copy;
     }
 
+    @Override
     public int size()
     {
         return elements.size();
@@ -64,6 +68,8 @@ public class YamlArray extends YamlNode implements YamlNodeContainer
 
     public YamlArray with(YamlNode node)
     {
+        node.parent(this);
+
         var copy = copy();
         copy.elements = elements.with(node);
         return copy;

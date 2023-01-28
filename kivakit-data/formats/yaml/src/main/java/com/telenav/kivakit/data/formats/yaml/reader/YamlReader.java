@@ -1,5 +1,6 @@
 package com.telenav.kivakit.data.formats.yaml.reader;
 
+import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.data.formats.yaml.model.YamlArray;
 import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
 import com.telenav.kivakit.data.formats.yaml.model.YamlLiteral;
@@ -101,7 +102,7 @@ public class YamlReader
         return switch (in.current().type())
             {
                 // is a scalar, read that,
-                case SCALAR_STRING, SCALAR_NUMBER, SCALAR_ENUM_VALUE -> readScalar(in);
+                case STRING, NUMBER, ENUM_VALUE -> readScalar(in);
 
                 // and if it's a literal then read that,
                 case LITERAL -> readLiteral(in);
@@ -296,19 +297,26 @@ public class YamlReader
         // read it,
         var next = in.read();
 
-        // then return it as
-        return switch (next.type())
-            {
-                // a string scalar,
-                case SCALAR_STRING -> scalar(next.label(), next.string());
+        try
+        {
+            // then return it as
+            return switch (next.type())
+                {
+                    // a string scalar,
+                    case STRING -> scalar(next.label(), next.string());
 
-                // a numeric scalar,
-                case SCALAR_NUMBER -> scalar(next.label(), next.number());
+                    // a numeric scalar,
+                    case NUMBER -> scalar(next.label(), next.number());
 
-                // or an enum value.
-                case SCALAR_ENUM_VALUE -> enumValue(next.string());
+                    // or an enum value.
+                    case ENUM_VALUE -> enumValue(next.string());
 
-                default -> fail();
-            };
+                    default -> fail();
+                };
+        }
+        catch (Exception e)
+        {
+            throw new Problem(e, "Unable to parse scalar from:\n\n$\n\n$", next, in.resource()).asException();
+        }
     }
 }
