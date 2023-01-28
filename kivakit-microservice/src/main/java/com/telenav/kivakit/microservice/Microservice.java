@@ -540,7 +540,7 @@ public abstract class Microservice<Member> extends Application implements
                 if (openApiAssets != null)
                 {
                     // mount them.
-                    mountOpenApiAssets("/docs", openApiAssets);
+                    mountOpenApiAssets("/docs/", openApiAssets);
                     mountOpenApiAssets("/api/" + version() + "/docs", openApiAssets);
                 }
 
