@@ -1,6 +1,6 @@
 package com.telenav.kivakit.data.formats.yaml.model;
 
-import com.telenav.kivakit.data.formats.yaml.Yamlizer;
+import com.telenav.kivakit.data.formats.yaml.YamlFormatter;
 import com.telenav.kivakit.interfaces.naming.Named;
 
 public abstract class YamlNode implements Named
@@ -67,7 +67,7 @@ public abstract class YamlNode implements Named
     @Override
     public String toString()
     {
-        return new Yamlizer()
+        return new YamlFormatter()
             .asStringList(this)
             .join("\n");
     }

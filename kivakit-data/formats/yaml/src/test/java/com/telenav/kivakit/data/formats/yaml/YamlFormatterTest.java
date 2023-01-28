@@ -2,7 +2,7 @@ package com.telenav.kivakit.data.formats.yaml;
 
 import org.junit.Test;
 
-public class YamlizerTest extends BaseYamlTest
+public class YamlFormatterTest extends BaseYamlTest
 {
     /**
      * <pre>

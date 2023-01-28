@@ -16,7 +16,7 @@ import static com.telenav.kivakit.core.string.Strings.doubleQuoted;
  *
  * @author Jonathan Locke
  */
-public class Yamlizer
+public class YamlFormatter
 {
     /**
      * Returns the yaml for the given node
@@ -83,6 +83,10 @@ public class Yamlizer
             ? ""
             : scalar.name() + ": ";
 
+        if (scalar.isEnum())
+        {
+            return stringList(scalar.string());
+        }
         if (scalar.isNumber())
         {
             return stringList(label + scalar.number());
@@ -94,10 +98,6 @@ public class Yamlizer
         if (scalar.isString())
         {
             return stringList(label + doubleQuoted(scalar.string()));
-        }
-        if (scalar.isEnum())
-        {
-            return stringList(scalar.string());
         }
 
         return fail("Unsupported scalar: $", scalar.toString());
