@@ -3,6 +3,7 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.o
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
 import com.telenav.kivakit.data.formats.yaml.model.YamlNode;
+import com.telenav.kivakit.data.formats.yaml.model.YamlScalar;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedMicroservlet;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
@@ -42,17 +43,6 @@ public class OpenApiPaths extends BaseComponent
         return paths;
     }
 
-    private YamlBlock content(Class<?> type)
-    {
-        var reference = scalar("$ref", "#/components/schemas/" + type.getSimpleName());
-
-        var applicationJson = block("application/json")
-            .with(reference);
-
-        return block("content")
-            .with(applicationJson);
-    }
-
     private YamlBlock path(MountedMicroservlet mounted)
     {
         var microservlet = mounted.microservlet();
@@ -66,18 +56,34 @@ public class OpenApiPaths extends BaseComponent
                 .with(responses(microservlet.responseType())));
     }
 
+    private YamlScalar reference(Class<?> type)
+    {
+        return scalar("$ref", "#/components/schemas/" + type.getSimpleName());
+    }
+
     private YamlNode requestBody(Class<?> requestType)
     {
         return block("requestBody")
-            .with(content(requestType));
+            .with(block("content")
+                .with(block("application/json")
+                    .with(block("schema")
+                        .with(reference(requestType)))));
     }
 
     private YamlNode responses(Class<?> responseType)
     {
         return block("responses")
             .with(block("'200'")
-                .with(content(responseType)))
+                .with(scalar("description", "Response object"))
+                .with(block("content")
+                    .with(block("application/json")
+                        .with(block("schema")
+                            .with(reference(responseType))))))
             .with(block("'500'")
-                .with(content(MicroservletError.class)));
+                .with(scalar("description", "Error description"))
+                .with(block("content")
+                    .with(block("application/json")
+                        .with(block("schema")
+                            .with(reference(MicroservletError.class))))));
     }
 }

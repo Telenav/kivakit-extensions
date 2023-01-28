@@ -50,7 +50,6 @@ public class OpenApiBuilder extends BaseComponent
                 .with(servers)
                 .with(new OpenApiPaths().yaml())
                 .with(new OpenApiComponents(schemas).yaml());
-
         }
         return yaml;
     }
@@ -72,18 +71,23 @@ public class OpenApiBuilder extends BaseComponent
 
                 if (!requestType.isAssignableFrom(OpenApiJsonRequest.class))
                 {
-                    information("Adding schema for $", requestType.getSimpleName());
                     var requestSchemas = schemas(this, requestType);
                     ensureNotNull(requestSchemas, "Could not extract YAML schemas from: $", requestType.getSimpleName());
                     schemas.addAll(requestSchemas);
 
-                    information("Adding schema for $", responseType.getSimpleName());
                     var responseSchemas = schemas(this, responseType);
                     ensureNotNull(responseSchemas, "Could not extract YAML schemas from: $", responseType.getSimpleName());
                     schemas.addAll(responseSchemas);
                 }
             }
         }
+
+        var restService = require(RestService.class);
+        for (var at : restService.onOpenApiSchemas())
+        {
+            schemas.addAll(schemas(this, at));
+        }
+
         return schemas;
     }
 }

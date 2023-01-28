@@ -46,6 +46,8 @@ public class YamlBlock extends YamlNode implements YamlNodeContainer
 
     public void addReference(String type)
     {
+        nameToElement.clear();
+        elements.clear();
         var reference = scalar("$ref", "#/components/schemas/" + type);
         elements.add(reference);
         nameToElement.put(reference.name(), reference);

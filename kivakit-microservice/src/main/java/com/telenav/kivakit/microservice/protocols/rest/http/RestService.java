@@ -19,6 +19,7 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.list.StringList;
 import com.telenav.kivakit.core.registry.Register;
 import com.telenav.kivakit.core.version.Version;
@@ -48,6 +49,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.core.collections.list.StringList.split;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
@@ -387,6 +389,16 @@ public abstract class RestService extends BaseComponent implements Initializable
 
     public void onInitialize(JettyServer server)
     {
+    }
+
+    /**
+     * Called when OpenAPI YAML is being created to allow additional types to be inspected
+     *
+     * @return The classes that should be added to the OpenAPI schemas list
+     */
+    public ObjectList<Class<?>> onOpenApiSchemas()
+    {
+        return list();
     }
 
     /**

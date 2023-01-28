@@ -184,8 +184,6 @@ public class RestClient extends BaseComponent implements TryTrait
         // open the POST resource for reading,
         try (var in = postResource(path, request).openForReading())
         {
-            Console.console().println("text = $", IO.readString(this, in));
-
             // read the JSON response,
             var reader = new JsonReader(new InputStreamReader(in));
             var gson = require(GsonFactory.class).gson();

@@ -65,7 +65,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
                 description: "A hierarchical error code per IETF RFC 7807"
               message:
                 type: string
-                desription: "A formatted description of the error"
+                description: "A formatted description of the error"
               type:
                 type: string
                 description: "The message type such as Problem or Warning"

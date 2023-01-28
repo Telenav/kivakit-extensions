@@ -9,6 +9,10 @@ import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 import com.telenav.kivakit.resource.resources.StringResource;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.language.reflection.Type.typeForClass;
 import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
@@ -23,17 +27,7 @@ public class OpenApiSchema implements Comparable<OpenApiSchema>
 
     public static ObjectList<OpenApiSchema> schemas(Listener listener, Class<?> type)
     {
-        var schemas = new ObjectList<OpenApiSchema>();
-        schemas.addIfNotNull(schema(listener, type.getSimpleName(), type));
-        for (var field : typeForClass(type).allFields())
-        {
-            var fieldType = field.type();
-            if (fieldType.hasAnnotation(OpenApi.class))
-            {
-                schemas.add(schema(listener, fieldType.simpleName(), fieldType.asJavaType()));
-            }
-        }
-        return schemas;
+        return schemas(listener, type, new HashSet<>());
     }
 
     private final YamlNode root;
@@ -81,7 +75,7 @@ public class OpenApiSchema implements Comparable<OpenApiSchema>
 
     private static OpenApiSchema schema(Listener listener, String name, Class<?> type)
     {
-        listener.information("Reading schema $", type.getSimpleName());
+        listener.trace("Reading schema $", type.getSimpleName());
         ensureNotNull(name);
         var annotation = ensureNotNull(type).getAnnotation(OpenApi.class);
         if (annotation != null)
@@ -101,5 +95,34 @@ public class OpenApiSchema implements Comparable<OpenApiSchema>
         }
 
         return null;
+    }
+
+    private static ObjectList<OpenApiSchema> schemas(Listener listener, Class<?> type, Set<Class<?>> visited)
+    {
+        if (!visited.contains(type))
+        {
+            visited.add(type);
+            var schemas = new ObjectList<OpenApiSchema>();
+            schemas.addIfNotNull(schema(listener, type.getSimpleName(), type));
+            for (var field : typeForClass(type).allFields())
+            {
+                var fieldType = field.type();
+                if (fieldType.hasAnnotation(OpenApi.class))
+                {
+                    schemas.add(schema(listener, fieldType.simpleName(), fieldType.asJavaType()));
+                    schemas.addAll(schemas(listener, fieldType.asJavaType(), visited));
+                }
+                for (var typeParameter : field.genericTypeParameters())
+                {
+                    if (typeParameter.hasAnnotation(OpenApi.class))
+                    {
+                        schemas.add(schema(listener, typeParameter.simpleName(), typeParameter.asJavaType()));
+                        schemas.addAll(schemas(listener, typeParameter.asJavaType(), visited));
+                    }
+                }
+            }
+            return schemas;
+        }
+        return list();
     }
 }

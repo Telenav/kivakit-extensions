@@ -43,18 +43,20 @@ public class YamlInputTest extends BaseYamlTest
      * 01 0 description: "A location on the surface of the Earth"
      * 02 0 properties:
      * 03 1   latitude:
-     * 04 2     type: double
-     * 05 2     description: "Latitude in degrees"
-     * 06 1   longitude:
-     * 07 2     type: double
-     * 08 2     description: "Longitude in degrees" </pre>
+     * 04 2     type: number
+     * 05 2     format: double
+     * 06 2     description: "Latitude in degrees"
+     * 07 1   longitude:
+     * 08 2     type: number
+     * 09 2     format: double
+     * 10 2     description: "Longitude in degrees" </pre>
      */
     @Test
     public void testLocationIndentLevels()
     {
         checkIndents("Location.yml", new int[]
             {
-                0, 0, 0, 1, 2, 2, 1, 2, 2
+                0, 0, 0, 1, 2, 2, 2, 1, 2, 2, 2
             });
     }
 

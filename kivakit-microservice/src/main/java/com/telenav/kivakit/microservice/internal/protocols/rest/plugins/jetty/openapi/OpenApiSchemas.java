@@ -15,6 +15,7 @@ import java.util.Collection;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.string.CaseFormat.isCapitalized;
+import static com.telenav.kivakit.core.string.CaseFormat.isUppercase;
 import static com.telenav.kivakit.resource.Extension.YAML;
 import static com.telenav.kivakit.resource.Extension.YML;
 
@@ -47,16 +48,20 @@ public class OpenApiSchemas extends BaseComponent
 
     public OpenApiSchemas add(OpenApiSchema schema)
     {
-        ensureNotNull(schema, "Null schema");
-        ensureNotNull(schema.yaml(), "Schema $ has no yaml", schema.name());
+        if (nameToSchema.get(schema.name()) == null)
+        {
+            ensureNotNull(schema, "Null schema");
+            ensureNotNull(schema.yaml(), "Schema $ has no yaml", schema.name());
 
-        if (schema.yaml().isNamed())
-        {
-            nameToSchema.put(schema.name(), schema);
-        }
-        else
-        {
-            fail("Unnamed schema: $", schema.yaml());
+            if (schema.yaml().isNamed())
+            {
+                information("Adding schema $", schema.name());
+                nameToSchema.put(schema.name(), schema);
+            }
+            else
+            {
+                fail("Unnamed schema: $", schema.yaml());
+            }
         }
         return this;
     }
@@ -106,9 +111,10 @@ public class OpenApiSchemas extends BaseComponent
                 var type = block.get("type");
                 if (type instanceof YamlLiteral literal)
                 {
-                    if (isCapitalized(literal.value()))
+                    var value = literal.value();
+                    if (isCapitalized(value) && !isUppercase(value))
                     {
-                        block.addReference(literal.value());
+                        block.addReference(value);
                     }
                 }
             }

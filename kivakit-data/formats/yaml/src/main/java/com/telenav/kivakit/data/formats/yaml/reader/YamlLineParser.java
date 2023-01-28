@@ -53,7 +53,7 @@ public class YamlLineParser implements TryCatchTrait
 
     private static final Pattern NUMERIC_ARRAY_ELEMENT = compile("- " + REGEX_NUMBER);
 
-    private static final Pattern ENUM_ARRAY_ELEMENT = compile("- " + REGEX_IDENTIFIER);
+    private static final Pattern ENUM_ARRAY_ELEMENT = compile("- \"" + REGEX_IDENTIFIER + "\"");
 
     /**
      * Parses the given line text into a {@link YamlLine}
