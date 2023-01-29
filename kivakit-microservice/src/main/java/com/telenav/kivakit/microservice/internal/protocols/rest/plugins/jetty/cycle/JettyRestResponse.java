@@ -22,8 +22,7 @@ import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SER
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
-import static com.telenav.kivakit.core.string.Strip.stripLeading;
-import static com.telenav.kivakit.core.string.Strip.stripTrailing;
+import static com.telenav.kivakit.core.string.Brackets.unbracket;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static com.telenav.kivakit.network.http.HttpStatus.OK;
@@ -171,11 +170,6 @@ public final class JettyRestResponse extends BaseComponent implements
         }
     }
 
-    private String stripBrackets(String json)
-    {
-        return stripTrailing(stripLeading(json, "{"), "}");
-    }
-
     private void writeContent(MicroservletResponse response)
     {
         tryCatch(() ->
@@ -202,9 +196,11 @@ public final class JettyRestResponse extends BaseComponent implements
 
                 // and send the JSON to the servlet output stream.
                 var out = httpResponse.getOutputStream();
-                out.println(stripBrackets(gson.toJson(responseJson)));
+                out.println("{");
+                out.println(unbracket(gson.toJson(responseJson)));
                 out.println(",");
-                out.println(stripBrackets(gson.toJson(errors)));
+                out.println(unbracket(gson.toJson(errors)));
+                out.println("}");
             }
         }, "Unable to write content response");
     }

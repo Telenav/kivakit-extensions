@@ -712,12 +712,11 @@ public abstract class Microservice<Member> extends Application implements
      * {@inheritDoc}
      */
     @Override
+    @MustBeInvokedByOverriders
     protected void onSerializationInitialize()
     {
-        // Register any object serializers
-        onRegisterObjectSerializers();
+        super.onSerializationInitialize();
 
-        // and gRPC schemas.
         register(new MicroservletGrpcSchemas(this));
     }
 

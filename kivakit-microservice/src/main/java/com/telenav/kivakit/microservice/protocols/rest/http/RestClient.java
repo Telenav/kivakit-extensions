@@ -1,11 +1,10 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.io.IO;
 import com.telenav.kivakit.core.language.trait.TryTrait;
-import com.telenav.kivakit.core.os.Console;
 import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
@@ -30,9 +29,12 @@ import java.net.http.HttpRequest;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.string.Brackets.bracket;
 import static com.telenav.kivakit.core.string.Formatter.format;
 import static com.telenav.kivakit.core.string.Strings.isNullOrBlank;
+import static com.telenav.kivakit.core.value.count.Bytes.bytes;
 import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultNetworkAccessConstraints;
+import static java.lang.Integer.parseInt;
 
 /**
  * A client for easy interaction with KivaKit {@link RestService}s.
@@ -176,10 +178,8 @@ public class RestClient extends BaseComponent implements TryTrait
         var postResource = postResource(path, request);
 
         // Get content length in case the content reader wants to show progress,
-        Integer length = tryCatchDefault(() -> Integer.parseInt(postResource.responseHeader().get("Content-Length")), null);
-        var bytes = length == null
-            ? null
-            : Bytes.bytes(length);
+        Integer length = tryCatchDefault(() -> parseInt(postResource.responseHeader().get("Content-Length")), null);
+        var bytes = length == null ? null : bytes(length);
 
         // open the POST resource for reading,
         try (var in = postResource(path, request).openForReading())
@@ -193,11 +193,15 @@ public class RestClient extends BaseComponent implements TryTrait
             contentReader.read(in, bytes);
             return response;
         }
+        catch (JsonSyntaxException e)
+        {
+            problem(e, "Could not parse JSON:\n\n$", postResource(path, request).reader().readText());
+        }
         catch (Exception e)
         {
             problem(e, "POST to $ failed", path);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -282,7 +286,7 @@ public class RestClient extends BaseComponent implements TryTrait
     {
         if ("application/json".equals(resource.responseHeader().get("content-type")))
         {
-            var json = "{" + resource.reader().asString() + "}";
+            var json = bracket(resource.reader().asString());
             if (!isNullOrBlank(json))
             {
                 return serializer.readObject(new StringResource(json), type).object();
