@@ -305,7 +305,7 @@ public abstract class Microservice<Member> extends Application implements
     private final Lazy<MicroserviceLambdaService> lambdaService = lazy(this::onNewLambdaService);
 
     /** Lazy-initialized REST service */
-    private final Lazy<RestService> restService = lazy(this::onNewRestService);
+    private final Lazy<RestService> restService = lazy(() -> register(onNewRestService()));
 
     /** True if this microservice is running */
     private boolean running;
@@ -318,7 +318,6 @@ public abstract class Microservice<Member> extends Application implements
      */
     protected Microservice()
     {
-        addProject(MicroserviceProject.class);
     }
 
     /**
@@ -425,6 +424,7 @@ public abstract class Microservice<Member> extends Application implements
     @Override
     public void onInitialize()
     {
+        addProject(MicroserviceProject.class);
     }
 
     /**
@@ -540,7 +540,7 @@ public abstract class Microservice<Member> extends Application implements
                 if (openApiAssets != null)
                 {
                     // mount them.
-                    mountOpenApiAssets("/docs", openApiAssets);
+                    mountOpenApiAssets("/docs/", openApiAssets);
                     mountOpenApiAssets("/api/" + version() + "/docs", openApiAssets);
                 }
 
@@ -695,9 +695,6 @@ public abstract class Microservice<Member> extends Application implements
             }
         }
 
-        // Next, initialize this microservice,
-        tryCatch(this::onInitialize, "Initialization failed");
-
         // then start our microservice running.
         tryCatch(this::start, "Microservice startup failed");
     }
@@ -715,12 +712,11 @@ public abstract class Microservice<Member> extends Application implements
      * {@inheritDoc}
      */
     @Override
+    @MustBeInvokedByOverriders
     protected void onSerializationInitialize()
     {
-        // Register any object serializers
-        onRegisterObjectSerializers();
+        super.onSerializationInitialize();
 
-        // and gRPC schemas.
         register(new MicroservletGrpcSchemas(this));
     }
 

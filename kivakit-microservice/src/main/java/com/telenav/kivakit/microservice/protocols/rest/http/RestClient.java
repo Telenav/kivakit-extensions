@@ -1,7 +1,11 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.JsonReader;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.language.trait.TryTrait;
+import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -15,16 +19,22 @@ import com.telenav.kivakit.resource.resources.StringOutputResource;
 import com.telenav.kivakit.resource.resources.StringResource;
 import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.resource.serialization.SerializableObject;
+import com.telenav.kivakit.serialization.gson.GsonFactory;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.http.HttpRequest;
 
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.string.Brackets.bracket;
 import static com.telenav.kivakit.core.string.Formatter.format;
 import static com.telenav.kivakit.core.string.Strings.isNullOrBlank;
+import static com.telenav.kivakit.core.value.count.Bytes.bytes;
 import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultNetworkAccessConstraints;
+import static java.lang.Integer.parseInt;
 
 /**
  * A client for easy interaction with KivaKit {@link RestService}s.
@@ -33,7 +43,7 @@ import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultN
  * The constructor of this class takes a {@link ObjectSerializer} to read and write JSON, a {@link Port} specifying the
  * host and port number to communicate with, and a {@link Version} specifying the version of the REST server. The
  * {@link #get(String, Class)} method reads a JSON object of the given type from a path relative to the server specified
- * in the constructor. The {@link #post(String, Class, MicroservletRequest)} method posts the given request object to
+ * in the constructor. The {@link #post(String, MicroservletRequest, Class)} method posts the given request object to
  * the given path as JSON and then reads a JSON object response.
  * </p>
  *
@@ -54,7 +64,8 @@ import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultN
  * <ul>
  *     <li>{@link #get(String, Class)}</li>
  *     <li>{@link #post(String, Class)}</li>
- *     <li>{@link #post(String, Class, MicroservletRequest)}</li>
+ *     <li>{@link #post(String, MicroservletRequest, Class)}</li>
+ *     <li>{@link #postAndReadContent(String, MicroservletRequest, Class, RestContentReader)}</li>
  * </ul>
  *
  * @author jonathanl (shibo)
@@ -63,8 +74,27 @@ import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultN
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
-public class RestClient extends BaseComponent
+public class RestClient extends BaseComponent implements TryTrait
 {
+    /**
+     * Interface that is called to read binary content that comes after a JSON header
+     */
+    public interface RestContentReader
+    {
+        /**
+         * Called to read any binary content following a JSON header
+         *
+         * @param in The input
+         * @param size The size of the input
+         */
+        void read(InputStream in, Bytes size);
+    }
+
+    public static class PostResponse
+    {
+
+    }
+
     /** Serializer for JSON request serialization and deserialization */
     private final ObjectSerializer serializer;
 
@@ -109,7 +139,7 @@ public class RestClient extends BaseComponent
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     Response post(String path, Class<Response> responseType)
     {
-        return post(path, responseType, null);
+        return post(path, null, responseType);
     }
 
     /**
@@ -118,40 +148,60 @@ public class RestClient extends BaseComponent
      * @param path The path to the microservlet request handler. If the path is not absolute (doesn't start with a '/'),
      * it is prefixed with: "/api/[major.version].[minor.version]/". For example, the path "users" in microservlet
      * version 3.1 will resolve to "/api/3.1/users", and the path "/users" will resolve to "/users".
-     * @param responseType The type of object to read. Must be a subclass of {@link MicroservletResponse}.
      * @param request The request object to post as application/json to the given path. If the request is null, then the
      * path or query parameters contains the data to be deserialized into JSON.
+     * @param responseType The type of object to read. Must be a subclass of {@link MicroservletResponse}.
      * @return The response object or null if a failure occurred
      */
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    Response post(String path, Class<Response> responseType, Request request)
+    Response post(String path, Request request, Class<Response> responseType)
     {
-        var outer = this;
-        var post = listenTo(new HttpPostResource(networkLocation(path), defaultNetworkAccessConstraints())
+        return fromJson(postResource(path, request), responseType);
+    }
+
+    /**
+     * Posts a request and reads a one-JSON-node header from the input before calling the contentReader callback
+     * function to allow further input to be read
+     *
+     * @param path The path to post to
+     * @param request The request to post
+     * @param responseType The type of the response
+     * @param contentReader The callback to process trailing input
+     * @return The response object
+     */
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    Response postAndReadContent(String path,
+                                Request request,
+                                Class<Response> responseType,
+                                RestContentReader contentReader)
+    {
+        var postResource = postResource(path, request);
+
+        // Get content length in case the content reader wants to show progress,
+        Integer length = tryCatchDefault(() -> parseInt(postResource.responseHeader().get("Content-Length")), null);
+        var bytes = length == null ? null : bytes(length);
+
+        // open the POST resource for reading,
+        try (var in = postResource(path, request).openForReading())
         {
-            @Override
-            public HttpRequest.Builder onInitialize(HttpRequest.Builder builder)
-            {
-                if (request != null)
-                {
-                    try
-                    {
-                        var serialized = new StringOutputResource();
-                        serializer.writeObject(serialized, new SerializableObject<>(request));
-                        builder = builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
-                    }
-                    catch (Exception e)
-                    {
-                        outer.problem("Could not post request: $", request);
-                    }
-                }
+            // read the JSON response,
+            var reader = new JsonReader(new InputStreamReader(in));
+            var gson = require(GsonFactory.class).gson();
+            Response response = gson.fromJson(reader, responseType);
 
-                return builder.header("Accept", "application/json")
-                    .header("Content-Type", "application/json");
-            }
-        });
-
-        return fromJson(post, responseType);
+            // then read the remainder of the content.
+            contentReader.read(in, bytes);
+            return response;
+        }
+        catch (JsonSyntaxException e)
+        {
+            problem(e, "Could not parse JSON:\n\n$", postResource(path, request).reader().readText());
+        }
+        catch (Exception e)
+        {
+            problem(e, "POST to $ failed", path);
+        }
+        return null;
     }
 
     /**
@@ -203,11 +253,40 @@ public class RestClient extends BaseComponent
         return new NetworkLocation(port.path(this, path));
     }
 
+    private <Request extends MicroservletRequest> HttpPostResource postResource(String path,
+                                                                                Request request)
+    {
+        return listenTo(new HttpPostResource(networkLocation(path), defaultNetworkAccessConstraints())
+        {
+            @Override
+            public HttpRequest.Builder onInitialize(HttpRequest.Builder builder)
+            {
+                if (request != null)
+                {
+                    try
+                    {
+                        var serialized = new StringOutputResource();
+                        serializer.writeObject(serialized, new SerializableObject<>(request));
+                        builder = builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
+                    }
+                    catch (Exception e)
+                    {
+                        problem("Could not post request: $", request);
+                    }
+                }
+
+                return builder
+                    .header("Accept", "application/json")
+                    .header("Content-Type", "application/json");
+            }
+        });
+    }
+
     private <T> T readResponse(BaseHttpResource resource, Class<T> type)
     {
         if ("application/json".equals(resource.responseHeader().get("content-type")))
         {
-            var json = "{" + resource.reader().asString() + "}";
+            var json = bracket(resource.reader().asString());
             if (!isNullOrBlank(json))
             {
                 return serializer.readObject(new StringResource(json), type).object();

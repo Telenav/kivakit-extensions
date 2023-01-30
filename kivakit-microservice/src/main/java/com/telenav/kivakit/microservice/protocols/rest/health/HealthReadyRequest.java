@@ -8,9 +8,7 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.fi
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiRequestHandler;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
@@ -24,23 +22,35 @@ import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
  * @author jonathanl (shibo)
  */
 @SuppressWarnings("unused")
-@OpenApiIncludeType(description = "Request for server readiness")
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED,
              audience = AUDIENCE_INTERNAL)
+@OpenApi
+    (
+        """
+            description: "Request for server readiness"
+                """
+    )
 public class HealthReadyRequest extends BaseMicroservletRequest
 {
     /**
      * Response object for this request
      */
-    @SuppressWarnings("unused")
-    @OpenApiIncludeType(description = "Response to a readiness request")
+    @OpenApi
+        (
+            """
+                description: "Response to a health readiness request"
+                properties:
+                  status:
+                    type: string
+                    description: "Description of status where READY indicates the server is ready for requests"
+                    """
+        )
     public static class HealthReadyResponse extends BaseMicroservletResponse
     {
         @Expose
         @IncludeProperty
-        @OpenApiIncludeMember(description = "The server status")
         private final String status;
 
         private HealthReadyResponse(String status)
@@ -56,7 +66,6 @@ public class HealthReadyRequest extends BaseMicroservletRequest
      * {@inheritDoc}
      */
     @Override
-    @OpenApiRequestHandler(tags = { "server readiness" })
     public MicroservletResponse onRespond()
     {
         // Go through each MountedApi,

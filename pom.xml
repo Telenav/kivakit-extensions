@@ -45,6 +45,11 @@
 
     <modules>
 
+        <module>kivakit-data/compression</module>
+        <module>kivakit-data/formats/xml</module>
+        <module>kivakit-data/formats/csv</module>
+        <module>kivakit-data/formats/library</module>
+        <module>kivakit-data/formats/yaml</module>
         <module>kivakit-extensions</module>
         <module>kivakit-logs/file</module>
         <module>kivakit-filesystems/java</module>

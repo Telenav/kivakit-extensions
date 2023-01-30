@@ -1,0 +1,32 @@
+package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections;
+
+import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiSchemas;
+
+import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
+
+public class OpenApiComponents
+{
+    private final OpenApiSchemas schemas;
+
+    public OpenApiComponents(OpenApiSchemas schemas)
+    {
+        this.schemas = schemas;
+    }
+
+    public YamlBlock yaml()
+    {
+        return block("components")
+            .with(schemas());
+    }
+
+    private YamlBlock schemas()
+    {
+        var block = block("schemas");
+        for (var schema : schemas.schemas().sorted())
+        {
+            block = block.with(schema.yaml());
+        }
+        return block;
+    }
+}
