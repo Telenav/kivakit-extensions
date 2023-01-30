@@ -55,6 +55,11 @@
             <artifactId>kivakit-web-swagger</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>kivakit-data-formats-yaml</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!-- Telenav -->
 
@@ -167,6 +172,13 @@
             <artifactId>junit</artifactId>
             <version>${testing.junit.version}</version>
             <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
         </dependency>
 
     </dependencies>

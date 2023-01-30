@@ -6,8 +6,7 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeMember;
-import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApiIncludeType;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.kivakit.validation.ValidationType;
 import com.telenav.kivakit.validation.Validator;
@@ -16,11 +15,11 @@ import com.telenav.lexakai.annotations.UmlClassDiagram;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.microservice.microservlet.MicroservletError.microservletError;
-import static com.telenav.kivakit.network.http.HttpStatus.*;
+import static com.telenav.kivakit.network.http.HttpStatus.OK;
 import static com.telenav.kivakit.validation.Validator.nullValidator;
 
 /**
@@ -45,15 +44,30 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
  */
 @SuppressWarnings({ "SpellCheckingInspection", "unused" })
 @UmlClassDiagram(diagram = DiagramMicroservlet.class)
-@OpenApiIncludeType(
-        description = "List of problems, warnings and other error messages in the event of a client or server problem")
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
+@OpenApi
+    (
+        """
+            description: "Error portion of response"
+            properties:
+              errors:
+                type: array
+                description: "List of errors"
+                items:
+                  type: MicroservletError
+            example:
+              errors:
+                - httpStatus: 401
+                  hierarchicalErrorCode: "errors/authentication/incorrect-password"
+                  message: "Invalid password"
+                  type: "Problem"
+                """
+    )
 public class MicroservletErrorResponse extends BaseMicroservletResponse
 {
     /** List of microservlet errors to include in this reponse */
-    @OpenApiIncludeMember(description = "List of errors that occurred")
     @Expose
     private final List<MicroservletError> errors = new ArrayList<>();
 
