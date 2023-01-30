@@ -41,7 +41,8 @@ public class HttpProblem extends Problem
 
     public HttpProblem(HttpStatus httpStatus, String message, Object... arguments)
     {
-        this(httpStatus, null, message, arguments);
+        super(message, arguments);
+        this.httpStatus = httpStatus;
     }
 
     public HttpProblem(HttpStatus httpStatus, Throwable cause, String message, Object... arguments)
