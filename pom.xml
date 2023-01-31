@@ -365,9 +365,11 @@
                     <destDir/>
                     <sourceFileIncludes>
                         <sourceFileInclude>**/*.java</sourceFileInclude>
-                        <sourceFileInclude>${project.basedir}/target/generated-sources/protobuf/grpc-java/**/*.java</sourceFileInclude>
-                        <sourceFileInclude>${project.basedir}/target/generated-sources/protobuf/java/**/*.java</sourceFileInclude>
                     </sourceFileIncludes>
+                    <sourceFileExcludes>
+                        <sourceFileExclude>**/internal/**/*.java</sourceFileExclude>
+                        <sourceFileExclude>**/test/**/*.java</sourceFileExclude>
+                    </sourceFileExcludes>
                 </configuration>
                 <executions>
                     <execution>
