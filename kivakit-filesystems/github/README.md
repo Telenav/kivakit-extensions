@@ -31,14 +31,14 @@ Read only filesystem service provider for GitHub.
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.14.0/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.15.0/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-filesystems-github</artifactId>
-        <version>1.14.0</version>
+        <version>1.15.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -93,18 +93,18 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.filesystems.github*](https://www.kivakit.org/1.14.0/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/com.telenav.kivakit.filesystems.github.svg)
+[*com.telenav.kivakit.filesystems.github*](https://www.kivakit.org/1.15.0/lexakai/kivakit-extensions/kivakit-filesystems/github/documentation/diagrams/com.telenav.kivakit.filesystems.github.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*GitHubFile*](https://www.kivakit.org/1.14.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFile.html) |  |  
-| [*GitHubFileSystemObject*](https://www.kivakit.org/1.14.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFileSystemObject.html) |  |  
-| [*GitHubFileSystemService*](https://www.kivakit.org/1.14.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFileSystemService.html) |  |  
-| [*GitHubFolder*](https://www.kivakit.org/1.14.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFolder.html) |  |  
-| [*GitHubTree*](https://www.kivakit.org/1.14.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubTree.html) |  |  
-| [*GitHubTree.EntryType*](https://www.kivakit.org/1.14.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubTree.EntryType.html) |  |  
+| [*GitHubFile*](https://www.kivakit.org/1.15.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFile.html) |  |  
+| [*GitHubFileSystemObject*](https://www.kivakit.org/1.15.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFileSystemObject.html) |  |  
+| [*GitHubFileSystemService*](https://www.kivakit.org/1.15.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFileSystemService.html) |  |  
+| [*GitHubFolder*](https://www.kivakit.org/1.15.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubFolder.html) |  |  
+| [*GitHubTree*](https://www.kivakit.org/1.15.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubTree.html) |  |  
+| [*GitHubTree.EntryType*](https://www.kivakit.org/1.15.0/javadoc/kivakit-extensions/kivakit-filesystems-github/com/telenav/kivakit/filesystems/github/GitHubTree.EntryType.html) |  |  
 
 [//]: # (start-user-text)
 
