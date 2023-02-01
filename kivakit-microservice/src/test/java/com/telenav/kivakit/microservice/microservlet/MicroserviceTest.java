@@ -212,7 +212,7 @@ public class MicroserviceTest extends UnitTest
         var succeeded = false;
         try
         {
-            client.post("garbage", TestResponse.class, garbageRequest);
+            client.post("garbage", garbageRequest, TestResponse.class);
             succeeded = true;
         }
         catch (Exception ignored)
@@ -223,7 +223,7 @@ public class MicroserviceTest extends UnitTest
 
         // Test POST
         var request = new TestPostRequest(7, 8);
-        var response = client.post("test", TestResponse.class, request);
+        var response = client.post("test",  request, TestResponse.class);
         ensureEqual(56, response.result);
 
         // Test GET

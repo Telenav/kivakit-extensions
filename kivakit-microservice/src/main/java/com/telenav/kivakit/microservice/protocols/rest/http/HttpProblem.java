@@ -22,8 +22,8 @@ import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.network.http.HttpStatus;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
@@ -41,7 +41,8 @@ public class HttpProblem extends Problem
 
     public HttpProblem(HttpStatus httpStatus, String message, Object... arguments)
     {
-        this(httpStatus, null, message, arguments);
+        super(message, arguments);
+        this.httpStatus = httpStatus;
     }
 
     public HttpProblem(HttpStatus httpStatus, Throwable cause, String message, Object... arguments)

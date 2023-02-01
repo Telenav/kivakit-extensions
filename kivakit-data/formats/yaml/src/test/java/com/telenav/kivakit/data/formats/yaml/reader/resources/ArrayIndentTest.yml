@@ -1,0 +1,19 @@
+type: object
+description: "Arrays test"
+properties:
+  animals:
+    type: array
+    description: "a list of animals"
+    items:
+      - element: "1"
+        name: "dinosaur"
+        occupation: "eating trees"
+        friends:
+          type: array
+          description: "list of friends"
+          items:
+            - name: "penguin"
+            - name: "bat"
+      - element: "2"
+        name: "penguin"
+        occupation: "keeping warm"

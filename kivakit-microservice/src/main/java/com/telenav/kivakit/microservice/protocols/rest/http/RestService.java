@@ -19,7 +19,9 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.registry.Register;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
@@ -47,6 +49,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.core.collections.list.StringList.split;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
@@ -168,6 +171,7 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  */
 @SuppressWarnings({ "RedundantSuppression", "unused", "unchecked", "SpellCheckingInspection" })
 @UmlClassDiagram(diagram = DiagramMicroservice.class)
+@Register
 public abstract class RestService extends BaseComponent implements Initializable
 {
     /** True while initializing */
@@ -288,7 +292,7 @@ public abstract class RestService extends BaseComponent implements Initializable
                     @Override
                     public String description()
                     {
-                        return format("KivaKit microservlet request handler for ${class}", requestType());
+                        return format("Handles ${class} requests", requestType());
                     }
 
                     @Override
@@ -388,6 +392,16 @@ public abstract class RestService extends BaseComponent implements Initializable
     }
 
     /**
+     * Called when OpenAPI YAML is being created to allow additional types to be inspected
+     *
+     * @return The classes that should be added to the OpenAPI schemas list
+     */
+    public ObjectList<Class<?>> onOpenApiSchemas()
+    {
+        return list();
+    }
+
+    /**
      * Called to give statistics for each request
      *
      * @param performance The statistics
@@ -422,9 +436,9 @@ public abstract class RestService extends BaseComponent implements Initializable
 
         // and add it to the OpenAPI object.
         return new Info()
-                .version(metadata.version().toString())
-                .description(metadata.description())
-                .title(metadata.name());
+            .version(metadata.version().toString())
+            .description(metadata.description())
+            .title(metadata.name());
     }
 
     /**

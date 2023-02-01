@@ -1,0 +1,7 @@
+type: array
+description: "Arrays test"
+items:
+  - 101
+  - 102
+  - -103
+  - 104
