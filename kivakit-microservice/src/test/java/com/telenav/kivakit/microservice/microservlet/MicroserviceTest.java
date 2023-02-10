@@ -23,6 +23,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
+import static com.telenav.kivakit.core.version.Version.version;
 import static com.telenav.kivakit.network.core.LocalHost.localhost;
 import static com.telenav.kivakit.network.http.HttpMethod.GET;
 import static com.telenav.kivakit.network.http.HttpMethod.POST;
@@ -169,6 +170,12 @@ public class MicroserviceTest extends UnitTest
         public TestRest(Microservice<?> microservice)
         {
             super(microservice);
+        }
+
+        @Override
+        public Version apiVersion()
+        {
+            return version("1.0");
         }
 
         @Override

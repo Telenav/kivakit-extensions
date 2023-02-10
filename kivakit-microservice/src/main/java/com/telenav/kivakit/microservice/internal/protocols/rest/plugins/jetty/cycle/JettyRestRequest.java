@@ -20,17 +20,15 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.c
 
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.core.io.IO;
-import com.telenav.kivakit.core.language.reflection.property.IncludeProperty;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.string.ObjectFormatter;
-import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequest;
+import com.telenav.kivakit.microservice.protocols.rest.http.Restful;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.properties.PropertyMap;
 import com.telenav.kivakit.validation.Validatable;
@@ -63,7 +61,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
  * The {@link #readRequest(Class)} method parses the JSON payload of a POST request into an object of the given type. It
  * then calls the {@link Validator} of the object. Parameters to the request (both path and query parameters) can be
  * retrieved with {@link #parameters()}. The requested path is available through {@link #path()}, and the version of the
- * REST application is provided by {@link #version()}.
+ * REST application is provided by {@link Restful#apiVersion()}.
  * </p>
  *
  * @author jonathanl (shibo)
@@ -248,15 +246,5 @@ public class JettyRestRequest extends BaseComponent implements
     public String toString()
     {
         return new ObjectFormatter(this).toString();
-    }
-
-    /**
-     * Returns the version of the microservice for this request
-     */
-    @Override
-    @IncludeProperty
-    public Version version()
-    {
-        return cycle.version();
     }
 }

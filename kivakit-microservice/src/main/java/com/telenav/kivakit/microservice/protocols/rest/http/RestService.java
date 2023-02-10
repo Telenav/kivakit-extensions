@@ -25,7 +25,6 @@ import com.telenav.kivakit.core.registry.Register;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
 import com.telenav.kivakit.microservice.Microservice;
-import com.telenav.kivakit.microservice.MicroserviceMetadata;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
@@ -43,7 +42,6 @@ import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
 import com.telenav.lexakai.annotations.associations.UmlRelation;
-import io.swagger.v3.oas.models.info.Info;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -144,13 +142,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * JAR for a previous version of the API on the given port number on the local host.
  * </p>
  *
- * <p><b>OpenAPI</b></p>
- *
- * <p>
- * The {@link #openApiInfo()} class can optionally be overridden to provide OpenAPI details beyond those provided by the
- * {@link Microservice} via {@link MicroserviceMetadata}.
- * </p>
- *
  * <p><b>API Paths and Versions</b></p>
  *
  * <p>
@@ -196,6 +187,13 @@ public abstract class RestService extends BaseComponent implements Initializable
     }
 
     /**
+     * Returns the API version for this REST service (it may also support earlier API versions).
+     *
+     * @return The API version
+     */
+    public abstract Version apiVersion();
+
+    /**
      * Mount OpenAPI request handler and initialize the rest service. This method cannot be overridden. Override
      * {@link #onInitialize()} instead.
      */
@@ -206,7 +204,7 @@ public abstract class RestService extends BaseComponent implements Initializable
         try
         {
             mount("/docs/open-api/swagger.json", GET, OpenApiJsonRequest.class);
-            mount("/api/" + microservice().version() + "/docs/open-api/swagger.json", GET, OpenApiJsonRequest.class);
+            mount("/api/" + apiVersion() + "/docs/open-api/swagger.json", GET, OpenApiJsonRequest.class);
 
             onInitialize();
         }
@@ -423,22 +421,6 @@ public abstract class RestService extends BaseComponent implements Initializable
      */
     public void onRequesting(MicroservletRequest request, HttpMethod method)
     {
-    }
-
-    /**
-     * OpenAPI Info for the microservice. This method can be overridden to provide more detail that what is in
-     * {@link MicroserviceMetadata}.
-     */
-    public Info openApiInfo()
-    {
-        // Get the microservice metadata,
-        var metadata = require(Microservice.class).metadata();
-
-        // and add it to the OpenAPI object.
-        return new Info()
-            .version(metadata.version().toString())
-            .description(metadata.description())
-            .title(metadata.name());
     }
 
     /**

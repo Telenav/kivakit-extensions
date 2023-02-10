@@ -79,7 +79,7 @@ public class OpenApiPaths extends BaseComponent
                     .with(block("application/json")
                         .with(block("schema")
                             .with(reference(responseType))))))
-            .with(block("'500'")
+            .with(block("'400,405,500'")
                 .with(scalar("description", "Error description"))
                 .with(block("content")
                     .with(block("application/json")
