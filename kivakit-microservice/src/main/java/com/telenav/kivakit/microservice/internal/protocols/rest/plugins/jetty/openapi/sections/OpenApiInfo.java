@@ -15,6 +15,6 @@ public class OpenApiInfo extends BaseComponent
         return block("info")
             .with(scalar("title", microservice.name()))
             .with(scalar("description", microservice.description()))
-            .with(scalar("version", microservice.version().toString()));
+            .with(scalar("version", microservice.restService().apiVersion().toString()));
     }
 }

@@ -27,7 +27,6 @@ import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceYamlSource;
 import com.telenav.kivakit.serialization.gson.GsonFactory;
 import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 
@@ -45,7 +44,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestTh
  * <ul>
  *     <li>{@link #restService()} - The rest service that owns this</li>
  *     <li>{@link #microservice()} - The microservice that owns this</li>
- *     <li>{@link #version()} - The version of {@link #microservice()}</li>
+ *     <li>{@link #apiVersion()} - The version of this REST API</li>
  * </ul>
  *
  * <p><b>Request Cycle</b></p>
@@ -74,6 +73,15 @@ import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestTh
              documentation = DOCUMENTED)
 public interface Restful extends Component
 {
+    /**
+     * Returns the version of the microservice that is responding to a request
+     */
+    @FormatProperty
+    default Version apiVersion()
+    {
+        return restService().apiVersion();
+    }
+
     /**
      * Deserializes the given JSON to the given type using Gson
      *
@@ -163,14 +171,5 @@ public interface Restful extends Component
     default JsonElement toJson(Object response)
     {
         return gson(response).toJsonTree(response);
-    }
-
-    /**
-     * Returns the version of the microservice that is responding to a request
-     */
-    @FormatProperty
-    default Version version()
-    {
-        return microservice().version();
     }
 }

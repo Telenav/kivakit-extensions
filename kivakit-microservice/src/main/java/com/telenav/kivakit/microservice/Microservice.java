@@ -48,6 +48,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.language.primitive.Ints.parseInt;
 import static com.telenav.kivakit.core.object.Lazy.lazy;
+import static com.telenav.kivakit.core.string.Strip.stripTrailing;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.filesystem.Folders.folderSwitchParser;
 import static com.telenav.kivakit.resource.Resource.resolveResource;
@@ -540,8 +541,8 @@ public abstract class Microservice<Member> extends Application implements
                 if (openApiAssets != null)
                 {
                     // mount them.
-                    mountOpenApiAssets("/docs/", openApiAssets);
-                    mountOpenApiAssets("/api/" + version() + "/docs", openApiAssets);
+                    mountOpenApiAssets("/docs", openApiAssets);
+                    mountOpenApiAssets("/api/" + restService().apiVersion() + "/docs", openApiAssets);
                 }
 
                 // If there are any previous APIs specified by the -api-forwarding switch,
@@ -799,6 +800,7 @@ public abstract class Microservice<Member> extends Application implements
 
     private void mountOpenApiAssets(String path, ResourceFolder<?> openApiAssets)
     {
+        path = stripTrailing(path, "/");
         server.mount(path, new SwaggerIndexJettyPlugin(openApiAssets, settings().port()));
         server.mount(path + "/assets/openapi/*", new AssetsJettyPlugin(openApiAssets));
         server.mount(path + "/assets/swagger/webapp/*", new SwaggerAssetsJettyPlugin());
