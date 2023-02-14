@@ -1,9 +1,0 @@
-type: object
-description: "A location on the surface of the Earth"
-properties:
-  latitude:
-    type: double
-    description: "Latitude in degrees"
-  longitude:
-    type: double
-    description: "Longitude in degrees"

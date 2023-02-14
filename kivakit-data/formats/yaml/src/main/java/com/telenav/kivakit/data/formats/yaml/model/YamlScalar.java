@@ -26,6 +26,11 @@ public class YamlScalar extends YamlNode
         return new YamlScalar(name, ensureNotNull(value));
     }
 
+    public static YamlScalar scalar(String value)
+    {
+        return new YamlScalar(UNNAMED, ensureNotNull(value));
+    }
+
     @FormatProperty
     private final Boolean truth;
 

@@ -1,9 +1,0 @@
-type: object
-description: "A rectangle with a bottom left and top right location"
-properties:
-  bottomLeft:
-    type: Location
-    description: "The bottom left corner of the rectangle"
-  topRight:
-    type: Location
-    description: "The top right corner of the rectangle"

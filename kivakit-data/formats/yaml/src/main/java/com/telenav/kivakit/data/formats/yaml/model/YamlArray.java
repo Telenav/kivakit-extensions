@@ -50,6 +50,11 @@ public class YamlArray extends YamlNode implements YamlNodeContainer
         return elements.get(index);
     }
 
+    public boolean isEmpty()
+    {
+        return size() == 0;
+    }
+
     @Override
     public YamlArray prepending(YamlNode node)
     {
