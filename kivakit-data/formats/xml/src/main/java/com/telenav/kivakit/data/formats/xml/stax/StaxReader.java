@@ -181,7 +181,7 @@ public class StaxReader extends BaseComponent implements Closeable
      * @param reader The Java STAX event reader
      * @param in The input stream that the reader is processing
      */
-    private StaxReader(Resource resource, XMLEventReader reader, InputStream in)
+    protected StaxReader(Resource resource, XMLEventReader reader, InputStream in)
     {
         this.resource = resource;
         this.reader = reader;
@@ -305,9 +305,9 @@ public class StaxReader extends BaseComponent implements Closeable
     }
 
     /**
-     * Returns true if the this path is hierarchically "under" the given path. For example, if this path is a/b/c and
-     * the given path is /a/b, this method would return true. However, if this path was a/b/c, and the given path was
-     * /a/b/c or /a/b/c/d, it would return false.
+     * Returns true if this path is hierarchically "under" the given path. For example, if this path is a/b/c and the
+     * given path is /a/b, this method would return true. However, if this path was a/b/c, and the given path was /a/b/c
+     * or /a/b/c/d, it would return false.
      */
     public boolean isInside(StaxPath path)
     {
@@ -413,15 +413,17 @@ public class StaxReader extends BaseComponent implements Closeable
         {
             switch (matcher.matcher(at))
             {
-                case FOUND:
+                case FOUND ->
+                {
                     return at;
-
-                case STOP:
+                }
+                case STOP ->
+                {
                     return null;
-
-                case NOT_FOUND:
-                default:
-                    break;
+                }
+                case NOT_FOUND ->
+                {
+                }
             }
         }
 

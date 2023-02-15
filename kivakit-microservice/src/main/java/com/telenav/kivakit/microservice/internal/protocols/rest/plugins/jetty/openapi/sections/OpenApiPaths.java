@@ -10,14 +10,23 @@ import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.op
 import com.telenav.kivakit.microservice.microservlet.MicroservletError;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.yamlBlock;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.yamlScalar;
 
 public class OpenApiPaths extends BaseComponent
 {
+    public static OpenApiPaths openApiPaths()
+    {
+        return new OpenApiPaths();
+    }
+
+    protected OpenApiPaths()
+    {
+    }
+
     public YamlNode yaml()
     {
-        var paths = block("paths");
+        var paths = yamlBlock("paths");
 
         var filter = require(JettyMicroservletFilter.class);
         var mountPaths = list(filter.microservletPaths());
@@ -49,41 +58,41 @@ public class OpenApiPaths extends BaseComponent
         var path = mounted.path();
         var method = path.httpMethod().name().toLowerCase();
 
-        return block(path.path().toString())
-            .with(block(method)
-                .with(scalar("description", microservlet.description()))
+        return yamlBlock(path.path().toString())
+            .with(yamlBlock(method)
+                .with(yamlScalar("description", microservlet.description()))
                 .with(requestBody(microservlet.requestType()))
                 .with(responses(microservlet.responseType())));
     }
 
     private YamlScalar reference(Class<?> type)
     {
-        return scalar("$ref", "#/components/schemas/" + type.getSimpleName());
+        return yamlScalar("$ref", "#/components/schemas/" + type.getSimpleName());
     }
 
     private YamlNode requestBody(Class<?> requestType)
     {
-        return block("requestBody")
-            .with(block("content")
-                .with(block("application/json")
-                    .with(block("schema")
+        return yamlBlock("requestBody")
+            .with(yamlBlock("content")
+                .with(yamlBlock("application/json")
+                    .with(yamlBlock("schema")
                         .with(reference(requestType)))));
     }
 
     private YamlNode responses(Class<?> responseType)
     {
-        return block("responses")
-            .with(block("'200'")
-                .with(scalar("description", "Response object"))
-                .with(block("content")
-                    .with(block("application/json")
-                        .with(block("schema")
+        return yamlBlock("responses")
+            .with(yamlBlock("'200'")
+                .with(yamlScalar("description", "Response object"))
+                .with(yamlBlock("content")
+                    .with(yamlBlock("application/json")
+                        .with(yamlBlock("schema")
                             .with(reference(responseType))))))
-            .with(block("'400,405,500'")
-                .with(scalar("description", "Error description"))
-                .with(block("content")
-                    .with(block("application/json")
-                        .with(block("schema")
+            .with(yamlBlock("'400,405,500'")
+                .with(yamlScalar("description", "Error description"))
+                .with(yamlBlock("content")
+                    .with(yamlBlock("application/json")
+                        .with(yamlBlock("schema")
                             .with(reference(MicroservletError.class))))));
     }
 }

@@ -15,11 +15,11 @@ import java.util.function.Function;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.array;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlLiteral.literal;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.enumValue;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.yamlArray;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.yamlBlock;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlLiteral.yamlLiteral;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.yamlEnumValue;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.yamlScalar;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlLineType.LITERAL;
 
 /**
@@ -63,6 +63,16 @@ public class YamlReader
             return new YamlReader().read(new YamlInput(new StringResource(text)));
         }
         return null;
+    }
+
+    public static YamlReader yamlReader()
+    {
+        return new YamlReader();
+    }
+
+    protected YamlReader()
+    {
+
     }
 
     /**
@@ -148,8 +158,8 @@ public class YamlReader
 
         // Create an array,
         var array = labeled
-            ? array(in.read().label())
-            : array();
+            ? yamlArray(in.read().label())
+            : yamlArray();
 
         // and if it's labeled,
         if (labeled)
@@ -198,7 +208,7 @@ public class YamlReader
         var blockIndent = in.indentLevel();
 
         // Create the unlabeled block,
-        var block = block();
+        var block = yamlBlock();
 
         // then loop through elements at the same indent level or higher,
         while (in.hasMore() && in.indentLevel() == blockIndent)
@@ -240,8 +250,8 @@ public class YamlReader
 
         // Create a block,
         var block = labeled
-            ? block(in.read().label())
-            : block();
+            ? yamlBlock(in.read().label())
+            : yamlBlock();
 
         // and if it's labeled,
         if (labeled)
@@ -279,7 +289,7 @@ public class YamlReader
         ensure(next.type() == LITERAL);
 
         // and return it.
-        return literal(next.label(), next.string());
+        return yamlLiteral(next.label(), next.string());
     }
 
     /**
@@ -303,13 +313,13 @@ public class YamlReader
             return switch (next.type())
                 {
                     // a string scalar,
-                    case STRING -> scalar(next.label(), next.string());
+                    case STRING -> yamlScalar(next.label(), next.string());
 
                     // a numeric scalar,
-                    case NUMBER -> scalar(next.label(), next.number());
+                    case NUMBER -> yamlScalar(next.label(), next.number());
 
                     // or an enum value.
-                    case ENUM_VALUE -> enumValue(next.string());
+                    case ENUM_VALUE -> yamlEnumValue(next.string());
 
                     default -> fail();
                 };

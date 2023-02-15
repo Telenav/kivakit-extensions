@@ -5,16 +5,16 @@ import com.telenav.kivakit.core.collections.map.StringMap;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.yamlScalar;
 
 public class YamlBlock extends YamlNode implements YamlNodeContainer
 {
-    public static YamlBlock block(String name)
+    public static YamlBlock yamlBlock(String name)
     {
         return new YamlBlock(name);
     }
 
-    public static YamlBlock block()
+    public static YamlBlock yamlBlock()
     {
         return new YamlBlock();
     }
@@ -48,7 +48,7 @@ public class YamlBlock extends YamlNode implements YamlNodeContainer
     {
         nameToElement.clear();
         elements.clear();
-        var reference = scalar("$ref", "#/components/schemas/" + type);
+        var reference = yamlScalar("$ref", "#/components/schemas/" + type);
         elements.add(reference);
         nameToElement.put(reference.name(), reference);
     }
@@ -67,6 +67,26 @@ public class YamlBlock extends YamlNode implements YamlNodeContainer
     public YamlNode get(String name)
     {
         return nameToElement.get(name);
+    }
+
+    public YamlArray array(String name)
+    {
+        return get(name).asArray();
+    }
+
+    public YamlBlock block(String name)
+    {
+        return get(name).asBlock();
+    }
+
+    public YamlLiteral literal(String name)
+    {
+        return get(name).asLiteral();
+    }
+
+    public YamlScalar scalar(String name)
+    {
+        return get(name).asScalar();
     }
 
     public boolean has(String name)

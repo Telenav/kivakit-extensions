@@ -5,27 +5,32 @@ import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiComponents;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiInfo;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiPaths;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 
 import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.yamlBlock;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.yamlScalar;
 import static com.telenav.kivakit.data.formats.yaml.reader.YamlReader.readYamlAnnotation;
-import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiSchema.schemas;
+import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiSchemas.openApiSchemas;
+import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiComponents.openApiComponents;
+import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiInfo.openApiInfo;
+import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.sections.OpenApiPaths.openApiPaths;
 import static com.telenav.kivakit.resource.packages.Package.parsePackage;
 
 public class OpenApiBuilder extends BaseComponent
 {
+    public static OpenApiBuilder openApiBuilder()
+    {
+        return new OpenApiBuilder();
+    }
+
     private final OpenApiSchemas schemas;
 
     YamlBlock yaml;
 
-    public OpenApiBuilder()
+    protected OpenApiBuilder()
     {
         var microserviceType = require(Microservice.class).getClass();
 
@@ -44,12 +49,12 @@ public class OpenApiBuilder extends BaseComponent
             var restServiceClass = require(RestService.class).getClass();
             var servers = readYamlAnnotation(restServiceClass, OpenApi.class, OpenApi::value);
 
-            yaml = block()
-                .with(scalar("openapi", "3.0.0"))
-                .with(new OpenApiInfo().yaml())
+            yaml = yamlBlock()
+                .with(yamlScalar("openapi", "3.0.0"))
+                .with(openApiInfo().yaml())
                 .with(servers)
-                .with(new OpenApiPaths().yaml())
-                .with(new OpenApiComponents(schemas).yaml());
+                .with(openApiPaths().yaml())
+                .with(openApiComponents(schemas).yaml());
         }
         return yaml;
     }
@@ -71,11 +76,11 @@ public class OpenApiBuilder extends BaseComponent
 
                 if (!requestType.isAssignableFrom(OpenApiJsonRequest.class))
                 {
-                    var requestSchemas = schemas(this, requestType);
+                    var requestSchemas = openApiSchemas(this, requestType);
                     ensureNotNull(requestSchemas, "Could not extract YAML schemas from: $", requestType.getSimpleName());
                     schemas.addAll(requestSchemas);
 
-                    var responseSchemas = schemas(this, responseType);
+                    var responseSchemas = openApiSchemas(this, responseType);
                     ensureNotNull(responseSchemas, "Could not extract YAML schemas from: $", responseType.getSimpleName());
                     schemas.addAll(responseSchemas);
                 }
@@ -85,7 +90,7 @@ public class OpenApiBuilder extends BaseComponent
         var restService = require(RestService.class);
         for (var at : restService.onOpenApiSchemas())
         {
-            schemas.addAll(schemas(this, at));
+            schemas.addAll(openApiSchemas(this, at));
         }
 
         return schemas;

@@ -42,9 +42,19 @@ public class StaxPath extends StringPath
         return stax;
     }
 
-    public StaxPath()
+    public static StaxPath staxPath()
+    {
+        return new StaxPath();
+    }
+
+    protected StaxPath()
     {
         super(List.of());
+    }
+
+    protected StaxPath(StaxPath that)
+    {
+        super(that);
     }
 
     /**
@@ -53,7 +63,7 @@ public class StaxPath extends StringPath
     @Override
     public StaxPath copy()
     {
-        return (StaxPath) super.copy();
+        return new StaxPath(this);
     }
 
     /**
@@ -99,13 +109,5 @@ public class StaxPath extends StringPath
     public StaxPath withChild(String element)
     {
         return (StaxPath) super.withChild(element);
-    }
-
-    @Override
-    protected StaxPath onCopy(String root, List<String> elements)
-    {
-        var path = new StaxPath();
-        path.elements().addAll(elements);
-        return path;
     }
 }

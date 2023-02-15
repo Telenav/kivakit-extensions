@@ -11,7 +11,7 @@ public abstract class YamlNode implements Named
 
     private YamlNode parent;
 
-    public YamlNode(String name)
+    protected YamlNode(String name)
     {
         this.name = name;
     }
@@ -20,6 +20,26 @@ public abstract class YamlNode implements Named
     {
         this.name = that.name;
         this.parent = that.parent;
+    }
+
+    public YamlArray asArray()
+    {
+        return (YamlArray) this;
+    }
+
+    public YamlBlock asBlock()
+    {
+        return (YamlBlock) this;
+    }
+
+    public YamlLiteral asLiteral()
+    {
+        return (YamlLiteral) this;
+    }
+
+    public YamlScalar asScalar()
+    {
+        return (YamlScalar) this;
     }
 
     @Override

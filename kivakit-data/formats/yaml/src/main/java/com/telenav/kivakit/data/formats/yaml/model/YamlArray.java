@@ -5,12 +5,12 @@ import com.telenav.kivakit.core.value.count.Count;
 
 public class YamlArray extends YamlNode implements YamlNodeContainer
 {
-    public static YamlArray array(String name)
+    public static YamlArray yamlArray(String name)
     {
         return new YamlArray(name);
     }
 
-    public static YamlArray array()
+    public static YamlArray yamlArray()
     {
         return new YamlArray(UNNAMED);
     }

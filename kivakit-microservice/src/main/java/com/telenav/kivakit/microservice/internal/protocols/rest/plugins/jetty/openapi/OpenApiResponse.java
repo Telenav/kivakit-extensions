@@ -5,6 +5,8 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceYamlSource;
 
+import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiBuilder.openApiBuilder;
+
 /**
  * Response to OpenAPI request
  */
@@ -15,7 +17,7 @@ public class OpenApiResponse extends BaseMicroservletResponse implements Microse
 
     public OpenApiResponse(Listener listener)
     {
-        api = listener.listenTo(new OpenApiBuilder()).buildYaml().toString();
+        api = listener.listenTo(openApiBuilder()).buildYaml().toString();
     }
 
     @Override

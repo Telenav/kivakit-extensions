@@ -2,14 +2,14 @@ package com.telenav.kivakit.data.formats.yaml.model;
 
 public class YamlLiteral extends YamlNode
 {
-    public static YamlLiteral literal(String name, String value)
+    public static YamlLiteral yamlLiteral(String name, String value)
     {
         return new YamlLiteral(name, value);
     }
 
     private final String value;
 
-    private YamlLiteral(String name, String value)
+    protected YamlLiteral(String name, String value)
     {
         super(name);
         this.value = value;

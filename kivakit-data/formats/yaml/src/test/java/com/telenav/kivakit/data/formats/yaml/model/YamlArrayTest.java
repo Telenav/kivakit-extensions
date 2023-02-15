@@ -4,16 +4,16 @@ import com.telenav.kivakit.data.formats.yaml.BaseYamlTest;
 import org.junit.Test;
 
 import static com.telenav.kivakit.core.value.count.Count._2;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.array;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.yamlArray;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.yamlScalar;
 
 public class YamlArrayTest extends BaseYamlTest
 {
     @Test
     public void testCreation()
     {
-        ensure(array().isUnnamed());
-        ensure(array("fred").isNamed());
+        ensure(yamlArray().isUnnamed());
+        ensure(yamlArray("fred").isNamed());
     }
 
     /**
@@ -55,9 +55,9 @@ public class YamlArrayTest extends BaseYamlTest
     @Test
     public void testWithAndElements()
     {
-        var array = array("duck");
-        array = array.with(scalar("color", "red"));
-        array = array.with(scalar("age", 3));
+        var array = yamlArray("duck");
+        array = array.with(yamlScalar("color", "red"));
+        array = array.with(yamlScalar("age", 3));
         ensureEqual(array.size(), 2);
         ensureEqual(array.elements().size(), 2);
         ensure(((YamlScalar) array.elements().get(0)).string().equals("red"));
