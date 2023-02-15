@@ -18,8 +18,6 @@
 
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.Component;
 import com.telenav.kivakit.core.string.FormatProperty;
@@ -27,8 +25,6 @@ import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.Microservice;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.serialization.gson.GsonFactory;
-import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
@@ -56,8 +52,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestTh
  *
  * <p><b>Serialization</b></p>
  * <ul>
- *     <li>{@link #fromJson(String, Class)} - Converts JSON to an object</li>
- *     <li>{@link #toJson(Object)} - Converts an object to JSON</li>
+ *     <li>{@link #restSerializer()}</li>
  * </ul>
  *
  * @author jonathanl (shibo)
@@ -80,45 +75,6 @@ public interface Restful extends Component
     default Version apiVersion()
     {
         return restService().apiVersion();
-    }
-
-    /**
-     * Deserializes the given JSON to the given type using Gson
-     *
-     * @param json The JSON to deserialize
-     * @param type The resulting object type
-     * @return The deserialized object
-     */
-    default <T> T fromJson(String json, Class<T> type)
-    {
-        return gson().fromJson(json, type);
-    }
-
-    default Gson gson()
-    {
-        return gson(null);
-    }
-
-    /**
-     * Provides a {@link Gson} serializer for the given object. If the object implements {@link GsonFactorySource}, that
-     * interface provides the serializer, otherwise, the {@link Gson} instance is provided by the request cycle
-     *
-     * @param object The object
-     * @return The {@link Gson} serializer for the object
-     */
-    default Gson gson(Object object)
-    {
-        // If the response object has a custom GsonFactory,
-        if (object instanceof GsonFactorySource)
-        {
-            // use that to convert the response to JSON,
-            return ((GsonFactorySource) object).gsonFactory().gson();
-        }
-        else
-        {
-            // otherwise, use the GsonFactory, provided by the application through the request cycle.
-            return require(GsonFactory.class).gson();
-        }
     }
 
     /**
@@ -155,21 +111,20 @@ public interface Restful extends Component
     }
 
     /**
+     * Returns a rest serializer for serializing requests and responses
+     *
+     * @return The serializer
+     */
+    default RestSerializer restSerializer()
+    {
+        return restService().restSerializer();
+    }
+
+    /**
      * Returns the REST service handling requests
      */
     default RestService restService()
     {
         return restRequestCycle().restService();
-    }
-
-    /**
-     * @param response The response object to be serialized
-     * @return The object serialized into JSON format, using the application {@link GsonFactory}. This behavior can be
-     * overridden by implementing {@link GsonFactorySource} to provide a custom {@link GsonFactory} for a given response
-     * object.
-     */
-    default JsonElement toJson(Object response)
-    {
-        return gson(response).toJsonTree(response);
     }
 }

@@ -21,6 +21,7 @@ package com.telenav.kivakit.microservice.protocols.rest.http;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.list.StringList;
+import com.telenav.kivakit.core.object.Lazy;
 import com.telenav.kivakit.core.registry.Register;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.interfaces.lifecycle.Initializable;
@@ -34,10 +35,10 @@ import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletPerformance;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+import com.telenav.kivakit.microservice.protocols.rest.http.serializers.GsonRestSerializer;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.resource.Resource;
 import com.telenav.kivakit.resource.ResourceIdentifier;
-import com.telenav.kivakit.resource.serialization.ObjectSerializer;
 import com.telenav.kivakit.web.jetty.JettyServer;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 import com.telenav.lexakai.annotations.associations.UmlAggregation;
@@ -52,6 +53,7 @@ import static com.telenav.kivakit.core.collections.list.StringList.split;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.language.reflection.Type.typeForClass;
+import static com.telenav.kivakit.core.object.Lazy.lazy;
 import static com.telenav.kivakit.core.string.Formatter.format;
 import static com.telenav.kivakit.core.string.Paths.pathConcatenate;
 import static com.telenav.kivakit.core.version.Version.parseVersion;
@@ -155,7 +157,6 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
  * @see MicroservletRequest
  * @see RestPath
  * @see MicroservletMountTarget
- * @see ObjectSerializer
  * @see HttpMethod
  * @see Resource
  * @see Version
@@ -174,6 +175,8 @@ public abstract class RestService extends BaseComponent implements Initializable
 
     /** Map from REST path to request handler */
     private final Map<RestPath, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
+
+    private final Lazy<RestSerializer> serializer = lazy(GsonRestSerializer::new);
 
     /**
      * @param microservice The microservice that is creating this REST service
@@ -424,11 +427,13 @@ public abstract class RestService extends BaseComponent implements Initializable
     }
 
     /**
-     * Returns the {@link ObjectSerializer} to use for serializing and deserializing requests.
+     * Returns the serializer to use for this rest service
+     *
+     * @return The serializer
      */
-    public ObjectSerializer serializer()
+    public RestSerializer restSerializer()
     {
-        return require(ObjectSerializer.class);
+        return serializer.get();
     }
 
     /**

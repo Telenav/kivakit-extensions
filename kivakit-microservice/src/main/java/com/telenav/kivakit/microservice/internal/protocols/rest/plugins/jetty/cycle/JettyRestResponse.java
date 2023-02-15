@@ -9,9 +9,9 @@ import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
-import com.telenav.kivakit.microservice.protocols.rest.gson.MicroserviceYamlSource;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -45,8 +45,8 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
  *
  * <p>
  * The {@link #writeResponse(MicroservletResponse)} method validates the given {@link MicroservletResponse}
- * object before serializing it to JSON format using the {@link JettyRestRequestCycle#gson()}
- * object obtained from the {@link RestService}. It then writes the JSON string to the
+ * object before serializing it using the {@link JettyRestRequestCycle#restSerializer()} ()}
+ * object obtained from the {@link RestService}. It then writes the serialized text to the
  * {@link HttpServletResponse}.
  * </p>
  *
@@ -127,7 +127,7 @@ public final class JettyRestResponse extends BaseComponent implements
     }
 
     /**
-     * Writes the given response object to the servlet output stream in JSON format. If the request is invalid, or the
+     * Writes the given response object to the servlet output stream in text format. If the request is invalid, or the
      * response is null or invalid, a {@link MicroservletErrorResponse} is sent with the captured error messages.
      *
      * @param response The response to write to the HTTP output stream
@@ -170,38 +170,29 @@ public final class JettyRestResponse extends BaseComponent implements
         }
     }
 
+    private RestSerializer restSerializer(MicroservletResponse response)
+    {
+        if (response instanceof RestSerializer serializer)
+        {
+            return serializer;
+        }
+        return restSerializer();
+    }
+
     private void writeContent(MicroservletResponse response)
     {
         tryCatch(() ->
         {
-            // If the response object provides YAML,
-            if (response instanceof MicroserviceYamlSource yamlSource)
-            {
-                // set the content type,
-                httpResponse.setContentType("text/yaml");
+            // set the content type,
+            httpResponse.setContentType(restSerializer(response).contentType());
 
-                // and send the YAML.
-                var out = httpResponse.getOutputStream();
-                out.println(yamlSource.yaml());
-            }
-            else
-            {
-                // otherwise, turn the response into JSON,
-                var gson = gson(response);
-                var responseJson = toJson(response);
-                var errorsJson = toJson(errors);
-
-                // set the content type,
-                httpResponse.setContentType("application/json");
-
-                // and send the JSON to the servlet output stream.
-                var out = httpResponse.getOutputStream();
-                out.println("{");
-                out.println(unbracket(gson.toJson(responseJson)));
-                out.println(",");
-                out.println(unbracket(gson.toJson(errors)));
-                out.println("}");
-            }
+            // and send the JSON to the servlet output stream.
+            var out = httpResponse.getOutputStream();
+            out.println("{");
+            out.println(unbracket(restSerializer(response).serialize(response)));
+            out.println(",");
+            out.println(unbracket(restSerializer(response).serialize(errors)));
+            out.println("}");
         }, "Unable to write content response");
     }
 }

@@ -188,7 +188,7 @@ public class YamlReader
     }
 
     /**
-     * Reads an (unlabeled) array element {@link YamlBlock} from the input.
+     * Reads an array element {@link YamlBlock} from the input.
      *
      * @param in The input
      * @return The {@link YamlBlock}
@@ -198,9 +198,6 @@ public class YamlReader
         // Make sure that there's more input,
         ensure(in.hasMore());
 
-        // and that there is no label,
-        ensure(!in.current().isLabel());
-
         // and we're looking at an array element.
         ensure(in.current().isArrayElement());
 
@@ -208,7 +205,9 @@ public class YamlReader
         var blockIndent = in.indentLevel();
 
         // Create the unlabeled block,
-        var block = yamlBlock();
+        var block = in.current().isLabel()
+            ? yamlBlock(in.current().label())
+            : yamlBlock();
 
         // then loop through elements at the same indent level or higher,
         while (in.hasMore() && in.indentLevel() == blockIndent)

@@ -1,7 +1,6 @@
 package com.telenav.kivakit.microservice.microservlet;
 
 import com.google.gson.annotations.Expose;
-import com.telenav.kivakit.core.registry.Registry;
 import com.telenav.kivakit.core.thread.KivaKitThread;
 import com.telenav.kivakit.core.time.Duration;
 import com.telenav.kivakit.core.version.Version;
@@ -12,8 +11,7 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.resource.serialization.ObjectSerializerRegistry;
-import com.telenav.kivakit.serialization.gson.GsonObjectSerializer;
+import com.telenav.kivakit.microservice.protocols.rest.http.serializers.GsonRestSerializer;
 import com.telenav.kivakit.serialization.gson.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.validation.BaseValidator;
@@ -22,12 +20,12 @@ import com.telenav.kivakit.validation.Validator;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static com.telenav.kivakit.core.registry.Registry.registryFor;
 import static com.telenav.kivakit.core.time.Duration.FOREVER;
 import static com.telenav.kivakit.core.version.Version.version;
 import static com.telenav.kivakit.network.core.LocalHost.localhost;
 import static com.telenav.kivakit.network.http.HttpMethod.GET;
 import static com.telenav.kivakit.network.http.HttpMethod.POST;
-import static com.telenav.kivakit.resource.Extension.JSON;
 
 @Ignore
 public class MicroserviceTest extends UnitTest
@@ -192,23 +190,20 @@ public class MicroserviceTest extends UnitTest
     {
         register(new KivaKitCoreGsonFactory());
 
-        var serializers = new ObjectSerializerRegistry();
-        serializers.add(JSON, new GsonObjectSerializer());
-        register(serializers);
-
-        Registry.registryFor(this).register(new MicroserviceSettings()
+        registryFor(this).register(new MicroserviceSettings()
             .port(8086)
             .grpcPort(8087)
             .server(false));
 
         var microservice = listenTo(new TestMicroservice());
 
-        KivaKitThread.run(this, "Test", () -> microservice.run(new String[] { "-port=8086", "-grpc-port=8087",
-            "-server=false" }));
+        KivaKitThread.run(this, "Test", () ->
+            microservice.run(new String[] { "-port=8086", "-grpc-port=8087", "-server=false" }));
+
         microservice.waitForReady();
 
         var client = listenTo(new RestClient(
-            new GsonObjectSerializer(), localhost().http(8086), microservice.version()));
+            new GsonRestSerializer(), localhost().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);
@@ -230,7 +225,7 @@ public class MicroserviceTest extends UnitTest
 
         // Test POST
         var request = new TestPostRequest(7, 8);
-        var response = client.post("test",  request, TestResponse.class);
+        var response = client.post("test", request, TestResponse.class);
         ensureEqual(56, response.result);
 
         // Test GET

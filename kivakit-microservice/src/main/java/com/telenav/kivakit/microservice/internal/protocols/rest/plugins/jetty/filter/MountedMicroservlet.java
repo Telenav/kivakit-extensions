@@ -6,6 +6,7 @@ import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.properties.PropertyMap;
@@ -89,7 +90,7 @@ public class MountedMicroservlet extends BaseMounted
                                  PropertyMap parameters)
     {
         // then turn parameters into a JSON object and then treat that like it was POSTed.
-        var request = gson().fromJson(parameters.asJson(), requestType);
+        var request = restSerializer(response).deserialize(parameters.asJson(), requestType);
 
         // Respond with the object returned from onGet.
         if (request != null)
@@ -115,13 +116,13 @@ public class MountedMicroservlet extends BaseMounted
         MicroservletRequest request;
         if (cycle.restRequest().hasBody())
         {
-            // then convert the JSON in the body to a request object,
+            // then convert the text body to a request object,
             request = cycle.restRequest().readRequest(requestType);
         }
         else
         {
-            // otherwise, convert any parameters to a JSON request object,
-            request = gson().fromJson(parameters.asJson(), requestType);
+            // otherwise, convert any parameters to a request object,
+            request = restSerializer(response).deserialize(parameters.asJson(), requestType);
         }
 
         // Respond with the object returned from respond(request).
@@ -136,5 +137,14 @@ public class MountedMicroservlet extends BaseMounted
         {
             response.problem(BAD_REQUEST, "Bad request: unable to deserialize");
         }
+    }
+
+    private RestSerializer restSerializer(RestResponse response)
+    {
+        if (response instanceof RestSerializer serializer)
+        {
+            return serializer;
+        }
+        return restSerializer();
     }
 }

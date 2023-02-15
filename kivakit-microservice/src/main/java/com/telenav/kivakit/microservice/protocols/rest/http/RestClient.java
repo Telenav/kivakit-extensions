@@ -1,11 +1,9 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.JsonReader;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.language.trait.TryTrait;
-import com.telenav.kivakit.core.value.count.Bytes;
 import com.telenav.kivakit.core.version.Version;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -15,15 +13,8 @@ import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.BaseHttpResource;
 import com.telenav.kivakit.network.http.HttpGetResource;
 import com.telenav.kivakit.network.http.HttpPostResource;
-import com.telenav.kivakit.resource.resources.StringOutputResource;
-import com.telenav.kivakit.resource.resources.StringResource;
-import com.telenav.kivakit.resource.serialization.ObjectSerializer;
-import com.telenav.kivakit.resource.serialization.SerializableObject;
-import com.telenav.kivakit.serialization.gson.GsonFactory;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.http.HttpRequest;
 
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
@@ -40,17 +31,17 @@ import static java.lang.Integer.parseInt;
  * A client for easy interaction with KivaKit {@link RestService}s.
  *
  * <p>
- * The constructor of this class takes a {@link ObjectSerializer} to read and write JSON, a {@link Port} specifying the
- * host and port number to communicate with, and a {@link Version} specifying the version of the REST server. The
- * {@link #get(String, Class)} method reads a JSON object of the given type from a path relative to the server specified
- * in the constructor. The {@link #post(String, MicroservletRequest, Class)} method posts the given request object to
- * the given path as JSON and then reads a JSON object response.
+ * The constructor of this class takes a {@link RestSerializer} to serialize requests and responses, a {@link Port}
+ * specifying the host and port number to communicate with, and a {@link Version} specifying the version of the REST
+ * server. The {@link #get(String, Class)} method reads an object of the given type from a path relative to the server
+ * specified in the constructor. The {@link #post(String, MicroservletRequest, Class)} method posts the given request
+ * object to the given path as text and then reads a response object.
  * </p>
  *
  * <p><b>Creation</b></p>
  *
  * <ul>
- *     <li>{@link RestClient#RestClient(ObjectSerializer, Port, Version)}</li>
+ *     <li>{@link RestClient#RestClient(RestSerializer, Port, Version)}</li>
  * </ul>
  *
  * <p><b>Properties</b></p>
@@ -65,7 +56,6 @@ import static java.lang.Integer.parseInt;
  *     <li>{@link #get(String, Class)}</li>
  *     <li>{@link #post(String, Class)}</li>
  *     <li>{@link #post(String, MicroservletRequest, Class)}</li>
- *     <li>{@link #postAndReadContent(String, MicroservletRequest, Class, RestContentReader)}</li>
  * </ul>
  *
  * @author jonathanl (shibo)
@@ -76,27 +66,13 @@ import static java.lang.Integer.parseInt;
              documentation = DOCUMENTED)
 public class RestClient extends BaseComponent implements TryTrait
 {
-    /**
-     * Interface that is called to read binary content that comes after a JSON header
-     */
-    public interface RestContentReader
-    {
-        /**
-         * Called to read any binary content following a JSON header
-         *
-         * @param in The input
-         * @param size The size of the input
-         */
-        void read(InputStream in, Bytes size);
-    }
-
     public static class PostResponse
     {
 
     }
 
     /** Serializer for JSON request serialization and deserialization */
-    private final ObjectSerializer serializer;
+    private final RestSerializer serializer;
 
     /** The remote host and port number */
     private final Port port;
@@ -105,11 +81,11 @@ public class RestClient extends BaseComponent implements TryTrait
     private final Version serverVersion;
 
     /**
-     * @param serializer JSON serialization
+     * @param serializer REST text serialization
      * @param port The (host and) port of the remote REST service to communicate with
      * @param serverVersion The version of the remote REST service
      */
-    public RestClient(@NotNull ObjectSerializer serializer,
+    public RestClient(@NotNull RestSerializer serializer,
                       @NotNull Port port,
                       @NotNull Version serverVersion)
     {
@@ -119,7 +95,7 @@ public class RestClient extends BaseComponent implements TryTrait
     }
 
     /**
-     * Uses HTTP GET to read a JSON object of the given type from the given path.
+     * Uses HTTP GET to read an object of the given type from the given path.
      *
      * @param path The path to the microservlet request handler. If the path is not absolute (doesn't start with a '/'),
      * it is prefixed with: "/api/[major.version].[minor.version]/". For example, the path "users" in microservlet
@@ -129,7 +105,7 @@ public class RestClient extends BaseComponent implements TryTrait
      */
     public <Response extends MicroservletResponse> Response get(String path, Class<Response> responseType)
     {
-        return fromJson(new HttpGetResource(networkLocation(path), defaultNetworkAccessConstraints()), responseType);
+        return readResponse(new HttpGetResource(networkLocation(path), defaultNetworkAccessConstraints()), responseType);
     }
 
     /**
@@ -156,7 +132,7 @@ public class RestClient extends BaseComponent implements TryTrait
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     Response post(String path, Request request, Class<Response> responseType)
     {
-        return fromJson(postResource(path, request), responseType);
+        return readResponse(postResource(path, request), responseType);
     }
 
     /**
@@ -166,36 +142,29 @@ public class RestClient extends BaseComponent implements TryTrait
      * @param path The path to post to
      * @param request The request to post
      * @param responseType The type of the response
-     * @param contentReader The callback to process trailing input
      * @return The response object
      */
     public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     Response postAndReadContent(String path,
                                 Request request,
-                                Class<Response> responseType,
-                                RestContentReader contentReader)
+                                Class<Response> responseType)
     {
-        var postResource = postResource(path, request);
+        var response = postResource(path, request);
 
         // Get content length in case the content reader wants to show progress,
-        Integer length = tryCatchDefault(() -> parseInt(postResource.responseHeader().get("Content-Length")), null);
+        Integer length = tryCatchDefault(() -> parseInt(response.responseHeader().get("Content-Length")), null);
         var bytes = length == null ? null : bytes(length);
 
-        // open the POST resource for reading,
-        try (var in = postResource(path, request).openForReading())
+        // read the response text,
+        var text = response.readText();
+        try
         {
-            // read the JSON response,
-            var reader = new JsonReader(new InputStreamReader(in));
-            var gson = require(GsonFactory.class).gson();
-            Response response = gson.fromJson(reader, responseType);
-
-            // then read the remainder of the content.
-            contentReader.read(in, bytes);
-            return response;
+            // and return the deserialized response
+            return serializer.deserialize(text, responseType);
         }
         catch (JsonSyntaxException e)
         {
-            problem(e, "Could not parse JSON:\n\n$", postResource(path, request).reader().readText());
+            problem(e, "Could not parse JSON:\n\n$", text);
         }
         catch (Exception e)
         {
@@ -213,31 +182,30 @@ public class RestClient extends BaseComponent implements TryTrait
         return serverVersion;
     }
 
-    private <T> T fromJson(BaseHttpResource resource, Class<T> type)
+    private <T> T deserializeResponse(BaseHttpResource resource, Class<T> type)
     {
-        // Execute the request and read the status code
-        var status = resource.status();
-
-        // and if the status is okay,
-        if (status.isSuccess())
+        var contentType = serializer.contentType();
+        if (contentType.equals(resource.responseHeader().get("content-type")))
         {
-            // then return the JSON payload.
-            return readResponse(resource, type);
-        }
-
-        // If the status code indicates that there are associated error messages,
-        if (status.isFailure())
-        {
-            // then read the errors,
-            var errors = readResponse(resource, MicroservletErrorResponse.class);
-            if (errors != null)
+            var text = resource.reader().asString();
+            if (contentType.equals("application/json"))
             {
-                // and send them to listeners of this client.
-                errors.sendTo(this);
+                text = bracket(text);
+            }
+            if (!isNullOrBlank(text))
+            {
+                return serializer.deserialize(text, type);
+            }
+            else
+            {
+                return null;
             }
         }
-
-        return null;
+        else
+        {
+            problem("Response content type is not application/json, but instead: $", resource.contentType());
+            return null;
+        }
     }
 
     @NotNull
@@ -265,9 +233,8 @@ public class RestClient extends BaseComponent implements TryTrait
                 {
                     try
                     {
-                        var serialized = new StringOutputResource();
-                        serializer.writeObject(serialized, new SerializableObject<>(request));
-                        builder = builder.POST(HttpRequest.BodyPublishers.ofString(serialized.string()));
+                        var body = serializer.serialize(request);
+                        builder = builder.POST(HttpRequest.BodyPublishers.ofString(body));
                     }
                     catch (Exception e)
                     {
@@ -284,22 +251,28 @@ public class RestClient extends BaseComponent implements TryTrait
 
     private <T> T readResponse(BaseHttpResource resource, Class<T> type)
     {
-        if ("application/json".equals(resource.responseHeader().get("content-type")))
+        // Execute the request and read the status code
+        var status = resource.status();
+
+        // and if the status is okay,
+        if (status.isSuccess())
         {
-            var json = bracket(resource.reader().asString());
-            if (!isNullOrBlank(json))
+            // then return the JSON payload.
+            return deserializeResponse(resource, type);
+        }
+
+        // If the status code indicates that there are associated error messages,
+        if (status.isFailure())
+        {
+            // then read the errors,
+            var errors = deserializeResponse(resource, MicroservletErrorResponse.class);
+            if (errors != null)
             {
-                return serializer.readObject(new StringResource(json), type).object();
-            }
-            else
-            {
-                return null;
+                // and send them to listeners of this client.
+                errors.sendTo(this);
             }
         }
-        else
-        {
-            problem("Response content type is not application/json, but instead: $", resource.contentType());
-            return null;
-        }
+
+        return null;
     }
 }
