@@ -3,10 +3,12 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.f
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestPath;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequestCycle;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializers;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpMethod;
 import com.telenav.kivakit.properties.PropertyMap;
@@ -83,14 +85,15 @@ public class MountedMicroservlet extends BaseMounted
     }
 
     @SuppressWarnings("unused")
-    private void handleGetDelete(HttpMethod method,
-                                 RestRequestCycle cycle,
-                                 RestResponse response,
-                                 Class<? extends MicroservletRequest> requestType,
-                                 PropertyMap parameters)
+    private <T extends MicroservletRequest> void
+    handleGetDelete(HttpMethod method,
+                    RestRequestCycle cycle,
+                    RestResponse response,
+                    Class<T> requestType,
+                    PropertyMap parameters)
     {
         // then turn parameters into a JSON object and then treat that like it was POSTed.
-        var request = restSerializer(response).deserialize(parameters.asJson(), requestType);
+        var request = restSerializer(requestType).deserializeRequest(parameters, requestType);
 
         // Respond with the object returned from onGet.
         if (request != null)
@@ -106,11 +109,12 @@ public class MountedMicroservlet extends BaseMounted
         }
     }
 
-    private void handlePost(HttpMethod method,
-                            RestRequestCycle cycle,
-                            RestResponse response,
-                            Class<? extends MicroservletRequest> requestType,
-                            PropertyMap parameters)
+    private <Request extends MicroservletRequest, Response extends MicroservletResponse> void
+    handlePost(HttpMethod method,
+               RestRequestCycle cycle,
+               RestResponse response,
+               Class<Request> requestType,
+               PropertyMap parameters)
     {
         // If there is a request body,
         MicroservletRequest request;
@@ -122,7 +126,8 @@ public class MountedMicroservlet extends BaseMounted
         else
         {
             // otherwise, convert any parameters to a request object,
-            request = restSerializer(response).deserialize(parameters.asJson(), requestType);
+            RestSerializer<Request, Response> restSerializer = restSerializer(requestType);
+            request = restSerializer.deserializeRequest(parameters, requestType);
         }
 
         // Respond with the object returned from respond(request).
@@ -139,12 +144,19 @@ public class MountedMicroservlet extends BaseMounted
         }
     }
 
-    private RestSerializer restSerializer(RestResponse response)
+    /**
+     * Returns the appropriate {@link RestSerializer} for the given request type. If the type itself does not define
+     * <i>public static RestSerializer restSerializer()</i>, then the return value of {@link #defaultRestSerializer()}
+     * method is used.
+     *
+     * @param requestType The request type
+     * @return The {@link RestSerializer}
+     */
+    @SuppressWarnings("unchecked")
+    private <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    RestSerializer<Request, Response> restSerializer(Class<Request> requestType)
     {
-        if (response instanceof RestSerializer serializer)
-        {
-            return serializer;
-        }
-        return restSerializer();
+        var serializer = RestSerializers.restSerializer(requestType);
+        return (RestSerializer<Request, Response>) (serializer == null ? defaultRestSerializer() : serializer);
     }
 }

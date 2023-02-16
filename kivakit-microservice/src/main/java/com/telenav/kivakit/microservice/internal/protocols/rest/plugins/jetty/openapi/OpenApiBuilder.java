@@ -74,7 +74,7 @@ public class OpenApiBuilder extends BaseComponent
                 var requestType = microservlet.requestType();
                 var responseType = microservlet.responseType();
 
-                if (!requestType.isAssignableFrom(OpenApiJsonRequest.class))
+                if (!requestType.isAssignableFrom(OpenApiRequest.class))
                 {
                     var requestSchemas = openApiSchemas(this, requestType);
                     ensureNotNull(requestSchemas, "Could not extract YAML schemas from: $", requestType.getSimpleName());

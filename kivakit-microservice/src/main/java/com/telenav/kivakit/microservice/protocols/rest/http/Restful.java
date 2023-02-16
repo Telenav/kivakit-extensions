@@ -52,7 +52,7 @@ import static com.telenav.kivakit.microservice.protocols.rest.http.RestRequestTh
  *
  * <p><b>Serialization</b></p>
  * <ul>
- *     <li>{@link #restSerializer()}</li>
+ *     <li>{@link #defaultRestSerializer()}</li>
  * </ul>
  *
  * @author jonathanl (shibo)
@@ -75,6 +75,17 @@ public interface Restful extends Component
     default Version apiVersion()
     {
         return restService().apiVersion();
+    }
+
+    /**
+     * Returns a rest serializer for serializing requests and responses
+     *
+     * @return The serializer
+     */
+    @SuppressWarnings("unchecked")
+    default <Request extends MicroservletRequest, Response extends MicroservletResponse> RestSerializer<Request, Response> defaultRestSerializer()
+    {
+        return restService().restSerializer();
     }
 
     /**
@@ -108,16 +119,6 @@ public interface Restful extends Component
     default RestResponse restResponse()
     {
         return restRequestCycle().restResponse();
-    }
-
-    /**
-     * Returns a rest serializer for serializing requests and responses
-     *
-     * @return The serializer
-     */
-    default RestSerializer restSerializer()
-    {
-        return restService().restSerializer();
     }
 
     /**

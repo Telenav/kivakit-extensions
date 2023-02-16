@@ -23,6 +23,7 @@ import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequest;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.properties.PropertyMap;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
@@ -83,9 +84,9 @@ public interface RestRequest extends Restful
     /**
      * Reads a {@link MicroservletRequest} object from the text in the servlet request input stream.
      *
-     * @param <T> The object type
      * @param requestType The type of object to deserialize from text
      * @return The deserialized object, or null if deserialization failed
      */
-    <T extends MicroservletRequest> T readRequest(Class<T> requestType);
+    <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    Request readRequest(Class<Request> requestType);
 }

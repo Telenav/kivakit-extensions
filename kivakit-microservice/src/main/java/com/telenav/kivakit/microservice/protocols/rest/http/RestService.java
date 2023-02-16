@@ -30,7 +30,7 @@ import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservice;
 import com.telenav.kivakit.microservice.internal.protocols.MicroservletMountTarget;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.JettyMicroservletFilter;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.filter.MountedApi;
-import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiJsonRequest;
+import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiRequest;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletPerformance;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
@@ -176,7 +176,7 @@ public abstract class RestService extends BaseComponent implements Initializable
     /** Map from REST path to request handler */
     private final Map<RestPath, Class<? extends MicroservletRequest>> pathToRequest = new HashMap<>();
 
-    private final Lazy<RestSerializer> serializer = lazy(GsonRestSerializer::new);
+    private final Lazy<RestSerializer<?, ?>> serializer = lazy(GsonRestSerializer::new);
 
     /**
      * @param microservice The microservice that is creating this REST service
@@ -206,8 +206,8 @@ public abstract class RestService extends BaseComponent implements Initializable
         initializing = true;
         try
         {
-            mount("/docs/open-api/swagger.json", GET, OpenApiJsonRequest.class);
-            mount("/api/" + apiVersion() + "/docs/open-api/swagger.json", GET, OpenApiJsonRequest.class);
+            mount("/docs/open-api/swagger.json", GET, OpenApiRequest.class);
+            mount("/api/" + apiVersion() + "/docs/open-api/swagger.json", GET, OpenApiRequest.class);
 
             onInitialize();
         }
@@ -431,9 +431,9 @@ public abstract class RestService extends BaseComponent implements Initializable
      *
      * @return The serializer
      */
-    public RestSerializer restSerializer()
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse> RestSerializer<Request, Response> restSerializer()
     {
-        return serializer.get();
+        return (RestSerializer<Request, Response>) serializer.get();
     }
 
     /**

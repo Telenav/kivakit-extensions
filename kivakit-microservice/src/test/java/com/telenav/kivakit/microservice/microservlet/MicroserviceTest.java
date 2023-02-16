@@ -11,7 +11,7 @@ import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcClient;
 import com.telenav.kivakit.microservice.protocols.grpc.MicroserviceGrpcService;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClient;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
-import com.telenav.kivakit.microservice.protocols.rest.http.serializers.GsonRestSerializer;
+import com.telenav.kivakit.microservice.protocols.rest.http.serializers.GsonRestClientSerializer;
 import com.telenav.kivakit.serialization.gson.KivaKitCoreGsonFactory;
 import com.telenav.kivakit.testing.UnitTest;
 import com.telenav.kivakit.validation.BaseValidator;
@@ -30,9 +30,9 @@ import static com.telenav.kivakit.network.http.HttpMethod.POST;
 @Ignore
 public class MicroserviceTest extends UnitTest
 {
-    @SuppressWarnings("unused")
-    public static class TestGarbageRequest extends BaseMicroservletRequest
+    public static class TestGarbageRequest extends TestRequest
     {
+        @SuppressWarnings("unused")
         @Expose
         private String trash;
 
@@ -48,13 +48,7 @@ public class MicroserviceTest extends UnitTest
         @Override
         public MicroservletResponse onRespond()
         {
-            return listenTo(new TestResponse(-1));
-        }
-
-        @Override
-        public Class<? extends MicroservletResponse> responseType()
-        {
-            return TestResponse.class;
+            return null;
         }
 
         @Override
@@ -71,22 +65,12 @@ public class MicroserviceTest extends UnitTest
         }
     }
 
-    public static class TestGetRequest extends BaseMicroservletRequest
+    public static class TestGetRequest extends TestRequest
     {
-        public TestGetRequest()
-        {
-        }
-
         @Override
         public MicroservletResponse onRespond()
         {
             return listenTo(new TestResponse(42));
-        }
-
-        @Override
-        public Class<? extends MicroservletResponse> responseType()
-        {
-            return TestResponse.class;
         }
     }
 
@@ -120,7 +104,7 @@ public class MicroserviceTest extends UnitTest
         }
     }
 
-    public static class TestPostRequest extends BaseMicroservletRequest
+    public static class TestPostRequest extends TestRequest
     {
         @Expose
         int a;
@@ -143,12 +127,6 @@ public class MicroserviceTest extends UnitTest
         public MicroservletResponse onRespond()
         {
             return listenTo(new TestResponse(a * b));
-        }
-
-        @Override
-        public Class<? extends MicroservletResponse> responseType()
-        {
-            return TestResponse.class;
         }
     }
 
@@ -185,6 +163,15 @@ public class MicroserviceTest extends UnitTest
         }
     }
 
+    static abstract class TestRequest extends BaseMicroservletRequest
+    {
+        @Override
+        public Class<? extends MicroservletResponse> responseType()
+        {
+            return TestResponse.class;
+        }
+    }
+
     @Test
     public void test()
     {
@@ -202,8 +189,8 @@ public class MicroserviceTest extends UnitTest
 
         microservice.waitForReady();
 
-        var client = listenTo(new RestClient(
-            new GsonRestSerializer(), localhost().http(8086), microservice.version()));
+        var client = listenTo(new RestClient<TestRequest, TestResponse>(
+            new GsonRestClientSerializer<>(), localhost().http(8086), microservice.version()));
 
         // Test POST with path parameters but no request object
         var response3 = client.post("test/a/9/b/3", TestResponse.class);

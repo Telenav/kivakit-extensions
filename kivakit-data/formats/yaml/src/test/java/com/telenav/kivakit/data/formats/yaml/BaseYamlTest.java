@@ -2,7 +2,6 @@ package com.telenav.kivakit.data.formats.yaml;
 
 import com.telenav.kivakit.data.formats.yaml.model.YamlArray;
 import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
-import com.telenav.kivakit.data.formats.yaml.model.YamlScalar;
 import com.telenav.kivakit.testing.UnitTest;
 
 import static com.telenav.kivakit.data.formats.yaml.model.YamlArray.yamlArray;

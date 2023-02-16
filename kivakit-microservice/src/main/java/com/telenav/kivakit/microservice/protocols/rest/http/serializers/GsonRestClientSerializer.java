@@ -3,17 +3,16 @@ package com.telenav.kivakit.microservice.protocols.rest.http.serializers;
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
-import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
-import com.telenav.kivakit.properties.PropertyMap;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestClientSerializer;
 import com.telenav.kivakit.serialization.gson.GsonFactory;
 import com.telenav.kivakit.serialization.gson.GsonFactorySource;
 
 /**
- * A serializer that uses {@link Gson} to serializer REST requests and responses
+ * A client-side serializer that uses {@link Gson} to serialize requests and deserialize responses
  *
  * @author Jonathan Locke
  */
-public class GsonRestSerializer<Request, Response> extends BaseComponent implements RestSerializer<Request, Response>
+public class GsonRestClientSerializer<Request, Response> extends BaseComponent implements RestClientSerializer<Request, Response>
 {
     /**
      * {@inheritDoc}
@@ -27,41 +26,39 @@ public class GsonRestSerializer<Request, Response> extends BaseComponent impleme
     }
 
     /**
-     * Deserializes the given request object to text using the application's registered {@link GsonFactory}. This
-     * behavior can be overridden by implementing {@link GsonFactorySource} on the response object to provide a custom
-     * {@link GsonFactory} for that response object.
+     * {@inheritDoc}
      *
-     * @param text The text object to be deserialized into a request object
-     * @return The object serialized into JSON format,
+     * @param text {@inheritDoc}
+     * @param type {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
-    public Request deserializeRequest(String text, Class<Request> type)
+    public MicroservletErrorResponse deserializeErrors(String text, Class<MicroservletErrorResponse> type)
     {
         return gson(null).fromJson(text, type);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param text {@inheritDoc}
+     * @param type {@inheritDoc}
+     * @return {@inheritDoc}
+     */
     @Override
-    public Request deserializeRequest(PropertyMap properties, Class<Request> type)
+    public Response deserializeResponse(String text, Class<Response> type)
     {
-        return gson(null).fromJson(properties.toJson(), type);
-    }
-
-    @Override
-    public String serializeErrors(MicroservletErrorResponse errors)
-    {
-        return gson(errors).toJson(errors);
+        return gson(null).fromJson(text, type);
     }
 
     /**
-     * Serializes the given response object to text using the application's registered {@link GsonFactory}. This
-     * behavior can be overridden by implementing {@link GsonFactorySource} on the response object to provide a custom
-     * {@link GsonFactory} for that response object.
+     * {@inheritDoc}
      *
-     * @param object The response object to be serialized to text
-     * @return The object serialized into JSON format,
+     * @param object {@inheritDoc}
+     * @return {@inheritDoc}
      */
     @Override
-    public String serializeResponse(Response object)
+    public String serializeRequest(Request object)
     {
         return gson(object).toJson(object);
     }

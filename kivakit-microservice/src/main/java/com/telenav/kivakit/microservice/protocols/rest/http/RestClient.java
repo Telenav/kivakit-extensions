@@ -41,7 +41,7 @@ import static java.lang.Integer.parseInt;
  * <p><b>Creation</b></p>
  *
  * <ul>
- *     <li>{@link RestClient#RestClient(RestSerializer, Port, Version)}</li>
+ *     <li>{@link RestClient#RestClient(RestClientSerializer, Port, Version)}</li>
  * </ul>
  *
  * <p><b>Properties</b></p>
@@ -64,15 +64,10 @@ import static java.lang.Integer.parseInt;
 @TypeQuality(stability = STABLE_EXTENSIBLE,
              testing = UNTESTED,
              documentation = DOCUMENTED)
-public class RestClient extends BaseComponent implements TryTrait
+public class RestClient<Request extends MicroservletRequest, Response extends MicroservletResponse> extends BaseComponent implements TryTrait
 {
-    public static class PostResponse
-    {
-
-    }
-
     /** Serializer for JSON request serialization and deserialization */
-    private final RestSerializer serializer;
+    private final RestClientSerializer<Request, Response> serializer;
 
     /** The remote host and port number */
     private final Port port;
@@ -85,7 +80,7 @@ public class RestClient extends BaseComponent implements TryTrait
      * @param port The (host and) port of the remote REST service to communicate with
      * @param serverVersion The version of the remote REST service
      */
-    public RestClient(@NotNull RestSerializer serializer,
+    public RestClient(@NotNull RestClientSerializer<Request, Response> serializer,
                       @NotNull Port port,
                       @NotNull Version serverVersion)
     {
@@ -103,7 +98,7 @@ public class RestClient extends BaseComponent implements TryTrait
      * @param responseType The type of object to read. Must be a subclass of {@link MicroservletResponse}.
      * @return The response object, or null if a failure occurred
      */
-    public <Response extends MicroservletResponse> Response get(String path, Class<Response> responseType)
+    public Response get(String path, Class<Response> responseType)
     {
         return readResponse(new HttpGetResource(networkLocation(path), defaultNetworkAccessConstraints()), responseType);
     }
@@ -112,8 +107,7 @@ public class RestClient extends BaseComponent implements TryTrait
      * Convenience method when "posting" a JSON object using path parameters
      */
     @SuppressWarnings("unused")
-    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    Response post(String path, Class<Response> responseType)
+    public Response post(String path, Class<Response> responseType)
     {
         return post(path, null, responseType);
     }
@@ -129,10 +123,18 @@ public class RestClient extends BaseComponent implements TryTrait
      * @param responseType The type of object to read. Must be a subclass of {@link MicroservletResponse}.
      * @return The response object or null if a failure occurred
      */
-    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
-    Response post(String path, Request request, Class<Response> responseType)
+    public Response post(String path, Request request, Class<Response> responseType)
     {
         return readResponse(postResource(path, request), responseType);
+    }
+
+    /**
+     * Returns the version of the remote server that this client is interacting with. The version is specified during
+     * construction.
+     */
+    public Version serverVersion()
+    {
+        return serverVersion;
     }
 
     /**
@@ -144,7 +146,6 @@ public class RestClient extends BaseComponent implements TryTrait
      * @param responseType The type of the response
      * @return The response object
      */
-    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
     Response postAndReadContent(String path,
                                 Request request,
                                 Class<Response> responseType)
@@ -160,7 +161,7 @@ public class RestClient extends BaseComponent implements TryTrait
         try
         {
             // and return the deserialized response
-            return serializer.deserialize(text, responseType);
+            return serializer.deserializeResponse(text, responseType);
         }
         catch (JsonSyntaxException e)
         {
@@ -173,16 +174,7 @@ public class RestClient extends BaseComponent implements TryTrait
         return null;
     }
 
-    /**
-     * Returns the version of the remote server that this client is interacting with. The version is specified during
-     * construction.
-     */
-    public Version serverVersion()
-    {
-        return serverVersion;
-    }
-
-    private <T> T deserializeResponse(BaseHttpResource resource, Class<T> type)
+    private Response deserializeResponse(BaseHttpResource resource, Class<Response> type)
     {
         var contentType = serializer.contentType();
         if (contentType.equals(resource.responseHeader().get("content-type")))
@@ -194,7 +186,7 @@ public class RestClient extends BaseComponent implements TryTrait
             }
             if (!isNullOrBlank(text))
             {
-                return serializer.deserialize(text, type);
+                return serializer.deserializeResponse(text, type);
             }
             else
             {
@@ -221,8 +213,7 @@ public class RestClient extends BaseComponent implements TryTrait
         return new NetworkLocation(port.path(this, path));
     }
 
-    private <Request extends MicroservletRequest> HttpPostResource postResource(String path,
-                                                                                Request request)
+    private HttpPostResource postResource(String path, Request request)
     {
         return listenTo(new HttpPostResource(networkLocation(path), defaultNetworkAccessConstraints())
         {
@@ -233,7 +224,7 @@ public class RestClient extends BaseComponent implements TryTrait
                 {
                     try
                     {
-                        var body = serializer.serialize(request);
+                        var body = serializer.serializeRequest(request);
                         builder = builder.POST(HttpRequest.BodyPublishers.ofString(body));
                     }
                     catch (Exception e)
@@ -249,7 +240,7 @@ public class RestClient extends BaseComponent implements TryTrait
         });
     }
 
-    private <T> T readResponse(BaseHttpResource resource, Class<T> type)
+    private Response readResponse(BaseHttpResource resource, Class<Response> type)
     {
         // Execute the request and read the status code
         var status = resource.status();
@@ -265,7 +256,7 @@ public class RestClient extends BaseComponent implements TryTrait
         if (status.isFailure())
         {
             // then read the errors,
-            var errors = deserializeResponse(resource, MicroservletErrorResponse.class);
+            var errors = serializer.deserializeErrors(resource.readText(), MicroservletErrorResponse.class);
             if (errors != null)
             {
                 // and send them to listeners of this client.

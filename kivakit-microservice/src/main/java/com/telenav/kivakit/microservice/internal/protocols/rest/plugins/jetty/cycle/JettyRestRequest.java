@@ -26,8 +26,11 @@ import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequest;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializers;
 import com.telenav.kivakit.microservice.protocols.rest.http.Restful;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.properties.PropertyMap;
@@ -195,12 +198,12 @@ public class JettyRestRequest extends BaseComponent implements
     /**
      * Retrieves an object from the servlet request input stream.
      *
-     * @param <T> The object type
      * @param requestType The type of object to deserialize
      * @return The deserialized object, or null if deserialization failed
      */
     @Override
-    public <T extends MicroservletRequest> T readRequest(Class<T> requestType)
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse> Request readRequest(
+        Class<Request> requestType)
     {
         var response = cycle.restResponse();
 
@@ -210,7 +213,8 @@ public class JettyRestRequest extends BaseComponent implements
         try
         {
             // Read object from servlet input
-            var request = restSerializer().deserialize(body, requestType);
+            RestSerializer<Request, Response> serializer = restSerializer(requestType);
+            var request = serializer.deserializeRequest(body, requestType);
 
             // If the request is invalid (any problems go into the response object),
             if (!request.isValid(response))
@@ -233,5 +237,20 @@ public class JettyRestRequest extends BaseComponent implements
     public String toString()
     {
         return new ObjectFormatter(this).toString();
+    }
+
+    /**
+     * Returns the appropriate {@link RestSerializer} for the given request type. If the type itself does not define
+     * <i>public static RestSerializer restSerializer()</i>, then the return value of {@link #defaultRestSerializer()}
+     * method is used.
+     *
+     * @param requestType The request type
+     * @return The {@link RestSerializer}
+     */
+    private <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    RestSerializer<Request, Response> restSerializer(Class<Request> requestType)
+    {
+        RestSerializer<Request, Response> serializer = RestSerializers.restSerializer(requestType);
+        return serializer == null ? defaultRestSerializer() : serializer;
     }
 }

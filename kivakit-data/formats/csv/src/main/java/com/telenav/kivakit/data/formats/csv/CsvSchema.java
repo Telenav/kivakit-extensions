@@ -30,9 +30,6 @@ import com.telenav.lexakai.annotations.associations.UmlAggregation;
 
 import java.util.List;
 
-import static com.telenav.kivakit.core.collections.map.StringMap.KeyCaseSensitivity.FOLD_CASE_LOWER;
-import static com.telenav.kivakit.core.collections.map.StringMap.KeyCaseSensitivity.FOLD_CASE_UPPER;
-
 /**
  * An ordered collection of {@link CsvColumn} objects, specifying the structure of a line in a CSV (Comma Separated
  * Data) file. {@link CsvColumn} objects are passed to the variable arguments constructor or added with

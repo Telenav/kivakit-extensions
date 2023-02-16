@@ -8,10 +8,12 @@ import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializers;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestService;
 import com.telenav.kivakit.network.http.HttpStatus;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
@@ -22,6 +24,7 @@ import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SER
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
+import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.core.string.Brackets.unbracket;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -45,7 +48,7 @@ import static com.telenav.kivakit.network.http.HttpStatus.OK;
  *
  * <p>
  * The {@link #writeResponse(MicroservletResponse)} method validates the given {@link MicroservletResponse}
- * object before serializing it using the {@link JettyRestRequestCycle#restSerializer()} ()}
+ * object before serializing it using the {@link JettyRestRequestCycle#defaultRestSerializer()} ()}
  * object obtained from the {@link RestService}. It then writes the serialized text to the
  * {@link HttpServletResponse}.
  * </p>
@@ -170,29 +173,57 @@ public final class JettyRestResponse extends BaseComponent implements
         }
     }
 
-    private RestSerializer restSerializer(MicroservletResponse response)
+    /**
+     * Returns the appropriate {@link RestSerializer} for the given response type. If the type itself does not define
+     * <i>public static RestSerializer restSerializer()</i>, then the return value of {@link #defaultRestSerializer()}
+     * method is used.
+     *
+     * @param responseType The response type
+     * @return The {@link RestSerializer}
+     */
+    private <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    RestSerializer<Request, Response> restSerializer(Class<Response> responseType)
     {
-        if (response instanceof RestSerializer serializer)
-        {
-            return serializer;
-        }
-        return restSerializer();
+        RestSerializer<Request, Response> serializer = RestSerializers.restSerializer(responseType);
+        return serializer == null ? defaultRestSerializer() : serializer;
     }
 
-    private void writeContent(MicroservletResponse response)
+    /**
+     * Serializes and writes the given response to the servlet output stream
+     *
+     * @param response The response to write
+     */
+    @SuppressWarnings("unchecked")
+    private <Request extends MicroservletRequest, Response extends MicroservletResponse> void writeContent(
+        Response response)
     {
         tryCatch(() ->
         {
-            // set the content type,
-            httpResponse.setContentType(restSerializer(response).contentType());
+            // Get the serializer for the response type,
+            RestSerializer<Request, Response> serializer = restSerializer((Class<Response>) response.getClass());
 
-            // and send the JSON to the servlet output stream.
+            // set the content type,
+            httpResponse.setContentType(serializer.contentType());
+
+            // and send the serialized response to the servlet output stream.
             var out = httpResponse.getOutputStream();
-            out.println("{");
-            out.println(unbracket(restSerializer(response).serialize(response)));
-            out.println(",");
-            out.println(unbracket(restSerializer(response).serialize(errors)));
-            out.println("}");
+
+            if (serializer.contentType().equals("application/json"))
+            {
+                out.println("{");
+                out.println(unbracket(serializer.serializeResponse(response)));
+                out.println(",");
+                out.println(unbracket(serializer.serializeErrors(errors)));
+                out.println("}");
+            }
+            else if (serializer.contentType().equals("text/yaml"))
+            {
+                out.println(serializer.serializeResponse(response));
+            }
+            else
+            {
+                unsupported("Unsupported content type");
+            }
         }, "Unable to write content response");
     }
 }

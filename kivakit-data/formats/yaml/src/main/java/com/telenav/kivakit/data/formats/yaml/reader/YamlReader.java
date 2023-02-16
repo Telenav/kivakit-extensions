@@ -76,6 +76,17 @@ public class YamlReader
     }
 
     /**
+     * Reads the given text as YAML
+     *
+     * @param text The YAML text
+     * @return The YAML
+     */
+    public YamlNode read(String text)
+    {
+        return read(new StringResource(text));
+    }
+
+    /**
      * Reads the given resource, returning the root node of a YAML tree.
      *
      * @param resource The resource to read
