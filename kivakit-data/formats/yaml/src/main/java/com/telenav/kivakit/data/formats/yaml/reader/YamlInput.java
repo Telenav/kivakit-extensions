@@ -40,6 +40,7 @@ public class YamlInput implements TryCatchTrait
     public YamlInput(Resource resource)
     {
         this.resource = resource;
+
         // Read all lines from the input resource,
         readLines(resource);
 

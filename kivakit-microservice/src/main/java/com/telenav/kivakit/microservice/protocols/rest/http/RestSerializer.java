@@ -1,7 +1,12 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.properties.PropertyMap;
+
+import java.io.PrintWriter;
+import java.io.Reader;
 
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 
@@ -10,7 +15,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
  *
  * @author Jonathan Locke
  */
-public interface RestSerializer<Request, Response>
+public interface RestSerializer<Request extends MicroservletRequest, Response extends MicroservletResponse>
 {
     /**
      * Returns the content type of the serialized data, such as "application/json"
@@ -20,45 +25,45 @@ public interface RestSerializer<Request, Response>
     String contentType();
 
     /**
-     * Deserializes from the given properties to an object of the given type
+     * Deserializes an object of the given type from the given properties
      *
-     * @param properties The properties from an HTTP request
-     * @param type The type of object
-     * @return The converted object
+     * @param properties The properties from the query parameters of an HTTP request
+     * @param requestType The type of object
+     * @return The deserialized object
      */
-    default Request deserializeRequest(PropertyMap properties, Class<Request> type)
+    default Request deserializeRequest(PropertyMap properties, Class<Request> requestType)
     {
         return unsupported();
     }
 
     /**
-     * Deserializes from the given text to an object of the given type
+     * Deserializes an object of the given type from the given input
      *
-     * @param text The text to deserialize
-     * @param type The type of object
-     * @return The converted object
+     * @param in The input to deserialize
+     * @param requestType The type of object
+     * @return The deserialized object
      */
-    default Request deserializeRequest(String text, Class<Request> type)
+    default Request deserializeRequest(Reader in, Class<Request> requestType)
     {
         return unsupported();
     }
 
     /**
-     * Serializes the given errors to text
+     * Serializes the given errors to text and writes them to the given output
      *
-     * @param errors The errors
-     * @return The serialized text
+     * @param out The output to write to
+     * @param errors The errors to write
      */
-    default String serializeErrors(MicroservletErrorResponse errors)
+    default void serializeErrors(PrintWriter out, MicroservletErrorResponse errors)
     {
-        return unsupported();
+        unsupported();
     }
 
     /**
-     * Serializes the given object to text
+     * Serializes the given object to text and writes it to the given output
      *
-     * @param object The object to serialize
-     * @return The text for the object
+     * @param out The output to write to
+     * @param response The object to serialize
      */
-    String serializeResponse(Response object);
+    void serializeResponse(PrintWriter out, Response response);
 }

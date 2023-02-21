@@ -4,6 +4,9 @@ import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.microservice.microservlet.BaseMicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
 
+import java.io.PrintWriter;
+import java.io.Writer;
+
 import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiBuilder.openApiBuilder;
 
 /**
@@ -11,7 +14,7 @@ import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.j
  */
 public class OpenApiResponse extends BaseMicroservletResponse
 {
-    public static RestSerializer<Object, OpenApiResponse> restSerializer()
+    public static RestSerializer<OpenApiRequest, OpenApiResponse> restSerializer()
     {
         return new RestSerializer<>()
         {
@@ -22,9 +25,9 @@ public class OpenApiResponse extends BaseMicroservletResponse
             }
 
             @Override
-            public String serializeResponse(OpenApiResponse object)
+            public void serializeResponse(PrintWriter out, OpenApiResponse response)
             {
-                return object.api;
+                out.println(response.api);
             }
         };
     }

@@ -431,7 +431,8 @@ public abstract class RestService extends BaseComponent implements Initializable
      *
      * @return The serializer
      */
-    public <Request extends MicroservletRequest, Response extends MicroservletResponse> RestSerializer<Request, Response> restSerializer()
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    RestSerializer<Request, Response> restSerializer()
     {
         return (RestSerializer<Request, Response>) serializer.get();
     }

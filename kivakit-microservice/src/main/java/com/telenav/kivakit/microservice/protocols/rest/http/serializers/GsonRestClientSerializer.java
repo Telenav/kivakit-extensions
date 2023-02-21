@@ -1,18 +1,25 @@
 package com.telenav.kivakit.microservice.protocols.rest.http.serializers;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestClientSerializer;
 import com.telenav.kivakit.serialization.gson.GsonFactory;
 import com.telenav.kivakit.serialization.gson.GsonFactorySource;
+
+import java.io.PrintWriter;
+import java.io.Reader;
 
 /**
  * A client-side serializer that uses {@link Gson} to serialize requests and deserialize responses
  *
  * @author Jonathan Locke
  */
-public class GsonRestClientSerializer<Request, Response> extends BaseComponent implements RestClientSerializer<Request, Response>
+public class GsonRestClientSerializer<Request extends MicroservletRequest, Response extends MicroservletResponse>
+    extends BaseComponent implements RestClientSerializer<Request, Response>
 {
     /**
      * {@inheritDoc}
@@ -29,38 +36,47 @@ public class GsonRestClientSerializer<Request, Response> extends BaseComponent i
      * {@inheritDoc}
      *
      * @param text {@inheritDoc}
-     * @param type {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Override
-    public MicroservletErrorResponse deserializeErrors(String text, Class<MicroservletErrorResponse> type)
+    public MicroservletErrorResponse deserializeErrors(Reader in)
     {
-        return gson(null).fromJson(text, type);
+        return gson(null).fromJson(in, MicroservletErrorResponse.class);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param text {@inheritDoc}
+     * @param in {@inheritDoc}
      * @param type {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Override
-    public Response deserializeResponse(String text, Class<Response> type)
+    public Response deserializeResponse(Reader in, Class<Response> type)
     {
-        return gson(null).fromJson(text, type);
+        try
+        {
+            var jsonReader = new JsonReader(in);
+            return gson(null).fromJson(jsonReader, type);
+        }
+        catch (Exception e)
+        {
+            problem(e, "Unable to deserialize: $", type);
+            return null;
+        }
     }
 
     /**
      * {@inheritDoc}
      *
+     * @param out {@inheritDoc}
      * @param object {@inheritDoc}
      * @return {@inheritDoc}
      */
     @Override
-    public String serializeRequest(Request object)
+    public void serializeRequest(PrintWriter out, Request object)
     {
-        return gson(object).toJson(object);
+        gson(object).toJson(object, out);
     }
 
     /**

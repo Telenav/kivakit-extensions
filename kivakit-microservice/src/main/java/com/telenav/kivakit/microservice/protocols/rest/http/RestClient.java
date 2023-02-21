@@ -1,11 +1,10 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.google.gson.JsonSyntaxException;
 import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.component.BaseComponent;
+import com.telenav.kivakit.core.io.LookAheadReader;
 import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.version.Version;
-import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.core.NetworkLocation;
@@ -13,6 +12,7 @@ import com.telenav.kivakit.network.core.Port;
 import com.telenav.kivakit.network.http.BaseHttpResource;
 import com.telenav.kivakit.network.http.HttpGetResource;
 import com.telenav.kivakit.network.http.HttpPostResource;
+import com.telenav.kivakit.resource.resources.StringOutputResource;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.http.HttpRequest;
@@ -20,12 +20,9 @@ import java.net.http.HttpRequest;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
-import static com.telenav.kivakit.core.string.Brackets.bracket;
 import static com.telenav.kivakit.core.string.Formatter.format;
-import static com.telenav.kivakit.core.string.Strings.isNullOrBlank;
-import static com.telenav.kivakit.core.value.count.Bytes.bytes;
 import static com.telenav.kivakit.network.core.NetworkAccessConstraints.defaultNetworkAccessConstraints;
-import static java.lang.Integer.parseInt;
+import static java.lang.Character.isWhitespace;
 
 /**
  * A client for easy interaction with KivaKit {@link RestService}s.
@@ -138,68 +135,41 @@ public class RestClient<Request extends MicroservletRequest, Response extends Mi
     }
 
     /**
-     * Posts a request and reads a one-JSON-node header from the input before calling the contentReader callback
-     * function to allow further input to be read
+     * Deserializes the response of the given type from the given HTTP resource
      *
-     * @param path The path to post to
-     * @param request The request to post
-     * @param responseType The type of the response
+     * @param resource The resource to read
+     * @param type The response type
      * @return The response object
      */
-    Response postAndReadContent(String path,
-                                Request request,
-                                Class<Response> responseType)
-    {
-        var response = postResource(path, request);
-
-        // Get content length in case the content reader wants to show progress,
-        Integer length = tryCatchDefault(() -> parseInt(response.responseHeader().get("Content-Length")), null);
-        var bytes = length == null ? null : bytes(length);
-
-        // read the response text,
-        var text = response.readText();
-        try
-        {
-            // and return the deserialized response
-            return serializer.deserializeResponse(text, responseType);
-        }
-        catch (JsonSyntaxException e)
-        {
-            problem(e, "Could not parse JSON:\n\n$", text);
-        }
-        catch (Exception e)
-        {
-            problem(e, "POST to $ failed", path);
-        }
-        return null;
-    }
-
     private Response deserializeResponse(BaseHttpResource resource, Class<Response> type)
     {
         var contentType = serializer.contentType();
         if (contentType.equals(resource.responseHeader().get("content-type")))
         {
-            var text = resource.reader().asString();
-            if (contentType.equals("application/json"))
+            var reader = new LookAheadReader(resource.reader().textReader());
+            if (reader.current() == '{')
             {
-                text = bracket(text);
+                reader.next();
+                while (isWhitespace(reader.current()))
+                {
+                    reader.next();
+                }
             }
-            if (!isNullOrBlank(text))
-            {
-                return serializer.deserializeResponse(text, type);
-            }
-            else
-            {
-                return null;
-            }
+            return serializer.deserializeResponse(reader, type);
         }
         else
         {
-            problem("Response content type is not application/json, but instead: $", resource.contentType());
+            problem("Response content type is not $, but instead: $", contentType, resource.contentType());
             return null;
         }
     }
 
+    /**
+     * Parses the given path into a {@link NetworkLocation}
+     *
+     * @param path The path
+     * @return The network location
+     */
     @NotNull
     private NetworkLocation networkLocation(String path)
     {
@@ -213,6 +183,13 @@ public class RestClient<Request extends MicroservletRequest, Response extends Mi
         return new NetworkLocation(port.path(this, path));
     }
 
+    /**
+     * Returns an HTTP POST resource with the given path for the given request object
+     *
+     * @param path The path
+     * @param request The request object
+     * @return The HTTP resource
+     */
     private HttpPostResource postResource(String path, Request request)
     {
         return listenTo(new HttpPostResource(networkLocation(path), defaultNetworkAccessConstraints())
@@ -224,7 +201,11 @@ public class RestClient<Request extends MicroservletRequest, Response extends Mi
                 {
                     try
                     {
-                        var body = serializer.serializeRequest(request);
+                        var resource = new StringOutputResource();
+                        var out = resource.printWriter();
+                        serializer.serializeRequest(out, request);
+                        out.flush();
+                        var body = resource.string();
                         builder = builder.POST(HttpRequest.BodyPublishers.ofString(body));
                     }
                     catch (Exception e)
@@ -240,6 +221,14 @@ public class RestClient<Request extends MicroservletRequest, Response extends Mi
         });
     }
 
+    /**
+     * Reads a response object of the given type from the given HTTP resource. If the status of the HTTP resource is not
+     * 200 (OK), then the response object will be null, and errors will be deserialized and transmitted to this client.
+     *
+     * @param resource The HTTP resource to read
+     * @param type The type of response
+     * @return The response
+     */
     private Response readResponse(BaseHttpResource resource, Class<Response> type)
     {
         // Execute the request and read the status code
@@ -248,7 +237,7 @@ public class RestClient<Request extends MicroservletRequest, Response extends Mi
         // and if the status is okay,
         if (status.isSuccess())
         {
-            // then return the JSON payload.
+            // then return the first object (the JSON payload).
             return deserializeResponse(resource, type);
         }
 
@@ -256,7 +245,7 @@ public class RestClient<Request extends MicroservletRequest, Response extends Mi
         if (status.isFailure())
         {
             // then read the errors,
-            var errors = serializer.deserializeErrors(resource.readText(), MicroservletErrorResponse.class);
+            var errors = serializer.deserializeErrors(resource.reader().textReader());
             if (errors != null)
             {
                 // and send them to listeners of this client.

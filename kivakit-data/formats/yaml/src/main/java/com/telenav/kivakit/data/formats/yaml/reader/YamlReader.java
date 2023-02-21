@@ -98,7 +98,7 @@ public class YamlReader
         var in = new YamlInput(resource);
 
         // and if the document is an array,
-        if (in.lookahead().isArrayElement())
+        if (in.lookahead() != null && in.lookahead().isArrayElement())
         {
             // then we read the array,
             return readArray(in);

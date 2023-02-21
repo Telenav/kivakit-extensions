@@ -25,7 +25,6 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
-import static com.telenav.kivakit.core.string.Brackets.unbracket;
 import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
 import static com.telenav.kivakit.network.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static com.telenav.kivakit.network.http.HttpStatus.OK;
@@ -206,19 +205,19 @@ public final class JettyRestResponse extends BaseComponent implements
             httpResponse.setContentType(serializer.contentType());
 
             // and send the serialized response to the servlet output stream.
-            var out = httpResponse.getOutputStream();
+            var writer = httpResponse.getWriter();
 
             if (serializer.contentType().equals("application/json"))
             {
-                out.println("{");
-                out.println(unbracket(serializer.serializeResponse(response)));
-                out.println(",");
-                out.println(unbracket(serializer.serializeErrors(errors)));
-                out.println("}");
+                writer.println("{");
+                serializer.serializeResponse(writer, response);
+                writer.println(",");
+                serializer.serializeErrors(writer, errors);
+                writer.println("}");
             }
             else if (serializer.contentType().equals("text/yaml"))
             {
-                out.println(serializer.serializeResponse(response));
+                serializer.serializeResponse(writer, response);
             }
             else
             {

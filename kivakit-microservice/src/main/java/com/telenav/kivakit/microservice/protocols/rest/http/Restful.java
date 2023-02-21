@@ -82,7 +82,6 @@ public interface Restful extends Component
      *
      * @return The serializer
      */
-    @SuppressWarnings("unchecked")
     default <Request extends MicroservletRequest, Response extends MicroservletResponse> RestSerializer<Request, Response> defaultRestSerializer()
     {
         return restService().restSerializer();

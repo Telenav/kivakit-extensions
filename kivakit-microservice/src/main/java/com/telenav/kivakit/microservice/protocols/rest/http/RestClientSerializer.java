@@ -1,44 +1,48 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
 import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
+
+import java.io.PrintWriter;
+import java.io.Reader;
 
 /**
  * Client-side serializer that serializes requests and deserializes responses.
  *
  * @author Jonathan Locke
  */
-public interface RestClientSerializer<Request, Response>
+public interface RestClientSerializer<Request extends MicroservletRequest, Response extends MicroservletResponse>
 {
     /**
-     * Returns the content type of the serialized data, such as "application/json"
+     * Returns the content type for this serializer, such as "application/json"
      *
      * @return The content type
      */
     String contentType();
 
     /**
-     * Deserializes the given error text
+     * Deserializes errors from the given input
      *
-     * @param text The text to deserialize
-     * @param type The type of object
-     * @return The errors object
+     * @param in The input to deserialize
+     * @return The errors
      */
-    MicroservletErrorResponse deserializeErrors(String text, Class<MicroservletErrorResponse> type);
+    MicroservletErrorResponse deserializeErrors(Reader in);
 
     /**
-     * Deserializes from the given text to an object of the given type
+     * Deserializes an object of the given type from the given input
      *
-     * @param text The text to deserialize
+     * @param in The input to deserialize
      * @param type The type of object
-     * @return The converted object
+     * @return The deserialized object
      */
-    Response deserializeResponse(String text, Class<Response> type);
+    Response deserializeResponse(Reader in, Class<Response> type);
 
     /**
-     * Serializes the given object to text
+     * Serializes the given object to text and writes it to the given writer
      *
+     * @param out The writer to write to
      * @param object The object to serialize
-     * @return The text for the object
      */
-    String serializeRequest(Request object);
+    void serializeRequest(PrintWriter out, Request object);
 }
