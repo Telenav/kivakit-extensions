@@ -1,6 +1,0 @@
-type: object
-description: "A distance in any unit"
-properties:
-  distance:
-    type: string
-    description: "Distance in any unit, like 6 feet, 4.5 miles or 15 meters"

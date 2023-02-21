@@ -3,34 +3,46 @@ package com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.o
 import com.telenav.kivakit.component.BaseComponent;
 import com.telenav.kivakit.core.collections.list.ObjectList;
 import com.telenav.kivakit.core.collections.map.StringMap;
+import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.data.formats.yaml.YamlTreeWalker;
 import com.telenav.kivakit.data.formats.yaml.model.YamlBlock;
 import com.telenav.kivakit.data.formats.yaml.model.YamlLiteral;
-import com.telenav.kivakit.data.formats.yaml.reader.YamlReader;
 import com.telenav.kivakit.microservice.microservlet.MicroservletError;
+import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 import com.telenav.kivakit.resource.ResourceFolder;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
+import static com.telenav.kivakit.core.collections.list.ObjectList.list;
 import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
+import static com.telenav.kivakit.core.language.reflection.Type.typeForClass;
 import static com.telenav.kivakit.core.string.CaseFormat.isCapitalized;
 import static com.telenav.kivakit.core.string.CaseFormat.isUppercase;
+import static com.telenav.kivakit.data.formats.yaml.reader.YamlReader.yamlReader;
+import static com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.openapi.OpenApiSchema.openApiSchema;
 import static com.telenav.kivakit.resource.Extension.YAML;
 import static com.telenav.kivakit.resource.Extension.YML;
 
 public class OpenApiSchemas extends BaseComponent
 {
+    public static ObjectList<OpenApiSchema> openApiSchemas(Listener listener, Class<?> type)
+    {
+        return openApiSchemas(listener, type, new HashSet<>());
+    }
+
     private final StringMap<OpenApiSchema> nameToSchema = new StringMap<>();
 
-    public OpenApiSchemas()
+    protected OpenApiSchemas()
     {
-        addAll(OpenApiSchema.schemas(this, MicroservletError.class));
+        addAll(openApiSchemas(this, MicroservletError.class));
     }
 
     public OpenApiSchemas add(Class<?> type)
     {
-        return addAll(OpenApiSchema.schemas(this, type));
+        return addAll(openApiSchemas(this, type));
     }
 
     public OpenApiSchemas add(ResourceFolder<?> folder)
@@ -39,9 +51,9 @@ public class OpenApiSchemas extends BaseComponent
         for (var resource : folder.resources(it -> it.hasExtension(YML) || it.hasExtension(YAML)))
         {
             // parse it as a YAML block
-            var block = new YamlReader().read(resource);
+            var block = yamlReader().read(resource);
             var name = resource.fileName().withoutExtension().name();
-            add(OpenApiSchema.schema(this, name, block));
+            add(openApiSchema(this, name, block));
         }
         return this;
     }
@@ -97,6 +109,35 @@ public class OpenApiSchemas extends BaseComponent
     public ObjectList<OpenApiSchema> schemas()
     {
         return ObjectList.list(nameToSchema.values());
+    }
+
+    private static ObjectList<OpenApiSchema> openApiSchemas(Listener listener, Class<?> type, Set<Class<?>> visited)
+    {
+        if (!visited.contains(type))
+        {
+            visited.add(type);
+            var schemas = new ObjectList<OpenApiSchema>();
+            schemas.addIfNotNull(openApiSchema(listener, type.getSimpleName(), type));
+            for (var field : typeForClass(type).allFields())
+            {
+                var fieldType = field.type();
+                if (fieldType.hasAnnotation(OpenApi.class))
+                {
+                    schemas.add(openApiSchema(listener, fieldType.simpleName(), fieldType.asJavaType()));
+                    schemas.addAll(openApiSchemas(listener, fieldType.asJavaType(), visited));
+                }
+                for (var typeParameter : field.genericTypeParameters())
+                {
+                    if (typeParameter.hasAnnotation(OpenApi.class))
+                    {
+                        schemas.add(openApiSchema(listener, typeParameter.simpleName(), typeParameter.asJavaType()));
+                        schemas.addAll(openApiSchemas(listener, typeParameter.asJavaType(), visited));
+                    }
+                }
+            }
+            return schemas;
+        }
+        return list();
     }
 
     private void resolveSchema(OpenApiSchema schema)

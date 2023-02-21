@@ -26,8 +26,11 @@ import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
 import com.telenav.kivakit.microservice.microservlet.Microservlet;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestProblemReportingTrait;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestRequest;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
+import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializers;
 import com.telenav.kivakit.microservice.protocols.rest.http.Restful;
 import com.telenav.kivakit.network.core.QueryParameters;
 import com.telenav.kivakit.properties.PropertyMap;
@@ -39,6 +42,7 @@ import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.InputStreamReader;
 import java.net.URI;
 
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_SERVICE_PROVIDER;
@@ -46,7 +50,6 @@ import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMEN
 import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.core.ensure.Ensure.ensure;
-import static com.telenav.kivakit.core.io.IO.readString;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
 import static com.telenav.kivakit.filesystem.FilePath.filePath;
 import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
@@ -58,8 +61,8 @@ import static com.telenav.kivakit.network.http.HttpStatus.BAD_REQUEST;
  * Represents an HTTP REST request to a microservlet in Jetty.
  *
  * <p>
- * The {@link #readRequest(Class)} method parses the JSON payload of a POST request into an object of the given type. It
- * then calls the {@link Validator} of the object. Parameters to the request (both path and query parameters) can be
+ * The {@link #readRequest(Class)} method parses the payload of a POST request into an object of the given type. It then
+ * calls the {@link Validator} of the object. Parameters to the request (both path and query parameters) can be
  * retrieved with {@link #parameters()}. The requested path is available through {@link #path()}, and the version of the
  * REST application is provided by {@link Restful#apiVersion()}.
  * </p>
@@ -97,19 +100,6 @@ public class JettyRestRequest extends BaseComponent implements
     {
         this.cycle = cycle;
         this.httpRequest = httpRequest;
-    }
-
-    /**
-     * Deserializes the given JSON to the given type using Gson
-     *
-     * @param json The JSON to deserialize
-     * @param type The resulting object type
-     * @return The deserialized object
-     */
-    @Override
-    public <T> T fromJson(String json, Class<T> type)
-    {
-        return cycle.gson().fromJson(json, type);
     }
 
     /**
@@ -206,24 +196,25 @@ public class JettyRestRequest extends BaseComponent implements
     }
 
     /**
-     * Retrieves an object from the JSON in the servlet request input stream.
+     * Retrieves an object from the servlet request input stream.
      *
-     * @param <T> The object type
-     * @param requestType The type of object to deserialize from JSON
+     * @param requestType The type of object to deserialize
      * @return The deserialized object, or null if deserialization failed
      */
     @Override
-    public <T extends MicroservletRequest> T readRequest(Class<T> requestType)
+    public <Request extends MicroservletRequest, Response extends MicroservletResponse> Request readRequest(
+        Class<Request> requestType)
     {
         var response = cycle.restResponse();
 
         var in = open();
-        var json = readString(this, in);
+        var reader = new InputStreamReader(in);
 
         try
         {
-            // Read JSON object from servlet input
-            var request = fromJson(json, requestType);
+            // Read object from servlet input
+            RestSerializer<Request, Response> serializer = restSerializer(requestType);
+            var request = serializer.deserializeRequest(reader, requestType);
 
             // If the request is invalid (any problems go into the response object),
             if (!request.isValid(response))
@@ -237,7 +228,7 @@ public class JettyRestRequest extends BaseComponent implements
         }
         catch (Exception e)
         {
-            problem(BAD_REQUEST, e, "Malformed request: $", json);
+            problem(BAD_REQUEST, e, "Malformed request");
             return null;
         }
     }
@@ -246,5 +237,20 @@ public class JettyRestRequest extends BaseComponent implements
     public String toString()
     {
         return new ObjectFormatter(this).toString();
+    }
+
+    /**
+     * Returns the appropriate {@link RestSerializer} for the given request type. If the type itself does not define
+     * <i>public static RestSerializer restSerializer()</i>, then the return value of {@link #defaultRestSerializer()}
+     * method is used.
+     *
+     * @param requestType The request type
+     * @return The {@link RestSerializer}
+     */
+    private <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    RestSerializer<Request, Response> restSerializer(Class<Request> requestType)
+    {
+        RestSerializer<Request, Response> serializer = RestSerializers.restSerializer(requestType);
+        return serializer == null ? defaultRestSerializer() : serializer;
     }
 }

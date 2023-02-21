@@ -43,6 +43,7 @@ import static com.telenav.kivakit.core.ensure.Ensure.ensureNotNull;
 import static com.telenav.kivakit.core.ensure.Ensure.fail;
 import static com.telenav.kivakit.core.ensure.Ensure.unsupported;
 import static com.telenav.kivakit.core.messaging.Listener.nullListener;
+import static com.telenav.kivakit.core.messaging.Listener.throwingListener;
 import static com.telenav.kivakit.core.string.Paths.pathHead;
 import static com.telenav.kivakit.core.string.Paths.pathTail;
 import static com.telenav.kivakit.filesystem.FilePath.parseFilePath;
@@ -72,7 +73,7 @@ public class JavaFileSystemObject extends BaseWritableResource implements FileSy
             String tail = pathTail(pathString, "!/");
 
             var uri = URI.create(head);
-            filesystem = Nio.filesystem(nullListener(), uri);
+            filesystem = Nio.filesystem(throwingListener(), uri);
             if (filesystem != null)
             {
                 this.path = filesystem.getPath(tail);

@@ -3,16 +3,16 @@ package com.telenav.kivakit.data.formats.yaml.model;
 import com.telenav.kivakit.data.formats.yaml.BaseYamlTest;
 import org.junit.Test;
 
-import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.block;
-import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.scalar;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlBlock.yamlBlock;
+import static com.telenav.kivakit.data.formats.yaml.model.YamlScalar.yamlScalar;
 
 public class YamlBlockTest extends BaseYamlTest
 {
     @Test
     public void testCreation()
     {
-        ensure(block().isUnnamed());
-        ensure(block("tuffy").isNamed());
+        ensure(yamlBlock().isUnnamed());
+        ensure(yamlBlock("tuffy").isNamed());
     }
 
     /**
@@ -119,9 +119,9 @@ public class YamlBlockTest extends BaseYamlTest
     @Test
     public void testWith()
     {
-        var block = block("duck");
-        block = block.with(scalar("color", "red"));
-        block = block.with(scalar("age", 3));
+        var block = yamlBlock("duck");
+        block = block.with(yamlScalar("color", "red"));
+        block = block.with(yamlScalar("age", 3));
         ensureEqual(block.size(), 2);
         ensure(((YamlScalar) block.elements().get(0)).string().equals("red"));
         ensure(((YamlScalar) block.elements().get(1)).number().intValue() == 3);

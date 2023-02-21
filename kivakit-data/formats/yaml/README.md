@@ -20,14 +20,14 @@ This module reads and provides a model for YAML documents
 
 ### Dependencies <a name="dependencies"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/dependencies-32.png" srcset="https://telenav.github.io/telenav-assets/images/icons/dependencies-32-2x.png 2x"/>
 
-[*Dependency Diagram*](https://www.kivakit.org/1.16.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/dependencies.svg)
+[*Dependency Diagram*](https://www.kivakit.org/1.17.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/dependencies.svg)
 
 #### Maven Dependency
 
     <dependency>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-data-formats-yaml</artifactId>
-        <version>1.16.0</version>
+        <version>1.17.0</version>
     </dependency>
 
 <img src="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128.png" srcset="https://telenav.github.io/telenav-assets/images/separators/horizontal-line-128-2x.png 2x"/>
@@ -62,27 +62,27 @@ None
 
 ### Package Diagrams <a name="package-diagrams"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/box-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/box-24-2x.png 2x"/>
 
-[*com.telenav.kivakit.data.formats.yaml*](https://www.kivakit.org/1.16.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/com.telenav.kivakit.data.formats.yaml.svg)  
-[*com.telenav.kivakit.data.formats.yaml.model*](https://www.kivakit.org/1.16.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/com.telenav.kivakit.data.formats.yaml.model.svg)  
-[*com.telenav.kivakit.data.formats.yaml.reader*](https://www.kivakit.org/1.16.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/com.telenav.kivakit.data.formats.yaml.reader.svg)
+[*com.telenav.kivakit.data.formats.yaml*](https://www.kivakit.org/1.17.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/com.telenav.kivakit.data.formats.yaml.svg)  
+[*com.telenav.kivakit.data.formats.yaml.model*](https://www.kivakit.org/1.17.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/com.telenav.kivakit.data.formats.yaml.model.svg)  
+[*com.telenav.kivakit.data.formats.yaml.reader*](https://www.kivakit.org/1.17.0/lexakai/kivakit-extensions/kivakit-data/formats/yaml/documentation/diagrams/com.telenav.kivakit.data.formats.yaml.reader.svg)
 
 ### Javadoc <a name="code-quality"></a> &nbsp;&nbsp; <img src="https://telenav.github.io/telenav-assets/images/icons/books-24.png" srcset="https://telenav.github.io/telenav-assets/images/icons/books-24-2x.png 2x"/>
 
 | Class | Documentation Sections  |
 |-------|-------------------------|
-| [*YamlArray*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlArray.html) |  |  
-| [*YamlBlock*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlBlock.html) |  |  
-| [*YamlFormatter*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/YamlFormatter.html) |  |  
-| [*YamlInput*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlInput.html) |  |  
-| [*YamlLine*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlLine.html) |  |  
-| [*YamlLineParser*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlLineParser.html) |  |  
-| [*YamlLineType*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlLineType.html) |  |  
-| [*YamlLiteral*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlLiteral.html) |  |  
-| [*YamlNode*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlNode.html) |  |  
-| [*YamlNodeContainer*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlNodeContainer.html) |  |  
-| [*YamlReader*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlReader.html) | Known Limitations |  
-| [*YamlScalar*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlScalar.html) |  |  
-| [*YamlTreeWalker*](https://www.kivakit.org/1.16.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/YamlTreeWalker.html) |  |  
+| [*YamlArray*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlArray.html) |  |  
+| [*YamlBlock*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlBlock.html) |  |  
+| [*YamlFormatter*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/YamlFormatter.html) |  |  
+| [*YamlInput*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlInput.html) |  |  
+| [*YamlLine*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlLine.html) |  |  
+| [*YamlLineParser*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlLineParser.html) |  |  
+| [*YamlLineType*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlLineType.html) |  |  
+| [*YamlLiteral*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlLiteral.html) |  |  
+| [*YamlNode*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlNode.html) |  |  
+| [*YamlNodeContainer*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlNodeContainer.html) |  |  
+| [*YamlReader*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/reader/YamlReader.html) | Known Limitations |  
+| [*YamlScalar*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/model/YamlScalar.html) |  |  
+| [*YamlTreeWalker*](https://www.kivakit.org/1.17.0/javadoc/kivakit-extensions/kivakit-data-formats-yaml/com/telenav/kivakit/data/formats/yaml/YamlTreeWalker.html) |  |  
 
 [//]: # (start-user-text)
 

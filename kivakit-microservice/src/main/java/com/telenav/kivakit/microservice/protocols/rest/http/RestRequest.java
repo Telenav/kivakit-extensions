@@ -23,14 +23,15 @@ import com.telenav.kivakit.filesystem.FilePath;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequest;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
+import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.properties.PropertyMap;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jetbrains.annotations.NotNull;
 
-import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Audience.AUDIENCE_INTERNAL;
 import static com.telenav.kivakit.annotations.code.quality.Documentation.DOCUMENTED;
+import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTENSIBLE;
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 
 /**
@@ -81,11 +82,11 @@ public interface RestRequest extends Restful
     FilePath path();
 
     /**
-     * Reads a {@link MicroservletRequest} object from the JSON in the servlet request input stream.
+     * Reads a {@link MicroservletRequest} object from the text in the servlet request input stream.
      *
-     * @param <T> The object type
-     * @param requestType The type of object to deserialize from JSON
+     * @param requestType The type of object to deserialize from text
      * @return The deserialized object, or null if deserialization failed
      */
-    <T extends MicroservletRequest> T readRequest(Class<T> requestType);
+    <Request extends MicroservletRequest, Response extends MicroservletResponse>
+    Request readRequest(Class<Request> requestType);
 }

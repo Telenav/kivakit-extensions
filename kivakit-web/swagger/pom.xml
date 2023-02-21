@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions-parent</artifactId>
-        <version>1.16.0</version>
+        <version>1.17.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     
@@ -49,6 +49,11 @@
 
         <!-- OpenAPI / Swagger -->
 
+        <!-- The SnakeYAML vulnerability requires consumption of untrusted YAML.
+             For our purposes, we are going to consider it safe, so we suprress
+             IntelliJ warning -->
+
+        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-jaxrs2-jakarta</artifactId>
@@ -112,11 +117,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${serialization.jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>${serialization.snake.yaml.version}</version>
         </dependency>
 
         <!-- Logging -->
