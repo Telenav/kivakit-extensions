@@ -26,6 +26,8 @@ public interface MicroservletResponse extends
     Component,
     RestProblemReportingTrait
 {
+    MicroservletErrorList errors();
+
     /**
      * Called when the response is complete, but before it is sent back
      */

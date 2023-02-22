@@ -5,11 +5,10 @@ import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.core.messaging.Listener;
 import com.telenav.kivakit.core.messaging.Message;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
+import com.telenav.kivakit.core.messaging.repeaters.BaseRepeater;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramMicroservlet;
 import com.telenav.kivakit.microservice.protocols.rest.openapi.OpenApi;
 import com.telenav.kivakit.network.http.HttpStatus;
-import com.telenav.kivakit.validation.ValidationType;
-import com.telenav.kivakit.validation.Validator;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import static com.telenav.kivakit.annotations.code.quality.Stability.STABLE_EXTE
 import static com.telenav.kivakit.annotations.code.quality.Testing.UNTESTED;
 import static com.telenav.kivakit.microservice.microservlet.MicroservletError.microservletError;
 import static com.telenav.kivakit.network.http.HttpStatus.OK;
-import static com.telenav.kivakit.validation.Validator.nullValidator;
 
 /**
  * A list of {@link MicroservletError} messages, with a translation to {@link HttpStatus}
@@ -65,11 +63,16 @@ import static com.telenav.kivakit.validation.Validator.nullValidator;
                   type: "Problem"
                 """
     )
-public class MicroservletErrorResponse extends BaseMicroservletResponse
+public class MicroservletErrorList extends BaseRepeater
 {
     /** List of microservlet errors to include in this reponse */
     @Expose
     private final List<MicroservletError> errors = new ArrayList<>();
+
+    public void add(MicroservletError error)
+    {
+        this.errors.add(error);
+    }
 
     /**
      * Returns the errors in this response
@@ -107,15 +110,6 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
      * {@inheritDoc}
      */
     @Override
-    public boolean isRepeating()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void onMessage(Message message)
     {
         if (message != null)
@@ -136,14 +130,5 @@ public class MicroservletErrorResponse extends BaseMicroservletResponse
     public void sendTo(Listener listener)
     {
         errors.forEach(error -> error.sendTo(listener));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Validator validator(ValidationType type)
-    {
-        return nullValidator();
     }
 }

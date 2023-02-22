@@ -22,7 +22,7 @@ import com.telenav.kivakit.annotations.code.quality.TypeQuality;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestRequestCycle;
 import com.telenav.kivakit.microservice.internal.protocols.rest.plugins.jetty.cycle.JettyRestResponse;
-import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletErrorList;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.network.http.HttpStatus;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,7 +60,7 @@ public interface RestResponse extends RestProblemReportingTrait
     /**
      * The errors for this response
      */
-    MicroservletErrorResponse errors();
+    MicroservletErrorList errors();
 
     /**
      * Returns the underlying {@link HttpServletResponse}
@@ -99,7 +99,7 @@ public interface RestResponse extends RestProblemReportingTrait
 
     /**
      * Writes the given response object to the servlet output stream in JSON format. If the request is invalid, or the
-     * response is null or invalid, a {@link MicroservletErrorResponse} is sent with the captured error messages.
+     * response is null or invalid, a {@link MicroservletErrorList} is sent with the captured error messages.
      *
      * @param response The response to write to the HTTP output stream
      */

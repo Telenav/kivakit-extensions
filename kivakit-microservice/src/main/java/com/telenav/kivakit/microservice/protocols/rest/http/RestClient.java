@@ -234,23 +234,20 @@ public class RestClient<Request extends MicroservletRequest, Response extends Mi
         // Execute the request and read the status code
         var status = resource.status();
 
+        var response = deserializeResponse(resource, type);
+
         // and if the status is okay,
         if (status.isSuccess())
         {
             // then return the first object (the JSON payload).
-            return deserializeResponse(resource, type);
+            return response;
         }
 
         // If the status code indicates that there are associated error messages,
         if (status.isFailure())
         {
-            // then read the errors,
-            var errors = serializer.deserializeErrors(resource.reader().textReader());
-            if (errors != null)
-            {
-                // and send them to listeners of this client.
-                errors.sendTo(this);
-            }
+            // and send them to listeners of this client.
+            response.errors().sendTo(this);
         }
 
         return null;

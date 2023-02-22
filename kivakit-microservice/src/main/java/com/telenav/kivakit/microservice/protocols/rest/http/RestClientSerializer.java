@@ -1,6 +1,5 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 
@@ -20,14 +19,6 @@ public interface RestClientSerializer<Request extends MicroservletRequest, Respo
      * @return The content type
      */
     String contentType();
-
-    /**
-     * Deserializes errors from the given input
-     *
-     * @param in The input to deserialize
-     * @return The errors
-     */
-    MicroservletErrorResponse deserializeErrors(Reader in);
 
     /**
      * Deserializes an object of the given type from the given input

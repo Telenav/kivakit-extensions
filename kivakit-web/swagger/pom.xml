@@ -18,7 +18,7 @@
     <parent>
         <groupId>com.telenav.kivakit</groupId>
         <artifactId>kivakit-extensions-parent</artifactId>
-        <version>1.17.0</version>
+        <version>1.17.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     
@@ -53,7 +53,6 @@
              For our purposes, we are going to consider it safe, so we suprress
              IntelliJ warning -->
 
-        <!--suppress VulnerableLibrariesLocal -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-jaxrs2-jakarta</artifactId>
@@ -78,6 +77,10 @@
                 <exclusion>
                     <groupId>org.javassist</groupId>
                     <artifactId>javassist</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.fasterxml.jackson.dataformat</groupId>

@@ -7,7 +7,7 @@ import com.telenav.kivakit.core.language.trait.TryTrait;
 import com.telenav.kivakit.core.messaging.messages.status.Problem;
 import com.telenav.kivakit.core.string.ObjectFormatter;
 import com.telenav.kivakit.microservice.internal.lexakai.DiagramJetty;
-import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletErrorList;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.HttpProblem;
@@ -71,7 +71,7 @@ public final class JettyRestResponse extends BaseComponent implements
     /** Error messages that were reported to this response via {@link #problem(HttpStatus, String, Object...)} */
     @Expose
     @UmlAggregation
-    private final MicroservletErrorResponse errors = new MicroservletErrorResponse();
+    private final MicroservletErrorList errors = new MicroservletErrorList();
 
     /** Servlet response */
     private final HttpServletResponse httpResponse;
@@ -87,7 +87,7 @@ public final class JettyRestResponse extends BaseComponent implements
     }
 
     @Override
-    public MicroservletErrorResponse errors()
+    public MicroservletErrorList errors()
     {
         return errors;
     }
@@ -130,7 +130,7 @@ public final class JettyRestResponse extends BaseComponent implements
 
     /**
      * Writes the given response object to the servlet output stream in text format. If the request is invalid, or the
-     * response is null or invalid, a {@link MicroservletErrorResponse} is sent with the captured error messages.
+     * response is null or invalid, a {@link MicroservletErrorList} is sent with the captured error messages.
      *
      * @param response The response to write to the HTTP output stream
      */
@@ -209,11 +209,8 @@ public final class JettyRestResponse extends BaseComponent implements
 
             if (serializer.contentType().equals("application/json"))
             {
-                writer.println("{");
                 serializer.serializeResponse(writer, response);
-                writer.println(",");
-                serializer.serializeErrors(writer, errors);
-                writer.println("}");
+//                serializer.serializeErrors(writer, errors);
             }
             else if (serializer.contentType().equals("text/yaml"))
             {

@@ -1,6 +1,5 @@
 package com.telenav.kivakit.microservice.protocols.rest.http;
 
-import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.properties.PropertyMap;
@@ -46,17 +45,6 @@ public interface RestSerializer<Request extends MicroservletRequest, Response ex
     default Request deserializeRequest(Reader in, Class<Request> requestType)
     {
         return unsupported();
-    }
-
-    /**
-     * Serializes the given errors to text and writes them to the given output
-     *
-     * @param out The output to write to
-     * @param errors The errors to write
-     */
-    default void serializeErrors(PrintWriter out, MicroservletErrorResponse errors)
-    {
-        unsupported();
     }
 
     /**

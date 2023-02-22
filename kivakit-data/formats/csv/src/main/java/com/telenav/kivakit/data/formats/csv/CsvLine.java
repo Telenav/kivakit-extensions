@@ -30,6 +30,7 @@ import com.telenav.lexakai.annotations.LexakaiJavadoc;
 import com.telenav.lexakai.annotations.UmlClassDiagram;
 
 import static com.telenav.kivakit.core.collections.list.StringList.stringList;
+import static com.telenav.kivakit.core.os.Console.console;
 import static com.telenav.kivakit.core.string.Strings.doubleQuoted;
 
 /**
@@ -219,7 +220,10 @@ public class CsvLine extends BaseRepeater implements PropertyValue
             var value = get(column);
             if (value != null)
             {
-                var string = value.toString().replaceAll("\"", "\"\"").trim();
+                var string = value.toString()
+                    .replaceAll("[^\\\\\"]\"[^\"]", "XXX")
+                    .replaceAll("XXX", "\"\"").trim();
+
                 if (quoted && column.type() == String.class)
                 {
                     result.add(doubleQuoted(string));
