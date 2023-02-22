@@ -7,7 +7,7 @@ import com.telenav.kivakit.core.language.reflection.Type;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcRequestProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletGrpcResponseProtobuf;
 import com.telenav.kivakit.microservice.grpc.MicroservletResponderGrpc;
-import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletErrorList;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequestHandler;
 import io.grpc.stub.StreamObserver;
@@ -71,12 +71,12 @@ public class MicroservletGrpcResponder extends MicroservletResponderGrpc.Microse
             var request = (MicroservletRequest) schemas.deserialize(requestType, requestProtobuf.getObject());
 
             // Next call the user's code and get a response, capturing any errors.
-            var errors = new MicroservletErrorResponse();
+            var errors = new MicroservletErrorList();
             var response = errors.listenTo(request).respond(path);
 
-            // Turn the MicroservletErrorResponse and MicroservletResponse into a GrpcResponseProtobuf
+            // Turn the MicroservletErrorList and MicroservletResponse into a GrpcResponseProtobuf
             var responseProtobuf = MicroservletGrpcResponseProtobuf.newBuilder()
-                    .addErrors(schemas.serialize(MicroservletErrorResponse.class, errors))
+                    .addErrors(schemas.serialize(MicroservletErrorList.class, errors))
                     .setObject(schemas.serialize(response.getClass(), response))
                     .build();
 

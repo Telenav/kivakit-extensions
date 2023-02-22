@@ -31,6 +31,10 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
     /** The result object listening to this request */
     private transient Result<?> result;
 
+    /** List of errors in the response, if any */
+    @SuppressWarnings("FieldCanBeLocal")
+    private final MicroservletErrorList errors = new MicroservletErrorList();
+
     /**
      * This constructor can be called in simple cases where the {@link Result} class is not being used.
      */
@@ -51,6 +55,12 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
         result.listenTo(this);
     }
 
+    @Override
+    public MicroservletErrorList errors()
+    {
+        return errors;
+    }
+
     /**
      * Propagates any failure messages in the {@link Result} object to the REST response for the current thread
      */
@@ -60,8 +70,8 @@ public abstract class BaseMicroservletResponse extends BaseComponent implements 
         // If the response failed,
         if (result != null && result.failed())
         {
-            // propagate any messages in the result object to the response
-            result.messages().forEach(restResponse()::receive);
+            // propagate any messages to the error list
+            result.messages().forEach(errors::receive);
         }
     }
 

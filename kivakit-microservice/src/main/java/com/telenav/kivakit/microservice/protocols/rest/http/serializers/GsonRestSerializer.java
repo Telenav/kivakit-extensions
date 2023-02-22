@@ -2,7 +2,7 @@ package com.telenav.kivakit.microservice.protocols.rest.http.serializers;
 
 import com.google.gson.Gson;
 import com.telenav.kivakit.component.BaseComponent;
-import com.telenav.kivakit.microservice.microservlet.MicroservletErrorResponse;
+import com.telenav.kivakit.microservice.microservlet.MicroservletErrorList;
 import com.telenav.kivakit.microservice.microservlet.MicroservletRequest;
 import com.telenav.kivakit.microservice.microservlet.MicroservletResponse;
 import com.telenav.kivakit.microservice.protocols.rest.http.RestSerializer;
@@ -50,12 +50,6 @@ public class GsonRestSerializer<Request extends MicroservletRequest, Response ex
     public Request deserializeRequest(PropertyMap properties, Class<Request> requestType)
     {
         return gson(null).fromJson(properties.toJson(), requestType);
-    }
-
-    @Override
-    public void serializeErrors(PrintWriter out, MicroservletErrorResponse errors)
-    {
-        gson(errors).toJson(errors, out);
     }
 
     /**
